@@ -131,11 +131,6 @@ function SkillTrees:updateNodes(tree, noReset)
                 tmpAvailableNodes[subNodeID] = SkillTrees.trees[tree][subNodeID]
             end
         end
-
-        -- Update total modifiers
-        if allocated then
-            SkillTrees:addModifier(node.modifiers)
-        end
     end
 
     -- Update availability
@@ -167,12 +162,15 @@ function SkillTrees:isNodeAllocatable(tree, nodeID, allocation)
         end
 
         -- If deallocating, check that adjacent nodes that require this one are not allocated
-        for _, adjacentID in ipairs(SkillTrees.trees[tree][nodeID].adjacent) do
-            local requiredNodes = SkillTrees.trees[tree][adjacentID].requires
-            if SkillTrees:isNodeAllocated(tree, adjacentID) and requiredNodes ~= nil then
-                for _, requiredID in ipairs(requiredNodes) do
-                    if requiredID == nodeID then
-                        return false
+        local adjacentNodes = SkillTrees.trees[tree][nodeID].adjacent
+        if adjacentNodes ~= nil then
+            for _, adjacentID in ipairs(adjacentNodes) do
+                local requiredNodes = SkillTrees.trees[tree][adjacentID].requires
+                if SkillTrees:isNodeAllocated(tree, adjacentID) and requiredNodes ~= nil then
+                    for _, requiredID in ipairs(requiredNodes) do
+                        if requiredID == nodeID then
+                            return false
+                        end
                     end
                 end
             end
