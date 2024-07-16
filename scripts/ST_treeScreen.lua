@@ -38,10 +38,6 @@ function SkillTrees:closeTreeMenu()
     treeMenuOpen = false
 end
 
-function SkillTrees:treeMenuInput()
-
-end
-
 function SkillTrees:treeMenuRendering()
     local shiftHeld = Input.IsButtonPressed(Keyboard.KEY_LEFT_SHIFT, 0)
 
@@ -62,7 +58,7 @@ function SkillTrees:treeMenuRendering()
 	elseif not Input.IsButtonPressed(Keyboard.KEY_V, 0) then
 		treeKeyHeld[Keyboard.KEY_V] = false
 	end
-    
+
     if treeMenuOpen then
         local screenW = Isaac.GetScreenWidth()
         local screenH = Isaac.GetScreenHeight()
@@ -75,7 +71,7 @@ function SkillTrees:treeMenuRendering()
         treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
         treeBGSprite:Render(Vector(0, 0))
 
-        -- Camera management
+        -- Camera management & tree navigation
         local cameraSpeed = 2
         if shiftHeld then
             cameraSpeed = 6
@@ -96,14 +92,19 @@ function SkillTrees:treeMenuRendering()
         local camCenterY = screenH / 2 + treeCamera.Y
         hoveredNode = nil
         for _, node in pairs(SkillTrees.nodeData.global) do
-            node.sprite:Render(Vector(node.pos.X - treeCamera.X, node.pos.Y - treeCamera.Y))
+            local nodeX = node.pos.X * 32
+            local nodeY = node.pos.Y * 32
+            node.sprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
 
-            if SkillTrees.modData.treeNodes[node.id] then
-                node.allocatedSprite:Render(Vector(node.pos.X - treeCamera.X, node.pos.Y - treeCamera.Y))
+            if SkillTrees:isNodeAllocated(node.id) then
+                node.allocatedSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
             end
-            
-            if camCenterX >= node.pos.X - 15 and camCenterX <= node.pos.X + 15 and
-            camCenterY >= node.pos.Y - 15 and camCenterY <= node.pos.Y + 15 then
+
+            -- Debug, show ID
+            Isaac.RenderText(tostring(node.id), nodeX + 28, nodeY + 28, 1, 1, 1, 0.7)
+
+            if camCenterX >= nodeX - 15 and camCenterX <= nodeX + 15 and
+            camCenterY >= nodeY - 15 and camCenterY <= nodeY + 15 then
                 hoveredNode = node
             end
         end
@@ -125,7 +126,7 @@ function SkillTrees:treeMenuRendering()
             treeKeyHeld[Keyboard.KEY_E] = true
 
             if hoveredNode ~= nil then
-                if hoveredNode.available and not SkillTrees.modData.treeNodes[hoveredNode.id] then
+                if SkillTrees:isNodeAllocatable(hoveredNode.id, true) then
                     if SkillTrees.modData.skillPoints > 0 then
                         SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints - 1
                         SkillTrees:allocateNodeID(hoveredNode.id, true)
@@ -133,7 +134,7 @@ function SkillTrees:treeMenuRendering()
                     else
                         sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                     end
-                elseif not hoveredNode.available then
+                elseif not SkillTrees:isNodeAllocated(hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end
@@ -146,7 +147,7 @@ function SkillTrees:treeMenuRendering()
             treeKeyHeld[Keyboard.KEY_R] = true
 
             if hoveredNode ~= nil then
-                if SkillTrees.modData.treeNodes[hoveredNode.id] then
+                if SkillTrees:isNodeAllocatable(hoveredNode.id, false) then
                     if SkillTrees.modData.respecPoints > 0 then
                         SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
                         SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
@@ -155,9 +156,11 @@ function SkillTrees:treeMenuRendering()
                     else
                         sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                     end
+                elseif SkillTrees:isNodeAllocated(hoveredNode.id) then
+                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end
-        else
+        elseif not Input.IsButtonPressed(Keyboard.KEY_R, 0) then
             treeKeyHeld[Keyboard.KEY_R] = false
         end
 

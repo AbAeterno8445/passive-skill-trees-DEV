@@ -19,8 +19,12 @@ function SkillTrees:resetData()
 		skillPoints = 2,
 		respecPoints = 4,
 		spawnKills = 0,
+
+		-- List of nodes and whether they're allocated
 		treeNodes = {},
+		-- List of applied modifiers from tree
 		treeMods = {},
+		-- List of applied modifiers that stays fixed during a run
 		treeModSnapshot = nil,
 		charData = {}
 	}
