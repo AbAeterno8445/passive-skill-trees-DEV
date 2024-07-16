@@ -2,8 +2,22 @@ SkillTrees = RegisterMod("SkillTrees", 1)
 
 local json = require("json")
 
-local startXPRequired = 50
+local startXPRequired = 60
 SkillTrees.modData = {}
+SkillTrees.selectedMenuChar = 0
+SkillTrees.charNames = {
+	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
+	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
+	"Judas", "Lilith", "Keeper", "Apollyon", "The Forgotten", "The Soul",
+	"Bethany", "Jacob & Esau", "Jacob & Esau",
+	"T. Isaac", "T. Magdalene", "T. Cain", "T. Judas", "T. ???", "T. Eve",
+	"T. Samson", "T. Azazel", "T. Lazarus", "T. Eden", "T. Lost", "T. Lilith",
+	"T. Keeper", "T. Apollyon", "T. Forgotten", "T. Bethany", "T. Jacob", "T. Lazarus",
+	"T. Jacob", "T. Soul"
+}
+-- Init mod char names here
+SkillTrees.charNames[42] = "Siren"
+SkillTrees.charNames[43] = "T. Siren"
 
 function SkillTrees:resetMods()
 	-- List of available global tree modifiers
@@ -33,12 +47,12 @@ function SkillTrees:resetData()
 end
 SkillTrees:resetData()
 
--- Initialize character data for current char
+-- Initialize character data for the given char
+---@param charName string Character name
 ---@param forceReset? boolean Forces resetting the character's data
-function SkillTrees:charInit(forceReset)
-	local currentChar = Isaac.GetPlayer():GetName()
-	if SkillTrees.modData.charData[currentChar] == nil or forceReset == true then
-		SkillTrees.modData.charData[currentChar] = {
+function SkillTrees:charInit(charName, forceReset)
+	if SkillTrees.modData.charData[charName] == nil or forceReset == true then
+		SkillTrees.modData.charData[charName] = {
 			level = 1,
 			xp = 0,
 			xpRequired = startXPRequired,
@@ -73,6 +87,11 @@ function SkillTrees:load()
 				tmpJson.treeMods[k] = v
 			end
 		end
+		for k, v in pairs(SkillTrees.modData.treeNodes) do
+			if tmpJson.treeNodes[k] == nil then
+				tmpJson.treeNodes[k] = v
+			end
+		end
 		SkillTrees.modData = tmpJson
 
 		loadSuccess = true
@@ -85,13 +104,13 @@ end
 -- On player init
 function SkillTrees:playerInit()
 	local loadSuccess = SkillTrees:load()
-	SkillTrees:charInit(not loadSuccess)
+	SkillTrees:charInit(SkillTrees:getCurrentCharName(), not loadSuccess)
 end
 
 -- Fetch the current character's skill tree data (makes sure it's initialized)
 function SkillTrees:getCurrentCharData()
-	SkillTrees:charInit()
-	local currentChar = Isaac.GetPlayer():GetName()
+	local currentChar = SkillTrees:getCurrentCharName()
+	SkillTrees:charInit(currentChar)
 	return SkillTrees.modData.charData[currentChar]
 end
 
@@ -103,6 +122,7 @@ include("scripts.ST_onUpdate")
 include("scripts.ST_rendering")
 include("scripts.ST_onCache")
 include("scripts.ST_onNewRun")
+include("scripts.ST_onCharSelect")
 
 SkillTrees:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, SkillTrees.playerInit)
 SkillTrees:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, SkillTrees.save)
@@ -116,6 +136,9 @@ SkillTrees:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, SkillTrees.onNewRun)
 -- MC_POST_GAME_END for run over
 
 SkillTrees:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, SkillTrees.load)
+SkillTrees:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, SkillTrees.onCharSelect)
 
 -- First load
 SkillTrees:load()
+
+print("Initialized Skill Trees.")

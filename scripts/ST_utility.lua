@@ -1,5 +1,10 @@
 local sfx = SFXManager()
 
+-- Get current char name (different to EntityPlayer's GetName() func as it uses a custom name table)
+function SkillTrees:getCurrentCharName()
+	return SkillTrees.charNames[1 + Isaac.GetPlayer():GetPlayerType()]
+end
+
 -- Add temporary XP (gets converted to normal xp once room is cleared)
 ---@param xp number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
@@ -33,7 +38,7 @@ function SkillTrees:addXP(xp, showText)
 
 	-- Level up
 	if charData.xp >= charData.xpRequired then
-		local currentChar = Isaac.GetPlayer():GetName()
+		local currentChar = SkillTrees:getCurrentCharName()
 
 		sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
 		charData.level = charData.level + 1

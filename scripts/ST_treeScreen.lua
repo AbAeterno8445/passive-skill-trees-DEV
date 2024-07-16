@@ -20,13 +20,9 @@ local defaultCamX = -Isaac.GetScreenWidth() / 2
 local defaultCamY = -Isaac.GetScreenHeight() / 2
 local treeCamera = Vector(defaultCamX, defaultCamY)
 
+local currentTree = "global"
 local hoveredNode = nil
 
-local treeKeyHeld = {
-    [Keyboard.KEY_V] = false,
-    [Keyboard.KEY_E] = false,
-    [Keyboard.KEY_R] = false
-}
 local treeMenuOpen = false
 local oldmask = nil
 
@@ -43,13 +39,14 @@ function SkillTrees:closeTreeMenu()
         oldmask = nil
     end
     treeMenuOpen = false
+    currentTree = "global"
 end
 
 function SkillTrees:treeMenuRendering()
     local shiftHeld = Input.IsButtonPressed(Keyboard.KEY_LEFT_SHIFT, 0)
 
-	if Input.IsButtonPressed(Keyboard.KEY_V, 0) and not treeKeyHeld[Keyboard.KEY_V] then
-		treeKeyHeld[Keyboard.KEY_V] = true
+    -- Input: V key
+	if Input.IsButtonTriggered(Keyboard.KEY_V, 0) then
 		if MenuManager.GetActiveMenu() == MainMenuType.CHARACTER then
 			if treeMenuOpen then
                 -- Shift + V reset camera
@@ -62,16 +59,21 @@ function SkillTrees:treeMenuRendering()
                 SkillTrees:openTreeMenu()
 			end
 		end
-	elseif not Input.IsButtonPressed(Keyboard.KEY_V, 0) then
-		treeKeyHeld[Keyboard.KEY_V] = false
 	end
 
     if treeMenuOpen then
         local screenW = Isaac.GetScreenWidth()
         local screenH = Isaac.GetScreenHeight()
 
+        local skPoints = SkillTrees.modData.skillPoints
+        local treeName = "Global Tree"
+        if currentTree ~= "global" then
+            skPoints = SkillTrees.modData.charData[currentTree].skillPoints
+            treeName = currentTree .. "'s Tree"
+        end
+
         -- Close with ESC
-        if Input.IsButtonPressed(Keyboard.KEY_ESCAPE, 0) then
+        if Input.IsButtonTriggered(Keyboard.KEY_ESCAPE, 0) then
             SkillTrees:closeTreeMenu()
         end
 
@@ -79,7 +81,7 @@ function SkillTrees:treeMenuRendering()
         treeBGSprite:Render(Vector(0, 0))
 
         -- Camera management & tree navigation
-        local cameraSpeed = 2
+        local cameraSpeed = 3
         if shiftHeld then
             cameraSpeed = 6
         end
@@ -98,12 +100,12 @@ function SkillTrees:treeMenuRendering()
         local camCenterY = screenH / 2 + treeCamera.Y
 
         -- Draw node links
-        for _, nodeLink in ipairs(SkillTrees.nodeData.nodeLinks) do
+        for _, nodeLink in ipairs(SkillTrees.nodeLinks[currentTree]) do
             local linkX = nodeLink.pos.X * 38 + nodeLink.dirX * 19
             local linkY = nodeLink.pos.Y * 38 + nodeLink.dirY * 19
 
-            local hasNode1 = SkillTrees:isNodeAllocated(nodeLink.node1)
-            local hasNode2 = SkillTrees:isNodeAllocated(nodeLink.node2)
+            local hasNode1 = SkillTrees:isNodeAllocated(currentTree, nodeLink.node1)
+            local hasNode2 = SkillTrees:isNodeAllocated(currentTree, nodeLink.node2)
             if hasNode1 and hasNode2 then
                 nodeLink.sprite:Play(nodeLink.type .. " Allocated", true)
             elseif hasNode1 or hasNode2 then
@@ -116,12 +118,12 @@ function SkillTrees:treeMenuRendering()
 
         -- Draw nodes
         hoveredNode = nil
-        for _, node in pairs(SkillTrees.nodeData.global) do
+        for _, node in pairs(SkillTrees.trees[currentTree]) do
             local nodeX = node.pos.X * 38
             local nodeY = node.pos.Y * 38
             node.sprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
 
-            if SkillTrees:isNodeAllocated(node.id) then
+            if SkillTrees:isNodeAllocated(currentTree, node.id) then
                 node.allocatedSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
             end
 
@@ -171,55 +173,64 @@ function SkillTrees:treeMenuRendering()
         cursorSprite:Render(Vector(screenW / 2, screenH / 2))
 
         -- Input: E key (allocate node)
-        if Input.IsButtonPressed(Keyboard.KEY_E, 0) and not treeKeyHeld[Keyboard.KEY_E] then
-            treeKeyHeld[Keyboard.KEY_E] = true
-
+        if Input.IsButtonTriggered(Keyboard.KEY_E, 0) then
             if hoveredNode ~= nil then
-                if SkillTrees:isNodeAllocatable(hoveredNode.id, true) then
-                    if SkillTrees.modData.skillPoints > 0 then
+                if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, true) then
+                    if currentTree == "global" then
                         SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints - 1
-                        SkillTrees:allocateNodeID(hoveredNode.id, true)
-                        sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.75)
                     else
-                        sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+                        SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints - 1
                     end
-                elseif not SkillTrees:isNodeAllocated(hoveredNode.id) then
+                    SkillTrees:allocateNodeID(currentTree, hoveredNode.id, true)
+                    sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.75)
+
+                elseif not SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end
-        elseif not Input.IsButtonPressed(Keyboard.KEY_E, 0) then
-            treeKeyHeld[Keyboard.KEY_E] = false
         end
 
         -- Input: R key (respec node)
-        if Input.IsButtonPressed(Keyboard.KEY_R, 0) and not treeKeyHeld[Keyboard.KEY_R] then
-            treeKeyHeld[Keyboard.KEY_R] = true
-
+        if Input.IsButtonTriggered(Keyboard.KEY_R, 0) then
             if hoveredNode ~= nil then
-                if SkillTrees:isNodeAllocatable(hoveredNode.id, false) then
-                    if SkillTrees.modData.respecPoints > 0 then
-                        SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
+                if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, false) then
+                    SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
+                    if currentTree == "global" then
                         SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
-                        SkillTrees:allocateNodeID(hoveredNode.id, false)
-                        sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
                     else
-                        sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+                        SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints + 1
                     end
-                elseif SkillTrees:isNodeAllocated(hoveredNode.id) then
+                    SkillTrees:allocateNodeID(currentTree, hoveredNode.id, false)
+                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+
+                elseif SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end
-        elseif not Input.IsButtonPressed(Keyboard.KEY_R, 0) then
-            treeKeyHeld[Keyboard.KEY_R] = false
+        end
+
+        -- Input: Q key (switch tree)
+        if Input.IsButtonTriggered(Keyboard.KEY_Q, 0) then
+            local selectedCharName = SkillTrees.charNames[1 + SkillTrees.selectedMenuChar]
+            if SkillTrees.trees[selectedCharName] ~= nil then
+                if currentTree == "global" then
+                    currentTree = selectedCharName
+                else
+                    currentTree = "global"
+                end
+                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+            else
+                sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+            end
         end
 
         -- HUD data
         Isaac.RenderText(
-            "Skill points: " .. SkillTrees.modData.skillPoints .. " / Respecs: " .. SkillTrees.modData.respecPoints,
+            "Skill points: " .. skPoints .. " / Respecs: " .. SkillTrees.modData.respecPoints,
             8, 8, 1, 1, 1, 1
         )
-        Isaac.RenderText("Global Tree", 8, 24, 1, 1, 1, 1)
-        Isaac.RenderText("WASD: pan, Shift+V: re-center, E: allocate, R: respec", 8, (screenH - 16), 1, 1, 1, 1)
+        Isaac.RenderText(treeName, 8, 24, 1, 1, 1, 1)
+        miniFont:DrawString("WASD: pan, Shift+V: re-center, E: allocate, R: respec, Q: switch tree", 8, (screenH - 16), KColor(1, 1, 1, 1))
     end
 end
 
