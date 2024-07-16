@@ -2,8 +2,15 @@ include("scripts.tree_data.nodes")
 
 local sfx = SFXManager()
 
-local treeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2")
+local miniFont = Font()
+miniFont:Load("font/cjk/lanapixel.fnt")
+
+local treeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
 treeBGSprite:Play("Default", true)
+
+local nodeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
+nodeBGSprite:Play("Pixel", true)
+nodeBGSprite.Color.A = 0.7
 
 local cursorSprite = Sprite("gfx/ui/cursor.anm2", true)
 cursorSprite.Color.A = 0.7
@@ -87,13 +94,31 @@ function SkillTrees:treeMenuRendering()
             treeCamera.X = treeCamera.X + cameraSpeed
         end
 
-        -- Draw nodes
         local camCenterX = screenW / 2 + treeCamera.X
         local camCenterY = screenH / 2 + treeCamera.Y
+
+        -- Draw node links
+        for _, nodeLink in ipairs(SkillTrees.nodeData.nodeLinks) do
+            local linkX = nodeLink.pos.X * 38 + nodeLink.dirX * 19
+            local linkY = nodeLink.pos.Y * 38 + nodeLink.dirY * 19
+
+            local hasNode1 = SkillTrees:isNodeAllocated(nodeLink.node1)
+            local hasNode2 = SkillTrees:isNodeAllocated(nodeLink.node2)
+            if hasNode1 and hasNode2 then
+                nodeLink.sprite:Play(nodeLink.type .. " Allocated", true)
+            elseif hasNode1 or hasNode2 then
+                nodeLink.sprite:Play(nodeLink.type .. " Available", true)
+            else
+                nodeLink.sprite:Play(nodeLink.type .. " Unavailable", true)
+            end
+            nodeLink.sprite:Render(Vector(linkX - treeCamera.X, linkY - treeCamera.Y))
+        end
+
+        -- Draw nodes
         hoveredNode = nil
         for _, node in pairs(SkillTrees.nodeData.global) do
-            local nodeX = node.pos.X * 32
-            local nodeY = node.pos.Y * 32
+            local nodeX = node.pos.X * 38
+            local nodeY = node.pos.Y * 38
             node.sprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
 
             if SkillTrees:isNodeAllocated(node.id) then
@@ -101,7 +126,7 @@ function SkillTrees:treeMenuRendering()
             end
 
             -- Debug, show ID
-            Isaac.RenderText(tostring(node.id), nodeX + 28, nodeY + 28, 1, 1, 1, 0.7)
+            Isaac.RenderText(tostring(node.id), nodeX - treeCamera.X + 14, nodeY - treeCamera.Y + 14, 1, 1, 1, 0.7)
 
             if camCenterX >= nodeX - 15 and camCenterX <= nodeX + 15 and
             camCenterY >= nodeY - 15 and camCenterY <= nodeY + 15 then
@@ -109,17 +134,41 @@ function SkillTrees:treeMenuRendering()
             end
         end
 
-        -- Cursor
-        cursorSprite:Render(Vector(screenW / 2, screenH / 2))
+        -- Cursor and node description
         if hoveredNode ~= nil then
             cursorSprite:Play("Clicked")
-            Isaac.RenderText(hoveredNode.name, screenW / 2 + 16, screenH / 2 - 5, 1, 1, 1, 0.8)
+
+            -- Base offset from center cursor
+            local offX = 4
+            local offY = 10
+
+            -- Calculate longest description line, and offset accordingly
+            local longestStr = hoveredNode.name
             for i = 1, #hoveredNode.description do
-                Isaac.RenderText(hoveredNode.description[i], screenW / 2 + 22, screenH / 2 - 5 + 14 * i, 1, 1, 1, 0.8)
+                if string.len(hoveredNode.description[i]) > string.len(longestStr) then
+                    longestStr = hoveredNode.description[i]
+                end
+            end
+            local longestStrWidth = 8 + offX + miniFont:GetStringWidth(longestStr)
+            if longestStrWidth > screenW / 2 then
+                offX = offX - (longestStrWidth - screenW / 2)
+            end
+
+            -- Draw description background
+            local descW = longestStrWidth + 4
+            local descH = miniFont:GetLineHeight() * (#hoveredNode.description + 1) + 4
+            nodeBGSprite.Scale.X = descW
+            nodeBGSprite.Scale.Y = descH
+            nodeBGSprite:Render(Vector(screenW / 2 + offX - 2, screenH / 2 + offY - 2))
+
+            miniFont:DrawString(hoveredNode.name, screenW / 2 + offX, screenH / 2 + offY, KColor(1, 1, 1, 1))
+            for i = 1, #hoveredNode.description do
+                miniFont:DrawString(hoveredNode.description[i], screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, KColor(1, 1, 1, 1))
             end
         else
             cursorSprite:Play("Idle")
         end
+        cursorSprite:Render(Vector(screenW / 2, screenH / 2))
 
         -- Input: E key (allocate node)
         if Input.IsButtonPressed(Keyboard.KEY_E, 0) and not treeKeyHeld[Keyboard.KEY_E] then

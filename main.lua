@@ -6,6 +6,7 @@ local startXPRequired = 50
 SkillTrees.modData = {}
 
 function SkillTrees:resetMods()
+	-- List of available global tree modifiers
 	SkillTrees.modData.treeMods = {
 		allstats = 0,
 		xpgain = 0,

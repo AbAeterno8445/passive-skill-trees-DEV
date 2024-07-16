@@ -1,50 +1,65 @@
--- Can check modifier types in main.lua, under SkillTrees.modData.treeMods defaults
-SkillTrees.nodeData = {
-    global = {
-        -- Center node
-        [1] = {
-            pos = Vector(0, 0),
-            type = "Central",
-            size = "Large",
-            name = "Leveling of Isaac",
-            description = { "+0.05 all stats" },
-            modifiers = {
-                allstats = 0.05
-            },
-            adjacent = { 2 },
-            requires = nil,
-            alwaysAvailable = true
-        },
-        -------- TOP BRANCH: XP NODES --------
-        [2] = {
-            pos = Vector(0, -2),
-            type = "Small XP",
-            size = "Small",
-            name = "XP gain",
-            description = { "+2% XP gain" },
-            modifiers = { xpgain = 2 },
-            adjacent = { 1, 3 },
-            requires = { 1 }
-        },
-        [3] = {
-            pos = Vector(0, -3),
-            type = "Small XP",
-            size = "Small",
-            name = "XP gain",
-            description = { "+2% XP gain" },
-            modifiers = { xpgain = 2 },
-            adjacent = { 2 },
-            requires = { 2 }
-        }
-    }
-}
+include("scripts.tree_data.globalTreeBank")
 
+-- Initial extra setup for nodes
 for nodeID, node in pairs(SkillTrees.nodeData.global) do
     node.id = nodeID
-    node.sprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2")
+    node.sprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
     node.sprite:Play(node.type, true)
-    node.allocatedSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2")
+    node.allocatedSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
     node.allocatedSprite:Play("Allocated " .. node.size, true)
+
+    -- Setup node links
+    local nodeConnections = {}
+    if node.adjacent ~= nil then
+        for _, adjacentID in ipairs(node.adjacent) do
+            -- Check connection hasn't been made already
+            local connectionDone = false
+            for _, connection in ipairs(nodeConnections) do
+                if (connection[1] == nodeID and connection[2] == adjacentID) or
+                (connection[1] == adjacentID and connection[2] == nodeID) then
+                    connectionDone = true
+                end
+            end
+
+            if not connectionDone then
+                local adjacentNode = SkillTrees.nodeData.global[adjacentID]
+                local linkType = nil
+                local dirX = adjacentNode.pos.X - node.pos.X
+                local dirY = adjacentNode.pos.Y - node.pos.Y
+
+                if math.abs(dirX) <= 2 and math.abs(dirY) <= 2 then
+                    if node.pos.X == adjacentNode.pos.X then
+                        linkType = "Vertical"
+                    elseif node.pos.Y == adjacentNode.pos.Y then
+                        linkType = "Horizontal"
+                    elseif math.abs(dirX) == math.abs(dirY) then
+                        linkType = "Diagonal"
+                    end
+                end
+
+                -- If still nil then there's no visual connection possible
+                if linkType ~= nil then
+                    table.insert(nodeConnections, {nodeID, adjacentID})
+
+                    local newLink = {
+                        pos = node.pos,
+                        type = linkType,
+                        dirX = dirX,
+                        dirY = dirY,
+                        node1 = nodeID,
+                        node2 = adjacentID,
+                        sprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true)
+                    }
+                    if math.abs(dirX) == 2 then
+                        newLink.sprite.Scale.X = 2
+                    elseif math.abs(dirY) == 2 then
+                        newLink.sprite.Scale.Y = 2
+                    end
+                    table.insert(SkillTrees.nodeData.nodeLinks, newLink)
+                end
+            end
+        end
+    end
 end
 
 function SkillTrees:resetNodes()
@@ -71,9 +86,9 @@ function SkillTrees:updateNodes()
         -- Count allocated nodes as available
         node.available = allocated or node.alwaysAvailable == true
         if not node.available then
-            node.sprite.Color.A = 0.4
+            node.sprite.Color = Color(0.4, 0.4, 0.4, 1)
         else
-            node.sprite.Color.A = 1
+            node.sprite.Color = Color(1, 1, 1, 1)
         end
 
         if node.adjacent ~= nil and allocated then
@@ -92,7 +107,7 @@ function SkillTrees:updateNodes()
     -- Update availability
     for _, node in pairs(tmpAvailableNodes) do
         node.available = true
-        node.sprite.Color.A = 1
+        node.sprite.Color = Color(1, 1, 1, 1)
     end
 end
 

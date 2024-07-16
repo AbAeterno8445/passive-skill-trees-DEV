@@ -31,9 +31,9 @@ end
 
 -- XP bar setup
 local barWidth = 256
-local xpbarSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2")
-local xpbarFullSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2")
-local xpbarTempSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2")
+local xpbarSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2", true)
+local xpbarFullSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2", true)
+local xpbarTempSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2", true)
 xpbarSprite.Color.A = 0.7
 xpbarFullSprite.Color.A = 0.7
 xpbarTempSprite.Color.A = 0.7
