@@ -3,7 +3,16 @@ SkillTrees.nodeLinks = {}
 
 -- Include tree node banks
 include("scripts.tree_data.globalTreeBank")
-include("scripts.tree_data.isaacTreeBank")
+
+-- Sanitize json data in banks
+for treeID, tree in pairs(SkillTrees.trees) do
+    local tmpTreeData = {}
+    for nodeID, node in pairs(tree) do
+        node.pos = Vector(node.pos[1], node.pos[2])
+        tmpTreeData[tonumber(nodeID)] = node
+    end
+    SkillTrees.trees[treeID] = tmpTreeData;
+end
 
 -- Initial extra setup for nodes
 function SkillTrees:initTreeNodes(tree)
@@ -56,10 +65,14 @@ function SkillTrees:initTreeNodes(tree)
                             node2 = adjacentID,
                             sprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true)
                         }
-                        if math.abs(dirX) == 2 then
-                            newLink.sprite.Scale.X = 2
-                        elseif math.abs(dirY) == 2 then
-                            newLink.sprite.Scale.Y = 2
+                        if (adjacentNode.pos.X <= node.pos.X and adjacentNode.pos.Y > node.pos.Y) or (adjacentNode.pos.X > node.pos.X and adjacentNode.pos.Y <= node.pos.Y) then
+                            newLink.sprite.Scale.X = -1
+                        end
+                        if linkType == "Diagonal" and math.abs(dirX) == 2 then
+                            newLink.sprite.Scale.X = newLink.sprite.Scale.X * 2
+                        end
+                        if math.abs(dirX) == 2 or math.abs(dirY) == 2 then
+                            newLink.sprite.Scale.Y = newLink.sprite.Scale.Y * 2
                         end
                         table.insert(SkillTrees.nodeLinks[tree], newLink)
                     end

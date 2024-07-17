@@ -127,9 +127,6 @@ function SkillTrees:treeMenuRendering()
                 node.allocatedSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
             end
 
-            -- Debug, show ID
-            Isaac.RenderText(tostring(node.id), nodeX - treeCamera.X + 14, nodeY - treeCamera.Y + 14, 1, 1, 1, 0.7)
-
             if camCenterX >= nodeX - 15 and camCenterX <= nodeX + 15 and
             camCenterY >= nodeY - 15 and camCenterY <= nodeY + 15 then
                 hoveredNode = node
