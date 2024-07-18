@@ -15,17 +15,43 @@ SkillTrees.charNames = {
 	"T. Keeper", "T. Apollyon", "T. Forgotten", "T. Bethany", "T. Jacob", "T. Lazarus",
 	"T. Jacob", "T. Soul"
 }
--- Init mod char names here
+-- Init mod char names here (index is the character's playerType + 1)
 SkillTrees.charNames[42] = "Siren"
 SkillTrees.charNames[43] = "T. Siren"
 
 function SkillTrees:resetMods()
-	-- List of available global tree modifiers
+	-- List of available tree modifiers
 	SkillTrees.modData.treeMods = {
 		allstats = 0,
+		damage = 0,
+		luck = 0, -- TODO
+		speed = 0, -- TODO
+		tears = 0, -- TODO
+		shotSpeed = 0, -- TODO
+		range = 0, -- TODO
 		xpgain = 0,
 		respecChance = 15, -- Chance to gain respec on floor clear
-		damage = 0
+		secretXP = 0, -- TODO
+		challengeXP = 0, -- TODO
+		challengeXPgain = 0, -- TODO
+		xpgainNormalMob = 0, -- TODO
+		xpgainBoss = 0, -- TODO
+		beggarLuck = 0, -- TODO
+		devilChance = 0, -- TODO
+		coinDupe = 0, -- TODO
+		keyDupe = 0, -- TODO
+		bombDupe = 0, -- TODO
+		grabBag = 0, -- TODO
+		mapChance = 0, -- TODO
+
+		-- 'Keystone' nodes
+		unholyGrowth = false, -- TODO
+		relearning = false, -- TODO
+		quickWit = {0, 0}, -- TODO
+		expertSpelunker = 0, -- TODO
+		hellFavour = false, -- TODO
+		heavenFavour = false, -- TODO
+		cosmicRealignment = false, -- TODO
 	}
 end
 function SkillTrees:resetData()
