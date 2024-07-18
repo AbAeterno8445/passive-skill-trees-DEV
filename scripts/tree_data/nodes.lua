@@ -38,43 +38,45 @@ function SkillTrees:initTreeNodes(tree)
 
                 if not connectionDone then
                     local adjacentNode = SkillTrees.trees[tree][adjacentID]
-                    local linkType = nil
-                    local dirX = adjacentNode.pos.X - node.pos.X
-                    local dirY = adjacentNode.pos.Y - node.pos.Y
+                    if adjacentNode ~= nil then
+                        local linkType = nil
+                        local dirX = adjacentNode.pos.X - node.pos.X
+                        local dirY = adjacentNode.pos.Y - node.pos.Y
 
-                    if math.abs(dirX) <= 2 and math.abs(dirY) <= 2 then
-                        if node.pos.X == adjacentNode.pos.X then
-                            linkType = "Vertical"
-                        elseif node.pos.Y == adjacentNode.pos.Y then
-                            linkType = "Horizontal"
-                        elseif math.abs(dirX) == math.abs(dirY) then
-                            linkType = "Diagonal"
+                        if math.abs(dirX) <= 2 and math.abs(dirY) <= 2 then
+                            if node.pos.X == adjacentNode.pos.X then
+                                linkType = "Vertical"
+                            elseif node.pos.Y == adjacentNode.pos.Y then
+                                linkType = "Horizontal"
+                            elseif math.abs(dirX) == math.abs(dirY) then
+                                linkType = "Diagonal"
+                            end
                         end
-                    end
 
-                    -- If still nil then there's no visual connection possible
-                    if linkType ~= nil then
-                        table.insert(nodeConnections, {nodeID, adjacentID})
+                        -- If still nil then there's no visual connection possible
+                        if linkType ~= nil then
+                            table.insert(nodeConnections, {nodeID, adjacentID})
 
-                        local newLink = {
-                            pos = node.pos,
-                            type = linkType,
-                            dirX = dirX,
-                            dirY = dirY,
-                            node1 = nodeID,
-                            node2 = adjacentID,
-                            sprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true)
-                        }
-                        if (adjacentNode.pos.X <= node.pos.X and adjacentNode.pos.Y > node.pos.Y) or (adjacentNode.pos.X > node.pos.X and adjacentNode.pos.Y <= node.pos.Y) then
-                            newLink.sprite.Scale.X = -1
+                            local newLink = {
+                                pos = node.pos,
+                                type = linkType,
+                                dirX = dirX,
+                                dirY = dirY,
+                                node1 = nodeID,
+                                node2 = adjacentID,
+                                sprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true)
+                            }
+                            if (adjacentNode.pos.X <= node.pos.X and adjacentNode.pos.Y > node.pos.Y) or (adjacentNode.pos.X > node.pos.X and adjacentNode.pos.Y <= node.pos.Y) then
+                                newLink.sprite.Scale.X = -1
+                            end
+                            if linkType == "Diagonal" and math.abs(dirX) == 2 then
+                                newLink.sprite.Scale.X = newLink.sprite.Scale.X * 2
+                            end
+                            if math.abs(dirX) == 2 or math.abs(dirY) == 2 then
+                                newLink.sprite.Scale.Y = newLink.sprite.Scale.Y * 2
+                            end
+                            table.insert(SkillTrees.nodeLinks[tree], newLink)
                         end
-                        if linkType == "Diagonal" and math.abs(dirX) == 2 then
-                            newLink.sprite.Scale.X = newLink.sprite.Scale.X * 2
-                        end
-                        if math.abs(dirX) == 2 or math.abs(dirY) == 2 then
-                            newLink.sprite.Scale.Y = newLink.sprite.Scale.Y * 2
-                        end
-                        table.insert(SkillTrees.nodeLinks[tree], newLink)
                     end
                 end
             end
