@@ -30,6 +30,7 @@ function SkillTrees:openTreeMenu()
     oldmask = MenuManager.GetInputMask()
     ---@diagnostic disable-next-line: param-type-mismatch
     MenuManager.SetInputMask(0)
+    sfx:Play(SoundEffect.SOUND_PAPER_IN)
     treeMenuOpen = true
 end
 
@@ -38,6 +39,7 @@ function SkillTrees:closeTreeMenu()
         MenuManager.SetInputMask(oldmask)
         oldmask = nil
     end
+    sfx:Play(SoundEffect.SOUND_PAPER_OUT)
     treeMenuOpen = false
     currentTree = "global"
 end
