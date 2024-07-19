@@ -10,15 +10,34 @@ end
 ---@param showText? boolean Whether to display the +xp floating text
 function SkillTrees:addTempXP(xp, showText)
     local xpMult = 1 + SkillTrees:getTreeSnapshotMod("xpgain", 0) / 100
-    local xpGain = xp * xpMult
 
+	-- Extra challenge room XP gain mod
+	local room = Game():GetRoom()
+	if room:GetType() == RoomType.ROOM_CHALLENGE then
+		xpMult = xpMult + SkillTrees:getTreeSnapshotMod("challengeXPgain", 0) / 100
+	end
+
+	-- Quick wit mod
+	local quickWitMod = SkillTrees:getTreeSnapshotMod("quickWit", {0, 0})
+	local quickWitTime = SkillTrees.specialNodes.quickWit.startTime
+	if quickWitTime ~= 0 then
+		local timeDiff = os.clock() - quickWitTime
+		local quickWitMult = quickWitMod[1] / 100
+		if timeDiff > 8 then
+			local tmpProgress = math.abs(quickWitMod[2] - quickWitMod[1]) * ((timeDiff - 8) / 10)
+			quickWitMult = (math.max(quickWitMod[2], quickWitMod[1] - tmpProgress)) / 100
+		end
+		xpMult = xpMult + quickWitMult
+	end
+
+	local xpGain = xp * xpMult
 	SkillTrees.modData.xpObtained = SkillTrees.modData.xpObtained + xpGain
 	if showText then
         local xpStr = string.format("+%.2f xp", xpGain)
         if xpGain % 1 == 0 then
             xpStr = string.format("+%d xp", xpGain)
         end
-		SkillTrees:createFloatTextFX(xpStr, Vector(-16, -40), Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
+		SkillTrees:createFloatTextFX(xpStr, Vector(0, 0), Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
 	end
 end
 
@@ -33,7 +52,7 @@ function SkillTrees:addXP(xp, showText)
         if xp % 1 == 0 then
             xpStr = string.format("+%d xp", xp)
         end
-		SkillTrees:createFloatTextFX(xpStr, Vector(-16, -40), Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
+		SkillTrees:createFloatTextFX(xpStr, Vector(0, 0), Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
 	end
 
 	-- Level up
@@ -48,16 +67,17 @@ function SkillTrees:addXP(xp, showText)
 		local xpRemaining = charData.xp - charData.xpRequired
 
 		-- Next level xp requirement formula
-		charData.xpRequired = math.ceil(100 * (charData.level ^ 1.1))
+		charData.xpRequired = math.ceil(SkillTrees.startXPRequired * (charData.level ^ 1.1))
 
-		-- Add overflowing xp to next level, capped at 30%
-		charData.xp = math.min(math.floor(charData.xpRequired * 0.3), xpRemaining)
+		-- Add overflowing xp to next level, capped at 50%
+		charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
 
-		SkillTrees:createFloatTextFX("Level up!", Vector(-24, -40), Color(1, 1, 1, 0.7), 0.17, 100, true)
+		SkillTrees:createFloatTextFX("Level up!", Vector(0, 0), Color(1, 1, 1, 0.7), 0.17, 100, true)
 	end
 end
 
 -- Get current snapshot tree modifier
+---@return any
 function SkillTrees:getTreeSnapshotMod(modName, default)
     if SkillTrees.modData.treeModSnapshot == nil then
         return default

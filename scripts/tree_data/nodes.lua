@@ -1,3 +1,5 @@
+local json = require("json")
+
 SkillTrees.trees = {}
 SkillTrees.nodeLinks = {}
 
@@ -7,7 +9,8 @@ include("scripts.tree_data.globalTreeBank")
 -- Sanitize json data in banks
 for treeID, tree in pairs(SkillTrees.trees) do
     local tmpTreeData = {}
-    for nodeID, node in pairs(tree) do
+    for nodeID, nodeStr in pairs(tree) do
+        local node = json.decode(nodeStr)
         node.pos = Vector(node.pos[1], node.pos[2])
         tmpTreeData[tonumber(nodeID)] = node
     end
@@ -107,9 +110,28 @@ function SkillTrees:resetNodes(tree)
 end
 
 -- Add a table of modifiers into tree data
-function SkillTrees:addModifier(modList)
+---@param modList table Table with modifiers and their values to be added/set
+---@param addToSnapshot? boolean If true, add to the tree snapshot modifiers instead (should be true if modifying current run mods)
+function SkillTrees:addModifier(modList, addToSnapshot)
     for modName, val in pairs(modList) do
-        SkillTrees.modData.treeMods[modName] = SkillTrees.modData.treeMods[modName] + val
+        local treeRef = SkillTrees.modData.treeMods
+        if addToSnapshot then
+            treeRef = SkillTrees.modData.treeModSnapshot
+        end
+        if not treeRef then
+            Console.PrintWarning("Error in SkillTrees:addModifier, treeRef is nil.")
+            break
+        end
+
+        if treeRef[modName] ~= nil and type(treeRef[modName]) == "number" then
+            treeRef[modName] = treeRef[modName] + val
+        else
+            treeRef[modName] = val
+        end
+    end
+    if addToSnapshot then
+        Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL)
+        Isaac.GetPlayer():EvaluateItems()
     end
 end
 
@@ -133,7 +155,7 @@ function SkillTrees:updateNodes(tree, noReset)
         local allocated = SkillTrees:isNodeAllocated(tree, nodeID)
 
         -- Count allocated nodes as available
-        node.available = allocated or node.alwaysAvailable == true
+        node.available = allocated or node.alwaysAvailable == true or SkillTrees.debugOptions.allAvailable
         if not node.available then
             node.sprite.Color = Color(0.4, 0.4, 0.4, 1)
         else
@@ -162,17 +184,23 @@ end
 
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
 function SkillTrees:isNodeAllocatable(tree, nodeID, allocation)
+    local infSP = SkillTrees.debugOptions.infSP
+    local infRespec = SkillTrees.debugOptions.infRespec
+    
     if allocation then
-        if tree == "global" and SkillTrees.modData.skillPoints <= 0 then
-            return false
-        elseif tree ~= "global" and SkillTrees.modData.charData[tree] ~= nil then
-            if SkillTrees.modData.charData[tree].skillPoints <= 0 then
+        if not infSP then
+            if tree == "global" and SkillTrees.modData.skillPoints <= 0 then
                 return false
+            elseif tree ~= "global" and SkillTrees.modData.charData[tree] ~= nil then
+                if SkillTrees.modData.charData[tree].skillPoints <= 0 then
+                    return false
+                end
             end
         end
         return SkillTrees.trees[tree][nodeID].available and not SkillTrees:isNodeAllocated(tree, nodeID)
     else
-        if not SkillTrees:isNodeAllocated(tree, nodeID) or SkillTrees.modData.respecPoints <= 0 then
+        if not SkillTrees:isNodeAllocated(tree, nodeID) or
+        (SkillTrees.modData.respecPoints <= 0 and not infRespec) then
             return false
         end
 

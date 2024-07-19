@@ -2,9 +2,9 @@ SkillTrees = RegisterMod("SkillTrees", 1)
 
 local json = require("json")
 
-local startXPRequired = 60
 SkillTrees.modData = {}
 SkillTrees.selectedMenuChar = 0
+SkillTrees.startXPRequired = 25
 SkillTrees.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
@@ -19,39 +19,54 @@ SkillTrees.charNames = {
 SkillTrees.charNames[42] = "Siren"
 SkillTrees.charNames[43] = "T. Siren"
 
+SkillTrees.debugOptions = {
+	infSP = true, -- No longer spend or require skill points for nodes
+	infRespec = true, -- No longer spend or require respec points for nodes
+	allAvailable = true, -- Makes all nodes available
+}
+
 function SkillTrees:resetMods()
 	-- List of available tree modifiers
 	SkillTrees.modData.treeMods = {
-		allstats = 0,
+		allstats = 0, -- Flat addition to damage, luck, speed, tears, shot speed and range
 		damage = 0,
-		luck = 0, -- TODO
-		speed = 0, -- TODO
-		tears = 0, -- TODO
-		shotSpeed = 0, -- TODO
-		range = 0, -- TODO
+		luck = 0,
+		speed = 0,
+		tears = 0,
+		shotSpeed = 0,
+		range = 0,
 		xpgain = 0,
 		respecChance = 15, -- Chance to gain respec on floor clear
-		secretXP = 0, -- TODO
-		challengeXP = 0, -- TODO
-		challengeXPgain = 0, -- TODO
-		xpgainNormalMob = 0, -- TODO
-		xpgainBoss = 0, -- TODO
-		beggarLuck = 0, -- TODO
-		devilChance = 0, -- TODO
-		coinDupe = 0, -- TODO
-		keyDupe = 0, -- TODO
-		bombDupe = 0, -- TODO
-		grabBag = 0, -- TODO
-		mapChance = 0, -- TODO
+		secretXP = 0, -- Flat xp granted when entering a secret room
+		challengeXP = 0, -- Flat xp granted when completing a challenge room round
+		challengeXPgain = 0, -- Extra XP gain % within a challenge room
+		bossChallengeXP = false, -- Whether challenge room XP mods apply to boss challenge rooms
+		xpgainNormalMob = 0, -- Extra XP gain for normal mobs
+		xpgainBoss = 0, -- Extra XP gain for bosses
+		beggarLuck = 0, -- Flat luck granted when offering to a beggar
+		devilChance = 0, -- TEST? -- Extra chance to spawn devil/angel room, overrides stage penalty similar to goat's head/eucharist
+		coinDupe = 0, -- Chance to gain an extra coin when picking one up
+		keyDupe = 0, -- Chance to gain an extra key when picking one up
+		bombDupe = 0, -- Chance to gain an extra bomb when picking one up
+		grabBag = 0, -- Chance to spawn a grab bag when picking up a coin/key/bomb
+		mapChance = 0, -- Chance to reveal the map on floor beginning (applied from floor 2 onwards)
+
+		allstatsPerc = 0, -- Multiplier version of allstats
+
+		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
 		-- 'Keystone' nodes
-		unholyGrowth = false, -- TODO
-		relearning = false, -- TODO
-		quickWit = {0, 0}, -- TODO
-		expertSpelunker = 0, -- TODO
-		hellFavour = false, -- TODO
-		heavenFavour = false, -- TODO
+		relearning = false,
+		relearningFloors = 0,
+		quickWit = {0, 0},
+		expertSpelunker = 0,
+		hellFavour = false,
+		heavenFavour = false,
 		cosmicRealignment = false, -- TODO
+	}
+	-- Holds temporary data for allocated special nodes
+	SkillTrees.specialNodes = {
+		quickWit = { startTime = 0, pauseTime = 0 }
 	}
 end
 function SkillTrees:resetData()
@@ -60,6 +75,9 @@ function SkillTrees:resetData()
 		skillPoints = 2,
 		respecPoints = 4,
 		spawnKills = 0,
+
+		-- Stores IDs of slots in the current room. Used to check if coins are given to slot entities
+		roomSlotIDs = {},
 
 		-- List of nodes and whether they're allocated
 		treeNodes = {},
@@ -81,7 +99,7 @@ function SkillTrees:charInit(charName, forceReset)
 		SkillTrees.modData.charData[charName] = {
 			level = 1,
 			xp = 0,
-			xpRequired = startXPRequired,
+			xpRequired = SkillTrees.startXPRequired,
 			skillPoints = 0
 		}
 	end
@@ -149,6 +167,11 @@ include("scripts.ST_rendering")
 include("scripts.ST_onCache")
 include("scripts.ST_onNewRun")
 include("scripts.ST_onCharSelect")
+include("scripts.ST_slots")
+include("scripts.ST_pickups")
+include("scripts.ST_devilChance")
+include("scripts.ST_onRunOver")
+include("scripts.ST_onNewLevel")
 
 SkillTrees:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, SkillTrees.playerInit)
 SkillTrees:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, SkillTrees.save)
@@ -158,13 +181,21 @@ SkillTrees:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, SkillTrees.onDamage)
 SkillTrees:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, SkillTrees.onNewRoom)
 SkillTrees:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, SkillTrees.onCache)
 SkillTrees:AddCallback(ModCallbacks.MC_POST_UPDATE, SkillTrees.onUpdate)
+SkillTrees:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, SkillTrees.onCurseEval)
 SkillTrees:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, SkillTrees.onNewRun)
--- MC_POST_GAME_END for run over
-
+SkillTrees:AddCallback(ModCallbacks.MC_POST_GAME_END, SkillTrees.onRunOver)
+-- Repentogon callbacks
 SkillTrees:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, SkillTrees.load)
 SkillTrees:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, SkillTrees.onCharSelect)
+SkillTrees:AddCallback(ModCallbacks.MC_POST_PLAYER_NEW_LEVEL, SkillTrees.onNewLevel)
+SkillTrees:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, SkillTrees.onSlotUpdate)
+SkillTrees:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, SkillTrees.onPickup)
+SkillTrees:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, SkillTrees.applyDevilChance)
 
 -- First load
 SkillTrees:load()
 
 print("Initialized Skill Trees.")
+for optName, _ in pairs(SkillTrees.debugOptions) do
+	Console.PrintWarning("Skill Trees: " .. optName .. " debug option is enabled")
+end

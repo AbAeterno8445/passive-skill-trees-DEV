@@ -46,6 +46,9 @@ function SkillTrees:Render()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
 	local screenRatioY = Isaac.GetScreenHeight() / 270
 
+	local room = Game():GetRoom()
+	local gamePaused = Game():IsPaused()
+
 	-- XP bar
 	local charData = SkillTrees:getCurrentCharData()
 
@@ -71,6 +74,23 @@ function SkillTrees:Render()
 	local levelStr = "LV " .. charData.level
 	Isaac.RenderText(levelStr, barPos.X - (3 + string.len(levelStr) * 8) * screenRatioX, barPos.Y - 6, 1, 1, 1, 0.7)
 
+	-- Quick wit mod
+	local quickWitMod = SkillTrees:getTreeSnapshotMod("quickWit", {0, 0})
+	local hasQuickWit = quickWitMod[1] ~= 0 or quickWitMod[2] ~= 0
+
+	-- Pause quick wit
+	if hasQuickWit and room:GetType() ~= RoomType.ROOM_BOSS and room:GetType() ~= RoomType.ROOM_BOSSRUSH then
+		local quickWitData = SkillTrees.specialNodes.quickWit
+		if gamePaused then
+			if quickWitData.pauseTime == 0 then
+				quickWitData.pauseTime = os.clock()
+			end
+		elseif quickWitData.pauseTime > 0 then
+			quickWitData.startTime = quickWitData.startTime + os.clock() - quickWitData.pauseTime
+			quickWitData.pauseTime = 0
+		end
+	end
+
 	-- Manage floating texts
     if floatTextDelay > 0 then
         floatTextDelay = floatTextDelay - 1
@@ -82,15 +102,15 @@ function SkillTrees:Render()
 
 	if #floatingTexts > 0 then
 		local player = Isaac.GetPlayer()
-		local room = Game():GetRoom()
 
         for i = #floatingTexts, 1, -1 do
             local textFX = floatingTexts[i]
             local textX = textFX.position.X
             local textY = textFX.position.Y
             if textFX.playerRelative then
-                textX = room:WorldToScreenPosition(Vector(player.Position.X, player.Position.Y)).X + textFX.position.X
-                textY = room:WorldToScreenPosition(Vector(player.Position.X, player.Position.Y)).Y + textFX.position.Y
+				local worldPos = room:WorldToScreenPosition(Vector(player.Position.X, player.Position.Y))
+                textX = worldPos.X + textFX.position.X - string.len(textFX.text) * 3
+                textY = worldPos.Y + textFX.position.Y - 40
             end
 
             textY = textY - textFX.step * textFX.speed

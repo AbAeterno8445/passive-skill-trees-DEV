@@ -12,7 +12,13 @@ function SkillTrees:onDamage(target, damage, flag, source)
 		end
 
         if addXP then
-            SkillTrees:addTempXP(math.max(1, math.floor(target.MaxHitPoints / 2)), true)
+            local mult = 1
+            if target:IsBoss() then
+                mult = mult + SkillTrees:getTreeSnapshotMod("xpgainBoss", 0) / 100
+            else
+                mult = mult + SkillTrees:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
+            end
+            SkillTrees:addTempXP(math.max(1, math.floor(mult * target.MaxHitPoints / 2)), true)
         end
     end
 end

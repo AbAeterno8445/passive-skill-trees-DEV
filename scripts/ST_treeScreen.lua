@@ -85,7 +85,7 @@ function SkillTrees:treeMenuRendering()
         -- Camera management & tree navigation
         local cameraSpeed = 3
         if shiftHeld then
-            cameraSpeed = 6
+            cameraSpeed = 8
         end
         if Input.IsButtonPressed(Keyboard.KEY_W, 0) then
             treeCamera.Y = treeCamera.Y - cameraSpeed
@@ -175,14 +175,15 @@ function SkillTrees:treeMenuRendering()
         if Input.IsButtonTriggered(Keyboard.KEY_E, 0) then
             if hoveredNode ~= nil then
                 if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, true) then
-                    if currentTree == "global" then
-                        SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints - 1
-                    else
-                        SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints - 1
+                    if not SkillTrees.debugOptions.infSP then
+                        if currentTree == "global" then
+                            SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints - 1
+                        else
+                            SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints - 1
+                        end
                     end
                     SkillTrees:allocateNodeID(currentTree, hoveredNode.id, true)
                     sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.75)
-
                 elseif not SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
@@ -193,15 +194,18 @@ function SkillTrees:treeMenuRendering()
         if Input.IsButtonTriggered(Keyboard.KEY_R, 0) then
             if hoveredNode ~= nil then
                 if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, false) then
-                    SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
-                    if currentTree == "global" then
-                        SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
-                    else
-                        SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints + 1
+                    if not SkillTrees.debugOptions.infRespec then
+                        SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
+                    end
+                    if not SkillTrees.debugOptions.infSP then
+                        if currentTree == "global" then
+                            SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
+                        else
+                            SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints + 1
+                        end
                     end
                     SkillTrees:allocateNodeID(currentTree, hoveredNode.id, false)
                     sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
-
                 elseif SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
