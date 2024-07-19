@@ -62,7 +62,7 @@ function PST:resetMods()
 		expertSpelunker = 0,
 		hellFavour = false,
 		heavenFavour = false,
-		-- TODO -- If set to a character's PlayerType, achievements can be unlocked as if playing that character while playing a different one.
+		-- If set to a character's PlayerType, achievements can be unlocked as if playing that character while playing a different one.
 		-- e.g. If set to PlayerType.PLAYER_CAIN, killing ??? in the chest will unlock Cain's Eye.
 		cosmicRealignment = false, ---@type boolean|PlayerType
 	}
@@ -195,7 +195,7 @@ PST:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, PST.onNewRun)
 PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onRunOver)
 -- Repentogon callbacks
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.load)
-PST:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, PST.onCharSelect)
+PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_NEW_LEVEL, PST.onNewLevel)
 PST:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, PST.onSlotUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PST.onPickup)

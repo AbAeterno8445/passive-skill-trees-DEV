@@ -93,3 +93,14 @@ function PST:getTreeSnapshotMod(modName, default)
     end
     return PST.modData.treeModSnapshot[modName]
 end
+
+-- Return whether the given PlayerType character has been picked in the Cosmic Realignment node.
+-- Also returns false if the player is currently playing as the given character.
+---@param character PlayerType 
+function PST:cosmicRCharPicked(character)
+	local player = Isaac.GetPlayer()
+	if player:GetType() == character then
+		return false
+	end
+	return PST:getTreeSnapshotMod("cosmicRealignment", false) == character
+end

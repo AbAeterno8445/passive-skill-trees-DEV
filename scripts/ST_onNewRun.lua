@@ -3,11 +3,25 @@ function PST:onNewRun(isContinued)
         return
     end
 
+    -- Mods that are mutable before beginning a run should be set here
+    local keptMods = {
+        ["Cosmic Realignment"] = { cosmicRealignment = PST.modData.treeMods.cosmicRealignment }
+    }
     -- Get snapshot of tree modifiers
     PST:resetMods()
     for nodeID, node in pairs(PST.trees["global"]) do
         if PST.modData.treeNodes["global"][nodeID] then
-            PST:addModifiers(node.modifiers)
+            local kept = false
+            for keptName, keptVal in pairs(keptMods) do
+                if node.name == keptName then
+                    PST:addModifiers(keptVal)
+                    kept = true
+                    break
+                end
+            end
+            if not kept then
+                PST:addModifiers(node.modifiers)
+            end
         end
     end
     local currentChar = PST.charNames[1 + PST.selectedMenuChar]
@@ -23,6 +37,12 @@ function PST:onNewRun(isContinued)
     Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL)
     Isaac.GetPlayer():EvaluateItems()
     PST:save()
+
+    -- Cosmic Realignment node
+    if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
+        -- Isaac, -0.1 all stats
+        PST:addModifiers({ allstats = -0.1 }, true)
+    end
 
     PST:closeTreeMenu()
 end
