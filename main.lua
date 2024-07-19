@@ -8,12 +8,12 @@ SkillTrees.startXPRequired = 25
 SkillTrees.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
-	"Judas", "Lilith", "Keeper", "Apollyon", "The Forgotten", "The Soul",
+	"Judas", "Lilith", "Keeper", "Apollyon", "The Forgotten", "The Forgotten",
 	"Bethany", "Jacob & Esau", "Jacob & Esau",
 	"T. Isaac", "T. Magdalene", "T. Cain", "T. Judas", "T. ???", "T. Eve",
 	"T. Samson", "T. Azazel", "T. Lazarus", "T. Eden", "T. Lost", "T. Lilith",
 	"T. Keeper", "T. Apollyon", "T. Forgotten", "T. Bethany", "T. Jacob", "T. Lazarus",
-	"T. Jacob", "T. Soul"
+	"T. Jacob", "T. Forgotten"
 }
 -- Init mod char names here (index is the character's playerType + 1)
 SkillTrees.charNames[42] = "Siren"

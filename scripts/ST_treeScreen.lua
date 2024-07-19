@@ -26,6 +26,25 @@ local hoveredNode = nil
 local treeMenuOpen = false
 local oldmask = nil
 
+-- Init cosmic realignment data
+local cosmicRData = {
+    menuOpen = false,
+    menuX = 0,
+    menuY = 0,
+    charSprite = Sprite("gfx/ui/skilltrees/cosmic_realignment_chars.anm2", true),
+    hoveredCharID = nil,
+    characters = {
+        PlayerType.PLAYER_ISAAC, PlayerType.PLAYER_MAGDALENE, PlayerType.PLAYER_CAIN, PlayerType.PLAYER_JUDAS, PlayerType.PLAYER_BLUEBABY,
+        PlayerType.PLAYER_EVE, PlayerType.PLAYER_SAMSON, PlayerType.PLAYER_AZAZEL, PlayerType.PLAYER_LAZARUS, PlayerType.PLAYER_EDEN,
+        PlayerType.PLAYER_THELOST, PlayerType.PLAYER_LILITH, PlayerType.PLAYER_KEEPER, PlayerType.PLAYER_APOLLYON, PlayerType.PLAYER_THEFORGOTTEN,
+        PlayerType.PLAYER_BETHANY, PlayerType.PLAYER_JACOB,
+        PlayerType.PLAYER_ISAAC_B, PlayerType.PLAYER_MAGDALENE_B, PlayerType.PLAYER_CAIN_B, PlayerType.PLAYER_JUDAS_B, PlayerType.PLAYER_BLUEBABY_B,
+        PlayerType.PLAYER_EVE_B, PlayerType.PLAYER_SAMSON_B, PlayerType.PLAYER_AZAZEL_B, PlayerType.PLAYER_LAZARUS_B, PlayerType.PLAYER_EDEN_B,
+        PlayerType.PLAYER_THELOST_B, PlayerType.PLAYER_LILITH_B, PlayerType.PLAYER_KEEPER_B, PlayerType.PLAYER_APOLLYON_B, PlayerType.PLAYER_THEFORGOTTEN_B,
+        PlayerType.PLAYER_BETHANY_B, PlayerType.PLAYER_JACOB_B
+    },
+}
+
 function SkillTrees:openTreeMenu()
     oldmask = MenuManager.GetInputMask()
     ---@diagnostic disable-next-line: param-type-mismatch
@@ -40,6 +59,7 @@ function SkillTrees:closeTreeMenu()
         oldmask = nil
     end
     sfx:Play(SoundEffect.SOUND_PAPER_OUT)
+    cosmicRData.menuOpen = false
     treeMenuOpen = false
     currentTree = "global"
 end
@@ -135,6 +155,48 @@ function SkillTrees:treeMenuRendering()
             end
         end
 
+        -- Draw Cosmic Realignment menu
+        cosmicRData.hoveredCharID = nil
+        if cosmicRData.menuOpen then
+            -- Draw BG
+            nodeBGSprite.Scale.X = 164
+            nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(#cosmicRData.characters / 5)
+            local tmpBGX = cosmicRData.menuX - 84
+            local tmpBGY = cosmicRData.menuY + 14
+            nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X, tmpBGY - treeCamera.Y))
+
+            -- Stop node hovering while cursor is in this menu
+            if camCenterX >= tmpBGX and camCenterX <= tmpBGX + nodeBGSprite.Scale.X and
+            camCenterY >= tmpBGY and camCenterY <= tmpBGY + nodeBGSprite.Scale.Y then
+                hoveredNode = nil
+            end
+
+            Isaac.RenderText("Cosmic Realignment", cosmicRData.menuX - 54 - treeCamera.X, cosmicRData.menuY + 20 - treeCamera.Y, 1, 1, 1, 1)
+
+            for i, charID in ipairs(cosmicRData.characters) do
+                local charName = SkillTrees.charNames[1 + charID]
+                local charX = cosmicRData.menuX - 64 + ((i - 1) % 5) * 32
+                local charY = cosmicRData.menuY + 52 + math.floor((i - 1) / 5) * 32
+
+                -- Hovered
+                if camCenterX > charX - 16 and camCenterX < charX + 16 and camCenterY > charY - 16 and camCenterY < charY + 16 then
+                    cosmicRData.hoveredCharID = charID
+                    cosmicRData.charSprite.Color.A = 1
+                    cosmicRData.charSprite:Play("Select", true)
+                    cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                else
+                    cosmicRData.charSprite.Color.A = 0.4
+                end
+
+                cosmicRData.charSprite:Play(charName, true)
+                cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+            end
+        end
+
+        if cosmicRData.hoveredCharID ~= nil then
+            miniFont:DrawString(SkillTrees.charNames[1 + cosmicRData.hoveredCharID], screenW / 2 + 20, screenH / 2 - 4, KColor(1, 1, 1, 1))
+        end
+
         -- Cursor and node description
         if hoveredNode ~= nil then
             cursorSprite:Play("Clicked")
@@ -186,6 +248,12 @@ function SkillTrees:treeMenuRendering()
                     sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.75)
                 elseif not SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+                else
+                    if hoveredNode.name == "Cosmic Realignment" then
+                        cosmicRData.menuOpen = not cosmicRData.menuOpen
+                        cosmicRData.menuX = hoveredNode.pos.X * 38
+                        cosmicRData.menuY = hoveredNode.pos.Y * 38
+                    end
                 end
             end
         end
@@ -193,21 +261,23 @@ function SkillTrees:treeMenuRendering()
         -- Input: R key (respec node)
         if Input.IsButtonTriggered(Keyboard.KEY_R, 0) then
             if hoveredNode ~= nil then
-                if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, false) then
-                    if not SkillTrees.debugOptions.infRespec then
-                        SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
-                    end
-                    if not SkillTrees.debugOptions.infSP then
-                        if currentTree == "global" then
-                            SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
-                        else
-                            SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints + 1
+                if not (hoveredNode.name == "Cosmic Realignment" and cosmicRData.menuOpen) then
+                    if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, false) then
+                        if not SkillTrees.debugOptions.infRespec then
+                            SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
                         end
+                        if not SkillTrees.debugOptions.infSP then
+                            if currentTree == "global" then
+                                SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
+                            else
+                                SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints + 1
+                            end
+                        end
+                        SkillTrees:allocateNodeID(currentTree, hoveredNode.id, false)
+                        sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+                    elseif SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
+                        sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                     end
-                    SkillTrees:allocateNodeID(currentTree, hoveredNode.id, false)
-                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
-                elseif SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
-                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end
         end
