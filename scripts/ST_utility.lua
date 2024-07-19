@@ -76,6 +76,15 @@ function SkillTrees:addXP(xp, showText)
 	end
 end
 
+-- Get tree modifier (pre-run tree)
+---@return any
+function SkillTrees:getTreeMod(modName, default)
+	if SkillTrees.modData.treeMods[modName] == nil then
+		return default
+	end
+	return SkillTrees.modData.treeMods[modName]
+end
+
 -- Get current snapshot tree modifier
 ---@return any
 function SkillTrees:getTreeSnapshotMod(modName, default)

@@ -42,14 +42,14 @@ function SkillTrees:onNewRoom()
 			if hellFavourMod then
 				local randomStat = statsList[math.random(#statsList)]
 				if room:GetType() == RoomType.ROOM_DEVIL then
-					SkillTrees:addModifier({
+					SkillTrees:addModifiers({
 						[randomStat] = 1
 					}, true)
 				else
-					SkillTrees:addModifier({
+					SkillTrees:addModifiers({
 						[randomStat] = -1
 					}, true)
-					SkillTrees:addModifier({causeCurse = true}, true)
+					SkillTrees:addModifiers({causeCurse = true}, true)
 				end
 			end
 
@@ -58,14 +58,14 @@ function SkillTrees:onNewRoom()
 			if heavenFavourMod then
 				local randomStat = statsList[math.random(#statsList)]
 				if room:GetType() == RoomType.ROOM_ANGEL then
-					SkillTrees:addModifier({
+					SkillTrees:addModifiers({
 						[randomStat] = 1
 					}, true)
 				else
-					SkillTrees:addModifier({
+					SkillTrees:addModifiers({
 						[randomStat] = -1
 					}, true)
-					SkillTrees:addModifier({causeCurse = true}, true)
+					SkillTrees:addModifiers({causeCurse = true}, true)
 				end
 			end
 		end

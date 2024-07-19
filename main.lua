@@ -57,12 +57,14 @@ function SkillTrees:resetMods()
 
 		-- 'Keystone' nodes
 		relearning = false,
-		relearningFloors = 0,
-		quickWit = {0, 0},
+		relearningFloors = 0, -- Completed floors counter for Relearning node
+		quickWit = {0, 0}, -- XP gain {ceil, floor} for Quick Wit node. Starts at ceil when entering a room, and after a delay, gradually lowers down to floor
 		expertSpelunker = 0,
 		hellFavour = false,
 		heavenFavour = false,
-		cosmicRealignment = false, -- TODO
+		-- TODO -- If set to a character's PlayerType, achievements can be unlocked as if playing that character while playing a different one.
+		-- e.g. If set to PlayerType.PLAYER_CAIN, killing ??? in the chest will unlock Cain's Eye.
+		cosmicRealignment = false, ---@type boolean|PlayerType
 	}
 	-- Holds temporary data for allocated special nodes
 	SkillTrees.specialNodes = {
@@ -79,9 +81,9 @@ function SkillTrees:resetData()
 		-- Stores IDs of slots in the current room. Used to check if coins are given to slot entities
 		roomSlotIDs = {},
 
-		-- List of nodes and whether they're allocated
+		-- List of trees with nodes and whether they're allocated
 		treeNodes = {},
-		-- List of applied modifiers from tree
+		-- List of applied modifiers from each tree
 		treeMods = {},
 		-- List of applied modifiers that stays fixed during a run
 		treeModSnapshot = nil,
@@ -134,6 +136,13 @@ function SkillTrees:load()
 		for k, v in pairs(SkillTrees.modData.treeNodes) do
 			if tmpJson.treeNodes[k] == nil then
 				tmpJson.treeNodes[k] = v
+			else
+				-- Convert node IDs to numbers. With [0] we make sure they get saved as strings again later (stops the table from being ordered numbers)
+				local tmpTreeNodes = { [0] = false }
+				for nodeID, nodeVal in pairs(tmpJson.treeNodes[k]) do
+					tmpTreeNodes[tonumber(nodeID)] = nodeVal
+				end
+				tmpJson.treeNodes[k] = tmpTreeNodes
 			end
 		end
 		SkillTrees.modData = tmpJson

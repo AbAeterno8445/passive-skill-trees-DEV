@@ -101,18 +101,15 @@ function SkillTrees:resetNodes(tree)
     end
     
     if SkillTrees.modData.treeNodes[tree] == nil then
-        SkillTrees.modData.treeNodes[tree] = {}
-    end
-
-    for nodeID, _ in pairs(SkillTrees.trees[tree]) do
-        SkillTrees.modData.treeNodes[tree][nodeID] = false
+        SkillTrees.modData.treeNodes[tree] = { [0] = false }
     end
 end
 
--- Add a table of modifiers into tree data
+-- Add a table of modifiers into tree data.
+-- Number modifiers are added to the tree value by default. To set a number value instead of adding, the modifier can arrive as a table {value = (number), set = true}.
 ---@param modList table Table with modifiers and their values to be added/set
 ---@param addToSnapshot? boolean If true, add to the tree snapshot modifiers instead (should be true if modifying current run mods)
-function SkillTrees:addModifier(modList, addToSnapshot)
+function SkillTrees:addModifiers(modList, addToSnapshot)
     for modName, val in pairs(modList) do
         local treeRef = SkillTrees.modData.treeMods
         if addToSnapshot then
@@ -123,16 +120,22 @@ function SkillTrees:addModifier(modList, addToSnapshot)
             break
         end
 
-        if treeRef[modName] ~= nil and type(treeRef[modName]) == "number" then
-            treeRef[modName] = treeRef[modName] + val
+        if type(val) == "table" and val.set ~= nil and val.value ~= nil then
+            -- Force set
+            treeRef[modName] = val.value
         else
-            treeRef[modName] = val
+            if treeRef[modName] ~= nil and type(treeRef[modName]) == "number" and type(val) == "number" then
+                treeRef[modName] = treeRef[modName] + val
+            else
+                treeRef[modName] = val
+            end
         end
     end
     if addToSnapshot then
         Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL)
         Isaac.GetPlayer():EvaluateItems()
     end
+    SkillTrees:save()
 end
 
 -- Update the state for the given tree

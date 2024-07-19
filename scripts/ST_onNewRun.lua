@@ -7,14 +7,14 @@ function SkillTrees:onNewRun(isContinued)
     SkillTrees:resetMods()
     for nodeID, node in pairs(SkillTrees.trees["global"]) do
         if SkillTrees.modData.treeNodes["global"][nodeID] then
-            SkillTrees:addModifier(node.modifiers)
+            SkillTrees:addModifiers(node.modifiers)
         end
     end
     local currentChar = SkillTrees.charNames[1 + SkillTrees.selectedMenuChar]
     if SkillTrees.trees[currentChar] ~= nil then
         for nodeID, node in pairs(SkillTrees.trees[currentChar]) do
             if SkillTrees.modData.treeNodes[currentChar][nodeID] then
-                SkillTrees:addModifier(node.modifiers)
+                SkillTrees:addModifiers(node.modifiers)
             end
         end
     end
@@ -23,4 +23,6 @@ function SkillTrees:onNewRun(isContinued)
     Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL)
     Isaac.GetPlayer():EvaluateItems()
     SkillTrees:save()
+
+    SkillTrees:closeTreeMenu()
 end

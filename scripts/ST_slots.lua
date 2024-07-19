@@ -16,7 +16,7 @@ function SkillTrees:onSlotUpdate(slot)
             local spentBombs = slot.Variant == SlotVariant.BOMB_BUM and player:GetNumBombs() < lastResources.bombs
             
             if spentCoins or spentHearts or spentKeys or spentBombs then
-                SkillTrees:addModifier({ luck = beggarLuck }, true)
+                SkillTrees:addModifiers({ luck = beggarLuck }, true)
             end
         end
         updateResources = true

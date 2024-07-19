@@ -139,6 +139,7 @@ function SkillTrees:treeMenuRendering()
         end
 
         -- Draw nodes
+        local cosmicRChar = SkillTrees:getTreeMod("cosmicRealignment", false)
         hoveredNode = nil
         for _, node in pairs(SkillTrees.trees[currentTree]) do
             local nodeX = node.pos.X * 38
@@ -153,6 +154,14 @@ function SkillTrees:treeMenuRendering()
             camCenterY >= nodeY - 15 and camCenterY <= nodeY + 15 then
                 hoveredNode = node
             end
+
+            -- Cosmic Realignment node, draw picked character
+            if node.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
+                local charName = SkillTrees.charNames[1 + cosmicRChar]
+                cosmicRData.charSprite.Color.A = 1
+                cosmicRData.charSprite:Play(charName, true)
+                cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
+            end
         end
 
         -- Draw Cosmic Realignment menu
@@ -161,6 +170,7 @@ function SkillTrees:treeMenuRendering()
             -- Draw BG
             nodeBGSprite.Scale.X = 164
             nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(#cosmicRData.characters / 5)
+            nodeBGSprite.Color.A = 0.9
             local tmpBGX = cosmicRData.menuX - 84
             local tmpBGY = cosmicRData.menuY + 14
             nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X, tmpBGY - treeCamera.Y))
@@ -193,10 +203,6 @@ function SkillTrees:treeMenuRendering()
             end
         end
 
-        if cosmicRData.hoveredCharID ~= nil then
-            miniFont:DrawString(SkillTrees.charNames[1 + cosmicRData.hoveredCharID], screenW / 2 + 20, screenH / 2 - 4, KColor(1, 1, 1, 1))
-        end
-
         -- Cursor and node description
         if hoveredNode ~= nil then
             cursorSprite:Play("Clicked")
@@ -205,8 +211,14 @@ function SkillTrees:treeMenuRendering()
             local offX = 4
             local offY = 10
 
+            local descName = hoveredNode.name
+            -- Cosmic Realignment node, show picked character name
+            if hoveredNode.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
+                descName = descName .. " (" .. SkillTrees.charNames[1 + cosmicRChar] .. ")"
+            end
+
             -- Calculate longest description line, and offset accordingly
-            local longestStr = hoveredNode.name
+            local longestStr = descName
             for i = 1, #hoveredNode.description do
                 if string.len(hoveredNode.description[i]) > string.len(longestStr) then
                     longestStr = hoveredNode.description[i]
@@ -222,12 +234,17 @@ function SkillTrees:treeMenuRendering()
             local descH = miniFont:GetLineHeight() * (#hoveredNode.description + 1) + 4
             nodeBGSprite.Scale.X = descW
             nodeBGSprite.Scale.Y = descH
+            nodeBGSprite.Color.A = 0.7
             nodeBGSprite:Render(Vector(screenW / 2 + offX - 2, screenH / 2 + offY - 2))
 
-            miniFont:DrawString(hoveredNode.name, screenW / 2 + offX, screenH / 2 + offY, KColor(1, 1, 1, 1))
+            miniFont:DrawString(descName, screenW / 2 + offX, screenH / 2 + offY, KColor(1, 1, 1, 1))
             for i = 1, #hoveredNode.description do
                 miniFont:DrawString(hoveredNode.description[i], screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, KColor(1, 1, 1, 1))
             end
+        -- Cosmic Realignment node, hovered character name
+        elseif cosmicRData.hoveredCharID ~= nil then
+            cursorSprite:Play("Clicked")
+            miniFont:DrawString(SkillTrees.charNames[1 + cosmicRData.hoveredCharID], screenW / 2 + 20, screenH / 2 - 4, KColor(1, 1, 1, 1))
         else
             cursorSprite:Play("Idle")
         end
@@ -249,35 +266,48 @@ function SkillTrees:treeMenuRendering()
                 elseif not SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 else
+                    -- Cosmic Realignment node, open/close menu
                     if hoveredNode.name == "Cosmic Realignment" then
+                        sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
                         cosmicRData.menuOpen = not cosmicRData.menuOpen
                         cosmicRData.menuX = hoveredNode.pos.X * 38
                         cosmicRData.menuY = hoveredNode.pos.Y * 38
                     end
                 end
+            -- Cosmic Realignment node, pick hovered character
+            elseif cosmicRData.hoveredCharID ~= nil then
+                SkillTrees:addModifiers({
+                    cosmicRealignment = { value = cosmicRData.hoveredCharID, set = true }
+                })
+                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+                cosmicRData.menuOpen = false
             end
         end
 
         -- Input: R key (respec node)
         if Input.IsButtonTriggered(Keyboard.KEY_R, 0) then
             if hoveredNode ~= nil then
-                if not (hoveredNode.name == "Cosmic Realignment" and cosmicRData.menuOpen) then
-                    if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, false) then
-                        if not SkillTrees.debugOptions.infRespec then
-                            SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
-                        end
-                        if not SkillTrees.debugOptions.infSP then
-                            if currentTree == "global" then
-                                SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
-                            else
-                                SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints + 1
-                            end
-                        end
-                        SkillTrees:allocateNodeID(currentTree, hoveredNode.id, false)
-                        sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
-                    elseif SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
-                        sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+                if SkillTrees:isNodeAllocatable(currentTree, hoveredNode.id, false) then
+                    if not SkillTrees.debugOptions.infRespec then
+                        SkillTrees.modData.respecPoints = SkillTrees.modData.respecPoints - 1
                     end
+                    if not SkillTrees.debugOptions.infSP then
+                        if currentTree == "global" then
+                            SkillTrees.modData.skillPoints = SkillTrees.modData.skillPoints + 1
+                        else
+                            SkillTrees.modData.charData[currentTree].skillPoints = SkillTrees.modData.charData[currentTree].skillPoints + 1
+                        end
+                    end
+                    SkillTrees:allocateNodeID(currentTree, hoveredNode.id, false)
+                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+
+                    -- Respec Cosmic Realignment node
+                    if hoveredNode.name == "Cosmic Realignment" then
+                        SkillTrees:addModifiers({ cosmicRealignment = false })
+                        cosmicRData.menuOpen = false
+                    end
+                elseif SkillTrees:isNodeAllocated(currentTree, hoveredNode.id) then
+                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end
         end

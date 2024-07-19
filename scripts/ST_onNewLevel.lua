@@ -23,10 +23,9 @@ local curseIDs = {
 function SkillTrees:onCurseEval(curses)
     local causeCurse = SkillTrees:getTreeSnapshotMod("causeCurse", false)
     if causeCurse and curses == LevelCurse.CURSE_NONE then
-        SkillTrees:addModifier({causeCurse = false}, true)
+        SkillTrees:addModifiers({causeCurse = false}, true)
         
         local newCurse = curseIDs[math.random(#curseIDs)]
-        print("Caused curse:", newCurse)
         return newCurse
     end
     return curses

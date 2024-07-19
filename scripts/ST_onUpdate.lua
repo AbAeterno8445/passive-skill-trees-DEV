@@ -39,7 +39,7 @@ function SkillTrees:onUpdate()
 				end
 			else
 				-- Relearning node, count as completed floor
-				SkillTrees:addModifier({ relearningFloors = 1 }, true)
+				SkillTrees:addModifiers({ relearningFloors = 1 }, true)
 			end
 		end
 
