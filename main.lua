@@ -44,7 +44,7 @@ function SkillTrees:resetMods()
 		xpgainNormalMob = 0, -- Extra XP gain for normal mobs
 		xpgainBoss = 0, -- Extra XP gain for bosses
 		beggarLuck = 0, -- Flat luck granted when offering to a beggar
-		devilChance = 0, -- TEST? -- Extra chance to spawn devil/angel room, overrides stage penalty similar to goat's head/eucharist
+		devilChance = 0, -- Extra chance to spawn devil/angel room, overrides stage penalty similar to goat's head/eucharist
 		coinDupe = 0, -- Chance to gain an extra coin when picking one up
 		keyDupe = 0, -- Chance to gain an extra key when picking one up
 		bombDupe = 0, -- Chance to gain an extra bomb when picking one up
