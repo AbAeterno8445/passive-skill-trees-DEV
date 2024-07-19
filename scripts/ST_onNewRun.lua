@@ -1,28 +1,28 @@
-function SkillTrees:onNewRun(isContinued)
+function PST:onNewRun(isContinued)
     if isContinued then
         return
     end
 
     -- Get snapshot of tree modifiers
-    SkillTrees:resetMods()
-    for nodeID, node in pairs(SkillTrees.trees["global"]) do
-        if SkillTrees.modData.treeNodes["global"][nodeID] then
-            SkillTrees:addModifiers(node.modifiers)
+    PST:resetMods()
+    for nodeID, node in pairs(PST.trees["global"]) do
+        if PST.modData.treeNodes["global"][nodeID] then
+            PST:addModifiers(node.modifiers)
         end
     end
-    local currentChar = SkillTrees.charNames[1 + SkillTrees.selectedMenuChar]
-    if SkillTrees.trees[currentChar] ~= nil then
-        for nodeID, node in pairs(SkillTrees.trees[currentChar]) do
-            if SkillTrees.modData.treeNodes[currentChar][nodeID] then
-                SkillTrees:addModifiers(node.modifiers)
+    local currentChar = PST.charNames[1 + PST.selectedMenuChar]
+    if PST.trees[currentChar] ~= nil then
+        for nodeID, node in pairs(PST.trees[currentChar]) do
+            if PST.modData.treeNodes[currentChar][nodeID] then
+                PST:addModifiers(node.modifiers)
             end
         end
     end
 
-    SkillTrees.modData.treeModSnapshot = SkillTrees.modData.treeMods
+    PST.modData.treeModSnapshot = PST.modData.treeMods
     Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL)
     Isaac.GetPlayer():EvaluateItems()
-    SkillTrees:save()
+    PST:save()
 
-    SkillTrees:closeTreeMenu()
+    PST:closeTreeMenu()
 end

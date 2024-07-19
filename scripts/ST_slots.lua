@@ -1,11 +1,11 @@
 local lastResources = { hearts = 0, coins = 0, keys = 0, bombs = 0 }
-function SkillTrees:onSlotUpdate(slot)
+function PST:onSlotUpdate(slot)
     local updateResources = lastResources.hearts == 0
 
     -- Player collided with slot
     local player = Isaac.GetPlayer()
     if slot:GetTouch() > 0 then
-        local beggarLuck = SkillTrees:getTreeSnapshotMod("beggarLuck", 0)
+        local beggarLuck = PST:getTreeSnapshotMod("beggarLuck", 0)
 
         -- Beggar luck mod
         if beggarLuck > 0 then
@@ -16,7 +16,7 @@ function SkillTrees:onSlotUpdate(slot)
             local spentBombs = slot.Variant == SlotVariant.BOMB_BUM and player:GetNumBombs() < lastResources.bombs
             
             if spentCoins or spentHearts or spentKeys or spentBombs then
-                SkillTrees:addModifiers({ luck = beggarLuck }, true)
+                PST:addModifiers({ luck = beggarLuck }, true)
             end
         end
         updateResources = true

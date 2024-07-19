@@ -1,7 +1,7 @@
 local json = require("json")
 
-SkillTrees.nodeLinks.global = {}
-SkillTrees.trees.global = json.decode([[
+PST.nodeLinks.global = {}
+PST.trees.global = json.decode([[
 {
   "1": "{\"pos\":[0,0],\"type\":\"Central\",\"size\":\"Large\",\"name\":\"Leveling of Isaac\",\"description\":[\"+0.05 all stats\"],\"modifiers\":{\"allstats\":0.05},\"alwaysAvailable\":true,\"adjacent\":[2,66,171,212],\"requires\":[]}",
   "2": "{\"pos\":[0,-2],\"type\":\"Small XP\",\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+2% XP gain\"],\"modifiers\":{\"xpgain\":2},\"adjacent\":[1,3],\"requires\":[1]}",

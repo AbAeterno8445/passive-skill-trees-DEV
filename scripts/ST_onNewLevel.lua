@@ -1,12 +1,12 @@
-function SkillTrees:onNewLevel()
-    local mappingChance = SkillTrees:getTreeSnapshotMod("mapChance", 0)
+function PST:onNewLevel()
+    local mappingChance = PST:getTreeSnapshotMod("mapChance", 0)
 
     if mappingChance > 0 then
         local level = Game():GetLevel()
         local floor = level:GetStage()
         if floor > 1 and 100 * math.random() < mappingChance then
             level:ShowMap()
-            SkillTrees:createFloatTextFX("Map revealed!", Vector(0, 0), Color(1, 1, 1, 1), 0.12, 70, true)
+            PST:createFloatTextFX("Map revealed!", Vector(0, 0), Color(1, 1, 1, 1), 0.12, 70, true)
         end
     end
 end
@@ -20,10 +20,10 @@ local curseIDs = {
     LevelCurse.CURSE_OF_THE_LOST,
     LevelCurse.CURSE_OF_THE_UNKNOWN
 }
-function SkillTrees:onCurseEval(curses)
-    local causeCurse = SkillTrees:getTreeSnapshotMod("causeCurse", false)
+function PST:onCurseEval(curses)
+    local causeCurse = PST:getTreeSnapshotMod("causeCurse", false)
     if causeCurse and curses == LevelCurse.CURSE_NONE then
-        SkillTrees:addModifiers({causeCurse = false}, true)
+        PST:addModifiers({causeCurse = false}, true)
         
         local newCurse = curseIDs[math.random(#curseIDs)]
         return newCurse

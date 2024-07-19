@@ -1,11 +1,11 @@
-SkillTrees = RegisterMod("SkillTrees", 1)
+PST = RegisterMod("PST", 1)
 
 local json = require("json")
 
-SkillTrees.modData = {}
-SkillTrees.selectedMenuChar = 0
-SkillTrees.startXPRequired = 25
-SkillTrees.charNames = {
+PST.modData = {}
+PST.selectedMenuChar = 0
+PST.startXPRequired = 25
+PST.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
 	"Judas", "Lilith", "Keeper", "Apollyon", "The Forgotten", "The Forgotten",
@@ -16,18 +16,18 @@ SkillTrees.charNames = {
 	"T. Jacob", "T. Forgotten"
 }
 -- Init mod char names here (index is the character's playerType + 1)
-SkillTrees.charNames[42] = "Siren"
-SkillTrees.charNames[43] = "T. Siren"
+PST.charNames[42] = "Siren"
+PST.charNames[43] = "T. Siren"
 
-SkillTrees.debugOptions = {
+PST.debugOptions = {
 	infSP = true, -- No longer spend or require skill points for nodes
 	infRespec = true, -- No longer spend or require respec points for nodes
 	allAvailable = true, -- Makes all nodes available
 }
 
-function SkillTrees:resetMods()
+function PST:resetMods()
 	-- List of available tree modifiers
-	SkillTrees.modData.treeMods = {
+	PST.modData.treeMods = {
 		allstats = 0, -- Flat addition to damage, luck, speed, tears, shot speed and range
 		damage = 0,
 		luck = 0,
@@ -67,12 +67,12 @@ function SkillTrees:resetMods()
 		cosmicRealignment = false, ---@type boolean|PlayerType
 	}
 	-- Holds temporary data for allocated special nodes
-	SkillTrees.specialNodes = {
+	PST.specialNodes = {
 		quickWit = { startTime = 0, pauseTime = 0 }
 	}
 end
-function SkillTrees:resetData()
-	SkillTrees.modData = {
+function PST:resetData()
+	PST.modData = {
 		xpObtained = 0,
 		skillPoints = 2,
 		respecPoints = 4,
@@ -89,51 +89,51 @@ function SkillTrees:resetData()
 		treeModSnapshot = nil,
 		charData = {}
 	}
-	SkillTrees:resetMods()
+	PST:resetMods()
 end
-SkillTrees:resetData()
+PST:resetData()
 
 -- Initialize character data for the given char
 ---@param charName string Character name
 ---@param forceReset? boolean Forces resetting the character's data
-function SkillTrees:charInit(charName, forceReset)
-	if SkillTrees.modData.charData[charName] == nil or forceReset == true then
-		SkillTrees.modData.charData[charName] = {
+function PST:charInit(charName, forceReset)
+	if PST.modData.charData[charName] == nil or forceReset == true then
+		PST.modData.charData[charName] = {
 			level = 1,
 			xp = 0,
-			xpRequired = SkillTrees.startXPRequired,
+			xpRequired = PST.startXPRequired,
 			skillPoints = 0
 		}
 	end
 end
 
 -- Save mod data
-function SkillTrees:save()
-	SkillTrees:SaveData(json.encode(SkillTrees.modData))
+function PST:save()
+	PST:SaveData(json.encode(PST.modData))
 end
 
 -- Load mod data
-function SkillTrees:load()
-	local loadedData = SkillTrees:LoadData()
+function PST:load()
+	local loadedData = PST:LoadData()
 	local loadSuccess = false
 
-	SkillTrees:resetData()
-	SkillTrees:resetNodes()
+	PST:resetData()
+	PST:resetNodes()
 	if #loadedData ~= 0 then
 		local tmpJson = json.decode(loadedData)
 
 		-- Add missing fields (old save)
-		for k, v in pairs(SkillTrees.modData) do
+		for k, v in pairs(PST.modData) do
 			if tmpJson[k] == nil then
 				tmpJson[k] = v
 			end
 		end
-		for k, v in pairs(SkillTrees.modData.treeMods) do
+		for k, v in pairs(PST.modData.treeMods) do
 			if tmpJson.treeMods[k] == nil then
 				tmpJson.treeMods[k] = v
 			end
 		end
-		for k, v in pairs(SkillTrees.modData.treeNodes) do
+		for k, v in pairs(PST.modData.treeNodes) do
 			if tmpJson.treeNodes[k] == nil then
 				tmpJson.treeNodes[k] = v
 			else
@@ -145,26 +145,26 @@ function SkillTrees:load()
 				tmpJson.treeNodes[k] = tmpTreeNodes
 			end
 		end
-		SkillTrees.modData = tmpJson
+		PST.modData = tmpJson
 
 		loadSuccess = true
 	end
-	SkillTrees:updateNodes()
+	PST:updateNodes()
 
 	return loadSuccess
 end
 
 -- On player init
-function SkillTrees:playerInit()
-	local loadSuccess = SkillTrees:load()
-	SkillTrees:charInit(SkillTrees:getCurrentCharName(), not loadSuccess)
+function PST:playerInit()
+	local loadSuccess = PST:load()
+	PST:charInit(PST:getCurrentCharName(), not loadSuccess)
 end
 
 -- Fetch the current character's skill tree data (makes sure it's initialized)
-function SkillTrees:getCurrentCharData()
-	local currentChar = SkillTrees:getCurrentCharName()
-	SkillTrees:charInit(currentChar)
-	return SkillTrees.modData.charData[currentChar]
+function PST:getCurrentCharData()
+	local currentChar = PST:getCurrentCharName()
+	PST:charInit(currentChar)
+	return PST.modData.charData[currentChar]
 end
 
 include("scripts.ST_utility")
@@ -182,29 +182,29 @@ include("scripts.ST_devilChance")
 include("scripts.ST_onRunOver")
 include("scripts.ST_onNewLevel")
 
-SkillTrees:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, SkillTrees.playerInit)
-SkillTrees:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, SkillTrees.save)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_GAME_END, SkillTrees.save)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_RENDER, SkillTrees.Render)
-SkillTrees:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, SkillTrees.onDamage)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, SkillTrees.onNewRoom)
-SkillTrees:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, SkillTrees.onCache)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_UPDATE, SkillTrees.onUpdate)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, SkillTrees.onCurseEval)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, SkillTrees.onNewRun)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_GAME_END, SkillTrees.onRunOver)
+PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
+PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.save)
+PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.save)
+PST:AddCallback(ModCallbacks.MC_POST_RENDER, PST.Render)
+PST:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, PST.onDamage)
+PST:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, PST.onNewRoom)
+PST:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, PST.onCache)
+PST:AddCallback(ModCallbacks.MC_POST_UPDATE, PST.onUpdate)
+PST:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, PST.onCurseEval)
+PST:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, PST.onNewRun)
+PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onRunOver)
 -- Repentogon callbacks
-SkillTrees:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, SkillTrees.load)
-SkillTrees:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, SkillTrees.onCharSelect)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_PLAYER_NEW_LEVEL, SkillTrees.onNewLevel)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, SkillTrees.onSlotUpdate)
-SkillTrees:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, SkillTrees.onPickup)
-SkillTrees:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, SkillTrees.applyDevilChance)
+PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.load)
+PST:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, PST.onCharSelect)
+PST:AddCallback(ModCallbacks.MC_POST_PLAYER_NEW_LEVEL, PST.onNewLevel)
+PST:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, PST.onSlotUpdate)
+PST:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PST.onPickup)
+PST:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, PST.applyDevilChance)
 
 -- First load
-SkillTrees:load()
+PST:load()
 
-print("Initialized Skill Trees.")
-for optName, _ in pairs(SkillTrees.debugOptions) do
-	Console.PrintWarning("Skill Trees: " .. optName .. " debug option is enabled")
+print("Initialized Passive Skill Trees.")
+for optName, _ in pairs(PST.debugOptions) do
+	Console.PrintWarning("Passive Skill Trees: " .. optName .. " debug option is enabled")
 end

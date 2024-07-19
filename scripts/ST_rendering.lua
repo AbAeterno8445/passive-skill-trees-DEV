@@ -10,7 +10,7 @@ local floatTextQueue = {}
 ---@param speed number -- How quickly the text rises up in pixels per frame
 ---@param totalSteps number -- How many frames the text lasts. Used for fading effect
 ---@param playerRelative boolean -- Whether the text should stick to the player. If true, the position vector becomes relative to the player
-function SkillTrees:createFloatTextFX(text, position, color, speed, totalSteps, playerRelative)
+function PST:createFloatTextFX(text, position, color, speed, totalSteps, playerRelative)
 	local tmpText = {
 		text = text,
 		position = position,
@@ -42,7 +42,7 @@ xpbarFullSprite:Play("BarFull", true)
 xpbarTempSprite:Play("BarTemp", true)
 
 -- Rendering function
-function SkillTrees:Render()
+function PST:Render()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
 	local screenRatioY = Isaac.GetScreenHeight() / 270
 
@@ -50,7 +50,7 @@ function SkillTrees:Render()
 	local gamePaused = Game():IsPaused()
 
 	-- XP bar
-	local charData = SkillTrees:getCurrentCharData()
+	local charData = PST:getCurrentCharData()
 
 	local barPos = Vector(112 * screenRatioX, Isaac.GetScreenHeight() - 12)
 	local barPercent = math.min(1, charData.xp / math.max(1, charData.xpRequired))
@@ -59,8 +59,8 @@ function SkillTrees:Render()
 	xpbarSprite.Scale = barScale
 	xpbarSprite:Render(barPos)
 
-	if SkillTrees.modData.xpObtained > 0 then
-		local tempBarPercent = math.min(1, (charData.xp + SkillTrees.modData.xpObtained) / math.max(1, charData.xpRequired))
+	if PST.modData.xpObtained > 0 then
+		local tempBarPercent = math.min(1, (charData.xp + PST.modData.xpObtained) / math.max(1, charData.xpRequired))
 		xpbarTempSprite.Scale = barScale
 		xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 32), Vector(barWidth, 16))
 	end
@@ -75,12 +75,12 @@ function SkillTrees:Render()
 	Isaac.RenderText(levelStr, barPos.X - (3 + string.len(levelStr) * 8) * screenRatioX, barPos.Y - 6, 1, 1, 1, 0.7)
 
 	-- Quick wit mod
-	local quickWitMod = SkillTrees:getTreeSnapshotMod("quickWit", {0, 0})
+	local quickWitMod = PST:getTreeSnapshotMod("quickWit", {0, 0})
 	local hasQuickWit = quickWitMod[1] ~= 0 or quickWitMod[2] ~= 0
 
 	-- Pause quick wit
 	if hasQuickWit and room:GetType() ~= RoomType.ROOM_BOSS and room:GetType() ~= RoomType.ROOM_BOSSRUSH then
-		local quickWitData = SkillTrees.specialNodes.quickWit
+		local quickWitData = PST.specialNodes.quickWit
 		if gamePaused then
 			if quickWitData.pauseTime == 0 then
 				quickWitData.pauseTime = os.clock()
