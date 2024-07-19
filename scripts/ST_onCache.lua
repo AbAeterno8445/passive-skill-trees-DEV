@@ -32,6 +32,13 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         local tmpMod = PST:getTreeSnapshotMod("speed", 0) + allstats
         local tmpMult = 1 + allstatsPerc / 100
-        player.MoveSpeed = (player.MoveSpeed + tmpMod) * tmpMult
+        local baseSpeed = player.MoveSpeed
+
+        -- Cosmic Realignment node
+        if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE) then
+            -- Magdalene, set base movement speed to 0.85
+            baseSpeed = 0.85
+        end
+        player.MoveSpeed = (baseSpeed + tmpMod) * tmpMult
     end
 end

@@ -26,25 +26,6 @@ local hoveredNode = nil
 local treeMenuOpen = false
 local oldmask = nil
 
--- Init cosmic realignment data
-local cosmicRData = {
-    menuOpen = false,
-    menuX = 0,
-    menuY = 0,
-    charSprite = Sprite("gfx/ui/skilltrees/cosmic_realignment_chars.anm2", true),
-    hoveredCharID = nil,
-    characters = {
-        PlayerType.PLAYER_ISAAC, PlayerType.PLAYER_MAGDALENE, PlayerType.PLAYER_CAIN, PlayerType.PLAYER_JUDAS, PlayerType.PLAYER_BLUEBABY,
-        PlayerType.PLAYER_EVE, PlayerType.PLAYER_SAMSON, PlayerType.PLAYER_AZAZEL, PlayerType.PLAYER_LAZARUS, PlayerType.PLAYER_EDEN,
-        PlayerType.PLAYER_THELOST, PlayerType.PLAYER_LILITH, PlayerType.PLAYER_KEEPER, PlayerType.PLAYER_APOLLYON, PlayerType.PLAYER_THEFORGOTTEN,
-        PlayerType.PLAYER_BETHANY, PlayerType.PLAYER_JACOB,
-        PlayerType.PLAYER_ISAAC_B, PlayerType.PLAYER_MAGDALENE_B, PlayerType.PLAYER_CAIN_B, PlayerType.PLAYER_JUDAS_B, PlayerType.PLAYER_BLUEBABY_B,
-        PlayerType.PLAYER_EVE_B, PlayerType.PLAYER_SAMSON_B, PlayerType.PLAYER_AZAZEL_B, PlayerType.PLAYER_LAZARUS_B, PlayerType.PLAYER_EDEN_B,
-        PlayerType.PLAYER_THELOST_B, PlayerType.PLAYER_LILITH_B, PlayerType.PLAYER_KEEPER_B, PlayerType.PLAYER_APOLLYON_B, PlayerType.PLAYER_THEFORGOTTEN_B,
-        PlayerType.PLAYER_BETHANY_B, PlayerType.PLAYER_JACOB_B
-    },
-}
-
 function PST:openTreeMenu()
     oldmask = MenuManager.GetInputMask()
     ---@diagnostic disable-next-line: param-type-mismatch
@@ -59,9 +40,41 @@ function PST:closeTreeMenu()
         oldmask = nil
     end
     sfx:Play(SoundEffect.SOUND_PAPER_OUT)
-    cosmicRData.menuOpen = false
+    PST.cosmicRData.menuOpen = false
     treeMenuOpen = false
     currentTree = "global"
+end
+
+-- Draw a 'node description box' next to screen center
+local function drawNodeBox(name, description, screenW, screenH)
+    -- Base offset from center cursor
+    local offX = 4
+    local offY = 10
+
+    -- Calculate longest description line, and offset accordingly
+    local longestStr = name
+    for i = 1, #description do
+        if string.len(description[i]) > string.len(longestStr) then
+            longestStr = description[i]
+        end
+    end
+    local longestStrWidth = 8 + offX + miniFont:GetStringWidth(longestStr)
+    if longestStrWidth > screenW / 2 then
+        offX = offX - (longestStrWidth - screenW / 2)
+    end
+
+    -- Draw description background
+    local descW = longestStrWidth + 4
+    local descH = miniFont:GetLineHeight() * (#description + 1) + 4
+    nodeBGSprite.Scale.X = descW
+    nodeBGSprite.Scale.Y = descH
+    nodeBGSprite.Color.A = 0.7
+    nodeBGSprite:Render(Vector(screenW / 2 + offX - 2, screenH / 2 + offY - 2))
+
+    miniFont:DrawString(name, screenW / 2 + offX, screenH / 2 + offY, KColor(1, 1, 1, 1))
+    for i = 1, #description do
+        miniFont:DrawString(description[i], screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, KColor(1, 1, 1, 1))
+    end
 end
 
 function PST:treeMenuRendering()
@@ -158,21 +171,21 @@ function PST:treeMenuRendering()
             -- Cosmic Realignment node, draw picked character
             if node.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
                 local charName = PST.charNames[1 + cosmicRChar]
-                cosmicRData.charSprite.Color.A = 1
-                cosmicRData.charSprite:Play(charName, true)
-                cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
+                PST.cosmicRData.charSprite.Color.A = 1
+                PST.cosmicRData.charSprite:Play(charName, true)
+                PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
             end
         end
 
         -- Draw Cosmic Realignment menu
-        cosmicRData.hoveredCharID = nil
-        if cosmicRData.menuOpen then
+        PST.cosmicRData.hoveredCharID = nil
+        if PST.cosmicRData.menuOpen then
             -- Draw BG
             nodeBGSprite.Scale.X = 164
-            nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(#cosmicRData.characters / 5)
+            nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(#PST.cosmicRData.characters / 5)
             nodeBGSprite.Color.A = 0.9
-            local tmpBGX = cosmicRData.menuX - 84
-            local tmpBGY = cosmicRData.menuY + 14
+            local tmpBGX = PST.cosmicRData.menuX - 84
+            local tmpBGY = PST.cosmicRData.menuY + 14
             nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X, tmpBGY - treeCamera.Y))
 
             -- Stop node hovering while cursor is in this menu
@@ -181,25 +194,27 @@ function PST:treeMenuRendering()
                 hoveredNode = nil
             end
 
-            Isaac.RenderText("Cosmic Realignment", cosmicRData.menuX - 54 - treeCamera.X, cosmicRData.menuY + 20 - treeCamera.Y, 1, 1, 1, 1)
+            Isaac.RenderText("Cosmic Realignment", PST.cosmicRData.menuX - 54 - treeCamera.X, PST.cosmicRData.menuY + 20 - treeCamera.Y, 1, 1, 1, 1)
 
-            for i, charID in ipairs(cosmicRData.characters) do
+            local i = 1
+            for charID, charData in pairs(PST.cosmicRData.characters) do
                 local charName = PST.charNames[1 + charID]
-                local charX = cosmicRData.menuX - 64 + ((i - 1) % 5) * 32
-                local charY = cosmicRData.menuY + 52 + math.floor((i - 1) / 5) * 32
+                local charX = PST.cosmicRData.menuX - 64 + ((i - 1) % 5) * 32
+                local charY = PST.cosmicRData.menuY + 52 + math.floor((i - 1) / 5) * 32
 
                 -- Hovered
                 if camCenterX > charX - 16 and camCenterX < charX + 16 and camCenterY > charY - 16 and camCenterY < charY + 16 then
-                    cosmicRData.hoveredCharID = charID
-                    cosmicRData.charSprite.Color.A = 1
-                    cosmicRData.charSprite:Play("Select", true)
-                    cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                    PST.cosmicRData.hoveredCharID = charID
+                    PST.cosmicRData.charSprite.Color.A = 1
+                    PST.cosmicRData.charSprite:Play("Select", true)
+                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
                 else
-                    cosmicRData.charSprite.Color.A = 0.4
+                    PST.cosmicRData.charSprite.Color.A = 0.4
                 end
 
-                cosmicRData.charSprite:Play(charName, true)
-                cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                PST.cosmicRData.charSprite:Play(charName, true)
+                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                i = i + 1
             end
         end
 
@@ -207,44 +222,24 @@ function PST:treeMenuRendering()
         if hoveredNode ~= nil then
             cursorSprite:Play("Clicked")
 
-            -- Base offset from center cursor
-            local offX = 4
-            local offY = 10
-
             local descName = hoveredNode.name
-            -- Cosmic Realignment node, show picked character name
-            if hoveredNode.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
-                descName = descName .. " (" .. PST.charNames[1 + cosmicRChar] .. ")"
-            end
-
-            -- Calculate longest description line, and offset accordingly
-            local longestStr = descName
-            for i = 1, #hoveredNode.description do
-                if string.len(hoveredNode.description[i]) > string.len(longestStr) then
-                    longestStr = hoveredNode.description[i]
+            local tmpDescription = hoveredNode.description
+            -- Cosmic Realignment node, show picked character name & curse description
+            if hoveredNode.name == "Cosmic Realignment" then
+                if type(cosmicRChar) == "number" then
+                    descName = descName .. " (" .. PST.charNames[1 + cosmicRChar] .. ")"
+                    tmpDescription = PST.cosmicRData.characters[cosmicRChar].curseDesc or { "Curse effect unknown." }
+                elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
+                    descName = descName .. " (E to pick character)"
                 end
             end
-            local longestStrWidth = 8 + offX + miniFont:GetStringWidth(longestStr)
-            if longestStrWidth > screenW / 2 then
-                offX = offX - (longestStrWidth - screenW / 2)
-            end
-
-            -- Draw description background
-            local descW = longestStrWidth + 4
-            local descH = miniFont:GetLineHeight() * (#hoveredNode.description + 1) + 4
-            nodeBGSprite.Scale.X = descW
-            nodeBGSprite.Scale.Y = descH
-            nodeBGSprite.Color.A = 0.7
-            nodeBGSprite:Render(Vector(screenW / 2 + offX - 2, screenH / 2 + offY - 2))
-
-            miniFont:DrawString(descName, screenW / 2 + offX, screenH / 2 + offY, KColor(1, 1, 1, 1))
-            for i = 1, #hoveredNode.description do
-                miniFont:DrawString(hoveredNode.description[i], screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, KColor(1, 1, 1, 1))
-            end
-        -- Cosmic Realignment node, hovered character name
-        elseif cosmicRData.hoveredCharID ~= nil then
+            drawNodeBox(descName, tmpDescription or hoveredNode.description, screenW, screenH)
+        -- Cosmic Realignment node, hovered character name & curse description
+        elseif PST.cosmicRData.hoveredCharID ~= nil then
             cursorSprite:Play("Clicked")
-            miniFont:DrawString(PST.charNames[1 + cosmicRData.hoveredCharID], screenW / 2 + 20, screenH / 2 - 4, KColor(1, 1, 1, 1))
+
+            local charID = PST.cosmicRData.hoveredCharID
+            drawNodeBox(PST.charNames[1 + charID], PST.cosmicRData.characters[charID].curseDesc or {}, screenW, screenH)
         else
             cursorSprite:Play("Idle")
         end
@@ -269,18 +264,18 @@ function PST:treeMenuRendering()
                     -- Cosmic Realignment node, open/close menu
                     if hoveredNode.name == "Cosmic Realignment" then
                         sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
-                        cosmicRData.menuOpen = not cosmicRData.menuOpen
-                        cosmicRData.menuX = hoveredNode.pos.X * 38
-                        cosmicRData.menuY = hoveredNode.pos.Y * 38
+                        PST.cosmicRData.menuOpen = not PST.cosmicRData.menuOpen
+                        PST.cosmicRData.menuX = hoveredNode.pos.X * 38
+                        PST.cosmicRData.menuY = hoveredNode.pos.Y * 38
                     end
                 end
             -- Cosmic Realignment node, pick hovered character
-            elseif cosmicRData.hoveredCharID ~= nil then
+            elseif PST.cosmicRData.hoveredCharID ~= nil then
                 PST:addModifiers({
-                    cosmicRealignment = { value = cosmicRData.hoveredCharID, set = true }
+                    cosmicRealignment = { value = PST.cosmicRData.hoveredCharID, set = true }
                 })
                 sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
-                cosmicRData.menuOpen = false
+                PST.cosmicRData.menuOpen = false
             end
         end
 
@@ -304,7 +299,7 @@ function PST:treeMenuRendering()
                     -- Respec Cosmic Realignment node
                     if hoveredNode.name == "Cosmic Realignment" then
                         PST:addModifiers({ cosmicRealignment = false })
-                        cosmicRData.menuOpen = false
+                        PST.cosmicRData.menuOpen = false
                     end
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)

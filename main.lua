@@ -168,6 +168,7 @@ function PST:getCurrentCharData()
 end
 
 include("scripts.ST_utility")
+include("scripts.ST_cosmicRData")
 include("scripts.ST_treeScreen")
 include("scripts.ST_onNewRoom")
 include("scripts.ST_onDamage")

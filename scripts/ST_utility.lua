@@ -99,7 +99,7 @@ end
 ---@param character PlayerType 
 function PST:cosmicRCharPicked(character)
 	local player = Isaac.GetPlayer()
-	if player:GetType() == character then
+	if player:GetPlayerType() == character then
 		return false
 	end
 	return PST:getTreeSnapshotMod("cosmicRealignment", false) == character
