@@ -36,7 +36,12 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_EDEN] = {
             curseDesc = { "-0.1 to a random stat when entering a floor, from floor 2 onwards." }
         },
-        [PlayerType.PLAYER_THELOST] = {},
+        [PlayerType.PLAYER_THELOST] = {
+            curseDesc = {
+                "You may not have more than 2 red/coin hearts, and non-red hearts vanish on pickup.",
+                "If Holy Mantle is unlocked with The Lost, start with Wafer."
+            }
+        },
         [PlayerType.PLAYER_LILITH] = {},
         [PlayerType.PLAYER_KEEPER] = {},
         [PlayerType.PLAYER_APOLLYON] = {},

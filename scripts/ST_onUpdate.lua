@@ -17,6 +17,12 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = 8 }, true)
 			cosmicRCache.eveActive = false
 		end
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
+		-- The Lost, limit max red hearts to 2
+		local plHearts = player:GetMaxHearts()
+		if plHearts > 4 then
+			player:AddMaxHearts(4 - plHearts)
+		end
 	end
 
 	-- On room clear

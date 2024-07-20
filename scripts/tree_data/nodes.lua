@@ -132,8 +132,7 @@ function PST:addModifiers(modList, addToSnapshot)
         end
     end
     if addToSnapshot then
-        Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL)
-        Isaac.GetPlayer():EvaluateItems()
+        Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL, true)
     end
     PST:save()
 end

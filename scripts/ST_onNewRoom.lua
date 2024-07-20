@@ -46,15 +46,20 @@ function PST:onNewRoom()
 			end
 		-- Devil/Angel rooms
 		elseif room:GetType() == RoomType.ROOM_DEVIL or room:GetType() == RoomType.ROOM_ANGEL then
+			local randomStat = PST:getRandomStat()
+			local tmpAdd = 1
+			if randomStat == "speed" then
+				tmpAdd = 0.1
+			end
+
 			-- Hell's favour mod
 			local hellFavourMod = PST:getTreeSnapshotMod("hellFavour", false)
 			if hellFavourMod then
-				local randomStat = PST:getRandomStat()
 				if room:GetType() == RoomType.ROOM_DEVIL then
-					PST:addModifiers({ [randomStat] = 1 }, true)
+					PST:addModifiers({ [randomStat] = tmpAdd }, true)
 				else
 					PST:addModifiers({
-						[randomStat] = -1,
+						[randomStat] = -tmpAdd,
 						causeCurse = true
 					}, true)
 				end
@@ -63,12 +68,11 @@ function PST:onNewRoom()
 			-- Angel's favour mod
 			local heavenFavourMod = PST:getTreeSnapshotMod("heavenFavour", false)
 			if heavenFavourMod then
-				local randomStat = PST:getRandomStat()
 				if room:GetType() == RoomType.ROOM_ANGEL then
-					PST:addModifiers({ [randomStat] = 1 }, true)
+					PST:addModifiers({ [randomStat] = tmpAdd }, true)
 				else
 					PST:addModifiers({
-						[randomStat] = -1,
+						[randomStat] = -tmpAdd,
 						causeCurse = true
 					}, true)
 				end

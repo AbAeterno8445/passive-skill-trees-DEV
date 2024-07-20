@@ -34,8 +34,7 @@ function PST:onNewRun(isContinued)
     end
 
     PST.modData.treeModSnapshot = PST.modData.treeMods
-    Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL)
-    Isaac.GetPlayer():EvaluateItems()
+    Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL, true)
     PST:save()
 
     -- Cosmic Realignment node
@@ -63,6 +62,11 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveTrinket(TrinketType.TRINKET_BROKEN_ANKH)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
         itemPool:RemoveTrinket(TrinketType.TRINKET_MISSING_POSTER)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
+        -- The Lost, if Holy Mantle is unlocked, start with Wafer
+        if Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
+            Isaac.GetPlayer():AddCollectible(CollectibleType.COLLECTIBLE_WAFER)
+        end
     end
 
     PST:closeTreeMenu(true)

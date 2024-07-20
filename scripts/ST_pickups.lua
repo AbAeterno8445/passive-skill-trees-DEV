@@ -14,6 +14,11 @@ function PST:tryGrabBag()
     end
 end
 
+function PST:vanishPickup(pickup)
+    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector(0, 0), nil, 1, 0)
+    pickup:Remove()
+end
+
 function PST:prePickup(pickup, collider, low)
     local player = collider:ToPlayer()
     local variant = pickup.Variant
@@ -22,19 +27,25 @@ function PST:prePickup(pickup, collider, low)
     if player ~= nil then
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
+            -- Blue baby, make first 2 non soul heart pickups vanish
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
             if cosmicRCache.blueBabyHearts < 2 then
-                -- Blue baby, make first 2 non soul heart pickups vanish
                 if (variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_SOUL) or
                 variant == PickupVariant.PICKUP_BOMB or variant == PickupVariant.PICKUP_KEY or
                 variant == PickupVariant.PICKUP_COIN then
-                    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector(0, 0), nil, 1, 0)
-                    pickup:Remove()
+                    PST:vanishPickup(pickup)
 
                     cosmicRCache.blueBabyHearts = cosmicRCache.blueBabyHearts + 1
                     PST:save()
                     return false
                 end
+            end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
+            -- The Lost, non-red hearts vanish on pickup
+            if variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_FULL and
+            subtype ~= HeartSubType.HEART_HALF then
+                PST:vanishPickup(pickup)
+                return false
             end
         end
     end
