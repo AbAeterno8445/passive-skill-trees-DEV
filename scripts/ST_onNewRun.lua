@@ -51,6 +51,18 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_AZAZEL) then
         -- Azazel, -20% range
         PST:addModifiers({ rangePerc = -20 }, true)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS) then
+        -- Lazarus, remove items that give extra lives
+        local itemPool = Game():GetItemPool()
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_1UP)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_DEAD_CAT)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INNER_CHILD)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_GUPPYS_COLLAR)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_LAZARUS_RAGS)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_ANKH)
+        itemPool:RemoveTrinket(TrinketType.TRINKET_BROKEN_ANKH)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
+        itemPool:RemoveTrinket(TrinketType.TRINKET_MISSING_POSTER)
     end
 
     PST:closeTreeMenu(true)

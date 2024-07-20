@@ -30,7 +30,9 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_AZAZEL] = {
             curseDesc = { "-20% range" }
         },
-        [PlayerType.PLAYER_LAZARUS] = {},
+        [PlayerType.PLAYER_LAZARUS] = {
+            curseDesc = { "Items that grant extra lives no longer show up." }
+        },
         [PlayerType.PLAYER_EDEN] = {},
         [PlayerType.PLAYER_THELOST] = {},
         [PlayerType.PLAYER_LILITH] = {},
