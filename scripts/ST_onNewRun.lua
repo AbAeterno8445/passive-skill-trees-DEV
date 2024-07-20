@@ -48,6 +48,9 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS) then
         -- Judas, -10% damage
         PST:addModifiers({ damagePerc = -10 }, true)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_AZAZEL) then
+        -- Azazel, -20% range
+        PST:addModifiers({ rangePerc = -20 }, true)
     end
 
     PST:closeTreeMenu(true)

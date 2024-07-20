@@ -53,6 +53,7 @@ function PST:resetMods()
 
 		allstatsPerc = 0, -- Multiplier version of allstats
 		damagePerc = 0,
+		rangePerc = 0,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 

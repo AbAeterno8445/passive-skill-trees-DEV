@@ -27,7 +27,9 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_SAMSON] = {
             curseDesc = { "-0.15 damage when you are hit, up to -0.9. Resets every room." }
         },
-        [PlayerType.PLAYER_AZAZEL] = {},
+        [PlayerType.PLAYER_AZAZEL] = {
+            curseDesc = { "-20% range" }
+        },
         [PlayerType.PLAYER_LAZARUS] = {},
         [PlayerType.PLAYER_EDEN] = {},
         [PlayerType.PLAYER_THELOST] = {},

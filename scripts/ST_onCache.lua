@@ -21,7 +21,7 @@ function PST:onCache(player, cacheFlag)
 
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         local tmpMod = PST:getTreeSnapshotMod("range", 0) + allstats
-        local tmpMult = 1 + allstatsPerc / 100
+        local tmpMult = 1 + allstatsPerc / 100 + PST:getTreeSnapshotMod("rangePerc", 0) / 100
         player.TearRange = (player.TearRange + tmpMod) * tmpMult
 
     elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
