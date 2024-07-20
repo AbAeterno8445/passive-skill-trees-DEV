@@ -41,6 +41,16 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = 8 }, true)
 			cosmicRCache.lilithActive = false
 		end
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
+		-- The Forgotten, Keeper debuff: -4% all stats per active blue fly, up to -40%
+		if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or
+		player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B then
+			local debuffVal = math.max(-40, math.min(cosmicRCache.forgottenKeeperDebuff, player:GetNumBlueFlies() * -4))
+			if cosmicRCache.forgottenKeeperDebuff ~= debuffVal then
+				cosmicRCache.forgottenKeeperDebuff = debuffVal
+				player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+			end
+		end
 	end
 
 	-- On room clear
@@ -79,6 +89,19 @@ function PST:onUpdate()
 			else
 				-- Relearning node, count as completed floor
 				PST:addModifiers({ relearningFloors = 1 }, true)
+			end
+		end
+
+		-- Cosmic Realignment node
+		if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
+			-- The Forgotten, reset Keeper debuff
+			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or
+			player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B then
+				local debuffVal = math.max(-40, math.min(0, player:GetNumBlueFlies() * -4))
+				if cosmicRCache.forgottenKeeperDebuff ~= debuffVal then
+					cosmicRCache.forgottenKeeperDebuff = debuffVal
+					player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+				end
 			end
 		end
 

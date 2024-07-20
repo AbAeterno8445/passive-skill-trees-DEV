@@ -2,8 +2,20 @@
 ---@param player EntityPlayer
 ---@param cacheFlag CacheFlag
 function PST:onCache(player, cacheFlag)
+    local dynamicMods = { allstatsPerc = 0 }
+
+    -- Cosmic Realignment node
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
+    if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
+        -- The Forgotten, Keeper debuff
+        if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or
+        player:GetPlayerType() == PlayerType.PLAYER_KEEPERB then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + cosmicRCache.forgottenKeeperDebuff
+        end
+    end
+
     local allstats = PST:getTreeSnapshotMod("allstats", 0)
-    local allstatsPerc = PST:getTreeSnapshotMod("allstatsPerc", 0)
+    local allstatsPerc = PST:getTreeSnapshotMod("allstatsPerc", 0) + dynamicMods.allstatsPerc
     if cacheFlag == CacheFlag.CACHE_DAMAGE then
         local tmpMod = PST:getTreeSnapshotMod("damage", 0) + allstats
         local tmpMult = 1 + allstatsPerc / 100 + PST:getTreeSnapshotMod("damagePerc", 0) / 100
@@ -11,8 +23,8 @@ function PST:onCache(player, cacheFlag)
 
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         local tmpMod = PST:getTreeSnapshotMod("tears", 0) + allstats
-        local tmpMult = 1 + allstatsPerc / 100
-        player.FireDelay = (player.FireDelay + tmpMod) * tmpMult
+        local tmpMult = 1 - allstatsPerc / 100
+        player.MaxFireDelay = (player.MaxFireDelay - tmpMod) * tmpMult
 
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         local tmpMod = PST:getTreeSnapshotMod("luck", 0) + allstats

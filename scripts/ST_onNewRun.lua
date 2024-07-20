@@ -33,8 +33,10 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    local player = Isaac.GetPlayer()
+
     PST.modData.treeModSnapshot = PST.modData.treeMods
-    Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL, true)
+    player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
     PST:save()
 
     local itemPool = Game():GetItemPool()
@@ -65,11 +67,23 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
         -- The Lost, if Holy Mantle is unlocked, start with Wafer
         if Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
-            Isaac.GetPlayer():AddCollectible(CollectibleType.COLLECTIBLE_WAFER)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_WAFER)
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH) then
         -- Lilith, remove incubus
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INCUBUS)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
+        -- The Forgotten, convert starting hearts to bone hearts (not on Keepers)
+        if player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER and
+        player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER_B then
+            local totalHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetBlackHearts() + player:GetRottenHearts()
+            player:AddMaxHearts(-player:GetMaxHearts())
+            player:AddSoulHearts(-player:GetSoulHearts())
+            player:AddBlackHearts(-player:GetBlackHearts())
+            player:AddRottenHearts(-player:GetRottenHearts())
+            player:AddBoneHearts(math.floor(totalHP / 2))
+            player:SetFullHearts()
+        end
     end
 
     PST:closeTreeMenu(true)

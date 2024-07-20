@@ -12,6 +12,7 @@ function PST:onNewLevel()
     end
 
     -- Cosmic Realignment node
+    local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
         -- Blue baby, reset non-soul heart pickups
@@ -25,10 +26,16 @@ function PST:onNewLevel()
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER) then
         -- Keeper, tally collected coins in previous floor and halve coin count if < 5
         if cosmicRCache.keeperFloorCoins < 5 then
-            local player = Isaac.GetPlayer()
             player:AddCoins(math.floor(player:GetNumCoins() / 2) * -1)
         end
         cosmicRCache.keeperFloorCoins = 0
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
+        -- The Forgotten, convert a red/bone heart into a full soul heart (prioritizes bone hearts)
+        local boneHearts = player:GetBoneHearts()
+        if boneHearts > 0 then
+            player:AddBoneHearts(-1)
+            player:AddSoulHearts(2)
+        end
     end
     PST:save()
 end

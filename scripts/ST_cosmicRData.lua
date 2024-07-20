@@ -53,7 +53,7 @@ PST.cosmicRData = {
             curseDesc = {
                 "Coins have a 50% chance to vanish when collected.",
                 "25% chance to take 1/2 heart damage when a coin vanishes.",
-                "Upon entering a floor, if less than 5 coins were picked up in the previous",
+                "When entering a new floor, if less than 5 coins were picked up in the previous",
                 "floor, halve your coin count."
             }
         },
@@ -62,7 +62,14 @@ PST.cosmicRData = {
                 "-0.04 to a random stat (except speed) when picking up a passive item."
             }
         },
-        [PlayerType.PLAYER_THEFORGOTTEN] = {},
+        [PlayerType.PLAYER_THEFORGOTTEN] = {
+            curseDesc = {
+                "Convert all starting hearts to bone hearts.",
+                "When entering a new floor, convert a red/bone heart container into a full soul heart.",
+                "As Keeper: -4% all stats per active blue fly, up to -40%. This effect stays",
+                "until clearing the room, even if blue flies are killed."
+            }
+        },
         [PlayerType.PLAYER_BETHANY] = {},
         [PlayerType.PLAYER_JACOB] = {},
         [PlayerType.PLAYER_ISAAC_B] = {},

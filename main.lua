@@ -91,7 +91,8 @@ function PST:resetMods()
 			eveActive = false,
 			samsonDmg = 0,
 			lilithActive = false,
-			keeperFloorCoins = 0
+			keeperFloorCoins = 0,
+			forgottenKeeperDebuff = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes
