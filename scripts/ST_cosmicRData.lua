@@ -42,7 +42,13 @@ PST.cosmicRData = {
                 "If Holy Mantle is unlocked with The Lost, start with Wafer."
             }
         },
-        [PlayerType.PLAYER_LILITH] = {},
+        [PlayerType.PLAYER_LILITH] = {
+            curseDesc = {
+                "Follower items have a 75% chance to be rerolled when spawned.",
+                "Incubus can no longer show up.",
+                "-8% all stats while you don't have a follower."
+            }
+        },
         [PlayerType.PLAYER_KEEPER] = {},
         [PlayerType.PLAYER_APOLLYON] = {},
         [PlayerType.PLAYER_THEFORGOTTEN] = {},

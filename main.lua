@@ -15,6 +15,24 @@ PST.charNames = {
 	"T. Keeper", "T. Apollyon", "T. Forgotten", "T. Bethany", "T. Jacob", "T. Lazarus",
 	"T. Jacob", "T. Forgotten"
 }
+PST.babyFamiliarItems = {
+    CollectibleType.COLLECTIBLE_BROTHER_BOBBY, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY,
+    CollectibleType.COLLECTIBLE_HEADLESS_BABY, CollectibleType.COLLECTIBLE_LITTLE_STEVEN,
+    CollectibleType.COLLECTIBLE_MONGO_BABY, CollectibleType.COLLECTIBLE_ROTTEN_BABY,
+    CollectibleType.COLLECTIBLE_SISTER_MAGGY, CollectibleType.COLLECTIBLE_ABEL,
+    CollectibleType.COLLECTIBLE_ACID_BABY, CollectibleType.COLLECTIBLE_BOILED_BABY,
+    CollectibleType.COLLECTIBLE_BUDDY_IN_A_BOX, CollectibleType.COLLECTIBLE_CUBE_BABY,
+    CollectibleType.COLLECTIBLE_DEMON_BABY, CollectibleType.COLLECTIBLE_DRY_BABY,
+    CollectibleType.COLLECTIBLE_FARTING_BABY, CollectibleType.COLLECTIBLE_FREEZER_BABY,
+    CollectibleType.COLLECTIBLE_GHOST_BABY, CollectibleType.COLLECTIBLE_GUARDIAN_ANGEL,
+    CollectibleType.COLLECTIBLE_INCUBUS, CollectibleType.COLLECTIBLE_KING_BABY,
+    CollectibleType.COLLECTIBLE_LIL_ABADDON, CollectibleType.COLLECTIBLE_LIL_BRIMSTONE,
+    CollectibleType.COLLECTIBLE_LIL_LOKI, CollectibleType.COLLECTIBLE_MULTIDIMENSIONAL_BABY,
+    CollectibleType.COLLECTIBLE_QUINTS, CollectibleType.COLLECTIBLE_RAINBOW_BABY,
+    CollectibleType.COLLECTIBLE_ROBO_BABY, CollectibleType.COLLECTIBLE_ROBO_BABY_2,
+    CollectibleType.COLLECTIBLE_SERAPHIM, CollectibleType.COLLECTIBLE_SWORN_PROTECTOR,
+    CollectibleType.COLLECTIBLE_TWISTED_PAIR
+}
 -- Init mod char names here (index is the character's playerType + 1)
 PST.charNames[42] = "Siren"
 PST.charNames[43] = "T. Siren"
@@ -71,7 +89,8 @@ function PST:resetMods()
 		cosmicRCache = {
 			blueBabyPickups = 0,
 			eveActive = false,
-			samsonDmg = 0
+			samsonDmg = 0,
+			lilithActive = false
 		}
 	}
 	-- Holds temporary data for allocated special nodes
@@ -193,6 +212,7 @@ include("scripts.ST_pickups")
 include("scripts.ST_devilChance")
 include("scripts.ST_onRunOver")
 include("scripts.ST_onNewLevel")
+include("scripts.ST_collectibles")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.save)
@@ -203,6 +223,7 @@ PST:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, PST.onNewRoom)
 PST:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, PST.onCache)
 PST:AddCallback(ModCallbacks.MC_POST_UPDATE, PST.onUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, PST.onCurseEval)
+PST:AddCallback(ModCallbacks.MC_POST_GET_COLLECTIBLE, PST.onGetCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, PST.onNewRun)
 PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onRunOver)
 -- Repentogon callbacks

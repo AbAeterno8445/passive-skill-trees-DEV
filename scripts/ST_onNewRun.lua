@@ -37,6 +37,7 @@ function PST:onNewRun(isContinued)
     Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL, true)
     PST:save()
 
+    local itemPool = Game():GetItemPool()
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats
@@ -52,7 +53,6 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ rangePerc = -20 }, true)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS) then
         -- Lazarus, remove items that give extra lives
-        local itemPool = Game():GetItemPool()
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_1UP)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_DEAD_CAT)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INNER_CHILD)
@@ -67,6 +67,9 @@ function PST:onNewRun(isContinued)
         if Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
             Isaac.GetPlayer():AddCollectible(CollectibleType.COLLECTIBLE_WAFER)
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH) then
+        -- Lilith, remove incubus
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INCUBUS)
     end
 
     PST:closeTreeMenu(true)

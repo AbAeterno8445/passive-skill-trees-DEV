@@ -123,3 +123,12 @@ function PST:getRandomStat(exclude)
 	end
 	return statsList[math.random(#statsList)]
 end
+
+function PST:arrHasValue(arr, value)
+	for _, item in ipairs(arr) do
+		if item == value then
+			return true
+		end
+	end
+	return false
+end

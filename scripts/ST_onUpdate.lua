@@ -17,11 +17,29 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = 8 }, true)
 			cosmicRCache.eveActive = false
 		end
+
 	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
 		-- The Lost, limit max red hearts to 2
 		local plHearts = player:GetMaxHearts()
 		if plHearts > 4 then
 			player:AddMaxHearts(4 - plHearts)
+		end
+
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH) then
+		-- Lilith, -8% all stats if you don't currently have a baby familiar
+		local hasBabyFamiliar = false
+		for _, familiarType in ipairs(PST.babyFamiliarItems) do
+			if player:HasCollectible(familiarType) then
+				hasBabyFamiliar = true
+				break
+			end
+		end
+		if not cosmicRCache.lilithActive and not hasBabyFamiliar then
+			PST:addModifiers({ allstatsPerc = -8 }, true)
+			cosmicRCache.lilithActive = true
+		elseif cosmicRCache.lilithActive and hasBabyFamiliar then
+			PST:addModifiers({ allstatsPerc = 8 }, true)
+			cosmicRCache.lilithActive = false
 		end
 	end
 

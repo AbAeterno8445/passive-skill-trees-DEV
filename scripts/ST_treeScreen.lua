@@ -229,8 +229,13 @@ function PST:treeMenuRendering()
             -- Cosmic Realignment node, show picked character name & curse description
             if hoveredNode.name == "Cosmic Realignment" then
                 if type(cosmicRChar) == "number" then
-                    descName = descName .. " (" .. PST.charNames[1 + cosmicRChar] .. ")"
-                    tmpDescription = PST.cosmicRData.characters[cosmicRChar].curseDesc or { "Curse effect unknown." }
+                    local tmpCharName = PST.charNames[1 + cosmicRChar]
+                    descName = descName .. " (" .. tmpCharName .. ")"
+                    tmpDescription = {}
+                    for _, descLine in ipairs(PST.cosmicRData.characters[cosmicRChar].curseDesc) do
+                        table.insert(tmpDescription, descLine)
+                    end
+                    table.insert(tmpDescription, "Can now unlock items as if playing as " .. tmpCharName .. ".")
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     descName = descName .. " (E to pick character)"
                 end
