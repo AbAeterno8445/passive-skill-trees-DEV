@@ -49,7 +49,14 @@ PST.cosmicRData = {
                 "-8% all stats while you don't have a follower."
             }
         },
-        [PlayerType.PLAYER_KEEPER] = {},
+        [PlayerType.PLAYER_KEEPER] = {
+            curseDesc = {
+                "Coins have a 50% chance to vanish when collected.",
+                "25% chance to take 1/2 heart damage when a coin vanishes.",
+                "Upon entering a floor, if less than 5 coins were picked up in the previous",
+                "floor, halve your coin count."
+            }
+        },
         [PlayerType.PLAYER_APOLLYON] = {},
         [PlayerType.PLAYER_THEFORGOTTEN] = {},
         [PlayerType.PLAYER_BETHANY] = {},

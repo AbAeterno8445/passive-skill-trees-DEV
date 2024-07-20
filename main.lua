@@ -90,7 +90,8 @@ function PST:resetMods()
 			blueBabyPickups = 0,
 			eveActive = false,
 			samsonDmg = 0,
-			lilithActive = false
+			lilithActive = false,
+			keeperFloorCoins = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes

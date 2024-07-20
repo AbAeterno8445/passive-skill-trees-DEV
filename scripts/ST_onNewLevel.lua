@@ -22,6 +22,13 @@ function PST:onNewLevel()
             local randomStat = PST:getRandomStat()
             PST:addModifiers({ [randomStat] = -0.1 }, true)
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER) then
+        -- Keeper, tally collected coins in previous floor and halve coin count if < 5
+        if cosmicRCache.keeperFloorCoins < 5 then
+            local player = Isaac.GetPlayer()
+            player:AddCoins(math.floor(player:GetNumCoins() / 2) * -1)
+        end
+        cosmicRCache.keeperFloorCoins = 0
     end
     PST:save()
 end

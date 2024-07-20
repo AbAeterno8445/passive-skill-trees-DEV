@@ -26,9 +26,9 @@ function PST:prePickup(pickup, collider, low)
 
     if player ~= nil then
         -- Cosmic Realignment node
+        local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
         if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
             -- Blue baby, make first 2 non soul heart pickups vanish
-            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
             if cosmicRCache.blueBabyHearts < 2 then
                 if (variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_SOUL) or
                 variant == PickupVariant.PICKUP_BOMB or variant == PickupVariant.PICKUP_KEY or
@@ -46,6 +46,28 @@ function PST:prePickup(pickup, collider, low)
             subtype ~= HeartSubType.HEART_HALF then
                 PST:vanishPickup(pickup)
                 return false
+            end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER) then
+            -- Keeper, 25% chance for coins to vanish, 25% chance to deal 1/2 heart dmg on vanish
+            if variant == PickupVariant.PICKUP_COIN then
+                if 100 * math.random() < 25 then
+                    PST:vanishPickup(pickup)
+                    if 100 * math.random() < 25 then
+                        player:TakeDamage(1, 0, EntityRef(player), 0)
+                    end
+                    return false
+                else
+                    -- Track collected coins for next floor
+                    cosmicRCache.keeperFloorCoins = cosmicRCache.keeperFloorCoins + 1
+                    if cosmicRCache.keeperFloorCoins <= 5 then
+                        local tmpColor = Color(1, 1, 1, 1)
+                        if cosmicRCache.keeperFloorCoins == 5 then
+                            tmpColor = Color(0.7, 1, 0.7, 1)
+                        end
+                        PST:createFloatTextFX("Keeper's curse: " .. cosmicRCache.keeperFloorCoins .. "/5", Vector(0, 0), tmpColor, 0.1, 50, true)
+                    end
+                    PST:save()
+                end
             end
         end
     end
