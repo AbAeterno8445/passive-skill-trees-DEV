@@ -92,7 +92,8 @@ function PST:resetMods()
 			samsonDmg = 0,
 			lilithActive = false,
 			keeperFloorCoins = 0,
-			forgottenKeeperDebuff = 0
+			forgottenKeeperDebuff = 0,
+			bethanyKeeperLuck = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes
@@ -215,6 +216,7 @@ include("scripts.ST_devilChance")
 include("scripts.ST_onRunOver")
 include("scripts.ST_onNewLevel")
 include("scripts.ST_collectibles")
+include("scripts.ST_entities")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.save)
@@ -223,6 +225,7 @@ PST:AddCallback(ModCallbacks.MC_POST_RENDER, PST.Render)
 PST:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, PST.onDamage)
 PST:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, PST.onNewRoom)
 PST:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, PST.onCache)
+PST:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, PST.onEntitySpawn)
 PST:AddCallback(ModCallbacks.MC_POST_UPDATE, PST.onUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, PST.onCurseEval)
 PST:AddCallback(ModCallbacks.MC_POST_GET_COLLECTIBLE, PST.onRollCollectible)

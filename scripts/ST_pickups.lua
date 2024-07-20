@@ -76,6 +76,8 @@ end
 function PST:onPickup(pickup, collider, low)
     local player = collider:ToPlayer()
     local variant = pickup.Variant
+    local subtype = pickup.SubType
+
     if player ~= nil then
         if variant == PickupVariant.PICKUP_COIN then
             local coinChance = PST:getTreeSnapshotMod("coinDupe", 0)
@@ -95,6 +97,20 @@ function PST:onPickup(pickup, collider, low)
                 player:AddBombs(1)
             end
             PST:tryGrabBag()
+        end
+
+        -- Cosmic Realignment node
+        if PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY) then
+            -- Bethany, halve soul and black heart pickups, and give -0.02 luck
+            if variant == PickupVariant.PICKUP_HEART then
+                if subtype == HeartSubType.HEART_BLACK then
+                    player:AddBlackHearts(-1)
+                    PST:addModifiers({ luck = -0.02 }, true)
+                elseif subtype == HeartSubType.HEART_SOUL then
+                    player:AddSoulHearts(-1)
+                    PST:addModifiers({ luck = -0.02 }, true)
+                end
+            end
         end
     end
 end

@@ -70,7 +70,13 @@ PST.cosmicRData = {
                 "until clearing the room, even if blue flies are killed."
             }
         },
-        [PlayerType.PLAYER_BETHANY] = {},
+        [PlayerType.PLAYER_BETHANY] = {
+            curseDesc = {
+                "Soul and Black hearts are halved once collected.",
+                "-0.02 luck when picking up a soul or black heart.",
+                "As Keeper: Permanent -0.01 luck whenever a blue fly spawns, up to -2."
+            }
+        },
         [PlayerType.PLAYER_JACOB] = {},
         [PlayerType.PLAYER_ISAAC_B] = {},
         [PlayerType.PLAYER_MAGDALENE_B] = {},
