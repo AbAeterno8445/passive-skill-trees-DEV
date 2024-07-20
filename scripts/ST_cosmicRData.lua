@@ -57,7 +57,11 @@ PST.cosmicRData = {
                 "floor, halve your coin count."
             }
         },
-        [PlayerType.PLAYER_APOLLYON] = {},
+        [PlayerType.PLAYER_APOLLYON] = {
+            curseDesc = {
+                "-0.04 to a random stat (except speed) when picking up a passive item."
+            }
+        },
         [PlayerType.PLAYER_THEFORGOTTEN] = {},
         [PlayerType.PLAYER_BETHANY] = {},
         [PlayerType.PLAYER_JACOB] = {},
