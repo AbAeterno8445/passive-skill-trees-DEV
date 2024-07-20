@@ -3,8 +3,23 @@ local sfx = SFXManager()
 -- On update
 local clearRoomProc = false
 function PST:onUpdate()
-	-- On room clear
 	local room = Game():GetRoom()
+	local player = Isaac.GetPlayer()
+
+	-- Cosmic Realignment node
+	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	if PST:cosmicRCharPicked(PlayerType.PLAYER_EVE) then
+		-- Eve, -8% all stats if you have 1 remaining red heart or less
+		if not cosmicRCache.eveActive and player:GetHearts() <= 2 then
+			PST:addModifiers({ allstatsPerc = -8 }, true)
+			cosmicRCache.eveActive = true
+		elseif cosmicRCache.eveActive and player:GetHearts() > 2 then
+			PST:addModifiers({ allstatsPerc = 8 }, true)
+			cosmicRCache.eveActive = false
+		end
+	end
+
+	-- On room clear
 	if room:IsClear() and (not clearRoomProc or PST.modData.xpObtained > 0) then
 		clearRoomProc = true
 

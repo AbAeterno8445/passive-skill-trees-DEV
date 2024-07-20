@@ -21,7 +21,9 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_BLUEBABY] = {
             curseDesc = { "The first 2 non-soul heart pickups you collect vanish.", "This effect resets every floor." }
         },
-        [PlayerType.PLAYER_EVE] = {},
+        [PlayerType.PLAYER_EVE] = {
+            curseDesc = { "-8% all stats if you have 1 remaining red heart or less." }
+        },
         [PlayerType.PLAYER_SAMSON] = {},
         [PlayerType.PLAYER_AZAZEL] = {},
         [PlayerType.PLAYER_LAZARUS] = {},

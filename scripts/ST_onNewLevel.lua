@@ -12,12 +12,10 @@ function PST:onNewLevel()
     end
 
     -- Cosmic Realignment node
-    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", nil)
-    if cosmicRCache then
-        if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
-            -- Blue baby, reset non-soul heart pickups
-            cosmicRCache.blueBabyHearts = 0
-        end
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+    if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
+        -- Blue baby, reset non-soul heart pickups
+        cosmicRCache.blueBabyHearts = 0
     end
     PST:save()
 end

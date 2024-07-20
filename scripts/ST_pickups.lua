@@ -22,8 +22,8 @@ function PST:prePickup(pickup, collider, low)
     if player ~= nil then
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
-            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", nil)
-            if cosmicRCache and cosmicRCache.blueBabyHearts < 2 then
+            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+            if cosmicRCache.blueBabyHearts < 2 then
                 -- Blue baby, make first 2 non soul heart pickups vanish
                 if (variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_SOUL) or
                 variant == PickupVariant.PICKUP_BOMB or variant == PickupVariant.PICKUP_KEY or
