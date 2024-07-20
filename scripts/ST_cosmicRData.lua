@@ -24,7 +24,9 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_EVE] = {
             curseDesc = { "-8% all stats if you have 1 remaining red heart or less." }
         },
-        [PlayerType.PLAYER_SAMSON] = {},
+        [PlayerType.PLAYER_SAMSON] = {
+            curseDesc = { "-0.15 damage when you are hit, up to -0.9. Resets every room." }
+        },
         [PlayerType.PLAYER_AZAZEL] = {},
         [PlayerType.PLAYER_LAZARUS] = {},
         [PlayerType.PLAYER_EDEN] = {},

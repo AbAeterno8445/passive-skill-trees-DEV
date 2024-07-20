@@ -9,6 +9,17 @@ function PST:onNewRoom()
 	floatingTexts = {}
 
 	local room = Game():GetRoom()
+
+	-- Cosmic Realignment node
+	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
+		-- Samson, reset damage debuff
+		if cosmicRCache.samsonDmg > 0 then
+			PST:addModifiers({ damage = cosmicRCache.samsonDmg }, true)
+			cosmicRCache.samsonDmg = 0
+		end
+	end
+
 	-- Quick Wit node, start timer
 	local quickWitMod = PST:getTreeSnapshotMod("quickWit", {0, 0})
 	if quickWitMod[1] ~= 0 or quickWitMod[2] ~= 0 then

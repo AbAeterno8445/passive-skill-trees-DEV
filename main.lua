@@ -69,7 +69,8 @@ function PST:resetMods()
 		-- Helper vars for Cosmic Realignment curse effects
 		cosmicRCache = {
 			blueBabyPickups = 0,
-			eveActive = false
+			eveActive = false,
+			samsonDmg = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes

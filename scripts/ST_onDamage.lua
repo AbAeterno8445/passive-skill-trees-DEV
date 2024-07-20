@@ -1,5 +1,20 @@
 -- On entity damage
 function PST:onDamage(target, damage, flag, source)
+    local player = target:ToPlayer()
+    -- Player gets hit
+    if player then
+        -- Cosmic Realignment node
+        local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
+            -- Samson, -0.15 damage when hit, up to -0.9
+            if cosmicRCache.samsonDmg < 0.9 then
+                cosmicRCache.samsonDmg = cosmicRCache.samsonDmg + 0.15
+                PST:addModifiers({ damage = -0.15 }, true)
+            end
+        end
+    end
+
+    -- Enemy kill
 	if target:IsVulnerableEnemy() and target:IsActiveEnemy() and target.HitPoints <= damage then
         local addXP = false
 		if target.SpawnerType ~= 0 then
