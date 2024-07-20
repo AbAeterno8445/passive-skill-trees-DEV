@@ -140,6 +140,9 @@ function PST:load()
 			if tmpJson.treeMods[k] == nil then
 				tmpJson.treeMods[k] = v
 			end
+			if tmpJson.treeModSnapshot[k] == nil then
+				tmpJson.treeModSnapshot[k] = v
+			end
 		end
 		for k, v in pairs(PST.modData.treeNodes) do
 			if tmpJson.treeNodes[k] == nil then
