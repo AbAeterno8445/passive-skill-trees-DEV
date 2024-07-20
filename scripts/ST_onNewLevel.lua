@@ -16,6 +16,12 @@ function PST:onNewLevel()
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
         -- Blue baby, reset non-soul heart pickups
         cosmicRCache.blueBabyHearts = 0
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN) then
+        -- Eden, -0.1 to random stat when entering a floor (from 2 onwards)
+        if floor > 1 then
+            local randomStat = PST:getRandomStat()
+            PST:addModifiers({ [randomStat] = -0.1 }, true)
+        end
     end
     PST:save()
 end

@@ -33,7 +33,9 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_LAZARUS] = {
             curseDesc = { "Items that grant extra lives no longer show up." }
         },
-        [PlayerType.PLAYER_EDEN] = {},
+        [PlayerType.PLAYER_EDEN] = {
+            curseDesc = { "-0.1 to a random stat when entering a floor, from floor 2 onwards." }
+        },
         [PlayerType.PLAYER_THELOST] = {},
         [PlayerType.PLAYER_LILITH] = {},
         [PlayerType.PLAYER_KEEPER] = {},

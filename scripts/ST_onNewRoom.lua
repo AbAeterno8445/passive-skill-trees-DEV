@@ -1,5 +1,3 @@
-local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
-
 -- On new room
 function PST:onNewRoom()
 	PST.modData.spawnKills = 0
@@ -51,32 +49,28 @@ function PST:onNewRoom()
 			-- Hell's favour mod
 			local hellFavourMod = PST:getTreeSnapshotMod("hellFavour", false)
 			if hellFavourMod then
-				local randomStat = statsList[math.random(#statsList)]
+				local randomStat = PST:getRandomStat()
 				if room:GetType() == RoomType.ROOM_DEVIL then
-					PST:addModifiers({
-						[randomStat] = 1
-					}, true)
+					PST:addModifiers({ [randomStat] = 1 }, true)
 				else
 					PST:addModifiers({
-						[randomStat] = -1
+						[randomStat] = -1,
+						causeCurse = true
 					}, true)
-					PST:addModifiers({causeCurse = true}, true)
 				end
 			end
 
 			-- Angel's favour mod
 			local heavenFavourMod = PST:getTreeSnapshotMod("heavenFavour", false)
 			if heavenFavourMod then
-				local randomStat = statsList[math.random(#statsList)]
+				local randomStat = PST:getRandomStat()
 				if room:GetType() == RoomType.ROOM_ANGEL then
-					PST:addModifiers({
-						[randomStat] = 1
-					}, true)
+					PST:addModifiers({ [randomStat] = 1 }, true)
 				else
 					PST:addModifiers({
-						[randomStat] = -1
+						[randomStat] = -1,
+						causeCurse = true
 					}, true)
-					PST:addModifiers({causeCurse = true}, true)
 				end
 			end
 		end

@@ -104,3 +104,22 @@ function PST:cosmicRCharPicked(character)
 	end
 	return PST:getTreeSnapshotMod("cosmicRealignment", false) == character
 end
+
+local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
+function PST:getRandomStat(exclude)
+	if exclude and type(exclude) == "table" then
+		local tmpStat = ""
+		local picked = false
+		while not picked do
+			tmpStat = statsList[math.random(#statsList)]
+			picked = true
+			for _, excludeStat in ipairs(exclude) do
+				if tmpStat == excludeStat then
+					picked = false
+				end
+			end
+		end
+		return tmpStat
+	end
+	return statsList[math.random(#statsList)]
+end
