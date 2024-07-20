@@ -52,6 +52,7 @@ function PST:resetMods()
 		mapChance = 0, -- Chance to reveal the map on floor beginning (applied from floor 2 onwards)
 
 		allstatsPerc = 0, -- Multiplier version of allstats
+		damagePerc = 0,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
@@ -65,6 +66,10 @@ function PST:resetMods()
 		-- If set to a character's PlayerType, achievements can be unlocked as if playing that character while playing a different one.
 		-- e.g. If set to PlayerType.PLAYER_CAIN, killing ??? in the chest will unlock Cain's Eye.
 		cosmicRealignment = false, ---@type boolean|PlayerType
+		-- Helper vars for Cosmic Realignment curse effects
+		cosmicRCache = {
+			blueBabyHearts = 0
+		}
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -197,8 +202,9 @@ PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onRunOver)
 -- Repentogon callbacks
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.load)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
-PST:AddCallback(ModCallbacks.MC_POST_PLAYER_NEW_LEVEL, PST.onNewLevel)
+PST:AddCallback(ModCallbacks.MC_POST_LEVEL_LAYOUT_GENERATED, PST.onNewLevel)
 PST:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, PST.onSlotUpdate)
+PST:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, PST.prePickup)
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PST.onPickup)
 PST:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, PST.applyDevilChance)
 

@@ -1,14 +1,25 @@
 function PST:onNewLevel()
-    local mappingChance = PST:getTreeSnapshotMod("mapChance", 0)
+    local level = Game():GetLevel()
+    local floor = level:GetStage()
 
+    -- Chance to reveal map mod
+    local mappingChance = PST:getTreeSnapshotMod("mapChance", 0)
     if mappingChance > 0 then
-        local level = Game():GetLevel()
-        local floor = level:GetStage()
         if floor > 1 and 100 * math.random() < mappingChance then
             level:ShowMap()
             PST:createFloatTextFX("Map revealed!", Vector(0, 0), Color(1, 1, 1, 1), 0.12, 70, true)
         end
     end
+
+    -- Cosmic Realignment node
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", nil)
+    if cosmicRCache then
+        if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
+            -- Blue baby, reset non-soul heart pickups
+            cosmicRCache.blueBabyHearts = 0
+        end
+    end
+    PST:save()
 end
 
 local curseIDs = {

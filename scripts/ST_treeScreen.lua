@@ -34,12 +34,14 @@ function PST:openTreeMenu()
     treeMenuOpen = true
 end
 
-function PST:closeTreeMenu()
+function PST:closeTreeMenu(mute)
     if oldmask ~= nil then
         MenuManager.SetInputMask(oldmask)
         oldmask = nil
     end
-    sfx:Play(SoundEffect.SOUND_PAPER_OUT)
+    if not mute then 
+        sfx:Play(SoundEffect.SOUND_PAPER_OUT)
+    end
     PST.cosmicRData.menuOpen = false
     treeMenuOpen = false
     currentTree = "global"

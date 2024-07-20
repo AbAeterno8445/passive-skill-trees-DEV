@@ -6,7 +6,7 @@ function PST:onCache(player, cacheFlag)
     local allstatsPerc = PST:getTreeSnapshotMod("allstatsPerc", 0)
     if cacheFlag == CacheFlag.CACHE_DAMAGE then
         local tmpMod = PST:getTreeSnapshotMod("damage", 0) + allstats
-        local tmpMult = 1 + allstatsPerc / 100
+        local tmpMult = 1 + allstatsPerc / 100 + PST:getTreeSnapshotMod("damagePerc", 0) / 100
         player.Damage = (player.Damage + tmpMod) * tmpMult
 
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then

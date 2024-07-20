@@ -12,9 +12,15 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_MAGDALENE] = {
             curseDesc = { "Starting speed is set to 0.85." }
         },
-        [PlayerType.PLAYER_CAIN] = {},
-        [PlayerType.PLAYER_JUDAS] = {},
-        [PlayerType.PLAYER_BLUEBABY] = {},
+        [PlayerType.PLAYER_CAIN] = {
+            curseDesc = { "-0.5 luck" }
+        },
+        [PlayerType.PLAYER_JUDAS] = {
+            curseDesc = { "-10% damage" }
+        },
+        [PlayerType.PLAYER_BLUEBABY] = {
+            curseDesc = { "The first 2 non-soul heart pickups you collect vanish.", "This effect resets every floor." }
+        },
         [PlayerType.PLAYER_EVE] = {},
         [PlayerType.PLAYER_SAMSON] = {},
         [PlayerType.PLAYER_AZAZEL] = {},

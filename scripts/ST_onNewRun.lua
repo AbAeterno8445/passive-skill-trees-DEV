@@ -42,7 +42,13 @@ function PST:onNewRun(isContinued)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats
         PST:addModifiers({ allstats = -0.1 }, true)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN) then
+        -- Cain, -0.5 luck
+        PST:addModifiers({ luck = -0.5 }, true)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS) then
+        -- Judas, -10% damage
+        PST:addModifiers({ damagePerc = -10 }, true)
     end
 
-    PST:closeTreeMenu()
+    PST:closeTreeMenu(true)
 end
