@@ -122,7 +122,11 @@ PST.cosmicRData = {
                 "Further floors' treasure room item has a 50% chance to be replaced with a poop item."
             }
         },
-        [PlayerType.PLAYER_EVE_B] = {},
+        [PlayerType.PLAYER_EVE_B] = {
+            curseDesc = {
+                "-33% tears"
+            }
+        },
         [PlayerType.PLAYER_SAMSON_B] = {},
         [PlayerType.PLAYER_AZAZEL_B] = {},
         [PlayerType.PLAYER_LAZARUS_B] = {},

@@ -112,6 +112,9 @@ function PST:onNewRun(isContinued)
             player:AddRottenHearts(-player:GetRottenHearts())
             player:AddSoulHearts(totalHP)
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EVE_B) then
+        -- Tainted Eve, -33% fire rate
+        PST:addModifiers({ tearsPerc = -33 }, true)
     end
 
     PST:closeTreeMenu(true)

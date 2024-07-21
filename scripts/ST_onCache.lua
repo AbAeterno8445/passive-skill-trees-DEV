@@ -28,37 +28,33 @@ function PST:onCache(player, cacheFlag)
         local tmpMult = 1 + allstatsPerc / 100
         tmpMult = tmpMult + PST:getTreeSnapshotMod("damagePerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.damagePerc / 100
-        tmpMult = math.max(0.05, tmpMult)
-        player.Damage = (player.Damage + tmpMod) * tmpMult
+        player.Damage = (player.Damage + tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         local tmpMod = PST:getTreeSnapshotMod("tears", 0) + allstats
-        local tmpMult = 1 - allstatsPerc / 100 - dynamicMods.tearsPerc / 100
-        tmpMult = math.max(0.05, tmpMult)
-        player.MaxFireDelay = (player.MaxFireDelay - tmpMod) * tmpMult
+        local tmpMult = 1 - allstatsPerc / 100
+        tmpMult = tmpMult - PST:getTreeSnapshotMod("tearsPerc", 0) / 100
+        tmpMult = tmpMult - dynamicMods.tearsPerc / 100
+        player.MaxFireDelay = (player.MaxFireDelay - tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         local tmpMod = PST:getTreeSnapshotMod("luck", 0) + allstats
         local tmpMult = 1 + allstatsPerc / 100
-        tmpMult = math.max(0.05, tmpMult)
-        player.Luck = (player.Luck + tmpMod) * tmpMult
+        player.Luck = (player.Luck + tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         local tmpMod = PST:getTreeSnapshotMod("range", 0) + allstats
         local tmpMult = 1 + allstatsPerc / 100 + PST:getTreeSnapshotMod("rangePerc", 0) / 100
-        tmpMult = math.max(0.05, tmpMult)
-        player.TearRange = (player.TearRange + tmpMod * 40) * tmpMult
+        player.TearRange = (player.TearRange + tmpMod * 40) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
         local tmpMod = PST:getTreeSnapshotMod("shotSpeed", 0) + allstats
         local tmpMult = 1 + allstatsPerc / 100
-        tmpMult = math.max(0.05, tmpMult)
-        player.ShotSpeed = (player.ShotSpeed + tmpMod) * tmpMult
+        player.ShotSpeed = (player.ShotSpeed + tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         local tmpMod = PST:getTreeSnapshotMod("speed", 0) + allstats
         local tmpMult = 1 + allstatsPerc / 100
-        tmpMult = math.max(0.05, tmpMult)
         local baseSpeed = player.MoveSpeed
 
         -- Cosmic Realignment node
@@ -66,6 +62,6 @@ function PST:onCache(player, cacheFlag)
             -- Magdalene, set base movement speed to 0.85
             baseSpeed = 0.85
         end
-        player.MoveSpeed = (baseSpeed + tmpMod) * tmpMult
+        player.MoveSpeed = (baseSpeed + tmpMod) * math.max(0.05, tmpMult)
     end
 end
