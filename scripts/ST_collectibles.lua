@@ -9,6 +9,16 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
                 return itemPool:GetCollectible(itemPool:GetLastPool())
             end
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY_B) then
+        -- Tainted ???, first floor treasure room guarantees a poop item, second floor onwards is a 50% chance
+        local floor = Game():GetLevel():GetStage()
+        local room = Game():GetRoom()
+        if room:GetType() == RoomType.ROOM_TREASURE and (floor == 1 or (floor > 1 and 100 * math.random() < 50)) then
+            local tmpItem = itemPool:GetCollectibleFromList(PST.poopItems, Random(), CollectibleType.COLLECTIBLE_BREAKFAST, true, false)
+            if tmpItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
+                return tmpItem
+            end
+        end
     end
 end
 

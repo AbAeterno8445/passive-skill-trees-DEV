@@ -102,6 +102,16 @@ function PST:onNewRun(isContinued)
             player:AddBoneHearts(-player:GetBoneHearts())
             player:AddBlackHearts(4)
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY_B) then
+        -- Tainted ???, convert starting hearts to soul hearts
+        if not isKeeper then
+            local totalHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetBlackHearts() + player:GetRottenHearts() + player:GetBoneHearts() * 2
+            player:AddMaxHearts(-player:GetMaxHearts())
+            player:AddSoulHearts(-player:GetSoulHearts())
+            player:AddBlackHearts(-player:GetBlackHearts())
+            player:AddRottenHearts(-player:GetRottenHearts())
+            player:AddSoulHearts(totalHP)
+        end
     end
 
     PST:closeTreeMenu(true)

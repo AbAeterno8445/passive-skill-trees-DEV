@@ -33,6 +33,13 @@ PST.babyFamiliarItems = {
     CollectibleType.COLLECTIBLE_SERAPHIM, CollectibleType.COLLECTIBLE_SWORN_PROTECTOR,
     CollectibleType.COLLECTIBLE_TWISTED_PAIR
 }
+PST.poopItems = {
+	CollectibleType.COLLECTIBLE_FLUSH, CollectibleType.COLLECTIBLE_POOP,
+	CollectibleType.COLLECTIBLE_BROWN_NUGGET, CollectibleType.COLLECTIBLE_E_COLI,
+	CollectibleType.COLLECTIBLE_BUTT_BOMBS, CollectibleType.COLLECTIBLE_DIRTY_MIND,
+	CollectibleType.COLLECTIBLE_HALLOWED_GROUND, CollectibleType.COLLECTIBLE_MONTEZUMAS_REVENGE,
+	CollectibleType.COLLECTIBLE_NUMBER_TWO, CollectibleType.COLLECTIBLE_SKATOLE
+}
 -- Init mod char names here (index is the character's playerType + 1)
 PST.charNames[42] = "Siren"
 PST.charNames[43] = "T. Siren"

@@ -115,7 +115,13 @@ PST.cosmicRData = {
                 "instead of healing, up to +1."
             }
         },
-        [PlayerType.PLAYER_BLUEBABY_B] = {},
+        [PlayerType.PLAYER_BLUEBABY_B] = {
+            curseDesc = {
+                "All starting hearts are converted to soul hearts.",
+                "First floor's treasure room is guaranteed to have a poop item.",
+                "Further floors' treasure room item has a 50% chance to be replaced with a poop item."
+            }
+        },
         [PlayerType.PLAYER_EVE_B] = {},
         [PlayerType.PLAYER_SAMSON_B] = {},
         [PlayerType.PLAYER_AZAZEL_B] = {},
