@@ -87,6 +87,11 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB) then
         -- Jacob & Esau, apply -50% xp gain
         PST:addModifiers({ xpgain = -50 }, true)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
+        -- Tainted Cain, begin with Bag of Crafting if unlocked
+        if Isaac.GetPersistentGameData():Unlocked(Achievement.BAG_OF_CRAFTING) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING)
+        end
     end
 
     PST:closeTreeMenu(true)

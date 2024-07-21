@@ -57,5 +57,15 @@ function PST:onCurseEval(curses)
         local newCurse = curseIDs[math.random(#curseIDs)]
         return newCurse
     end
+
+    -- Cosmic Realignment node
+    if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
+        -- Tainted Cain, roll for curse of the blind
+        local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+        if 100 * math.random() < 100 - cosmicRCache.TCainUses * 10 then
+            curses = curses | LevelCurse.CURSE_OF_BLIND
+        end
+    end
+
     return curses
 end

@@ -58,6 +58,18 @@ function PST:onUpdate()
         	cosmicRCache.TIsaacItems = tmpItemCount
 			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 		end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
+		-- Tainted Cain, -2 luck if not holding Bag of Crafting
+		if not cosmicRCache.TCainActive and not player:HasCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING) then
+			PST:addModifiers({ luck = -2 }, true)
+			cosmicRCache.TCainActive = true
+		elseif cosmicRCache.TCainActive and player:HasCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING) then
+			PST:addModifiers({ luck = 2 }, true)
+			cosmicRCache.TCainActive = false
+		end
+
+		-- Set bag full status to detect crafting
+		cosmicRCache.TCainBag = player:GetBagOfCraftingSlot(7) ~= 0
 	end
 
 	-- On room clear

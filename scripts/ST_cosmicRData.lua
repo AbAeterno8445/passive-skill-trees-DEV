@@ -97,7 +97,14 @@ PST.cosmicRData = {
                 "Coins, bombs, keys and chests have a 15% chance to be replaced with a half red heart."
             }
         },
-        [PlayerType.PLAYER_CAIN_B] = {},
+        [PlayerType.PLAYER_CAIN_B] = {
+            curseDesc = {
+                "Begin with Bag of Crafting if you have it unlocked.",
+                "-2 luck while not holding the Bag of Crafting.",
+                "100% chance to be cursed with Curse of the Blind when entering a floor.",
+                "Crafting an item with Bag of Crafting reduces this chance by 10%."
+            }
+        },
         [PlayerType.PLAYER_JUDAS_B] = {},
         [PlayerType.PLAYER_BLUEBABY_B] = {},
         [PlayerType.PLAYER_EVE_B] = {},

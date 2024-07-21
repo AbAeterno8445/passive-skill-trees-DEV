@@ -32,3 +32,17 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         end
     end
 end
+
+function PST:onUseItem(type)
+    -- Cosmic Realignment node
+    if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
+        -- Tainted Cain, detect craft from Bag of Crafting
+        if type == CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING then
+            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+            if cosmicRCache.TCainBag then
+                cosmicRCache.TCainUses = cosmicRCache.TCainUses + 1
+                PST:save()
+            end
+        end
+    end
+end

@@ -96,7 +96,10 @@ function PST:resetMods()
 			bethanyKeeperLuck = 0,
 			jacobProcs = 0,
 			TIsaacProc = false,
-			TIsaacItems = 0
+			TIsaacItems = 0,
+			TCainActive = false,
+			TCainBag = false,
+			TCainUses = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes
@@ -234,6 +237,7 @@ PST:AddCallback(ModCallbacks.MC_POST_UPDATE, PST.onUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, PST.onCurseEval)
 PST:AddCallback(ModCallbacks.MC_POST_GET_COLLECTIBLE, PST.onRollCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE, PST.onGrabCollectible)
+PST:AddCallback(ModCallbacks.MC_USE_ITEM, PST.onUseItem)
 PST:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, PST.onNewRun)
 PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onRunOver)
 -- Repentogon callbacks
