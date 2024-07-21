@@ -84,7 +84,12 @@ PST.cosmicRData = {
                 "Halve these reductions when first obtaining an item, up to 8 times.",
             }
         },
-        [PlayerType.PLAYER_ISAAC_B] = {},
+        [PlayerType.PLAYER_ISAAC_B] = {
+            curseDesc = {
+                "Items are removed from the first treasure room you enter.",
+                "-4% all stats per item obtained after the 8th one, up to -40%."
+            }
+        },
         [PlayerType.PLAYER_MAGDALENE_B] = {},
         [PlayerType.PLAYER_CAIN_B] = {},
         [PlayerType.PLAYER_JUDAS_B] = {},

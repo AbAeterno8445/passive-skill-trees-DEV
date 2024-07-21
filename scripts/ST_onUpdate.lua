@@ -51,6 +51,13 @@ function PST:onUpdate()
 				player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 			end
 		end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
+        -- Tainted Isaac, -4% all stats per item obtained after the 8th one, up to -40%
+		local tmpItemCount = math.max(0, player:GetCollectibleCount() - 8)
+		if tmpItemCount ~= cosmicRCache.TIsaacItems then
+        	cosmicRCache.TIsaacItems = tmpItemCount
+			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+		end
 	end
 
 	-- On room clear

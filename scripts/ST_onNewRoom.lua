@@ -77,6 +77,23 @@ function PST:onNewRoom()
 					}, true)
 				end
 			end
+		-- Treasure room
+		elseif room:GetType() == RoomType.ROOM_TREASURE then
+			-- Cosmic Realignment node
+			if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
+				-- Tainted Isaac, remove items from first treasure room entered
+				if not cosmicRCache.TIsaacProc then
+					for _, entity in ipairs(Isaac.GetRoomEntities()) do
+						if entity.Type == EntityType.ENTITY_PICKUP and entity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+							entity:Remove()
+						end
+					end
+					PST:createFloatTextFX("Curse of T. Isaac", Vector(0, 0), Color(1, 0.4, 0.4, 1), 0.09, 120, true)
+					SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
+					cosmicRCache.TIsaacProc = true
+					PST:save()
+				end
+			end
 		end
 	end
 end
