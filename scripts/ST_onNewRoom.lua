@@ -6,6 +6,7 @@ function PST:onNewRoom()
 	PST.specialNodes.quickWit.pauseTime = 0
 	floatingTexts = {}
 
+	local player = Isaac.GetPlayer()
 	local room = Game():GetRoom()
 
 	-- Cosmic Realignment node
@@ -15,6 +16,17 @@ function PST:onNewRoom()
 		if cosmicRCache.samsonDmg > 0 then
 			PST:addModifiers({ damage = cosmicRCache.samsonDmg }, true)
 			cosmicRCache.samsonDmg = 0
+		end
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
+		-- Tainted Judas, reset damage buff
+		local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
+		if cosmicRCache.TJudasDmgUps > 0 then
+			if not isKeeper then
+				PST:addModifiers({ damage = -0.4 * cosmicRCache.TJudasDmgUps }, true)
+			else
+				PST:addModifiers({ damage = -0.2 * cosmicRCache.TJudasDmgUps }, true)
+			end
+			cosmicRCache.TJudasDmgUps = 0
 		end
 	end
 
@@ -29,7 +41,7 @@ function PST:onNewRoom()
 		end
 	end
 
-	-- First room entry XP reward
+	-- First room entry
 	if room:IsFirstVisit() then
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then

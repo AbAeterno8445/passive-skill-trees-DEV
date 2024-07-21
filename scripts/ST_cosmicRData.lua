@@ -105,7 +105,16 @@ PST.cosmicRData = {
                 "Crafting an item with Bag of Crafting reduces this chance by 10%."
             }
         },
-        [PlayerType.PLAYER_JUDAS_B] = {},
+        [PlayerType.PLAYER_JUDAS_B] = {
+            curseDesc = {
+                "Starting health is set to 2 black hearts.",
+                "Soul hearts are converted to black hearts when spawned.",
+                "Take 1 heart of damage when picking up a black heart.",
+                "Black hearts grant +0.4 damage on pickup for the current room, up to +1.2.",
+                "As Keeper: Coins have a 50% chance to grant 0.2 damage for the current room",
+                "instead of healing, up to +1."
+            }
+        },
         [PlayerType.PLAYER_BLUEBABY_B] = {},
         [PlayerType.PLAYER_EVE_B] = {},
         [PlayerType.PLAYER_SAMSON_B] = {},

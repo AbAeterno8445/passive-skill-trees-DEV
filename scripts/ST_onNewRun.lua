@@ -40,6 +40,7 @@ function PST:onNewRun(isContinued)
     PST:save()
 
     local itemPool = Game():GetItemPool()
+    local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats
@@ -74,8 +75,7 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INCUBUS)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
         -- The Forgotten, convert starting hearts to bone hearts (not on Keepers)
-        if player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER and
-        player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER_B then
+        if not isKeeper then
             local totalHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetBlackHearts() + player:GetRottenHearts()
             player:AddMaxHearts(-player:GetMaxHearts())
             player:AddSoulHearts(-player:GetSoulHearts())
@@ -91,6 +91,16 @@ function PST:onNewRun(isContinued)
         -- Tainted Cain, begin with Bag of Crafting if unlocked
         if Isaac.GetPersistentGameData():Unlocked(Achievement.BAG_OF_CRAFTING) then
             player:AddCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING)
+        end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
+        -- Tainted Judas, set starting health to 2 black hearts
+        if not isKeeper then
+            player:AddMaxHearts(-player:GetMaxHearts())
+            player:AddSoulHearts(-player:GetSoulHearts())
+            player:AddBlackHearts(-player:GetBlackHearts())
+            player:AddRottenHearts(-player:GetRottenHearts())
+            player:AddBoneHearts(-player:GetBoneHearts())
+            player:AddBlackHearts(4)
         end
     end
 

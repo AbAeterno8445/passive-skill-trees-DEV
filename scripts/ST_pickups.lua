@@ -69,6 +69,19 @@ function PST:prePickup(pickup, collider, low)
                     PST:save()
                 end
             end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
+            -- Tainted Judas, as Keeper: coins have a 50% chance to grant +0.2 damage for the current room instead of healing, up to +1
+            local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
+            if isKeeper and variant == PickupVariant.PICKUP_COIN then
+                if player:GetHearts() < player:GetMaxHearts() and 100 * math.random() < 50 then
+                    if cosmicRCache.TJudasDmgUps < 5 then
+                        cosmicRCache.TJudasDmgUps = cosmicRCache.TJudasDmgUps + 1
+                        PST:addModifiers({ damage = 0.2 }, true)
+                        PST:save()
+                    end
+                    player:AddHearts(-2)
+                end
+            end
         end
     end
 end
@@ -111,12 +124,25 @@ function PST:onPickup(pickup, collider, low)
                     PST:addModifiers({ luck = -0.02 }, true)
                 end
             end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
+            -- Tainted Judas, take 1 heart of damage when picking up a black heart
+            if variant == PickupVariant.PICKUP_HEART and subtype == HeartSubType.HEART_BLACK then
+                player:TakeDamage(2, 0, EntityRef(player), 0)
+                local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+                if cosmicRCache.TJudasDmgUps < 3 then
+                    cosmicRCache.TJudasDmgUps = cosmicRCache.TJudasDmgUps + 1
+                    PST:addModifiers({ damage = 0.4 }, true)
+                    PST:save()
+                end
+            end
         end
     end
 end
 
 function PST:onPickupInit(pickup)
     local variant = pickup.Variant
+    local subtype = pickup.SubType
+
     -- Cosmic Realignment node
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
         -- Tainted Magdalene, 15% chance to turn coins, bombs, keys or chests into a half red heart
@@ -139,6 +165,22 @@ function PST:onPickupInit(pickup)
                         Random()
                     )
                 end
+            end
+        end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
+        -- Tainted Judas, convert soul hearts to black hearts
+        if variant == PickupVariant.PICKUP_HEART then
+            if subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL then
+                pickup:Remove()
+                Game():Spawn(
+                    EntityType.ENTITY_PICKUP,
+                    PickupVariant.PICKUP_HEART,
+                    pickup.Position,
+                    pickup.Velocity,
+                    nil,
+                    HeartSubType.HEART_BLACK,
+                    Random()
+                )
             end
         end
     end
