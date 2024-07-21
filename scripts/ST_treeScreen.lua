@@ -232,8 +232,10 @@ function PST:treeMenuRendering()
                     local tmpCharName = PST.charNames[1 + cosmicRChar]
                     descName = descName .. " (" .. tmpCharName .. ")"
                     tmpDescription = {}
-                    for _, descLine in ipairs(PST.cosmicRData.characters[cosmicRChar].curseDesc) do
-                        table.insert(tmpDescription, descLine)
+                    if PST.cosmicRData.characters[cosmicRChar].curseDesc then
+                        for _, descLine in ipairs(PST.cosmicRData.characters[cosmicRChar].curseDesc) do
+                            table.insert(tmpDescription, descLine)
+                        end
                     end
                     table.insert(tmpDescription, "Can now unlock items as if playing as " .. tmpCharName .. ".")
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
