@@ -84,6 +84,9 @@ function PST:onNewRun(isContinued)
             player:AddBoneHearts(math.floor(totalHP / 2))
             player:SetFullHearts()
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB) then
+        -- Jacob & Esau, apply -50% xp gain
+        PST:addModifiers({ xpgain = -50 }, true)
     end
 
     PST:closeTreeMenu(true)

@@ -20,5 +20,15 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
             local randomStat = PST:getRandomStat({"speed"})
             PST:addModifiers({ [randomStat] = -0.04 }, true)
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB) then
+        -- Jacob & Esau, reduce debuff when first obtaining an item, up to 8 times
+        if firstTime then
+            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+            if cosmicRCache.jacobProcs < 8 then
+                cosmicRCache.jacobProcs = cosmicRCache.jacobProcs + 1
+            end
+
+            PST:addModifiers({ xpgain = 50 / (2 ^ cosmicRCache.jacobProcs) }, true)
+        end
     end
 end

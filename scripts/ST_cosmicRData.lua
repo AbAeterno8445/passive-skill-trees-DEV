@@ -77,7 +77,13 @@ PST.cosmicRData = {
                 "As Keeper: Permanent -0.01 luck whenever a blue fly spawns, up to -2."
             }
         },
-        [PlayerType.PLAYER_JACOB] = {},
+        [PlayerType.PLAYER_JACOB] = {
+            curseDesc = {
+                "Start with -25% damage and tears.",
+                "-50% xp gain.",
+                "Halve these reductions when first obtaining an item, up to 8 times.",
+            }
+        },
         [PlayerType.PLAYER_ISAAC_B] = {},
         [PlayerType.PLAYER_MAGDALENE_B] = {},
         [PlayerType.PLAYER_CAIN_B] = {},

@@ -93,7 +93,8 @@ function PST:resetMods()
 			lilithActive = false,
 			keeperFloorCoins = 0,
 			forgottenKeeperDebuff = 0,
-			bethanyKeeperLuck = 0
+			bethanyKeeperLuck = 0,
+			jacobProcs = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes
