@@ -90,7 +90,13 @@ PST.cosmicRData = {
                 "-4% all stats per item obtained after the 8th one, up to -40%."
             }
         },
-        [PlayerType.PLAYER_MAGDALENE_B] = {},
+        [PlayerType.PLAYER_MAGDALENE_B] = {
+            curseDesc = {
+                "When entering a room with monsters, if you are above 2 red hearts,",
+                "take 1/2 heart damage.",
+                "Coins, bombs, keys and chests have a 15% chance to be replaced with a half red heart."
+            }
+        },
         [PlayerType.PLAYER_CAIN_B] = {},
         [PlayerType.PLAYER_JUDAS_B] = {},
         [PlayerType.PLAYER_BLUEBABY_B] = {},

@@ -114,3 +114,32 @@ function PST:onPickup(pickup, collider, low)
         end
     end
 end
+
+function PST:onPickupInit(pickup)
+    local variant = pickup.Variant
+    -- Cosmic Realignment node
+	if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
+        -- Tainted Magdalene, 15% chance to turn coins, bombs, keys or chests into a half red heart
+        if variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
+        variant == PickupVariant.PICKUP_KEY or variant == PickupVariant.PICKUP_CHEST or
+        variant == PickupVariant.PICKUP_REDCHEST or variant == PickupVariant.PICKUP_LOCKEDCHEST or
+        variant == PickupVariant.PICKUP_SPIKEDCHEST or variant == PickupVariant.PICKUP_WOODENCHEST or
+        variant == PickupVariant.PICKUP_BOMBCHEST then
+            local room = Game():GetRoom()
+            if room:GetFrameCount() >= 0 or room:IsFirstVisit() then
+                if 100 * math.random() < 15 then
+                    pickup:Remove()
+                    Game():Spawn(
+                        EntityType.ENTITY_PICKUP,
+                        PickupVariant.PICKUP_HEART,
+                        pickup.Position,
+                        pickup.Velocity,
+                        nil,
+                        HeartSubType.HEART_HALF,
+                        Random()
+                    )
+                end
+            end
+        end
+    end
+end

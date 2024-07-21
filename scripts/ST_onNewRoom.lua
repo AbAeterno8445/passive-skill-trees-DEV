@@ -31,6 +31,15 @@ function PST:onNewRoom()
 
 	-- First room entry XP reward
 	if room:IsFirstVisit() then
+		-- Cosmic Realignment node
+		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
+			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage
+			local player = Isaac.GetPlayer()
+			if room:GetAliveEnemiesCount() > 0 and player:GetHearts() > 4 then
+				player:TakeDamage(1, 0, EntityRef(player), 0)
+			end
+		end
+
 		-- Secret rooms
 		if room:GetType() == RoomType.ROOM_SECRET or
 		room:GetType() == RoomType.ROOM_SUPERSECRET or
