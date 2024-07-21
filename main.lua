@@ -108,7 +108,8 @@ function PST:resetMods()
 			TCainActive = false,
 			TCainBag = false,
 			TCainUses = 0,
-			TJudasDmgUps = 0
+			TJudasDmgUps = 0,
+			TSamsonBuffer = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes

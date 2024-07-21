@@ -122,6 +122,14 @@ function PST:onUpdate()
 					player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 				end
 			end
+		elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
+			-- Tainted Samson, take up to 1 heart damage if final buff was negative, then reset
+			local totalHP = player:GetHearts() + player:GetSoulHearts() + player:GetBlackHearts() + player:GetRottenHearts() + player:GetBrokenHearts() + player:GetBoneHearts()
+			if cosmicRCache.TSamsonBuffer < 0 and totalHP - 1 > 0 then
+				player:TakeDamage(math.min(2, totalHP - 1), 0, EntityRef(player), 0)
+			end
+			cosmicRCache.TSamsonBuffer = 0
+			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 		end
 
 		-- Convert temp xp to normal xp

@@ -19,6 +19,9 @@ function PST:onCache(player, cacheFlag)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
         -- Tainted Isaac, -4% all stats per item obtained after the 8th one, up to 40%
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.max(-40, cosmicRCache.TIsaacItems * -4)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
+        -- Tainted Samson, all stats buffer (-20% to 10%)
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.max(-20, math.min(10, cosmicRCache.TSamsonBuffer))
     end
 
     local allstats = PST:getTreeSnapshotMod("allstats", 0)

@@ -127,7 +127,14 @@ PST.cosmicRData = {
                 "-33% tears"
             }
         },
-        [PlayerType.PLAYER_SAMSON_B] = {},
+        [PlayerType.PLAYER_SAMSON_B] = {
+            curseDesc = {
+                "-5% all stats when hit, up to -20%.",
+                "+2% all stats when killing a monster, up to 10%.",
+                "Resets when clearing a room. If the final bonus was negative, take up to 1 heart damage",
+                "if you can survive it."
+            }
+        },
         [PlayerType.PLAYER_AZAZEL_B] = {},
         [PlayerType.PLAYER_LAZARUS_B] = {},
         [PlayerType.PLAYER_EDEN_B] = {},
