@@ -21,6 +21,16 @@ function PST:onDamage(target, damage, flag, source)
                 player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
             end
         end
+    else
+        local tmpPlayer = Isaac.GetPlayer()
+        -- Cosmic Realignment node
+        if PST:cosmicRCharPicked(PlayerType.PLAYER_AZAZEL_B) then
+            -- Tainted Azazel, -40% damage dealt to enemies far away from you, based on your range stat
+            local dist = math.sqrt((tmpPlayer.Position.X - target.Position.X) ^ 2 + (tmpPlayer.Position.Y - target.Position.Y) ^ 2)
+            if dist > tmpPlayer.TearRange * 0.4 then
+                return { Damage = damage * 0.6 }
+            end
+        end
     end
 
     -- Enemy dies

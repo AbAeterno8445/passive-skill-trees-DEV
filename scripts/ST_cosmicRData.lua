@@ -124,7 +124,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_EVE_B] = {
             curseDesc = {
-                "-33% tears"
+                "-33% tears."
             }
         },
         [PlayerType.PLAYER_SAMSON_B] = {
@@ -135,7 +135,11 @@ PST.cosmicRData = {
                 "if you can survive it."
             }
         },
-        [PlayerType.PLAYER_AZAZEL_B] = {},
+        [PlayerType.PLAYER_AZAZEL_B] = {
+            curseDesc = {
+                "-40% damage dealt to enemies far away from you, based on your range stat."
+            }
+        },
         [PlayerType.PLAYER_LAZARUS_B] = {},
         [PlayerType.PLAYER_EDEN_B] = {},
         [PlayerType.PLAYER_THELOST_B] = {},
