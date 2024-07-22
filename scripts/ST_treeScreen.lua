@@ -56,8 +56,12 @@ local function drawNodeBox(name, description, screenW, screenH)
     -- Calculate longest description line, and offset accordingly
     local longestStr = name
     for i = 1, #description do
-        if string.len(description[i]) > string.len(longestStr) then
-            longestStr = description[i]
+        local tmpStr = description[i]
+        if type(tmpStr) == "table" then
+            tmpStr = description[i][1]
+        end
+        if string.len(tmpStr) > string.len(longestStr) then
+            longestStr = tmpStr
         end
     end
     local longestStrWidth = 8 + offX + miniFont:GetStringWidth(longestStr)
@@ -75,7 +79,13 @@ local function drawNodeBox(name, description, screenW, screenH)
 
     miniFont:DrawString(name, screenW / 2 + offX, screenH / 2 + offY, KColor(1, 1, 1, 1))
     for i = 1, #description do
-        miniFont:DrawString(description[i], screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, KColor(1, 1, 1, 1))
+        local tmpStr = description[i]
+        local tmpColor = KColor(1, 1, 1, 1)
+        if type(tmpStr) == "table" then
+            tmpStr = description[i][1]
+            tmpColor = description[i][2]
+        end
+        miniFont:DrawString(tmpStr, screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, tmpColor)
     end
 end
 
@@ -237,7 +247,9 @@ function PST:treeMenuRendering()
                             table.insert(tmpDescription, descLine)
                         end
                     end
-                    table.insert(tmpDescription, "Can now unlock items as if playing as " .. tmpCharName .. ".")
+                    table.insert(tmpDescription, {
+                        "Can now unlock items as if playing as " .. tmpCharName .. ".", KColor(0.85, 0.85, 1, 1)
+                    })
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     descName = descName .. " (E to pick character)"
                 end
