@@ -80,6 +80,9 @@ function PST:resetMods()
 		damagePerc = 0,
 		rangePerc = 0,
 		tearsPerc = 0,
+		speedPerc = 0,
+		shotSpeedPerc = 0,
+		luckPerc = 0,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
@@ -117,7 +120,8 @@ function PST:resetMods()
 				damagePerc = 0, luckPerc = 0, speedPerc = 0, tearsPerc = 0, shotSpeedPerc = 0, rangePerc = 0
 			},
 			TLostKeeperCoins = 0,
-			TApollyonLocusts = 0
+			TApollyonLocusts = 0,
+			TForgottenTracker = { soul = false, bone = false, keeperCoin = false, keeperHeal = false }
 		}
 	}
 	-- Holds temporary data for allocated special nodes

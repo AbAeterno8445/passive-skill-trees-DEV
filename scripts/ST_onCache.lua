@@ -10,10 +10,10 @@ function PST:onCache(player, cacheFlag)
 
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
+    local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB
     if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
         -- The Forgotten, Keeper debuff
-        if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or
-        player:GetPlayerType() == PlayerType.PLAYER_KEEPERB then
+        if isKeeper then
             dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + cosmicRCache.forgottenKeeperDebuff
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB) then
@@ -43,11 +43,17 @@ function PST:onCache(player, cacheFlag)
         else
             dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+        -- Tainted Forgotten, Keeper debuff
+        if isKeeper and not cosmicRCache.TForgottenTracker.keeperCoin then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
+        end
     end
 
     local allstats = PST:getTreeSnapshotMod("allstats", 0)
     local allstatsPerc = PST:getTreeSnapshotMod("allstatsPerc", 0) + dynamicMods.allstatsPerc
     if cacheFlag == CacheFlag.CACHE_DAMAGE then
+        -- DAMAGE
         local tmpMod = PST:getTreeSnapshotMod("damage", 0) + dynamicMods.damage + allstats
         local tmpMult = 1 + allstatsPerc / 100
         tmpMult = tmpMult + PST:getTreeSnapshotMod("damagePerc", 0) / 100
@@ -55,6 +61,7 @@ function PST:onCache(player, cacheFlag)
         player.Damage = (player.Damage + tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+        -- TEARS (MaxFireDelay)
         local tmpMod = PST:getTreeSnapshotMod("tears", 0) + dynamicMods.tears + allstats
         local tmpMult = 1 - allstatsPerc / 100
         tmpMult = tmpMult - PST:getTreeSnapshotMod("tearsPerc", 0) / 100
@@ -62,12 +69,15 @@ function PST:onCache(player, cacheFlag)
         player.MaxFireDelay = (player.MaxFireDelay - tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
+        -- LUCK
         local tmpMod = PST:getTreeSnapshotMod("luck", 0) + dynamicMods.luck + allstats
         local tmpMult = 1 + allstatsPerc / 100
+        tmpMult = tmpMult + PST:getTreeSnapshotMod("luckPerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.luckPerc / 100
         player.Luck = (player.Luck + tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
+        -- RANGE
         local tmpMod = PST:getTreeSnapshotMod("range", 0) + dynamicMods.range + allstats
         local tmpMult = 1 + allstatsPerc / 100
         tmpMult = tmpMult + PST:getTreeSnapshotMod("rangePerc", 0) / 100
@@ -75,14 +85,18 @@ function PST:onCache(player, cacheFlag)
         player.TearRange = (player.TearRange + tmpMod * 40) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
+        -- SHOT SPEED
         local tmpMod = PST:getTreeSnapshotMod("shotSpeed", 0) + dynamicMods.shotSpeed + allstats
         local tmpMult = 1 + allstatsPerc / 100
+        tmpMult = tmpMult + PST:getTreeSnapshotMod("shotSpeedPerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.shotSpeedPerc / 100
         player.ShotSpeed = (player.ShotSpeed + tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
+        -- MOVEMENT SPEED
         local tmpMod = PST:getTreeSnapshotMod("speed", 0) + dynamicMods.speed + allstats
         local tmpMult = 1 + allstatsPerc / 100
+        tmpMult = tmpMult + PST:getTreeSnapshotMod("speedPerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.speedPerc / 100
         local baseSpeed = player.MoveSpeed
 

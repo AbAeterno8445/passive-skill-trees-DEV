@@ -66,15 +66,15 @@ PST.cosmicRData = {
             curseDesc = {
                 "Convert all starting hearts to bone hearts.",
                 "When entering a new floor, convert a red/bone heart container into a full soul heart.",
-                "As Keeper: -4% all stats per active blue fly, up to -40%. This effect stays",
-                "until clearing the room, even if blue flies are killed."
+                {"As Keeper: -4% all stats per active blue fly, up to -40%. This effect stays", KColor(1, 1, 0.6, 1)},
+                {"until clearing the room, even if blue flies are killed.", KColor(1, 1, 0.6, 1)}
             }
         },
         [PlayerType.PLAYER_BETHANY] = {
             curseDesc = {
                 "Soul and Black hearts are halved once collected.",
                 "-0.02 luck when picking up a soul or black heart.",
-                "As Keeper: Permanent -0.01 luck whenever a blue fly spawns, up to -2."
+                {"As Keeper: Permanent -0.01 luck whenever a blue fly spawns, up to -2.", KColor(1, 1, 0.6, 1)}
             }
         },
         [PlayerType.PLAYER_JACOB] = {
@@ -111,7 +111,7 @@ PST.cosmicRData = {
                 "Soul hearts are converted to black hearts when spawned.",
                 "Take 1 heart of damage when picking up a black heart.",
                 "Black hearts grant +0.4 damage on pickup for the current room, up to +1.2.",
-                "As Keeper: Coins have a 50% chance to grant 0.2 damage for the current room",
+                {"As Keeper: Coins have a 50% chance to grant 0.2 damage for the current room", KColor(1, 1, 0.6, 1)},
                 "instead of healing, up to +1."
             }
         },
@@ -145,8 +145,8 @@ PST.cosmicRData = {
                 "You now have 2 health banks, which switch when clearing a room.",
                 "First health bank is your character's starting health. Second bank starts at 2 soul hearts.",
                 "Permanent health modifiers will only affect the current bank.",
-                "As Keeper: 33% chance for coins to spawn a blue fly instead of healing you.",
-                "As Keeper: Cannot heal while you have blue flies."
+                {"As Keeper: 33% chance for coins to spawn a blue fly instead of healing you.", KColor(1, 1, 0.6, 1)},
+                {"As Keeper: Cannot heal while you have blue flies.", KColor(1, 1, 0.6, 1)}
             }
         },
         [PlayerType.PLAYER_EDEN_B] = {
@@ -161,7 +161,7 @@ PST.cosmicRData = {
                 "You may not have more than 1 heart of each type (soul and black count as the same type).",
                 "Eternal hearts can no longer show up.",
                 "Wafer and Holy Mantle can no longer show up.",
-                "As Keeper: coins will only heal you up to 3 times per floor."
+                {"As Keeper: coins will only heal you up to 3 times per floor.", KColor(1, 1, 0.6, 1)}
             }
         },
         [PlayerType.PLAYER_LILITH_B] = {
@@ -186,7 +186,17 @@ PST.cosmicRData = {
                 "-8% all stats while no locusts are active."
             }
         },
-        [PlayerType.PLAYER_THEFORGOTTEN_B] = {},
+        [PlayerType.PLAYER_THEFORGOTTEN_B] = {
+            curseDesc = {
+                "Convert one of your starting hearts to a bone heart.",
+                "Cannot have more than 1 soul/black heart or bone hearts.",
+                "Bosses drop an additional soul or bone heart on death.",
+                "-15% range, shot speed and luck if you don't have a soul heart.",
+                "-15% damage, tears and speed if you don't have a bone heart.",
+                {"As Keeper: The first coin you pick up in a room can't heal you.", KColor(1, 1, 0.6, 1)},
+                {"As Keeper: -8% all stats while you haven't picked up a coin. Resets each room.", KColor(1, 1, 0.6, 1)}
+            }
+        },
         [PlayerType.PLAYER_BETHANY_B] = {},
         [PlayerType.PLAYER_JACOB_B] = {}
     }

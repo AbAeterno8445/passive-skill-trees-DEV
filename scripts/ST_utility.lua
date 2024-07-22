@@ -96,7 +96,7 @@ end
 
 -- Return whether the given PlayerType character has been picked in the Cosmic Realignment node.
 -- Also returns false if the player is currently playing as the given character.
----@param character PlayerType 
+---@param character PlayerType
 function PST:cosmicRCharPicked(character)
 	local player = Isaac.GetPlayer()
 	if player:GetPlayerType() == character then

@@ -28,6 +28,11 @@ function PST:onNewRoom()
 			end
 			cosmicRCache.TJudasDmgUps = 0
 		end
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+		-- Tainted Forgotten, as Keeper: reset trackers
+		cosmicRCache.TForgottenTracker.keeperCoin = false
+		cosmicRCache.TForgottenTracker.keeperHeal = false
+		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 	end
 
 	-- Quick Wit node, start timer

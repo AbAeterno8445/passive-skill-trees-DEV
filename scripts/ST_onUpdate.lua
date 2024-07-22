@@ -8,6 +8,7 @@ function PST:onUpdate()
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_EVE) then
 		-- Eve, -8% all stats if you have 1 remaining red heart or less
 		if not cosmicRCache.eveActive and player:GetHearts() <= 2 then
@@ -84,7 +85,6 @@ function PST:onUpdate()
 		currentBank.eternal = player:GetEternalHearts()
 	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
 		-- Tainted Lost, limit max hearts of each type to 1
-		local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 		if not isKeeper then
 			if player:GetMaxHearts() > 2 then
 				player:AddMaxHearts(2 - player:GetMaxHearts())
@@ -100,6 +100,34 @@ function PST:onUpdate()
 			end
 			if player:GetRottenHearts() > 2 then
 				player:AddRottenHearts(2 - player:GetRottenHearts())
+			end
+		end
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+		-- Tainted Forgotten, cannot have more than 1 soul/black heart or bone hearts
+		if not isKeeper then
+			if player:GetSoulHearts() > 2 then
+				player:AddSoulHearts(2 - player:GetSoulHearts())
+			end
+			if player:GetBoneHearts() > 1 then
+				player:AddBoneHearts(1 - player:GetBoneHearts())
+			end
+
+			-- -15% range, shot speed and luck when no soul hearts
+			if not cosmicRCache.TForgottenTracker.soul and player:GetSoulHearts() == 0 then
+				PST:addModifiers({ rangePerc = -15, shotSpeedPerc = -15, luckPerc = -15 }, true)
+				cosmicRCache.TForgottenTracker.soul = true
+			elseif cosmicRCache.TForgottenTracker.soul and player:GetSoulHearts() > 0 then
+				PST:addModifiers({ rangePerc = 15, shotSpeedPerc = 15, luckPerc = 15 }, true)
+				cosmicRCache.TForgottenTracker.soul = false
+			end
+
+			-- -15% damage, tears and shot speed when no bone hearts
+			if not cosmicRCache.TForgottenTracker.bone and player:GetBoneHearts() == 0 then
+				PST:addModifiers({ damagePerc = -15, tearsPerc = -15, shotSpeedPerc = -15 }, true)
+				cosmicRCache.TForgottenTracker.bone = true
+			elseif cosmicRCache.TForgottenTracker.bone and player:GetBoneHearts() > 0 then
+				PST:addModifiers({ damagePerc = 15, tearsPerc = 15, shotSpeedPerc = 15 }, true)
+				cosmicRCache.TForgottenTracker.bone = false
 			end
 		end
 	end

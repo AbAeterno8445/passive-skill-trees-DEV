@@ -134,6 +134,18 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER_B) then
         -- Tainted Keeper, start with Restock
         player:AddCollectible(CollectibleType.COLLECTIBLE_RESTOCK)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+        -- Tainted Forgotten, convert a starting red/soul heart to a bone heart
+        if not isKeeper then
+            if player:GetMaxHearts() > 2 then
+                player:AddMaxHearts(-2)
+                player:AddBoneHearts(1)
+            elseif player:GetSoulHearts() > 2 then
+                player:AddSoulHearts(-2)
+                player:AddBoneHearts(1)
+            end
+            player:SetFullHearts()
+        end
     end
 
     PST:closeTreeMenu(true)

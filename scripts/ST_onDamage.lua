@@ -76,6 +76,20 @@ function PST:onDamage(target, damage, flag, source)
                 PST:save()
                 tmpPlayer:AddCacheFlags(CacheFlag.CACHE_ALL, true)
             end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+            -- Tainted Forgotten, bosses drop an additional soul heart
+            if target:IsBoss() then
+                local isBone = 100 * math.random() < 50
+                Game():Spawn(
+                    EntityType.ENTITY_PICKUP,
+                    PickupVariant.PICKUP_HEART,
+                    target.Position,
+                    Vector(0, 0),
+                    nil,
+                    isBone and HeartSubType.HEART_BONE or HeartSubType.HEART_SOUL,
+                    Random()
+                )
+            end
         end
     end
 end

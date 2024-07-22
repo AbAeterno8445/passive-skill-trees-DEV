@@ -110,6 +110,18 @@ function PST:prePickup(pickup, collider, low)
                     player:AddHearts(-2)
                 end
             end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+            -- Tainted Forgotten, as Keeper: first coin per room doesn't heal you
+            if isKeeper and variant == PickupVariant.PICKUP_COIN then
+                if not cosmicRCache.TForgottenTracker.keeperCoin then
+                    cosmicRCache.TForgottenTracker.keeperCoin = true
+                    player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                end
+                if player:GetHearts() < player:GetMaxHearts() and not cosmicRCache.TForgottenTracker.keeperHeal then
+                    player:AddHearts(-2)
+                    cosmicRCache.TForgottenTracker.keeperHeal = true
+                end
+            end
         end
     end
 end
