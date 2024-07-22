@@ -37,8 +37,20 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
             if cosmicRCache.jacobProcs < 8 then
                 cosmicRCache.jacobProcs = cosmicRCache.jacobProcs + 1
             end
-
             PST:addModifiers({ xpgain = 50 / (2 ^ cosmicRCache.jacobProcs) }, true)
+        end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH_B) then
+        -- Tainted Lilith, reduce debuff when obtaining a baby familiar
+        if PST:arrHasValue(PST.babyFamiliarItems, type) then
+            local playerCollectibles = player:GetCollectiblesList()
+            local familiarCount = 0
+            for _, tmpType in ipairs(PST.babyFamiliarItems) do
+                familiarCount = familiarCount + playerCollectibles[tmpType]
+            end
+            if familiarCount > 0 then
+                local tmpMod = 1 / (2 ^ familiarCount)
+                PST:addModifiers({ tears = tmpMod, range = tmpMod, shotSpeed = tmpMod }, true)
+            end
         end
     end
 end

@@ -44,9 +44,9 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_LILITH] = {
             curseDesc = {
-                "Follower items have a 75% chance to be rerolled when spawned.",
+                "Baby familiar items have a 75% chance to be rerolled when spawned.",
                 "Incubus can no longer show up.",
-                "-8% all stats while you don't have a follower."
+                "-8% all stats while you don't have a baby familiar."
             }
         },
         [PlayerType.PLAYER_KEEPER] = {
@@ -153,7 +153,7 @@ PST.cosmicRData = {
             curseDesc = {
                 "Start with -0.15 all stats.",
                 "When hit, shuffle the total reduction randomly across all stats. Additionally",
-                "receive -0 ~ 25% to a random stat."
+                "receive 0 ~ -25% to a random stat."
             }
         },
         [PlayerType.PLAYER_THELOST_B] = {
@@ -164,7 +164,12 @@ PST.cosmicRData = {
                 "As Keeper: coins will only heal you up to 3 times per floor."
             }
         },
-        [PlayerType.PLAYER_LILITH_B] = {},
+        [PlayerType.PLAYER_LILITH_B] = {
+            curseDesc = {
+                "-1 tears, range and shot speed.",
+                "This reduction is halved for each baby familiar you have."
+            }
+        },
         [PlayerType.PLAYER_KEEPER_B] = {},
         [PlayerType.PLAYER_APOLLYON_B] = {},
         [PlayerType.PLAYER_THEFORGOTTEN_B] = {},

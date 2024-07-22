@@ -128,6 +128,9 @@ function PST:onNewRun(isContinued)
         -- Tainted Lost, remove Wafer and Holy Mantle
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_WAFER)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH_B) then
+        -- Tainted Lilith, -1 tears, range and shot speed
+        PST:addModifiers({ tears = -1, range = -1, shotSpeed = -1 }, true)
     end
 
     PST:closeTreeMenu(true)
