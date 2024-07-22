@@ -156,7 +156,14 @@ PST.cosmicRData = {
                 "receive -0 ~ 25% to a random stat."
             }
         },
-        [PlayerType.PLAYER_THELOST_B] = {},
+        [PlayerType.PLAYER_THELOST_B] = {
+            curseDesc = {
+                "You may not have more than 1 heart of each type (soul and black count as the same type).",
+                "Eternal hearts can no longer show up.",
+                "Wafer and Holy Mantle can no longer show up.",
+                "As Keeper: coins will only heal you up to 3 times per floor."
+            }
+        },
         [PlayerType.PLAYER_LILITH_B] = {},
         [PlayerType.PLAYER_KEEPER_B] = {},
         [PlayerType.PLAYER_APOLLYON_B] = {},

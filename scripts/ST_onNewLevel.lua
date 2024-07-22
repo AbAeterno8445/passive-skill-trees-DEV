@@ -36,6 +36,9 @@ function PST:onNewLevel()
             player:AddBoneHearts(-1)
             player:AddSoulHearts(2)
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
+        -- Tainted Lost, reset Keeper coins tracker
+        cosmicRCache.TLostKeeperCoins = 0
     end
     PST:save()
 end

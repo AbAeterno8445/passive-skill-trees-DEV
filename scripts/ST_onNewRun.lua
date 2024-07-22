@@ -76,10 +76,9 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
         -- The Forgotten, convert starting hearts to bone hearts (not on Keepers)
         if not isKeeper then
-            local totalHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetBlackHearts() + player:GetRottenHearts()
+            local totalHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetRottenHearts()
             player:AddMaxHearts(-player:GetMaxHearts())
             player:AddSoulHearts(-player:GetSoulHearts())
-            player:AddBlackHearts(-player:GetBlackHearts())
             player:AddRottenHearts(-player:GetRottenHearts())
             player:AddBoneHearts(math.floor(totalHP / 2))
             player:SetFullHearts()
@@ -97,7 +96,6 @@ function PST:onNewRun(isContinued)
         if not isKeeper then
             player:AddMaxHearts(-player:GetMaxHearts())
             player:AddSoulHearts(-player:GetSoulHearts())
-            player:AddBlackHearts(-player:GetBlackHearts())
             player:AddRottenHearts(-player:GetRottenHearts())
             player:AddBoneHearts(-player:GetBoneHearts())
             player:AddBlackHearts(4)
@@ -105,10 +103,9 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY_B) then
         -- Tainted ???, convert starting hearts to soul hearts
         if not isKeeper then
-            local totalHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetBlackHearts() + player:GetRottenHearts() + player:GetBoneHearts() * 2
+            local totalHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetRottenHearts() + player:GetBoneHearts() * 2
             player:AddMaxHearts(-player:GetMaxHearts())
             player:AddSoulHearts(-player:GetSoulHearts())
-            player:AddBlackHearts(-player:GetBlackHearts())
             player:AddRottenHearts(-player:GetRottenHearts())
             player:AddSoulHearts(totalHP)
         end
@@ -127,6 +124,10 @@ function PST:onNewRun(isContinued)
         cosmicRCache.TLazarusBank1.broken = player:GetBrokenHearts()
         cosmicRCache.TLazarusBank1.eternal = player:GetEternalHearts()
         PST:save()
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
+        -- Tainted Lost, remove Wafer and Holy Mantle
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_WAFER)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
     end
 
     PST:closeTreeMenu(true)

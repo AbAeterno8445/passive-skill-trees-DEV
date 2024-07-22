@@ -17,14 +17,12 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = 8 }, true)
 			cosmicRCache.eveActive = false
 		end
-
 	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
 		-- The Lost, limit max red hearts to 2
 		local plHearts = player:GetMaxHearts()
 		if plHearts > 4 then
 			player:AddMaxHearts(4 - plHearts)
 		end
-
 	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH) then
 		-- Lilith, -8% all stats if you don't currently have a baby familiar
 		local hasBabyFamiliar = false
@@ -84,6 +82,26 @@ function PST:onUpdate()
 		currentBank.rotten = player:GetRottenHearts()
 		currentBank.broken = player:GetBrokenHearts()
 		currentBank.eternal = player:GetEternalHearts()
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
+		-- Tainted Lost, limit max hearts of each type to 1
+		local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
+		if not isKeeper then
+			if player:GetMaxHearts() > 2 then
+				player:AddMaxHearts(2 - player:GetMaxHearts())
+			end
+			if player:GetSoulHearts() > 2 then
+				player:AddSoulHearts(2 - player:GetSoulHearts())
+			end
+			if player:GetBoneHearts() > 1 then
+				player:AddBoneHearts(1 - player:GetBoneHearts())
+			end
+			if player:GetBrokenHearts() > 2 then
+				player:AddBrokenHearts(2 - player:GetBrokenHearts())
+			end
+			if player:GetRottenHearts() > 2 then
+				player:AddRottenHearts(2 - player:GetRottenHearts())
+			end
+		end
 	end
 
 	-- On room clear
@@ -138,7 +156,7 @@ function PST:onUpdate()
 			end
 		elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
 			-- Tainted Samson, take up to 1 heart damage if final buff was negative, then reset
-			local totalHP = player:GetHearts() + player:GetSoulHearts() + player:GetBlackHearts() + player:GetRottenHearts() + player:GetBrokenHearts() + player:GetBoneHearts()
+			local totalHP = player:GetHearts() + player:GetSoulHearts() + player:GetRottenHearts() + player:GetBrokenHearts() + player:GetBoneHearts()
 			if cosmicRCache.TSamsonBuffer < 0 and totalHP - 1 > 0 then
 				player:TakeDamage(math.min(2, totalHP - 1), 0, EntityRef(player), 0)
 			end
@@ -157,7 +175,8 @@ function PST:onUpdate()
 				end
 				player:AddMaxHearts(-player:GetMaxHearts() + newBank.max)
 				player:AddSoulHearts(-player:GetSoulHearts() + newBank.soul)
-				player:AddBlackHearts(-player:GetBlackHearts() + newBank.black)
+				---@diagnostic disable-next-line: undefined-field
+				player:SetBlackHeart(newBank.black)
 				player:AddRottenHearts(-player:GetRottenHearts() + newBank.rotten)
 				player:AddBoneHearts(-player:GetBoneHearts() + newBank.bone)
 				player:AddBrokenHearts(-player:GetBrokenHearts() + newBank.broken)

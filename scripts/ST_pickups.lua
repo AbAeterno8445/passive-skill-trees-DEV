@@ -94,6 +94,16 @@ function PST:prePickup(pickup, collider, low)
                     end
                 end
             end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
+            -- Tainted Lost, as Keeper: coins will only heal you up to 3 times per floor
+            if isKeeper and variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() then
+                if cosmicRCache.TLostKeeperCoins < 3 then
+                    cosmicRCache.TLostKeeperCoins = cosmicRCache.TLostKeeperCoins + 1
+                    PST:save()
+                else
+                    player:AddHearts(-2)
+                end
+            end
         end
     end
 end
@@ -194,6 +204,11 @@ function PST:onPickupInit(pickup)
                     Random()
                 )
             end
+        end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
+        -- Tainted Lost, remove eternal hearts
+        if variant == PickupVariant.PICKUP_HEART and subtype == HeartSubType.HEART_ETERNAL then
+            pickup:Remove()
         end
     end
 end
