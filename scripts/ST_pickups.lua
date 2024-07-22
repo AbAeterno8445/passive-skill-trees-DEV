@@ -26,6 +26,7 @@ function PST:prePickup(pickup, collider, low)
 
     if player ~= nil then
         -- Cosmic Realignment node
+        local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
         local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
         if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
             -- Blue baby, make first 2 non soul heart pickups vanish
@@ -71,7 +72,6 @@ function PST:prePickup(pickup, collider, low)
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
             -- Tainted Judas, as Keeper: coins have a 50% chance to grant +0.2 damage for the current room instead of healing, up to +1
-            local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
             if isKeeper and variant == PickupVariant.PICKUP_COIN then
                 if player:GetHearts() < player:GetMaxHearts() and 100 * math.random() < 50 then
                     if cosmicRCache.TJudasDmgUps < 5 then
@@ -80,6 +80,18 @@ function PST:prePickup(pickup, collider, low)
                         PST:save()
                     end
                     player:AddHearts(-2)
+                end
+            end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+            -- Tainted Lazarus, as Keeper: 33% chance for coins to spawn a blue fly instead of healing you
+            if isKeeper and variant == PickupVariant.PICKUP_COIN then
+                if player:GetHearts() < player:GetMaxHearts() then
+                    if 100 * math.random() < 33 then
+                        Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector(0, 0), nil, 0, Random())
+                        player:AddHearts(-2)
+                    elseif player:GetNumBlueFlies() > 0 then
+                        player:AddHearts(-2)
+                    end
                 end
             end
         end

@@ -140,7 +140,15 @@ PST.cosmicRData = {
                 "-40% damage dealt to enemies far away from you, based on your range stat."
             }
         },
-        [PlayerType.PLAYER_LAZARUS_B] = {},
+        [PlayerType.PLAYER_LAZARUS_B] = {
+            curseDesc = {
+                "You now have 2 health banks, which switch when clearing a room.",
+                "First health bank is your character's starting health. Second bank starts at 2 soul hearts.",
+                "Permanent health modifiers will only affect the current bank.",
+                "As Keeper: 33% chance for coins to spawn a blue fly instead of healing you.",
+                "As Keeper: Cannot heal while you have blue flies."
+            }
+        },
         [PlayerType.PLAYER_EDEN_B] = {},
         [PlayerType.PLAYER_THELOST_B] = {},
         [PlayerType.PLAYER_LILITH_B] = {},

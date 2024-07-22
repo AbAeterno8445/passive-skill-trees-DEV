@@ -70,6 +70,20 @@ function PST:onUpdate()
 
 		-- Set bag full status to detect crafting
 		cosmicRCache.TCainBag = player:GetBagOfCraftingSlot(7) ~= 0
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+		-- Tainted Lazarus, update current health bank
+		local currentBank = cosmicRCache.TLazarusBank1
+		if not cosmicRCache.TLazarusBank1.active then
+			currentBank = cosmicRCache.TLazarusBank2
+		end
+		currentBank.red = player:GetHearts()
+		currentBank.max = player:GetMaxHearts()
+		currentBank.soul = player:GetSoulHearts()
+		currentBank.black = player:GetBlackHearts()
+		currentBank.bone = player:GetBoneHearts()
+		currentBank.rotten = player:GetRottenHearts()
+		currentBank.broken = player:GetBrokenHearts()
+		currentBank.eternal = player:GetEternalHearts()
 	end
 
 	-- On room clear
@@ -112,10 +126,10 @@ function PST:onUpdate()
 		end
 
 		-- Cosmic Realignment node
+		local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
 			-- The Forgotten, reset Keeper debuff
-			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or
-			player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B then
+			if isKeeper then
 				local debuffVal = math.max(-40, math.min(0, player:GetNumBlueFlies() * -4))
 				if cosmicRCache.forgottenKeeperDebuff ~= debuffVal then
 					cosmicRCache.forgottenKeeperDebuff = debuffVal
@@ -130,6 +144,26 @@ function PST:onUpdate()
 			end
 			cosmicRCache.TSamsonBuffer = 0
 			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+		elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+			-- Tainted Lazarus, switch health banks
+			if not isKeeper and PST.modData.xpObtained > 0 then
+				local newBank = nil
+				if cosmicRCache.TLazarusBank1.active then
+					newBank = cosmicRCache.TLazarusBank2
+					cosmicRCache.TLazarusBank1.active = false
+				else
+					newBank = cosmicRCache.TLazarusBank1
+					cosmicRCache.TLazarusBank1.active = true
+				end
+				player:AddMaxHearts(-player:GetMaxHearts() + newBank.max)
+				player:AddSoulHearts(-player:GetSoulHearts() + newBank.soul)
+				player:AddBlackHearts(-player:GetBlackHearts() + newBank.black)
+				player:AddRottenHearts(-player:GetRottenHearts() + newBank.rotten)
+				player:AddBoneHearts(-player:GetBoneHearts() + newBank.bone)
+				player:AddBrokenHearts(-player:GetBrokenHearts() + newBank.broken)
+				player:AddHearts(-player:GetHearts() + newBank.red)
+				player:AddEternalHearts(-player:GetEternalHearts() + newBank.eternal)
+			end
 		end
 
 		-- Convert temp xp to normal xp

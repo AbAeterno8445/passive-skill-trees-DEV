@@ -115,6 +115,18 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EVE_B) then
         -- Tainted Eve, -33% fire rate
         PST:addModifiers({ tearsPerc = -33 }, true)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+        -- Tainted Lazarus, setup first health bank
+        local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+        cosmicRCache.TLazarusBank1.red = player:GetHearts()
+        cosmicRCache.TLazarusBank1.max = player:GetMaxHearts()
+        cosmicRCache.TLazarusBank1.soul = player:GetSoulHearts()
+        cosmicRCache.TLazarusBank1.black = player:GetBlackHearts()
+        cosmicRCache.TLazarusBank1.bone = player:GetBoneHearts()
+        cosmicRCache.TLazarusBank1.rotten = player:GetRottenHearts()
+        cosmicRCache.TLazarusBank1.broken = player:GetBrokenHearts()
+        cosmicRCache.TLazarusBank1.eternal = player:GetEternalHearts()
+        PST:save()
     end
 
     PST:closeTreeMenu(true)
