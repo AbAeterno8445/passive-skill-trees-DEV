@@ -170,7 +170,14 @@ PST.cosmicRData = {
                 "This reduction is halved for each baby familiar you have."
             }
         },
-        [PlayerType.PLAYER_KEEPER_B] = {},
+        [PlayerType.PLAYER_KEEPER_B] = {
+            curseDesc = {
+                "Converts heart pickups, bombs, keys and chests into coins.",
+                "Start with Restock.",
+                "When entering a new floor, if your coin count is less than 15, lose a heart",
+                "container. Otherwise, halve your coin count."
+            }
+        },
         [PlayerType.PLAYER_APOLLYON_B] = {},
         [PlayerType.PLAYER_THEFORGOTTEN_B] = {},
         [PlayerType.PLAYER_BETHANY_B] = {},

@@ -14,6 +14,12 @@ function PST:tryGrabBag()
     end
 end
 
+function PST:isPickupChest(variant)
+    return variant == PickupVariant.PICKUP_CHEST or variant == PickupVariant.PICKUP_REDCHEST or
+    variant == PickupVariant.PICKUP_LOCKEDCHEST or variant == PickupVariant.PICKUP_SPIKEDCHEST or
+    variant == PickupVariant.PICKUP_WOODENCHEST or variant == PickupVariant.PICKUP_BOMBCHEST
+end
+
 function PST:vanishPickup(pickup)
     Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector(0, 0), nil, 1, 0)
     pickup:Remove()
@@ -169,10 +175,7 @@ function PST:onPickupInit(pickup)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
         -- Tainted Magdalene, 15% chance to turn coins, bombs, keys or chests into a half red heart
         if variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
-        variant == PickupVariant.PICKUP_KEY or variant == PickupVariant.PICKUP_CHEST or
-        variant == PickupVariant.PICKUP_REDCHEST or variant == PickupVariant.PICKUP_LOCKEDCHEST or
-        variant == PickupVariant.PICKUP_SPIKEDCHEST or variant == PickupVariant.PICKUP_WOODENCHEST or
-        variant == PickupVariant.PICKUP_BOMBCHEST then
+        variant == PickupVariant.PICKUP_KEY or PST:isPickupChest(variant) then
             local room = Game():GetRoom()
             if room:GetFrameCount() >= 0 or room:IsFirstVisit() then
                 if 100 * math.random() < 15 then
@@ -209,6 +212,21 @@ function PST:onPickupInit(pickup)
         -- Tainted Lost, remove eternal hearts
         if variant == PickupVariant.PICKUP_HEART and subtype == HeartSubType.HEART_ETERNAL then
             pickup:Remove()
+        end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER_B) then
+        -- Tainted Keeper, convert bombs, keys, hearts and chests to coins
+        if variant == PickupVariant.PICKUP_HEART or variant == PickupVariant.PICKUP_KEY or
+        variant == PickupVariant.PICKUP_BOMB or PST:isPickupChest(variant) then
+            pickup:Remove()
+            Game():Spawn(
+                EntityType.ENTITY_PICKUP,
+                PickupVariant.PICKUP_COIN,
+                pickup.Position,
+                pickup.Velocity,
+                nil,
+                CoinSubType.COIN_PENNY,
+                Random()
+            )
         end
     end
 end

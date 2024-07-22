@@ -39,6 +39,19 @@ function PST:onNewLevel()
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
         -- Tainted Lost, reset Keeper coins tracker
         cosmicRCache.TLostKeeperCoins = 0
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER_B) then
+        -- Tainted Keeper, if < 15 coins, lose a heart container, otherwise halve coin count
+        if floor > 1 then
+            if player:GetNumCoins() < 15 then
+                if player:GetMaxHearts() > 2 then
+                    player:AddMaxHearts(-2)
+                elseif player:GetSoulHearts() > 2 then
+                    player:AddSoulHearts(-2)
+                end
+            else
+                player:AddCoins(-math.ceil(player:GetNumCoins() / 2))
+            end
+        end
     end
     PST:save()
 end

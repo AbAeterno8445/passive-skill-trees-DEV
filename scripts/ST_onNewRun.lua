@@ -131,6 +131,9 @@ function PST:onNewRun(isContinued)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH_B) then
         -- Tainted Lilith, -1 tears, range and shot speed
         PST:addModifiers({ tears = -1, range = -1, shotSpeed = -1 }, true)
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER_B) then
+        -- Tainted Keeper, start with Restock
+        player:AddCollectible(CollectibleType.COLLECTIBLE_RESTOCK)
     end
 
     PST:closeTreeMenu(true)
