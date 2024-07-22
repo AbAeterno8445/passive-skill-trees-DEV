@@ -130,6 +130,21 @@ function PST:onUpdate()
 				cosmicRCache.TForgottenTracker.bone = false
 			end
 		end
+	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB_B) then
+		-- Tainted Jacob, spawn Dark Esau if he's not around
+		if room:GetAliveEnemiesCount() > 0 and not PST.specialNodes.TJacobEsauSpawned then
+			local spawned = false
+			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+				if tmpEntity.Type == EntityType.ENTITY_DARK_ESAU then
+					spawned = true
+					break
+				end
+			end
+			if not spawned then
+				Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector(0, 0), nil, 0, Random())
+				PST.specialNodes.TJacobEsauSpawned = true
+			end
+		end
 	end
 
 	-- On room clear

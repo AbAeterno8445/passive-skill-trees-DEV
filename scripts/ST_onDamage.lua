@@ -106,3 +106,13 @@ function PST:onDamage(target, damage, flag, source)
         end
     end
 end
+
+function PST:onPlayerCollision(player, collider, low)
+    -- Cosmic Realignment node
+    if PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB_B) then
+        -- Tainted Jacob, take 1 1/2 hearts of damage when colliding with Dark Esau
+        if collider.Type == EntityType.ENTITY_DARK_ESAU then
+            player:TakeDamage(3, 0, EntityRef(collider), 0)
+        end
+    end
+end

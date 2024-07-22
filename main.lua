@@ -127,7 +127,8 @@ function PST:resetMods()
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
-		quickWit = { startTime = 0, pauseTime = 0 }
+		quickWit = { startTime = 0, pauseTime = 0 },
+		TJacobEsauSpawned = false
 	}
 end
 function PST:resetData()
@@ -271,6 +272,7 @@ PST:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, PST.prePickup)
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PST.onPickup)
 PST:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, PST.applyDevilChance)
 PST:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE, PST.onGrabCollectible)
+PST:AddCallback(ModCallbacks.MC_POST_PLAYER_COLLISION, PST.onPlayerCollision)
 
 -- First load
 PST:load()

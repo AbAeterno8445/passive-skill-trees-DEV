@@ -205,6 +205,11 @@ PST.cosmicRData = {
                 "-4% all stats when a wisp dies, up to -20%."
             }
         },
-        [PlayerType.PLAYER_JACOB_B] = {}
+        [PlayerType.PLAYER_JACOB_B] = {
+            curseDesc = {
+                "You are chased by Dark Esau, who spawns once you first enter a room with monsters.",
+                "Contact with Dark Esau will deal 1.5 hearts of damage to you."
+            }
+        }
     }
 }
