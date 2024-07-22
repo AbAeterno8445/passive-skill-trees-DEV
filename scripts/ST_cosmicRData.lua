@@ -178,7 +178,14 @@ PST.cosmicRData = {
                 "container. Otherwise, halve your coin count."
             }
         },
-        [PlayerType.PLAYER_APOLLYON_B] = {},
+        [PlayerType.PLAYER_APOLLYON_B] = {
+            curseDesc = {
+                "Spawn a locust familiar when first picking up an item, up to 10.",
+                "When entering a new floor, a locust will vanish.",
+                "-4% damage, tears and luck per active locust.",
+                "-8% all stats while no locusts are active."
+            }
+        },
         [PlayerType.PLAYER_THEFORGOTTEN_B] = {},
         [PlayerType.PLAYER_BETHANY_B] = {},
         [PlayerType.PLAYER_JACOB_B] = {}

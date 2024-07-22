@@ -52,6 +52,16 @@ function PST:onNewLevel()
                 player:AddCoins(-math.ceil(player:GetNumCoins() / 2))
             end
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON_B) then
+        -- Tainted Apollyon, despawn a locust
+        for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+            if tmpEntity.Type == EntityType.ENTITY_FAMILIAR and tmpEntity.Variant == FamiliarVariant.ABYSS_LOCUST then
+                tmpEntity:Remove()
+                cosmicRCache.TApollyonLocusts = math.max(0, cosmicRCache.TApollyonLocusts - 1)
+                player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                break
+            end
+        end
     end
     PST:save()
 end

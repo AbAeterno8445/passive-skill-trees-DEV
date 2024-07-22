@@ -52,6 +52,14 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
                 PST:addModifiers({ tears = tmpMod, range = tmpMod, shotSpeed = tmpMod }, true)
             end
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON_B) then
+        -- Tainted Apollyon, spawn a locust familiar tied to the grabbed collectible
+        if firstTime then
+            player:AddLocust(type, player.Position)
+            cosmicRCache.TApollyonLocusts = cosmicRCache.TApollyonLocusts + 1
+            PST:save()
+            player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+        end
     end
 end
 

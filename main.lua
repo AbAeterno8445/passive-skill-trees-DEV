@@ -116,7 +116,8 @@ function PST:resetMods()
 				damage = -0.15, luck = -0.15, speed = -0.15, tears = -0.15, shotSpeed = -0.15, range = -0.15,
 				damagePerc = 0, luckPerc = 0, speedPerc = 0, tearsPerc = 0, shotSpeedPerc = 0, rangePerc = 0
 			},
-			TLostKeeperCoins = 0
+			TLostKeeperCoins = 0,
+			TApollyonLocusts = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes

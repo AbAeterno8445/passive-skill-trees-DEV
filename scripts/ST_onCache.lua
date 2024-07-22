@@ -33,6 +33,16 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods[stat] = val + cosmicRCache.TEdenDebuff[stat]
             end
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON_B) then
+        -- Tainted Apollyon, -4% damage, tears and luck per active locust, or -8% all stats if no locusts
+        if cosmicRCache.TApollyonLocusts > 0 then
+            local locustsVal = 4 * cosmicRCache.TApollyonLocusts
+            dynamicMods.damagePerc = dynamicMods.damagePerc - locustsVal
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc - locustsVal
+            dynamicMods.luckPerc = dynamicMods.luckPerc - locustsVal
+        else
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
+        end
     end
 
     local allstats = PST:getTreeSnapshotMod("allstats", 0)
