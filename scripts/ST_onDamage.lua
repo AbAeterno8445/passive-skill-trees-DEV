@@ -20,6 +20,18 @@ function PST:onDamage(target, damage, flag, source)
                 PST:save()
                 player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
             end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN_B) then
+            -- Tainted Eden, shuffle stat reduction
+            for stat, _ in pairs(cosmicRCache.TEdenDebuff) do
+                cosmicRCache.TEdenDebuff[stat] = 0
+            end
+            for _=1,6 do
+                local tmpStat = PST:getRandomStat()
+                cosmicRCache.TEdenDebuff[tmpStat] = cosmicRCache.TEdenDebuff[tmpStat] - 0.1
+            end
+            local tmpStat = PST:getRandomStat()
+            cosmicRCache.TEdenDebuff[tmpStat .. "Perc"] = math.floor(-25 * math.random())
+            player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
         end
     else
         local tmpPlayer = Isaac.GetPlayer()

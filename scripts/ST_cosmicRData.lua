@@ -149,7 +149,13 @@ PST.cosmicRData = {
                 "As Keeper: Cannot heal while you have blue flies."
             }
         },
-        [PlayerType.PLAYER_EDEN_B] = {},
+        [PlayerType.PLAYER_EDEN_B] = {
+            curseDesc = {
+                "Start with -0.15 all stats.",
+                "When hit, shuffle the total reduction randomly across all stats. Additionally",
+                "receive -0 ~ 25% to a random stat."
+            }
+        },
         [PlayerType.PLAYER_THELOST_B] = {},
         [PlayerType.PLAYER_LILITH_B] = {},
         [PlayerType.PLAYER_KEEPER_B] = {},
