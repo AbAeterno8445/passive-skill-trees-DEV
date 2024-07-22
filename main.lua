@@ -121,7 +121,8 @@ function PST:resetMods()
 			},
 			TLostKeeperCoins = 0,
 			TApollyonLocusts = 0,
-			TForgottenTracker = { soul = false, bone = false, keeperCoin = false, keeperHeal = false }
+			TForgottenTracker = { soul = false, bone = false, keeperCoin = false, keeperHeal = false },
+			TBethanyDeadWisps = 0
 		}
 	}
 	-- Holds temporary data for allocated special nodes

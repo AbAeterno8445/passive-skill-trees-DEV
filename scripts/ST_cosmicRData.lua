@@ -197,7 +197,14 @@ PST.cosmicRData = {
                 {"As Keeper: -8% all stats while you haven't picked up a coin. Resets each room.", KColor(1, 1, 0.6, 1)}
             }
         },
-        [PlayerType.PLAYER_BETHANY_B] = {},
+        [PlayerType.PLAYER_BETHANY_B] = {
+            curseDesc = {
+                "Passive items you pick up become Lemegeton wisps.",
+                "These wisps have 3x their usual health.",
+                "Fully heal wisps when entering a new floor.",
+                "-4% all stats when a wisp dies, up to -20%."
+            }
+        },
         [PlayerType.PLAYER_JACOB_B] = {}
     }
 }

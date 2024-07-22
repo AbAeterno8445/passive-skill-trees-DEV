@@ -62,6 +62,13 @@ function PST:onNewLevel()
                 break
             end
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY_B) then
+        -- Tainted Bethany, heal wisps
+        for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+            if tmpEntity.Type == EntityType.ENTITY_FAMILIAR and tmpEntity.Variant == FamiliarVariant.ITEM_WISP then
+                tmpEntity:AddHealth(tmpEntity.MaxHitPoints)
+            end
+        end
     end
     PST:save()
 end

@@ -60,6 +60,14 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
             PST:save()
             player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
         end
+    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY_B) then
+        -- Tainted Bethany, convert passive collectibles to Lemegeton wisps
+        if charge == 0 then
+            player:RemoveCollectible(type)
+            local newWisp = Isaac.GetPlayer():AddItemWisp(type, player.Position)
+            newWisp.MaxHitPoints = newWisp.MaxHitPoints * 3
+            newWisp:AddHealth(newWisp.MaxHitPoints)
+        end
     end
 end
 
