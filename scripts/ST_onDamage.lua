@@ -45,11 +45,14 @@ function PST:onDamage(target, damage, flag, source)
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY_B) then
             -- Tainted Bethany, -4% all stats when an item wisp dies, up to -20%
             local tmpWisp = target:ToFamiliar()
-            if tmpWisp then
-                if target.HitPoints <= damage and tmpWisp.Variant == FamiliarVariant.ITEM_WISP and
-                cosmicRCache.TBethanyDeadWisps < 5 then
-                    cosmicRCache.TBethanyDeadWisps = cosmicRCache.TBethanyDeadWisps + 1
-                    PST:addModifiers({ allstatsPerc = -4 }, true)
+            if tmpWisp and tmpWisp.Variant == FamiliarVariant.ITEM_WISP then
+                if target.HitPoints <= damage then
+                    if cosmicRCache.TBethanyDeadWisps < 5 then
+                        cosmicRCache.TBethanyDeadWisps = cosmicRCache.TBethanyDeadWisps + 1
+                        PST:addModifiers({ allstatsPerc = -4 }, true)
+                    end
+                else
+                    return { Damage = damage * 0.3 }
                 end
             end
         end

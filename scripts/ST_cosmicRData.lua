@@ -200,7 +200,7 @@ PST.cosmicRData = {
         [PlayerType.PLAYER_BETHANY_B] = {
             curseDesc = {
                 "Passive items you pick up become Lemegeton wisps.",
-                "These wisps have 3x their usual health.",
+                "These wisps receive 70% less damage from hits.",
                 "Fully heal wisps when entering a new floor.",
                 "-4% all stats when a wisp dies, up to -20%."
             }
