@@ -4,6 +4,7 @@ PST.cosmicRData = {
     menuX = 0,
     menuY = 0,
     charSprite = Sprite("gfx/ui/skilltrees/cosmic_realignment_chars.anm2", true),
+    lockedCharSprite = Sprite("gfx/ui/skilltrees/cosmic_realignment_chars.anm2", true),
     hoveredCharID = nil,
     characters = {
         [PlayerType.PLAYER_ISAAC] = {
@@ -28,6 +29,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_MAGDALENE] = {
             curseDesc = { "Starting speed is set to 0.85." },
+            unlockReq = Achievement.MAGDALENE,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.MAGGYS_BOW,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.CUTE_BABY,
@@ -48,6 +50,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_CAIN] = {
             curseDesc = { "-0.5 luck" },
+            unlockReq = Achievement.CAIN,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.CAINS_OTHER_EYE,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.GLASS_BABY,
@@ -68,6 +71,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_JUDAS] = {
             curseDesc = { "-10% damage" },
+            unlockReq = Achievement.JUDAS,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.JUDAS_SHADOW,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.SHADOW_BABY,
@@ -88,6 +92,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_BLUEBABY] = {
             curseDesc = { "The first 2 non-soul heart pickups you collect vanish.", "This effect resets every floor." },
+            unlockReq = Achievement.BLUE_BABY,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.BLUE_BABYS_ONLY_FRIEND,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.DEAD_BABY,
@@ -108,6 +113,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_EVE] = {
             curseDesc = { "-8% all stats if you have 1 remaining red heart or less." },
+            unlockReq = Achievement.EVE,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.EVES_MASCARA,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.CROW_BABY,
@@ -128,6 +134,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_SAMSON] = {
             curseDesc = { "-0.15 damage when you are hit, up to -0.9. Resets every room." },
+            unlockReq = Achievement.SAMSON,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.SAMSONS_CHAINS,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.FIGHTING_BABY,
@@ -148,6 +155,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_AZAZEL] = {
             curseDesc = { "-20% range" },
+            unlockReq = Achievement.AZAZEL,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.NAIL,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.BEGOTTEN_BABY,
@@ -168,6 +176,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_LAZARUS] = {
             curseDesc = { "Items that grant extra lives no longer show up." },
+            unlockReq = Achievement.LAZARUS,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.MISSING_NO,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.WRAPPED_BABY,
@@ -188,6 +197,7 @@ PST.cosmicRData = {
         },
         [PlayerType.PLAYER_EDEN] = {
             curseDesc = { "-0.1 to a random stat when entering a floor, from floor 2 onwards." },
+            unlockReq = Achievement.EDEN,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.UNDEFINED,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.GLITCH_BABY,
@@ -211,6 +221,7 @@ PST.cosmicRData = {
                 "You may not have more than 2 red/coin hearts, and non-red hearts vanish on pickup.",
                 "If Holy Mantle is unlocked with The Lost, start with Wafer."
             },
+            unlockReq = Achievement.LOST,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.D100,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.ZERO_BABY,
@@ -235,6 +246,7 @@ PST.cosmicRData = {
                 "Incubus can no longer show up.",
                 "-8% all stats while you don't have a baby familiar."
             },
+            unlockReq = Achievement.LILITH,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.IMMACULATE_CONCEPTION,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.GOAT_HEAD_BABY,
@@ -260,6 +272,7 @@ PST.cosmicRData = {
                 "When entering a new floor, if less than 5 coins were picked up in the previous",
                 "floor, halve your coin count."
             },
+            unlockReq = Achievement.KEEPER,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.STICKY_NICKELS,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.SUPER_GREED_BABY,
@@ -282,6 +295,7 @@ PST.cosmicRData = {
             curseDesc = {
                 "-0.04 to a random stat (except speed) when picking up a passive item."
             },
+            unlockReq = Achievement.APOLLYON,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.LOCUST_OF_CONQUEST,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.SMELTER,
@@ -307,6 +321,7 @@ PST.cosmicRData = {
                 {"As Keeper: -4% all stats per active blue fly, up to -40%. This effect stays", KColor(1, 1, 0.6, 1)},
                 {"until clearing the room, even if blue flies are killed.", KColor(1, 1, 0.6, 1)}
             },
+            unlockReq = Achievement.FORGOTTEN,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.DIVORCE_PAPERS,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.MARROW,
@@ -331,6 +346,7 @@ PST.cosmicRData = {
                 "-0.02 luck when picking up a soul or black heart.",
                 {"As Keeper: Permanent -0.01 luck whenever a blue fly spawns, up to -2.", KColor(1, 1, 0.6, 1)}
             },
+            unlockReq = Achievement.BETHANY,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.BETHS_FAITH,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.WISP_BABY,
@@ -355,6 +371,7 @@ PST.cosmicRData = {
                 "-50% xp gain.",
                 "Halve these reductions when first obtaining an item, up to 8 times.",
             },
+            unlockReq = Achievement.JACOB_AND_ESAU,
             unlocks = {
                 [CompletionType.BOSS_RUSH] = Achievement.ROCK_BOTTOM,
                 [CompletionType.MOMS_HEART .. "hard"] = Achievement.DOUBLE_BABY,
@@ -378,6 +395,7 @@ PST.cosmicRData = {
                 "Items are removed from the first treasure room you enter.",
                 "-4% all stats per item obtained after the 8th one, up to -40%."
             },
+            unlockReq = Achievement.TAINTED_ISAAC,
             unlocks = {
                 -- Isaac + ??? + Satan + Lamb
                 tainted1 = Achievement.MOMS_LOCK,
@@ -396,6 +414,7 @@ PST.cosmicRData = {
                 "take 1/2 heart damage.",
                 "Coins, bombs, keys and chests have a 15% chance to be replaced with a half red heart."
             },
+            unlockReq = Achievement.TAINTED_MAGDALENE,
             unlocks = {
                 tainted1 = Achievement.HOLY_CROWN,
                 tainted2 = Achievement.SOUL_OF_MAGDALENE,
@@ -413,6 +432,7 @@ PST.cosmicRData = {
                 "100% chance to be cursed with Curse of the Blind when entering a floor.",
                 "Crafting an item with Bag of Crafting reduces this chance by 10%."
             },
+            unlockReq = Achievement.TAINTED_CAIN,
             unlocks = {
                 tainted1 = Achievement.GILDED_KEY,
                 tainted2 = Achievement.SOUL_OF_CAIN,
@@ -432,6 +452,7 @@ PST.cosmicRData = {
                 {"As Keeper: Coins have a 50% chance to grant 0.2 damage for the current room", KColor(1, 1, 0.6, 1)},
                 "instead of healing, up to +1."
             },
+            unlockReq = Achievement.TAINTED_JUDAS,
             unlocks = {
                 tainted1 = Achievement.YOUR_SOUL,
                 tainted2 = Achievement.SOUL_OF_JUDAS,
@@ -448,6 +469,7 @@ PST.cosmicRData = {
                 "First floor's treasure room is guaranteed to have a poop item.",
                 "Further floors' treasure room item has a 50% chance to be replaced with a poop item."
             },
+            unlockReq = Achievement.TAINTED_BLUE_BABY,
             unlocks = {
                 tainted1 = Achievement.DINGLE_BERRY,
                 tainted2 = Achievement.SOUL_OF_BLUE_BABY,
@@ -462,6 +484,7 @@ PST.cosmicRData = {
             curseDesc = {
                 "-33% tears."
             },
+            unlockReq = Achievement.TAINTED_EVE,
             unlocks = {
                 tainted1 = Achievement.STRANGE_KEY,
                 tainted2 = Achievement.SOUL_OF_EVE,
@@ -479,6 +502,7 @@ PST.cosmicRData = {
                 "Resets when clearing a room. If the final bonus was negative, take up to 1 heart damage",
                 "if you can survive it."
             },
+            unlockReq = Achievement.TAINTED_SAMSON,
             unlocks = {
                 tainted1 = Achievement.TEMPORARY_TATTOO,
                 tainted2 = Achievement.SOUL_OF_SAMSON,
@@ -493,6 +517,7 @@ PST.cosmicRData = {
             curseDesc = {
                 "-40% damage dealt to enemies far away from you, based on your range stat."
             },
+            unlockReq = Achievement.TAINTED_AZAZEL,
             unlocks = {
                 tainted1 = Achievement.WICKED_CROWN,
                 tainted2 = Achievement.SOUL_OF_AZAZEL,
@@ -511,6 +536,7 @@ PST.cosmicRData = {
                 {"As Keeper: 33% chance for coins to spawn a blue fly instead of healing you.", KColor(1, 1, 0.6, 1)},
                 {"As Keeper: Cannot heal while you have blue flies.", KColor(1, 1, 0.6, 1)}
             },
+            unlockReq = Achievement.TAINTED_LAZARUS,
             unlocks = {
                 tainted1 = Achievement.TORN_POCKET,
                 tainted2 = Achievement.SOUL_OF_LAZARUS,
@@ -527,6 +553,7 @@ PST.cosmicRData = {
                 "When hit, shuffle the total reduction randomly across all stats. Additionally",
                 "receive 0 ~ -25% to a random stat."
             },
+            unlockReq = Achievement.TAINTED_EDEN,
             unlocks = {
                 tainted1 = Achievement.NUH_UH,
                 tainted2 = Achievement.SOUL_OF_EDEN,
@@ -544,6 +571,7 @@ PST.cosmicRData = {
                 "Wafer and Holy Mantle can no longer show up.",
                 {"As Keeper: coins will only heal you up to 3 times per floor.", KColor(1, 1, 0.6, 1)}
             },
+            unlockReq = Achievement.TAINTED_LOST,
             unlocks = {
                 tainted1 = Achievement.KIDS_DRAWING,
                 tainted2 = Achievement.SOUL_OF_LOST,
@@ -559,6 +587,7 @@ PST.cosmicRData = {
                 "-1 tears, range and shot speed.",
                 "This reduction is halved for each baby familiar you have."
             },
+            unlockReq = Achievement.TAINTED_LILITH,
             unlocks = {
                 tainted1 = Achievement.THE_TWINS,
                 tainted2 = Achievement.SOUL_OF_LILITH,
@@ -576,6 +605,7 @@ PST.cosmicRData = {
                 "When entering a new floor, if your coin count is less than 15, lose a heart",
                 "container. Otherwise, halve your coin count."
             },
+            unlockReq = Achievement.TAINTED_KEEPER,
             unlocks = {
                 tainted1 = Achievement.KEEPERS_BARGAIN,
                 tainted2 = Achievement.SOUL_OF_KEEPER,
@@ -593,6 +623,7 @@ PST.cosmicRData = {
                 "-4% damage, tears and luck per active locust.",
                 "-8% all stats while no locusts are active."
             },
+            unlockReq = Achievement.TAINTED_APOLLYON,
             unlocks = {
                 tainted1 = Achievement.CRICKET_LEG,
                 tainted2 = Achievement.SOUL_OF_APOLLYON,
@@ -613,6 +644,7 @@ PST.cosmicRData = {
                 {"As Keeper: The first coin you pick up in a room can't heal you.", KColor(1, 1, 0.6, 1)},
                 {"As Keeper: -8% all stats while you haven't picked up a coin. Resets each room.", KColor(1, 1, 0.6, 1)}
             },
+            unlockReq = Achievement.TAINTED_FORGOTTEN,
             unlocks = {
                 tainted1 = Achievement.POLISHED_BONE,
                 tainted2 = Achievement.SOUL_OF_FORGOTTEN,
@@ -630,6 +662,7 @@ PST.cosmicRData = {
                 "Fully heal wisps when entering a new floor.",
                 "Permanent -4% all stats when a wisp dies, up to -20%."
             },
+            unlockReq = Achievement.TAINTED_BETHANY,
             unlocks = {
                 tainted1 = Achievement.EXPANSION_PACK,
                 tainted2 = Achievement.SOUL_OF_BETHANY,
@@ -645,6 +678,7 @@ PST.cosmicRData = {
                 "You are chased by Dark Esau, who spawns once you first enter a room with monsters.",
                 "Contact with Dark Esau will deal 1.5 hearts of damage to you."
             },
+            unlockReq = Achievement.TAINTED_JACOB,
             unlocks = {
                 tainted1 = Achievement.RC_REMOTE,
                 tainted2 = Achievement.SOUL_OF_JACOB,
@@ -657,3 +691,4 @@ PST.cosmicRData = {
         }
     }
 }
+PST.cosmicRData.lockedCharSprite:ReplaceSpritesheet(0, "gfx/ui/skilltrees/cosmic_realignment_chars_locked.png", true)

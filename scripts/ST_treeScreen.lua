@@ -209,7 +209,7 @@ function PST:treeMenuRendering()
             Isaac.RenderText("Cosmic Realignment", PST.cosmicRData.menuX - 54 - treeCamera.X, PST.cosmicRData.menuY + 20 - treeCamera.Y, 1, 1, 1, 1)
 
             local i = 1
-            for charID, charData in pairs(PST.cosmicRData.characters) do
+            for charID, _ in pairs(PST.cosmicRData.characters) do
                 local charName = PST.charNames[1 + charID]
                 local charX = PST.cosmicRData.menuX - 64 + ((i - 1) % 5) * 32
                 local charY = PST.cosmicRData.menuY + 52 + math.floor((i - 1) / 5) * 32
@@ -224,8 +224,18 @@ function PST:treeMenuRendering()
                     PST.cosmicRData.charSprite.Color.A = 0.4
                 end
 
-                PST.cosmicRData.charSprite:Play(charName, true)
-                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                if not PST:cosmicRIsCharUnlocked(charID) then
+                    PST.cosmicRData.lockedCharSprite:Play(charName, true)
+                    PST.cosmicRData.lockedCharSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+
+                    PST.cosmicRData.charSprite.Color.A = 1
+                    PST.cosmicRData.charSprite:Play("Locked", true)
+                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                else
+                    PST.cosmicRData.charSprite:Play(charName, true)
+                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                end
+
                 i = i + 1
             end
         end
@@ -260,7 +270,11 @@ function PST:treeMenuRendering()
             cursorSprite:Play("Clicked")
 
             local charID = PST.cosmicRData.hoveredCharID
-            drawNodeBox(PST.charNames[1 + charID], PST.cosmicRData.characters[charID].curseDesc or {}, screenW, screenH)
+            local tmpDescription = { "Unlock " .. PST.charNames[1 + charID] .. " to enable this option." }
+            if PST:cosmicRIsCharUnlocked(charID) then
+                tmpDescription = PST.cosmicRData.characters[charID].curseDesc
+            end
+            drawNodeBox(PST.charNames[1 + charID], tmpDescription, screenW, screenH)
         else
             cursorSprite:Play("Idle")
         end
@@ -292,11 +306,15 @@ function PST:treeMenuRendering()
                 end
             -- Cosmic Realignment node, pick hovered character
             elseif PST.cosmicRData.hoveredCharID ~= nil then
-                PST:addModifiers({
-                    cosmicRealignment = { value = PST.cosmicRData.hoveredCharID, set = true }
-                })
-                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
-                PST.cosmicRData.menuOpen = false
+                if PST:cosmicRIsCharUnlocked(PST.cosmicRData.hoveredCharID) then
+                    PST:addModifiers({
+                        cosmicRealignment = { value = PST.cosmicRData.hoveredCharID, set = true }
+                    })
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+                    PST.cosmicRData.menuOpen = false
+                else
+                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+                end
             end
         end
 
@@ -353,17 +371,12 @@ function PST:treeMenuRendering()
     end
 end
 
+-- Render Cosmic Realignment completion marks on relevant characters (original marks take priority)
 local markLayerOverrides = {
     [CompletionType.ULTRA_GREEDIER] = 8,
     [CompletionType.DELIRIUM] = 0,
     [CompletionType.MOTHER] = 10,
     [CompletionType.BEAST] = 11
-}
-local markPaths = {
-    cosmic = "gfx/ui/skilltrees/completion_widget_cosmic.png",
-    cosmicPaused = "gfx/ui/skilltrees/completion_widget_pause_cosmic.png",
-    normal = "gfx/ui/completion_widget.png",
-    paused = "gfx/ui/completion_widget_pause.png"
 }
 function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
     local pTypeStr = tostring(playerType)

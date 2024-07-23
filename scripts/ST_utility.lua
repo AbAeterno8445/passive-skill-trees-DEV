@@ -105,6 +105,13 @@ function PST:cosmicRCharPicked(character)
 	return PST:getTreeSnapshotMod("cosmicRealignment", false) == character
 end
 
+function PST:cosmicRIsCharUnlocked(char)
+	if not PST.cosmicRData.characters[char].unlockReq then
+		return true
+	end
+	return Isaac.GetPersistentGameData():Unlocked(PST.cosmicRData.characters[char].unlockReq)
+end
+
 -- Attempt to unlock an achievement associated with the currently selected Cosmic Realignment character
 function PST:cosmicRTryUnlock(unlockSource)
 	local cosmicRChar = PST:getTreeSnapshotMod("cosmicRealignment", false)
