@@ -353,4 +353,36 @@ function PST:treeMenuRendering()
     end
 end
 
+local markLayerOverrides = {
+    [CompletionType.ULTRA_GREEDIER] = 8,
+    [CompletionType.DELIRIUM] = 0,
+    [CompletionType.MOTHER] = 10,
+    [CompletionType.BEAST] = 11
+}
+function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
+    local pTypeStr = tostring(playerType)
+    for i=0,14 do
+        local layerID = i + 1
+        if markLayerOverrides[i] ~= nil then
+            layerID = markLayerOverrides[i]
+        end
+
+        if PST.modData.cosmicRCompletions[pTypeStr] ~= nil then
+            local hasMark = Isaac.GetCompletionMark(playerType, i)
+            if PST.modData.cosmicRCompletions[pTypeStr][i .. "hard"] and hasMark < 2 then
+                markSprite:ReplaceSpritesheet(layerID, "gfx/ui/skilltrees/completion_widget_cosmic.png", true)
+                markSprite:SetLayerFrame(layerID, 2)
+            elseif PST.modData.cosmicRCompletions[pTypeStr][tostring(i)] and hasMark == 0 then
+                markSprite:ReplaceSpritesheet(layerID, "gfx/ui/skilltrees/completion_widget_cosmic.png", true)
+                markSprite:SetLayerFrame(layerID, 1)
+            else
+                markSprite:ReplaceSpritesheet(layerID, "gfx/ui/completion_widget.png", true)
+            end
+        else
+            markSprite:ReplaceSpritesheet(layerID, "gfx/ui/completion_widget.png", true)
+        end
+    end
+end
+
 PST:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, PST.treeMenuRendering)
+PST:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, PST.cosmicRMarksRender)
