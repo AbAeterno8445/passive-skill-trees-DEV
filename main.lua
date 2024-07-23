@@ -124,8 +124,7 @@ function PST:resetMods()
 			TApollyonLocusts = 0,
 			TForgottenTracker = { soul = false, bone = false, keeperCoin = false, keeperHeal = false },
 			TBethanyDeadWisps = 0
-		},
-		cosmicRCompletions = {}
+		}
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -149,6 +148,8 @@ function PST:resetData()
 		treeMods = {},
 		-- List of applied modifiers that stays fixed during a run
 		treeModSnapshot = {},
+		-- Completion tracker for Cosmic Realignment unlocks
+		cosmicRCompletions = {},
 		charData = {}
 	}
 	PST:resetMods()

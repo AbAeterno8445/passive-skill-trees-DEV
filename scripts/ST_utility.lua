@@ -129,12 +129,15 @@ function PST:onCompletionEvent(event)
 	local pType = player:GetPlayerType()
 
 	-- Store completion
-	local tmpCompletions = PST:getTreeSnapshotMod("cosmicRCompletions", PST.modData.treeMods.cosmicRCompletions)
+	local tmpCompletions = PST.modData.cosmicRCompletions
 	if tmpCompletions[pType] == nil then
 		tmpCompletions[pType] = {}
 	end
 	local pComp = tmpCompletions[pType]
 	pComp[event] = true
+	if Game():IsHardMode() then
+		pComp[event .. "hard"] = true
+	end
 
 	-- More specific Cosmic Realignment unlocks
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
@@ -156,7 +159,19 @@ function PST:onCompletionEvent(event)
 		PST:cosmicRTryUnlock("tainted2")
 	end
 
+	-- All hard completion mark unlocks
+	if pComp[CompletionType.MOMS_HEART .. "hard"] and pComp[CompletionType.ISAAC .. "hard"] and
+	pComp[CompletionType.BLUE_BABY .. "hard"] and pComp[CompletionType.SATAN .. "hard"] and
+	pComp[CompletionType.LAMB .. "hard"] and pComp[CompletionType.MEGA_SATAN .. "hard"] and
+	pComp[CompletionType.BOSS_RUSH .. "hard"] and pComp[CompletionType.HUSH .. "hard"] and
+	pComp[CompletionType.ULTRA_GREED .. "hard"] and pComp[CompletionType.ULTRA_GREEDIER .. "hard"] and
+	pComp[CompletionType.DELIRIUM .. "hard"] and pComp[CompletionType.MOTHER .. "hard"] and
+	pComp[CompletionType.BEAST .. "hard"] then
+		PST:cosmicRTryUnlock("allHardMarks")
+	end
+
 	PST:cosmicRTryUnlock(event)
+	PST:save()
 end
 
 local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
