@@ -69,15 +69,26 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
     end
 end
 
-function PST:onUseItem(type)
+function PST:onUseItem(itemType)
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
         -- Tainted Cain, detect craft from Bag of Crafting
-        if type == CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING then
+        if itemType == CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING then
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
             if cosmicRCache.TCainBag then
                 cosmicRCache.TCainUses = cosmicRCache.TCainUses + 1
                 PST:save()
+            end
+        end
+    end
+
+    -- Cosmic Realignment tainted unlock on red key home
+    if itemType == CollectibleType.COLLECTIBLE_RED_KEY and Game():GetLevel():GetStage() == LevelStage.STAGE8 then
+        local cosmicRChar = PST:getTreeSnapshotMod("cosmicRealignment", false)
+        if type(cosmicRChar) == "number" and Isaac.GetPlayer():GetPlayerType() ~= cosmicRChar then
+            local taintedUnlock = PST.cosmicRData.characters[cosmicRChar].unlocks.tainted
+            if taintedUnlock ~= nil then
+                PST:cosmicRTryUnlock("tainted")
             end
         end
     end

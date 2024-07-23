@@ -22,6 +22,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.D_INFINITY,
                 [CompletionType.MOTHER] = Achievement.MEAT_CLEAVER,
                 [CompletionType.BEAST] = Achievement.OPTIONS,
+                tainted = Achievement.TAINTED_ISAAC,
                 allHardMarks = Achievement.BUDDY_BABY
             }
         },
@@ -41,6 +42,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.EUCHARIST,
                 [CompletionType.MOTHER] = Achievement.YUCK_HEART,
                 [CompletionType.BEAST] = Achievement.CANDY_HEART,
+                tainted = Achievement.TAINTED_MAGDALENE,
                 allHardMarks = Achievement.COLORFUL_BABY
             }
         },
@@ -60,6 +62,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.SILVER_DOLLAR,
                 [CompletionType.MOTHER] = Achievement.GUPPYS_EYE,
                 [CompletionType.BEAST] = Achievement.POUND_OF_FLESH,
+                tainted = Achievement.TAINTED_CAIN,
                 allHardMarks = Achievement.PICKY_BABY
             }
         },
@@ -79,6 +82,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.SHADE,
                 [CompletionType.MOTHER] = Achievement.AKELDAMA,
                 [CompletionType.BEAST] = Achievement.REDEMPTION,
+                tainted = Achievement.TAINTED_JUDAS,
                 allHardMarks = Achievement.BELIAL_BABY
             }
         },
@@ -98,6 +102,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.KING_BABY,
                 [CompletionType.MOTHER] = Achievement.ETERNAL_D6,
                 [CompletionType.BEAST] = Achievement.MONTEZUMAS_REVENGE,
+                tainted = Achievement.TAINTED_BLUE_BABY,
                 allHardMarks = Achievement.HIVE_BABY
             }
         },
@@ -117,6 +122,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.DULL_RAZOR,
                 [CompletionType.MOTHER] = Achievement.BIRD_CAGE,
                 [CompletionType.BEAST] = Achievement.CRACKED_ORB,
+                tainted = Achievement.TAINTED_EVE,
                 allHardMarks = Achievement.WHORE_BABY
             }
         },
@@ -136,6 +142,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.BLOODY_CROWN,
                 [CompletionType.MOTHER] = Achievement.BLOODY_GUST,
                 [CompletionType.BEAST] = Achievement.EMPTY_HEART,
+                tainted = Achievement.TAINTED_SAMSON,
                 allHardMarks = Achievement.REVENGE_BABY
             }
         },
@@ -155,6 +162,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.DARK_PRINCES_CROWN,
                 [CompletionType.MOTHER] = Achievement.DEVILS_CROWN,
                 [CompletionType.BEAST] = Achievement.LIL_ABADDON,
+                tainted = Achievement.TAINTED_AZAZEL,
                 allHardMarks = Achievement.SUCKY_BABY
             }
         },
@@ -174,6 +182,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.COMPOUND_FRACTURE,
                 [CompletionType.MOTHER] = Achievement.TINYTOMA,
                 [CompletionType.BEAST] = Achievement.ASTRAL_PROJECTION,
+                tainted = Achievement.TAINTED_LAZARUS,
                 allHardMarks = Achievement.DRIPPING_BABY
             }
         },
@@ -193,6 +202,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.EDENS_SOUL,
                 [CompletionType.MOTHER] = Achievement.M,
                 [CompletionType.BEAST] = Achievement.EVERYTHING_JAR,
+                tainted = Achievement.TAINTED_EDEN,
                 allHardMarks = Achievement.CRACKED_BABY
             }
         },
@@ -215,6 +225,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.HOLY_CARD,
                 [CompletionType.MOTHER] = Achievement.LOST_SOUL,
                 [CompletionType.BEAST] = Achievement.HUNGRY_SOUL,
+                tainted = Achievement.TAINTED_LOST,
                 allHardMarks = Achievement.GODHEAD
             }
         },
@@ -238,6 +249,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.EUTHANASIA,
                 [CompletionType.MOTHER] = Achievement.BLOOD_PUPPY,
                 [CompletionType.BEAST] = Achievement.C_SECTION,
+                tainted = Achievement.TAINTED_LILITH,
                 allHardMarks = Achievement.DARK_BABY
             }
         },
@@ -262,6 +274,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.CROOKED_CARD,
                 [CompletionType.MOTHER] = Achievement.KEEPERS_SACK,
                 [CompletionType.BEAST] = Achievement.KEEPERS_BOX,
+                tainted = Achievement.TAINTED_KEEPER,
                 allHardMarks = Achievement.SALE_BABY
             }
         },
@@ -283,6 +296,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.VOID,
                 [CompletionType.MOTHER] = Achievement.LIL_PORTAL,
                 [CompletionType.BEAST] = Achievement.WORM_FRIEND,
+                tainted = Achievement.TAINTED_APOLLYON,
                 allHardMarks = Achievement.APOLLYON_BABY
             }
         },
@@ -307,6 +321,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.BOOK_OF_THE_DEAD,
                 [CompletionType.MOTHER] = Achievement.BONE_SPURS,
                 [CompletionType.BEAST] = Achievement.SPIRIT_SHACKLES,
+                tainted = Achievement.TAINTED_FORGOTTEN,
                 allHardMarks = Achievement.BONE_BABY
             }
         },
@@ -330,6 +345,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.STAR_OF_BETHLEHEM,
                 [CompletionType.MOTHER] = Achievement.REVELATION,
                 [CompletionType.BEAST] = Achievement.JAR_OF_WISPS,
+                tainted = Achievement.TAINTED_BETHANY,
                 allHardMarks = Achievement.HOPE_BABY
             }
         },
@@ -353,6 +369,7 @@ PST.cosmicRData = {
                 [CompletionType.DELIRIUM] = Achievement.SUPLEX,
                 [CompletionType.MOTHER] = Achievement.MAGIC_SKIN,
                 [CompletionType.BEAST] = Achievement.FRIEND_FINDER,
+                tainted = Achievement.TAINTED_JACOB,
                 allHardMarks = Achievement.SOLOMONS_BABY
             }
         },
