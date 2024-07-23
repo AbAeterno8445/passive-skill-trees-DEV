@@ -359,8 +359,21 @@ local markLayerOverrides = {
     [CompletionType.MOTHER] = 10,
     [CompletionType.BEAST] = 11
 }
+local markPaths = {
+    cosmic = "gfx/ui/skilltrees/completion_widget_cosmic.png",
+    cosmicPaused = "gfx/ui/skilltrees/completion_widget_pause_cosmic.png",
+    normal = "gfx/ui/completion_widget.png",
+    paused = "gfx/ui/completion_widget_pause.png"
+}
 function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
     local pTypeStr = tostring(playerType)
+    local markPathNormal = "gfx/ui/completion_widget.png"
+    local markPathCosmic = "gfx/ui/skilltrees/completion_widget_cosmic.png"
+    if Game():IsPauseMenuOpen() then
+        markPathNormal = "gfx/ui/completion_widget_pause.png"
+        markPathCosmic = "gfx/ui/skilltrees/completion_widget_pause_cosmic.png"
+    end
+
     for i=0,14 do
         local layerID = i + 1
         if markLayerOverrides[i] ~= nil then
@@ -370,16 +383,16 @@ function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
         if PST.modData.cosmicRCompletions[pTypeStr] ~= nil then
             local hasMark = Isaac.GetCompletionMark(playerType, i)
             if PST.modData.cosmicRCompletions[pTypeStr][i .. "hard"] and hasMark < 2 then
-                markSprite:ReplaceSpritesheet(layerID, "gfx/ui/skilltrees/completion_widget_cosmic.png", true)
+                markSprite:ReplaceSpritesheet(layerID, markPathCosmic, true)
                 markSprite:SetLayerFrame(layerID, 2)
             elseif PST.modData.cosmicRCompletions[pTypeStr][tostring(i)] and hasMark == 0 then
-                markSprite:ReplaceSpritesheet(layerID, "gfx/ui/skilltrees/completion_widget_cosmic.png", true)
+                markSprite:ReplaceSpritesheet(layerID, markPathCosmic, true)
                 markSprite:SetLayerFrame(layerID, 1)
             else
-                markSprite:ReplaceSpritesheet(layerID, "gfx/ui/completion_widget.png", true)
+                markSprite:ReplaceSpritesheet(layerID, markPathNormal, true)
             end
         else
-            markSprite:ReplaceSpritesheet(layerID, "gfx/ui/completion_widget.png", true)
+            markSprite:ReplaceSpritesheet(layerID, markPathNormal, true)
         end
     end
 end
