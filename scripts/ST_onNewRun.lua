@@ -3,32 +3,34 @@ function PST:onNewRun(isContinued)
         return
     end
 
-    -- Mods that are mutable before beginning a run should be set here
-    local keptMods = {
-        ["Cosmic Realignment"] = { cosmicRealignment = PST.modData.treeMods.cosmicRealignment }
-    }
-    -- Get snapshot of tree modifiers
     PST:resetMods()
-    for nodeID, node in pairs(PST.trees["global"]) do
-        if PST.modData.treeNodes["global"][nodeID] then
-            local kept = false
-            for keptName, keptVal in pairs(keptMods) do
-                if node.name == keptName then
-                    PST:addModifiers(keptVal)
-                    kept = true
-                    break
+    if not PST.modData.treeDisabled then
+        -- Mods that are mutable before beginning a run should be set here
+        local keptMods = {
+            ["Cosmic Realignment"] = { cosmicRealignment = PST.modData.treeMods.cosmicRealignment }
+        }
+        -- Get snapshot of tree modifiers
+        for nodeID, node in pairs(PST.trees["global"]) do
+            if PST.modData.treeNodes["global"][nodeID] then
+                local kept = false
+                for keptName, keptVal in pairs(keptMods) do
+                    if node.name == keptName then
+                        PST:addModifiers(keptVal)
+                        kept = true
+                        break
+                    end
+                end
+                if not kept then
+                    PST:addModifiers(node.modifiers)
                 end
             end
-            if not kept then
-                PST:addModifiers(node.modifiers)
-            end
         end
-    end
-    local currentChar = PST.charNames[1 + PST.selectedMenuChar]
-    if PST.trees[currentChar] ~= nil then
-        for nodeID, node in pairs(PST.trees[currentChar]) do
-            if PST.modData.treeNodes[currentChar][nodeID] then
-                PST:addModifiers(node.modifiers)
+        local currentChar = PST.charNames[1 + PST.selectedMenuChar]
+        if PST.trees[currentChar] ~= nil then
+            for nodeID, node in pairs(PST.trees[currentChar]) do
+                if PST.modData.treeNodes[currentChar][nodeID] then
+                    PST:addModifiers(node.modifiers)
+                end
             end
         end
     end

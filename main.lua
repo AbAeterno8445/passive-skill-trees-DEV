@@ -138,6 +138,7 @@ function PST:resetData()
 		skillPoints = 2,
 		respecPoints = 4,
 		spawnKills = 0,
+		treeDisabled = false,
 
 		-- Stores IDs of slots in the current room. Used to check if coins are given to slot entities
 		roomSlotIDs = {},

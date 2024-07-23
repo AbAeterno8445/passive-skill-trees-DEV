@@ -23,6 +23,16 @@ local treeCamera = Vector(defaultCamX, defaultCamY)
 local currentTree = "global"
 local hoveredNode = nil
 
+local helpOpen = false
+local treeControlDesc = {
+    "WASD: pan camera",
+    "Shift + V: re-center camera",
+    "E: allocate hovered node",
+    "R: respec hovered node",
+    "Q: switch to selected character's tree",
+    "Shift + Q: enable/disable tree effects next run"
+}
+
 local treeMenuOpen = false
 local oldmask = nil
 
@@ -43,6 +53,7 @@ function PST:closeTreeMenu(mute)
         sfx:Play(SoundEffect.SOUND_PAPER_OUT)
     end
     PST.cosmicRData.menuOpen = false
+    helpOpen = false
     treeMenuOpen = false
     currentTree = "global"
 end
@@ -91,10 +102,11 @@ end
 
 function PST:treeMenuRendering()
     local shiftHeld = Input.IsButtonPressed(Keyboard.KEY_LEFT_SHIFT, 0)
+    local isCharMenu = MenuManager.GetActiveMenu() == MainMenuType.CHARACTER
 
     -- Input: V key
 	if Input.IsButtonTriggered(Keyboard.KEY_V, 0) then
-		if MenuManager.GetActiveMenu() == MainMenuType.CHARACTER then
+		if isCharMenu then
 			if treeMenuOpen then
                 -- Shift + V reset camera
                 if shiftHeld then
@@ -107,6 +119,24 @@ function PST:treeMenuRendering()
 			end
 		end
 	end
+
+    if not treeMenuOpen and isCharMenu and PST.selectedMenuChar then
+        local selCharName = PST.charNames[1 + PST.selectedMenuChar]
+        local selCharData = PST.modData.charData[selCharName]
+        if selCharData then
+            local tmpStr = selCharName .. " LV " .. selCharData.level
+            tmpStr = tmpStr .. " (V to open tree)"
+            if PST.modData.treeDisabled then
+                tmpStr = tmpStr .. " (tree disabled)"
+            end
+            miniFont:DrawString(
+                tmpStr,
+                Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2,
+                Isaac.GetScreenHeight() - 18,
+                KColor(1, 0.8, 1, 1)
+            )
+        end
+    end
 
     if treeMenuOpen then
         local screenW = Isaac.GetScreenWidth()
@@ -292,7 +322,7 @@ function PST:treeMenuRendering()
                         end
                     end
                     PST:allocateNodeID(currentTree, hoveredNode.id, true)
-                    sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.75)
+                    sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.5)
                 elseif not PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 else
@@ -354,17 +384,36 @@ function PST:treeMenuRendering()
 
         -- Input: Q key (switch tree)
         if Input.IsButtonTriggered(Keyboard.KEY_Q, 0) then
-            local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
-            if PST.trees[selectedCharName] ~= nil then
-                if currentTree == "global" then
-                    currentTree = selectedCharName
+            if not shiftHeld then
+                local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
+                if PST.trees[selectedCharName] ~= nil then
+                    if currentTree == "global" then
+                        currentTree = selectedCharName
+                    else
+                        currentTree = "global"
+                    end
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
                 else
-                    currentTree = "global"
+                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
-                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
             else
-                sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+                -- Shift + Q, toggle tree
+                PST.modData.treeDisabled = not PST.modData.treeDisabled
+                PST:save()
+                if PST.modData.treeDisabled then
+                    sfx:Play(SoundEffect.SOUND_BEEP, 0.6)
+                end
             end
+        end
+
+        -- Input: H key (toggle help menu)
+        if Input.IsButtonTriggered(Keyboard.KEY_H, 0) then
+            helpOpen = not helpOpen
+        end
+
+        -- Draw help menu
+        if helpOpen then
+            drawNodeBox("Tree Controls", treeControlDesc, screenW / 2, screenH / 2)
         end
 
         -- HUD data
@@ -373,7 +422,10 @@ function PST:treeMenuRendering()
             8, 8, 1, 1, 1, 1
         )
         Isaac.RenderText(treeName, 8, 24, 1, 1, 1, 1)
-        miniFont:DrawString("WASD: pan, Shift+V: re-center, E: allocate, R: respec, Q: switch tree", 8, (screenH - 16), KColor(1, 1, 1, 1))
+        if PST.modData.treeDisabled then
+            Isaac.RenderText("Tree effects disabled", 8, 40, 1, 0.4, 0.4, 1)
+        end
+        miniFont:DrawString("H: toggle help", 16, screenH - 24, KColor(1, 1, 1, 1))
     end
 end
 
