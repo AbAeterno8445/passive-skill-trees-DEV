@@ -307,9 +307,15 @@ function PST:treeMenuRendering()
             -- Cosmic Realignment node, pick hovered character
             elseif PST.cosmicRData.hoveredCharID ~= nil then
                 if PST:cosmicRIsCharUnlocked(PST.cosmicRData.hoveredCharID) then
-                    PST:addModifiers({
-                        cosmicRealignment = { value = PST.cosmicRData.hoveredCharID, set = true }
-                    })
+                    if not (cosmicRChar == PST.cosmicRData.hoveredCharID) then
+                        PST:addModifiers({
+                            cosmicRealignment = { value = PST.cosmicRData.hoveredCharID, set = true }
+                        })
+                    else
+                        PST:addModifiers({
+                            cosmicRealignment = { value = true, set = true }
+                        })
+                    end
                     sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
                     PST.cosmicRData.menuOpen = false
                 else
