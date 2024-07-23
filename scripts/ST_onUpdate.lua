@@ -148,8 +148,9 @@ function PST:onUpdate()
 	end
 
 	-- On room clear
-	if room:IsClear() and (not clearRoomProc or PST.modData.xpObtained > 0) then
+	if room:GetAliveEnemiesCount() == 0 and (not clearRoomProc or PST.modData.xpObtained > 0) then
 		clearRoomProc = true
+		PST.modData.spawnKills = 0
 
 		local level = Game():GetLevel()
 		-- Challenge rooms
@@ -187,7 +188,6 @@ function PST:onUpdate()
 		end
 
 		-- Cosmic Realignment node
-		local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
 			-- The Forgotten, reset Keeper debuff
 			if isKeeper then
@@ -236,7 +236,7 @@ function PST:onUpdate()
 
 		-- Save data
 		PST:save()
-	elseif not room:IsClear() then
+	elseif room:GetAliveEnemiesCount() > 0 then
 		clearRoomProc = false
 	end
 end

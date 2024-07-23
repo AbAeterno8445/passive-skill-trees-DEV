@@ -96,8 +96,9 @@ function PST:resetMods()
 		-- If set to a character's PlayerType, achievements can be unlocked as if playing that character while playing a different one.
 		-- e.g. If set to PlayerType.PLAYER_CAIN, killing ??? in the chest will unlock Cain's Eye.
 		cosmicRealignment = false, ---@type boolean|PlayerType
-		-- Helper vars for Cosmic Realignment curse effects
+		-- Helper vars for Cosmic Realignment effects
 		cosmicRCache = {
+			lazarusHasDied = false,
 			blueBabyPickups = 0,
 			eveActive = false,
 			samsonDmg = 0,
@@ -123,7 +124,8 @@ function PST:resetMods()
 			TApollyonLocusts = 0,
 			TForgottenTracker = { soul = false, bone = false, keeperCoin = false, keeperHeal = false },
 			TBethanyDeadWisps = 0
-		}
+		},
+		cosmicRCompletions = {}
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -146,7 +148,7 @@ function PST:resetData()
 		-- List of applied modifiers from each tree
 		treeMods = {},
 		-- List of applied modifiers that stays fixed during a run
-		treeModSnapshot = nil,
+		treeModSnapshot = {},
 		charData = {}
 	}
 	PST:resetMods()
@@ -263,6 +265,7 @@ PST:AddCallback(ModCallbacks.MC_POST_GET_COLLECTIBLE, PST.onRollCollectible)
 PST:AddCallback(ModCallbacks.MC_USE_ITEM, PST.onUseItem)
 PST:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, PST.onNewRun)
 PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onRunOver)
+PST:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, PST.onDeath)
 -- Repentogon callbacks
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.load)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
@@ -273,6 +276,7 @@ PST:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PST.onPickup)
 PST:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, PST.applyDevilChance)
 PST:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE, PST.onGrabCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_COLLISION, PST.onPlayerCollision)
+PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_EVENT, PST.onCompletionEvent)
 
 -- First load
 PST:load()

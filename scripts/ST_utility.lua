@@ -105,6 +105,60 @@ function PST:cosmicRCharPicked(character)
 	return PST:getTreeSnapshotMod("cosmicRealignment", false) == character
 end
 
+-- Attempt to unlock an achievement associated with the currently selected Cosmic Realignment character
+function PST:cosmicRTryUnlock(unlockSource)
+	local cosmicRChar = PST:getTreeSnapshotMod("cosmicRealignment", false)
+	if type(cosmicRChar) == "number" and Isaac.GetPlayer():GetPlayerType() ~= cosmicRChar then
+		local tmpData = PST.cosmicRData.characters
+		if tmpData[cosmicRChar].unlocks ~= nil then
+			if tmpData[cosmicRChar].unlocks[unlockSource] ~= nil then
+				Isaac.GetPersistentGameData():TryUnlock(tmpData[cosmicRChar].unlocks[unlockSource])
+			end
+			if Game():IsHardMode() then
+				local tmpSource = unlockSource .. "hard"
+				if tmpData[cosmicRChar].unlocks[tmpSource] ~= nil then
+					Isaac.GetPersistentGameData():TryUnlock(tmpData[cosmicRChar].unlocks[tmpSource])
+				end
+			end
+		end
+	end
+end
+
+function PST:onCompletionEvent(event)
+	local player = Isaac.GetPlayer()
+	local pType = player:GetPlayerType()
+
+	-- Store completion
+	local tmpCompletions = PST:getTreeSnapshotMod("cosmicRCompletions", PST.modData.treeMods.cosmicRCompletions)
+	if tmpCompletions[pType] == nil then
+		tmpCompletions[pType] = {}
+	end
+	local pComp = tmpCompletions[pType]
+	pComp[event] = true
+
+	-- More specific Cosmic Realignment unlocks
+	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	if pType == PlayerType.PLAYER_LAZARUS then
+		-- Lazarus, kill Mom's Heart/It Lives! without dying in hard mode -> Bethany
+		if event == CompletionType.MOMS_HEART and not cosmicRCache.lazarusHasDied and Game():IsHardMode() then
+			Isaac.GetPersistentGameData():TryUnlock(Achievement.BETHANY)
+		end
+	end
+
+	-- Isaac + Blue Baby + Satan + Lamb, for tainted characters
+	if pComp[CompletionType.ISAAC] and pComp[CompletionType.BLUE_BABY] and
+	pComp[CompletionType.SATAN] and pComp[CompletionType.LAMB] then
+		PST:cosmicRTryUnlock("tainted1")
+	end
+
+	-- Hush + Boss Rush, for tainted characters
+	if pComp[CompletionType.HUSH] and pComp[CompletionType.BOSS_RUSH] then
+		PST:cosmicRTryUnlock("tainted2")
+	end
+
+	PST:cosmicRTryUnlock(event)
+end
+
 local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
 function PST:getRandomStat(exclude)
 	if exclude and type(exclude) == "table" then

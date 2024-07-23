@@ -107,6 +107,18 @@ function PST:onDamage(target, damage, flag, source)
     end
 end
 
+function PST:onDeath(entity)
+    -- Player death
+    local player = entity:ToPlayer()
+    if player ~= nil then
+        if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
+            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+            cosmicRCache.lazarusHasDied = true
+            PST:save()
+        end
+    end
+end
+
 function PST:onPlayerCollision(player, collider, low)
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB_B) then
