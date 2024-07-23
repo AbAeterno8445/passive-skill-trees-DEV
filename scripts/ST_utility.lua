@@ -131,11 +131,11 @@ function PST:onCompletionEvent(event)
 	if type(pType) == "number" then
 		-- Store completion
 		local tmpCompletions = PST.modData.cosmicRCompletions
-		if tmpCompletions[pType] == nil then
-			tmpCompletions[pType] = {}
+		if tmpCompletions[tostring(pType)] == nil then
+			tmpCompletions[tostring(pType)] = {}
 		end
-		local pComp = tmpCompletions[pType]
-		pComp[event] = true
+		local pComp = tmpCompletions[tostring(pType)]
+		pComp[tostring(event)] = true
 		if Game():IsHardMode() then
 			pComp[event .. "hard"] = true
 		end
@@ -150,13 +150,13 @@ function PST:onCompletionEvent(event)
 		end
 
 		-- Isaac + Blue Baby + Satan + Lamb, for tainted characters
-		if pComp[CompletionType.ISAAC] and pComp[CompletionType.BLUE_BABY] and
-		pComp[CompletionType.SATAN] and pComp[CompletionType.LAMB] then
+		if pComp[tostring(CompletionType.ISAAC)] and pComp[tostring(CompletionType.BLUE_BABY)] and
+		pComp[tostring(CompletionType.SATAN)] and pComp[tostring(CompletionType.LAMB)] then
 			PST:cosmicRTryUnlock("tainted1")
 		end
 
 		-- Hush + Boss Rush, for tainted characters
-		if pComp[CompletionType.HUSH] and pComp[CompletionType.BOSS_RUSH] then
+		if pComp[tostring(CompletionType.HUSH)] and pComp[tostring(CompletionType.BOSS_RUSH)] then
 			PST:cosmicRTryUnlock("tainted2")
 		end
 
