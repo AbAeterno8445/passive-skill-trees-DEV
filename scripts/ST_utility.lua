@@ -125,53 +125,55 @@ function PST:cosmicRTryUnlock(unlockSource)
 end
 
 function PST:onCompletionEvent(event)
-	local player = Isaac.GetPlayer()
-	local pType = player:GetPlayerType()
+	local pType = PST:getTreeSnapshotMod("cosmicRealignment", false)
 
-	-- Store completion
-	local tmpCompletions = PST.modData.cosmicRCompletions
-	if tmpCompletions[pType] == nil then
-		tmpCompletions[pType] = {}
-	end
-	local pComp = tmpCompletions[pType]
-	pComp[event] = true
-	if Game():IsHardMode() then
-		pComp[event .. "hard"] = true
-	end
-
-	-- More specific Cosmic Realignment unlocks
-	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
-	if pType == PlayerType.PLAYER_LAZARUS then
-		-- Lazarus, kill Mom's Heart/It Lives! without dying in hard mode -> Bethany
-		if event == CompletionType.MOMS_HEART and not cosmicRCache.lazarusHasDied and Game():IsHardMode() then
-			Isaac.GetPersistentGameData():TryUnlock(Achievement.BETHANY)
+	-- Cosmic Realignment unlocks
+	if type(pType) == "number" then
+		-- Store completion
+		local tmpCompletions = PST.modData.cosmicRCompletions
+		if tmpCompletions[pType] == nil then
+			tmpCompletions[pType] = {}
 		end
-	end
+		local pComp = tmpCompletions[pType]
+		pComp[event] = true
+		if Game():IsHardMode() then
+			pComp[event .. "hard"] = true
+		end
 
-	-- Isaac + Blue Baby + Satan + Lamb, for tainted characters
-	if pComp[CompletionType.ISAAC] and pComp[CompletionType.BLUE_BABY] and
-	pComp[CompletionType.SATAN] and pComp[CompletionType.LAMB] then
-		PST:cosmicRTryUnlock("tainted1")
-	end
+		-- More specific Cosmic Realignment unlocks
+		local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+		if pType == PlayerType.PLAYER_LAZARUS then
+			-- Lazarus, kill Mom's Heart/It Lives! without dying in hard mode -> Bethany
+			if event == CompletionType.MOMS_HEART and not cosmicRCache.lazarusHasDied and Game():IsHardMode() then
+				Isaac.GetPersistentGameData():TryUnlock(Achievement.BETHANY)
+			end
+		end
 
-	-- Hush + Boss Rush, for tainted characters
-	if pComp[CompletionType.HUSH] and pComp[CompletionType.BOSS_RUSH] then
-		PST:cosmicRTryUnlock("tainted2")
-	end
+		-- Isaac + Blue Baby + Satan + Lamb, for tainted characters
+		if pComp[CompletionType.ISAAC] and pComp[CompletionType.BLUE_BABY] and
+		pComp[CompletionType.SATAN] and pComp[CompletionType.LAMB] then
+			PST:cosmicRTryUnlock("tainted1")
+		end
 
-	-- All hard completion mark unlocks
-	if pComp[CompletionType.MOMS_HEART .. "hard"] and pComp[CompletionType.ISAAC .. "hard"] and
-	pComp[CompletionType.BLUE_BABY .. "hard"] and pComp[CompletionType.SATAN .. "hard"] and
-	pComp[CompletionType.LAMB .. "hard"] and pComp[CompletionType.MEGA_SATAN .. "hard"] and
-	pComp[CompletionType.BOSS_RUSH .. "hard"] and pComp[CompletionType.HUSH .. "hard"] and
-	pComp[CompletionType.ULTRA_GREED .. "hard"] and pComp[CompletionType.ULTRA_GREEDIER .. "hard"] and
-	pComp[CompletionType.DELIRIUM .. "hard"] and pComp[CompletionType.MOTHER .. "hard"] and
-	pComp[CompletionType.BEAST .. "hard"] then
-		PST:cosmicRTryUnlock("allHardMarks")
-	end
+		-- Hush + Boss Rush, for tainted characters
+		if pComp[CompletionType.HUSH] and pComp[CompletionType.BOSS_RUSH] then
+			PST:cosmicRTryUnlock("tainted2")
+		end
 
-	PST:cosmicRTryUnlock(event)
-	PST:save()
+		-- All hard completion mark unlocks
+		if pComp[CompletionType.MOMS_HEART .. "hard"] and pComp[CompletionType.ISAAC .. "hard"] and
+		pComp[CompletionType.BLUE_BABY .. "hard"] and pComp[CompletionType.SATAN .. "hard"] and
+		pComp[CompletionType.LAMB .. "hard"] and pComp[CompletionType.MEGA_SATAN .. "hard"] and
+		pComp[CompletionType.BOSS_RUSH .. "hard"] and pComp[CompletionType.HUSH .. "hard"] and
+		pComp[CompletionType.ULTRA_GREED .. "hard"] and pComp[CompletionType.ULTRA_GREEDIER .. "hard"] and
+		pComp[CompletionType.DELIRIUM .. "hard"] and pComp[CompletionType.MOTHER .. "hard"] and
+		pComp[CompletionType.BEAST .. "hard"] then
+			PST:cosmicRTryUnlock("allHardMarks")
+		end
+
+		PST:cosmicRTryUnlock(event)
+		PST:save()
+	end
 end
 
 local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}

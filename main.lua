@@ -149,7 +149,7 @@ function PST:resetData()
 		-- List of applied modifiers that stays fixed during a run
 		treeModSnapshot = {},
 		-- Completion tracker for Cosmic Realignment unlocks
-		cosmicRCompletions = {},
+		cosmicRCompletions = { [0] = {} },
 		charData = {}
 	}
 	PST:resetMods()
