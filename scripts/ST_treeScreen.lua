@@ -305,7 +305,7 @@ function PST:treeMenuRendering()
                         end
                     end
                     table.insert(tmpDescription, {
-                        "Can now unlock items as if playing as " .. tmpCharName .. ".", KColor(0.85, 0.85, 1, 1)
+                        "Can now get unlocks as if playing as " .. tmpCharName .. ".", KColor(0.85, 0.85, 1, 1)
                     })
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     descName = descName .. " (E to pick character)"
