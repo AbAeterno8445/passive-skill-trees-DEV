@@ -88,7 +88,7 @@ end
 -- Get current snapshot tree modifier
 ---@return any
 function PST:getTreeSnapshotMod(modName, default)
-    if PST.modData.treeModSnapshot == nil then
+    if PST.modData.treeModSnapshot[modName] == nil then
         return default
     end
     return PST.modData.treeModSnapshot[modName]
