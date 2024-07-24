@@ -67,7 +67,8 @@ function PST:initTreeNodes(tree)
                                 dirY = dirY,
                                 node1 = nodeID,
                                 node2 = adjacentID,
-                                sprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true)
+                                sprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true),
+                                origScale = Vector.One
                             }
                             if (adjacentNode.pos.X <= node.pos.X and adjacentNode.pos.Y > node.pos.Y) or (adjacentNode.pos.X > node.pos.X and adjacentNode.pos.Y <= node.pos.Y) then
                                 newLink.sprite.Scale.X = -1
@@ -78,6 +79,7 @@ function PST:initTreeNodes(tree)
                             if math.abs(dirX) == 2 or math.abs(dirY) == 2 then
                                 newLink.sprite.Scale.Y = newLink.sprite.Scale.Y * 2
                             end
+                            newLink.origScale = Vector(newLink.sprite.Scale.X, newLink.sprite.Scale.Y)
                             table.insert(PST.nodeLinks[tree], newLink)
                         end
                     end

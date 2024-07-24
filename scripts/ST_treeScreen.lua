@@ -19,6 +19,7 @@ cursorSprite:Play("Idle", true)
 local defaultCamX = -Isaac.GetScreenWidth() / 2
 local defaultCamY = -Isaac.GetScreenHeight() / 2
 local treeCamera = Vector(defaultCamX, defaultCamY)
+local zoomScale = 1
 
 local currentTree = "global"
 local hoveredNode = nil
@@ -27,6 +28,7 @@ local helpOpen = false
 local treeControlDesc = {
     "WASD: pan camera",
     "Shift + V: re-center camera",
+    "Z / Shift + Z: zoom in/out",
     "E: allocate hovered node",
     "R: respec hovered node",
     "Q: switch to selected character's tree",
@@ -178,8 +180,8 @@ function PST:treeMenuRendering()
 
         -- Draw node links
         for _, nodeLink in ipairs(PST.nodeLinks[currentTree]) do
-            local linkX = nodeLink.pos.X * 38 + nodeLink.dirX * 19
-            local linkY = nodeLink.pos.Y * 38 + nodeLink.dirY * 19
+            local linkX = nodeLink.pos.X * 38 * zoomScale + nodeLink.dirX * 19 * zoomScale
+            local linkY = nodeLink.pos.Y * 38 * zoomScale + nodeLink.dirY * 19 * zoomScale
 
             local hasNode1 = PST:isNodeAllocated(currentTree, nodeLink.node1)
             local hasNode2 = PST:isNodeAllocated(currentTree, nodeLink.node2)
@@ -190,6 +192,7 @@ function PST:treeMenuRendering()
             else
                 nodeLink.sprite:Play(nodeLink.type .. " Unavailable", true)
             end
+            nodeLink.sprite.Scale = nodeLink.origScale * zoomScale
             nodeLink.sprite:Render(Vector(linkX - treeCamera.X, linkY - treeCamera.Y))
         end
 
@@ -197,16 +200,21 @@ function PST:treeMenuRendering()
         local cosmicRChar = PST:getTreeMod("cosmicRealignment", false)
         hoveredNode = nil
         for _, node in pairs(PST.trees[currentTree]) do
-            local nodeX = node.pos.X * 38
-            local nodeY = node.pos.Y * 38
+            local nodeX = node.pos.X * 38 * zoomScale
+            local nodeY = node.pos.Y * 38 * zoomScale
+            node.sprite.Scale.X = zoomScale
+            node.sprite.Scale.Y = zoomScale
             node.sprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
 
             if PST:isNodeAllocated(currentTree, node.id) then
+                node.allocatedSprite.Scale.X = zoomScale
+                node.allocatedSprite.Scale.Y = zoomScale
                 node.allocatedSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
             end
 
-            if camCenterX >= nodeX - 15 and camCenterX <= nodeX + 15 and
-            camCenterY >= nodeY - 15 and camCenterY <= nodeY + 15 then
+            local nodeHalf = 15 * zoomScale
+            if camCenterX >= nodeX - nodeHalf and camCenterX <= nodeX + nodeHalf and
+            camCenterY >= nodeY - nodeHalf and camCenterY <= nodeY + nodeHalf then
                 hoveredNode = node
             end
 
@@ -214,6 +222,8 @@ function PST:treeMenuRendering()
             if node.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
                 local charName = PST.charNames[1 + cosmicRChar]
                 PST.cosmicRData.charSprite.Color.A = 1
+                PST.cosmicRData.charSprite.Scale.X = zoomScale
+                PST.cosmicRData.charSprite.Scale.Y = zoomScale
                 PST.cosmicRData.charSprite:Play(charName, true)
                 PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
             end
@@ -226,8 +236,8 @@ function PST:treeMenuRendering()
             nodeBGSprite.Scale.X = 164
             nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(#PST.cosmicRData.characters / 5)
             nodeBGSprite.Color.A = 0.9
-            local tmpBGX = PST.cosmicRData.menuX - 84
-            local tmpBGY = PST.cosmicRData.menuY + 14
+            local tmpBGX = PST.cosmicRData.menuX * zoomScale - 84
+            local tmpBGY = PST.cosmicRData.menuY * zoomScale + 14
             nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X, tmpBGY - treeCamera.Y))
 
             -- Stop node hovering while cursor is in this menu
@@ -236,15 +246,22 @@ function PST:treeMenuRendering()
                 hoveredNode = nil
             end
 
-            Isaac.RenderText("Cosmic Realignment", PST.cosmicRData.menuX - 54 - treeCamera.X, PST.cosmicRData.menuY + 20 - treeCamera.Y, 1, 1, 1, 1)
+            Isaac.RenderText(
+                "Cosmic Realignment",
+                PST.cosmicRData.menuX * zoomScale - 54 - treeCamera.X,
+                PST.cosmicRData.menuY * zoomScale + 20 - treeCamera.Y,
+                1, 1, 1, 1
+            )
 
             local i = 1
             for charID, _ in pairs(PST.cosmicRData.characters) do
                 local charName = PST.charNames[1 + charID]
-                local charX = PST.cosmicRData.menuX - 64 + ((i - 1) % 5) * 32
-                local charY = PST.cosmicRData.menuY + 52 + math.floor((i - 1) / 5) * 32
+                local charX = PST.cosmicRData.menuX * zoomScale - 64 + ((i - 1) % 5) * 32
+                local charY = PST.cosmicRData.menuY * zoomScale + 52 + math.floor((i - 1) / 5) * 32
 
                 -- Hovered
+                PST.cosmicRData.charSprite.Scale.X = 1
+                PST.cosmicRData.charSprite.Scale.Y = 1
                 if camCenterX > charX - 16 and camCenterX < charX + 16 and camCenterY > charY - 16 and camCenterY < charY + 16 then
                     PST.cosmicRData.hoveredCharID = charID
                     PST.cosmicRData.charSprite.Color.A = 1
@@ -409,6 +426,15 @@ function PST:treeMenuRendering()
         -- Input: H key (toggle help menu)
         if Input.IsButtonTriggered(Keyboard.KEY_H, 0) then
             helpOpen = not helpOpen
+        end
+
+        -- Input: Z key (zoom in/out)
+        if Input.IsButtonTriggered(Keyboard.KEY_Z, 0) then
+            if not shiftHeld then
+                zoomScale = math.min(1, zoomScale + 0.1)
+            else
+                zoomScale = math.max(0.5, zoomScale - 0.1)
+            end
         end
 
         -- Draw help menu
