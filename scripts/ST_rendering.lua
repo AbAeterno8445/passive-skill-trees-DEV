@@ -1,5 +1,5 @@
 local floatingTexts = {}
-local floatTextDelayDefault = 30
+local floatTextDelayDefault = 22
 local floatTextDelay = 0
 local floatTextQueue = {}
 

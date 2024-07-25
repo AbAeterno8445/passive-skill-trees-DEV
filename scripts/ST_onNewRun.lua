@@ -33,6 +33,15 @@ function PST:onNewRun(isContinued)
                 end
             end
         end
+
+        -- Effects that re-enable when killing Mom's Heart
+        if PST.modData.momHeartProc["isaacBlessing"] or PST.modData.momHeartProc["isaacBlessing"] == nil then
+            -- Isaac's Blessing, % all stats
+            if PST.modData.treeMods.isaacBlessing > 0 then
+                PST:addModifiers({ allstatsPerc = PST.modData.treeMods.isaacBlessing })
+                PST.modData.momHeartProc["isaacBlessing"] = false
+            end
+        end
     end
 
     local player = Isaac.GetPlayer()
@@ -43,6 +52,13 @@ function PST:onNewRun(isContinued)
 
     local itemPool = Game():GetItemPool()
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
+
+    -- Intermittent Conceptions node (Isaac's tree)
+    if PST:getTreeSnapshotMod("intermittentConceptions", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

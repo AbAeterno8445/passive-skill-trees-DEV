@@ -5,6 +5,12 @@ local json = require("json")
 include("scripts.ST_initData")
 PST:resetData()
 
+PST.debugOptions = {
+	infSP = true, -- No longer spend or require skill points for nodes
+	infRespec = true, -- No longer spend or require respec points for nodes
+	allAvailable = true, -- Makes all nodes available
+}
+
 -- Initialize character data for the given char
 ---@param charName string Character name
 ---@param forceReset? boolean Forces resetting the character's data

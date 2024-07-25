@@ -23,6 +23,17 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
 end
 
 function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
+    -- Intermittent Conceptions node (Isaac's tree)
+    if PST:getTreeSnapshotMod("intermittentConceptions", false) then
+        if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+                player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+            else
+                player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT, 0, false)
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then
@@ -64,12 +75,86 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         -- Tainted Bethany, convert passive collectibles to Lemegeton wisps
         if charge == 0 then
             player:RemoveCollectible(type)
-            Isaac.GetPlayer():AddItemWisp(type, player.Position)
+            player:AddItemWisp(type, player.Position)
         end
     end
 end
 
-function PST:onUseItem(itemType)
+function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
+    -- D6 use
+    if itemType == CollectibleType.COLLECTIBLE_D6 then
+        -- Magic Die node (Isaac's tree)
+        if PST:getTreeSnapshotMod("magicDie", false) then
+            local magicDieData = PST:getTreeSnapshotMod("magicDieData", nil)
+            if magicDieData then
+                local tmpRoomType = Game():GetRoom():GetType()
+                if tmpRoomType == RoomType.ROOM_BOSS and magicDieData.source ~= "none" then
+                    -- Boss room with existing buff, augment it by 3
+                    magicDieData.value = magicDieData.value + 3
+                else
+                    if tmpRoomType == RoomType.ROOM_ANGEL then
+                        -- Angel room buff
+                        magicDieData.source = "angel"
+                        magicDieData.value = 7
+                    elseif tmpRoomType == RoomType.ROOM_DEVIL then
+                        -- Devil room buff
+                        magicDieData.source = "devil"
+                        magicDieData.value = 6
+                    elseif tmpRoomType == RoomType.ROOM_TREASURE or tmpRoomType == RoomType.ROOM_SHOP then
+                        -- Treasure/Shop room buff
+                        magicDieData.source = "treasure"
+                        magicDieData.value = 7
+                    elseif tmpRoomType == RoomType.ROOM_BOSS then
+                        -- Boss room buff
+                        magicDieData.source = "boss"
+                        magicDieData.value = 3
+                    else
+                        -- Any other room buff
+                        magicDieData.source = "boss"
+                        magicDieData.value = 2
+                    end
+                end
+                PST:save()
+                Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL, true)
+            end
+        end
+
+        -- Mod: chance to spawn pickup when using D6
+        if 100 * math.random() < PST:getTreeSnapshotMod("d6Pickup", 0) then
+            local pickupType = { PickupVariant.PICKUP_COIN, PickupVariant.PICKUP_KEY, PickupVariant.PICKUP_BOMB, PickupVariant.PICKUP_HEART }
+            local randPickup = pickupType[math.random(#pickupType)]
+            local tmpSubtype = 1
+            if randPickup == PickupVariant.PICKUP_HEART then
+                if 100 * math.random() < 70 then
+                    tmpSubtype = HeartSubType.HEART_HALF
+                elseif 100 * math.random() < 10 then
+                    if 100 * math.random() < 70 then
+                        tmpSubtype = HeartSubType.HEART_HALF_SOUL
+                    else
+                        tmpSubtype = HeartSubType.HEART_SOUL
+                    end
+                end
+            end
+            -- Very rarely spawn a chest/locked chest
+            if 100 * math.random() < 5 then
+                if 100 * math.random() < 90 then
+                    randPickup = PickupVariant.PICKUP_CHEST
+                else
+                    randPickup = PickupVariant.PICKUP_LOCKEDCHEST
+                end
+            end
+            Game():Spawn(EntityType.ENTITY_PICKUP, randPickup, player.Position, Vector.Zero, nil, tmpSubtype, Random() + 1)
+        end
+
+        -- Mod: chance to keep half the charge when using D6
+        if 100 * math.random() < PST:getTreeSnapshotMod("d6HalfCharge", 0) then
+            if player:GetBatteryCharge(slot) == 0 then
+                SFXManager():Play(SoundEffect.SOUND_BEEP, 1)
+                player:SetActiveCharge(player:GetActiveCharge(slot) + math.ceil(player:GetActiveMaxCharge(slot) / 2), slot)
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
         -- Tainted Cain, detect craft from Bag of Crafting

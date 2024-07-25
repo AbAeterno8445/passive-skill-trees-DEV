@@ -5,8 +5,33 @@ function PST:onCache(player, cacheFlag)
     local dynamicMods = {
         damage = 0, luck = 0, speed = 0, tears = 0, shotSpeed = 0, range = 0,
         damagePerc = 0, luckPerc = 0, speedPerc = 0, tearsPerc = 0, shotSpeedPerc = 0, rangePerc = 0,
-        allstatsPerc = 0,
+        allstatsPerc = 0, allstats = 0
     }
+
+    -- Magic Die node (Isaac's tree)
+    if PST:getTreeSnapshotMod("magicDie", false) then
+        local magicDieData = PST:getTreeSnapshotMod("magicDieData", nil)
+        if magicDieData then
+            if magicDieData.source == "angel" then
+                dynamicMods.speedPerc = dynamicMods.speedPerc + magicDieData.value
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc + magicDieData.value
+            elseif magicDieData.source == "devil" then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + magicDieData.value
+                dynamicMods.rangePerc = dynamicMods.rangePerc + magicDieData.value
+            elseif magicDieData.source == "treasure" then
+                dynamicMods.shotSpeedPerc = dynamicMods.shotSpeedPerc + magicDieData.value
+                dynamicMods.luckPerc = dynamicMods.luckPerc + magicDieData.value
+            else
+                dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + magicDieData.value
+            end
+        end
+    end
+
+    -- Mod: all stats while holding Birthright
+    local tmpTreeMod = PST:getTreeSnapshotMod("allstatsBirthright", 0)
+    if tmpTreeMod and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+        dynamicMods.allstats = dynamicMods.allstats + tmpTreeMod
+    end
 
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
@@ -50,7 +75,7 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
-    local allstats = PST:getTreeSnapshotMod("allstats", 0)
+    local allstats = PST:getTreeSnapshotMod("allstats", 0) + dynamicMods.allstats
     local allstatsPerc = PST:getTreeSnapshotMod("allstatsPerc", 0) + dynamicMods.allstatsPerc
     if cacheFlag == CacheFlag.CACHE_DAMAGE then
         -- DAMAGE

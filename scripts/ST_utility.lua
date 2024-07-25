@@ -134,6 +134,13 @@ end
 function PST:onCompletionEvent(event)
 	local pType = PST:getTreeSnapshotMod("cosmicRealignment", false)
 
+	-- Mom's Heart procs
+	if event == CompletionType.MOMS_HEART then
+		for procName, _ in pairs(PST.modData.momHeartProc) do
+			PST.modData.momHeartProc[procName] = true
+		end
+	end
+
 	-- Cosmic Realignment unlocks
 	if type(pType) == "number" then
 		-- Store completion
@@ -179,8 +186,8 @@ function PST:onCompletionEvent(event)
 		end
 
 		PST:cosmicRTryUnlock(event)
-		PST:save()
 	end
+	PST:save()
 end
 
 local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}

@@ -9,6 +9,18 @@ function PST:onNewRoom()
 	local player = Isaac.GetPlayer()
 	local room = Game():GetRoom()
 
+	-- Mod: chance to gain +4% all stats when entering a room with monsters
+	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
+	if tmpTreeMod and room:GetAliveEnemiesCount() > 0 and 100 * math.random() < tmpTreeMod then
+		if not PST:getTreeSnapshotMod("allstatsRoomProc", false) then
+			PST:addModifiers({ allstatsPerc = 4, allstatsRoomProc = true }, true)
+			player:AddCacheFlags(CacheFlag.CACHE_ALL)
+		end
+	elseif PST:getTreeSnapshotMod("allstatsRoomProc", false) then
+		PST:addModifiers({ allstatsPerc = -4, allstatsRoomProc = false}, true)
+		player:AddCacheFlags(CacheFlag.CACHE_ALL)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

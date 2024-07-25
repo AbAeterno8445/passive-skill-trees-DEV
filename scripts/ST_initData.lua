@@ -41,12 +41,6 @@ PST.poopItems = {
 PST.charNames[42] = "Siren"
 PST.charNames[43] = "T. Siren"
 
-PST.debugOptions = {
-	infSP = true, -- No longer spend or require skill points for nodes
-	infRespec = true, -- No longer spend or require respec points for nodes
-	allAvailable = true, -- Makes all nodes available
-}
-
 function PST:resetMods()
 	-- List of available tree modifiers
 	PST.modData.treeMods = {
@@ -123,13 +117,18 @@ function PST:resetMods()
 			TBethanyDeadWisps = 0
 		},
         ---- Isaac's tree ----
-        isaacBlessing = 0, -- TODO
-        magicDie = false, -- TODO
-        intermittentConceptions = false, -- TODO
-        allstatsBirthright = 0, -- TODO
-        allstatsRoom = 0, -- TODO
-        d6Pickup = 0, -- TODO
-        d6HalfCharge = 0, -- TODO
+        isaacBlessing = 0, -- Mom Heart Proc
+        magicDie = false,
+        magicDieData = {
+            source = "none", -- Can be: "none" (not procced yet), "any" (unspecified room), "angel", "devil", "boss", "treasure" (for both treasure room and shop)
+            value = 0
+        },
+        intermittentConceptions = false,
+        allstatsBirthright = 0,
+        allstatsRoom = 0,
+        allstatsRoomProc = false,
+        d6Pickup = 0,
+        d6HalfCharge = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -145,9 +144,10 @@ function PST:resetData()
 		spawnKills = 0,
 		treeDisabled = false,
 
+        -- Holds relevant vars, which start at true, are set to false when a new run begins, and become true again once you defeat Mom's Heart
+        momHeartProc = {},
 		-- Stores IDs of slots in the current room. Used to check if coins are given to slot entities
 		roomSlotIDs = {},
-
 		-- List of trees with nodes and whether they're allocated
 		treeNodes = {},
 		-- List of applied modifiers from each tree
