@@ -141,7 +141,7 @@ function PST:onUpdate()
 				end
 			end
 			if not spawned then
-				Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector(0, 0), nil, 0, Random())
+				Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector(0, 0), nil, 0, Random() + 1)
 				PST.specialNodes.TJacobEsauSpawned = true
 			end
 		end

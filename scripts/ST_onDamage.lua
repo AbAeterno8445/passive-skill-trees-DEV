@@ -100,7 +100,7 @@ function PST:onDamage(target, damage, flag, source)
                     Vector(0, 0),
                     nil,
                     isBone and HeartSubType.HEART_BONE or HeartSubType.HEART_SOUL,
-                    Random()
+                    Random() + 1
                 )
             end
         end

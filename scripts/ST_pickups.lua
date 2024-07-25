@@ -93,7 +93,7 @@ function PST:prePickup(pickup, collider, low)
             if isKeeper and variant == PickupVariant.PICKUP_COIN then
                 if player:GetHearts() < player:GetMaxHearts() then
                     if 100 * math.random() < 33 then
-                        Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector(0, 0), nil, 0, Random())
+                        Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector(0, 0), nil, 0, Random() + 1)
                         player:AddHearts(-2)
                     elseif player:GetNumBlueFlies() > 0 then
                         player:AddHearts(-2)
@@ -199,7 +199,7 @@ function PST:onPickupInit(pickup)
                         pickup.Velocity,
                         nil,
                         HeartSubType.HEART_HALF,
-                        Random()
+                        Random() + 1
                     )
                 end
             end
@@ -216,7 +216,7 @@ function PST:onPickupInit(pickup)
                     pickup.Velocity,
                     nil,
                     HeartSubType.HEART_BLACK,
-                    Random()
+                    Random() + 1
                 )
             end
         end
@@ -237,7 +237,7 @@ function PST:onPickupInit(pickup)
                 pickup.Velocity,
                 nil,
                 CoinSubType.COIN_PENNY,
-                Random()
+                Random() + 1
             )
         end
     end
