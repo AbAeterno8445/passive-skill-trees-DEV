@@ -5,6 +5,7 @@ PST.nodeLinks = {}
 
 -- Include tree node banks
 include("scripts.tree_data.globalTreeBank")
+include("scripts.tree_data.isaacTreeBank")
 
 -- Sanitize json data in banks
 for treeID, tree in pairs(PST.trees) do
