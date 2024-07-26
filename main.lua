@@ -105,6 +105,7 @@ include("scripts.ST_onRunOver")
 include("scripts.ST_onNewLevel")
 include("scripts.ST_collectibles")
 include("scripts.ST_entities")
+include("scripts.ST_onAddHearts")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.save)
@@ -126,6 +127,7 @@ PST:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, PST.onDeath)
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.load)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
 PST:AddCallback(ModCallbacks.MC_POST_LEVEL_LAYOUT_GENERATED, PST.onNewLevel)
+PST:AddCallback(ModCallbacks.MC_PRE_SLOT_COLLISION, PST.preSlotCollision)
 PST:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, PST.onSlotUpdate)
 PST:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, PST.prePickup)
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PST.onPickup)
@@ -133,6 +135,7 @@ PST:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, PST.applyDevilCha
 PST:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE, PST.onGrabCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_COLLISION, PST.onPlayerCollision)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_EVENT, PST.onCompletionEvent)
+PST:AddCallback(ModCallbacks.MC_POST_PLAYER_ADD_HEARTS, PST.onAddHearts)
 
 -- First load
 PST:load()

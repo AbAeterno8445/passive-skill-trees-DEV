@@ -33,6 +33,15 @@ function PST:onCache(player, cacheFlag)
         dynamicMods.allstats = dynamicMods.allstats + tmpTreeMod
     end
 
+    -- Magdalene's Blessing node (Magdalene's tree)
+    if PST:getTreeSnapshotMod("magdaleneBlessing", false) then
+        local tmpHearts = math.ceil((player:GetMaxHearts() - 8) / 2)
+        if tmpHearts > 0 then
+            dynamicMods.speed = dynamicMods.speed - tmpHearts * 0.02
+            dynamicMods.damage = dynamicMods.damage + tmpHearts * 0.1
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB

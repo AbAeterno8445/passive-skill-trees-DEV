@@ -41,6 +41,9 @@ PST.poopItems = {
 PST.charNames[42] = "Siren"
 PST.charNames[43] = "T. Siren"
 
+-- Blood machine on floor start spawn proc
+PST.spawnBloodMachine = false
+
 function PST:resetMods()
 	-- List of available tree modifiers
 	PST.modData.treeMods = {
@@ -129,12 +132,25 @@ function PST:resetMods()
         allstatsRoomProc = false,
         d6Pickup = 0,
         d6HalfCharge = 0,
+        ---- Magdalene's tree ----
+        allstatsFullRed = 0,
+        allstatsFullRedProc = false,
+        magdaleneBlessing = false,
+        crystalHeart = false,
+        bloodDonor = false,
+        yumHeartHealHalf = 0,
+        bloodMachineSpawn = 0,
+        bloodDonationLuck = 0,
+        bloodDonationNickel = 0,
+        healOnClear = 0
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
 		quickWit = { startTime = 0, pauseTime = 0 },
 		TJacobEsauSpawned = false
 	}
+    PST.modData.firstHeartUpdate = false
+	PST.spawnBloodMachine = false
 end
 function PST:resetData()
 	PST.modData = {
@@ -144,10 +160,10 @@ function PST:resetData()
 		spawnKills = 0,
 		treeDisabled = false,
 
+        -- Used for first update on heart-related functions
+        firstHeartUpdate = false,
         -- Holds relevant vars, which start at true, are set to false when a new run begins, and become true again once you defeat Mom's Heart
         momHeartProc = {},
-		-- Stores IDs of slots in the current room. Used to check if coins are given to slot entities
-		roomSlotIDs = {},
 		-- List of trees with nodes and whether they're allocated
 		treeNodes = {},
 		-- List of applied modifiers from each tree

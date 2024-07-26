@@ -2,7 +2,6 @@
 function PST:onNewRoom()
 	PST.modData.spawnKills = 0
 	PST.modData.xpObtained = 0
-	PST.modData.roomSlotIDs = {}
 	PST.specialNodes.quickWit.pauseTime = 0
 	floatingTexts = {}
 

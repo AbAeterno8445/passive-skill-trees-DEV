@@ -153,6 +153,22 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 player:SetActiveCharge(player:GetActiveCharge(slot) + math.ceil(player:GetActiveMaxCharge(slot) / 2), slot)
             end
         end
+    -- Yum Heart use
+    elseif itemType == CollectibleType.COLLECTIBLE_YUM_HEART then
+        -- Crystal Heart node (Magdalene's tree)
+        if PST:getTreeSnapshotMod("crystalHeart", false) then
+            player:AddHearts(1)
+            if 100 * math.random() < 4 and player:GetMaxHearts() > 2 then
+                player:AddMaxHearts(-2)
+                player:AddBoneHearts(1)
+                player:AddHearts(2)
+            end
+        end
+
+        -- Mod: chance for Yum Heart to heal an additional 1/2 red heart
+        if 100 * math.random() < PST:getTreeSnapshotMod("yumHeartHealHalf", 0) then
+            player:AddHearts(1)
+        end
     end
 
     -- Cosmic Realignment node

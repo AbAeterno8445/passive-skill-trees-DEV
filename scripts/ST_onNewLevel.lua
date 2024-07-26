@@ -11,6 +11,11 @@ function PST:onNewLevel()
         end
     end
 
+    -- Mod: chance to spawn a Blood Donation Machine at the start of a floor (except first floor)
+    if floor > 1 and 100 * math.random() < PST:getTreeSnapshotMod("bloodMachineSpawn", 0) then
+        PST.spawnBloodMachine = true
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
