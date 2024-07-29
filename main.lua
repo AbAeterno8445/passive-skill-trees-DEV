@@ -106,6 +106,7 @@ include("scripts.ST_onNewLevel")
 include("scripts.ST_collectibles")
 include("scripts.ST_entities")
 include("scripts.ST_onAddHearts")
+include("scripts.ST_shops")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.save)
@@ -136,6 +137,7 @@ PST:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE, PST.onGrabCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_COLLISION, PST.onPlayerCollision)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_EVENT, PST.onCompletionEvent)
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_ADD_HEARTS, PST.onAddHearts)
+PST:AddCallback(ModCallbacks.MC_POST_PICKUP_SHOP_PURCHASE, PST.onShopPurchase)
 
 -- First load
 PST:load()

@@ -110,6 +110,14 @@ function PST:onCache(player, cacheFlag)
         tmpMult = tmpMult + dynamicMods.luckPerc / 100
         player.Luck = (player.Luck + tmpMod) * math.max(0.05, tmpMult)
 
+        -- Fickle Fortune node (Cain's tree)
+        if PST:getTreeSnapshotMod("fickleFortune", false) and (player:GetTrinket(0) ~= 0 or player:GetTrinket(1) ~= 0) then
+            -- Prevent luck from going negative while holding a trinket
+            if player.Luck < 1 then
+                player.Luck = 1
+            end
+        end
+
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- RANGE
         local tmpMod = PST:getTreeSnapshotMod("range", 0) + dynamicMods.range + allstats

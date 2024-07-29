@@ -41,8 +41,8 @@ PST.poopItems = {
 PST.charNames[42] = "Siren"
 PST.charNames[43] = "T. Siren"
 
--- Blood machine on floor start spawn proc
-PST.spawnBloodMachine = false
+-- First update when entering a new floor
+PST.floorFirstUpdate = false
 
 function PST:resetMods()
 	-- List of available tree modifiers
@@ -142,15 +142,30 @@ function PST:resetMods()
         bloodMachineSpawn = 0,
         bloodDonationLuck = 0,
         bloodDonationNickel = 0,
-        healOnClear = 0
+        healOnClear = 0,
+		---- Cain's tree ----
+		impromptuGambler = false,
+		impromptuGamblerProc = false,
+		thievery = false,
+		thieveryGreedProc = false,
+		fickleFortune = false,
+		fickleFortuneActive = false,
+		stealChance = 0,
+		trinketSpawn = 0,
+		freeMachinesChance = 0,
+		arcadeReveal = 0,
+		shopReveal = 0,
+		nickelOnClear = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
 		quickWit = { startTime = 0, pauseTime = 0 },
-		TJacobEsauSpawned = false
+		TJacobEsauSpawned = false,
+		impromptuGamblerItems = {}, -- Hold natural items in treasure room
+		fickleFortuneVanish = false
 	}
     PST.modData.firstHeartUpdate = false
-	PST.spawnBloodMachine = false
+	PST.floorFirstUpdate = false
 end
 function PST:resetData()
 	PST.modData = {

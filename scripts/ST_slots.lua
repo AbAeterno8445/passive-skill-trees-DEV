@@ -48,6 +48,31 @@ function PST:onSlotUpdate(slot)
                 local tmpPos = Isaac.GetFreeNearPosition(slot.Position, 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
             end
+        -- Crane game
+        elseif slot.Variant == SlotVariant.CRANE_GAME and spentCoins then
+            -- Impromptu Gambler node (Cain's tree)
+            if PST:getTreeSnapshotMod("impromptuGambler", false) then
+                if Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
+                    player:AddCoins(-3)
+
+                    -- Remove natural treasure room items
+                    if #PST.specialNodes.impromptuGamblerItems > 0 then
+                        for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+                            if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+                                local tmpX = math.floor(tmpEntity.Position.X / 40)
+                                local tmpY = math.floor(tmpEntity.Position.Y / 40)
+                                for _, itemPos in ipairs(PST.specialNodes.impromptuGamblerItems) do
+                                    if tmpX == itemPos.X and tmpY == itemPos.Y then
+                                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+                                        tmpEntity:Remove()
+                                    end
+                                end
+                            end
+                        end
+                        PST.specialNodes.impromptuGamblerItems = {}
+                    end
+                end
+            end
         else
             -- Beggar luck mod
             local beggarLuck = PST:getTreeSnapshotMod("beggarLuck", 0)
@@ -55,6 +80,17 @@ function PST:onSlotUpdate(slot)
                 if spentCoins or spentHearts or spentKeys or spentBombs then
                     PST:addModifiers({ luck = beggarLuck }, true)
                 end
+            end
+        end
+
+        -- Machine-specific
+        if spentCoins and (slot.Variant == SlotVariant.FORTUNE_TELLING_MACHINE or slot.Variant == SlotVariant.SHOP_RESTOCK_MACHINE or
+        slot.Variant == SlotVariant.SLOT_MACHINE or slot.Variant == SlotVariant.CRANE_GAME) then
+            -- Mod: chance for machines that use coins to cost nothing on use
+            if 100 * math.random() < PST:getTreeSnapshotMod("freeMachinesChance", 0) then
+                player:AddCoins(lastResources.coins - player:GetNumCoins())
+                PST:createFloatTextFX("Free use!", Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 50, true)
+                SFXManager():Play(SoundEffect.SOUND_PENNYPICKUP)
             end
         end
     end

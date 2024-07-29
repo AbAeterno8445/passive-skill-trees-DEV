@@ -6,6 +6,14 @@ function PST:onDamage(target, damage, flag, source)
 
     -- Player gets hit
     if player then
+        -- Fickle Fortune node (Cain's tree)
+        if PST:getTreeSnapshotMod("fickleFortune", false) and 100 * math.random() < 7 then
+            if 100 * math.random() < 7 then
+                PST.specialNodes.fickleFortuneVanish = true
+            end
+            player:DropTrinket(player.Position, true)
+        end
+
         -- Cosmic Realignment node
 	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
             -- Samson, -0.15 damage when hit, up to -0.9
@@ -57,27 +65,37 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
     end
+end
 
-    -- Enemy dies
-	if target:IsVulnerableEnemy() and target:IsActiveEnemy() and target.HitPoints <= damage then
+function PST:onDeath(entity)
+    local player = entity:ToPlayer()
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+    if player ~= nil then
+        -- Player death
+        if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
+            cosmicRCache.lazarusHasDied = true
+            PST:save()
+        end
+    elseif entity:IsActiveEnemy(true) then
+        -- Enemy death
         local addXP = false
-		if target.SpawnerType ~= 0 then
-			if PST.modData.spawnKills < 10 then
-				PST.modData.spawnKills = PST.modData.spawnKills + 1
+        if entity.SpawnerType ~= 0 then
+            if PST.modData.spawnKills < 10 then
+                PST.modData.spawnKills = PST.modData.spawnKills + 1
                 addXP = true
-			end
-		else
+            end
+        else
             addXP = true
-		end
+        end
 
         if addXP then
             local mult = 1
-            if target:IsBoss() then
+            if entity:IsBoss() then
                 mult = mult + PST:getTreeSnapshotMod("xpgainBoss", 0) / 100
             else
                 mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
             end
-            PST:addTempXP(math.max(1, math.floor(mult * target.MaxHitPoints / 2)), true)
+            PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
         -- Cosmic Realignment node
@@ -91,30 +109,18 @@ function PST:onDamage(target, damage, flag, source)
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
             -- Tainted Forgotten, bosses drop an additional soul heart
-            if target:IsBoss() then
+            if entity:IsBoss() then
                 local isBone = 100 * math.random() < 50
                 Game():Spawn(
                     EntityType.ENTITY_PICKUP,
                     PickupVariant.PICKUP_HEART,
-                    target.Position,
-                    Vector(0, 0),
+                    entity.Position,
+                    Vector.Zero,
                     nil,
                     isBone and HeartSubType.HEART_BONE or HeartSubType.HEART_SOUL,
                     Random() + 1
                 )
             end
-        end
-    end
-end
-
-function PST:onDeath(entity)
-    -- Player death
-    local player = entity:ToPlayer()
-    if player ~= nil then
-        if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
-            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
-            cosmicRCache.lazarusHasDied = true
-            PST:save()
         end
     end
 end

@@ -44,6 +44,8 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    PST.floorFirstUpdate = true
+
     local player = Isaac.GetPlayer()
 
     PST.modData.treeModSnapshot = PST.modData.treeMods

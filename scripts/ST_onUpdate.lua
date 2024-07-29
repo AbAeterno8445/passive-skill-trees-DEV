@@ -12,14 +12,65 @@ function PST:onUpdate()
 		PST.modData.firstHeartUpdate = true
 	end
 
-	-- Mod: spawn Blood Donation Machine on floor start (proc)
-	if PST.spawnBloodMachine then
-		local tmpPos = room:GetCenterPos()
-        tmpPos.Y = tmpPos.Y - 40
-        Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.BLOOD_DONATION_MACHINE, tmpPos, Vector.Zero, nil, 0, Random() + 1)
-		Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector(0, 0), nil, 0, 0)
-		SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND, 0.7)
-		PST.spawnBloodMachine = false
+	-- First update when entering floor
+	if PST.floorFirstUpdate then
+		PST.floorFirstUpdate = false
+
+		local level = Game():GetLevel()
+		-- Mod: chance to reveal the arcade room's location if it is present
+		if 100 * math.random() < PST:getTreeSnapshotMod("arcadeReveal", 0) then
+			local arcadeIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ARCADE, false, RNG())
+			local arcadeRoom = level:GetRoomByIdx(arcadeIdx)
+			if arcadeRoom then
+				arcadeRoom.DisplayFlags = 1 << 2
+				level:UpdateVisibility()
+			end
+		end
+
+		-- Mod: chance to reveal the shop room's location if it is present
+		if 100 * math.random() < PST:getTreeSnapshotMod("shopReveal", 0) then
+			local shopIdx = level:QueryRoomTypeIndex(RoomType.ROOM_SHOP, false, RNG())
+			local shopRoom = level:GetRoomByIdx(shopIdx)
+			if shopRoom then
+				shopRoom.DisplayFlags = 1 << 2
+				level:UpdateVisibility()
+			end
+		end
+
+		-- After first floor
+		if level:GetStage() > 1 then
+			-- Mod: chance to reveal map
+			if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) then
+				level:ShowMap()
+				PST:createFloatTextFX("Map revealed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+			end
+
+			-- Mod: chance to spawn a Blood Donation Machine at the start of a floor
+			if 100 * math.random() < PST:getTreeSnapshotMod("bloodMachineSpawn", 0) then
+				local tmpPos = room:GetCenterPos()
+				tmpPos.Y = tmpPos.Y - 40
+				Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.BLOOD_DONATION_MACHINE, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND, 0.7)
+			end
+
+			-- Mod: chance to spawn a random trinket at the start of a floor
+			if 100 * math.random() < PST:getTreeSnapshotMod("trinketSpawn", 0) then
+				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+       			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, Game():GetItemPool():GetTrinket(), Random() + 1)
+			end
+		end
+	end
+
+	-- Fickle Fortune node (Cain's tree)
+	if PST:getTreeSnapshotMod("fickleFortune", false) then
+		-- +7% luck while holding a trinket
+		local hasTrinket = player:GetTrinket(0) ~= 0 or player:GetTrinket(1) ~= 0
+		if not PST:getTreeSnapshotMod("fickleFortuneActive", false) and hasTrinket then
+			PST:addModifiers({ luckPerc = 7, fickleFortuneActive = true }, true)
+		elseif PST:getTreeSnapshotMod("fickleFortuneActive", false) and not hasTrinket then
+			PST:addModifiers({ luckPerc = -7, fickleFortuneActive = false }, true)
+		end
 	end
 
 	-- Cosmic Realignment node
@@ -81,7 +132,7 @@ function PST:onUpdate()
 				end
 			end
 			if not spawned then
-				Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector(0, 0), nil, 0, Random() + 1)
+				Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1)
 				PST.specialNodes.TJacobEsauSpawned = true
 			end
 		end
@@ -89,7 +140,6 @@ function PST:onUpdate()
 
 	-- On room clear
 	if room:GetAliveEnemiesCount() == 0 and (not clearRoomProc or PST.modData.xpObtained > 0) then
-		clearRoomProc = true
 		PST.modData.spawnKills = 0
 
 		local level = Game():GetLevel()
@@ -104,38 +154,60 @@ function PST:onUpdate()
 			end
 		-- Boss rooms
 		elseif room:GetType() == RoomType.ROOM_BOSS then
-			-- Respec chance
-			local relearningMod = PST:getTreeSnapshotMod("relearning", false)
-			local respecChance = PST:getTreeSnapshotMod("respecChance", 15)
-
-			if not relearningMod then
-				local tmpRespecs = 0
-				while (respecChance > 0) do
-					if 100 * math.random() < respecChance then
-						tmpRespecs = tmpRespecs + 1
-					end
-					respecChance = respecChance - 100
-				end
-				if tmpRespecs > 0 then
-					PST:createFloatTextFX("+" .. tmpRespecs .. " Respec(s)", Vector(0, 0), Color(1, 1, 1, 1), 0.12, 90, true)
-					sfx:Play(SoundEffect.SOUND_THUMBSUP)
-					PST.modData.respecPoints = PST.modData.respecPoints + tmpRespecs
-				end
+			-- Thievery node Greed proc (Cain's tree)
+			if PST:getTreeSnapshotMod("thieveryGreedProc", false) then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+				Game():Spawn(EntityType.ENTITY_GREED, 0, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
+				PST:addModifiers({ thieveryGreedProc = false }, true)
 			else
-				-- Relearning node, count as completed floor
-				PST:addModifiers({ relearningFloors = 1 }, true)
+				-- Respec chance
+				local respecChance = PST:getTreeSnapshotMod("respecChance", 15)
+				if not PST:getTreeSnapshotMod("relearning", false) then
+					local tmpRespecs = 0
+					while (respecChance > 0) do
+						if 100 * math.random() < respecChance then
+							tmpRespecs = tmpRespecs + 1
+						end
+						respecChance = respecChance - 100
+					end
+					if tmpRespecs > 0 then
+						PST:createFloatTextFX("+" .. tmpRespecs .. " Respec(s)", Vector.Zero, Color(1, 1, 1, 1), 0.12, 90, true)
+						sfx:Play(SoundEffect.SOUND_THUMBSUP)
+						PST.modData.respecPoints = PST.modData.respecPoints + tmpRespecs
+					end
+				else
+					-- Relearning node, count as completed floor
+					PST:addModifiers({ relearningFloors = 1 }, true)
+				end
 			end
 		end
 
-		-- Mod: chance to heal 1/2 red heart when clearing a room
-		local tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
-		if room:GetType() == RoomType.ROOM_BOSS then
-			tmpChance = tmpChance * 2
-		end
-		if 100 * math.random() < tmpChance then
-			player:AddHearts(1)
-			if room:GetType() == RoomType.ROOM_BOSS then
+		-- Once-per-clear effects
+		if not clearRoomProc and PST.modData.xpObtained > 0 then
+			local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
+
+			-- Mod: chance to heal 1/2 red heart when clearing a room
+			local tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
+			if isBossRoom then
+				tmpChance = tmpChance * 2
+			end
+			if 100 * math.random() < tmpChance then
 				player:AddHearts(1)
+				if room:GetType() == RoomType.ROOM_BOSS then
+					player:AddHearts(1)
+				end
+			end
+
+			-- Mod: chance to spawn an additional nickel when clearing a room
+			tmpChance = PST:getTreeSnapshotMod("nickelOnClear", 0)
+			if isBossRoom then
+				tmpChance = tmpChance * 2
+			end
+			if 100 * math.random() < tmpChance then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
 			end
 		end
 
@@ -188,6 +260,7 @@ function PST:onUpdate()
 
 		-- Save data
 		PST:save()
+		clearRoomProc = true
 	elseif room:GetAliveEnemiesCount() > 0 then
 		clearRoomProc = false
 	end

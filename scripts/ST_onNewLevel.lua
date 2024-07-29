@@ -2,18 +2,11 @@ function PST:onNewLevel()
     local level = Game():GetLevel()
     local floor = level:GetStage()
 
-    -- Chance to reveal map mod
-    local mappingChance = PST:getTreeSnapshotMod("mapChance", 0)
-    if mappingChance > 0 then
-        if floor > 1 and 100 * math.random() < mappingChance then
-            level:ShowMap()
-            PST:createFloatTextFX("Map revealed!", Vector(0, 0), Color(1, 1, 1, 1), 0.12, 70, true)
-        end
-    end
+    PST.floorFirstUpdate = true
 
-    -- Mod: chance to spawn a Blood Donation Machine at the start of a floor (except first floor)
-    if floor > 1 and 100 * math.random() < PST:getTreeSnapshotMod("bloodMachineSpawn", 0) then
-        PST.spawnBloodMachine = true
+    -- Impromptu Gambler node (Cain's tree)
+	if PST:getTreeSnapshotMod("impromptuGambler", false) then
+		PST:addModifiers({ impromptuGamblerProc = false }, true)
     end
 
     -- Cosmic Realignment node

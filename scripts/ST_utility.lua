@@ -37,7 +37,7 @@ function PST:addTempXP(xp, showText)
         if xpGain % 1 == 0 then
             xpStr = string.format("+%d xp", xpGain)
         end
-		PST:createFloatTextFX(xpStr, Vector(0, 0), Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
+		PST:createFloatTextFX(xpStr, Vector.Zero, Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
 	end
 end
 
@@ -52,7 +52,7 @@ function PST:addXP(xp, showText)
         if xp % 1 == 0 then
             xpStr = string.format("+%d xp", xp)
         end
-		PST:createFloatTextFX(xpStr, Vector(0, 0), Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
+		PST:createFloatTextFX(xpStr, Vector.Zero, Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
 	end
 
 	-- Level up
@@ -72,7 +72,7 @@ function PST:addXP(xp, showText)
 		-- Add overflowing xp to next level, capped at 50%
 		charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
 
-		PST:createFloatTextFX("Level up!", Vector(0, 0), Color(1, 1, 1, 0.7), 0.17, 100, true)
+		PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
 	end
 end
 

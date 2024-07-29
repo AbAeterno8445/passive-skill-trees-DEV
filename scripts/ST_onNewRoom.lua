@@ -20,6 +20,30 @@ function PST:onNewRoom()
 		player:AddCacheFlags(CacheFlag.CACHE_ALL)
 	end
 
+	-- Impromptu Gambler node (Cain's tree)
+	if PST:getTreeSnapshotMod("impromptuGambler", false) and room:GetType() == RoomType.ROOM_TREASURE then
+		if not PST:getTreeSnapshotMod("impromptuGamblerProc", false) then
+			PST.specialNodes.impromptuGamblerItems = {}
+			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+				if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+					table.insert(
+						PST.specialNodes.impromptuGamblerItems,
+						Vector(math.floor(tmpEntity.Position.X / 40), math.floor(tmpEntity.Position.Y / 40))
+					)
+				end
+			end
+			PST:addModifiers({ impromptuGamblerProc = true }, true)
+
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 80)
+			local newCrane = Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+			SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND, 0.7)
+
+			local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_NULL, false, Random() + 1)
+			newCrane:ToSlot():SetPrizeCollectible(newItem)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
@@ -125,7 +149,7 @@ function PST:onNewRoom()
 							entity:Remove()
 						end
 					end
-					PST:createFloatTextFX("Curse of T. Isaac", Vector(0, 0), Color(1, 0.4, 0.4, 1), 0.09, 120, true)
+					PST:createFloatTextFX("Curse of T. Isaac", Vector.Zero, Color(1, 0.4, 0.4, 1), 0.09, 120, true)
 					SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
 					cosmicRCache.TIsaacProc = true
 					PST:save()

@@ -157,7 +157,7 @@ function PST:treeMenuRendering()
         end
 
         treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
-        treeBGSprite:Render(Vector(0, 0))
+        treeBGSprite:Render(Vector.Zero)
 
         -- Camera management & tree navigation
         local cameraSpeed = 3
