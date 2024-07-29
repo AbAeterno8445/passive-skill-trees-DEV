@@ -149,7 +149,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Mod: chance to keep half the charge when using D6
         if 100 * math.random() < PST:getTreeSnapshotMod("d6HalfCharge", 0) then
             if player:GetBatteryCharge(slot) == 0 then
-                SFXManager():Play(SoundEffect.SOUND_BEEP, 1)
+                SFXManager():Play(SoundEffect.SOUND_BEEP)
                 player:SetActiveCharge(player:GetActiveCharge(slot) + math.ceil(player:GetActiveMaxCharge(slot) / 2), slot)
             end
         end
@@ -168,6 +168,12 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Mod: chance for Yum Heart to heal an additional 1/2 red heart
         if 100 * math.random() < PST:getTreeSnapshotMod("yumHeartHealHalf", 0) then
             player:AddHearts(1)
+        end
+    -- Book of Belial
+    elseif itemType == CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL then
+        -- Dark Heart node (Judas' tree)
+        if PST:getTreeSnapshotMod("darkHeart", false) and not PST:getTreeSnapshotMod("darkHeartBelial", false) then
+            PST:addModifiers({ darkHeartBelial = true }, true)
         end
     end
 

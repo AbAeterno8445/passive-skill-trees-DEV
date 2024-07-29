@@ -61,6 +61,16 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
     end
 
+    -- Dark Heart node (Judas' tree)
+    if PST:getTreeSnapshotMod("darkHeart", false) then
+        player:AddBlackHearts(2)
+    end
+
+    -- Inner Demon node (Judas' tree)
+    if PST:getTreeSnapshotMod("innerDemon", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

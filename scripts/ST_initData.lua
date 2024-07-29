@@ -156,6 +156,19 @@ function PST:resetMods()
 		arcadeReveal = 0,
 		shopReveal = 0,
 		nickelOnClear = 0,
+		---- Judas' Tree ----
+		darkHeart = false,
+		darkHeartActive = false,
+		darkHeartBelial = false,
+		innerDemon = false,
+		innerDemonActive = false,
+		sacrificeDarkness = false,
+		blackHeartSacrifices = 0,
+		darkJudasSpeed = 0,
+		darkJudasShotspeedRange = 0,
+		belialBossHitCharge = 0,
+		belialChargesGained = 0,
+		lostBlackHeartsLuck = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

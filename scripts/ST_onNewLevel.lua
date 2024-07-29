@@ -9,6 +9,11 @@ function PST:onNewLevel()
 		PST:addModifiers({ impromptuGamblerProc = false }, true)
     end
 
+    -- Sacrifice Darkness node (Judas' tree)
+    if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
+        PST:addModifiers({ blackHeartSacrifices = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

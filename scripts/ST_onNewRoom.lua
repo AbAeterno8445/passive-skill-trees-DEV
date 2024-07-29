@@ -44,6 +44,16 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Dark Heart node (Judas' tree)
+	if PST:getTreeSnapshotMod("darkHeart", false) and PST:getTreeSnapshotMod("darkHeartBelial", false) then
+		PST:addModifiers({ darkHeartBelial = false }, true)
+	end
+
+	-- Reset book of belial charges gained counter
+    if PST:getTreeSnapshotMod("belialChargesGained", 0) > 0 then
+        PST:addModifiers({ belialChargesGained = { value = 0, set = true } }, true)
+    end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

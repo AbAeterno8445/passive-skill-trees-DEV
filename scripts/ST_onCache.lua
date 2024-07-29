@@ -42,6 +42,20 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- Sacrifice Darkness node (Judas' tree)
+    if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + PST:getTreeSnapshotMod("blackHeartSacrifices", 0)
+    end
+
+    -- Dark Judas mods
+    if player:GetPlayerType() == PlayerType.PLAYER_BLACKJUDAS then
+        -- Speed
+        dynamicMods.speedPerc = dynamicMods.speedPerc + PST:getTreeSnapshotMod("darkJudasSpeed", 0)
+        -- Shot speed + range
+        dynamicMods.shotSpeedPerc = dynamicMods.shotSpeedPerc + PST:getTreeSnapshotMod("darkJudasShotspeedRange", 0)
+        dynamicMods.rangePerc = dynamicMods.rangePerc + PST:getTreeSnapshotMod("darkJudasShotspeedRange", 0)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB

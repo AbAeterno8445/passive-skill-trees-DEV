@@ -43,6 +43,18 @@ function PST:onDamage(target, damage, flag, source)
         end
     else
         local tmpPlayer = Isaac.GetPlayer()
+
+        if target:IsBoss() then
+            -- Mod: chance for Book of Belial to gain a charge when hitting a boss
+            if tmpPlayer:GetActiveCharge(0) < tmpPlayer:GetActiveMaxCharge(0) and tmpPlayer:GetActiveItem(0) == CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL then
+                if PST:getTreeSnapshotMod("belialChargesGained", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("belialBossHitCharge", 0) then
+                    PST:addModifiers({ belialChargesGained = 1 }, true)
+                    tmpPlayer:SetActiveCharge(tmpPlayer:GetActiveCharge(0) + 1, 0)
+                    SFXManager():Play(SoundEffect.SOUND_BEEP)
+                end
+            end
+        end
+
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_AZAZEL_B) then
             -- Tainted Azazel, -40% damage dealt to enemies far away from you, based on your range stat

@@ -1,5 +1,7 @@
 local sfx = SFXManager()
 
+local blackHeartTracker = 0
+
 -- On update
 local clearRoomProc = false
 function PST:onUpdate()
@@ -72,6 +74,32 @@ function PST:onUpdate()
 			PST:addModifiers({ luckPerc = -7, fickleFortuneActive = false }, true)
 		end
 	end
+
+	-- Dark Heart node (Judas' tree)
+	if PST:getTreeSnapshotMod("darkHeart", false) then
+		-- -6% all stats while you have no black hearts. Book of Belial removes this reduction for the current room
+		if not PST:getTreeSnapshotMod("darkHeartActive", false) and not PST:getTreeSnapshotMod("darkHeartBelial", false) and player:GetBlackHearts() == 0 then
+			PST:addModifiers({ allstatsPerc = -6, darkHeartActive = true }, true)
+		elseif PST:getTreeSnapshotMod("darkHeartActive", false) and (player:GetBlackHearts() > 0 or PST:getTreeSnapshotMod("darkHeartBelial", false)) then
+			PST:addModifiers({ allstatsPerc = 6, darkHeartActive = false }, true)
+		end
+	end
+
+	-- Inner Demon node (Judas' tree)
+	if PST:getTreeSnapshotMod("innerDemon", false) then
+		-- -15% damage as Dark Judas and start with 1 black heart instead
+		if not PST:getTreeSnapshotMod("innerDemonActive") and player:GetPlayerType() == PlayerType.PLAYER_BLACKJUDAS then
+			PST:addModifiers({ damagePerc = -15, innerDemonActive = true }, true)
+			player:AddSoulHearts(-2)
+		end
+	end
+
+	-- Mod: +luck whenever you lose black hearts
+	local lostBlackHeartsLuck = PST:getTreeSnapshotMod("lostBlackHeartsLuck", 0)
+	if lostBlackHeartsLuck > 0 and player:GetBlackHearts() < blackHeartTracker then
+		PST:addModifiers({ luck = lostBlackHeartsLuck }, true)
+	end
+	blackHeartTracker = player:GetBlackHearts()
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
