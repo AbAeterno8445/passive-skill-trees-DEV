@@ -190,14 +190,32 @@ function PST:resetMods()
 		thePoopAllStatsPerc = 0,
 		poopAllStatsProc = false,
 		soulHeartTearsRange = 0,
-		soulHeartTearsRangeTotal = 0
+		soulHeartTearsRangeTotal = 0,
+		---- Eve's Tree ----
+		heartless = false,
+		heartlessTotal = 0,
+		darkProtection = false,
+		darkProtectionProc = false,
+		carrionAvian = false,
+		carrionAvianTempBonus = 0,
+		deadBirdNullify = 0,
+		activeDeadBirdDamage = 0,
+		activeDeadBirdSpeed = 0,
+		activeDeadBirdTears = 0,
+		activeDeadBirdRange = 0,
+		activeDeadBirdShotspeed = 0,
+		deadBirdInheritDamage = 0,
+		luckOnClearBelowFull = 0,
+		allStatsOneRed = 0,
+		allStatsOneRedActive = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
 		quickWit = { startTime = 0, pauseTime = 0 },
 		TJacobEsauSpawned = false,
 		impromptuGamblerItems = {}, -- Hold natural items in treasure room
-		fickleFortuneVanish = false
+		fickleFortuneVanish = false,
+		deadBirdActive = false
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

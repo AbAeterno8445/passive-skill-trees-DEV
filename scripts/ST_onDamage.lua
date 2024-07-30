@@ -41,6 +41,11 @@ function PST:onDamage(target, damage, flag, source)
             cosmicRCache.TEdenDebuff[tmpStat .. "Perc"] = math.floor(-25 * math.random())
             player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
         end
+
+        -- Mod: chance to nullify hit that wakes dead bird
+        if not PST.specialNodes.deadBirdActive and 100 * math.random() < PST:getTreeSnapshotMod("deadBirdNullify", 0) then
+            return { Damage = 0 }
+        end
     else
         local tmpPlayer = Isaac.GetPlayer()
 
@@ -51,6 +56,28 @@ function PST:onDamage(target, damage, flag, source)
                     PST:addModifiers({ belialChargesGained = 1 }, true)
                     tmpPlayer:SetActiveCharge(tmpPlayer:GetActiveCharge(0) + 1, 0)
                     SFXManager():Play(SoundEffect.SOUND_BEEP)
+                end
+            end
+        end
+
+        -- Carrion Avian node (Eve's tree)
+        local tmpFamiliar = source.Entity:ToFamiliar()
+        if PST:getTreeSnapshotMod("carrionAvian", false) and tmpFamiliar then
+            if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
+                -- +0.15 damage when dead bird kills an enemy, up to +3. Permanent +0.6 if boss
+                if target.HitPoints <= damage then
+                    if not target:IsBoss() then
+                        if PST:getTreeSnapshotMod("carrionAvianTempBonus", 0) < 3 then
+                            PST:addModifiers({ damage = 0.15, carrionAvianTempBonus = 0.15 }, true)
+                        end
+                    else
+                        PST:addModifiers({ damage = 0.6 }, true)
+                    end
+                end
+
+                local birdInheritDmg = PST:getTreeSnapshotMod("deadBirdInheritDamage", 0)
+                if birdInheritDmg > 0 then
+                    return { Damage = damage * (1 + birdInheritDmg / 100) }
                 end
             end
         end

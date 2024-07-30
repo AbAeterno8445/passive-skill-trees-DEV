@@ -24,6 +24,14 @@ function PST:onNewLevel()
         }, true)
     end
 
+    -- Carrion Avian node (Eve's tree)
+    if PST:getTreeSnapshotMod("carrionAvian", false) then
+        PST:addModifiers({
+            damage = -PST:getTreeSnapshotMod("carrionAvianTempBonus", 0),
+            carrionAvianTempBonus = { value = 0, set = true }
+        }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

@@ -15,6 +15,24 @@ function PST:onAddHearts(player, amount, healthType, optional)
         player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED)
     end
 
+	-- Dark protection node (Eve's tree)
+	if PST:getTreeSnapshotMod("darkProtection", false) and not PST:getTreeSnapshotMod("darkProtectionProc", false) and player:GetHearts() <= 2 then
+		PST:addModifiers({ darkProtectionProc = true }, true)
+		SFXManager():Play(SoundEffect.SOUND_EMPRESS)
+		PST:createFloatTextFX("Dark protection!", Vector.Zero, Color(0.8, 0.4, 1, 1), 0.12, 70, true)
+		player:AddBlackHearts(2)
+	end
+
+	-- Mod: all stats while you have only 1 red heart
+	local tmpBonus = PST:getTreeSnapshotMod("allstatsOneRed", 0)
+	if tmpBonus > 0 then
+		if player:GetHearts() == 2 and not PST:getTreeSnapshotMod("allStatsOneRedActive", false) then
+			PST:addModifiers({ allstats = tmpBonus, allStatsOneRedActive = true }, true)
+		elseif player:GetHearts() ~= 2 and PST:getTreeSnapshotMod("allStatsOneRedActive", false) then
+			PST:addModifiers({ allstats = -tmpBonus, allStatsOneRedActive = false }, true)
+		end
+	end
+
     -- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B

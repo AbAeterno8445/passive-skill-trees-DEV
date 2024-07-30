@@ -1,4 +1,20 @@
 function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, seed)
+    if Game():GetRoom():GetFrameCount() > 1 then
+        -- Dead bird spawn, set active
+        if type == EntityType.ENTITY_FAMILIAR and variant == FamiliarVariant.DEAD_BIRD and not PST.specialNodes.deadBirdActive then
+            PST.specialNodes.deadBirdActive = true
+
+            -- Active dead bird mods
+            PST:addModifiers({
+                damage = PST:getTreeSnapshotMod("activeDeadBirdDamage", 0),
+                speed = PST:getTreeSnapshotMod("activeDeadBirdSpeed", 0),
+                range = PST:getTreeSnapshotMod("activeDeadBirdRange", 0),
+                tears = PST:getTreeSnapshotMod("activeDeadBirdTears", 0),
+                shotSpeed = PST:getTreeSnapshotMod("activeDeadBirdShotspeed", 0)
+            }, true)
+        end
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY) then
         local player = Isaac.GetPlayer()

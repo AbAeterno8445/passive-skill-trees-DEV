@@ -63,6 +63,18 @@ function PST:onNewRoom()
 		}, true)
 	end
 
+	-- Active dead bird mods
+	if PST.specialNodes.deadBirdActive then
+		PST:addModifiers({
+			damage = -PST:getTreeSnapshotMod("activeDeadBirdDamage", 0),
+			speed = -PST:getTreeSnapshotMod("activeDeadBirdSpeed", 0),
+			range = -PST:getTreeSnapshotMod("activeDeadBirdRange", 0),
+			tears = -PST:getTreeSnapshotMod("activeDeadBirdTears", 0),
+			shotSpeed = -PST:getTreeSnapshotMod("activeDeadBirdShotspeed", 0)
+		}, true)
+		PST.specialNodes.deadBirdActive = false
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

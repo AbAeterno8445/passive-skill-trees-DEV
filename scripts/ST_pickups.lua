@@ -186,6 +186,14 @@ function PST:onPickup(pickup, collider, low)
                     }, true)
                 end
             end
+
+            -- Heartless node (Eve's tree)
+            if PST:getTreeSnapshotMod("heartless", false) then
+                local heartlessTotal = PST:getTreeSnapshotMod("heartlessTotal", 0)
+                if heartlessTotal > 0 then
+                    PST:addModifiers({ allstatsPerc = -heartlessTotal / 2, heartlessTotal = -heartlessTotal / 2 }, true)
+                end
+            end
         end
 
         -- Cosmic Realignment node

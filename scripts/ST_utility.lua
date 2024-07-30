@@ -139,6 +139,11 @@ function PST:onCompletionEvent(event)
 		for procName, _ in pairs(PST.modData.momHeartProc) do
 			PST.modData.momHeartProc[procName] = true
 		end
+
+		-- Dark Protection node (Eve's tree)
+		if PST:getTreeSnapshotMod("darkProtection", false) then
+			PST:addModifiers({ darkProtectionProc = false }, true)
+		end
 	end
 
 	-- Cosmic Realignment unlocks

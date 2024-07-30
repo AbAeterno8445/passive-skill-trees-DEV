@@ -248,6 +248,22 @@ function PST:onUpdate()
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
 			end
+
+			-- Heartless node (Eve's tree)
+			if PST:getTreeSnapshotMod("heartless", false) then
+				-- +0.5% all stats on room clear, up to 10%
+				local tmpTotal = PST:getTreeSnapshotMod("heartlessTotal", 0)
+				if tmpTotal < 10 then
+					local tmpAdd = math.min(0.5, 10 - tmpTotal)
+					PST:addModifiers({ allstatsPerc = tmpAdd, heartlessTotal = tmpAdd }, true)
+				end
+			end
+
+			-- Mod: +luck when clearing a room below full red hearts
+			local tmpLuck = PST:getTreeSnapshotMod("luckOnClearBelowFull", 0)
+			if tmpLuck > 0 and player:GetHearts() < player:GetEffectiveMaxHearts() then
+				PST:addModifiers({ luck = tmpLuck }, true)
+			end
 		end
 
 		-- Cosmic Realignment node
