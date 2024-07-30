@@ -1,6 +1,7 @@
 local sfx = SFXManager()
 
 local blackHeartTracker = 0
+local soulHeartTracker = 0
 
 -- On update
 local clearRoomProc = false
@@ -17,6 +18,8 @@ function PST:onUpdate()
 	-- First update when entering floor
 	if PST.floorFirstUpdate then
 		PST.floorFirstUpdate = false
+		blackHeartTracker = 0
+		soulHeartTracker = 0
 
 		local level = Game():GetLevel()
 		-- Mod: chance to reveal the arcade room's location if it is present
@@ -100,6 +103,14 @@ function PST:onUpdate()
 		PST:addModifiers({ luck = lostBlackHeartsLuck }, true)
 	end
 	blackHeartTracker = player:GetBlackHearts()
+
+	-- Slipping Essence node (Blue Baby's tree)
+	local slippingEssenceLost = PST:getTreeSnapshotMod("slippingEssenceLost", 0)
+	if player:GetSoulHearts() < soulHeartTracker and 100 * math.random() < 100 / (2 ^ slippingEssenceLost) then
+		PST:addModifiers({ slippingEssenceLost = 1, luck = -0.1 }, true)
+		Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, player.Position, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
+	end
+	soulHeartTracker = player:GetSoulHearts()
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

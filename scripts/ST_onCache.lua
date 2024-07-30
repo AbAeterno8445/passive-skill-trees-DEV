@@ -35,10 +35,12 @@ function PST:onCache(player, cacheFlag)
 
     -- Magdalene's Blessing node (Magdalene's tree)
     if PST:getTreeSnapshotMod("magdaleneBlessing", false) then
-        local tmpHearts = math.ceil((player:GetMaxHearts() - 8) / 2)
-        if tmpHearts > 0 then
-            dynamicMods.speed = dynamicMods.speed - tmpHearts * 0.02
-            dynamicMods.damage = dynamicMods.damage + tmpHearts * 0.1
+        if cacheFlag == CacheFlag.CACHE_DAMAGE or cacheFlag == CacheFlag.CACHE_SPEED then
+            local tmpHearts = math.ceil((player:GetMaxHearts() - 8) / 2)
+            if tmpHearts > 0 then
+                dynamicMods.speed = dynamicMods.speed - tmpHearts * 0.02
+                dynamicMods.damage = dynamicMods.damage + tmpHearts * 0.1
+            end
         end
     end
 
@@ -49,11 +51,44 @@ function PST:onCache(player, cacheFlag)
 
     -- Dark Judas mods
     if player:GetPlayerType() == PlayerType.PLAYER_BLACKJUDAS then
-        -- Speed
-        dynamicMods.speedPerc = dynamicMods.speedPerc + PST:getTreeSnapshotMod("darkJudasSpeed", 0)
-        -- Shot speed + range
-        dynamicMods.shotSpeedPerc = dynamicMods.shotSpeedPerc + PST:getTreeSnapshotMod("darkJudasShotspeedRange", 0)
-        dynamicMods.rangePerc = dynamicMods.rangePerc + PST:getTreeSnapshotMod("darkJudasShotspeedRange", 0)
+        if cacheFlag == CacheFlag.CACHE_SPEED then
+            -- Speed
+            dynamicMods.speedPerc = dynamicMods.speedPerc + PST:getTreeSnapshotMod("darkJudasSpeed", 0)
+        elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
+            -- Shot speed
+            dynamicMods.shotSpeedPerc = dynamicMods.shotSpeedPerc + PST:getTreeSnapshotMod("darkJudasShotspeedRange", 0)
+        elseif cacheFlag == CacheFlag.CACHE_RANGE then
+            -- Range
+            dynamicMods.rangePerc = dynamicMods.rangePerc + PST:getTreeSnapshotMod("darkJudasShotspeedRange", 0)
+        end
+    end
+
+    if cacheFlag == CacheFlag.CACHE_LUCK then
+        -- Mod: +luck per held poop item
+        tmpTreeMod = PST:getTreeSnapshotMod("poopItemLuck", 0)
+        if tmpTreeMod ~= 0 then
+            local playerCollectibles = player:GetCollectiblesList()
+            for _, tmpItem in ipairs(PST.poopItems) do
+                if playerCollectibles[tmpItem] > 0 then
+                    dynamicMods.luck = dynamicMods.luck + tmpTreeMod
+                end
+            end
+        end
+
+        -- Mod: +luck while holding a poop trinket
+        tmpTreeMod = PST:getTreeSnapshotMod("poopTrinketLuck", 0)
+        if tmpTreeMod ~= 0 then
+            local hasTrinket = false
+            for _, tmpTrinket in ipairs(PST.poopTrinkets) do
+                if player:GetTrinket(0) == tmpTrinket or player:GetTrinket(1) == tmpTrinket then
+                    hasTrinket = true
+                    break
+                end
+            end
+            if hasTrinket then
+                dynamicMods.luck = dynamicMods.luck + tmpTreeMod
+            end
+        end
     end
 
     -- Cosmic Realignment node
@@ -66,8 +101,11 @@ function PST:onCache(player, cacheFlag)
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB) then
         -- Jacob & Esau, damage and tears debuff
-        dynamicMods.damagePerc = dynamicMods.damagePerc - 25 / (2 ^ cosmicRCache.jacobProcs)
-        dynamicMods.tearsPerc = dynamicMods.tearsPerc - 25 / (2 ^ cosmicRCache.jacobProcs)
+        if cacheFlag == CacheFlag.CACHE_DAMAGE then
+            dynamicMods.damagePerc = dynamicMods.damagePerc - 25 / (2 ^ cosmicRCache.jacobProcs)
+        elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc - 25 / (2 ^ cosmicRCache.jacobProcs)
+        end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
         -- Tainted Isaac, -4% all stats per item obtained after the 8th one, up to 40%
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.max(-40, cosmicRCache.TIsaacItems * -4)

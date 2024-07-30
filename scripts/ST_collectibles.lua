@@ -34,6 +34,11 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         end
     end
 
+    -- Mod: +luck per held poop item - update player
+    if PST:arrHasValue(PST.poopItems, type) then
+        player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then
@@ -80,8 +85,15 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
     end
 end
 
+function PST:onRemoveCollectible(player, type)
+    -- Mod: +luck per held poop item - update player
+    if PST:arrHasValue(PST.poopItems, type) then
+        player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
+    end
+end
+
 function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
-    -- D6 use
+    -- D6
     if itemType == CollectibleType.COLLECTIBLE_D6 then
         -- Magic Die node (Isaac's tree)
         if PST:getTreeSnapshotMod("magicDie", false) then
@@ -153,7 +165,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 player:SetActiveCharge(player:GetActiveCharge(slot) + math.ceil(player:GetActiveMaxCharge(slot) / 2), slot)
             end
         end
-    -- Yum Heart use
+    -- Yum Heart
     elseif itemType == CollectibleType.COLLECTIBLE_YUM_HEART then
         -- Crystal Heart node (Magdalene's tree)
         if PST:getTreeSnapshotMod("crystalHeart", false) then
@@ -174,6 +186,25 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Dark Heart node (Judas' tree)
         if PST:getTreeSnapshotMod("darkHeart", false) and not PST:getTreeSnapshotMod("darkHeartBelial", false) then
             PST:addModifiers({ darkHeartBelial = true }, true)
+        end
+    -- The Poop
+    elseif itemType == CollectibleType.COLLECTIBLE_POOP then
+        -- Brown Blessing node (Blue Baby's tree)
+        if PST:getTreeSnapshotMod("brownBlessing", false) and 100 * math.random() < 7 then
+            local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
+            local tmpPoopItem = Game():GetItemPool():GetCollectibleFromList(PST.poopItems, Random() + 1, CollectibleType.COLLECTIBLE_BREAKFAST, true, false)
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, tmpPoopItem, Random() + 1)
+        end
+
+        -- Mod: +all stats when using the poop (once per room)
+        local poopAllStats = PST:getTreeSnapshotMod("thePoopAllStats", 0)
+        local poopAllStatsPerc = PST:getTreeSnapshotMod("thePoopAllStatsPerc", 0)
+        if (poopAllStats > 0 or poopAllStatsPerc > 0) and not PST:getTreeSnapshotMod("poopAllStatsProc") then
+            PST:addModifiers({
+                allstats = poopAllStats,
+                allstatsPerc = poopAllStatsPerc,
+                poopAllStatsProc = true
+            }, true)
         end
     end
 

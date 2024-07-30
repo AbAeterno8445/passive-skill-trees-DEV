@@ -71,6 +71,11 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
     end
 
+    -- Brown Blessing node (Blue Baby's tree)
+    if PST:getTreeSnapshotMod("brownBlessing", false) then
+        player:AddTrinket(TrinketType.TRINKET_PETRIFIED_POOP)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

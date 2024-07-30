@@ -14,6 +14,16 @@ function PST:onNewLevel()
         PST:addModifiers({ blackHeartSacrifices = { value = 0, set = true } }, true)
     end
 
+    -- Mod: +% tears and range when picking up a soul heart (reset)
+    local tmpBonusTotal = PST:getTreeSnapshotMod("soulHeartTearsRangeTotal", 0)
+    if tmpBonusTotal > 0 then
+        PST:addModifiers({
+            tearsPerc = -tmpBonusTotal,
+            rangePerc = -tmpBonusTotal,
+            soulHeartTearsRangeTotal = { value = 0, set = true }
+        }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

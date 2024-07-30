@@ -175,6 +175,16 @@ function PST:onPickup(pickup, collider, low)
                         PST:addModifiers({ blackHeartSacrifices = 1 }, true)
                     end
                 end
+            elseif subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL then
+                -- Mod: +% tears and range when picking up a soul heart. Resets every floor
+                local tmpBonus = PST:getTreeSnapshotMod("soulHeartTearsRange", 0)
+                if tmpBonus > 0 and PST:getTreeSnapshotMod("soulHeartTearsRangeTotal", 0) < 10 then
+                    PST:addModifiers({
+                        tearsPerc = tmpBonus,
+                        rangePerc = tmpBonus,
+                        soulHeartTearsRangeTotal = tmpBonus
+                    }, true)
+                end
             end
         end
 
@@ -260,4 +270,12 @@ function PST:onPickupInit(pickup)
             end
         end
     end
+end
+
+-- Update stats on trinket change
+function PST:onTrinketAdd(player, type)
+    player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+end
+function PST:onTrinketRemove(player, type)
+    player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 end

@@ -54,6 +54,15 @@ function PST:onNewRoom()
         PST:addModifiers({ belialChargesGained = { value = 0, set = true } }, true)
     end
 
+	-- Mod: +all stats when using the poop (reset)
+	if PST:getTreeSnapshotMod("poopAllStatsProc", false) then
+		PST:addModifiers({
+			allstats = -PST:getTreeSnapshotMod("thePoopAllStats", 0),
+			allstatsPerc = -PST:getTreeSnapshotMod("thePoopAllStatsPerc", 0),
+			poopAllStatsProc = false
+		}, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

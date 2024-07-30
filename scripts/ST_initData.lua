@@ -12,6 +12,10 @@ PST.charNames = {
 	"T. Keeper", "T. Apollyon", "T. Forgotten", "T. Bethany", "T. Jacob", "T. Lazarus",
 	"T. Jacob", "T. Forgotten"
 }
+-- Init mod char names here (index is the character's playerType + 1)
+PST.charNames[42] = "Siren"
+PST.charNames[43] = "T. Siren"
+
 PST.babyFamiliarItems = {
     CollectibleType.COLLECTIBLE_BROTHER_BOBBY, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY,
     CollectibleType.COLLECTIBLE_HEADLESS_BABY, CollectibleType.COLLECTIBLE_LITTLE_STEVEN,
@@ -37,9 +41,11 @@ PST.poopItems = {
 	CollectibleType.COLLECTIBLE_HALLOWED_GROUND, CollectibleType.COLLECTIBLE_MONTEZUMAS_REVENGE,
 	CollectibleType.COLLECTIBLE_NUMBER_TWO, CollectibleType.COLLECTIBLE_SKATOLE
 }
--- Init mod char names here (index is the character's playerType + 1)
-PST.charNames[42] = "Siren"
-PST.charNames[43] = "T. Siren"
+PST.poopTrinkets = {
+	TrinketType.TRINKET_PETRIFIED_POOP, TrinketType.TRINKET_BUTT_PENNY, TrinketType.TRINKET_MECONIUM,
+	TrinketType.TRINKET_BROWN_CAP, TrinketType.TRINKET_USED_DIAPER, TrinketType.TRINKET_DINGLE_BERRY,
+	TrinketType.TRINKET_GIGANTE_BEAN, TrinketType.TRINKET_MYSTERIOUS_CANDY, TrinketType.TRINKET_LIL_LARVA
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -169,6 +175,22 @@ function PST:resetMods()
 		belialBossHitCharge = 0,
 		belialChargesGained = 0,
 		lostBlackHeartsLuck = 0,
+		---- Blue Baby's Tree ----
+		blueGambit = false,
+		blueGambitCardProc = false,
+		blueGambitPillProc = false,
+		brownBlessing = false,
+		slippingEssence = false,
+		slippingEssenceLost = 0,
+		soulOnCardPill = 0,
+		poopItemLuck = 0,
+		poopTrinketLuck = 0,
+		poopTrinketLuckActive = false,
+		thePoopAllStats = 0,
+		thePoopAllStatsPerc = 0,
+		poopAllStatsProc = false,
+		soulHeartTearsRange = 0,
+		soulHeartTearsRangeTotal = 0
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
