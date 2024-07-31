@@ -42,6 +42,23 @@ function PST:onNewLevel()
         }, true)
     end
 
+    -- Mod: +damage / +luck on card use, resets every floor
+    local tmpTotal = PST:getTreeSnapshotMod("cardFloorDamageTotal", 0)
+    if tmpTotal > 0 then
+        PST:addModifiers({
+            damage = -tmpTotal,
+            cardFloorDamageTotal = { value = 0, set = true }
+        }, true)
+    end
+
+    tmpTotal = PST:getTreeSnapshotMod("cardFloorTearsTotal", 0)
+    if tmpTotal > 0 then
+        PST:addModifiers({
+            tears = -tmpTotal,
+            cardFloorTearsTotal = { value = 0, set = true }
+        }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

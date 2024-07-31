@@ -42,6 +42,18 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Demonic Souvenirs node (Azazel's tree)
+		if PST:getTreeSnapshotMod("demonicSouvenirs", false) then
+			-- Spawn The Empress card every other floor, and spawn a random unlocked evil trinket on the second floor you enter
+			if not PST:getTreeSnapshotMod("demonicSouvenirsProc", false) then
+				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_EMPRESS, Random() + 1)
+				PST:addModifiers({ demonicSouvenirsProc = true }, true)
+			else
+				PST:addModifiers({ demonicSouvenirsProc = false }, true)
+			end
+		end
+
 		-- After first floor
 		if level:GetStage() > 1 then
 			-- Mod: chance to reveal map
@@ -63,6 +75,29 @@ function PST:onUpdate()
 			if 100 * math.random() < PST:getTreeSnapshotMod("trinketSpawn", 0) then
 				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
        			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, Game():GetItemPool():GetTrinket(), Random() + 1)
+			end
+
+			-- Demonic Souvenirs node (Azazel's tree)
+			if PST:getTreeSnapshotMod("demonicSouvenirs", false) and not PST:getTreeSnapshotMod("demonicSouvenirsTrinket", false) then
+				-- Spawn random evil trinket on the second floor you enter
+				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpTrinket = PST.evilTrinkets[math.random(#PST.evilTrinkets)]
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpTrinket, Random() + 1)
+				PST:addModifiers({ demonicSouvenirsTrinket = true }, true)
+			end
+
+			-- Demon Helpers node (Azazel's tree)
+			if PST:getTreeSnapshotMod("demonHelpers", false) then
+				-- Chance to spawn devil beggar at the beginning of the floor
+				local tmpChance = PST:getTreeSnapshotMod("demonHelpersBeggarChance", 0)
+				if 100 * math.random() < tmpChance then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+					Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.DEVIL_BEGGAR, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+					PST:addModifiers({ demonHelpersBeggarChance = { value = 5, set = true } }, true)
+				elseif tmpChance < 40 then
+					PST:addModifiers({ demonHelpersBeggarChance = math.min(tmpChance, 40 - tmpChance) }, true)
+				end
 			end
 		end
 	end
@@ -105,10 +140,12 @@ function PST:onUpdate()
 	blackHeartTracker = player:GetBlackHearts()
 
 	-- Slipping Essence node (Blue Baby's tree)
-	local slippingEssenceLost = PST:getTreeSnapshotMod("slippingEssenceLost", 0)
-	if player:GetSoulHearts() < soulHeartTracker and 100 * math.random() < 100 / (2 ^ slippingEssenceLost) then
-		PST:addModifiers({ slippingEssenceLost = 1, luck = -0.1 }, true)
-		Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, player.Position, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
+	if PST:getTreeSnapshotMod("slippingEssence", false) then
+		local slippingEssenceLost = PST:getTreeSnapshotMod("slippingEssenceLost", 0)
+		if player:GetSoulHearts() < soulHeartTracker and 100 * math.random() < 100 / (2 ^ slippingEssenceLost) then
+			PST:addModifiers({ slippingEssenceLost = 1, luck = -0.1 }, true)
+			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, player.Position, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
+		end
 	end
 	soulHeartTracker = player:GetSoulHearts()
 

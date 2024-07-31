@@ -46,6 +46,16 @@ PST.poopTrinkets = {
 	TrinketType.TRINKET_BROWN_CAP, TrinketType.TRINKET_USED_DIAPER, TrinketType.TRINKET_DINGLE_BERRY,
 	TrinketType.TRINKET_GIGANTE_BEAN, TrinketType.TRINKET_MYSTERIOUS_CANDY, TrinketType.TRINKET_LIL_LARVA
 }
+PST.evilTrinkets = {
+	TrinketType.TRINKET_GOAT_HOOF, TrinketType.TRINKET_BLACK_LIPSTICK, TrinketType.TRINKET_DAEMONS_TAIL,
+	TrinketType.TRINKET_LEFT_HAND, TrinketType.TRINKET_BLACK_FEATHER, TrinketType.TRINKET_MECONIUM,
+	TrinketType.TRINKET_SIGIL_OF_BAPHOMET
+}
+PST.demonFamiliars = {
+	CollectibleType.COLLECTIBLE_DARK_BUM, CollectibleType.COLLECTIBLE_LIL_BRIMSTONE,
+	CollectibleType.COLLECTIBLE_INCUBUS, CollectibleType.COLLECTIBLE_LIL_ABADDON,
+	CollectibleType.COLLECTIBLE_TWISTED_PAIR, CollectibleType.COLLECTIBLE_SUCCUBUS
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -223,6 +233,20 @@ function PST:resetMods()
 		bossCulling = 0,
 		bossQuickKillLuck = 0,
 		bossFlawlessLuck = 0,
+		---- Azazel's Tree ----
+		demonicSouvenirs = false,
+		demonicSouvenirsProc = false,
+		demonicSouvenirsTrinket = false,
+		demonHelpers = false,
+		demonHelpersBeggarChance = 5,
+		heartsToBlack = 0,
+		blackHeartOnDeals = 0,
+		evilTrinketLuck = 0,
+		devilBeggarBlackHeart = 0,
+		cardFloorDamage = 0,
+		cardFloorDamageTotal = 0,
+		cardFloorTears = 0,
+		cardFloorTearsTotal = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

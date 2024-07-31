@@ -81,6 +81,13 @@ function PST:onSlotUpdate(slot)
                     PST:addModifiers({ luck = beggarLuck }, true)
                 end
             end
+
+            -- Mod: chance for devil beggar to grant half a black heart when helped
+            if PST:getTreeSnapshotMod("devilBeggarBlackHeart", 0) > 0 then
+                if slot.Variant == SlotVariant.DEVIL_BEGGAR and spentHearts and 100 * math.random() < PST:getTreeSnapshotMod("devilBeggarBlackHeart", 0) then
+                    player:AddBlackHearts(1)
+                end
+            end
         end
 
         -- Machine-specific
@@ -91,6 +98,19 @@ function PST:onSlotUpdate(slot)
                 player:AddCoins(lastResources.coins - player:GetNumCoins())
                 PST:createFloatTextFX("Free use!", Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 50, true)
                 SFXManager():Play(SoundEffect.SOUND_PENNYPICKUP)
+            end
+        end
+    end
+
+    -- Beggar gives prize
+    local slotSpr = slot:GetSprite()
+    if slotSpr:GetAnimation() == "Teleport" and slotSpr:GetFrame() == 1 then
+        -- Demon Helpers node (Azazel's tree)
+        if PST:getTreeSnapshotMod("demonHelpers", false) then
+            if slot.Variant == SlotVariant.DEVIL_BEGGAR and 100 * math.random() < 33 then
+                local tmpPos = Isaac.GetFreeNearPosition(slot.Position, 40)
+                local tmpItem = PST.demonFamiliars[math.random(#PST.demonFamiliars)]
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, tmpItem, Random() + 1)
             end
         end
     end

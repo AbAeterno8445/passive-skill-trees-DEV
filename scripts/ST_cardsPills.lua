@@ -20,6 +20,20 @@ function PST:onUseCard(card, player, useFlags)
     if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
         player:AddSoulHearts(1)
     end
+
+    -- Mod: +damage when using a card, up to +3. Resets every floor
+    local tmpBonus = PST:getTreeSnapshotMod("cardFloorDamage", 0)
+    if PST:getTreeSnapshotMod("cardFloorDamageTotal", 0) < 3 then
+        local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
+        PST:addModifiers({ damage = tmpAdd, cardFloorDamageTotal = tmpAdd }, true)
+    end
+
+    -- Mod: +tears when using a card, up to +3. Resets every floor
+    tmpBonus = PST:getTreeSnapshotMod("cardFloorTears", 0)
+    if PST:getTreeSnapshotMod("cardFloorTearsTotal", 0) < 3 then
+        local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
+        PST:addModifiers({ tears = tmpAdd, cardFloorTearsTotal = tmpAdd }, true)
+    end
 end
 
 function PST:onPillEffect(effect, pillColor)

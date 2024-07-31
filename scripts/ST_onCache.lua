@@ -157,7 +157,7 @@ function PST:onCache(player, cacheFlag)
         local tmpMult = 1 - allstatsPerc / 100
         tmpMult = tmpMult - PST:getTreeSnapshotMod("tearsPerc", 0) / 100
         tmpMult = tmpMult - dynamicMods.tearsPerc / 100
-        player.MaxFireDelay = (player.MaxFireDelay - tmpMod) * math.max(0.05, tmpMult)
+        player.MaxFireDelay = (player.MaxFireDelay - tmpMod * 3.5) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         -- LUCK

@@ -224,57 +224,72 @@ function PST:onPickup(pickup, collider, low)
 end
 
 function PST:onPickupInit(pickup)
+    local room = Game():GetRoom()
+    local firstSpawn = room:GetFrameCount() >= 0 or room:IsFirstVisit()
     local variant = pickup.Variant
     local subtype = pickup.SubType
 
     -- Trinkets
     if variant == PickupVariant.PICKUP_TRINKET then
+        -- Fickle Fortune node (Cain's tree), vanish proc
         if PST:getTreeSnapshotMod("fickleFortune", false) and PST.specialNodes.fickleFortuneVanish then
             PST:vanishPickup(pickup)
             PST.specialNodes.fickleFortuneVanish = false
         end
     else
-        -- Sacrifice Dakness node (Judas' tree)
-        if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
-            -- 35% chance to replace dropped soul hearts with black hearts
-            if variant == PickupVariant.PICKUP_HEART and subtype == HeartSubType.HEART_SOUL and 100 * math.random() < 35 then
+        local pickupGone = false
+        -- Hearts
+        if variant == PickupVariant.PICKUP_HEART then
+            -- Sacrifice Darkness node (Judas' tree)
+            if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
+                -- 35% chance to replace dropped soul hearts with black hearts
+                if firstSpawn and subtype == HeartSubType.HEART_SOUL and 100 * math.random() < 35 then
+                    pickup:Remove()
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_BLACK, Random() + 1)
+                    pickupGone = true
+                end
+            end
+
+            -- Mod: chance to replace any heart drops with black hearts
+            if firstSpawn and not pickupGone and subtype ~= HeartSubType.HEART_BLACK and
+            100 * math.random() < PST:getTreeSnapshotMod("heartsToBlack", 0) then
                 pickup:Remove()
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_BLACK, Random() + 1)
+                pickupGone = true
             end
         end
 
-        -- Cosmic Realignment node
-        if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
-            -- Tainted Magdalene, 15% chance to turn coins, bombs, keys or chests into a half red heart
-            if variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
-            variant == PickupVariant.PICKUP_KEY or PST:isPickupChest(variant) then
-                local room = Game():GetRoom()
-                if room:GetFrameCount() >= 0 or room:IsFirstVisit() then
+        if not pickupGone then
+            -- Cosmic Realignment node
+            if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
+                -- Tainted Magdalene, 15% chance to turn coins, bombs, keys or chests into a half red heart
+                if firstSpawn and variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
+                variant == PickupVariant.PICKUP_KEY or PST:isPickupChest(variant) then
                     if 100 * math.random() < 15 then
                         pickup:Remove()
                         Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_HALF, Random() + 1)
                     end
                 end
-            end
-        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
-            -- Tainted Judas, convert soul hearts to black hearts
-            if variant == PickupVariant.PICKUP_HEART then
-                if subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL then
-                    pickup:Remove()
-                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_BLACK, Random() + 1)
+            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
+                -- Tainted Judas, convert soul hearts to black hearts
+                if variant == PickupVariant.PICKUP_HEART then
+                    if subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL then
+                        pickup:Remove()
+                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_BLACK, Random() + 1)
+                    end
                 end
-            end
-        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
-            -- Tainted Lost, remove eternal hearts
-            if variant == PickupVariant.PICKUP_HEART and subtype == HeartSubType.HEART_ETERNAL then
-                pickup:Remove()
-            end
-        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER_B) then
-            -- Tainted Keeper, convert bombs, keys, hearts and chests to coins
-            if variant == PickupVariant.PICKUP_HEART or variant == PickupVariant.PICKUP_KEY or
-            variant == PickupVariant.PICKUP_BOMB or PST:isPickupChest(variant) then
-                pickup:Remove()
-                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, pickup.Position, pickup.Velocity, nil, CoinSubType.COIN_PENNY, Random() + 1)
+            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
+                -- Tainted Lost, remove eternal hearts
+                if variant == PickupVariant.PICKUP_HEART and subtype == HeartSubType.HEART_ETERNAL then
+                    pickup:Remove()
+                end
+            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER_B) then
+                -- Tainted Keeper, convert bombs, keys, hearts and chests to coins
+                if variant == PickupVariant.PICKUP_HEART or variant == PickupVariant.PICKUP_KEY or
+                variant == PickupVariant.PICKUP_BOMB or PST:isPickupChest(variant) then
+                    pickup:Remove()
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, pickup.Position, pickup.Velocity, nil, CoinSubType.COIN_PENNY, Random() + 1)
+                end
             end
         end
     end
@@ -282,8 +297,28 @@ end
 
 -- Update stats on trinket change
 function PST:onTrinketAdd(player, type)
+    -- Demonic Souvenirs node (Azazel's tree)
+    if PST:getTreeSnapshotMod("demonicSouvenirs", false) and PST:arrHasValue(PST.evilTrinkets, type) then
+        PST:addModifiers({ damagePerc = 6, tearsPerc = 6 }, true)
+    end
+
+    -- Mod: +luck while holding an evil trinket
+    if PST:getTreeSnapshotMod("evilTrinketLuck", 0) > 0 then
+        PST:addModifiers({ luck = PST:getTreeSnapshotMod("evilTrinketLuck", 0) }, true)
+    end
+
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 end
 function PST:onTrinketRemove(player, type)
+    -- Demonic Souvenirs node (Azazel's tree)
+    if PST:getTreeSnapshotMod("demonicSouvenirs", false) and PST:arrHasValue(PST.evilTrinkets, type) then
+        PST:addModifiers({ damagePerc = -6, tearsPerc = -6 }, true)
+    end
+
+    -- Mod: +luck while holding an evil trinket
+    if PST:getTreeSnapshotMod("evilTrinketLuck", 0) > 0 then
+        PST:addModifiers({ luck = -PST:getTreeSnapshotMod("evilTrinketLuck", 0) }, true)
+    end
+
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 end

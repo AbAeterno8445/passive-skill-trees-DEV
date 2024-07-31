@@ -21,5 +21,10 @@ function PST:onShopPurchase(pickupBought, player, spent)
                 PST:createFloatTextFX("Stolen!", Vector.Zero, tmpColor, 0.13, 100, true)
             end
         end
+    elseif spent < 0 then
+        -- Mod: chance to gain a black heart when spending hearts on deals
+        if 100 * math.random() < PST:getTreeSnapshotMod("blackHeartOnDeals", 0) then
+            player:AddBlackHearts(2)
+        end
     end
 end
