@@ -207,7 +207,22 @@ function PST:resetMods()
 		deadBirdInheritDamage = 0,
 		luckOnClearBelowFull = 0,
 		allStatsOneRed = 0,
-		allStatsOneRedActive = false
+		allStatsOneRedActive = false,
+		---- Samson's Tree ----
+		hasted = false,
+		hastedHits = 0,
+		rageBuildup = false,
+		rageBuildupTotal = 0,
+		hearty = false,
+		samsonTempDamage = 0,
+		samsonTempSpeed = 0,
+		samsonTempActive = false,
+		samsonTempTime = 0,
+		speedWhenHit = 0,
+		speedWhenHitTotal = 0,
+		bossCulling = 0,
+		bossQuickKillLuck = 0,
+		bossFlawlessLuck = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -215,7 +230,9 @@ function PST:resetMods()
 		TJacobEsauSpawned = false,
 		impromptuGamblerItems = {}, -- Hold natural items in treasure room
 		fickleFortuneVanish = false,
-		deadBirdActive = false
+		deadBirdActive = false,
+		bossHits = 0,
+		bossRoomHitsFrom = 0,
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

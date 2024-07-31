@@ -89,6 +89,11 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.luck = dynamicMods.luck + tmpTreeMod
             end
         end
+    elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
+        -- Hearty node (Samson's tree)
+        if PST:getTreeSnapshotMod("hearty", false) then
+            dynamicMods.damagePerc = dynamicMods.damagePerc - 1.5 * player:GetHearts()
+        end
     end
 
     -- Cosmic Realignment node
@@ -164,7 +169,7 @@ function PST:onCache(player, cacheFlag)
 
         -- Fickle Fortune node (Cain's tree)
         if PST:getTreeSnapshotMod("fickleFortune", false) and (player:GetTrinket(0) ~= 0 or player:GetTrinket(1) ~= 0) then
-            -- Prevent luck from going negative while holding a trinket
+            -- Prevent luck from going below 1 while holding a trinket
             if player.Luck < 1 then
                 player.Luck = 1
             end

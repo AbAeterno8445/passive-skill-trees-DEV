@@ -11,6 +11,7 @@ include("scripts.tree_data.cainTreeBank")
 include("scripts.tree_data.judasTreeBank")
 include("scripts.tree_data.bluebabyTreeBank")
 include("scripts.tree_data.eveTreeBank")
+include("scripts.tree_data.samsonTreeBank")
 
 -- Sanitize json data in banks
 for treeID, tree in pairs(PST.trees) do
@@ -118,6 +119,7 @@ end
 ---@param modList table Table with modifiers and their values to be added/set
 ---@param addToSnapshot? boolean If true, add to the tree snapshot modifiers instead (should be true if modifying current run mods)
 function PST:addModifiers(modList, addToSnapshot)
+    local tmpFlags = 0
     for modName, val in pairs(modList) do
         local treeRef = PST.modData.treeMods
         if addToSnapshot then
@@ -138,9 +140,28 @@ function PST:addModifiers(modList, addToSnapshot)
                 treeRef[modName] = val
             end
         end
+
+        -- Determine flags to check
+        if addToSnapshot and tmpFlags ~= CacheFlag.CACHE_ALL then
+            if modName == "allstats" or modName == "allstatsPerc" then
+                tmpFlags = CacheFlag.CACHE_ALL
+            elseif modName == "damage" or modName == "damagePerc" then
+                tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
+            elseif modName == "speed" or modName == "speedPerc" then
+                tmpFlags = tmpFlags | CacheFlag.CACHE_SPEED
+            elseif modName == "range" or modName == "rangePerc" then
+                tmpFlags = tmpFlags | CacheFlag.CACHE_RANGE
+            elseif modName == "tears" or modName == "tearsPerc" then
+                tmpFlags = tmpFlags | CacheFlag.CACHE_FIREDELAY
+            elseif modName == "shotSpeed" or modName == "shotSpeedPerc" then
+                tmpFlags = tmpFlags | CacheFlag.CACHE_SHOTSPEED
+            elseif modName == "luck" or modName == "luckPerc" then
+                tmpFlags = tmpFlags | CacheFlag.CACHE_LUCK
+            end
+        end
     end
-    if addToSnapshot then
-        Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL, true)
+    if tmpFlags ~= 0 and addToSnapshot then
+        Isaac.GetPlayer():AddCacheFlags(tmpFlags, true)
     end
     PST:save()
 end

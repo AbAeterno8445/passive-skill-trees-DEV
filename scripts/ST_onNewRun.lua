@@ -76,6 +76,18 @@ function PST:onNewRun(isContinued)
         player:AddTrinket(TrinketType.TRINKET_PETRIFIED_POOP)
     end
 
+    -- Hasted node (Samson's tree)
+    if PST:getTreeSnapshotMod("hasted", false) then
+        PST:addModifiers({ tearsPerc = 10, shotSpeedPerc = 10 }, true)
+    end
+
+    -- Hearty node (Samson's tree)
+    if PST:getTreeSnapshotMod("hearty", false) then
+        player:AddMaxHearts(2)
+        player:SetFullHearts()
+        player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

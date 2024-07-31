@@ -33,6 +33,13 @@ function PST:onAddHearts(player, amount, healthType, optional)
 		end
 	end
 
+	-- Hearty node (Samson's tree)
+	if PST:getTreeSnapshotMod("hearty", false) then
+		if healthType == HealthType.RED then
+			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
     -- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B

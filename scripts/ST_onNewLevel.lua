@@ -32,6 +32,16 @@ function PST:onNewLevel()
         }, true)
     end
 
+    -- Hasted node (Samson's tree)
+    if PST:getTreeSnapshotMod("hasted", false) then
+        local tmpHits = PST:getTreeSnapshotMod("hastedHits", 0)
+        PST:addModifiers({
+            tearsPerc = tmpHits * 1.5,
+            shotSpeedPerc = tmpHits * 1.5,
+            hastedHits = { value = 0, set = true }
+        }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

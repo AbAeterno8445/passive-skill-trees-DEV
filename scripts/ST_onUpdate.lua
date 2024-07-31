@@ -112,6 +112,20 @@ function PST:onUpdate()
 	end
 	soulHeartTracker = player:GetSoulHearts()
 
+	-- Samson temp mods
+	local tmpTime = PST:getTreeSnapshotMod("samsonTempTime", 0)
+	if tmpTime ~= 0 then
+		-- Mod: +damage or +speed for 2.5 seconds after killing an enemy, or hitting a boss 8 times
+		if os.clock() - tmpTime > 2.5 and PST:getTreeSnapshotMod("samsonTempActive", false) then
+			PST:addModifiers({
+                damagePerc = -PST:getTreeSnapshotMod("samsonTempDamage", 0),
+                speedPerc = -PST:getTreeSnapshotMod("samsonTempSpeed", 0),
+                samsonTempActive = false,
+				samsonTempTime = { value = 0, set = true}
+            }, true)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -255,13 +269,27 @@ function PST:onUpdate()
 				local tmpTotal = PST:getTreeSnapshotMod("heartlessTotal", 0)
 				if tmpTotal < 10 then
 					local tmpAdd = math.min(0.5, 10 - tmpTotal)
-					PST:addModifiers({ allstatsPerc = tmpAdd, heartlessTotal = tmpAdd }, true)
+					if tmpAdd > 0 then
+						PST:addModifiers({ allstatsPerc = tmpAdd, heartlessTotal = tmpAdd }, true)
+					end
 				end
 			end
 
 			-- Mod: +luck when clearing a room below full red hearts
 			local tmpLuck = PST:getTreeSnapshotMod("luckOnClearBelowFull", 0)
 			if tmpLuck > 0 and player:GetHearts() < player:GetEffectiveMaxHearts() then
+				PST:addModifiers({ luck = tmpLuck }, true)
+			end
+
+			-- Mod: +luck if you clear the boss room within 1 minute
+			tmpLuck = PST:getTreeSnapshotMod("bossQuickKillLuck", 0)
+			if isBossRoom and tmpLuck > 0 and room:GetFrameCount() <= 1800 then
+				PST:addModifiers({ luck = tmpLuck }, true)
+			end
+
+			-- Mod: +luck if you clear the boss room without getting hit more than 3 times
+			tmpLuck = PST:getTreeSnapshotMod("bossFlawlessLuck", 0)
+			if isBossRoom and tmpLuck > 0 and PST.specialNodes.bossRoomHitsFrom <= 3 then
 				PST:addModifiers({ luck = tmpLuck }, true)
 			end
 		end

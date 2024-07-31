@@ -3,6 +3,8 @@ function PST:onNewRoom()
 	PST.modData.spawnKills = 0
 	PST.modData.xpObtained = 0
 	PST.specialNodes.quickWit.pauseTime = 0
+	PST.specialNodes.bossHits = 0
+	PST.specialNodes.bossRoomHitsFrom = 0
 	floatingTexts = {}
 
 	local player = Isaac.GetPlayer()
@@ -73,6 +75,15 @@ function PST:onNewRoom()
 			shotSpeed = -PST:getTreeSnapshotMod("activeDeadBirdShotspeed", 0)
 		}, true)
 		PST.specialNodes.deadBirdActive = false
+	end
+
+	-- Mod: +% speed when hit. Resets every room
+	local tmpTotal = PST:getTreeSnapshotMod("speedWhenHitTotal", 0)
+	if tmpTotal > 0 then
+		PST:addModifiers({
+			speedPerc = -tmpTotal,
+			speedWhenHitTotal = { value = 0, set = true }
+		}, true)
 	end
 
 	-- Cosmic Realignment node

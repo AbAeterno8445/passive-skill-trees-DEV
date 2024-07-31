@@ -14,6 +14,32 @@ function PST:onDamage(target, damage, flag, source)
             player:DropTrinket(player.Position, true)
         end
 
+        -- Hasted node (Samson's tree)
+        if PST:getTreeSnapshotMod("hasted", false) and PST:getTreeSnapshotMod("hastedHits", 0) < 5 then
+            PST:addModifiers({ tearsPerc = -1.5, shotSpeedPerc = -1.5, hastedHits = 1 }, true)
+        end
+
+        -- Rage Buildup node (Samson's tree)
+        if PST:getTreeSnapshotMod("rageBuildup", false) then
+            local tmpTotal = PST:getTreeSnapshotMod("rageBuildupTotal", 0)
+            PST:addModifiers({ damage = -tmpTotal, rageBuildupTotal = { value = 0, set = true } }, true)
+        end
+
+        -- Mod: +% speed when hit, up to 15%
+        local tmpBonus = PST:getTreeSnapshotMod("speedWhenHit", 0)
+        local tmpTotal = PST:getTreeSnapshotMod("speedWhenHitTotal", 0)
+        if tmpBonus > 0 and tmpTotal < 15 then
+            local tmpAdd = math.min(tmpBonus, 15 - tmpTotal)
+            if tmpAdd > 0 then
+                PST:addModifiers({ speedPerc = tmpAdd, speedWhenHitTotal = tmpAdd }, true)
+            end
+        end
+
+        -- Mod: +luck if you clear the boss room without getting hit more than 3 times (register hit)
+        if room:GetType() == RoomType.ROOM_BOSS then
+            PST.specialNodes.bossRoomHitsFrom = PST.specialNodes.bossRoomHitsFrom + 1
+        end
+
         -- Cosmic Realignment node
 	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
             -- Samson, -0.15 damage when hit, up to -0.9
@@ -61,23 +87,65 @@ function PST:onDamage(target, damage, flag, source)
         end
 
         -- Carrion Avian node (Eve's tree)
-        local tmpFamiliar = source.Entity:ToFamiliar()
-        if PST:getTreeSnapshotMod("carrionAvian", false) and tmpFamiliar then
-            if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
-                -- +0.15 damage when dead bird kills an enemy, up to +3. Permanent +0.6 if boss
-                if target.HitPoints <= damage then
-                    if not target:IsBoss() then
-                        if PST:getTreeSnapshotMod("carrionAvianTempBonus", 0) < 3 then
-                            PST:addModifiers({ damage = 0.15, carrionAvianTempBonus = 0.15 }, true)
+        if source and source.Entity then
+            local tmpFamiliar = source.Entity:ToFamiliar()
+            if PST:getTreeSnapshotMod("carrionAvian", false) and tmpFamiliar then
+                if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
+                    -- +0.15 damage when dead bird kills an enemy, up to +3. Permanent +0.6 if boss
+                    if target.HitPoints <= damage then
+                        if not target:IsBoss() then
+                            if PST:getTreeSnapshotMod("carrionAvianTempBonus", 0) < 3 then
+                                PST:addModifiers({ damage = 0.15, carrionAvianTempBonus = 0.15 }, true)
+                            end
+                        else
+                            PST:addModifiers({ damage = 0.6 }, true)
                         end
-                    else
-                        PST:addModifiers({ damage = 0.6 }, true)
+                    end
+
+                    local birdInheritDmg = PST:getTreeSnapshotMod("deadBirdInheritDamage", 0)
+                    if birdInheritDmg > 0 then
+                        return { Damage = damage * (1 + birdInheritDmg / 100) }
                     end
                 end
+            else
+                -- Direct player hit to enemy
+                if source.Type == EntityType.ENTITY_TEAR and source.Entity.Parent then
+                    local srcPlayer = source.Entity.Parent:ToPlayer()
+                    if srcPlayer then
+                        -- Rage Buildup node (Samson's tree)
+                        if PST:getTreeSnapshotMod("rageBuildup", false) and PST:getTreeSnapshotMod("rageBuildupTotal", 0) < 3 then
+                            PST:addModifiers({ damage = 0.02, rageBuildupTotal = 0.02 }, true)
+                        end
 
-                local birdInheritDmg = PST:getTreeSnapshotMod("deadBirdInheritDamage", 0)
-                if birdInheritDmg > 0 then
-                    return { Damage = damage * (1 + birdInheritDmg / 100) }
+                        -- Player hits boss
+                        if target:IsBoss() then
+                            PST.specialNodes.bossHits = PST.specialNodes.bossHits + 1
+
+                            -- Samson temp mods
+                            if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then
+                                -- Mod: +damage or +speed for 2 seconds when hitting a boss 8 times
+                                if PST.specialNodes.bossHits > 0 and PST.specialNodes.bossHits % 8 == 0 then
+                                    if not PST:getTreeSnapshotMod("samsonTempActive", false) then
+                                        PST:addModifiers({
+                                            damagePerc = PST:getTreeSnapshotMod("samsonTempDamage", 0),
+                                            speedPerc = PST:getTreeSnapshotMod("samsonTempSpeed", 0),
+                                            samsonTempActive = true,
+                                            samsonTempTime = { value = os.clock(), set = true }
+                                        }, true)
+                                    else
+                                        PST:addModifiers({ samsonTempTime = { value = os.clock(), set = true } }, true)
+                                    end
+                                end
+                            end
+
+                            -- Mod: chance to deal 10x damage to boss below 10% HP
+                            if (target.HitPoints - damage) / target.MaxHitPoints <= 0.1 then
+                                if 100 * math.random() < PST:getTreeSnapshotMod("bossCulling", 0) then
+                                    return { Damage = damage * 10 }
+                                end
+                            end
+                        end
+                    end
                 end
             end
         end
@@ -135,6 +203,20 @@ function PST:onDeath(entity)
                 mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
             end
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
+        end
+
+        -- Samson temp mods
+        if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then
+            if not PST:getTreeSnapshotMod("samsonTempActive", false) then
+                PST:addModifiers({
+                    damagePerc = PST:getTreeSnapshotMod("samsonTempDamage", 0),
+                    speedPerc = PST:getTreeSnapshotMod("samsonTempSpeed", 0),
+                    samsonTempActive = true,
+                    samsonTempTime = { value = os.clock(), set = true }
+                }, true)
+            else
+                PST:addModifiers({ samsonTempTime = { value = os.clock(), set = true } }, true)
+            end
         end
 
         -- Cosmic Realignment node
