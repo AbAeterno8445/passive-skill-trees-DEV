@@ -51,13 +51,25 @@ function PST:onNewLevel()
             cardFloorDamageTotal = { value = 0, set = true }
         }, true)
     end
-
     tmpTotal = PST:getTreeSnapshotMod("cardFloorTearsTotal", 0)
     if tmpTotal > 0 then
         PST:addModifiers({
             tears = -tmpTotal,
             cardFloorTearsTotal = { value = 0, set = true }
         }, true)
+    end
+
+    -- Chaotic Treasury node (Eden's tree)
+    if PST:getTreeSnapshotMod("chaoticTreasury", false) then
+        PST:addModifiers({ chaoticTreasuryProc = false }, true)
+    end
+
+    -- Sporadic Growth node (Eden's tree)
+    if PST:getTreeSnapshotMod("sporadicGrowth", false) and floor > 1 then
+        for _=1,2 do
+            local tmpStat = PST:getRandomStat()
+            PST:addModifiers({ [tmpStat .. "Perc"] = 1 }, true)
+        end
     end
 
     -- Cosmic Realignment node

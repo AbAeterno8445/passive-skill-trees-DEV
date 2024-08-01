@@ -99,6 +99,14 @@ function PST:onUpdate()
 					PST:addModifiers({ demonHelpersBeggarChance = math.min(tmpChance, 40 - tmpChance) }, true)
 				end
 			end
+
+			-- Mod: chance to spawn Eden's Blessing at the beginning of the floor
+			if 100 * math.random() < PST:getTreeSnapshotMod("edenBlessingSpawn", 0) and not PST:getTreeSnapshotMod("edenBlessingSpawned", 0) then
+				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_EDENS_BLESSING, Random() + 1)
+				PST:addModifiers({ edenBlessingSpawned = true }, true)
+			end
 		end
 	end
 
@@ -364,6 +372,14 @@ function PST:onUpdate()
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
 				elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+				end
+			end
+
+			-- Starblessed node (Eden's tree)
+			if PST:getTreeSnapshotMod("starblessed", false) then
+				if isBossRoom and level:GetStage() == LevelStage.STAGE1_1 then
+					local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_STARS, Random() + 1)
 				end
 			end
 		end

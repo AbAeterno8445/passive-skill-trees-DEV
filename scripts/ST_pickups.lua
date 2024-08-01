@@ -296,7 +296,7 @@ function PST:onPickupInit(pickup)
 end
 
 -- Update stats on trinket change
-function PST:onTrinketAdd(player, type)
+function PST:onTrinketAdd(player, type, firstTime)
     -- Demonic Souvenirs node (Azazel's tree)
     if PST:getTreeSnapshotMod("demonicSouvenirs", false) and PST:arrHasValue(PST.evilTrinkets, type) then
         PST:addModifiers({ damagePerc = 6, tearsPerc = 6 }, true)
@@ -305,6 +305,14 @@ function PST:onTrinketAdd(player, type)
     -- Mod: +luck while holding an evil trinket
     if PST:getTreeSnapshotMod("evilTrinketLuck", 0) > 0 then
         PST:addModifiers({ luck = PST:getTreeSnapshotMod("evilTrinketLuck", 0) }, true)
+    end
+
+    -- Mod: +- luck when first obtaining any trinket
+    if firstTime then
+        local tmpBonus = PST:getTreeSnapshotMod("trinketRandLuck", 0)
+        if tmpBonus ~= 0 then
+            PST:addModifiers({ luck = -tmpBonus + tmpBonus * 2 * math.random() }, true)
+        end
     end
 
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)

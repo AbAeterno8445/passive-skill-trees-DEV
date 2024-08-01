@@ -39,6 +39,49 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
     end
 
+    -- Chaotic Treasury node (Eden's tree)
+    if PST:getTreeSnapshotMod("chaoticTreasury", false) and Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
+        -- When grabbing an item in a treasure room, remove all other items
+        for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+            if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+                Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+                tmpEntity:Remove()
+            end
+        end
+    end
+
+    -- Mod: +random stat when collecting a treasure/shop room item
+    if firstTime then
+        local roomType = Game():GetRoom():GetType()
+        local tmpBonus = PST:getTreeSnapshotMod("treasureShopItemStat", 0)
+        local tmpBonusPerc = PST:getTreeSnapshotMod("treasureShopItemStatPerc", 0)
+        if (roomType == RoomType.ROOM_TREASURE or roomType == RoomType.ROOM_SHOP) and (tmpBonus ~= 0 or tmpBonusPerc ~= 0) then
+            local tmpStat = PST:getRandomStat()
+            PST:addModifiers({
+                [tmpStat] = tmpBonus,
+                [tmpStat .. "Perc"] = tmpBonusPerc
+            }, true)
+        -- Mod: +random stat when collecting a devil/angel/boss room item
+        elseif roomType == RoomType.ROOM_DEVIL or roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_BOSS then
+            tmpBonus = PST:getTreeSnapshotMod("devilAngelBossItemStat", 0)
+            tmpBonusPerc = PST:getTreeSnapshotMod("devilAngelBossItemStatPerc", 0)
+            if tmpBonus ~= 0 or tmpBonusPerc ~= 0 then
+                print("HERE")
+                local tmpStat = PST:getRandomStat()
+                PST:addModifiers({
+                    [tmpStat] = tmpBonus,
+                    [tmpStat .. "Perc"] = tmpBonusPerc
+                }, true)
+            end
+        end
+
+        -- Mod: +- luck when first obtaining any passive item
+        tmpBonus = PST:getTreeSnapshotMod("itemRandLuck", 0)
+        if tmpBonus ~= 0 then
+            PST:addModifiers({ luck = -tmpBonus + tmpBonus * 2 * math.random() }, true)
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then

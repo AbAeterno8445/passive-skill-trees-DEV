@@ -98,6 +98,32 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
     end
 
+    -- Sporadic Growth node (Eden's tree)
+    if PST:getTreeSnapshotMod("sporadicGrowth", false) then
+        for _=1,6 do
+            local tmpStat = PST:getRandomStat()
+            PST:addModifiers({ [tmpStat .. "Perc"] = 1 }, true)
+        end
+    end
+
+    -- Starblessed node (Eden's tree)
+    if PST:getTreeSnapshotMod("starblessed", false) then
+        local tmpItem = itemPool:GetCollectible(ItemPoolType.POOL_TREASURE)
+        player:AddCollectible(tmpItem)
+    end
+
+    -- Mod: chance to start with an additional coin/key/bomb
+    local tmpChance = PST:getTreeSnapshotMod("startCoinKeyBomb", 0)
+    if tmpChance > 0 then
+        while tmpChance > 0 do
+            if 100 * math.random() < tmpChance then
+                local randAddFunc = { player.AddCoins, player.AddKeys, player.AddBombs }
+                randAddFunc[math.random(#randAddFunc)](player, 1)
+            end
+            tmpChance = tmpChance - 100
+        end
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

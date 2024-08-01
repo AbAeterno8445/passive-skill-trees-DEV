@@ -262,6 +262,21 @@ function PST:resetMods()
 		luckyAllStatsActive = false,
 		momPlanC = 0,
 		lazarusClearHearts = 0,
+		---- Eden's Tree ----
+		chaoticTreasury = false,
+		chaoticTreasuryProc = false,
+		sporadicGrowth = false,
+		starblessed = false,
+		treasureShopItemStat = 0,
+		treasureShopItemStatPerc = 0,
+		devilAngelBossItemStat = 0,
+		devilAngelBossItemStatPerc = 0,
+		itemRandLuck = 0,
+		itemRandLuckPerc = 0,
+		trinketRandLuck = 0,
+		startCoinKeyBomb = 0,
+		edenBlessingSpawn = 0,
+		edenBlessingSpawned = false,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
