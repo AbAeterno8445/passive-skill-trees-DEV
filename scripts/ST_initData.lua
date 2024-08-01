@@ -247,6 +247,21 @@ function PST:resetMods()
 		cardFloorDamageTotal = 0,
 		cardFloorTears = 0,
 		cardFloorTearsTotal = 0,
+		---- Lazarus' Tree ----
+		soulfulAwakening = false,
+		kingCurse = false,
+		kingCurseActive = false,
+		aTrueEnding = false,
+		aTrueEndingCardUses = 0,
+		lazarusDamage = 0,
+		lazarusSpeed = 0,
+		lazarusTears = 0,
+		lazarusRange = 0,
+		lazarusLuck = 0,
+		luckyAllStats = 0,
+		luckyAllStatsActive = false,
+		momPlanC = 0,
+		lazarusClearHearts = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -257,6 +272,7 @@ function PST:resetMods()
 		deadBirdActive = false,
 		bossHits = 0,
 		bossRoomHitsFrom = 0,
+		momDeathProc = false
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

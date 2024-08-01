@@ -183,6 +183,13 @@ function PST:onDeath(entity)
             cosmicRCache.lazarusHasDied = true
             PST:save()
         end
+
+        -- Soulful Awakening node (Lazarus' tree)
+        if PST:getTreeSnapshotMod("soulfulAwakening", false) then
+            local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
+            PST:addModifiers({ luck = -0.5 }, true)
+        end
     elseif entity:IsActiveEnemy(true) then
         -- Enemy death
         local addXP = false
@@ -216,6 +223,17 @@ function PST:onDeath(entity)
                 }, true)
             else
                 PST:addModifiers({ samsonTempTime = { value = os.clock(), set = true } }, true)
+            end
+        end
+
+        -- Mom death procs
+        if entity.Type == EntityType.ENTITY_MOM and not PST.specialNodes.momDeathProc then
+            PST.specialNodes.momDeathProc = true
+
+            -- Mod: chance for Mom to drop Plan C when defeated
+            if 100 * math.random() < 100 then
+                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_PLAN_C, Random() + 1)
             end
         end
 

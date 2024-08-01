@@ -2,6 +2,7 @@ function PST:onNewLevel()
     local level = Game():GetLevel()
     local floor = level:GetStage()
 
+    PST.specialNodes.momDeathProc = false
     PST.floorFirstUpdate = true
 
     -- Impromptu Gambler node (Cain's tree)

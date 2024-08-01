@@ -88,6 +88,16 @@ function PST:onNewRun(isContinued)
         player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
     end
 
+    -- Soulful Awakening node (Lazarus' tree)
+    if PST:getTreeSnapshotMod("soulfulAwakening", false) then
+        PST:addModifiers({ luck = 2 }, true)
+    end
+    
+    -- King's Curse node (Lazarus' tree)
+    if PST:getTreeSnapshotMod("kingCurse", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

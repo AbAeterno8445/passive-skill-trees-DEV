@@ -34,6 +34,11 @@ function PST:onUseCard(card, player, useFlags)
         local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
         PST:addModifiers({ tears = tmpAdd, cardFloorTearsTotal = tmpAdd }, true)
     end
+
+    -- A True Ending? node (Lazarus' tree)
+    if PST:getTreeSnapshotMod("aTrueEnding", false) and card == Card.CARD_SUICIDE_KING then
+        PST:addModifiers({ aTrueEndingCardUses = 1 }, true)
+    end
 end
 
 function PST:onPillEffect(effect, pillColor)

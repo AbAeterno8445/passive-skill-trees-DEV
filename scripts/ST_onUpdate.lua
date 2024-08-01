@@ -163,6 +163,25 @@ function PST:onUpdate()
 		end
 	end
 
+	-- King's Curse node (Lazarus' tree)
+	if PST:getTreeSnapshotMod("kingCurse", false) then
+		if not PST:getTreeSnapshotMod("kingCurseActive", false) and player:GetPlayerType() ~= PlayerType.PLAYER_LAZARUS2 then
+			PST:addModifiers({ allstatsPerc = -5, kingCurseActive = true }, true)
+		elseif PST:getTreeSnapshotMod("kingCurseActive", false) and player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
+			PST:addModifiers({ allstatsPerc = 5, kingCurseActive = false }, true)
+		end
+	end
+
+	-- Mod: +all stats while luck is positive
+	local tmpStats = PST:getTreeSnapshotMod("luckyAllStats", 0)
+	if tmpStats > 0 then
+		if player.Luck > 0 and not PST:getTreeSnapshotMod("luckyAllStatsActive", false) then
+			PST:addModifiers({ allstats = tmpStats, luckyAllStatsActive = true }, true)
+		elseif player.Luck <= 0 and PST:getTreeSnapshotMod("luckyAllStatsActive", false) then
+			PST:addModifiers({ allstats = -tmpStats, luckyAllStatsActive = false }, true)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -328,6 +347,24 @@ function PST:onUpdate()
 			tmpLuck = PST:getTreeSnapshotMod("bossFlawlessLuck", 0)
 			if isBossRoom and tmpLuck > 0 and PST.specialNodes.bossRoomHitsFrom <= 3 then
 				PST:addModifiers({ luck = tmpLuck }, true)
+			end
+
+			-- A True Ending? node (Lazarus' tree)
+			if isBossRoom and PST:getTreeSnapshotMod("aTrueEnding", false) and
+			(level:GetStage() == LevelStage.STAGE1_1 or level:GetStage() == LevelStage.STAGE3_2 or level:GetStage() == LevelStage.STAGE4_2) then
+				-- Drop Suicide King card when defeating first boss, mom, or mom's heart
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_SUICIDE_KING, Random() + 1)
+			end
+
+			-- Mod: chance to spawn 1/2 red heard as Lazarus, or 1/2 soul heart as Lazarus Risen
+			if 100 * math.random() < PST:getTreeSnapshotMod("lazarusClearHearts", 0) then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
+				elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+				end
 			end
 		end
 

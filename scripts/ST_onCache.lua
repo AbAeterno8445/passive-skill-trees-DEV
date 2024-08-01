@@ -96,6 +96,38 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- A True Ending? node (Lazarus' tree)
+    if PST:getTreeSnapshotMod("aTrueEnding", false) and player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + PST:getTreeSnapshotMod("aTrueEndingCardUses", 0) * 2
+    end
+
+    -- Lazarus stat mods
+    if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
+        if cacheFlag == CacheFlag.CACHE_DAMAGE then
+            dynamicMods.damage = dynamicMods.damage + PST:getTreeSnapshotMod("lazarusDamage", 0)
+        elseif cacheFlag == CacheFlag.CACHE_SPEED then
+            dynamicMods.speed = dynamicMods.speed + PST:getTreeSnapshotMod("lazarusSpeed", 0)
+        elseif cacheFlag == CacheFlag.CACHE_RANGE then
+            dynamicMods.range = dynamicMods.range + PST:getTreeSnapshotMod("lazarusRange", 0)
+        elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+            dynamicMods.tears = dynamicMods.tears + PST:getTreeSnapshotMod("lazarusTears", 0)
+        elseif cacheFlag == CacheFlag.CACHE_LUCK then
+            dynamicMods.luck = dynamicMods.luck + PST:getTreeSnapshotMod("lazarusLuck", 0)
+        end
+    elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
+        if cacheFlag == CacheFlag.CACHE_DAMAGE then
+            dynamicMods.damage = dynamicMods.damage + PST:getTreeSnapshotMod("lazarusDamage", 0) / 2
+        elseif cacheFlag == CacheFlag.CACHE_SPEED then
+            dynamicMods.speed = dynamicMods.speed + PST:getTreeSnapshotMod("lazarusSpeed", 0) / 2
+        elseif cacheFlag == CacheFlag.CACHE_RANGE then
+            dynamicMods.range = dynamicMods.range + PST:getTreeSnapshotMod("lazarusRange", 0) / 2
+        elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+            dynamicMods.tears = dynamicMods.tears + PST:getTreeSnapshotMod("lazarusTears", 0) / 2
+        elseif cacheFlag == CacheFlag.CACHE_LUCK then
+            dynamicMods.luck = dynamicMods.luck + PST:getTreeSnapshotMod("lazarusLuck", 0) / 2
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB
