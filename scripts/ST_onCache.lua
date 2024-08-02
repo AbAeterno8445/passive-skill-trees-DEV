@@ -63,6 +63,7 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    local totalFamiliars = PST:getTreeSnapshotMod("totalFamiliars", 0)
     if cacheFlag == CacheFlag.CACHE_LUCK then
         -- Mod: +luck per held poop item
         tmpTreeMod = PST:getTreeSnapshotMod("poopItemLuck", 0)
@@ -93,6 +94,36 @@ function PST:onCache(player, cacheFlag)
         -- Hearty node (Samson's tree)
         if PST:getTreeSnapshotMod("hearty", false) then
             dynamicMods.damagePerc = dynamicMods.damagePerc - 1.5 * player:GetHearts()
+        end
+
+        -- Mod: +% damage per active Incubus familiar
+        tmpTreeMod = PST:getTreeSnapshotMod("activeIncubusDamage", 0)
+        if tmpTreeMod > 0 then
+            local tmpIncubi = PST:getRoomFamiliars(FamiliarVariant.INCUBUS)
+            if tmpIncubi > 0 then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + tmpIncubi * tmpTreeMod
+            end
+        end
+    elseif cacheFlag == CacheFlag.CACHE_SPEED then
+        -- Minion Maneuvering node (Lilith's tree)
+        if PST:getTreeSnapshotMod("minionManeuvering", false) then
+            local maxBonus = PST.specialNodes.minionManeuveringMaxBonus
+            dynamicMods.speedPerc = dynamicMods.speedPerc + math.min(maxBonus, totalFamiliars * 3)
+        end
+    elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+        -- Mod: +% tears per active Incubus familiar
+        tmpTreeMod = PST:getTreeSnapshotMod("activeIncubusTears", 0)
+        if tmpTreeMod > 0 then
+            local tmpIncubi = PST:getRoomFamiliars(FamiliarVariant.INCUBUS)
+            if tmpIncubi > 0 then
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpIncubi * tmpTreeMod
+            end
+        end
+    elseif cacheFlag == CacheFlag.CACHE_LUCK then
+        -- Mod: +luck per active familiar
+        tmpTreeMod = PST:getTreeSnapshotMod("activeFamiliarsLuck", 0)
+        if tmpTreeMod > 0 and totalFamiliars > 0 then
+            dynamicMods.luck = dynamicMods.luck + totalFamiliars * tmpTreeMod
         end
     end
 

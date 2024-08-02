@@ -111,6 +111,18 @@ function PST:onNewRoom()
 		PST.specialNodes.sacredAegis = { hitTime = 0, proc = false, hitsTaken = 0 }
 	end
 
+	-- Minion Maneuvering node (Lilith's tree)
+	if PST:getTreeSnapshotMod("minionManeuvering", false) then
+		PST.specialNodes.minionManeuveringMaxBonus = 15
+		player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+	end
+
+	-- Mod: +all stats when using Box of Friends (reset)
+	local tmpStats = PST:getTreeSnapshotMod("boxOfFriendsAllStats", 0)
+	if PST:getTreeSnapshotMod("boxOfFriendsAllStatsProc", 0) then
+		PST:addModifiers({ allstats = -tmpStats, boxOfFriendsAllStatsProc = false }, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

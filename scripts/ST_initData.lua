@@ -360,6 +360,18 @@ function PST:resetMods()
 		blackHeartDamageTotal = 0,
 		eternalD6Charge = 0,
 		soulHeartOnClear = 0,
+		---- Lilith's Tree ----
+		minionManeuvering = false,
+		totalFamiliars = 0,
+		heavyFriends = false,
+		daemonArmy = false,
+		familiarKillSoulHeart = 0,
+		activeFamiliarsLuck = 0,
+		activeIncubusDamage = 0,
+		activeIncubusTears = 0,
+		boxOfFriendsCharge = 0,
+		boxOfFriendsAllStats = 0,
+		boxOfFriendsAllStatsProc = false,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -371,7 +383,8 @@ function PST:resetMods()
 		bossHits = 0,
 		bossRoomHitsFrom = 0,
 		momDeathProc = false,
-		sacredAegis = { hitTime = 0, proc = false, hitsTaken = 0 }
+		sacredAegis = { hitTime = 0, proc = false, hitsTaken = 0 },
+		minionManeuveringMaxBonus = 15
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

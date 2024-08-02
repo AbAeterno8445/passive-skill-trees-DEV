@@ -195,6 +195,18 @@ function PST:onCompletionEvent(event)
 	PST:save()
 end
 
+--- Get the amount of familiars in the room
+---@param specificType? FamiliarVariant Check for a specific familiar type instead, and return the amount of those
+function PST:getRoomFamiliars(specificType)
+	local totalFamiliars = 0
+	for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+		if tmpEntity.Type == EntityType.ENTITY_FAMILIAR and (specificType == nil or tmpEntity.Variant == specificType) then
+			totalFamiliars = totalFamiliars + 1
+		end
+	end
+	return totalFamiliars
+end
+
 local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
 function PST:getRandomStat(exclude)
 	if exclude and type(exclude) == "table" then

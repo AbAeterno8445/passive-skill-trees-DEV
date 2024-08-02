@@ -16,6 +16,7 @@ include("scripts.tree_data.azazelTreeBank")
 include("scripts.tree_data.lazarusTreeBank")
 include("scripts.tree_data.edenTreeBank")
 include("scripts.tree_data.theLostTreeBank")
+include("scripts.tree_data.lilithTreeBank")
 
 -- Sanitize json data in banks
 for treeID, tree in pairs(PST.trees) do

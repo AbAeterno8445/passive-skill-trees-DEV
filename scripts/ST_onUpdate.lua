@@ -230,6 +230,14 @@ function PST:onUpdate()
 		PST.specialNodes.sacredAegis.proc = true
 	end
 
+	-- Familiar quantity update
+	local totalFamiliars = PST:getRoomFamiliars()
+	local tmpTotal = PST:getTreeSnapshotMod("totalFamiliars", 0)
+	if tmpTotal ~= totalFamiliars then
+		PST:addModifiers({ totalFamiliars = { value = totalFamiliars, set = true } }, true)
+		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B

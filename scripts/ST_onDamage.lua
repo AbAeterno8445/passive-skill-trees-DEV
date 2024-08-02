@@ -93,26 +93,38 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        -- Carrion Avian node (Eve's tree)
         if source and source.Entity then
+            -- Check if a familiar hit/killed enemy
             local tmpFamiliar = source.Entity:ToFamiliar()
-            if PST:getTreeSnapshotMod("carrionAvian", false) and tmpFamiliar then
-                if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
-                    -- +0.15 damage when dead bird kills an enemy, up to +3. Permanent +0.6 if boss
-                    if target.HitPoints <= damage then
-                        if not target:IsBoss() then
-                            if PST:getTreeSnapshotMod("carrionAvianTempBonus", 0) < 3 then
-                                PST:addModifiers({ damage = 0.15, carrionAvianTempBonus = 0.15 }, true)
+            if tmpFamiliar == nil and source.Entity.SpawnerEntity ~= nil then
+                -- For tears shot by familiars
+                tmpFamiliar = source.Entity.SpawnerEntity:ToFamiliar()
+            end
+            if tmpFamiliar then
+                -- Carrion Avian node (Eve's tree)
+                if PST:getTreeSnapshotMod("carrionAvian", false) then
+                    if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
+                        -- +0.15 damage when dead bird kills an enemy, up to +3. Permanent +0.6 if boss
+                        if target.HitPoints <= damage then
+                            if not target:IsBoss() then
+                                if PST:getTreeSnapshotMod("carrionAvianTempBonus", 0) < 3 then
+                                    PST:addModifiers({ damage = 0.15, carrionAvianTempBonus = 0.15 }, true)
+                                end
+                            else
+                                PST:addModifiers({ damage = 0.6 }, true)
                             end
-                        else
-                            PST:addModifiers({ damage = 0.6 }, true)
+                        end
+
+                        local birdInheritDmg = PST:getTreeSnapshotMod("deadBirdInheritDamage", 0)
+                        if birdInheritDmg > 0 then
+                            return { Damage = damage * (1 + birdInheritDmg / 100) }
                         end
                     end
+                end
 
-                    local birdInheritDmg = PST:getTreeSnapshotMod("deadBirdInheritDamage", 0)
-                    if birdInheritDmg > 0 then
-                        return { Damage = damage * (1 + birdInheritDmg / 100) }
-                    end
+                -- Mod: chance for enemies killed by familiars to drop an additional 1/2 soul heart
+                if target.SpawnerType == 0 and target.HitPoints <= damage and 100 * math.random() < PST:getTreeSnapshotMod("familiarKillSoulHeart", 0) then
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                 end
             else
                 -- Direct player hit to enemy
@@ -238,9 +250,16 @@ function PST:onDeath(entity)
             PST.specialNodes.momDeathProc = true
 
             -- Mod: chance for Mom to drop Plan C when defeated
-            if 100 * math.random() < 100 then
+            if 100 * math.random() < PST:getTreeSnapshotMod("momPlanC", 0) then
                 local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_PLAN_C, Random() + 1)
+            end
+
+            -- Daemon Army node (Lilith's tree)
+            if PST:getTreeSnapshotMod("daemonArmy", false) then
+                -- Mom drops an additional Incubus
+                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_INCUBUS, Random() + 1)
             end
         end
 

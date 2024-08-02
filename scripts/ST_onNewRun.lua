@@ -124,6 +124,21 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    -- Heavy Friends node (Lilith's tree)
+    if PST:getTreeSnapshotMod("heavyFriends", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BFFS)
+    end
+
+    -- Daemon Army node (Lilith's tree)
+    if PST:getTreeSnapshotMod("daemonArmy", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_INCUBUS)
+        for _, tmpItem in ipairs(PST.babyFamiliarItems) do
+            if tmpItem ~= CollectibleType.COLLECTIBLE_INCUBUS then
+                itemPool:RemoveCollectible(tmpItem)
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

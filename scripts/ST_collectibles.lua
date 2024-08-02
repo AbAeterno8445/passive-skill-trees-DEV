@@ -277,6 +277,27 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             SFXManager():Play(SoundEffect.SOUND_BATTERYCHARGE)
             player:SetActiveCharge(player:GetActiveMaxCharge(slot) * 2, slot)
         end
+    -- Box of Friends
+    elseif itemType == CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS then
+        -- Minion Maneuvering node (Lilith's tree)
+        if PST:getTreeSnapshotMod("minionManeuvering", false) then
+            PST.specialNodes.minionManeuveringMaxBonus = 30
+            player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+        end
+
+        -- Mod: chance for Box of Friends to keep 1 charge on use
+        if 100 * math.random() < PST:getTreeSnapshotMod("boxOfFriendsCharge", 0) then
+            if player:GetBatteryCharge(slot) == 0 then
+                SFXManager():Play(SoundEffect.SOUND_BEEP)
+                player:SetActiveCharge(player:GetActiveCharge(slot) + 1, slot)
+            end
+        end
+
+        -- Mod: +all stats when using Box of Friends
+        local tmpStats = PST:getTreeSnapshotMod("boxOfFriendsAllStats", 0)
+        if tmpStats > 0 and not PST:getTreeSnapshotMod("boxOfFriendsAllStatsProc", 0) then
+            PST:addModifiers({ allstats = tmpStats, boxOfFriendsAllStatsProc = true }, true)
+        end
     end
 
     -- Cosmic Realignment node
