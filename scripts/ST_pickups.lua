@@ -175,6 +175,21 @@ function PST:onPickup(pickup, collider, low)
                         PST:addModifiers({ blackHeartSacrifices = 1 }, true)
                     end
                 end
+
+                -- Heartseeker Phantasm node (The Lost's tree)
+                if PST:getTreeSnapshotMod("heartseekerPhantasm", false) then
+                    -- +0.2 luck when collecting soul or black hearts. +1% all stats for every 3 hearts collected
+                    PST:addModifiers({ luck = 0.2, heartseekerPhantasmCollected = 1 }, true)
+                    if PST:getTreeSnapshotMod("heartseekerPhantasmCollected", 0) % 3 == 0 then
+                        PST:addModifiers({ allstatsPerc = 1 }, true)
+                    end
+                end
+
+                -- Mod: Black hearts grant +damage when collected, up to a total +3
+                tmpBonus = PST:getTreeSnapshotMod("blackHeartDamage", 0)
+                if tmpBonus ~= 0 and PST:getTreeSnapshotMod("blackHeartDamageTotal", 0) < 3 then
+                    PST:addModifiers({ damage = tmpBonus, blackHeartDamageTotal = tmpBonus }, true)
+                end
             elseif subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL then
                 -- Mod: +% tears and range when picking up a soul heart. Resets every floor
                 local tmpBonus = PST:getTreeSnapshotMod("soulHeartTearsRange", 0)
@@ -184,6 +199,21 @@ function PST:onPickup(pickup, collider, low)
                         rangePerc = tmpBonus,
                         soulHeartTearsRangeTotal = tmpBonus
                     }, true)
+                end
+
+                -- Heartseeker Phantasm node (The Lost's tree)
+                if PST:getTreeSnapshotMod("heartseekerPhantasm", false) then
+                    -- +0.2 luck when collecting soul or black hearts. +1% all stats for every 3 hearts collected
+                    PST:addModifiers({ luck = 0.2, heartseekerPhantasmCollected = 1 }, true)
+                    if PST:getTreeSnapshotMod("heartseekerPhantasmCollected", 0) % 3 == 0 then
+                        PST:addModifiers({ allstatsPerc = 1 }, true)
+                    end
+                end
+
+                -- Mod: Soul hearts grant +tears when collected, up to a total +1
+                tmpBonus = PST:getTreeSnapshotMod("soulHeartTears", 0)
+                if tmpBonus ~= 0 and PST:getTreeSnapshotMod("soulHeartTearsTotal", 0) < 1 then
+                    PST:addModifiers({ tears = tmpBonus, soulHeartTearsTotal = tmpBonus }, true)
                 end
             end
 
@@ -256,6 +286,16 @@ function PST:onPickupInit(pickup)
                 pickup:Remove()
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_BLACK, Random() + 1)
                 pickupGone = true
+            end
+
+            -- Heartseeker Phantasm node (The Lost's tree)
+            if PST:getTreeSnapshotMod("heartseekerPhantasm", false) and not pickupGone then
+                -- Convert red and eternal hearts to soul hearts
+                if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_ETERNAL then
+                    pickup:Remove()
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_SOUL, Random() + 1)
+                    pickupGone = true
+                end
             end
         end
 

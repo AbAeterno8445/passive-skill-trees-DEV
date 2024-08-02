@@ -102,6 +102,15 @@ function PST:onNewRoom()
 		PST:addModifiers({ chaoticTreasuryProc = true }, true)
 	end
 
+	-- Sacred Aegis node (The Lost's tree)
+	if PST:getTreeSnapshotMod("sacredAegis", false) then
+		local hitsTaken = PST.specialNodes.sacredAegis.hitsTaken
+		if hitsTaken > 0 then
+			PST:addModifiers({ allstatsPerc = 7 * hitsTaken }, true)
+		end
+		PST.specialNodes.sacredAegis = { hitTime = 0, proc = false, hitsTaken = 0 }
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

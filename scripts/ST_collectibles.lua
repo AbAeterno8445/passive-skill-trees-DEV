@@ -82,6 +82,27 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         end
     end
 
+    -- Spectral Advantage node (The Lost's tree)
+    if PST:getTreeSnapshotMod("spectralAdvantage", false) then
+        if type == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+            PST:addModifiers({ tearsPerc = 8 }, true)
+        else
+            local tmpTotal = PST:getTreeSnapshotMod("spectralAdvantageHearts", 0)
+            if tmpTotal < 20 then
+                for tmpItemType, heartsGiven in pairs(PST.heartUpItems) do
+                    if type == tmpItemType then
+                        PST:addModifiers({
+                            damagePerc = math.min(2 * heartsGiven, 40 - tmpTotal * 2),
+                            luck = math.min(0.15 * heartsGiven, 3 - tmpTotal * 0.15),
+                            spectralAdvantageHearts = 1
+                        }, true)
+                        break
+                    end
+                end
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then
@@ -248,6 +269,13 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 allstatsPerc = poopAllStatsPerc,
                 poopAllStatsProc = true
             }, true)
+        end
+    -- Eternal D6
+    elseif itemType == CollectibleType.COLLECTIBLE_ETERNAL_D6 then
+        -- Mod: chance for Eternal D6 to not consume charges on use
+        if 100 * math.random() < PST:getTreeSnapshotMod("eternalD6Charge", 0) then
+            SFXManager():Play(SoundEffect.SOUND_BATTERYCHARGE)
+            player:SetActiveCharge(player:GetActiveMaxCharge(slot) * 2, slot)
         end
     end
 

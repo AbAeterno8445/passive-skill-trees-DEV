@@ -40,6 +40,13 @@ function PST:onDamage(target, damage, flag, source)
             PST.specialNodes.bossRoomHitsFrom = PST.specialNodes.bossRoomHitsFrom + 1
         end
 
+        -- Mod: chance to negate incoming hit if it would've killed you
+        local tmpHP = player:GetHearts() + player:GetSoulHearts() + player:GetBoneHearts() + player:GetRottenHearts() / 2
+        if 100 * math.random() < PST:getTreeSnapshotMod("killingHitNegation", 0) and damage >= tmpHP then
+            SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
+            return { Damage = 0 }
+        end
+
         -- Cosmic Realignment node
 	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
             -- Samson, -0.15 damage when hit, up to -0.9

@@ -340,6 +340,11 @@ function PST:treeMenuRendering()
                     end
                     PST:allocateNodeID(currentTree, hoveredNode.id, true)
                     sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.5)
+
+                    -- Lost tree, unlock holy mantle if allocating Sacred Aegis
+                    if hoveredNode.name == "Sacred Aegis" and not Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
+                        Isaac.GetPersistentGameData():TryUnlock(Achievement.LOST_HOLDS_HOLY_MANTLE)
+                    end
                 elseif not PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 else

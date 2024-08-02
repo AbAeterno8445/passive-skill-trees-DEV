@@ -2,6 +2,7 @@ local sfx = SFXManager()
 
 local blackHeartTracker = 0
 local soulHeartTracker = 0
+local holyMantleTracker = false
 
 -- On update
 local clearRoomProc = false
@@ -188,6 +189,45 @@ function PST:onUpdate()
 		elseif player.Luck <= 0 and PST:getTreeSnapshotMod("luckyAllStatsActive", false) then
 			PST:addModifiers({ allstats = -tmpStats, luckyAllStatsActive = false }, true)
 		end
+	end
+
+	-- Holy mantle broken
+	if player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) == nil and holyMantleTracker then
+		holyMantleTracker = false
+
+		-- Sacred Aegis node (The Lost's tree)
+		if PST:getTreeSnapshotMod("sacredAegis", false) then
+			-- Regenerate holy mantle after 7 seconds in this room
+			PST.specialNodes.sacredAegis.hitTime = room:GetFrameCount()
+
+			if PST.specialNodes.sacredAegis.hitsTaken < 2 then
+				PST:addModifiers({ allstatsPerc = -7 }, true)
+				PST.specialNodes.sacredAegis.hitsTaken = PST.specialNodes.sacredAegis.hitsTaken + 1
+			end
+		end
+
+		-- Mod: all stats while not having holy mantle
+		tmpStats = PST:getTreeSnapshotMod("noHolyMantleAllStats", 0)
+		if tmpStats ~= 0 and not PST:getTreeSnapshotMod("noHolyMantleAllStatsActive", false) then
+			PST:addModifiers({ allstats = tmpStats, noHolyMantleAllStatsActive = true }, true)
+		end
+	elseif player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) ~= nil and not holyMantleTracker then
+		holyMantleTracker = true
+
+		tmpStats = PST:getTreeSnapshotMod("noHolyMantleAllStats", 0)
+		if tmpStats ~= 0 and PST:getTreeSnapshotMod("noHolyMantleAllStatsActive", false) then
+			PST:addModifiers({ allstats = -tmpStats, noHolyMantleAllStatsActive = false }, true)
+		end
+	end
+
+	-- Sacred Aegis node (The Lost's tree)
+	if PST:getTreeSnapshotMod("sacredAegis", false) and room:GetFrameCount() - PST.specialNodes.sacredAegis.hitTime >= 210 and
+	PST.specialNodes.sacredAegis.hitTime ~= 0 and not PST.specialNodes.sacredAegis.proc then
+		-- Regenerate holy mantle
+		player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+		sfx:Play(SoundEffect.SOUND_BEEP)
+		Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
+		PST.specialNodes.sacredAegis.proc = true
 	end
 
 	-- Cosmic Realignment node
@@ -381,6 +421,12 @@ function PST:onUpdate()
 					local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_STARS, Random() + 1)
 				end
+			end
+
+			-- Mod: chance to spawn a soul heart on room clear
+			if 100 * math.random() < PST:getTreeSnapshotMod("soulHeartOnClear", 0) then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
 			end
 		end
 
