@@ -23,7 +23,6 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
 end
 
 function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
-    print("HERE", type)
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
         if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT then
@@ -67,7 +66,6 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
             tmpBonus = PST:getTreeSnapshotMod("devilAngelBossItemStat", 0)
             tmpBonusPerc = PST:getTreeSnapshotMod("devilAngelBossItemStatPerc", 0)
             if tmpBonus ~= 0 or tmpBonusPerc ~= 0 then
-                print("HERE")
                 local tmpStat = PST:getRandomStat()
                 PST:addModifiers({
                     [tmpStat] = tmpBonus,
