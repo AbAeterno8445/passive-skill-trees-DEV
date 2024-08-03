@@ -256,4 +256,5 @@ function PST:onNewRun(isContinued)
     end
 
     PST:closeTreeMenu(true)
+    PST.gameInit = true
 end

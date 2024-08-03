@@ -88,6 +88,11 @@ function PST:getCurrentCharData()
 	return PST.modData.charData[currentChar]
 end
 
+function PST:onExitGame()
+	PST:save()
+	PST.gameInit = false
+end
+
 include("scripts.ST_utility")
 include("scripts.ST_cosmicRData")
 include("scripts.ST_treeScreen")
@@ -110,8 +115,8 @@ include("scripts.ST_shops")
 include("scripts.ST_cardsPills")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
-PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.save)
-PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.save)
+PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.onExitGame)
+PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onExitGame)
 PST:AddCallback(ModCallbacks.MC_POST_RENDER, PST.Render)
 PST:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, PST.onDamage)
 PST:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, PST.onNewRoom)

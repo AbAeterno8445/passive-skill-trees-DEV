@@ -23,6 +23,8 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
 end
 
 function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
+    if not PST.gameInit then return end
+
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
         if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT then

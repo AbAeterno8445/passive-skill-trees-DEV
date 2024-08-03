@@ -405,6 +405,7 @@ function PST:resetMods()
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false
+	PST.gameInit = false
 end
 function PST:resetData()
 	PST.modData = {
