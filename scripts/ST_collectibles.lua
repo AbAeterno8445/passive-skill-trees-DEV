@@ -23,6 +23,7 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
 end
 
 function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
+    print("HERE", type)
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
         if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT then
@@ -297,6 +298,13 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         local tmpStats = PST:getTreeSnapshotMod("boxOfFriendsAllStats", 0)
         if tmpStats > 0 and not PST:getTreeSnapshotMod("boxOfFriendsAllStatsProc", 0) then
             PST:addModifiers({ allstats = tmpStats, boxOfFriendsAllStatsProc = true }, true)
+        end
+    -- Wooden Nickel
+    elseif itemType == CollectibleType.COLLECTIBLE_WOODEN_NICKEL then
+        -- Keeper's Blessing node (Keeper's tree)
+        if PST:getTreeSnapshotMod("keeperBlessing", false) and 100 * math.random() < 20 then
+            local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_PENNY, Random() + 1)
         end
     end
 

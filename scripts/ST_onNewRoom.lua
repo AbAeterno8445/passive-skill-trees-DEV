@@ -123,6 +123,11 @@ function PST:onNewRoom()
 		PST:addModifiers({ allstats = -tmpStats, boxOfFriendsAllStatsProc = false }, true)
 	end
 
+	-- Keeper's Blessing node (Keeper's tree)
+	if PST:getTreeSnapshotMod("keeperBlessing", false) then
+		PST:addModifiers({ keeperBlessingHeals = { value = 0, set = true } }, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

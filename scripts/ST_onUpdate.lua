@@ -55,6 +55,12 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Gulp! node (Keeper's tree)
+		if PST:getTreeSnapshotMod("gulp") and level:GetStage() % 2 ~= 0 then
+			local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+       		Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, TrinketType.TRINKET_SWALLOWED_PENNY, Random() + 1)
+		end
+
 		-- After first floor
 		if level:GetStage() > 1 then
 			-- Mod: chance to reveal map
@@ -238,6 +244,17 @@ function PST:onUpdate()
 		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 	end
 
+	-- Gulp! node (Keeper's tree)
+	if PST:getTreeSnapshotMod("gulp", false) then
+		-- +1.5 luck while holding swallowed penny
+		local hasTrinket = player:GetTrinket(0) == TrinketType.TRINKET_SWALLOWED_PENNY or player:GetTrinket(1) == TrinketType.TRINKET_SWALLOWED_PENNY
+		if hasTrinket and not PST:getTreeSnapshotMod("gulpActive", false) then
+			PST:addModifiers({ luck = 1.5, gulpActive = true }, true)
+		elseif not hasTrinket and PST:getTreeSnapshotMod("gulpActive", false) then
+			PST:addModifiers({ luck = -1.5, gulpActive = false }, true)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -320,12 +337,14 @@ function PST:onUpdate()
 		-- Boss rooms
 		elseif room:GetType() == RoomType.ROOM_BOSS then
 			-- Thievery node Greed proc (Cain's tree)
-			if PST:getTreeSnapshotMod("thieveryGreedProc", false) then
+			-- Mod: chance for Greed to spawn after defeating the first floor's boss
+			if not PST.specialNodes.bossGreedSpawned and (PST:getTreeSnapshotMod("thieveryGreedProc", false) or
+			(level:GetStage() == LevelStage.STAGE1_1 and 100 * math.random() < PST:getTreeSnapshotMod("firstBossGreed", 0))) then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
 				Game():Spawn(EntityType.ENTITY_GREED, 0, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
-				PST:addModifiers({ thieveryGreedProc = false }, true)
+				PST.specialNodes.bossGreedSpawned = true
 			else
 				-- Respec chance
 				local respecChance = PST:getTreeSnapshotMod("respecChance", 15)

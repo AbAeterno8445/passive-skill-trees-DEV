@@ -44,6 +44,14 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
         else
+            -- Keeper's Blessing node (Keeper's tree)
+            if PST:getTreeSnapshotMod("keeperBlessing", false) then
+                if variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() and PST:getTreeSnapshotMod("keeperBlessingHeals") < 4 then
+                    player:AddCoins(2)
+                    PST:addModifiers({ keeperBlessingHeals = 1 }, true)
+                end
+            end
+
             -- Cosmic Realignment node
             local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

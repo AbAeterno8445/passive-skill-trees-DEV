@@ -21,6 +21,17 @@ function PST:onShopPurchase(pickupBought, player, spent)
                 PST:createFloatTextFX("Stolen!", Vector.Zero, tmpColor, 0.13, 100, true)
             end
         end
+
+        -- Mod: +luck when purchasing an item
+        local tmpMod = PST:getTreeSnapshotMod("itemPurchaseLuck", 0)
+        if tmpMod ~= 0 then
+            PST:addModifiers({ luck = tmpMod }, true)
+        end
+
+        -- Mod: chance to keep 1-3 coins when purchasing an item
+        if 100 * math.random() < PST:getTreeSnapshotMod("purchaseKeepCoins", 0) then
+            player:AddCoins(math.random(3))
+        end
     elseif spent < 0 then
         -- Mod: chance to gain a black heart when spending hearts on deals
         if 100 * math.random() < PST:getTreeSnapshotMod("blackHeartOnDeals", 0) then

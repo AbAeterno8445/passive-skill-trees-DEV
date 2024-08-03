@@ -72,6 +72,15 @@ function PST:onNewLevel()
         end
     end
 
+    -- Mod: +damage when a blue fly dies, up to +2. Resets every floor
+    tmpTotal = PST:getTreeSnapshotMod("blueFlyDeathDamageTotal", 0)
+    if tmpTotal > 0 then
+        PST:addModifiers({
+            damage = -tmpTotal,
+            blueFlyDeathDamageTotal = { value = 0, set = true }
+        }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

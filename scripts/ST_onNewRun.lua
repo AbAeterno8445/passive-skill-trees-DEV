@@ -26,6 +26,9 @@ function PST:onNewRun(isContinued)
             end
         end
         local currentChar = PST.charNames[1 + PST.selectedMenuChar]
+        if PST.selectedMenuChar == 0 then
+            currentChar = PST.charNames[1 + Isaac.GetPlayer():GetPlayerType()]
+        end
         if PST.trees[currentChar] ~= nil then
             for nodeID, node in pairs(PST.trees[currentChar]) do
                 if PST.modData.treeNodes[currentChar][nodeID] then
@@ -137,6 +140,12 @@ function PST:onNewRun(isContinued)
                 itemPool:RemoveCollectible(tmpItem)
             end
         end
+    end
+
+    -- Avid Shopper node (Keeper's tree)
+    if PST:getTreeSnapshotMod("avidShopper", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE)
+        player:AddCoins(5)
     end
 
     -- Cosmic Realignment node

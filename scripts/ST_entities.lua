@@ -31,3 +31,10 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
         end
     end
 end
+
+function PST:postNPCInit(npc)
+    -- Mod: Greed has lower health
+    if npc.Type == EntityType.ENTITY_GREED then
+        npc.HitPoints = npc.HitPoints - math.min(npc.HitPoints / 2, npc.MaxHitPoints * (PST:getTreeSnapshotMod("greedLowerHealth", 0) / 100))
+    end
+end

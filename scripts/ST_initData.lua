@@ -372,6 +372,22 @@ function PST:resetMods()
 		boxOfFriendsCharge = 0,
 		boxOfFriendsAllStats = 0,
 		boxOfFriendsAllStatsProc = false,
+		---- Keeper's Tree ----
+		keeperBlessing = false,
+		keeperBlessingHeals = 0,
+		gulp = false,
+		gulpActive = false,
+		avidShopper = false,
+		coinShield = 0,
+		itemPurchaseLuck = 0,
+		purchaseKeepCoins = 0,
+		firstBossGreed = 0,
+		firstBossGreedProc = false,
+		greedLowerHealth = 0,
+		greedNickelDrop = 0,
+		greedDimeDrop = 0,
+		blueFlyDeathDamage = 0, -- TODO
+		blueFlyDeathDamageTotal = 0
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -384,7 +400,8 @@ function PST:resetMods()
 		bossRoomHitsFrom = 0,
 		momDeathProc = false,
 		sacredAegis = { hitTime = 0, proc = false, hitsTaken = 0 },
-		minionManeuveringMaxBonus = 15
+		minionManeuveringMaxBonus = 15,
+		bossGreedSpawned = false
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

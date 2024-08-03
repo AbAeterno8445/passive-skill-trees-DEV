@@ -47,6 +47,30 @@ function PST:onDamage(target, damage, flag, source)
             return { Damage = 0 }
         end
 
+        -- Gulp! node (Keeper's tree)
+        if PST:getTreeSnapshotMod("gulp", false) then
+            local hasTrinket = player:GetTrinket(0) == TrinketType.TRINKET_SWALLOWED_PENNY or player:GetTrinket(1) == TrinketType.TRINKET_SWALLOWED_PENNY
+            if hasTrinket and 100 * math.random() < 30 then
+                SFXManager():Play(SoundEffect.SOUND_GULP)
+                player:TryRemoveTrinket(TrinketType.TRINKET_SWALLOWED_PENNY)
+                player:AddCoins(math.random(4))
+            end
+        end
+
+        -- Mod: chance to negate a hit that would've killed you if you have more than 0 coins. Negating a hit removes all your coins and fully discharges your active item
+        if player:GetNumCoins() > 0 and 100 * math.random() < PST:getTreeSnapshotMod("coinShield", 0) and damage >= tmpHP then
+            SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.7)
+            SFXManager():Play(SoundEffect.SOUND_BATTERYDISCHARGE)
+            player:AddCoins(-999)
+            player:SetActiveCharge(0)
+            return { Damage = 0 }
+        end
+
+        -- Avid Shopper node (Keeper's tree)
+        if PST:getTreeSnapshotMod("avidShopper", false) then
+            player:AddCoins(-math.random(3))
+        end
+
         -- Cosmic Realignment node
 	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
             -- Samson, -0.15 damage when hit, up to -0.9
@@ -126,6 +150,16 @@ function PST:onDamage(target, damage, flag, source)
                 if target.SpawnerType == 0 and target.HitPoints <= damage and 100 * math.random() < PST:getTreeSnapshotMod("familiarKillSoulHeart", 0) then
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                 end
+
+                if tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY then
+                    -- Mod: +damage when a blue fly dies, up to +1.2. Resets every floor
+                    local tmpBonus = PST:getTreeSnapshotMod("blueFlyDeathDamage", 0)
+                    local tmpTotal = PST:getTreeSnapshotMod("blueFlyDeathDamageTotal", 0)
+                    if tmpBonus > 0 and tmpTotal < 1.2 then
+                        local tmpAdd = math.min(tmpBonus, 1.2 - tmpTotal)
+                        PST:addModifiers({ damage = tmpAdd, blueFlyDeathDamageTotal = tmpAdd }, true)
+                    end
+                end
             else
                 -- Direct player hit to enemy
                 if source.Type == EntityType.ENTITY_TEAR and source.Entity.Parent then
@@ -196,8 +230,8 @@ end
 function PST:onDeath(entity)
     local player = entity:ToPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+    -- Player death
     if player ~= nil then
-        -- Player death
         if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
             cosmicRCache.lazarusHasDied = true
             PST:save()
@@ -260,6 +294,19 @@ function PST:onDeath(entity)
                 -- Mom drops an additional Incubus
                 local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_INCUBUS, Random() + 1)
+            end
+        -- Greed death procs
+        elseif entity.Type == EntityType.ENTITY_GREED then
+            -- Mod: chance for Greed to drop an additional nickel
+            if 100 * math.random() < PST:getTreeSnapshotMod("greedNickelDrop", 0) then
+                local tmpPos = Isaac.GetFreeNearPosition(entity.Position, 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
+            end
+
+            -- Mod: chance for Greed to drop an additional dime
+            if 100 * math.random() < PST:getTreeSnapshotMod("greedDimeDrop", 0) then
+                local tmpPos = Isaac.GetFreeNearPosition(entity.Position, 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_DIME, Random() + 1)
             end
         end
 
