@@ -268,14 +268,25 @@ function PST:onPickupInit(pickup)
     local subtype = pickup.SubType
 
     -- Trinkets
+    local pickupGone = false
     if variant == PickupVariant.PICKUP_TRINKET then
         -- Fickle Fortune node (Cain's tree), vanish proc
         if PST:getTreeSnapshotMod("fickleFortune", false) and PST.specialNodes.fickleFortuneVanish then
             PST:vanishPickup(pickup)
             PST.specialNodes.fickleFortuneVanish = false
+            pickupGone = true
+        end
+
+        -- Harbinger Locusts node (Apollyon's tree)
+        if PST:getTreeSnapshotMod("harbingerLocusts", false) then
+            -- Chance to replace dropped trinkets with a random locust
+            if firstSpawn and 100 * math.random() < PST:getTreeSnapshotMod("harbingerLocustsReplace", 0) then
+                pickup:Remove()
+                local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, pickup.Velocity, nil, tmpLocust, Random() + 1)
+            end
         end
     else
-        local pickupGone = false
         -- Hearts
         if variant == PickupVariant.PICKUP_HEART then
             -- Sacrifice Darkness node (Judas' tree)

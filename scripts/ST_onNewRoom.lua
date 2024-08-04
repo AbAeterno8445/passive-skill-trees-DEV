@@ -87,9 +87,10 @@ function PST:onNewRoom()
 	end
 
 	-- Chaotic Treasury node (Eden's tree)
+	local level = Game():GetLevel()
 	if PST:getTreeSnapshotMod("chaoticTreasury", false) and room:GetType() == RoomType.ROOM_TREASURE and
 	not PST:getTreeSnapshotMod("chaoticTreasuryProc", false) then
-		if Game():GetLevel():GetStage() == LevelStage.STAGE1_1 then
+		if level:GetStage() == LevelStage.STAGE1_1 then
 			-- Spawn Chaos in the first floor's treasure room
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 80)
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_CHAOS, Random() + 1)
@@ -126,6 +127,15 @@ function PST:onNewRoom()
 	-- Keeper's Blessing node (Keeper's tree)
 	if PST:getTreeSnapshotMod("keeperBlessing", false) then
 		PST:addModifiers({ keeperBlessingHeals = { value = 0, set = true } }, true)
+	end
+
+	-- Mod: chance for the first floor's treasure room to contain an additional Eraser item pedestal
+	if level:GetStage() == LevelStage.STAGE1_2 and room:GetType() == RoomType.ROOM_TREASURE and not PST:getTreeSnapshotMod("eraserSecondFloorProc", false) then
+		if 100 * math.random() < PST:getTreeSnapshotMod("eraserSecondFloor", 0) then
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_ERASER, Random() + 1)
+			PST:addModifiers({ eraserSecondFloorProc = true }, true)
+		end
 	end
 
 	-- Cosmic Realignment node

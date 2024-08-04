@@ -81,6 +81,13 @@ function PST:onNewLevel()
         }, true)
     end
 
+    -- Null node (Apollyon's tree)
+    if PST:getTreeSnapshotMod("null", false) then
+        if not PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and PST:getTreeSnapshotMod("nullAppliedBonus", 0) < 3 then
+            PST:addModifiers({ allstatsPerc = 5, nullAppliedBonus = 1 }, true)
+        end
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
@@ -168,6 +175,12 @@ function PST:onCurseEval(curses)
         if 100 * math.random() < 100 - cosmicRCache.TCainUses * 10 then
             curses = curses | LevelCurse.CURSE_OF_BLIND
         end
+    end
+
+    -- Apollyon's Blessing node (Apollyon's tree)
+    if PST:getTreeSnapshotMod("apollyonBlessing", false) then
+        -- Curse of blind immunity
+        curses = curses ~ LevelCurse.CURSE_OF_BLIND
     end
 
     return curses

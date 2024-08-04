@@ -114,6 +114,13 @@ function PST:onUpdate()
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_EDENS_BLESSING, Random() + 1)
 				PST:addModifiers({ edenBlessingSpawned = true }, true)
 			end
+
+			-- Harbinger Locusts node (Apollyon's tree)
+			if PST:getTreeSnapshotMod("harbingerLocusts", false) and level:GetStage() == LevelStage.STAGE1_2 then
+				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
+			end
 		end
 	end
 
@@ -252,6 +259,21 @@ function PST:onUpdate()
 			PST:addModifiers({ luck = 1.5, gulpActive = true }, true)
 		elseif not hasTrinket and PST:getTreeSnapshotMod("gulpActive", false) then
 			PST:addModifiers({ luck = -1.5, gulpActive = false }, true)
+		end
+	end
+
+	-- Null node (Apollyon's tree)
+	if PST:getTreeSnapshotMod("null", false) then
+		-- Set whether an active item has been absorbed
+		if not PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and #player:GetVoidedCollectiblesList() > 0 then
+			PST:addModifiers({ nullActiveAbsorbed = true }, true)
+		end
+
+		-- -10% all stats while not holding void
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) and not PST:getTreeSnapshotMod("nullDebuff", false) then
+			PST:addModifiers({ allstatsPerc = -10, nullDebuff = true }, true)
+		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) and PST:getTreeSnapshotMod("nullDebuff", false) then
+			PST:addModifiers({ allstatsPerc = 10, nullDebuff = false }, true)
 		end
 	end
 
@@ -454,6 +476,13 @@ function PST:onUpdate()
 			if 100 * math.random() < PST:getTreeSnapshotMod("soulHeartOnClear", 0) then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
+			end
+
+			-- Null node (Apollyon's tree)
+			if PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed") and 100 * math.random() < 100 then
+				if player:GetBatteryCharge(0) == 0 then
+					player:SetActiveCharge(player:GetActiveCharge(0) + 1)
+				end
 			end
 		end
 

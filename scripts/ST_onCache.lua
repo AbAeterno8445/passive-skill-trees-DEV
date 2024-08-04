@@ -64,6 +64,7 @@ function PST:onCache(player, cacheFlag)
     end
 
     local totalFamiliars = PST:getTreeSnapshotMod("totalFamiliars", 0)
+    -- LUCK CACHE
     if cacheFlag == CacheFlag.CACHE_LUCK then
         -- Mod: +luck per held poop item
         tmpTreeMod = PST:getTreeSnapshotMod("poopItemLuck", 0)
@@ -79,17 +80,27 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +luck while holding a poop trinket
         tmpTreeMod = PST:getTreeSnapshotMod("poopTrinketLuck", 0)
         if tmpTreeMod ~= 0 then
-            local hasTrinket = false
-            for _, tmpTrinket in ipairs(PST.poopTrinkets) do
-                if player:GetTrinket(0) == tmpTrinket or player:GetTrinket(1) == tmpTrinket then
-                    hasTrinket = true
-                    break
-                end
-            end
+            local hasTrinket = PST:arrHasValue(PST.poopTrinkets, player:GetTrinket(0)) or PST:arrHasValue(PST.poopTrinkets, player:GetTrinket(1))
             if hasTrinket then
                 dynamicMods.luck = dynamicMods.luck + tmpTreeMod
             end
         end
+
+        -- Mod: +luck per active familiar
+        tmpTreeMod = PST:getTreeSnapshotMod("activeFamiliarsLuck", 0)
+        if tmpTreeMod > 0 and totalFamiliars > 0 then
+            dynamicMods.luck = dynamicMods.luck + totalFamiliars * tmpTreeMod
+        end
+
+        -- Mod: +luck while holding a locust (trinket)
+        tmpTreeMod = PST:getTreeSnapshotMod("locustHeldLuck", 0)
+        if tmpTreeMod ~= 0 then
+            local hasLocust = PST:arrHasValue(PST.locustTrinkets, player:GetTrinket(0)) or PST:arrHasValue(PST.locustTrinkets, player:GetTrinket(1))
+            if hasLocust then
+                dynamicMods.luck = dynamicMods.luck + tmpTreeMod
+            end
+        end
+    -- DAMAGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
         -- Hearty node (Samson's tree)
         if PST:getTreeSnapshotMod("hearty", false) then
@@ -104,12 +115,14 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.damagePerc = dynamicMods.damagePerc + tmpIncubi * tmpTreeMod
             end
         end
+    -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Minion Maneuvering node (Lilith's tree)
         if PST:getTreeSnapshotMod("minionManeuvering", false) then
             local maxBonus = PST.specialNodes.minionManeuveringMaxBonus
             dynamicMods.speedPerc = dynamicMods.speedPerc + math.min(maxBonus, totalFamiliars * 3)
         end
+    -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: +% tears per active Incubus familiar
         tmpTreeMod = PST:getTreeSnapshotMod("activeIncubusTears", 0)
@@ -118,12 +131,6 @@ function PST:onCache(player, cacheFlag)
             if tmpIncubi > 0 then
                 dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpIncubi * tmpTreeMod
             end
-        end
-    elseif cacheFlag == CacheFlag.CACHE_LUCK then
-        -- Mod: +luck per active familiar
-        tmpTreeMod = PST:getTreeSnapshotMod("activeFamiliarsLuck", 0)
-        if tmpTreeMod > 0 and totalFamiliars > 0 then
-            dynamicMods.luck = dynamicMods.luck + totalFamiliars * tmpTreeMod
         end
     end
 
@@ -156,6 +163,43 @@ function PST:onCache(player, cacheFlag)
             dynamicMods.tears = dynamicMods.tears + PST:getTreeSnapshotMod("lazarusTears", 0) / 2
         elseif cacheFlag == CacheFlag.CACHE_LUCK then
             dynamicMods.luck = dynamicMods.luck + PST:getTreeSnapshotMod("lazarusLuck", 0) / 2
+        end
+    end
+
+    -- Locust buff nodes
+    for _, tmpLocust in ipairs(PST.locustTrinkets) do
+        local tmpLocustNum = player:GetSmeltedTrinkets()[tmpLocust].trinketAmount
+        for i=0,1 do
+            if player:GetTrinket(i) == tmpLocust then
+                tmpLocustNum = tmpLocustNum + 1
+            end
+        end
+        if tmpLocust == TrinketType.TRINKET_LOCUST_OF_CONQUEST then
+            tmpTreeMod = math.min(15, PST:getTreeSnapshotMod("conquestLocustSpeed", 0))
+            if tmpTreeMod > 0 then
+                dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod * tmpLocustNum
+            end
+        elseif tmpLocust == TrinketType.TRINKET_LOCUST_OF_DEATH then
+            tmpTreeMod = math.min(15, PST:getTreeSnapshotMod("deathLocustTears", 0))
+            if tmpTreeMod > 0 then
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod * tmpLocustNum
+            end
+        elseif tmpLocust == TrinketType.TRINKET_LOCUST_OF_FAMINE then
+            tmpTreeMod = math.min(15, PST:getTreeSnapshotMod("famineLocustRangeShotspeed", 0))
+            if tmpTreeMod > 0 then
+                dynamicMods.rangePerc = dynamicMods.rangePerc + tmpTreeMod * tmpLocustNum
+                dynamicMods.shotSpeedPerc = dynamicMods.shotSpeedPerc + tmpTreeMod * tmpLocustNum
+            end
+        elseif tmpLocust == TrinketType.TRINKET_LOCUST_OF_PESTILENCE then
+            tmpTreeMod = math.min(15, PST:getTreeSnapshotMod("pestilenceLocustLuck", 0))
+            if tmpTreeMod > 0 then
+                dynamicMods.luckPerc = dynamicMods.luckPerc + tmpTreeMod * tmpLocustNum
+            end
+        elseif tmpLocust == TrinketType.TRINKET_LOCUST_OF_WRATH then
+            tmpTreeMod = math.min(15, PST:getTreeSnapshotMod("warLocustDamage", 0))
+            if tmpTreeMod > 0 then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod * tmpLocustNum
+            end
         end
     end
 

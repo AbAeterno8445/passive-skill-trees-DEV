@@ -124,6 +124,10 @@ PST.heartUpItems = {
 	[CollectibleType.COLLECTIBLE_SACRED_HEART] = 1,
 	[CollectibleType.COLLECTIBLE_BODY] = 3
 }
+PST.locustTrinkets = {
+	TrinketType.TRINKET_LOCUST_OF_DEATH, TrinketType.TRINKET_LOCUST_OF_FAMINE, TrinketType.TRINKET_LOCUST_OF_PESTILENCE,
+	TrinketType.TRINKET_LOCUST_OF_WRATH, TrinketType.TRINKET_LOCUST_OF_CONQUEST
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -386,8 +390,28 @@ function PST:resetMods()
 		greedLowerHealth = 0,
 		greedNickelDrop = 0,
 		greedDimeDrop = 0,
-		blueFlyDeathDamage = 0, -- TODO
-		blueFlyDeathDamageTotal = 0
+		blueFlyDeathDamage = 0,
+		blueFlyDeathDamageTotal = 0,
+		---- Apollyon's Tree ----
+		apollyonBlessing = false,
+		null = false,
+		nullActiveAbsorbed = false,
+		nullAppliedBonus = 0,
+		nullDebuff = false,
+		harbingerLocusts = false,
+		harbingerLocustsReplace = 2,
+		voidBlueFlies = 0,
+		voidBlueSpiders = 0,
+		voidAnnihilation = 0,
+		eraserSecondFloor = 0,
+		eraserSecondFloorProc = false,
+		locustHeldLuck = 0,
+		locustConsumedLuck = 0,
+		conquestLocustSpeed = 0,
+		deathLocustTears = 0,
+		famineLocustRangeShotspeed = 0,
+		pestilenceLocustLuck = 0,
+		warLocustDamage = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

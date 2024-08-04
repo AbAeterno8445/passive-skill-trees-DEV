@@ -306,6 +306,61 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_PENNY, Random() + 1)
         end
+    -- Void
+    elseif itemType == CollectibleType.COLLECTIBLE_VOID then
+        -- Apollyon's Blessing node (Apollyon's tree)
+        if PST:getTreeSnapshotMod("apollyonBlessing", false) and 100 * math.random() < 40 then
+            if player:GetBatteryCharge(slot) == 0 then
+                SFXManager():Play(SoundEffect.SOUND_BEEP)
+                player:SetActiveCharge(math.floor(player:GetActiveMaxCharge(slot) * 1.5), slot)
+            end
+        end
+
+        -- Harbinger Locusts node (Apollyon's tree)
+        if PST:getTreeSnapshotMod("harbingerLocusts", false) then
+            local consumedLocust = false
+            for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+                if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_TRINKET then
+                    if PST:arrHasValue(PST.locustTrinkets, tmpEntity.SubType) then
+                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+                        tmpEntity:Remove()
+                        player:AddSmeltedTrinket(tmpEntity.SubType)
+                        PST:addModifiers({ luck = PST:getTreeSnapshotMod("locustConsumedLuck", 0) }, true)
+                        consumedLocust = true
+                    end
+                end
+            end
+            if consumedLocust then
+                player:AddCacheFlags(CacheFlag.CACHE_ALL)
+            end
+        end
+
+        -- Mod: chance for Void to spawn 4 blue flies on use
+        if 100 * math.random() < PST:getTreeSnapshotMod("voidBlueFlies", 0) then
+            for _=1,4 do
+                Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector.Zero, nil, 0, Random() + 1)
+            end
+        end
+
+        -- Mod: chance for Void to spawn 3 blue spiders on use
+        if 100 * math.random() < PST:getTreeSnapshotMod("voidBlueSpiders", 0) then
+            for _=1,3 do
+                Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_SPIDER, player.Position, Vector.Zero, nil, 0, Random() + 1)
+            end
+        end
+
+        -- Mod: chance for Void to instantly kill a random non-boss enemy in the room
+        if 100 * math.random() < PST:getTreeSnapshotMod("voidAnnihilation", 0) then
+            local tmpEnemies = {}
+            for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+                if tmpEntity:IsActiveEnemy() and tmpEntity:IsVulnerableEnemy() and not tmpEntity:IsBoss() then
+                    table.insert(tmpEnemies, tmpEntity)
+                end
+            end
+            if #tmpEnemies > 0 then
+                tmpEnemies[math.random(#tmpEnemies)]:Die()
+            end
+        end
     end
 
     -- Cosmic Realignment node

@@ -295,6 +295,13 @@ function PST:onDeath(entity)
                 local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_INCUBUS, Random() + 1)
             end
+
+            -- Harbinger Locusts node (Apollyon's tree)
+			if PST:getTreeSnapshotMod("harbingerLocusts", false) then
+				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
+			end
         -- Greed death procs
         elseif entity.Type == EntityType.ENTITY_GREED then
             -- Mod: chance for Greed to drop an additional nickel
@@ -307,6 +314,14 @@ function PST:onDeath(entity)
             if 100 * math.random() < PST:getTreeSnapshotMod("greedDimeDrop", 0) then
                 local tmpPos = Isaac.GetFreeNearPosition(entity.Position, 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_DIME, Random() + 1)
+            end
+        end
+
+        -- Harbinger Locusts node (Apollyon's tree)
+        if PST:getTreeSnapshotMod("harbingerLocusts", false) then
+            -- +1% chance to replace dropped trinkets with a random locust when defeating a boss, up to 10%
+            if entity:IsBoss() and entity.Parent == nil and PST:getTreeSnapshotMod("harbingerLocustsReplace", 2) < 10 then
+                PST:addModifiers({ harbingerLocustsReplace = 1 }, true)
             end
         end
 
