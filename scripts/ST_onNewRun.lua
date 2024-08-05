@@ -1,5 +1,6 @@
 function PST:onNewRun(isContinued)
     if isContinued then
+        PST.gameInit = true
         return
     end
 
