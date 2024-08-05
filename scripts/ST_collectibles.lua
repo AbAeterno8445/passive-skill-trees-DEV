@@ -27,7 +27,7 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
 
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
-        if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+        if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT and charge == 0 then
             if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
                 player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
             else
