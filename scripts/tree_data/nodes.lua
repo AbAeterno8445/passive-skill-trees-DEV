@@ -19,6 +19,7 @@ include("scripts.tree_data.theLostTreeBank")
 include("scripts.tree_data.lilithTreeBank")
 include("scripts.tree_data.keeperTreeBank")
 include("scripts.tree_data.apollyonTreeBank")
+include("scripts.tree_data.theForgottenTreeBank")
 
 -- Sanitize json data in banks
 for treeID, tree in pairs(PST.trees) do
@@ -36,7 +37,9 @@ function PST:initTreeNodes(tree)
     for nodeID, node in pairs(PST.trees[tree]) do
         node.id = nodeID
         node.sprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
-        node.sprite:Play(node.type, true)
+        node.sprite:Play("Default", true)
+        ---@diagnostic disable-next-line: param-type-mismatch
+        node.sprite:SetFrame("Default", tonumber(node.type))
         node.allocatedSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
         node.allocatedSprite:Play("Allocated " .. node.size, true)
 

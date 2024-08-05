@@ -412,6 +412,8 @@ function PST:resetMods()
 		famineLocustRangeShotspeed = 0,
 		pestilenceLocustLuck = 0,
 		warLocustDamage = 0,
+		---- The Forgotten's Tree ----
+		
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
