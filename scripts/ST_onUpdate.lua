@@ -2,6 +2,8 @@ local sfx = SFXManager()
 
 local blackHeartTracker = 0
 local soulHeartTracker = 0
+local boneHeartTracker = 0
+local playerTypeTracker = 0
 local holyMantleTracker = false
 
 -- On update
@@ -21,6 +23,7 @@ function PST:onUpdate()
 		PST.floorFirstUpdate = false
 		blackHeartTracker = 0
 		soulHeartTracker = 0
+		boneHeartTracker = 0
 
 		local level = Game():GetLevel()
 		-- Mod: chance to reveal the arcade room's location if it is present
@@ -276,6 +279,33 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = 10, nullDebuff = false }, true)
 		end
 	end
+
+	-- Soulful node (The Forgotten's tree)
+	if PST:getTreeSnapshotMod("soulful", false) then
+		if player:GetBoneHearts() < boneHeartTracker and player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL then
+			for _=1, boneHeartTracker - player:GetBoneHearts() do
+				local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
+				PST:addModifiers({ luck = -0.25 }, true)
+			end
+		end
+	end
+	boneHeartTracker = player:GetBoneHearts()
+
+	-- Inner Flare node (The Forgotten's tree)
+	if PST:getTreeSnapshotMod("innerFlare", false) then
+		-- Slow room enemies when switching to The Soul
+		if not PST:getTreeSnapshotMod("innerFlareProc", false) and playerTypeTracker == PlayerType.PLAYER_THEFORGOTTEN and
+		player:GetPlayerType() == PlayerType.PLAYER_THESOUL then
+			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+				if tmpEntity:IsActiveEnemy() and tmpEntity:IsVulnerableEnemy() then
+					tmpEntity:AddSlowing(EntityRef(player), math.floor(PST:getTreeSnapshotMod("innerFlareSlowDuration", 2) * 30), 0.7, Color(0.7, 0.7, 1, 1, 0, 0))
+				end
+			end
+			PST:addModifiers({ innerFlareProc = true }, true)
+		end
+	end
+	playerTypeTracker = player:GetPlayerType()
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

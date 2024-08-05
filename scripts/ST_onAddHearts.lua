@@ -12,7 +12,7 @@ function PST:onAddHearts(player, amount, healthType, optional)
 
     -- Magdalene's Blessing node (Magdalene's tree)
     if PST:getTreeSnapshotMod("magdaleneBlessing", false) then
-        player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED)
+        player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED, true)
     end
 
 	-- Dark protection node (Eve's tree)
@@ -36,8 +36,14 @@ function PST:onAddHearts(player, amount, healthType, optional)
 	-- Hearty node (Samson's tree)
 	if PST:getTreeSnapshotMod("hearty", false) then
 		if healthType == HealthType.RED then
-			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
+			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
 		end
+	end
+
+	-- The Forgotten mod updates
+	if PST:getTreeSnapshotMod("forgottenSoulDamage", 0) ~= 0 or PST:getTreeSnapshotMod("forgottenSoulTears", 0) ~= 0 or
+	PST:getTreeSnapshotMod("theSoulBoneDamage", 0) ~= 0 or PST:getTreeSnapshotMod("theSoulBoneTears", 0) ~= 0 then
+		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
 	end
 
     -- Cosmic Realignment node

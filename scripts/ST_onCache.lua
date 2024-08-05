@@ -115,12 +115,37 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.damagePerc = dynamicMods.damagePerc + tmpIncubi * tmpTreeMod
             end
         end
+
+        -- Spirit Ebb node (The Forgotten's tree)
+        if (PST.specialNodes.spiritEbbHits.forgotten >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THESOUL) or
+        (PST.specialNodes.spiritEbbHits.soul >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN) then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + 10
+        end
+
+        if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN and player:GetSubPlayer() then
+            -- Mod: +damage with The Forgotten per remaining soul/black hearts
+            tmpTreeMod = PST:getTreeSnapshotMod("forgottenSoulDamage", 0)
+            if tmpTreeMod > 0 then
+                dynamicMods.damage = dynamicMods.damage + tmpTreeMod * player:GetSubPlayer():GetSoulHearts() / 2
+            end
+        elseif player:GetPlayerType() == PlayerType.PLAYER_THESOUL and player:GetSubPlayer() then
+            -- Mod: +damage with The Soul per remaining soul/black hearts
+            tmpTreeMod = PST:getTreeSnapshotMod("theSoulBoneDamage", 0)
+            if tmpTreeMod > 0 then
+                dynamicMods.damage = dynamicMods.damage + tmpTreeMod * player:GetSubPlayer():GetBoneHearts()
+            end
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Minion Maneuvering node (Lilith's tree)
         if PST:getTreeSnapshotMod("minionManeuvering", false) then
             local maxBonus = PST.specialNodes.minionManeuveringMaxBonus
             dynamicMods.speedPerc = dynamicMods.speedPerc + math.min(maxBonus, totalFamiliars * 3)
+        end
+
+        -- Spirit Ebb node (The Forgotten's tree)
+        if (PST.specialNodes.spiritEbbHits.forgotten >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THESOUL) then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + 10
         end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
@@ -130,6 +155,25 @@ function PST:onCache(player, cacheFlag)
             local tmpIncubi = PST:getRoomFamiliars(FamiliarVariant.INCUBUS)
             if tmpIncubi > 0 then
                 dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpIncubi * tmpTreeMod
+            end
+        end
+
+        -- Spirit Ebb node (The Forgotten's tree)
+        if (PST.specialNodes.spiritEbbHits.soul >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN) then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + 10
+        end
+
+        if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN and player:GetSubPlayer() then
+            -- Mod: +tears with The Forgotten per remaining soul/black hearts
+            tmpTreeMod = PST:getTreeSnapshotMod("forgottenSoulTears", 0)
+            if tmpTreeMod > 0 then
+                dynamicMods.tears = dynamicMods.tears + tmpTreeMod * player:GetSubPlayer():GetSoulHearts() / 2
+            end
+        elseif player:GetPlayerType() == PlayerType.PLAYER_THESOUL and player:GetSubPlayer() then
+            -- Mod: +tears with The Soul per remaining soul/black hearts
+            tmpTreeMod = PST:getTreeSnapshotMod("theSoulBoneTears", 0)
+            if tmpTreeMod > 0 then
+                dynamicMods.tears = dynamicMods.tears + tmpTreeMod * player:GetSubPlayer():GetBoneHearts()
             end
         end
     end

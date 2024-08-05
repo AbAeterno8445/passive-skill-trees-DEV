@@ -413,7 +413,16 @@ function PST:resetMods()
 		pestilenceLocustLuck = 0,
 		warLocustDamage = 0,
 		---- The Forgotten's Tree ----
-		
+		soulful = false,
+		spiritEbb = false,
+		innerFlare = false,
+		innerFlareProc = false,
+		forgottenMeleeTearBuff = 0,
+		forgottenSoulDamage = 0,
+		forgottenSoulTears = 0,
+		theSoulBoneDamage = 0,
+		theSoulBoneTears = 0,
+		innerFlareSlowDuration = 2,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -427,7 +436,9 @@ function PST:resetMods()
 		momDeathProc = false,
 		sacredAegis = { hitTime = 0, proc = false, hitsTaken = 0 },
 		minionManeuveringMaxBonus = 15,
-		bossGreedSpawned = false
+		bossGreedSpawned = false,
+		spiritEbbHits = { soul = 0, forgotten = 0 },
+		forgottenMeleeTearBuff = 0
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

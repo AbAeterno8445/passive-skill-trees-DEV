@@ -331,7 +331,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
             if consumedLocust then
-                player:AddCacheFlags(CacheFlag.CACHE_ALL)
+                player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
             end
         end
 

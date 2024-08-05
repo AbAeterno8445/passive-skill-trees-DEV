@@ -5,6 +5,7 @@ function PST:onNewRoom()
 	PST.specialNodes.quickWit.pauseTime = 0
 	PST.specialNodes.bossHits = 0
 	PST.specialNodes.bossRoomHitsFrom = 0
+	PST.specialNodes.forgottenMeleeTearBuff = 0
 	floatingTexts = {}
 
 	local player = Isaac.GetPlayer()
@@ -15,11 +16,11 @@ function PST:onNewRoom()
 	if tmpTreeMod and room:GetAliveEnemiesCount() > 0 and 100 * math.random() < tmpTreeMod then
 		if not PST:getTreeSnapshotMod("allstatsRoomProc", false) then
 			PST:addModifiers({ allstatsPerc = 4, allstatsRoomProc = true }, true)
-			player:AddCacheFlags(CacheFlag.CACHE_ALL)
+			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 		end
 	elseif PST:getTreeSnapshotMod("allstatsRoomProc", false) then
 		PST:addModifiers({ allstatsPerc = -4, allstatsRoomProc = false}, true)
-		player:AddCacheFlags(CacheFlag.CACHE_ALL)
+		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 	end
 
 	-- Impromptu Gambler node (Cain's tree)
@@ -136,6 +137,18 @@ function PST:onNewRoom()
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_ERASER, Random() + 1)
 			PST:addModifiers({ eraserSecondFloorProc = true }, true)
 		end
+	end
+
+	-- Spirit Ebb node (The Forgotten's tree)
+	if PST.specialNodes.spiritEbbHits.forgotten > 0 or PST.specialNodes.spiritEbbHits.soul > 0 then
+		PST.specialNodes.spiritEbbHits.forgotten = 0
+		PST.specialNodes.spiritEbbHits.soul = 0
+		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY, true)
+	end
+
+	-- Inner Flare node (The Forgotten's tree)
+	if PST:getTreeSnapshotMod("innerFlareProc", false) then
+		PST:addModifiers({ innerFlareProc = false }, true)
 	end
 
 	-- Cosmic Realignment node

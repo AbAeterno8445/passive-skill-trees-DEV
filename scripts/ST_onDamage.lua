@@ -105,6 +105,7 @@ function PST:onDamage(target, damage, flag, source)
         end
     else
         local tmpPlayer = Isaac.GetPlayer()
+        local dmgMult = 1
 
         if target:IsBoss() then
             -- Mod: chance for Book of Belial to gain a charge when hitting a boss
@@ -141,7 +142,7 @@ function PST:onDamage(target, damage, flag, source)
 
                         local birdInheritDmg = PST:getTreeSnapshotMod("deadBirdInheritDamage", 0)
                         if birdInheritDmg > 0 then
-                            return { Damage = damage * (1 + birdInheritDmg / 100) }
+                            dmgMult = dmgMult + birdInheritDmg / 100
                         end
                     end
                 end
@@ -162,9 +163,17 @@ function PST:onDamage(target, damage, flag, source)
                 end
             else
                 -- Direct player hit to enemy
-                if source.Type == EntityType.ENTITY_TEAR and source.Entity.Parent then
-                    local srcPlayer = source.Entity.Parent:ToPlayer()
-                    if srcPlayer then
+                local srcPlayer = source.Entity:ToPlayer()
+                if srcPlayer == nil then
+                    if source.Entity.Parent then
+                        srcPlayer = source.Entity.Parent:ToPlayer()
+                    end
+                    if srcPlayer == nil and source.Entity.SpawnerEntity then
+                        srcPlayer = source.Entity.SpawnerEntity:ToPlayer()
+                    end
+                end
+                if srcPlayer then
+                    if target:IsVulnerableEnemy() then
                         -- Rage Buildup node (Samson's tree)
                         if PST:getTreeSnapshotMod("rageBuildup", false) and PST:getTreeSnapshotMod("rageBuildupTotal", 0) < 3 then
                             PST:addModifiers({ damage = 0.02, rageBuildupTotal = 0.02 }, true)
@@ -194,9 +203,44 @@ function PST:onDamage(target, damage, flag, source)
                             -- Mod: chance to deal 10x damage to boss below 10% HP
                             if (target.HitPoints - damage) / target.MaxHitPoints <= 0.1 then
                                 if 100 * math.random() < PST:getTreeSnapshotMod("bossCulling", 0) then
-                                    return { Damage = damage * 10 }
+                                    dmgMult = dmgMult + 9
                                 end
                             end
+                        end
+
+                        -- Spirit Ebb and Flow node (The Forgotten's tree)
+                        if PST:getTreeSnapshotMod("spiritEbb", false) then
+                            if srcPlayer:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN then
+                                PST.specialNodes.spiritEbbHits.forgotten = PST.specialNodes.spiritEbbHits.forgotten + 1
+                                if PST.specialNodes.spiritEbbHits.forgotten == 6 then
+                                    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, srcPlayer.Position, Vector.Zero, nil, 0, Random() + 1)
+                                    srcPlayer:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED, true)
+                                end
+                            elseif srcPlayer:GetPlayerType() == PlayerType.PLAYER_THESOUL then
+                                PST.specialNodes.spiritEbbHits.soul = PST.specialNodes.spiritEbbHits.soul + 1
+                                if PST.specialNodes.spiritEbbHits.soul == 6 then
+                                    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, srcPlayer.Position, Vector.Zero, nil, 0, Random() + 1)
+                                    srcPlayer:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
+                                end
+                            end
+                        end
+
+                        -- Inner Flare node (The Forgotten's tree)
+                        if PST:getTreeSnapshotMod("innerFlare", false) then
+                            if target:GetSlowingCountdown() > 0 and srcPlayer:GetPlayerType() == PlayerType.PLAYER_THESOUL then
+                                dmgMult = dmgMult + 0.15
+                            end
+                        end
+
+                        -- Mod: increased tear damage when melee hitting as The Forgotten
+                        local tmpBonus = PST:getTreeSnapshotMod("forgottenMeleeTearBuff", 0)
+                        if tmpBonus > 0 and srcPlayer:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN then
+                            if PST.specialNodes.forgottenMeleeTearBuff < 20 then
+                                local tmpAdd = math.min(tmpBonus, 20 - PST.specialNodes.forgottenMeleeTearBuff)
+                                PST.specialNodes.forgottenMeleeTearBuff = PST.specialNodes.forgottenMeleeTearBuff + tmpAdd
+                            end
+                        elseif source.Entity.Type == EntityType.ENTITY_TEAR and PST.specialNodes.forgottenMeleeTearBuff ~= 0 then
+                            dmgMult = dmgMult + PST.specialNodes.forgottenMeleeTearBuff / 100
                         end
                     end
                 end
@@ -208,7 +252,7 @@ function PST:onDamage(target, damage, flag, source)
             -- Tainted Azazel, -40% damage dealt to enemies far away from you, based on your range stat
             local dist = math.sqrt((tmpPlayer.Position.X - target.Position.X) ^ 2 + (tmpPlayer.Position.Y - target.Position.Y) ^ 2)
             if dist > tmpPlayer.TearRange * 0.4 then
-                return { Damage = damage * 0.6 }
+                dmgMult = dmgMult - 0.4
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY_B) then
             -- Tainted Bethany, -4% all stats when an item wisp dies, up to -20%
@@ -220,10 +264,12 @@ function PST:onDamage(target, damage, flag, source)
                         PST:addModifiers({ allstatsPerc = -4 }, true)
                     end
                 else
-                    return { Damage = damage * 0.3 }
+                    dmgMult = dmgMult - 0.7
                 end
             end
         end
+
+        return { Damage = damage * math.max(0, dmgMult) }
     end
 end
 
