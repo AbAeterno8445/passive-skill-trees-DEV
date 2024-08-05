@@ -88,6 +88,22 @@ function PST:onNewLevel()
         end
     end
 
+    -- Mod: +% all stats per wisp orbiting you when entering a floor, up to 15%
+    local tmpBonus = PST:getTreeSnapshotMod("wispFloorBuff", 0)
+    if tmpBonus ~= 0 then
+        tmpTotal = 0
+        for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+            if tmpEntity.Type == EntityType.ENTITY_FAMILIAR and tmpEntity.Variant == FamiliarVariant.WISP then
+                tmpTotal = tmpTotal + tmpBonus
+            end
+        end
+        local treeTotal = PST:getTreeSnapshotMod("wispFloorBuffTotal", 0)
+        if tmpTotal ~= 0 and treeTotal < 15 then
+            local tmpAdd = math.min(tmpTotal, 15 - treeTotal)
+            PST:addModifiers({ allstatsPerc = tmpAdd, wispFloorBuffTotal = tmpAdd }, true)
+        end
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

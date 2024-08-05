@@ -223,6 +223,17 @@ function PST:onPickup(pickup, collider, low)
                 if tmpBonus ~= 0 and PST:getTreeSnapshotMod("soulHeartTearsTotal", 0) < 1 then
                     PST:addModifiers({ tears = tmpBonus, soulHeartTearsTotal = tmpBonus }, true)
                 end
+
+                -- Soul Trickle node (Bethany's tree)
+                if PST:getTreeSnapshotMod("soulTrickle", false) then
+                    player:AddHearts(1)
+                end
+            elseif subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF then
+                -- Mod: chance to gain a soul charge when picking up a red heart
+                if 100 * math.random() < PST:getTreeSnapshotMod("redHeartsSoulCharge", 0) then
+                    SFXManager():Play(SoundEffect.SOUND_BEEP)
+                    player:AddSoulCharge(1)
+                end
             end
 
             -- Heartless node (Eve's tree)
@@ -317,6 +328,17 @@ function PST:onPickupInit(pickup)
             if PST:getTreeSnapshotMod("heartseekerPhantasm", false) and not pickupGone then
                 -- Convert red and eternal hearts to soul hearts
                 if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_ETERNAL then
+                    pickup:Remove()
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_SOUL, Random() + 1)
+                    pickupGone = true
+                end
+            end
+
+            -- Soul Trickle node (Bethany's tree)
+            if firstSpawn and not pickupGone and PST:getTreeSnapshotMod("soulTrickle", false) and
+            (subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF) then
+                local player = Isaac.GetPlayer()
+                if player:GetHearts() == player:GetMaxHearts() and 100 * math.random() < 30 then
                     pickup:Remove()
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_SOUL, Random() + 1)
                     pickupGone = true

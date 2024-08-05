@@ -307,6 +307,16 @@ function PST:onUpdate()
 	end
 	playerTypeTracker = player:GetPlayerType()
 
+	-- Fate Pendulum node (Bethany's tree)
+	if PST:getTreeSnapshotMod("fatePendulum", false) then
+		-- -50% all stats while not holding Metronome
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_METRONOME) and not PST:getTreeSnapshotMod("fatePendulumDebuffActive", false) then
+			PST:addModifiers({ allstatsPerc = -50, fatePendulumDebuffActive = true }, true)
+		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_METRONOME) and PST:getTreeSnapshotMod("fatePendulumDebuffActive", false) then
+			PST:addModifiers({ allstatsPerc = 50, fatePendulumDebuffActive = false }, true)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -509,10 +519,17 @@ function PST:onUpdate()
 			end
 
 			-- Null node (Apollyon's tree)
-			if PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed") and 100 * math.random() < 100 then
+			-- Mod: chance to gain an additional active item charge when clearing a room
+			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed") and 100 * math.random() < 100)
+			or (100 * math.random() < PST:getTreeSnapshotMod("chargeOnClear", 0)) then
 				if player:GetBatteryCharge(0) == 0 then
 					player:SetActiveCharge(player:GetActiveCharge(0) + 1)
 				end
+			end
+
+			-- Mod: chance to gain a soul charge when clearing a room
+			if 100 * math.random() < PST:getTreeSnapshotMod("soulChargeOnClear", 0) then
+				player:AddSoulCharge(1)
 			end
 		end
 

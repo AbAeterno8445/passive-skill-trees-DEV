@@ -116,6 +116,35 @@ function PST:onDamage(target, damage, flag, source)
                     SFXManager():Play(SoundEffect.SOUND_BEEP)
                 end
             end
+        else
+            -- Check if a familiar got hit
+            local tmpFamiliar = target:ToFamiliar()
+            if tmpFamiliar then
+                if tmpFamiliar.Variant == FamiliarVariant.WISP then
+                    -- Will-o-the-Wisp node (Bethany's tree)
+                    if PST:getTreeSnapshotMod("willOTheWisp", false) then
+                        dmgMult = dmgMult - 0.6
+                        if tmpFamiliar.HitPoints <= damage * dmgMult and PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0) < 2.5 then
+                            PST:addModifiers({ damage = 0.5, willOTheWispDmgBuff = 0.5 }, true)
+                        end
+                    end
+
+                    -- Soul Trickle node (Bethany's tree)
+                    if PST:getTreeSnapshotMod("soulTrickle", false) and PST:getTreeSnapshotMod("soulTrickleWispDrops", 0) < 2 and
+                    100 * math.random() < 5 then
+                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpFamiliar.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                        PST:addModifiers({ soulTrickleWispDrops = 1 }, true)
+                    end
+
+                    -- Mod: +luck when a wisp is destroyed, up to +4
+                    local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
+                    local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
+                    if tmpBonus ~= 0 and tmpTotal < 4 and tmpFamiliar.HitPoints <= damage * dmgMult then
+                        local tmpAdd = math.min(tmpBonus, 4 - tmpTotal)
+                        PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
+                    end
+                end
+            end
         end
 
         if source and source.Entity then
@@ -130,7 +159,7 @@ function PST:onDamage(target, damage, flag, source)
                 if PST:getTreeSnapshotMod("carrionAvian", false) then
                     if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
                         -- +0.15 damage when dead bird kills an enemy, up to +3. Permanent +0.6 if boss
-                        if target.HitPoints <= damage then
+                        if target.HitPoints <= damage * dmgMult then
                             if not target:IsBoss() then
                                 if PST:getTreeSnapshotMod("carrionAvianTempBonus", 0) < 3 then
                                     PST:addModifiers({ damage = 0.15, carrionAvianTempBonus = 0.15 }, true)
@@ -148,7 +177,7 @@ function PST:onDamage(target, damage, flag, source)
                 end
 
                 -- Mod: chance for enemies killed by familiars to drop an additional 1/2 soul heart
-                if target.SpawnerType == 0 and target.HitPoints <= damage and 100 * math.random() < PST:getTreeSnapshotMod("familiarKillSoulHeart", 0) then
+                if target.SpawnerType == 0 and target.HitPoints <= damage * dmgMult and 100 * math.random() < PST:getTreeSnapshotMod("familiarKillSoulHeart", 0) then
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                 end
 
@@ -201,7 +230,7 @@ function PST:onDamage(target, damage, flag, source)
                             end
 
                             -- Mod: chance to deal 10x damage to boss below 10% HP
-                            if (target.HitPoints - damage) / target.MaxHitPoints <= 0.1 then
+                            if (target.HitPoints - damage * dmgMult) / target.MaxHitPoints <= 0.1 then
                                 if 100 * math.random() < PST:getTreeSnapshotMod("bossCulling", 0) then
                                     dmgMult = dmgMult + 9
                                 end
@@ -258,7 +287,7 @@ function PST:onDamage(target, damage, flag, source)
             -- Tainted Bethany, -4% all stats when an item wisp dies, up to -20%
             local tmpWisp = target:ToFamiliar()
             if tmpWisp and tmpWisp.Variant == FamiliarVariant.ITEM_WISP then
-                if target.HitPoints <= damage then
+                if target.HitPoints <= damage * dmgMult then
                     if cosmicRCache.TBethanyDeadWisps < 5 then
                         cosmicRCache.TBethanyDeadWisps = cosmicRCache.TBethanyDeadWisps + 1
                         PST:addModifiers({ allstatsPerc = -4 }, true)

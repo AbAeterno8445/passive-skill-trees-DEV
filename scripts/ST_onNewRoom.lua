@@ -151,6 +151,18 @@ function PST:onNewRoom()
 		PST:addModifiers({ innerFlareProc = false }, true)
 	end
 
+	-- Will-o-the-Wisp node (Bethany's tree)
+	tmpTreeMod = PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0)
+	if tmpTreeMod ~= 0 then
+		PST:addModifiers({ damage = -tmpTreeMod, willOTheWispDmgBuff = { value = 0, set = true } }, true)
+	end
+
+	-- Soul Trickle node (Bethany's tree)
+	tmpTreeMod = PST:getTreeSnapshotMod("soulTrickleWispDrops", 0)
+	if tmpTreeMod ~= 0 then
+		PST:addModifiers({ soulTrickleWispDrops = { value = 0, set = true } }, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

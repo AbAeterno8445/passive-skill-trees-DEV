@@ -363,6 +363,11 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         end
     end
 
+    -- Mod: chance to spawn a regular wisp when using your active item
+    if 100 * math.random() < PST:getTreeSnapshotMod("activeItemWisp", 0) then
+        Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.WISP, player.Position, Vector.Zero, nil, 0, Random() + 1)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
         -- Tainted Cain, detect craft from Bag of Crafting

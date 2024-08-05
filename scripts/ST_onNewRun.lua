@@ -149,6 +149,13 @@ function PST:onNewRun(isContinued)
         player:AddCoins(5)
     end
 
+    -- Fate Pendulum node (Bethany's tree)
+    if PST:getTreeSnapshotMod("fatePendulum", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_METRONOME)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_METRONOME)
+        player:SetActiveCharge(player:GetActiveMaxCharge(0))
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

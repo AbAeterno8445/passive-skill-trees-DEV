@@ -423,6 +423,21 @@ function PST:resetMods()
 		theSoulBoneDamage = 0,
 		theSoulBoneTears = 0,
 		innerFlareSlowDuration = 2,
+		---- Bethany's Tree ----
+		willOTheWisp = false,
+		willOTheWispDmgBuff = 0,
+		soulTrickle = false,
+		soulTrickleWispDrops = 0,
+		fatePendulum = false,
+		fatePendulumDebuffActive = false,
+		activeItemWisp = 0,
+		chargeOnClear = 0,
+		soulChargeOnClear = 0,
+		wispDestroyedLuck = 0,
+		wispDestroyedLuckTotal = 0,
+		wispFloorBuff = 0,
+		wispFloorBuffTotal = 0,
+		redHeartsSoulCharge = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -438,7 +453,7 @@ function PST:resetMods()
 		minionManeuveringMaxBonus = 15,
 		bossGreedSpawned = false,
 		spiritEbbHits = { soul = 0, forgotten = 0 },
-		forgottenMeleeTearBuff = 0
+		forgottenMeleeTearBuff = 0,
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false
