@@ -1,5 +1,5 @@
 -- Useful for heart-related checks
-function PST:onAddHearts(player, amount, healthType, optional)
+function PST:onAddHearts(player, amount, addHealthType, optional)
 	-- Mod: all stats while you have at least 1 red heart container and are at full health
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsFullRed", 0)
     if tmpTreeMod and player:GetMaxHearts() > 1 and player:HasFullHearts() and not PST:getTreeSnapshotMod("allstatsFullRedProc", false) then
@@ -35,7 +35,7 @@ function PST:onAddHearts(player, amount, healthType, optional)
 
 	-- Hearty node (Samson's tree)
 	if PST:getTreeSnapshotMod("hearty", false) then
-		if healthType == HealthType.RED then
+		if addHealthType == AddHealthType.RED then
 			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
 		end
 	end
@@ -44,6 +44,18 @@ function PST:onAddHearts(player, amount, healthType, optional)
 	if PST:getTreeSnapshotMod("forgottenSoulDamage", 0) ~= 0 or PST:getTreeSnapshotMod("forgottenSoulTears", 0) ~= 0 or
 	PST:getTreeSnapshotMod("theSoulBoneDamage", 0) ~= 0 or PST:getTreeSnapshotMod("theSoulBoneTears", 0) ~= 0 then
 		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
+	end
+
+	-- Heart Link (Jacob & Esau's tree)
+	if PST:getTreeSnapshotMod("heartLink", false) and player:GetOtherTwin() then
+		if amount > 0 and addHealthType == AddHealthType.MAX then
+			if not PST.specialNodes.heartLinkProc then
+				PST.specialNodes.heartLinkProc = true
+				player:GetOtherTwin():AddMaxHearts(amount)
+			else
+				PST.specialNodes.heartLinkProc = false
+			end
+		end
 	end
 
     -- Cosmic Realignment node

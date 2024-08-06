@@ -103,6 +103,16 @@ function PST:onDamage(target, damage, flag, source)
         if not PST.specialNodes.deadBirdActive and 100 * math.random() < PST:getTreeSnapshotMod("deadBirdNullify", 0) then
             return { Damage = 0 }
         end
+
+        -- Mod: chance to negate killing hit if opposing brother has more than 1 remaining red heart
+        local tmpTwin = player:GetOtherTwin()
+        if tmpTwin then
+            if 100 * math.random() < PST:getTreeSnapshotMod("brotherHitNegation", 0) and tmpTwin:GetHearts() > 2 and damage >= tmpHP then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.7)
+                tmpTwin:AddHearts(2 - tmpTwin:GetHearts())
+                return { Damage = 0 }
+            end
+        end
     else
         local tmpPlayer = Isaac.GetPlayer()
         local dmgMult = 1
@@ -271,6 +281,39 @@ function PST:onDamage(target, damage, flag, source)
                         elseif source.Entity.Type == EntityType.ENTITY_TEAR and PST.specialNodes.forgottenMeleeTearBuff ~= 0 then
                             dmgMult = dmgMult + PST.specialNodes.forgottenMeleeTearBuff / 100
                         end
+
+                        -- Coordination node (Jacob & Esau's tree)
+                        if PST:getTreeSnapshotMod("coordination", false) and srcPlayer:GetOtherTwin() then
+                            local tmpTwin = srcPlayer:GetOtherTwin()
+                            -- Landing 5 hits as Jacob grants +10% tears to Esau, 5 hits as Esau grants +10% damage to Jacob
+                            if srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
+                                PST.specialNodes.coordinationHits.jacob = PST.specialNodes.coordinationHits.jacob + 1
+                                if PST.specialNodes.coordinationHits.jacob == 5 then
+                                    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpTwin.Position, Vector.Zero, nil, 0, Random() + 1)
+                                    tmpTwin:AddCacheFlags(CacheFlag.CACHE_FIREDELAY, true)
+                                end
+                            elseif srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
+                                PST.specialNodes.coordinationHits.esau = PST.specialNodes.coordinationHits.esau + 1
+                                if PST.specialNodes.coordinationHits.esau == 5 then
+                                    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpTwin.Position, Vector.Zero, nil, 0, Random() + 1)
+                                    tmpTwin:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
+                                end
+                            end
+                        end
+
+                        -- Mod: chance for enemies killed by Jacob to drop 1/2 red heart, once per room
+                        if 100 * math.random() < PST:getTreeSnapshotMod("jacobHeartOnKill", 0) and not PST:getTreeSnapshotMod("jacobHeartOnKillProc", false) and
+                        target.HitPoints <= damage * dmgMult and srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
+                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
+                            PST:addModifiers({ jacobHeartOnKillProc = true }, true)
+                        end
+
+                        -- Mod: chance for enemies killed by Esau to drop 1/2 soul heart, once per room
+                        if 100 * math.random() < PST:getTreeSnapshotMod("esauSoulOnKill", 0) and not PST:getTreeSnapshotMod("esauSoulOnKillProc", false) and
+                        target.HitPoints <= damage * dmgMult and srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
+                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                            PST:addModifiers({ esauSoulOnKillProc = true }, true)
+                        end
                     end
                 end
             end
@@ -377,6 +420,23 @@ function PST:onDeath(entity)
 				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
 			end
+
+            -- Mod: chance for mom to additionally drop Birthright
+            if 100 * math.random() < PST:getTreeSnapshotMod("jacobBirthright", 0) then
+                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
+                PST:addModifiers({ jacobBirthrightProc = true }, true)
+            end
+        -- Mom's Heart death procs
+        elseif entity.Type == EntityType.ENTITY_MOMS_HEART and not PST.specialNodes.momHeartDeathProc then
+            PST.specialNodes.momDeathProc = true
+
+            -- Mod: chance for Mom's Heart to additionally drop Birthright (if Mom didn't previously drop it)
+            if not PST:getTreeSnapshotMod("jacobBirthrightProc", false) and 100 * math.random() < PST:getTreeSnapshotMod("jacobBirthright", 0) then
+                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
+                PST:addModifiers({ jacobBirthrightProc = true }, true)
+            end
         -- Greed death procs
         elseif entity.Type == EntityType.ENTITY_GREED then
             -- Mod: chance for Greed to drop an additional nickel

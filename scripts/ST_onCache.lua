@@ -100,6 +100,12 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.luck = dynamicMods.luck + tmpTreeMod
             end
         end
+
+        -- Mod: +luck per 1/2 heart of any type with the brother with lower total health
+        tmpTreeMod = PST:getTreeSnapshotMod("jacobHeartLuck", 0)
+        if tmpTreeMod ~= 0 and PST.specialNodes.jacobHeartLuckVal ~= 0 then
+		    dynamicMods.luck = dynamicMods.luck + PST.specialNodes.jacobHeartLuckVal * tmpTreeMod
+		end
     -- DAMAGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
         -- Hearty node (Samson's tree)
@@ -135,6 +141,11 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.damage = dynamicMods.damage + tmpTreeMod * player:GetSubPlayer():GetBoneHearts()
             end
         end
+
+        -- Coordination node (Jacob & Esau's tree)
+        if PST.specialNodes.coordinationHits.esau >= 5 and player:GetPlayerType() == PlayerType.PLAYER_JACOB then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + 10
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Minion Maneuvering node (Lilith's tree)
@@ -159,7 +170,7 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Spirit Ebb node (The Forgotten's tree)
-        if (PST.specialNodes.spiritEbbHits.soul >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN) then
+        if PST.specialNodes.spiritEbbHits.soul >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + 10
         end
 
@@ -175,6 +186,11 @@ function PST:onCache(player, cacheFlag)
             if tmpTreeMod > 0 then
                 dynamicMods.tears = dynamicMods.tears + tmpTreeMod * player:GetSubPlayer():GetBoneHearts()
             end
+        end
+
+        -- Coordination node (Jacob & Esau's tree)
+        if PST.specialNodes.coordinationHits.jacob >= 5 and player:GetPlayerType() == PlayerType.PLAYER_ESAU then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + 10
         end
     end
 
@@ -244,6 +260,26 @@ function PST:onCache(player, cacheFlag)
             if tmpTreeMod > 0 then
                 dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod * tmpLocustNum
             end
+        end
+    end
+
+    -- Heart Link node (Jacob & Esau's tree)
+    if PST:getTreeSnapshotMod("heartLink", false) and player:GetOtherTwin() then
+        local tmpTwin = player:GetOtherTwin()
+        local tmpDiff = tmpTwin:GetHearts() - player:GetHearts()
+        if tmpDiff > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc - tmpDiff
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpDiff
+            dynamicMods.rangePerc = dynamicMods.rangePerc - tmpDiff
+        end
+    end
+
+    -- Mod: +% all stats per item obtained by the opposing brother, up to 15%
+    tmpTreeMod = PST:getTreeSnapshotMod("jacobItemAllstats", 0)
+    if tmpTreeMod ~= 0 and player:GetOtherTwin() then
+        local itemCount = player:GetOtherTwin():GetCollectibleCount()
+        if itemCount > 0 then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.min(15, tmpTreeMod * itemCount)
         end
     end
 

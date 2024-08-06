@@ -156,6 +156,11 @@ function PST:onNewRun(isContinued)
         player:SetActiveCharge(player:GetActiveMaxCharge(0))
     end
 
+    -- Statue Pilgrimage node (Jacob & Esau's tree)
+    if PST:getTreeSnapshotMod("statuePilgrimage", false) and player:GetOtherTwin() then
+        player:GetOtherTwin():AddCollectible(CollectibleType.COLLECTIBLE_GNAWED_LEAF)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

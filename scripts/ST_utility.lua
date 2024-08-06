@@ -195,6 +195,24 @@ function PST:onCompletionEvent(event)
 	PST:save()
 end
 
+function PST:onNPCPickTarget(NPC, target)
+	if not target then return end
+
+	local player = target:ToPlayer()
+	if player then
+		-- Statue Pilgrimage node (Jacob & Esau's tree)
+		if PST:getTreeSnapshotMod("statuePilgrimage", false) then
+			-- If Esau is transformed by Gnawed Leaf, make enemy target Jacob instead
+			if player:GetPlayerType() == PlayerType.PLAYER_ESAU and PST.specialNodes.esauIsStatue then
+				local mainPlayer = Isaac.GetPlayer()
+				if mainPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
+					return mainPlayer
+				end
+			end
+		end
+	end
+end
+
 --- Get the amount of familiars in the room
 ---@param specificType? FamiliarVariant Check for a specific familiar type instead, and return the amount of those
 function PST:getRoomFamiliars(specificType)

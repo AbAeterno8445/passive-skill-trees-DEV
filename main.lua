@@ -113,6 +113,7 @@ include("scripts.ST_entities")
 include("scripts.ST_onAddHearts")
 include("scripts.ST_shops")
 include("scripts.ST_cardsPills")
+include("scripts.ST_onInput")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.onExitGame)
@@ -135,6 +136,7 @@ PST:AddCallback(ModCallbacks.MC_GET_CARD, PST.onGetCard)
 PST:AddCallback(ModCallbacks.MC_USE_CARD, PST.onUseCard)
 PST:AddCallback(ModCallbacks.MC_GET_PILL_EFFECT, PST.onPillEffect)
 PST:AddCallback(ModCallbacks.MC_USE_PILL, PST.onUsePill)
+PST:AddCallback(ModCallbacks.MC_INPUT_ACTION, PST.onInput)
 -- Repentogon callbacks
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.load)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
@@ -152,6 +154,7 @@ PST:AddCallback(ModCallbacks.MC_POST_PLAYER_ADD_HEARTS, PST.onAddHearts)
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_SHOP_PURCHASE, PST.onShopPurchase)
 PST:AddCallback(ModCallbacks.MC_POST_TRIGGER_TRINKET_ADDED, PST.onTrinketAdd)
 PST:AddCallback(ModCallbacks.MC_POST_TRIGGER_TRINKET_REMOVED, PST.onTrinketRemove)
+PST:AddCallback(ModCallbacks.MC_NPC_PICK_TARGET, PST.onNPCPickTarget)
 
 -- First load
 PST:load()

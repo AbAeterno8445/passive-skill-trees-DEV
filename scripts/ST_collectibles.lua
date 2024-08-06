@@ -104,6 +104,13 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         end
     end
 
+    -- Mod: +% all stats per item obtained by the opposing brother, up to 15%
+    local tmpMod = PST:getTreeSnapshotMod("jacobItemAllstats", 0)
+    if tmpMod ~= 0 and player:GetOtherTwin() then
+        player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+        player:GetOtherTwin():AddCacheFlags(CacheFlag.CACHE_ALL, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then

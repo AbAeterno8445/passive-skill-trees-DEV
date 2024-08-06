@@ -4,6 +4,7 @@ local blackHeartTracker = 0
 local soulHeartTracker = 0
 local boneHeartTracker = 0
 local playerTypeTracker = 0
+local jacobHeartDiffTracker = 0
 local holyMantleTracker = false
 
 -- On update
@@ -24,6 +25,8 @@ function PST:onUpdate()
 		blackHeartTracker = 0
 		soulHeartTracker = 0
 		boneHeartTracker = 0
+		jacobHeartDiffTracker = 0
+		PST.specialNodes.jacobHeartLuckVal = 0
 
 		local level = Game():GetLevel()
 		-- Mod: chance to reveal the arcade room's location if it is present
@@ -314,6 +317,54 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = -50, fatePendulumDebuffActive = true }, true)
 		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_METRONOME) and PST:getTreeSnapshotMod("fatePendulumDebuffActive", false) then
 			PST:addModifiers({ allstatsPerc = 50, fatePendulumDebuffActive = false }, true)
+		end
+	end
+
+	-- Player twin checks
+	local tmpTwin = player:GetOtherTwin()
+	if tmpTwin then
+		-- Heart Link node (Jacob & Esau's tree)
+		if PST:getTreeSnapshotMod("heartLink", false) then
+			if (player:GetHearts() - tmpTwin:GetHearts()) ~= jacobHeartDiffTracker then
+				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_RANGE, true)
+				tmpTwin:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_RANGE, true)
+				jacobHeartDiffTracker = player:GetHearts() - tmpTwin:GetHearts()
+			end
+		end
+
+		-- Statue Pilgrimage node (Jacob & Esau's tree)
+		if PST:getTreeSnapshotMod("statuePilgrimage", false) then
+			---@diagnostic disable-next-line: undefined-field
+			local tmpTimer = tmpTwin:GetGnawedLeafTimer()
+			if tmpTimer >= 60 and not PST.specialNodes.esauIsStatue then
+				PST.specialNodes.esauIsStatue = true
+			elseif tmpTimer < 60 and PST.specialNodes.esauIsStatue then
+				PST.specialNodes.esauIsStatue = false
+			end
+
+			local tmpDist = math.sqrt((player.Position.X - tmpTwin.Position.X)^2 + (player.Position.Y - tmpTwin.Position.Y)^2)
+			if PST.specialNodes.esauIsStatue and tmpDist < tmpTwin.TearRange / 3 and not PST.specialNodes.jacobNearEsauBuff then
+				PST:addModifiers({ allstatsPerc = 7 }, true)
+				PST.specialNodes.jacobNearEsauBuff = true
+			elseif (not PST.specialNodes.esauIsStatue or tmpDist > tmpTwin.TearRange / 3) and PST.specialNodes.jacobNearEsauBuff then
+				PST:addModifiers({ allstatsPerc = -7 }, true)
+				PST.specialNodes.jacobNearEsauBuff = false
+			end
+		end
+
+		-- Mod: +luck per 1/2 heart of any type with the brother with lower total health
+		local tmpBonus = PST:getTreeSnapshotMod("jacobHeartLuck", 0)
+		if tmpBonus ~= 0 then
+			local tmpHP = player:GetHearts() + player:GetSoulHearts() + player:GetBoneHearts() + player:GetRottenHearts() / 2
+			local twinHP = tmpTwin:GetHearts() + tmpTwin:GetSoulHearts() + tmpTwin:GetBoneHearts() + tmpTwin:GetRottenHearts() / 2
+			if twinHP < tmpHP then
+				tmpHP = twinHP
+			end
+			if tmpHP ~= PST.specialNodes.jacobHeartLuckVal then
+				PST.specialNodes.jacobHeartLuckVal = tmpHP
+				player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
+				tmpTwin:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
+			end
 		end
 	end
 

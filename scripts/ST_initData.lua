@@ -438,6 +438,19 @@ function PST:resetMods()
 		wispFloorBuff = 0,
 		wispFloorBuffTotal = 0,
 		redHeartsSoulCharge = 0,
+		---- Jacob & Esau's Tree ----
+		heartLink = false,
+		statuePilgrimage = false,
+		coordination = false,
+		brotherHitNegation = 0,
+		jacobHeartLuck = 0,
+		jacobBirthright = 0,
+		jacobBirthrightProc = false,
+		jacobHeartOnKill = 0,
+		jacobHeartOnKillProc = false,
+		esauSoulOnKill = 0,
+		esauSoulOnKillProc = false,
+		jacobItemAllstats = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -449,11 +462,17 @@ function PST:resetMods()
 		bossHits = 0,
 		bossRoomHitsFrom = 0,
 		momDeathProc = false,
+		momHeartDeathProc = false,
 		sacredAegis = { hitTime = 0, proc = false, hitsTaken = 0 },
 		minionManeuveringMaxBonus = 15,
 		bossGreedSpawned = false,
 		spiritEbbHits = { soul = 0, forgotten = 0 },
 		forgottenMeleeTearBuff = 0,
+		heartLinkProc = false,
+		esauIsStatue = false,
+		jacobNearEsauBuff = false,
+		coordinationHits = { jacob = 0, esau = 0 },
+		jacobHeartLuckVal = 0,
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

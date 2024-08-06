@@ -163,6 +163,21 @@ function PST:onNewRoom()
 		PST:addModifiers({ soulTrickleWispDrops = { value = 0, set = true } }, true)
 	end
 
+	-- Coordination node (Jacob & Esau's tree)
+	if PST.specialNodes.coordinationHits.jacob > 0 or PST.specialNodes.coordinationHits.esau > 0 then
+		PST.specialNodes.coordinationHits.jacob = 0
+		PST.specialNodes.coordinationHits.esau = 0
+		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
+		if player:GetOtherTwin() then
+			player:GetOtherTwin():AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
+		end
+	end
+
+	-- Mod: chance for enemies killed by Jacob to drop 1/2 red heart, once per room
+	if PST:getTreeSnapshotMod("jacobHeartOnKillProc", false) or PST:getTreeSnapshotMod("esauSoulOnKillProc", false) then
+		PST:addModifiers({ jacobHeartOnKillProc = false, esauSoulOnKillProc = false }, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
