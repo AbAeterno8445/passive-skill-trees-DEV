@@ -250,6 +250,11 @@ function PST:treeMenuRendering()
                 PST.cosmicRData.charSprite:Play(charName, true)
                 PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
             end
+
+            -- Debug: show node IDs
+            if PST.debugOptions.drawNodeIDs then
+                Isaac.RenderText(tostring(node.id), nodeX - treeCamera.X - camZoomOffset.X - 12, nodeY - treeCamera.Y - camZoomOffset.Y - 12, 1, 1, 1, 1)
+            end
         end
 
         -- Draw Cosmic Realignment menu

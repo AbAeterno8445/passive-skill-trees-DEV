@@ -232,6 +232,7 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
     local infRespec = PST.debugOptions.infRespec
     
     if allocation then
+        -- Allocation
         if not infSP then
             if tree == "global" and PST.modData.skillPoints <= 0 then
                 return false
@@ -243,23 +244,24 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         end
         return PST.trees[tree][nodeID].available and not PST:isNodeAllocated(tree, nodeID)
     else
+        -- Deallocation (e.g. respec)
         if not PST:isNodeAllocated(tree, nodeID) or
         (PST.modData.respecPoints <= 0 and not infRespec) then
             return false
         end
 
-        -- If deallocating, check that adjacent nodes that require this one are not allocated
+        -- Check that adjacent nodes remain reachable from root nodes after deallocation
         local adjacentNodes = PST.trees[tree][nodeID].adjacent
         if adjacentNodes ~= nil then
+            local adjacentReachable = true
             for _, adjacentID in ipairs(adjacentNodes) do
-                local requiredNodes = PST.trees[tree][adjacentID].requires
-                if PST:isNodeAllocated(tree, adjacentID) and requiredNodes ~= nil then
-                    for _, requiredID in ipairs(requiredNodes) do
-                        if requiredID == nodeID then
-                            return false
-                        end
-                    end
+                if PST:isNodeAllocated(tree, adjacentID) and not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
+                    adjacentReachable = false
+                    break
                 end
+            end
+            if not adjacentReachable then
+                return false
             end
         end
     end
@@ -275,4 +277,60 @@ function PST:allocateNodeID(tree, nodeID, allocation)
     PST.modData.treeNodes[tree][nodeID] = allocation
     PST:updateNodes(tree)
     PST:save()
+end
+
+local nodeReachableFound = false
+-- Returns whether the given node can be reached from root nodes through allocated nodes
+---@param tree string -- Tree to search in, can be "global" or a character name e.g. "Isaac"
+---@param targetNodeID integer -- Node ID to search for
+---@param exclude? integer[] -- List of IDs of nodes to exclude in the search, even if allocated
+---@param start? integer -- For recursion, should start as nil
+---@param visited? any -- For recursion, should start as an empty table
+---@return boolean
+function PST:isNodeReachable(tree, targetNodeID, exclude, start, visited)
+    if PST.debugOptions.allAvailable then
+        return true
+    end
+
+    if exclude == nil then
+        exclude = {}
+    end
+
+    if start == targetNodeID then
+        return true
+    end
+
+    if visited == nil then
+        -- First iteration
+        local tmpVisited = {}
+        nodeReachableFound = false
+
+        -- Start from root nodes (alwaysAvailable set to true)
+        for tmpNodeID, node in pairs(PST.trees[tree]) do
+            if node.alwaysAvailable then
+                table.insert(tmpVisited, tmpNodeID)
+                if tmpNodeID == targetNodeID then
+                    return true
+                elseif PST:isNodeAllocated(tree, tmpNodeID) then
+                    return PST:isNodeReachable(tree, targetNodeID, exclude, tmpNodeID, tmpVisited)
+                end
+            end
+        end
+    elseif start ~= nil then
+        local node = PST.trees[tree][start]
+        for _, adjacentNode in ipairs(node.adjacent) do
+            if not PST:arrHasValue(visited, adjacentNode) then
+                table.insert(visited, adjacentNode)
+                if adjacentNode == targetNodeID then
+                    nodeReachableFound = true
+                elseif PST:isNodeAllocated(tree, adjacentNode) and not PST:arrHasValue(exclude, adjacentNode) then
+                    if PST:isNodeReachable(tree, targetNodeID, exclude, adjacentNode, visited) then
+                        nodeReachableFound = true
+                    end
+                end
+            end
+        end
+    end
+
+    return nodeReachableFound
 end
