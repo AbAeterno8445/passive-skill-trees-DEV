@@ -146,6 +146,11 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.coordinationHits.esau >= 5 and player:GetPlayerType() == PlayerType.PLAYER_JACOB then
             dynamicMods.damagePerc = dynamicMods.damagePerc + 10
         end
+
+        -- Song of Darkness node (Siren's tree) [Harmonic modifier]
+        if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:songNodesAllocated(true) <= 2 then
+            dynamicMods.damage = dynamicMods.damage + PST:GetBlackHeartCount(player) * 0.1
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Minion Maneuvering node (Lilith's tree)
@@ -280,6 +285,15 @@ function PST:onCache(player, cacheFlag)
         local itemCount = player:GetOtherTwin():GetCollectibleCount()
         if itemCount > 0 then
             dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.min(15, tmpTreeMod * itemCount)
+        end
+    end
+
+    -- Mod: +% all stats per 1 luck you have
+    local tmpLuck = math.floor(player.Luck)
+    if tmpLuck > 0 then
+        tmpTreeMod = PST:getTreeSnapshotMod("mightOfFortune", 0)
+        if tmpTreeMod > 0 then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpLuck * tmpTreeMod
         end
     end
 

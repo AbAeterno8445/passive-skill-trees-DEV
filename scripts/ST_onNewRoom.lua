@@ -178,6 +178,32 @@ function PST:onNewRoom()
 		PST:addModifiers({ jacobHeartOnKillProc = false, esauSoulOnKillProc = false }, true)
 	end
 
+	-- Dark Songstress node (Siren's tree)
+	if PST:getTreeSnapshotMod("darkSongstressActive", false) then
+		PST:addModifiers({ damagePerc = -8, speedPerc = -8, darkSongstressActive = false }, true)
+	end
+
+	-- Song of Darkness node (Siren's tree)
+	if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:getTreeSnapshotMod("songOfDarknessChance", 2) > 2 then
+		PST:addModifiers({ songOfDarknessChance = { value = 2, set = true } }, true)
+	end
+
+	-- Song of Celerity node (Siren's tree)
+	tmpTreeMod = PST:getTreeSnapshotMod("songOfCelerityBuff", 0)
+	if tmpTreeMod ~= 0 then
+		PST:addModifiers({ tearsPerc = -tmpTreeMod, songOfCelerityBuff = { value = 0, set = true } }, true)
+	end
+
+	-- Song of Awe node (Siren's tree)
+	if PST:getTreeSnapshotMod("songOfAweActive", false) then
+		PST:addModifiers({ allstatsPerc = -4, songOfAweActive = false }, true)
+	end
+
+	-- Mod: charmed hit negation (reset)
+	if PST:getTreeSnapshotMod("charmedHitNegationProc", false) then
+		PST:addModifiers({ charmedHitNegationProc = false }, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

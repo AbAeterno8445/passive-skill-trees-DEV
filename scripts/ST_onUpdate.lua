@@ -5,6 +5,7 @@ local soulHeartTracker = 0
 local boneHeartTracker = 0
 local playerTypeTracker = 0
 local jacobHeartDiffTracker = 0
+local luckTracker = 0
 local holyMantleTracker = false
 
 -- On update
@@ -26,6 +27,7 @@ function PST:onUpdate()
 		soulHeartTracker = 0
 		boneHeartTracker = 0
 		jacobHeartDiffTracker = 0
+		luckTracker = 0
 		PST.specialNodes.jacobHeartLuckVal = 0
 
 		local level = Game():GetLevel()
@@ -160,10 +162,18 @@ function PST:onUpdate()
 		end
 	end
 
-	-- Mod: +luck whenever you lose black hearts
-	local lostBlackHeartsLuck = PST:getTreeSnapshotMod("lostBlackHeartsLuck", 0)
-	if lostBlackHeartsLuck > 0 and player:GetBlackHearts() < blackHeartTracker then
-		PST:addModifiers({ luck = lostBlackHeartsLuck }, true)
+	-- Black heart quantity updates
+	if player:GetBlackHearts() ~= blackHeartTracker then
+		-- Mod: +luck whenever you lose black hearts
+		local lostBlackHeartsLuck = PST:getTreeSnapshotMod("lostBlackHeartsLuck", 0)
+		if lostBlackHeartsLuck > 0 and player:GetBlackHearts() < blackHeartTracker then
+			PST:addModifiers({ luck = lostBlackHeartsLuck }, true)
+		end
+
+		-- Song of Darkness node (Siren's tree) [Harmonic modifier]
+		if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:songNodesAllocated(true) <= 2 then
+			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
+		end
 	end
 	blackHeartTracker = player:GetBlackHearts()
 
@@ -367,6 +377,16 @@ function PST:onUpdate()
 			end
 		end
 	end
+
+	-- Luck changes
+	if player.Luck ~= luckTracker then
+		-- Mod: +% all stats when luck changes
+		tmpStats = PST:getTreeSnapshotMod("mightOfFortune", 0)
+		if tmpStats ~= 0 then
+			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+		end
+	end
+	luckTracker = player.Luck
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
@@ -581,6 +601,21 @@ function PST:onUpdate()
 			-- Mod: chance to gain a soul charge when clearing a room
 			if 100 * math.random() < PST:getTreeSnapshotMod("soulChargeOnClear", 0) then
 				player:AddSoulCharge(1)
+			end
+
+			-- Song of Darkness node (Siren's tree)
+			if PST:getTreeSnapshotMod("songOfDarkness", false) and 100 * math.random() < PST:getTreeSnapshotMod("songOfDarknessChance", 2) then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_BLACK, Random() + 1)
+			end
+
+			-- Song of Awe node (Siren's tree) [Harmonic modifier]
+			if PST:getTreeSnapshotMod("songOfAwe", false) then
+				local tmpSlot = player:GetActiveItemSlot(Isaac.GetItemIdByName("Siren Song"))
+				if tmpSlot ~= -1 then
+					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.4)
+					player:SetActiveCharge(player:GetActiveCharge(tmpSlot) + 1, tmpSlot)
+				end
 			end
 		end
 

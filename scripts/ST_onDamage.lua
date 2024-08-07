@@ -113,6 +113,27 @@ function PST:onDamage(target, damage, flag, source)
                 return { Damage = 0 }
             end
         end
+
+        -- Mod: when a charmed enemy hits you, return damage
+        local tmpTreeMod = PST:getTreeSnapshotMod("charmedRetaliation", 0)
+        if tmpTreeMod > 0 then
+            if source and source.Entity then
+                if source.Entity:IsVulnerableEnemy() and source.IsCharmed then
+                    source.Entity:TakeDamage(tmpTreeMod, 0, EntityRef(player), 0)
+                elseif source.Entity.Parent and source.Entity.Parent:IsVulnerableEnemy() and EntityRef(source.Entity.Parent).IsCharmed then
+                    source.Entity.Parent:TakeDamage(tmpTreeMod, 0, EntityRef(player), 0)
+                end
+            end
+        end
+
+        -- Mod: chance to negate a killing hit from charmed enemies. This can only happen once per room
+        if 100 * math.random() < 100 and not PST:getTreeSnapshotMod("charmedHitNegationProc", false) and damage >= tmpHP then
+            if source.IsCharmed or (source.Entity.Parent and EntityRef(source.Entity.Parent).IsCharmed) then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.7)
+                PST:addModifiers({ charmedHitNegationProc = true }, true)
+                return { Damage = 0 }
+            end
+        end
     else
         local tmpPlayer = Isaac.GetPlayer()
         local dmgMult = 1
@@ -314,6 +335,18 @@ function PST:onDamage(target, damage, flag, source)
                             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                             PST:addModifiers({ esauSoulOnKillProc = true }, true)
                         end
+
+                        -- Dark Songstress node (Siren's tree)
+                        if PST:getTreeSnapshotMod("darkSongstress", false) and not EntityRef(target).IsCharmed and not PST:getTreeSnapshotMod("darkSongstressActive", false) then
+                            -- Deal -8% damage to non-charmed enemies
+                            dmgMult = dmgMult - 0.08
+                        end
+
+                        -- Song of Celerity node (Siren's tree) [Harmonic modifier]
+                        if PST:getTreeSnapshotMod("songOfCelerity", false) and PST:songNodesAllocated(true) <= 2 and EntityRef(target).IsCharmed and
+                        PST:getTreeSnapshotMod("songOfCelerityBuff", 0) < 15 then
+                            PST:addModifiers({ tearsPerc = 1, songOfCelerityBuff = 1 }, true)
+                        end
                     end
                 end
             end
@@ -457,6 +490,45 @@ function PST:onDeath(entity)
             -- +1% chance to replace dropped trinkets with a random locust when defeating a boss, up to 10%
             if entity:IsBoss() and entity.Parent == nil and PST:getTreeSnapshotMod("harbingerLocustsReplace", 2) < 10 then
                 PST:addModifiers({ harbingerLocustsReplace = 1 }, true)
+            end
+        end
+
+        -- Killed charmed enemy
+        if EntityRef(entity).IsCharmed then
+            local tmpPlayer = Isaac.GetPlayer()
+
+            -- Song of Darkness node (Siren's tree) [Harmonic modifier]
+            if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:getTreeSnapshotMod("songOfDarknessChance", 2) < 6 and PST:songNodesAllocated(true) <= 2 then
+                PST:addModifiers({ songOfDarknessChance = 0.4 }, true)
+            end
+
+            local luckBonus = 0
+            -- Song of Fortune node (Siren's tree) [Harmonic modifier]
+            if PST:getTreeSnapshotMod("songOfFortune", false) and PST:songNodesAllocated(true) <= 2 then
+                if tmpPlayer.Luck < 4 and 100 * math.random() < 50 then
+                    luckBonus = luckBonus + 0.01
+                elseif tmpPlayer.Luck > 4 and 100 * math.random() < 25 then
+                    luckBonus = -1
+                end
+            end
+
+            -- Mod: chance for charmed enemies to grant an additional 0.01 luck on kill
+            if 100 * math.random() < PST:getTreeSnapshotMod("luckOnCharmedKill", 0) then
+                luckBonus = luckBonus + 0.01
+            end
+
+            -- Mod: chance for charmed enemies to explode in a cloud of pheromones on death, dealing 4 damage and charming nearby enemies
+            if 100 * math.random() < PST:getTreeSnapshotMod("charmExplosions", 0) then
+                Game():CharmFart(entity.Position, 80, tmpPlayer)
+                for _, tmpEntity in ipairs(Isaac.FindInRadius(entity.Position, 80, EntityPartition.ENEMY)) do
+                    if tmpEntity:IsVulnerableEnemy() then
+                        tmpEntity:TakeDamage(4, 0, EntityRef(tmpPlayer), 0)
+                    end
+                end
+            end
+
+            if luckBonus > 0 then
+                PST:addModifiers({ luck = luckBonus }, true)
             end
         end
 

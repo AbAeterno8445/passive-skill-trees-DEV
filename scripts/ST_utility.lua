@@ -257,3 +257,43 @@ function PST:arrHasValue(arr, value)
 	end
 	return false
 end
+
+-- For Siren tree, checks how many "Song of..." nodes you currently have allocated
+function PST:songNodesAllocated(checkSnapshot)
+	local tmpCount = 0
+	if not checkSnapshot then
+		for nodeID, node in pairs(PST.trees["Siren"]) do
+			if PST:strStartsWith(node.name, "Song of") and PST.modData.treeNodes["Siren"][nodeID] then
+				tmpCount = tmpCount + 1
+			end
+		end
+	else
+		if PST:getTreeSnapshotMod("songOfDarkness", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("songOfFortune", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("songOfCelerity", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("songOfAwe", false) then tmpCount = tmpCount + 1 end
+	end
+	return tmpCount
+end
+
+---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
+-- Returns the actual amount of black hearts the player has
+---@param player EntityPlayer
+function PST:GetBlackHeartCount(player)
+    local black_count = 0
+    local soul_hearts = player:GetSoulHearts()
+    local black_mask = player:GetBlackHearts()
+
+    for i = 1, soul_hearts do
+        local bit = 2 ^ math.floor((i - 1) / 2)
+        if black_mask | bit == black_mask then
+            black_count = black_count + 1
+        end
+    end
+
+    return black_count
+end
+
+function PST:strStartsWith(txt, start)
+	return string.sub(txt, 1, string.len(start)) == start
+ end

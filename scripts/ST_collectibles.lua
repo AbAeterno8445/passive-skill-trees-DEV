@@ -368,6 +368,33 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 tmpEnemies[math.random(#tmpEnemies)]:Die()
             end
         end
+    -- Siren's Song
+    elseif itemType == Isaac.GetItemIdByName("Siren Song") then
+        -- Dark Songstress node (Siren's tree)
+        if PST:getTreeSnapshotMod("darkSongstress", false) and not PST:getTreeSnapshotMod("darkSongstressActive", false) then
+            PST:addModifiers({ damagePerc = 8, speedPerc = 8, darkSongstressActive = true }, true)
+        end
+
+        -- Song of Fortune node (Siren's tree) [Harmonic modifier]
+        if PST:getTreeSnapshotMod("songOfFortune", false) and PST:songNodesAllocated(true) <= 2 and 100 * math.random() < 15 then
+            PST:addModifiers({ luck = 0.05 }, true)
+        end
+
+        -- Song of Awe node (Siren's tree)
+        if PST:getTreeSnapshotMod("songOfAwe", false) then
+            if not PST:getTreeSnapshotMod("songOfAweActive", false) then
+                PST:addModifiers({ allstatsPerc = 4, songOfAweActive = true }, true)
+            end
+
+            -- Slow enemies [Harmonic modifier]
+            if PST:songNodesAllocated(true) <= 2 then
+                for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+                    if tmpEntity:IsActiveEnemy() and tmpEntity:IsVulnerableEnemy() then
+                        tmpEntity:AddSlowing(EntityRef(player), 60, 0.1, Color(0.8, 0.8, 0.8, 1, 0, 0))
+                    end
+                end
+            end
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item

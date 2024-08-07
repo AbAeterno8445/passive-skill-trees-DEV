@@ -161,6 +161,11 @@ function PST:onNewRun(isContinued)
         player:GetOtherTwin():AddCollectible(CollectibleType.COLLECTIBLE_GNAWED_LEAF)
     end
 
+    -- Song of Celerity node (Siren's tree) [Harmonic modifier]
+    if PST:getTreeSnapshotMod("songOfCelerity", false) and PST:songNodesAllocated(true) <= 2 then
+        PST:addModifiers({ speedPerc = 7 }, true)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats

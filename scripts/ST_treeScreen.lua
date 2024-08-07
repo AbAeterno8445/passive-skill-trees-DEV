@@ -97,6 +97,15 @@ local function drawNodeBox(name, description, screenW, screenH)
         if type(tmpStr) == "table" then
             tmpStr = description[i][1]
             tmpColor = description[i][2]
+        else
+            -- Harmonic mods color (Siren's tree)
+            if PST:strStartsWith(tmpStr, "[Harmonic]") then
+                if PST:songNodesAllocated(false) <= 2 then
+                    tmpColor = KColor(0.6, 0.9, 1, 1)
+                else
+                    tmpColor = KColor(0.4, 0.4, 0.4, 1)
+                end
+            end
         end
         miniFont:DrawString(tmpStr, screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, tmpColor)
     end

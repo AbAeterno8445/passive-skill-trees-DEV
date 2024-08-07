@@ -451,6 +451,22 @@ function PST:resetMods()
 		esauSoulOnKill = 0,
 		esauSoulOnKillProc = false,
 		jacobItemAllstats = 0,
+		---- Siren's Tree ----
+		darkSongstress = false,
+		darkSongstressActive = false,
+		songOfDarkness = false,
+		songOfDarknessChance = 2,
+		songOfFortune = false,
+		songOfCelerity = false,
+		songOfCelerityBuff = 0,
+		songOfAwe = false,
+		songOfAweActive = false,
+		luckOnCharmedKill = 0,
+		mightOfFortune = 0,
+		charmedRetaliation = 0,
+		charmedHitNegation = 0,
+		charmedHitNegationProc = false,
+		charmExplosions = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

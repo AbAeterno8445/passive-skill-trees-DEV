@@ -22,6 +22,7 @@ include("scripts.tree_data.apollyonTreeBank")
 include("scripts.tree_data.theForgottenTreeBank")
 include("scripts.tree_data.bethanyTreeBank")
 include("scripts.tree_data.jacobEsauTreeBank")
+include("scripts.tree_data.sirenTreeBank")
 
 -- Sanitize json data in banks
 for treeID, tree in pairs(PST.trees) do
@@ -265,7 +266,7 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
     return true
 end
 
--- Allocates a node
+-- Allocates a node in the given tree
 function PST:allocateNodeID(tree, nodeID, allocation)
     if allocation == nil then
         allocation = false
