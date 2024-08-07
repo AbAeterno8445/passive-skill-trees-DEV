@@ -15,6 +15,11 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
         end
     end
 
+    -- Familiar quantity update
+    if PST.gameInit and type == EntityType.ENTITY_FAMILIAR  then
+        PST:addModifiers({ totalFamiliars = 1 }, true)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY) then
         local player = Isaac.GetPlayer()

@@ -6,6 +6,7 @@ local boneHeartTracker = 0
 local playerTypeTracker = 0
 local jacobHeartDiffTracker = 0
 local luckTracker = 0
+local familiarsTracker = 0
 local holyMantleTracker = false
 
 -- On update
@@ -28,6 +29,7 @@ function PST:onUpdate()
 		boneHeartTracker = 0
 		jacobHeartDiffTracker = 0
 		luckTracker = 0
+		familiarsTracker = 0
 		PST.specialNodes.jacobHeartLuckVal = 0
 
 		local level = Game():GetLevel()
@@ -129,6 +131,15 @@ function PST:onUpdate()
 				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
 			end
+		end
+	end
+
+	-- First update per room
+	if room:GetFrameCount() == 1 then
+		-- Update familiars
+		local tmpFamiliars = PST:getRoomFamiliars()
+		if tmpFamiliars ~= PST:getTreeSnapshotMod("totalFamiliars", 0) then
+			PST:addModifiers({ totalFamiliars = { value = tmpFamiliars, set = true } }, true)
 		end
 	end
 
@@ -260,12 +271,11 @@ function PST:onUpdate()
 	end
 
 	-- Familiar quantity update
-	local totalFamiliars = PST:getRoomFamiliars()
 	local tmpTotal = PST:getTreeSnapshotMod("totalFamiliars", 0)
-	if tmpTotal ~= totalFamiliars then
-		PST:addModifiers({ totalFamiliars = { value = totalFamiliars, set = true } }, true)
+	if tmpTotal ~= familiarsTracker then
 		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 	end
+	familiarsTracker = tmpTotal
 
 	-- Gulp! node (Keeper's tree)
 	if PST:getTreeSnapshotMod("gulp", false) then

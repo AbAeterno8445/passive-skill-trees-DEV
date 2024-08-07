@@ -166,6 +166,12 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ speedPerc = 7 }, true)
     end
 
+    -- Update familiars
+    local tmpFamiliars = PST:getRoomFamiliars()
+    if tmpFamiliars > 0 then
+        PST:addModifiers({ totalFamiliars = { value = tmpFamiliars, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats
