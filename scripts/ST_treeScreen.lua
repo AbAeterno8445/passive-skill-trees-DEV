@@ -19,6 +19,7 @@ cursorSprite:Play("Idle", true)
 local defaultCamX = -Isaac.GetScreenWidth() / 2
 local defaultCamY = -Isaac.GetScreenHeight() / 2
 local treeCamera = Vector(defaultCamX, defaultCamY)
+local camZoomOffset = Vector(0, 0)
 local zoomScale = 1
 
 local currentTree = "global"
@@ -37,6 +38,13 @@ local treeControlDesc = {
 
 local treeMenuOpen = false
 local oldmask = nil
+
+local function PST_updateCamZoomOffset()
+    local translateX = -Isaac.GetScreenWidth() / 2 - treeCamera.X
+    local translateY = -Isaac.GetScreenHeight() / 2 - treeCamera.Y
+    camZoomOffset.X = translateX - translateX * zoomScale
+    camZoomOffset.Y = translateY - translateY * zoomScale
+end
 
 function PST:openTreeMenu()
     oldmask = MenuManager.GetInputMask()
@@ -121,7 +129,9 @@ function PST:treeMenuRendering()
 			if treeMenuOpen then
                 -- Shift + V reset camera
                 if shiftHeld then
-                    treeCamera = Vector(defaultCamX, defaultCamY)
+                    treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2)
+                    camZoomOffset.X = 0
+                    camZoomOffset.Y = 0
                 else
                     PST:closeTreeMenu()
                 end
@@ -169,23 +179,27 @@ function PST:treeMenuRendering()
         treeBGSprite:Render(Vector.Zero)
 
         -- Camera management & tree navigation
-        local cameraSpeed = 3
+        local cameraSpeed = 3 * (1 + 1 - zoomScale)
         if shiftHeld then
-            cameraSpeed = 8
+            cameraSpeed = 8 * (1 + 1 - zoomScale)
         end
         if Input.IsButtonPressed(Keyboard.KEY_W, 0) then
             treeCamera.Y = treeCamera.Y - cameraSpeed
+            PST_updateCamZoomOffset()
         elseif Input.IsButtonPressed(Keyboard.KEY_S, 0) then
             treeCamera.Y = treeCamera.Y + cameraSpeed
+            PST_updateCamZoomOffset()
         end
         if Input.IsButtonPressed(Keyboard.KEY_A, 0) then
             treeCamera.X = treeCamera.X - cameraSpeed
+            PST_updateCamZoomOffset()
         elseif Input.IsButtonPressed(Keyboard.KEY_D, 0) then
             treeCamera.X = treeCamera.X + cameraSpeed
+            PST_updateCamZoomOffset()
         end
 
-        local camCenterX = screenW / 2 + treeCamera.X
-        local camCenterY = screenH / 2 + treeCamera.Y
+        local camCenterX = screenW / 2 + treeCamera.X + camZoomOffset.X
+        local camCenterY = screenH / 2 + treeCamera.Y + camZoomOffset.Y
 
         -- Draw node links
         for _, nodeLink in ipairs(PST.nodeLinks[currentTree]) do
@@ -202,7 +216,7 @@ function PST:treeMenuRendering()
                 nodeLink.sprite:Play(nodeLink.type .. " Unavailable", true)
             end
             nodeLink.sprite.Scale = nodeLink.origScale * zoomScale
-            nodeLink.sprite:Render(Vector(linkX - treeCamera.X, linkY - treeCamera.Y))
+            nodeLink.sprite:Render(Vector(linkX - treeCamera.X - camZoomOffset.X, linkY - treeCamera.Y - camZoomOffset.Y))
         end
 
         -- Draw nodes
@@ -213,12 +227,12 @@ function PST:treeMenuRendering()
             local nodeY = node.pos.Y * 38 * zoomScale
             node.sprite.Scale.X = zoomScale
             node.sprite.Scale.Y = zoomScale
-            node.sprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
+            node.sprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
 
             if PST:isNodeAllocated(currentTree, node.id) then
                 node.allocatedSprite.Scale.X = zoomScale
                 node.allocatedSprite.Scale.Y = zoomScale
-                node.allocatedSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
+                node.allocatedSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
             end
 
             local nodeHalf = 15 * zoomScale
@@ -234,7 +248,7 @@ function PST:treeMenuRendering()
                 PST.cosmicRData.charSprite.Scale.X = zoomScale
                 PST.cosmicRData.charSprite.Scale.Y = zoomScale
                 PST.cosmicRData.charSprite:Play(charName, true)
-                PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X, nodeY - treeCamera.Y))
+                PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
             end
         end
 
@@ -247,7 +261,7 @@ function PST:treeMenuRendering()
             nodeBGSprite.Color.A = 0.9
             local tmpBGX = PST.cosmicRData.menuX * zoomScale - 84
             local tmpBGY = PST.cosmicRData.menuY * zoomScale + 14
-            nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X, tmpBGY - treeCamera.Y))
+            nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
 
             -- Stop node hovering while cursor is in this menu
             if camCenterX >= tmpBGX and camCenterX <= tmpBGX + nodeBGSprite.Scale.X and
@@ -257,8 +271,8 @@ function PST:treeMenuRendering()
 
             Isaac.RenderText(
                 "Cosmic Realignment",
-                PST.cosmicRData.menuX * zoomScale - 54 - treeCamera.X,
-                PST.cosmicRData.menuY * zoomScale + 20 - treeCamera.Y,
+                PST.cosmicRData.menuX * zoomScale - 54 - treeCamera.X - camZoomOffset.X,
+                PST.cosmicRData.menuY * zoomScale + 20 - treeCamera.Y - camZoomOffset.Y,
                 1, 1, 1, 1
             )
 
@@ -275,21 +289,21 @@ function PST:treeMenuRendering()
                     PST.cosmicRData.hoveredCharID = charID
                     PST.cosmicRData.charSprite.Color.A = 1
                     PST.cosmicRData.charSprite:Play("Select", true)
-                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
                 else
                     PST.cosmicRData.charSprite.Color.A = 0.4
                 end
 
                 if not PST:cosmicRIsCharUnlocked(charID) then
                     PST.cosmicRData.lockedCharSprite:Play(charName, true)
-                    PST.cosmicRData.lockedCharSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                    PST.cosmicRData.lockedCharSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
 
                     PST.cosmicRData.charSprite.Color.A = 1
                     PST.cosmicRData.charSprite:Play("Locked", true)
-                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
                 else
                     PST.cosmicRData.charSprite:Play(charName, true)
-                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X, charY - treeCamera.Y))
+                    PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
                 end
 
                 i = i + 1
@@ -444,10 +458,18 @@ function PST:treeMenuRendering()
 
         -- Input: Z key (zoom in/out)
         if Input.IsButtonTriggered(Keyboard.KEY_Z, 0) then
+            local zoomed = false
             if not shiftHeld then
-                zoomScale = math.min(1, zoomScale + 0.1)
-            else
-                zoomScale = math.max(0.5, zoomScale - 0.1)
+                if zoomScale < 1 then
+                    zoomScale = zoomScale + 0.1
+                    zoomed = true
+                end
+            elseif zoomScale > 0.5 then
+                zoomScale = zoomScale - 0.1
+                zoomed = true
+            end
+            if zoomed then
+                PST_updateCamZoomOffset()
             end
         end
 
