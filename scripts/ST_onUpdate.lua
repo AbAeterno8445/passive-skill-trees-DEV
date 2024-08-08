@@ -473,8 +473,7 @@ function PST:onUpdate()
 			-- Challenge room XP reward
 			local challengeXP = PST:getTreeSnapshotMod("challengeXP", 0);
 			local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false);
-			if (not level:HasBossChallenge() and challengeXP > 0) or
-			(level:HasBossChallenge() and bossChallengeXP) then
+			if challengeXP > 0 and (not level:HasBossChallenge() or (level:HasBossChallenge() and bossChallengeXP)) then
 				PST:addTempXP(challengeXP, true)
 			end
 		-- Boss rooms
