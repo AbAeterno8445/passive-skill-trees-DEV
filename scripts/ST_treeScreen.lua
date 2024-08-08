@@ -25,15 +25,24 @@ local zoomScale = 1
 local currentTree = "global"
 local hoveredNode = nil
 
-local helpOpen = false
+local helpOpen = ""
 local treeControlDesc = {
-    "WASD: pan camera",
+    "WASD / Arrow keys: pan camera",
     "Shift + V: re-center camera",
     "Z / Shift + Z: zoom in/out",
     "E: allocate hovered node",
     "R: respec hovered node",
     "Q: switch to selected character's tree",
     "Shift + Q: enable/disable tree effects next run"
+}
+local treeControlDescController = {
+    "Joystick / Dpad: pan camera",
+    "RT: re-center camera",
+    "Item + Shoot down/up: zoom in/out",
+    "Menu action: allocate hovered node",
+    "Item + Menu action: respec hovered node",
+    "Menu tab: switch to selected character's tree",
+    "Item + Menu tab: enable/disable tree effects next run"
 }
 
 local treeMenuOpen = false
@@ -63,7 +72,7 @@ function PST:closeTreeMenu(mute)
         sfx:Play(SoundEffect.SOUND_PAPER_OUT)
     end
     PST.cosmicRData.menuOpen = false
-    helpOpen = false
+    helpOpen = ""
     treeMenuOpen = false
     currentTree = "global"
 end
@@ -120,31 +129,23 @@ local function drawNodeBox(name, description, screenW, screenH)
 end
 
 function PST:treeMenuRendering()
-    local shiftHeld = Input.IsButtonPressed(Keyboard.KEY_LEFT_SHIFT, 0)
     local isCharMenu = MenuManager.GetActiveMenu() == MainMenuType.CHARACTER
 
-    -- Input: V key
-	if Input.IsButtonTriggered(Keyboard.KEY_V, 0) then
-		if isCharMenu then
-			if treeMenuOpen then
-                -- Shift + V reset camera
-                if shiftHeld then
-                    treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2)
-                    camZoomOffset.X = 0
-                    camZoomOffset.Y = 0
-                else
-                    PST:closeTreeMenu()
-                end
-			else
+    -- Input: Open tree menu
+    if PST:isKeybindActive(PSTKeybind.OPEN_TREE) then
+        if isCharMenu then
+            if treeMenuOpen then
+                PST:closeTreeMenu()
+            else
                 PST:openTreeMenu()
-			end
-		end
-	end
+            end
+        end
+    end
 
     if not treeMenuOpen and isCharMenu and PST.selectedMenuChar then
         local selCharName = PST.charNames[1 + PST.selectedMenuChar]
         local selCharData = PST.modData.charData[selCharName]
-        if selCharData then
+        if selCharData and PST.config.charSelectInfoText then
             local tmpStr = selCharName .. " LV " .. selCharData.level
             tmpStr = tmpStr .. " (V to open tree)"
             if PST.modData.treeDisabled then
@@ -171,7 +172,7 @@ function PST:treeMenuRendering()
         end
 
         -- Close with ESC
-        if Input.IsButtonTriggered(Keyboard.KEY_ESCAPE, 0) then
+        if PST:isKeybindActive(PSTKeybind.CLOSE_TREE) then
             PST:closeTreeMenu()
         end
 
@@ -180,20 +181,20 @@ function PST:treeMenuRendering()
 
         -- Camera management & tree navigation
         local cameraSpeed = 3 * (1 + 1 - zoomScale)
-        if shiftHeld then
+        if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
             cameraSpeed = 8 * (1 + 1 - zoomScale)
         end
-        if Input.IsButtonPressed(Keyboard.KEY_W, 0) then
+        if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
             treeCamera.Y = treeCamera.Y - cameraSpeed
             PST_updateCamZoomOffset()
-        elseif Input.IsButtonPressed(Keyboard.KEY_S, 0) then
+        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
             treeCamera.Y = treeCamera.Y + cameraSpeed
             PST_updateCamZoomOffset()
         end
-        if Input.IsButtonPressed(Keyboard.KEY_A, 0) then
+        if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
             treeCamera.X = treeCamera.X - cameraSpeed
             PST_updateCamZoomOffset()
-        elseif Input.IsButtonPressed(Keyboard.KEY_D, 0) then
+        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
             treeCamera.X = treeCamera.X + cameraSpeed
             PST_updateCamZoomOffset()
         end
@@ -355,8 +356,8 @@ function PST:treeMenuRendering()
         end
         cursorSprite:Render(Vector(screenW / 2, screenH / 2))
 
-        -- Input: E key (allocate node)
-        if Input.IsButtonTriggered(Keyboard.KEY_E, 0) then
+        -- Input: Allocate node
+        if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
             if hoveredNode ~= nil then
                 if PST:isNodeAllocatable(currentTree, hoveredNode.id, true) then
                     if not PST.debugOptions.infSP then
@@ -404,8 +405,8 @@ function PST:treeMenuRendering()
             end
         end
 
-        -- Input: R key (respec node)
-        if Input.IsButtonTriggered(Keyboard.KEY_R, 0) then
+        -- Input: Respec node
+        if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
             if hoveredNode ~= nil then
                 if PST:isNodeAllocatable(currentTree, hoveredNode.id, false) then
                     if not PST.debugOptions.infRespec then
@@ -432,55 +433,70 @@ function PST:treeMenuRendering()
             end
         end
 
-        -- Input: Q key (switch tree)
-        if Input.IsButtonTriggered(Keyboard.KEY_Q, 0) then
-            if not shiftHeld then
-                local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
-                if PST.trees[selectedCharName] ~= nil then
-                    if currentTree == "global" then
-                        currentTree = selectedCharName
-                    else
-                        currentTree = "global"
-                    end
-                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+        -- Input: Switch tree
+        if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
+            local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
+            if PST.trees[selectedCharName] ~= nil then
+                if currentTree == "global" then
+                    currentTree = selectedCharName
                 else
-                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+                    currentTree = "global"
                 end
+                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
             else
-                -- Shift + Q, toggle tree
-                PST.modData.treeDisabled = not PST.modData.treeDisabled
-                PST:save()
-                if PST.modData.treeDisabled then
-                    sfx:Play(SoundEffect.SOUND_BEEP, 0.6)
-                end
+                sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
             end
         end
 
-        -- Input: H key (toggle help menu)
-        if Input.IsButtonTriggered(Keyboard.KEY_H, 0) then
-            helpOpen = not helpOpen
+        -- Input: Toggle tree effects
+        if PST:isKeybindActive(PSTKeybind.TOGGLE_TREE_MODS) then
+            PST.modData.treeDisabled = not PST.modData.treeDisabled
+            PST:save()
+            if PST.modData.treeDisabled then
+                sfx:Play(SoundEffect.SOUND_BEEP, 0.6)
+            end
         end
 
-        -- Input: Z key (zoom in/out)
-        if Input.IsButtonTriggered(Keyboard.KEY_Z, 0) then
-            local zoomed = false
-            if not shiftHeld then
-                if zoomScale < 1 then
-                    zoomScale = zoomScale + 0.1
-                    zoomed = true
-                end
-            elseif zoomScale > 0.6 then
+        -- Input: Toggle help menu
+        if PST:isKeybindActive(PSTKeybind.TOGGLE_HELP) then
+            if helpOpen ~= "keyboard" then
+                helpOpen = "keyboard"
+            else
+                helpOpen = ""
+            end
+        -- Input: Toggle help menu (controller)
+        elseif PST:isKeybindActive(PSTKeybind.TOGGLE_HELP_CONTROLLER) then
+            if helpOpen ~= "controller" then
+                helpOpen = "controller"
+            else
+                helpOpen = ""
+            end
+        end
+
+        if Isaac.GetFrameCount() % 2 == 0 then
+            -- Input: Zoom in
+            if PST:isKeybindActive(PSTKeybind.ZOOM_IN, true) and zoomScale < 1 then
+                zoomScale = zoomScale + 0.1
+                PST_updateCamZoomOffset()
+            -- Input: Zoom out
+            elseif PST:isKeybindActive(PSTKeybind.ZOOM_OUT, true) and zoomScale > 0.6 then
                 zoomScale = zoomScale - 0.1
-                zoomed = true
-            end
-            if zoomed then
                 PST_updateCamZoomOffset()
             end
         end
 
+        -- Input: Center camera
+        if PST:isKeybindActive(PSTKeybind.CENTER_CAMERA) then
+            treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2)
+            camZoomOffset.X = 0
+            camZoomOffset.Y = 0
+        end
+
         -- Draw help menu
-        if helpOpen then
+        if helpOpen == "keyboard" then
             drawNodeBox("Tree Controls", treeControlDesc, screenW / 2, screenH / 2)
+        elseif helpOpen == "controller" then
+            drawNodeBox("Tree Controls (Controller)", treeControlDescController, screenW / 2, screenH / 2)
         end
 
         -- HUD data
@@ -492,7 +508,7 @@ function PST:treeMenuRendering()
         if PST.modData.treeDisabled then
             Isaac.RenderText("Tree effects disabled", 8, 40, 1, 0.4, 0.4, 1)
         end
-        miniFont:DrawString("H: toggle help", 16, screenH - 24, KColor(1, 1, 1, 1))
+        miniFont:DrawString("H / Select: toggle help", 16, screenH - 24, KColor(1, 1, 1, 1))
     end
 end
 

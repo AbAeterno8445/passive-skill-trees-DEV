@@ -2,6 +2,7 @@ PST = RegisterMod("PST", 1)
 
 local json = require("json")
 
+include("PST_config")
 include("scripts.ST_initData")
 PST:resetData()
 
@@ -114,7 +115,7 @@ include("scripts.ST_entities")
 include("scripts.ST_onAddHearts")
 include("scripts.ST_shops")
 include("scripts.ST_cardsPills")
-include("scripts.ST_onInput")
+include("scripts.ST_inputs")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.onExitGame)

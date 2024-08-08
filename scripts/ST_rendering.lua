@@ -11,6 +11,8 @@ local floatTextQueue = {}
 ---@param totalSteps number -- How many frames the text lasts. Used for fading effect
 ---@param playerRelative boolean -- Whether the text should stick to the player. If true, the position vector becomes relative to the player
 function PST:createFloatTextFX(text, position, color, speed, totalSteps, playerRelative)
+	if not PST.config.floatingTexts then return end
+
 	local tmpText = {
 		text = text,
 		position = position,
@@ -50,29 +52,31 @@ function PST:Render()
 	local gamePaused = Game():IsPaused()
 
 	-- XP bar
-	local charData = PST:getCurrentCharData()
+	if PST.config.drawXPbar then
+		local charData = PST:getCurrentCharData()
 
-	local barPos = Vector(112 * screenRatioX, Isaac.GetScreenHeight() - 12)
-	local barPercent = math.min(1, charData.xp / math.max(1, charData.xpRequired))
-	local barScale = Vector(screenRatioX, math.min(1, screenRatioY))
+		local barPos = Vector(112 * screenRatioX, Isaac.GetScreenHeight() - 12)
+		local barPercent = math.min(1, charData.xp / math.max(1, charData.xpRequired))
+		local barScale = Vector(screenRatioX, math.min(1, screenRatioY))
 
-	xpbarSprite.Scale = barScale
-	xpbarSprite:Render(barPos)
+		xpbarSprite.Scale = barScale
+		xpbarSprite:Render(barPos)
 
-	if PST.modData.xpObtained > 0 then
-		local tempBarPercent = math.min(1, (charData.xp + PST.modData.xpObtained) / math.max(1, charData.xpRequired))
-		xpbarTempSprite.Scale = barScale
-		xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 32), Vector(barWidth, 16))
+		if PST.modData.xpObtained > 0 then
+			local tempBarPercent = math.min(1, (charData.xp + PST.modData.xpObtained) / math.max(1, charData.xpRequired))
+			xpbarTempSprite.Scale = barScale
+			xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 32), Vector(barWidth, 16))
+		end
+
+		if charData.xp > 0 then
+			xpbarFullSprite.Scale = barScale
+			xpbarFullSprite:Render(barPos, Vector(barWidth * barPercent, 16), Vector(barWidth, 16))
+		end
+
+		-- Level text
+		local levelStr = "LV " .. charData.level
+		Isaac.RenderText(levelStr, barPos.X - (3 + string.len(levelStr) * 8) * screenRatioX, barPos.Y - 6, 1, 1, 1, 0.7)
 	end
-
-	if charData.xp > 0 then
-		xpbarFullSprite.Scale = barScale
-		xpbarFullSprite:Render(barPos, Vector(barWidth * barPercent, 16), Vector(barWidth, 16))
-	end
-
-	-- Level text
-	local levelStr = "LV " .. charData.level
-	Isaac.RenderText(levelStr, barPos.X - (3 + string.len(levelStr) * 8) * screenRatioX, barPos.Y - 6, 1, 1, 1, 0.7)
 
 	-- Quick wit mod
 	local quickWitMod = PST:getTreeSnapshotMod("quickWit", {0, 0})
