@@ -488,8 +488,15 @@ function PST:onUpdate()
 				Game():Spawn(EntityType.ENTITY_GREED, 0, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
 				PST.specialNodes.bossGreedSpawned = true
-			else
-				-- Respec chance
+			end
+		end
+
+		-- Once-per-clear effects
+		if not clearRoomProc and PST.modData.xpObtained > 0 then
+			local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
+
+			-- Respec chance
+			if isBossRoom then
 				local respecChance = PST:getTreeSnapshotMod("respecChance", 15)
 				if not PST:getTreeSnapshotMod("relearning", false) then
 					local tmpRespecs = 0
@@ -509,11 +516,6 @@ function PST:onUpdate()
 					PST:addModifiers({ relearningFloors = 1 }, true)
 				end
 			end
-		end
-
-		-- Once-per-clear effects
-		if not clearRoomProc and PST.modData.xpObtained > 0 then
-			local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
 
 			-- Mod: chance to heal 1/2 red heart when clearing a room
 			local tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
@@ -522,7 +524,7 @@ function PST:onUpdate()
 			end
 			if 100 * math.random() < tmpChance then
 				player:AddHearts(1)
-				if room:GetType() == RoomType.ROOM_BOSS then
+				if isBossRoom then
 					player:AddHearts(1)
 				end
 			end
