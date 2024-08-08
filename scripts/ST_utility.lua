@@ -42,7 +42,7 @@ function PST:addTempXP(xp, showText, noMult)
 		xpMult = 1
 	end
 
-	local xpGain = xp * math.min(0.01, xpMult)
+	local xpGain = xp * math.max(0.01, xpMult)
 	PST.modData.xpObtained = PST.modData.xpObtained + xpGain
 	if showText then
         local xpStr = string.format("+%.2f xp", xpGain)
