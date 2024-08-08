@@ -9,7 +9,7 @@ PST.debugOptions = {
 	infSP = true, -- No longer spend or require skill points for nodes
 	infRespec = true, -- No longer spend or require respec points for nodes
 	allAvailable = true, -- Makes all nodes available
-	drawNodeIDs = true, -- Draw node IDS on tree
+	drawNodeIDs = false, -- Draw node IDS on tree
 }
 
 -- Initialize character data for the given char
@@ -161,6 +161,8 @@ PST:AddCallback(ModCallbacks.MC_NPC_PICK_TARGET, PST.onNPCPickTarget)
 PST:load()
 
 print("Initialized Passive Skill Trees.")
-for optName, _ in pairs(PST.debugOptions) do
-	Console.PrintWarning("Passive Skill Trees: " .. optName .. " debug option is enabled")
+for optName, enabled in pairs(PST.debugOptions) do
+	if enabled then
+		Console.PrintWarning("Passive Skill Trees: " .. optName .. " debug option is enabled")
+	end
 end

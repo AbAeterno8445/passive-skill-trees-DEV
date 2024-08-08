@@ -469,7 +469,7 @@ function PST:treeMenuRendering()
                     zoomScale = zoomScale + 0.1
                     zoomed = true
                 end
-            elseif zoomScale > 0.5 then
+            elseif zoomScale > 0.6 then
                 zoomScale = zoomScale - 0.1
                 zoomed = true
             end
