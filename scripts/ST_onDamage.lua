@@ -499,6 +499,15 @@ function PST:onDeath(entity)
         if EntityRef(entity).IsCharmed then
             local tmpPlayer = Isaac.GetPlayer()
 
+            -- Dark Songstress node
+            if PST:getTreeSnapshotMod("darkSongstress", false) then
+                local tmpSlot = tmpPlayer:GetActiveItemSlot(Isaac.GetItemIdByName("Siren Song"))
+				if tmpSlot ~= -1 and tmpPlayer:GetActiveCharge(tmpSlot) < tmpPlayer:GetActiveMaxCharge(tmpSlot) and 100 * math.random() < 8 then
+					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.7)
+					tmpPlayer:SetActiveCharge(tmpPlayer:GetActiveCharge(tmpSlot) + 1, tmpSlot)
+				end
+            end
+
             -- Song of Darkness node (Siren's tree) [Harmonic modifier]
             if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:getTreeSnapshotMod("songOfDarknessChance", 2) < 6 and PST:songNodesAllocated(true) <= 2 then
                 PST:addModifiers({ songOfDarknessChance = 0.4 }, true)

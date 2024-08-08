@@ -623,8 +623,8 @@ function PST:onUpdate()
 			-- Song of Awe node (Siren's tree) [Harmonic modifier]
 			if PST:getTreeSnapshotMod("songOfAwe", false) then
 				local tmpSlot = player:GetActiveItemSlot(Isaac.GetItemIdByName("Siren Song"))
-				if tmpSlot ~= -1 then
-					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.4)
+				if tmpSlot ~= -1 and player:GetActiveCharge(tmpSlot) < player:GetActiveMaxCharge(tmpSlot) then
+					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.7)
 					player:SetActiveCharge(player:GetActiveCharge(tmpSlot) + 1, tmpSlot)
 				end
 			end
