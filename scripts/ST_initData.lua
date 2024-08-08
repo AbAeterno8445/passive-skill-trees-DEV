@@ -1,7 +1,7 @@
 -- Mod data initialization
 PST.modData = {}
 PST.selectedMenuChar = 0
-PST.startXPRequired = 25
+PST.startXPRequired = 32
 PST.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
@@ -143,7 +143,7 @@ function PST:resetMods()
 		shotSpeed = 0,
 		range = 0,
 		xpgain = 0,
-		respecChance = 15, -- Chance to gain respec on floor clear
+		respecChance = 30, -- Chance to gain respec on floor clear
 		secretXP = 0, -- Flat xp granted when entering a secret room
 		challengeXP = 0, -- Flat xp granted when completing a challenge room round
 		challengeXPgain = 0, -- Extra XP gain % within a challenge room
@@ -497,7 +497,7 @@ end
 function PST:resetData()
 	PST.modData = {
 		xpObtained = 0,
-		skillPoints = 2,
+		skillPoints = 0,
 		respecPoints = 4,
 		spawnKills = 0,
 		treeDisabled = false,

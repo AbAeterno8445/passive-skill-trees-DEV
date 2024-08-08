@@ -6,9 +6,9 @@ include("scripts.ST_initData")
 PST:resetData()
 
 PST.debugOptions = {
-	infSP = true, -- No longer spend or require skill points for nodes
-	infRespec = true, -- No longer spend or require respec points for nodes
-	allAvailable = true, -- Makes all nodes available
+	infSP = false, -- No longer spend or require skill points for nodes
+	infRespec = false, -- No longer spend or require respec points for nodes
+	allAvailable = false, -- Makes all nodes available
 	drawNodeIDs = false, -- Draw node IDS on tree
 }
 

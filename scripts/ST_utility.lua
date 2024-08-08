@@ -8,13 +8,21 @@ end
 -- Add temporary XP (gets converted to normal xp once room is cleared)
 ---@param xp number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
-function PST:addTempXP(xp, showText)
+---@param noMult? boolean If true, apply no multipliers to xp
+function PST:addTempXP(xp, showText, noMult)
     local xpMult = 1 + PST:getTreeSnapshotMod("xpgain", 0) / 100
+
+	if not Game():IsHardMode() then
+		xpMult = xpMult - 0.25
+	end
 
 	-- Extra challenge room XP gain mod
 	local room = Game():GetRoom()
 	if room:GetType() == RoomType.ROOM_CHALLENGE then
 		xpMult = xpMult + PST:getTreeSnapshotMod("challengeXPgain", 0) / 100
+	-- -40% xp gain in boss rush
+	elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
+		xpMult = xpMult - 0.4
 	end
 
 	-- Quick wit mod
@@ -30,7 +38,11 @@ function PST:addTempXP(xp, showText)
 		xpMult = xpMult + quickWitMult
 	end
 
-	local xpGain = xp * xpMult
+	if noMult then
+		xpMult = 1
+	end
+
+	local xpGain = xp * math.min(0.01, xpMult)
 	PST.modData.xpObtained = PST.modData.xpObtained + xpGain
 	if showText then
         local xpStr = string.format("+%.2f xp", xpGain)
