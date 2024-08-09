@@ -160,6 +160,7 @@ PST:AddCallback(ModCallbacks.MC_NPC_PICK_TARGET, PST.onNPCPickTarget)
 
 -- First load
 PST:load()
+PST:charInit("Isaac")
 
 if Isaac.IsInGame() then
 	PST.gameInit = true
