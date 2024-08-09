@@ -1,8 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<name>passive skill trees</name>
-	<directory>passive skill trees</directory>
-	<description/>
-	<version>0.1.0</version>
-	<visibility/>
-</metadata>
+    <name>Passive Skill Trees [BETA]</name>
+    <directory>passive skill trees</directory>
+    <id>3305869734</id>
+    <description>XP, leveling, skill points and skill trees. Global passive skill tree + a personal skill tree for each vanilla character. These apply modifiers that can modify your run, from simple stat ups to gameplay-changing alterations.
 
+[h1]Passive Skill Trees[/h1]
+[h2]General Overview:[/h2]
+[list]
+[*]XP and leveling system, each character has their own level progress.
+[*]Monsters grant XP based on their HP (XP is granted on room clear).
+[*]Leveling up with any character grants a skill point.
+[*]Global passive skill tree with nodes you can allocate using skill points, which grant modifiers to the next run. Accessed from the character select menu.
+[*]Character-specific skill trees with nodes more correlated to their gameplay.
+[*]Respec points which allow you to refund allocated nodes. Clearing a floor has a base 30% chance to award one. Can increase this chance through certain tree nodes.
+[*]Can toggle tree effects on/off before a run.
+[/list]
+
+Generally the small nodes are not very impactful on their own, granting small bonuses like +0.02 damage or +2% xp gain, medium nodes will tend to grant slightly more significant boosts, and large nodes can present an upside vs downside effect or significant boosts under the right conditions, which can affect your run's choices.
+
+You can access the tree screen from the character select menu by pressing [b]V[/b] (or LT on controller). Within the tree screen you can press [b]H[/b] (or Select on controller) to get the control layout. The tree menu should have controller support but I've only tested on an old PS controller.
+
+[h2]Important Node: Cosmic Realignment[/h2]
+A very particular large node found in the global skill tree is &quot;Cosmic Realignment&quot; (which was originally a mod I wanted to make on its own).
+
+Once allocated, you can pick (with an UI menu) any unlocked character and earn their unlocks while playing as a different character. There are a few downsides however:
+[list]
+[*]Node itself is locked behind multiple 'luck down' nodes.
+[*]Each picked character has their own unique curse which will be applied to the run.
+[/list]
+This de-incentivizes for example using a relatively easy character to go and unlock all of, say, tainted lost's stuff.
+These unlocks grant a 'pseudo' blue completion mark to the target character so you may keep track, but original marks take priority, and thus isn't exactly a shortcut for an easier 100% file per se.
+
+[h2]BETA release[/h2]
+This is a very early release of the mod, and with this many moving pieces, it may contain a fair few bugs and weird interactions! Let me know if you find any of these during gameplay.
+
+I'm also rather new to the Isaac modding scene, so there might be conflicts with other popular mods as I haven't tested those too extensively. I am using External Item Descriptions and Achievement Portraits, so those should be fine.
+
+Co-op hasn't been tested, but most if not all of the tree effects are applied to the main player, meaning co-op players don't get trees of their own and could have to adjust their gameplay to synergize with the host's tree.
+
+[h2]Requirements[/h2]
+This mod requires installing Repentogon. You may install it from [url=https://repentogon.com/]here[/url].
+Untested in Afterbirth+, and many node effects are designed around Repentance features.
+
+[h2]Power Creep Concerns[/h2]
+While I haven't balanced the trees too heavily, it's likely that this feature introduces a lot of free player power, making runs generally easier. There's room to introduce opt-in difficulty-altering features in the future if there's interest, e.g. something such as balancing the xp curve so that easy runs barely grant xp past a certain level, and making runs more difficult (in correlation with how much tree progress you have) with certain new modifiers grants more xp.
+
+[h2]Custom Skill Trees[/h2]
+I have a little visual node js app that lets you create skill trees, and the mod supports coding skill trees for custom characters, but this requires having some modding &amp; lua experience. Let me know if there's interest in creating skill trees for your characters and I can see about creating a release for the app with a guide.
+
+I've been playing with the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=846760924]Siren character mod[/url] and this mod comes with a skill tree for her out of the box.
+
+[h2]Debugging and Config[/h2]
+The mod comes with a few debug settings which make testing its features easier. In the mod directory, main.lua file, at the top you can find a PST.debugOptions table with some variables you can set to 'true', such as:
+[list]
+[*][b]infSP:[/b] No longer spend or require skill points for nodes
+[*][b]infRespec:[/b] No longer spend or require respec points for nodes
+[*][b]allAvailable:[/b] Makes all nodes available at all times, regardless of connections
+[/list]
+
+There's also the PST_config.lua file, where you can also find some extra settings such as whether to draw the xp bar, floating texts, and char info in character select, as well as re-configuring the keybinds used in the tree screen, in case of conflicts.
+
+[h3]Support[/h3]
+I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
+    <version>0.1.2</version>
+    <visibility>Private</visibility>
+    <tag id="Lua"/>
+    <tag id="Player Characters"/>
+</metadata>
