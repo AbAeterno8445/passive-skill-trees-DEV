@@ -1,3 +1,8 @@
+local function tearsUp(firedelay, newValue)
+    local newTears = 30 / (firedelay + 1) + newValue
+    return math.max((30 / newTears) - 1, -0.75)
+end
+
 -- Player cache updates
 ---@param player EntityPlayer
 ---@param cacheFlag CacheFlag
@@ -358,7 +363,7 @@ function PST:onCache(player, cacheFlag)
         local tmpMult = 1 - allstatsPerc / 100
         tmpMult = tmpMult - PST:getTreeSnapshotMod("tearsPerc", 0) / 100
         tmpMult = tmpMult - dynamicMods.tearsPerc / 100
-        player.MaxFireDelay = (player.MaxFireDelay - tmpMod * 3.5) * math.max(0.05, tmpMult)
+        player.MaxFireDelay = tearsUp(player.MaxFireDelay, tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         -- LUCK

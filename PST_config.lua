@@ -88,6 +88,12 @@ PST.config = {
             shift = true,
             controllerAction = ButtonAction.ACTION_SHOOTDOWN,
             actionItem = true
+        },
+        toggleTotalMods = {
+            keyboardButton = Keyboard.KEY_H,
+            shift = true,
+            controllerAction = ButtonAction.ACTION_MAP,
+            actionItem = true
         }
     }
 }
@@ -109,5 +115,6 @@ PSTKeybind = {
     TOGGLE_HELP = "toggleHelp",
     TOGGLE_HELP_CONTROLLER = "toggleHelpController",
     ZOOM_IN = "zoomIn",
-    ZOOM_OUT = "zoomOut"
+    ZOOM_OUT = "zoomOut",
+    TOGGLE_TOTAL_MODS = "toggleTotalMods"
 }

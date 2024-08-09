@@ -12,7 +12,7 @@ function PST:onNewRun(isContinued)
         }
         -- Get snapshot of tree modifiers
         for nodeID, node in pairs(PST.trees["global"]) do
-            if PST.modData.treeNodes["global"][nodeID] then
+            if PST:isNodeAllocated("global", nodeID) then
                 local kept = false
                 for keptName, keptVal in pairs(keptMods) do
                     if node.name == keptName then
@@ -32,7 +32,7 @@ function PST:onNewRun(isContinued)
         end
         if PST.trees[currentChar] ~= nil then
             for nodeID, node in pairs(PST.trees[currentChar]) do
-                if PST.modData.treeNodes[currentChar][nodeID] then
+                if PST:isNodeAllocated(currentChar, nodeID) then
                     PST:addModifiers(node.modifiers)
                 end
             end

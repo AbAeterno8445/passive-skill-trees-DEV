@@ -10,7 +10,7 @@ PST.debugOptions = {
 	infSP = false, -- No longer spend or require skill points for nodes
 	infRespec = false, -- No longer spend or require respec points for nodes
 	allAvailable = false, -- Makes all nodes available
-	drawNodeIDs = false, -- Draw node IDS on tree
+	drawNodeIDs = false, -- Draw node IDs on the tree screen
 }
 
 -- Initialize character data for the given char

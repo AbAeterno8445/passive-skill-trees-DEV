@@ -25,6 +25,10 @@ local zoomScale = 1
 local currentTree = "global"
 local hoveredNode = nil
 
+local totalModsMenuOpen = false
+local totalModsMenuY = 0
+local totalModsList = {}
+
 local helpOpen = ""
 local treeControlDesc = {
     "WASD / Arrow keys: pan camera",
@@ -33,7 +37,8 @@ local treeControlDesc = {
     "E: allocate hovered node",
     "R: respec hovered node",
     "Q: switch to selected character's tree",
-    "Shift + Q: enable/disable tree effects next run"
+    "Shift + Q: enable/disable tree effects next run",
+    "Shift + H: display a list of all active modifiers"
 }
 local treeControlDescController = {
     "Joystick / Dpad: pan camera",
@@ -42,7 +47,8 @@ local treeControlDescController = {
     "Menu action: allocate hovered node",
     "Item + Menu action: respec hovered node",
     "Menu tab: switch to selected character's tree",
-    "Item + Menu tab: enable/disable tree effects next run"
+    "Item + Menu tab: enable/disable tree effects next run",
+    "Item + Select: display a list of all active modifiers"
 }
 
 local treeMenuOpen = false
@@ -73,12 +79,13 @@ function PST:closeTreeMenu(mute)
     end
     PST.cosmicRData.menuOpen = false
     helpOpen = ""
+    totalModsMenuOpen = false
     treeMenuOpen = false
     currentTree = "global"
 end
 
 -- Draw a 'node description box' next to screen center
-local function drawNodeBox(name, description, screenW, screenH)
+local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
     -- Base offset from center cursor
     local offX = 4
     local offY = 10
@@ -95,19 +102,26 @@ local function drawNodeBox(name, description, screenW, screenH)
         end
     end
     local longestStrWidth = 8 + offX + miniFont:GetStringWidth(longestStr)
-    if longestStrWidth > screenW / 2 then
-        offX = offX - (longestStrWidth - screenW / 2)
+    if longestStrWidth > paramX / 2 then
+        offX = offX - (longestStrWidth - paramX / 2)
     end
 
     -- Draw description background
+    local drawX = paramX / 2 + offX
+    local drawY = paramY / 2 + offY
+    if absolute then
+        drawX = paramX
+        drawY = paramY
+    end
+
     local descW = longestStrWidth + 4
-    local descH = miniFont:GetLineHeight() * (#description + 1) + 4
+    local descH = (miniFont:GetLineHeight() + 2) * (#description + 1) + 4
     nodeBGSprite.Scale.X = descW
     nodeBGSprite.Scale.Y = descH
-    nodeBGSprite.Color.A = 0.7
-    nodeBGSprite:Render(Vector(screenW / 2 + offX - 2, screenH / 2 + offY - 2))
+    nodeBGSprite.Color.A = bgAlpha or 0.7
+    nodeBGSprite:Render(Vector(drawX - 2, drawY - 2))
 
-    miniFont:DrawString(name, screenW / 2 + offX, screenH / 2 + offY, KColor(1, 1, 1, 1))
+    miniFont:DrawString(name, drawX, drawY, KColor(1, 1, 1, 1))
     for i = 1, #description do
         local tmpStr = description[i]
         local tmpColor = KColor(1, 1, 1, 1)
@@ -124,7 +138,7 @@ local function drawNodeBox(name, description, screenW, screenH)
                 end
             end
         end
-        miniFont:DrawString(tmpStr, screenW / 2 + offX + 6, screenH / 2 + offY + 14 * i, tmpColor)
+        miniFont:DrawString(tmpStr, drawX + 6, drawY + 14 * i, tmpColor)
     end
 end
 
@@ -173,7 +187,12 @@ function PST:treeMenuRendering()
 
         -- Close with ESC
         if PST:isKeybindActive(PSTKeybind.CLOSE_TREE) then
-            PST:closeTreeMenu()
+            if totalModsMenuOpen then
+                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                totalModsMenuOpen = false
+            else
+                PST:closeTreeMenu()
+            end
         end
 
         treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
@@ -185,18 +204,30 @@ function PST:treeMenuRendering()
             cameraSpeed = 8 * (1 + 1 - zoomScale)
         end
         if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
-            treeCamera.Y = treeCamera.Y - cameraSpeed
-            PST_updateCamZoomOffset()
+            if not totalModsMenuOpen then
+                treeCamera.Y = treeCamera.Y - cameraSpeed
+                PST_updateCamZoomOffset()
+            else
+                totalModsMenuY = math.min(0, totalModsMenuY + cameraSpeed)
+            end
         elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
-            treeCamera.Y = treeCamera.Y + cameraSpeed
-            PST_updateCamZoomOffset()
+            if not totalModsMenuOpen then
+                treeCamera.Y = treeCamera.Y + cameraSpeed
+                PST_updateCamZoomOffset()
+            else
+                totalModsMenuY = totalModsMenuY - cameraSpeed
+            end
         end
         if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
-            treeCamera.X = treeCamera.X - cameraSpeed
-            PST_updateCamZoomOffset()
+            if not totalModsMenuOpen then
+                treeCamera.X = treeCamera.X - cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
-            treeCamera.X = treeCamera.X + cameraSpeed
-            PST_updateCamZoomOffset()
+            if not totalModsMenuOpen then
+                treeCamera.X = treeCamera.X + cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         end
 
         local camCenterX = screenW / 2 + treeCamera.X + camZoomOffset.X
@@ -464,12 +495,133 @@ function PST:treeMenuRendering()
             else
                 helpOpen = ""
             end
+            totalModsMenuOpen = false
         -- Input: Toggle help menu (controller)
         elseif PST:isKeybindActive(PSTKeybind.TOGGLE_HELP_CONTROLLER) then
             if helpOpen ~= "controller" then
                 helpOpen = "controller"
             else
                 helpOpen = ""
+            end
+            totalModsMenuOpen = false
+        -- Input: Toggle total modifiers menu
+        elseif PST:isKeybindActive(PSTKeybind.TOGGLE_TOTAL_MODS) then
+            helpOpen = ""
+            totalModsMenuY = 0
+            totalModsMenuOpen = not totalModsMenuOpen
+            sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+
+            -- Compile list of active modifiers
+            local sortedModNames = {}
+            local tmpModsList = {}
+            totalModsList = {}
+            if totalModsMenuOpen then
+                local function processTreeNodes(tmpTree)
+                    for tmpNodeID, tmpNode in pairs(PST.trees[tmpTree]) do
+                        if PST:isNodeAllocated(tmpTree, tmpNodeID) then
+                            -- Create sorted table of modifier names
+                            for tmpModName, _ in pairs(tmpNode.modifiers) do
+                                if PST.treeModDescriptions[tmpModName] ~= nil and not PST:arrHasValue(sortedModNames, tmpModName) then
+                                    table.insert(sortedModNames, tmpModName)
+                                end
+                            end
+
+                            -- Create table with totals for each modifier
+                            for tmpModName, tmpModVal in pairs(tmpNode.modifiers) do
+                                if tmpModsList[tmpModName] == nil then
+                                    tmpModsList[tmpModName] = tmpModVal
+                                elseif type(tmpModsList[tmpModName]) == "number" then
+                                    tmpModsList[tmpModName] = tmpModsList[tmpModName] + tmpModVal
+                                end
+                            end
+                        end
+                    end
+                end
+                processTreeNodes("global")
+                if PST.trees[PST.charNames[1 + PST.selectedMenuChar]] then
+                    processTreeNodes(PST.charNames[1 + PST.selectedMenuChar])
+                end
+
+                table.sort(sortedModNames, function(a, b)
+                    if PST.treeModDescriptions[a] == nil or PST.treeModDescriptions[b] == nil then
+                        return false
+                    end
+                    return PST.treeModDescriptions[a].sort < PST.treeModDescriptions[b].sort
+                end)
+
+                -- Create final description table
+                local lastCategory = nil
+                for _, tmpModName in ipairs(sortedModNames) do
+                    local tmpModVal = tmpModsList[tmpModName]
+                    local modStr = PST.treeModDescriptions[tmpModName].str
+
+                    -- Category change
+                    local categorySwitch = lastCategory == nil
+                    if lastCategory ~= nil and lastCategory ~= PST.treeModDescriptions[tmpModName].category then
+                        table.insert(totalModsList, "")
+                        categorySwitch = true
+                    end
+                    lastCategory = PST.treeModDescriptions[tmpModName].category
+
+                    local tmpColor = KColor(1, 1, 1, 1)
+                    if PST.treeModDescriptionCategories[lastCategory] then
+                        tmpColor = PST.treeModDescriptionCategories[lastCategory].color
+                    end
+                    -- Mom heart proc mods - show as disabled if mom's heart needs to be re-defeated
+                    if PST.modData.momHeartProc[tmpModName] == false then
+                        tmpColor = KColor(0.5, 0.5, 0.5, 1)
+                    end
+
+                    -- Category title
+                    if categorySwitch then
+                        local tmpName = PST.treeModDescriptionCategories[lastCategory].name
+                        if lastCategory == "charTree" then
+                            tmpName = PST.charNames[1 + PST.selectedMenuChar] .. "'s tree:"
+                        end
+                        table.insert(totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
+                    end
+                    if type(modStr) == "table" then
+                        for _, tmpLine in ipairs(modStr) do
+                            local tmpStr = ""
+                            if PST.treeModDescriptions[tmpModName].addPlus then
+                                tmpStr = string.format(tmpLine, tmpModVal >= 0 and "+" or "", tmpModVal)
+                            else
+                                tmpStr = string.format(tmpLine, tmpModVal, tmpModVal, tmpModVal)
+                            end
+                            -- Harmonic modifiers, check if disabled
+                            if PST:strStartsWith(tmpLine, "   [Harmonic]") and PST:songNodesAllocated() > 2 then
+                                tmpColor = KColor(0.5, 0.5, 0.5, 1)
+                            end
+                            table.insert(totalModsList, {tmpStr, tmpColor})
+                        end
+                    else
+                        local tmpStr = ""
+                        if PST.treeModDescriptions[tmpModName].addPlus then
+                            tmpStr = string.format(modStr, tmpModVal >= 0 and "+" or "", tmpModVal)
+                        else
+                            tmpStr = string.format(modStr, tmpModVal, tmpModVal, tmpModVal)
+                        end
+                        table.insert(totalModsList, {tmpStr, tmpColor})
+                    end
+
+                    if PST.modData.momHeartProc[tmpModName] == false then
+                        table.insert(totalModsList, {"   Inactive until Mom's Heart is defeated again.", KColor(1, 0.6, 0.6, 1)})
+                    end
+                end
+
+                -- Add Cosmic Realignment mod to description table
+                if type(cosmicRChar) == "number" then
+                    local tmpCharName = PST.charNames[1 + cosmicRChar]
+                    table.insert(totalModsList, "")
+                    table.insert(totalModsList, {
+                        "Cosmic Realignment (" .. tmpCharName .. ")",
+                        KColor(0.85, 0.85, 1, 1)
+                    })
+                    table.insert(totalModsList, {
+                        "Can now get unlocks as if playing as " .. tmpCharName,
+                        KColor(0.85, 0.85, 1, 1)
+                    })
+                end
             end
         end
 
@@ -492,23 +644,28 @@ function PST:treeMenuRendering()
             camZoomOffset.Y = 0
         end
 
+        if not totalModsMenuOpen then
+            -- HUD data
+            Isaac.RenderText(
+                "Skill points: " .. skPoints .. " / Respecs: " .. PST.modData.respecPoints,
+                8, 8, 1, 1, 1, 1
+            )
+            Isaac.RenderText(treeName, 8, 24, 1, 1, 1, 1)
+            if PST.modData.treeDisabled then
+                Isaac.RenderText("Tree effects disabled", 8, 40, 1, 0.4, 0.4, 1)
+            end
+        end
+        miniFont:DrawString("H / Select: toggle help", 16, screenH - 24, KColor(1, 1, 1, 1))
+
         -- Draw help menu
         if helpOpen == "keyboard" then
             drawNodeBox("Tree Controls", treeControlDesc, screenW / 2, screenH / 2)
         elseif helpOpen == "controller" then
             drawNodeBox("Tree Controls (Controller)", treeControlDescController, screenW / 2, screenH / 2)
+        -- Draw total modifiers menu
+        elseif totalModsMenuOpen then
+            drawNodeBox("Active Modifiers", totalModsList, 16, 16 + totalModsMenuY, true, 1)
         end
-
-        -- HUD data
-        Isaac.RenderText(
-            "Skill points: " .. skPoints .. " / Respecs: " .. PST.modData.respecPoints,
-            8, 8, 1, 1, 1, 1
-        )
-        Isaac.RenderText(treeName, 8, 24, 1, 1, 1, 1)
-        if PST.modData.treeDisabled then
-            Isaac.RenderText("Tree effects disabled", 8, 40, 1, 0.4, 0.4, 1)
-        end
-        miniFont:DrawString("H / Select: toggle help", 16, screenH - 24, KColor(1, 1, 1, 1))
     end
 end
 

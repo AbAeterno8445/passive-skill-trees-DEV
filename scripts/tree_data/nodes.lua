@@ -4,6 +4,7 @@ PST.trees = {}
 PST.nodeLinks = {}
 
 -- Include tree node banks
+include("scripts.tree_data.modifierDescriptions")
 include("scripts.tree_data.globalTreeBank")
 include("scripts.tree_data.isaacTreeBank")
 include("scripts.tree_data.magdaleneTreeBank")
