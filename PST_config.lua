@@ -2,10 +2,11 @@ PST.config = {
     drawXPbar = true, -- Draw level and XP bar at the bottom of the screen during gameplay
     floatingTexts = true, -- Draw floating texts during gameplay (e.g. xp gain, +1 respec, certain node effects, etc.)
     charSelectInfoText = true, -- Draw selected character level info at the bottom of the screen during character selection
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed
-    -- actionItem: requires actionItem to be held during controller press.
+    -- actionItem: requires actionItem to be held during controller press
     -- allowShift: allows pressing key while shift is held
     -- allowCtrl: allows pressing key while ctrl is held
     -- allowActionItem: allows triggering action while actionItem is held

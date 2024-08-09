@@ -1,8 +1,8 @@
 <metadata>
-	<name>skill trees</name>
-	<directory>skill trees</directory>
+	<name>passive skill trees</name>
+	<directory>passive skill trees</directory>
 	<description/>
-	<version>1.0</version>
+	<version>0.1.0</version>
 	<visibility/>
 </metadata>
 
