@@ -140,8 +140,20 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
     end
 end
 
+local firstRender = false
 function PST:treeMenuRendering()
     local isCharMenu = MenuManager.GetActiveMenu() == MainMenuType.CHARACTER
+
+    -- First MC_MAIN_MENU_RENDER call
+    if not firstRender then
+        firstRender = true
+
+        -- Reset input mask if restarting
+        if MenuManager.GetInputMask() == 0 then
+            ---@diagnostic disable-next-line: param-type-mismatch
+            MenuManager.SetInputMask(4294967295)
+        end
+    end
 
     -- Input: Open tree menu
     if PST:isKeybindActive(PSTKeybind.OPEN_TREE) then
