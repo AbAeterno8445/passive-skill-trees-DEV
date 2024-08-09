@@ -500,7 +500,7 @@ function PST:onDeath(entity)
             local tmpPlayer = Isaac.GetPlayer()
 
             -- Dark Songstress node
-            if PST:getTreeSnapshotMod("darkSongstress", false) then
+            if PST:getTreeSnapshotMod("darkSongstress", false) and not PST:getTreeSnapshotMod("darkSongstressActive", false) then
                 local tmpSlot = tmpPlayer:GetActiveItemSlot(Isaac.GetItemIdByName("Siren Song"))
 				if tmpSlot ~= -1 and tmpPlayer:GetActiveCharge(tmpSlot) < tmpPlayer:GetActiveMaxCharge(tmpSlot) and 100 * math.random() < 8 then
 					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.7)
