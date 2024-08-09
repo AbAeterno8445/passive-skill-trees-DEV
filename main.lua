@@ -161,6 +161,16 @@ PST:AddCallback(ModCallbacks.MC_NPC_PICK_TARGET, PST.onNPCPickTarget)
 -- First load
 PST:load()
 
+-- Reset menu input mask if restarting mod
+if not Isaac.IsInGame() then
+	if MenuManager.GetInputMask() == 0 then
+		---@diagnostic disable-next-line: param-type-mismatch
+		MenuManager.SetInputMask(4294967295)
+	end
+else
+	PST.gameInit = true
+end
+
 print("Initialized Passive Skill Trees.")
 for optName, enabled in pairs(PST.debugOptions) do
 	if enabled then

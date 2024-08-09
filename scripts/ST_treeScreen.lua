@@ -52,7 +52,6 @@ local treeControlDescController = {
 }
 
 local treeMenuOpen = false
-local oldmask = nil
 
 local function PST_updateCamZoomOffset()
     local translateX = -Isaac.GetScreenWidth() / 2 - treeCamera.X
@@ -62,7 +61,6 @@ local function PST_updateCamZoomOffset()
 end
 
 function PST:openTreeMenu()
-    oldmask = MenuManager.GetInputMask()
     ---@diagnostic disable-next-line: param-type-mismatch
     MenuManager.SetInputMask(0)
     sfx:Play(SoundEffect.SOUND_PAPER_IN)
@@ -70,11 +68,11 @@ function PST:openTreeMenu()
 end
 
 function PST:closeTreeMenu(mute)
-    if oldmask ~= nil then
-        MenuManager.SetInputMask(oldmask)
-        oldmask = nil
+    if not Isaac.IsInGame() then
+        ---@diagnostic disable-next-line: param-type-mismatch
+        MenuManager.SetInputMask(4294967295)
     end
-    if not mute then 
+    if not mute then
         sfx:Play(SoundEffect.SOUND_PAPER_OUT)
     end
     PST.cosmicRData.menuOpen = false
