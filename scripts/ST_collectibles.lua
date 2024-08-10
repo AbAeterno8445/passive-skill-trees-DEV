@@ -111,6 +111,32 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         player:GetOtherTwin():AddCacheFlags(CacheFlag.CACHE_ALL, true)
     end
 
+    -- Mod: +stat when first obtaining an item
+    if firstTime then
+        local tmpAdd = {}
+        tmpMod = PST:getTreeSnapshotMod("firstItemDamage", 0)
+        if tmpMod ~= 0 then tmpAdd["damage"] = tmpMod end
+
+        tmpMod = PST:getTreeSnapshotMod("firstItemTears", 0)
+        if tmpMod ~= 0 then tmpAdd["tears"] = tmpMod end
+
+        tmpMod = PST:getTreeSnapshotMod("firstItemRange", 0)
+        if tmpMod ~= 0 then tmpAdd["range"] = tmpMod end
+
+        tmpMod = PST:getTreeSnapshotMod("firstItemSpeed", 0)
+        if tmpMod ~= 0 then tmpAdd["speed"] = tmpMod end
+
+        tmpMod = PST:getTreeSnapshotMod("firstItemShotspeed", 0)
+        if tmpMod ~= 0 then tmpAdd["shotSpeed"] = tmpMod end
+
+        tmpMod = PST:getTreeSnapshotMod("firstItemLuck", 0)
+        if tmpMod ~= 0 then tmpAdd["luck"] = tmpMod end
+
+        if next(tmpAdd) ~= nil then
+            PST:addModifiers(tmpAdd, true)
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then

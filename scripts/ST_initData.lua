@@ -192,12 +192,12 @@ function PST:resetMods()
 		planetariumAllstats = 0,
 		planetariumAllstatsProc = false,
 		secretRoomRandomStat = 0,
-		firstItemDamage = 0, -- TODO
-		firstItemTears = 0, -- TODO
-		firstItemRange = 0, -- TODO
-		firstItemSpeed = 0, -- TODO
-		firstItemShotspeed = 0, -- TODO
-		firstItemLuck = 0, -- TODO
+		firstItemDamage = 0,
+		firstItemTears = 0,
+		firstItemRange = 0,
+		firstItemSpeed = 0,
+		firstItemShotspeed = 0,
+		firstItemLuck = 0,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
