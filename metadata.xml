@@ -80,6 +80,8 @@ The mod comes with a few debug settings which make testing its features easier. 
 
 There's also the PST_config.lua file, where you can also find some extra settings such as whether to draw the xp bar, floating texts, and char info in character select, as well as re-configuring the keybinds used in the tree screen, in case of conflicts.
 
+Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787]Mod Config Menu Pure[/url] to toggle PST_config.lua settings.
+
 [h3]Support[/h3]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
     <version>0.1.6</version>
