@@ -39,6 +39,12 @@ function PST:onUseCard(card, player, useFlags)
     if PST:getTreeSnapshotMod("aTrueEnding", false) and card == Card.CARD_SUICIDE_KING then
         PST:addModifiers({ aTrueEndingCardUses = 1 }, true)
     end
+
+    -- Mod: % luck for the current floor when using a card
+    tmpBonus = PST:getTreeSnapshotMod("cardFloorLuck", 0)
+    if tmpBonus ~= 0 then
+        PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
+    end
 end
 
 function PST:onPillEffect(effect, pillColor)
@@ -62,5 +68,11 @@ function PST:onUsePill(pillEffect, player, useFlags)
     -- Mod: chance to receive half a soul heart when using a card or pill
     if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
         player:AddSoulHearts(1)
+    end
+
+    -- Mod: % luck for the current floor when using a pill
+    tmpBonus = PST:getTreeSnapshotMod("pillFloorLuck", 0)
+    if tmpBonus ~= 0 then
+        PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
     end
 end

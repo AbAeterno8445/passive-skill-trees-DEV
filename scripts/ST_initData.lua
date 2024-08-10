@@ -175,10 +175,13 @@ function PST:resetMods()
 		shotSpeedPerc = 0,
 		luckPerc = 0,
 
+		floorLuckPerc = 0,
+		floorLuck = 0,
+
 		luckyPennyChance = 0,
-		cardFloorLuck = 0, -- TODO
-		pillFloorLuck = 0, -- TODO
-		secretRoomFloorLuck = 0, -- TODO
+		cardFloorLuck = 0,
+		pillFloorLuck = 0,
+		secretRoomFloorLuck = 0,
 		fireXP = 0, -- TODO
 		poopXP = 0, -- TODO
 		tintedRockXP = 0, -- TODO

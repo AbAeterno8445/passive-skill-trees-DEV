@@ -104,6 +104,16 @@ function PST:onNewLevel()
         end
     end
 
+    -- Floor stat buffs reset
+    tmpBonus = PST:getTreeSnapshotMod("floorLuckPerc", 0)
+    if tmpBonus ~= 0 then
+        PST:addModifiers({ luckPerc = -tmpBonus, floorLuckPerc = { value = 0, set = true } }, true)
+    end
+    tmpBonus = PST:getTreeSnapshotMod("floorLuck", 0)
+    if tmpBonus ~= 0 then
+        PST:addModifiers({ luck = -tmpBonus, floorLuck = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

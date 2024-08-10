@@ -267,6 +267,12 @@ function PST:onNewRoom()
 					PST:addXP(expertSpelunkerXP, true)
 				end
 			end
+
+			-- Mod: +luck for the current floor when entering a secret room
+			local secretLuck = PST:getTreeSnapshotMod("secretRoomFloorLuck", 0)
+			if secretLuck ~= 0 then
+				PST:addModifiers({ luck = secretLuck, floorLuck = secretLuck }, true)
+			end
 		-- Devil/Angel rooms
 		elseif room:GetType() == RoomType.ROOM_DEVIL or room:GetType() == RoomType.ROOM_ANGEL then
 			local randomStat = PST:getRandomStat()
