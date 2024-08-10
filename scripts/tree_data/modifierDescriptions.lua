@@ -1,5 +1,6 @@
 PST.treeModDescriptionCategories = {
     stats = { name = "Global stat alterations:", color = KColor(0.9, 1, 0.9, 1) },
+    condStats = { name = "Conditional stat alterations:", color = KColor(0.8, 1, 0.8, 1) },
     xp = { name = "XP and respecs:", color = KColor(0.9, 0.9, 0.9, 1) },
     extra = { name = "Miscellaneous:", color = KColor(0.9, 0.9, 0.7, 1) },
     charTree = { name = "", color = KColor(1, 0.8, 1, 1) }
@@ -77,9 +78,70 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "stats", sort = 7
     },
+
+    ---- CONDITIONAL STATS CATEGORY ----
     beggarLuck = {
         str = "%.2f luck gained when helping any beggar",
-        category = "stats", sort = 10
+        category = "condStats", sort = 10
+    },
+    cardFloorLuck = {
+        str = "%d%% increased luck for the current floor when you use a card",
+        category = "condStats", sort = 11
+    },
+    pillFloorLuck = {
+        str = "%d%% increased luck for the current floor when you use a pill",
+        category = "condStats", sort = 11
+    },
+    secretRoomFloorLuck = {
+        str = "%s%.2f luck for the current floor when first entering a secret or super secret room",
+        addPlus = true,
+        category = "condStats", sort = 12
+    },
+    secretRoomRandomStat = {
+        str = {
+            "+0.01 to a random stat when first entering a secret room",
+            "    Rolls %d times"
+        },
+        category = "condStats", sort = 13
+    },
+    tintedRockAllstats = {
+        str = "%s%.2f all stats when blowing up a tinted rock",
+        addPlus = true,
+        category = "condStats", sort = 13
+    },
+    planetariumAllStats = {
+        str = "%s%.2f all stats when entering a Planetarium for the first time in the run",
+        category = "condStats", sort = 14
+    },
+    firstItemDamage = {
+        str = "%s%.2f damage when first obtaining a passive item",
+        addPlus = true,
+        category = "condStats", sort = 15
+    },
+    firstItemTears = {
+        str = "%s%.2f tears when first obtaining a passive item",
+        addPlus = true,
+        category = "condStats", sort = 15
+    },
+    firstItemRange = {
+        str = "%s%.2f range when first obtaining a passive item",
+        addPlus = true,
+        category = "condStats", sort = 15
+    },
+    firstItemSpeed = {
+        str = "%s%.2f speed when first obtaining a passive item",
+        addPlus = true,
+        category = "condStats", sort = 15
+    },
+    firstItemShotspeed = {
+        str = "%s%.2f shot speed when first obtaining a passive item",
+        addPlus = true,
+        category = "condStats", sort = 15
+    },
+    firstItemLuck = {
+        str = "%s%.2f luck when first obtaining a passive item",
+        addPlus = true,
+        category = "condStats", sort = 15
     },
 
     ---- XP CATEGORY ----
@@ -129,6 +191,22 @@ PST.treeModDescriptions = {
         },
         category = "xp", sort = 105
     },
+    fireXP = {
+        str = "Gain %s%d xp when putting out fires",
+        addPlus = true,
+        category = "xp", sort = 106
+    },
+    poopXP = {
+        str = "Gain %s%d xp when destroying poop",
+        addPlus = true,
+        category = "xp", sort = 106
+    },
+    tintedRockXP = {
+        str = "Gain %s%d xp when destroying tinted rocks",
+        addPlus = true,
+        category = "xp", sort = 106
+    },
+
     respecChance = {
         str = {
             "%.2f%% chance to gain respecs on floor clear",
@@ -170,13 +248,21 @@ PST.treeModDescriptions = {
         str = "%.2f%% chance to reveal the map on floor beginning, from second floor onwards",
         category = "extra", sort = 1003
     },
+    luckyPennyChance = {
+        str = "%.2f%% chance to replace penny drops with a lucky penny",
+        category = "extra", sort = 1004
+    },
+    planetariumChance = {
+        str = "%.2f%% increased chance of finding a planetarium",
+        category = "extra", sort = 1005
+    },
     hellFavour = {
         str = {
             "+1 to a random stat when entering a devil room",
             "-1 to a random stat when entering an angel room",
             "Entering an angel room will trigger a curse on the next floor"
         },
-        category = "extra", sort = 1010
+        category = "extra", sort = 1100
     },
     heavenFavour = {
         str = {
@@ -184,7 +270,7 @@ PST.treeModDescriptions = {
             "-1 to a random stat when entering a devil room",
             "Entering an devil room will trigger a curse on the next floor"
         },
-        category = "extra", sort = 1011
+        category = "extra", sort = 1101
     },
 
     ---- ISAAC'S TREE ----

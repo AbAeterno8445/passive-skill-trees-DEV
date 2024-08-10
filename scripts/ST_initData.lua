@@ -175,6 +175,24 @@ function PST:resetMods()
 		shotSpeedPerc = 0,
 		luckPerc = 0,
 
+		luckyPennyChance = 0, -- TODO
+		cardFloorLuck = 0, -- TODO
+		pillFloorLuck = 0, -- TODO
+		secretRoomFloorLuck = 0, -- TODO
+		fireXP = 0, -- TODO
+		poopXP = 0, -- TODO
+		tintedRockXP = 0, -- TODO
+		tintedRockAllstats = 0, -- TODO
+		planetariumChance = 0, -- TODO
+		planetariumAllstats = 0, -- TODO
+		secretRoomRandomStat = 0, -- TODO
+		firstItemDamage = 0, -- TODO
+		firstItemTears = 0, -- TODO
+		firstItemRange = 0, -- TODO
+		firstItemSpeed = 0, -- TODO
+		firstItemShotspeed = 0, -- TODO
+		firstItemLuck = 0, -- TODO
+
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
 		-- 'Keystone' nodes
