@@ -21,6 +21,20 @@ Generally the small nodes are not very impactful on their own, granting small bo
 
 You can access the tree screen from the character select menu by pressing [b]V[/b] (or LT on controller). Within the tree screen you can press [b]H[/b] (or Select on controller) to get the control layout. The tree menu should have controller support but I've only tested on an old PS controller.
 
+[h2]Controls[/h2]
+While in the tree screen:
+[list]
+[*]H: open help menu for a reminder on available controls
+[*]WASD / Arrow keys: pan camera
+[*]Shift + V: re-center camera
+[*]Z / Shift + Z: zoom in/out
+[*]E: allocate hovered node, if you have the skill points
+[*]R: respec hovered node, if you have the respec points
+[*]Q: switch to the selected character's tree, if they have one
+[*]Shift + Q: enable/disable tree effects next run
+[*]Shift + H: display a list of all active modifiers affecting the next run
+[/list]
+
 [h2]Important Node: Cosmic Realignment[/h2]
 A very particular large node found in the global skill tree is &quot;Cosmic Realignment&quot; (which was originally a mod I wanted to make on its own).
 
@@ -48,10 +62,13 @@ Requires Repentance. Afterbirth+ unsupported.
 [h2]Power Creep Concerns[/h2]
 While I haven't balanced the trees too heavily, it's likely that this feature introduces a lot of free player power, making runs generally easier. There's room to introduce opt-in difficulty-altering features in the future if there's interest, e.g. something such as balancing the xp curve so that easy runs barely grant xp past a certain level, and making runs more difficult (in correlation with how much tree progress you have) with certain new modifiers grants more xp.
 
-[h2]Custom Skill Trees[/h2]
-I have a little visual node js app that lets you create skill trees, and the mod supports coding skill trees for custom characters, but this requires having some modding &amp; lua experience. Let me know if there's interest in creating skill trees for your characters and I can see about creating a release for the app with a guide.
+[h2]For Modders - Custom Skill Trees[/h2]
+I have a little visual node js app, **isaac-skilltreegen**, that lets you create skill trees, and the mod supports coding skill trees for custom characters.
+You can find the app's repo and releases [url=https://github.com/AbAeterno8445/isaac-skilltreegen]Here[/url]. Repo includes usage instructions on its README.
 
-I've been playing with the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=846760924]Siren character mod[/url] and this mod comes with a skill tree for her out of the box.
+The mod also exposes an API function to initialize generated skill trees. [url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/master/docs/api.md]Here[/url]'s a reference guide for using it.
+
+I've also been playing with the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=846760924]Siren character mod[/url] and this mod comes with a skill tree for her out of the box.
 
 [h2]Debugging and Config[/h2]
 The mod comes with a few debug settings which make testing its features easier. In the mod directory, main.lua file, at the top you can find a PST.debugOptions table with some variables you can set to 'true', such as:
