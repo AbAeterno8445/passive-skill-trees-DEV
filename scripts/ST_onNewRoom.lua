@@ -273,6 +273,20 @@ function PST:onNewRoom()
 			if secretLuck ~= 0 then
 				PST:addModifiers({ luck = secretLuck, floorLuck = secretLuck }, true)
 			end
+
+			-- Mod: +0.01 to a random stat when entering a secret room. Rolls more times if multiple are allocated
+			local tmpMod = PST:getTreeSnapshotMod("secretRoomRandomStat", 0)
+			if tmpMod > 0 and room:GetType() == RoomType.ROOM_SECRET then
+				local tmpAdd = {}
+				for _=1,tmpMod do
+					local randStat = PST:getRandomStat()
+					if tmpAdd[randStat] == nil then
+						tmpAdd[randStat] = 0
+					end
+					tmpAdd[randStat] = tmpAdd[randStat] + 0.01
+				end
+				PST:addModifiers(tmpAdd, true)
+			end
 		-- Devil/Angel rooms
 		elseif room:GetType() == RoomType.ROOM_DEVIL or room:GetType() == RoomType.ROOM_ANGEL then
 			local randomStat = PST:getRandomStat()
@@ -322,6 +336,13 @@ function PST:onNewRoom()
 					cosmicRCache.TIsaacProc = true
 					PST:save()
 				end
+			end
+		-- Planetarium
+		elseif room:GetType() == RoomType.ROOM_PLANETARIUM then
+			-- Mod: +% all stats when entering the planetarium for the first time in this run
+			tmpStats = PST:getTreeSnapshotMod("planetariumAllstats", 0)
+			if tmpStats ~= 0 and not PST:getTreeSnapshotMod("planetariumAllstatsProc") then
+				PST:addModifiers({ allstatsPerc = tmpStats, planetariumAllstatsProc = true }, true)
 			end
 		end
 	end
