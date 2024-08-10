@@ -2,8 +2,8 @@ PST = RegisterMod("PST", 1)
 
 local json = require("json")
 
-include("PST_config")
 include("scripts.ST_initData")
+include("PST_config")
 PST:resetData()
 
 PST.debugOptions = {
@@ -31,6 +31,9 @@ end
 
 -- Save mod data
 function PST:save()
+	-- Save config
+	PST.modData.config = PST.config
+
 	PST:SaveData(json.encode(PST.modData))
 end
 
@@ -69,6 +72,10 @@ function PST:load()
 				end
 				tmpJson.treeNodes[k] = tmpTreeNodes
 			end
+		end
+		-- Load saved config
+		if tmpJson.config then
+			PST.config = tmpJson.config
 		end
 		PST.modData = tmpJson
 

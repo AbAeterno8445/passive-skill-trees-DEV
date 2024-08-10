@@ -244,6 +244,7 @@
     "WispSubType",
     "XMLData",
     "XMLNode",
-    "REPENTOGON"
+    "REPENTOGON",
+        "ModConfigMenu"
   ]
 }

@@ -124,3 +124,75 @@ PSTKeybind = {
     ZOOM_OUT = "zoomOut",
     TOGGLE_TOTAL_MODS = "toggleTotalMods"
 }
+
+-- Support for Mod Config Menu
+function PST:initModConfigMenu()
+    if ModConfigMenu == nil then
+        return
+    end
+
+    -- Draw XP bar setting
+    ModConfigMenu.RemoveSetting(PST.modName, nil, "drawXPbar")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        nil,
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "drawXPbar",
+            CurrentSetting = function()
+                return PST.config.drawXPbar
+            end,
+            Display = function()
+                return "Draw LVL and XP bar: " .. (PST.config.drawXPbar and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.drawXPbar = b
+                PST:save()
+            end,
+            Info = {"Draw level and XP bar at the bottom of the screen", "during gameplay"}
+        }
+    )
+    -- Draw floating texts setting
+    ModConfigMenu.RemoveSetting(PST.modName, nil, "floatingTexts")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        nil,
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "floatingTexts",
+            CurrentSetting = function()
+                return PST.config.floatingTexts
+            end,
+            Display = function()
+                return "Draw floating texts: " .. (PST.config.floatingTexts and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.floatingTexts = b
+                PST:save()
+            end,
+            Info = {"Draw floating texts during gameplay", "(e.g. xp gain, +1 respec, certain node effects, etc.)"}
+        }
+    )
+    -- Draw selected character info setting
+    ModConfigMenu.RemoveSetting(PST.modName, nil, "charSelectInfoText")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        nil,
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "charSelectInfoText",
+            CurrentSetting = function()
+                return PST.config.charSelectInfoText
+            end,
+            Display = function()
+                return "Draw char select info: " .. (PST.config.charSelectInfoText and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.charSelectInfoText = b
+                PST:save()
+            end,
+            Info = {"Draw char info text in character select screen"}
+        }
+    )
+end
+PST:initModConfigMenu()
