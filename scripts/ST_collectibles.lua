@@ -233,8 +233,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Mod: chance to keep half the charge when using D6
         if 100 * math.random() < PST:getTreeSnapshotMod("d6HalfCharge", 0) then
             if player:GetBatteryCharge(slot) == 0 then
-                SFXManager():Play(SoundEffect.SOUND_BEEP)
-                player:SetActiveCharge(player:GetActiveCharge(slot) + math.ceil(player:GetActiveMaxCharge(slot) / 2), slot)
+                player:AddActiveCharge(math.ceil(player:GetActiveMaxCharge(slot) / 2), slot, true, true, false)
             end
         end
     -- Yum Heart
@@ -282,8 +281,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     elseif itemType == CollectibleType.COLLECTIBLE_ETERNAL_D6 then
         -- Mod: chance for Eternal D6 to not consume charges on use
         if 100 * math.random() < PST:getTreeSnapshotMod("eternalD6Charge", 0) then
-            SFXManager():Play(SoundEffect.SOUND_BATTERYCHARGE)
-            player:SetActiveCharge(player:GetActiveMaxCharge(slot) * 2, slot)
+            player:AddActiveCharge(player:GetActiveMaxCharge(slot), slot, true, true, false)
         end
     -- Box of Friends
     elseif itemType == CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS then
@@ -296,8 +294,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Mod: chance for Box of Friends to keep 1 charge on use
         if 100 * math.random() < PST:getTreeSnapshotMod("boxOfFriendsCharge", 0) then
             if player:GetBatteryCharge(slot) == 0 then
-                SFXManager():Play(SoundEffect.SOUND_BEEP)
-                player:SetActiveCharge(player:GetActiveCharge(slot) + 1, slot)
+                player:AddActiveCharge(1, slot, true, true, false)
             end
         end
 
@@ -318,8 +315,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Apollyon's Blessing node (Apollyon's tree)
         if PST:getTreeSnapshotMod("apollyonBlessing", false) and 100 * math.random() < 40 then
             if player:GetBatteryCharge(slot) == 0 then
-                SFXManager():Play(SoundEffect.SOUND_BEEP)
-                player:SetActiveCharge(math.floor(player:GetActiveMaxCharge(slot) * 1.5), slot)
+                player:AddActiveCharge(math.ceil(player:GetActiveMaxCharge(slot) / 2), slot, true, true, false)
             end
         end
 

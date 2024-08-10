@@ -59,7 +59,7 @@ function PST:onUsePill(pillEffect, player, useFlags)
         end
     end
 
-    -- Mod: chance to receive half a soul hart when using a card or pill
+    -- Mod: chance to receive half a soul heart when using a card or pill
     if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
         player:AddSoulHearts(1)
     end

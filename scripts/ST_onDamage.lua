@@ -140,11 +140,11 @@ function PST:onDamage(target, damage, flag, source)
 
         if target:IsBoss() then
             -- Mod: chance for Book of Belial to gain a charge when hitting a boss
-            if tmpPlayer:GetActiveCharge(0) < tmpPlayer:GetActiveMaxCharge(0) and tmpPlayer:GetActiveItem(0) == CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL then
+            local tmpBookSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
+            if tmpBookSlot ~= -1 then
                 if PST:getTreeSnapshotMod("belialChargesGained", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("belialBossHitCharge", 0) then
                     PST:addModifiers({ belialChargesGained = 1 }, true)
-                    tmpPlayer:SetActiveCharge(tmpPlayer:GetActiveCharge(0) + 1, 0)
-                    SFXManager():Play(SoundEffect.SOUND_BEEP)
+                    tmpPlayer:AddActiveCharge(1, 0, true, false, false)
                 end
             end
         else
@@ -502,9 +502,8 @@ function PST:onDeath(entity)
             -- Dark Songstress node
             if PST:getTreeSnapshotMod("darkSongstress", false) and not PST:getTreeSnapshotMod("darkSongstressActive", false) then
                 local tmpSlot = tmpPlayer:GetActiveItemSlot(Isaac.GetItemIdByName("Siren Song"))
-				if tmpSlot ~= -1 and tmpPlayer:GetActiveCharge(tmpSlot) < tmpPlayer:GetActiveMaxCharge(tmpSlot) and 100 * math.random() < 8 then
-					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.7)
-					tmpPlayer:SetActiveCharge(tmpPlayer:GetActiveCharge(tmpSlot) + 1, tmpSlot)
+				if tmpSlot ~= -1 and 100 * math.random() < 8 then
+                    tmpPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
 				end
             end
 

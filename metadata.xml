@@ -41,6 +41,8 @@ Co-op hasn't been tested, but most if not all of the tree effects are applied to
 
 [h2]Requirements[/h2]
 This mod requires installing Repentogon. You may install it from [url=https://repentogon.com/]here[/url].
+NOTE: you need to install Repentogon following the instructions in the link for the mod to work properly, it's not just a workshop install!
+
 Untested in Afterbirth+, and many node effects are designed around Repentance features.
 
 [h2]Power Creep Concerns[/h2]
@@ -63,7 +65,7 @@ There's also the PST_config.lua file, where you can also find some extra setting
 
 [h3]Support[/h3]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <visibility>Private</visibility>
     <tag id="Lua"/>
     <tag id="Player Characters"/>

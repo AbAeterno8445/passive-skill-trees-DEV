@@ -154,7 +154,7 @@ function PST:onNewRun(isContinued)
     if PST:getTreeSnapshotMod("fatePendulum", false) then
         player:AddCollectible(CollectibleType.COLLECTIBLE_METRONOME)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_METRONOME)
-        player:SetActiveCharge(player:GetActiveMaxCharge(0))
+        player:FullCharge(0)
     end
 
     -- Statue Pilgrimage node (Jacob & Esau's tree)

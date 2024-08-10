@@ -1,5 +1,6 @@
 .vscode
 *.xcf
 releases/
+ideas/
 *.exe
 *.exe.lnk

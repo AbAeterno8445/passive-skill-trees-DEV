@@ -605,7 +605,7 @@ function PST:onUpdate()
 			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and 100 * math.random() < 100)
 			or (100 * math.random() < PST:getTreeSnapshotMod("chargeOnClear", 0)) then
 				if player:GetBatteryCharge(0) == 0 then
-					player:SetActiveCharge(player:GetActiveCharge(0) + 1)
+					player:AddActiveCharge(1, 0, true, false, false)
 				end
 			end
 
@@ -625,7 +625,7 @@ function PST:onUpdate()
 				local tmpSlot = player:GetActiveItemSlot(Isaac.GetItemIdByName("Siren Song"))
 				if tmpSlot ~= -1 and player:GetActiveCharge(tmpSlot) < player:GetActiveMaxCharge(tmpSlot) then
 					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.7)
-					player:SetActiveCharge(player:GetActiveCharge(tmpSlot) + 1, tmpSlot)
+					player:AddActiveCharge(1, tmpSlot, true, false, false)
 				end
 			end
 		end

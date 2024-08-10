@@ -29,11 +29,11 @@ function PST:onSlotUpdate(slot)
         -- Blood donation machine
         if slot.Variant == SlotVariant.BLOOD_DONATION_MACHINE and spentHearts then
             -- Blood Donor node (Magdalene's tree)
-            if PST:getTreeSnapshotMod("bloodDonor", false) and player:GetActiveCharge(0) < player:GetActiveMaxCharge(0) then
+            if PST:getTreeSnapshotMod("bloodDonor", false) then
                 SFXManager():Play(SoundEffect.SOUND_BEEP)
-                player:SetActiveCharge(player:GetActiveCharge(0) + 1, 0)
+                player:AddActiveCharge(1, 0, true, false, false)
                 if Isaac.GetPlayer():GetActiveItem(0) == CollectibleType.COLLECTIBLE_YUM_HEART and 100 * math.random() < 50 then
-                    player:SetActiveCharge(player:GetActiveCharge(0) + 1, 0)
+                    player:AddActiveCharge(1, 0, true, false, false)
                 end
             end
 
