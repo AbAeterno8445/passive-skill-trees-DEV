@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Lazarus", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Lazarus", [[
 {
 "1": "{\"pos\":[0,0],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[2,5,134],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[-1,-1],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[1,3]}",
@@ -99,4 +98,3 @@ PST.SkillTreesAPI.AddCharacterTree("Lazarus", json.decode([[
 "146": "{\"pos\":[0,12],\"type\":144,\"size\":\"Large\",\"name\":\"A True Ending?\",\"description\":[\"First floor's boss, Mom and Mom's Heart drop a Suicide King card when defeated.\",\"+2% all stats as Lazarus Risen per Suicide King card used.\"],\"modifiers\":{\"aTrueEnding\":true},\"adjacent\":[126]}"
 }
 ]])
-)

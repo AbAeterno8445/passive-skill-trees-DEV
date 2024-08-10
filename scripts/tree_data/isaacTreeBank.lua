@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Isaac", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Isaac", [[
 {
 "4": "{\"pos\":[0,0],\"type\":50,\"size\":\"Small\",\"name\":\"All Stats\",\"description\":[\"+0.01 all stats\"],\"modifiers\":{\"allstats\":0.01},\"adjacent\":[19,138,171],\"alwaysAvailable\":true}",
 "19": "{\"pos\":[0,-1],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[4,25]}",
@@ -92,4 +91,3 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", json.decode([[
 "181": "{\"pos\":[-5,5],\"type\":55,\"size\":\"Med\",\"name\":\"All Stats Chance - Room\",\"description\":[\"When entering a room with monsters, 5% chance to gain +4% all stats for the current room.\"],\"modifiers\":{\"allstatsRoom\":5},\"adjacent\":[180]}"
 }
 ]])
-)

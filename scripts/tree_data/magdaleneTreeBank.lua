@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Magdalene", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Magdalene", [[
 {
 "1": "{\"pos\":[0,0],\"type\":67,\"size\":\"Small\",\"name\":\"Room Clear Heal\",\"description\":[\"0.4% chance to heal 1/2 red heart when clearing a room.\",\"Double the chance and healing on boss rooms.\"],\"modifiers\":{\"healOnClear\":0.4},\"adjacent\":[32,128],\"alwaysAvailable\":true}",
 "6": "{\"pos\":[-2,-2],\"type\":67,\"size\":\"Small\",\"name\":\"Room Clear Heal\",\"description\":[\"0.1% chance to heal 1/2 red heart when clearing a room.\",\"Double the chance and healing on boss rooms.\"],\"modifiers\":{\"healOnClear\":0.1},\"adjacent\":[32,7]}",
@@ -94,4 +93,3 @@ PST.SkillTreesAPI.AddCharacterTree("Magdalene", json.decode([[
 "140": "{\"pos\":[0,5],\"type\":62,\"size\":\"Med\",\"name\":\"Blood Donation Machine Spawn\",\"description\":[\"5% chance to spawn a Blood Donation Machine at the start of a floor.\",\"Doesn't apply to first floor.\"],\"modifiers\":{\"bloodMachineSpawn\":5},\"adjacent\":[133,134]}"
 }
 ]])
-)

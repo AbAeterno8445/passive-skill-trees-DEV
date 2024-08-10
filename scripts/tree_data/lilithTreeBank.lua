@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Lilith", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Lilith", [[
 {
 "1": "{\"pos\":[0,0],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[2],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[0,-1],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[1,3]}",
@@ -97,4 +96,3 @@ PST.SkillTreesAPI.AddCharacterTree("Lilith", json.decode([[
 "160": "{\"pos\":[-9,-12],\"type\":191,\"size\":\"Large\",\"name\":\"Daemon Army\",\"description\":[\"Start with an additional Incubus.\",\"Mom drops an additional Incubus on defeat.\",\"Baby familiar items other than Incubus no longer show up.\"],\"modifiers\":{\"daemonArmy\":true},\"adjacent\":[97,155]}"
 }
 ]])
-)

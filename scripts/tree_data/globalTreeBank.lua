@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("global", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("global", [[
 {
 "2": "{\"pos\":[0,-2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+2% XP gain\"],\"modifiers\":{\"xpgain\":2},\"adjacent\":[3,315]}",
 "3": "{\"pos\":[0,-3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+2% XP gain\"],\"modifiers\":{\"xpgain\":2},\"adjacent\":[2,10,283]}",
@@ -229,4 +228,3 @@ PST.SkillTreesAPI.AddCharacterTree("global", json.decode([[
 "333": "{\"pos\":[0,11],\"type\":43,\"size\":\"Large\",\"name\":\"Cosmic Realignment\",\"description\":[\"Allocate to choose a character. Once chosen, you may receive unlocks as if playing\",\"as that character while using a different one.\",\"Beware the cosmic curse each character brings...\"],\"modifiers\":{\"cosmicRealignment\":true},\"adjacent\":[330]}"
 }
 ]])
-)

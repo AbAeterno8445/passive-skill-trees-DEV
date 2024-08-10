@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Samson", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Samson", [[
 {
 "75": "{\"pos\":[7,-15],\"type\":116,\"size\":\"Large\",\"name\":\"Rage Buildup\",\"description\":[\"+0.02 damage when hitting an enemy, up to +3.\",\"Getting hit resets the bonus.\"],\"modifiers\":{\"rageBuildup\":true},\"adjacent\":[189]}",
 "95": "{\"pos\":[-8,-13],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[96,155]}",
@@ -105,4 +104,3 @@ PST.SkillTreesAPI.AddCharacterTree("Samson", json.decode([[
 "226": "{\"pos\":[-1,-17],\"type\":125,\"size\":\"Med\",\"name\":\"Boss Quick Kill Luck\",\"description\":[\"+0.25 luck if you clear the boss room within 1 minute of entering it.\"],\"modifiers\":{\"bossQuickKillLuck\":0.25},\"adjacent\":[224]}"
 }
 ]])
-)

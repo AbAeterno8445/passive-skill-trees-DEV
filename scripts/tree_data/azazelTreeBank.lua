@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Azazel", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Azazel", [[
 {
 "1": "{\"pos\":[0,0],\"type\":133,\"size\":\"Small\",\"name\":\"Black Heart On Deals\",\"description\":[\"2% chance to gain an additional black heart when spending hearts for items, such as devil deals.\"],\"modifiers\":{\"blackHeartOnDeals\":2},\"adjacent\":[3,7,24,34,102,180],\"alwaysAvailable\":true}",
 "3": "{\"pos\":[-1,-1],\"type\":133,\"size\":\"Small\",\"name\":\"Black Heart On Deals\",\"description\":[\"1% chance to gain an additional black heart when spending hearts for items, such as devil deals.\"],\"modifiers\":{\"blackHeartOnDeals\":1},\"adjacent\":[1,4]}",
@@ -114,4 +113,3 @@ PST.SkillTreesAPI.AddCharacterTree("Azazel", json.decode([[
 "193": "{\"pos\":[0,11],\"type\":131,\"size\":\"Large\",\"name\":\"Demon Helpers\",\"description\":[\"33% chance to receive half a black heart back when helping a Devil Beggar.\",\"Once a Devil Beggar gives a reward, 33% chance to additionally spawn a demon familiar.\",\"5% chance to spawn a devil beggar at the beginning of a floor, starting from second floor.\",\"This chance doubles every floor up to 40%, and resets when one spawns.\"],\"modifiers\":{\"devilBeggarBlackHeart\":33,\"demonHelpers\":true},\"adjacent\":[191,148]}"
 }
 ]])
-)

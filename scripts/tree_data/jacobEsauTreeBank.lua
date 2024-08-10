@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Jacob & Esau", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Jacob & Esau", [[
 {
 "29": "{\"pos\":[4,-3],\"type\":276,\"size\":\"Small\",\"name\":\"Birthright\",\"description\":[\"0.5% chance for Mom to additionally drop Birthright when defeated.\",\"If Mom doesn't drop Birthright, roll for half the chance again when defeating Mom's heart.\"],\"modifiers\":{\"jacobBirthright\":0.5},\"adjacent\":[30,139]}",
 "30": "{\"pos\":[5,-3],\"type\":276,\"size\":\"Small\",\"name\":\"Birthright\",\"description\":[\"0.5% chance for Mom to additionally drop Birthright when defeated.\",\"If Mom doesn't drop Birthright, roll for half the chance again when defeating Mom's heart.\"],\"modifiers\":{\"jacobBirthright\":0.5},\"adjacent\":[29,31]}",
@@ -107,4 +106,3 @@ PST.SkillTreesAPI.AddCharacterTree("Jacob & Esau", json.decode([[
 "154": "{\"pos\":[0,-8],\"type\":55,\"size\":\"Med\",\"name\":\"Brother Items All Stats\",\"description\":[\"+0.2% all stats per item obtained by the opposing brother, up to 15%.\"],\"modifiers\":{\"jacobItemAllstats\":0.2},\"adjacent\":[146]}"
 }
 ]])
-)

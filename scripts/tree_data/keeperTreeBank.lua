@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Keeper", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Keeper", [[
 {
 "1": "{\"pos\":[0,0],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[2],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[1,-1],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[1,3]}",
@@ -115,4 +114,3 @@ PST.SkillTreesAPI.AddCharacterTree("Keeper", json.decode([[
 "207": "{\"pos\":[-9,-2],\"type\":213,\"size\":\"Small\",\"name\":\"Blue Fly Death Damage\",\"description\":[\"+0.01 damage whenever a blue fly dies, up to +1.2. Resets every floor.\"],\"modifiers\":{\"blueFlyDeathDamage\":0.01},\"adjacent\":[206,197]}"
 }
 ]])
-)

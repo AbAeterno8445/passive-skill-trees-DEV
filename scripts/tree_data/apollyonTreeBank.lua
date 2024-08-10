@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Apollyon", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Apollyon", [[
 {
 "1": "{\"pos\":[-1,-1],\"type\":224,\"size\":\"Small\",\"name\":\"Void Blue Flies\",\"description\":[\"1% chance for Void to spawn 4 blue flies on use.\"],\"modifiers\":{\"voidBlueFlies\":1},\"adjacent\":[2,178]}",
 "2": "{\"pos\":[-2,-2],\"type\":224,\"size\":\"Small\",\"name\":\"Void Blue Flies\",\"description\":[\"1% chance for Void to spawn 4 blue flies on use.\"],\"modifiers\":{\"voidBlueFlies\":1},\"adjacent\":[1,3]}",
@@ -131,4 +130,3 @@ PST.SkillTreesAPI.AddCharacterTree("Apollyon", json.decode([[
 "214": "{\"pos\":[6,-12],\"type\":237,\"size\":\"Med\",\"name\":\"First Floor Eraser\",\"description\":[\"5% chance for the second floor's treasure room to additionally contain an Eraser\",\"item pedestal.\"],\"modifiers\":{\"eraserSecondFloor\":5},\"adjacent\":[210,179]}"
 }
 ]])
-)

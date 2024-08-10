@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Eve", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Eve", [[
 {
 "2": "{\"pos\":[0,0],\"type\":113,\"size\":\"Small\",\"name\":\"Luck On Room Clear Below Full\",\"description\":[\"+0.01 luck when clearing a room below full red hearts.\"],\"modifiers\":{\"luckOnClearBelowFull\":0.01},\"adjacent\":[100,164],\"alwaysAvailable\":true}",
 "20": "{\"pos\":[0,-17],\"type\":104,\"size\":\"Large\",\"name\":\"Carrion Avian\",\"description\":[\"+0.15 damage when dead bird kills an enemy, up to +3. Resets every floor.\",\"If dead bird kills a boss, gain a permanent +0.6 damage instead.\"],\"modifiers\":{\"carrionAvian\":true},\"adjacent\":[178]}",
@@ -95,4 +94,3 @@ PST.SkillTreesAPI.AddCharacterTree("Eve", json.decode([[
 "185": "{\"pos\":[4,-12],\"type\":112,\"size\":\"Small\",\"name\":\"Dead Bird Damage\",\"description\":[\"Dead bird deals an additional 1% of your damage per tick.\"],\"modifiers\":{\"deadBirdInheritDamage\":1},\"adjacent\":[184]}"
 }
 ]])
-)

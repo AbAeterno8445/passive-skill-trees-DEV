@@ -1,5 +1,4 @@
-local json = require("json")
-PST.SkillTreesAPI.AddCharacterTree("Bethany", json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Bethany", [[
 {
 "2": "{\"pos\":[0,0],\"type\":262,\"size\":\"Small\",\"name\":\"Room Clear Soul Charge\",\"description\":[\"0.5% chance to gain a Soul Charge on room clear.\"],\"modifiers\":{\"soulChargeOnClear\":0.5},\"adjacent\":[3],\"alwaysAvailable\":true}",
 "3": "{\"pos\":[0,-2],\"type\":262,\"size\":\"Small\",\"name\":\"Room Clear Soul Charge\",\"description\":[\"0.5% chance to gain a Soul Charge on room clear.\"],\"modifiers\":{\"soulChargeOnClear\":0.5},\"adjacent\":[2,4,5]}",
@@ -96,4 +95,3 @@ PST.SkillTreesAPI.AddCharacterTree("Bethany", json.decode([[
 "132": "{\"pos\":[0,-27],\"type\":269,\"size\":\"Med\",\"name\":\"Wisps Orbital Boon\",\"description\":[\"When entering a floor, +0.1% all stats per wisp orbiting you, up to a total 15%.\"],\"modifiers\":{\"wispFloorBuff\":0.1},\"adjacent\":[105,126,123,129]}"
 }
 ]])
-)
