@@ -178,13 +178,15 @@ function PST:resetMods()
 		floorLuckPerc = 0,
 		floorLuck = 0,
 
+		staticEntitiesCache = {}, -- For storing the state of 'static entities' such as fireplaces, poop and tinted rocks
+
 		luckyPennyChance = 0,
 		cardFloorLuck = 0,
 		pillFloorLuck = 0,
 		secretRoomFloorLuck = 0,
-		fireXP = 0, -- TODO
-		poopXP = 0, -- TODO
-		tintedRockXP = 0, -- TODO
+		fireXP = 0,
+		poopXP = 0,
+		tintedRockXP = 0,
 		tintedRockAllstats = 0, -- TODO
 		planetariumChance = 0, -- TODO
 		planetariumAllstats = 0, -- TODO
