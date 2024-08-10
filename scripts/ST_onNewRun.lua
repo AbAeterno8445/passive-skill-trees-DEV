@@ -4,6 +4,7 @@ function PST:onNewRun(isContinued)
         return
     end
 
+    local player = Isaac.GetPlayer()
     PST:resetMods()
     if not PST.modData.treeDisabled then
         -- Mods that are mutable before beginning a run should be set here
@@ -27,13 +28,15 @@ function PST:onNewRun(isContinued)
             end
         end
         local currentChar = PST.charNames[1 + PST.selectedMenuChar]
-        if PST.selectedMenuChar == 0 then
-            currentChar = PST.charNames[1 + Isaac.GetPlayer():GetPlayerType()]
+        if currentChar == nil then
+            currentChar = PST.charNames[1 + player:GetPlayerType()]
         end
-        if PST.trees[currentChar] ~= nil then
-            for nodeID, node in pairs(PST.trees[currentChar]) do
-                if PST:isNodeAllocated(currentChar, nodeID) then
-                    PST:addModifiers(node.modifiers)
+        if currentChar ~= nil then
+            if PST.trees[currentChar] ~= nil then
+                for nodeID, node in pairs(PST.trees[currentChar]) do
+                    if PST:isNodeAllocated(currentChar, nodeID) then
+                        PST:addModifiers(node.modifiers)
+                    end
                 end
             end
         end
@@ -49,8 +52,6 @@ function PST:onNewRun(isContinued)
     end
 
     PST.floorFirstUpdate = true
-
-    local player = Isaac.GetPlayer()
 
     PST.modData.treeModSnapshot = PST.modData.treeMods
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)

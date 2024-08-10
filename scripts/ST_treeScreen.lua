@@ -147,6 +147,7 @@ function PST:treeMenuRendering()
     -- First MC_MAIN_MENU_RENDER call
     if not firstRender then
         firstRender = true
+        PST:firstRenderInit()
 
         -- Reset input mask if restarting
         if MenuManager.GetInputMask() == 0 then
@@ -166,21 +167,23 @@ function PST:treeMenuRendering()
         end
     end
 
-    if not treeMenuOpen and isCharMenu and PST.selectedMenuChar then
+    if not treeMenuOpen and isCharMenu and PST.selectedMenuChar ~= -1 then
         local selCharName = PST.charNames[1 + PST.selectedMenuChar]
-        local selCharData = PST.modData.charData[selCharName]
-        if selCharData and PST.config.charSelectInfoText then
-            local tmpStr = selCharName .. " LV " .. selCharData.level
-            tmpStr = tmpStr .. " (V to open tree)"
-            if PST.modData.treeDisabled then
-                tmpStr = tmpStr .. " (tree disabled)"
+        if selCharName then
+            local selCharData = PST.modData.charData[selCharName]
+            if selCharData and PST.config.charSelectInfoText then
+                local tmpStr = selCharName .. " LV " .. selCharData.level
+                tmpStr = tmpStr .. " (V / LT to open tree)"
+                if PST.modData.treeDisabled then
+                    tmpStr = tmpStr .. " (tree disabled)"
+                end
+                miniFont:DrawString(
+                    tmpStr,
+                    Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2,
+                    Isaac.GetScreenHeight() - 18,
+                    KColor(1, 0.8, 1, 1)
+                )
             end
-            miniFont:DrawString(
-                tmpStr,
-                Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2,
-                Isaac.GetScreenHeight() - 18,
-                KColor(1, 0.8, 1, 1)
-            )
         end
     end
 
@@ -477,7 +480,7 @@ function PST:treeMenuRendering()
         -- Input: Switch tree
         if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
             local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
-            if PST.trees[selectedCharName] ~= nil then
+            if selectedCharName and PST.trees[selectedCharName] ~= nil then
                 if currentTree == "global" then
                     currentTree = selectedCharName
                 else
@@ -548,8 +551,9 @@ function PST:treeMenuRendering()
                     end
                 end
                 processTreeNodes("global")
-                if PST.trees[PST.charNames[1 + PST.selectedMenuChar]] then
-                    processTreeNodes(PST.charNames[1 + PST.selectedMenuChar])
+                local tmpCharName = PST.charNames[1 + PST.selectedMenuChar]
+                if tmpCharName and PST.trees[tmpCharName] ~= nil then
+                    processTreeNodes(tmpCharName)
                 end
 
                 table.sort(sortedModNames, function(a, b)
@@ -583,10 +587,10 @@ function PST:treeMenuRendering()
                     end
 
                     -- Category title
-                    if categorySwitch then
+                    if categorySwitch and tmpCharName and PST.trees[tmpCharName] ~= nil then
                         local tmpName = PST.treeModDescriptionCategories[lastCategory].name
                         if lastCategory == "charTree" then
-                            tmpName = PST.charNames[1 + PST.selectedMenuChar] .. "'s tree:"
+                            tmpName = tmpCharName .. "'s tree:"
                         end
                         table.insert(totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
                     end

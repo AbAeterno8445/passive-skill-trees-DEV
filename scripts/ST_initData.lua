@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modData = {}
-PST.selectedMenuChar = 0
+PST.selectedMenuChar = -1
 PST.startXPRequired = 32
 PST.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
@@ -12,9 +12,17 @@ PST.charNames = {
 	"T. Keeper", "T. Apollyon", "T. Forgotten", "T. Bethany", "T. Jacob", "T. Lazarus",
 	"T. Jacob", "T. Forgotten"
 }
--- Init mod char names here (index is the character's playerType + 1)
-PST.charNames[42] = "Siren"
-PST.charNames[43] = "T. Siren"
+
+-- Initialization performed on the first menu render call
+function PST:firstRenderInit()
+	-- Init mod char names here
+	if Isaac.GetPlayerTypeByName("Siren") ~= -1 then
+		PST.charNames[1 + Isaac.GetPlayerTypeByName("Siren")] = "Siren"
+	end
+	if Isaac.GetPlayerTypeByName("Siren", true) ~= -1 then
+		PST.charNames[1 + Isaac.GetPlayerTypeByName("Siren", true)] = "T. Siren"
+	end
+end
 
 PST.babyFamiliarItems = {
     CollectibleType.COLLECTIBLE_BROTHER_BOBBY, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY,
@@ -514,7 +522,11 @@ function PST:resetData()
 		treeModSnapshot = {},
 		-- Completion tracker for Cosmic Realignment unlocks
 		cosmicRCompletions = { [0] = {} },
-		charData = {}
+		charData = {},
+
+		-- For initializing new unsupported characters, so they can gain XP
+		newChars = {},
+		newCharsTainted = {}
 	}
 	PST:resetMods()
 end

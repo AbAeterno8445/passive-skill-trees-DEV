@@ -34,7 +34,7 @@ function PST:onCache(player, cacheFlag)
 
     -- Mod: all stats while holding Birthright
     local tmpTreeMod = PST:getTreeSnapshotMod("allstatsBirthright", 0)
-    if tmpTreeMod and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+    if tmpTreeMod ~= 0 and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
         dynamicMods.allstats = dynamicMods.allstats + tmpTreeMod
     end
 

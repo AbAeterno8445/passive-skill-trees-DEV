@@ -13,14 +13,16 @@ function PST:onNewRoom()
 
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
-	if tmpTreeMod and room:GetAliveEnemiesCount() > 0 and 100 * math.random() < tmpTreeMod then
-		if not PST:getTreeSnapshotMod("allstatsRoomProc", false) then
-			PST:addModifiers({ allstatsPerc = 4, allstatsRoomProc = true }, true)
+	if tmpTreeMod ~= 0 then
+		if room:GetAliveEnemiesCount() > 0 and 100 * math.random() < tmpTreeMod then
+			if not PST:getTreeSnapshotMod("allstatsRoomProc", false) then
+				PST:addModifiers({ allstatsPerc = 4, allstatsRoomProc = true }, true)
+				player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+			end
+		elseif PST:getTreeSnapshotMod("allstatsRoomProc", false) then
+			PST:addModifiers({ allstatsPerc = -4, allstatsRoomProc = false}, true)
 			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 		end
-	elseif PST:getTreeSnapshotMod("allstatsRoomProc", false) then
-		PST:addModifiers({ allstatsPerc = -4, allstatsRoomProc = false}, true)
-		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 	end
 
 	-- Impromptu Gambler node (Cain's tree)

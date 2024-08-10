@@ -23,14 +23,14 @@ function PST:onUseCard(card, player, useFlags)
 
     -- Mod: +damage when using a card, up to +3. Resets every floor
     local tmpBonus = PST:getTreeSnapshotMod("cardFloorDamage", 0)
-    if PST:getTreeSnapshotMod("cardFloorDamageTotal", 0) < 3 then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorDamageTotal", 0) < 3 then
         local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
         PST:addModifiers({ damage = tmpAdd, cardFloorDamageTotal = tmpAdd }, true)
     end
 
     -- Mod: +tears when using a card, up to +3. Resets every floor
     tmpBonus = PST:getTreeSnapshotMod("cardFloorTears", 0)
-    if PST:getTreeSnapshotMod("cardFloorTearsTotal", 0) < 3 then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorTearsTotal", 0) < 3 then
         local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
         PST:addModifiers({ tears = tmpAdd, cardFloorTearsTotal = tmpAdd }, true)
     end

@@ -118,7 +118,7 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to spawn Eden's Blessing at the beginning of the floor
-			if 100 * math.random() < PST:getTreeSnapshotMod("edenBlessingSpawn", 0) and not PST:getTreeSnapshotMod("edenBlessingSpawned", 0) then
+			if 100 * math.random() < PST:getTreeSnapshotMod("edenBlessingSpawn", 0) and not PST:getTreeSnapshotMod("edenBlessingSpawned", false) then
 				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_EDENS_BLESSING, Random() + 1)
@@ -541,7 +541,7 @@ function PST:onUpdate()
 			-- Heartless node (Eve's tree)
 			if PST:getTreeSnapshotMod("heartless", false) then
 				-- +0.5% all stats on room clear, up to 10%
-				local tmpTotal = PST:getTreeSnapshotMod("heartlessTotal", 0)
+				tmpTotal = PST:getTreeSnapshotMod("heartlessTotal", 0)
 				if tmpTotal < 10 then
 					local tmpAdd = math.min(0.5, 10 - tmpTotal)
 					if tmpAdd > 0 then
@@ -602,7 +602,7 @@ function PST:onUpdate()
 
 			-- Null node (Apollyon's tree)
 			-- Mod: chance to gain an additional active item charge when clearing a room
-			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed") and 100 * math.random() < 100)
+			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and 100 * math.random() < 100)
 			or (100 * math.random() < PST:getTreeSnapshotMod("chargeOnClear", 0)) then
 				if player:GetBatteryCharge(0) == 0 then
 					player:SetActiveCharge(player:GetActiveCharge(0) + 1)

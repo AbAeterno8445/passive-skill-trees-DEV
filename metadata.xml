@@ -63,7 +63,7 @@ There's also the PST_config.lua file, where you can also find some extra setting
 
 [h3]Support[/h3]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
-    <version>0.1.2</version>
+    <version>0.1.5</version>
     <visibility>Private</visibility>
     <tag id="Lua"/>
     <tag id="Player Characters"/>

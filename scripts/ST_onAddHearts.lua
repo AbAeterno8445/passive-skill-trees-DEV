@@ -2,13 +2,13 @@
 function PST:onAddHearts(player, amount, addHealthType, optional)
 	-- Mod: all stats while you have at least 1 red heart container and are at full health
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsFullRed", 0)
-    if tmpTreeMod and player:GetMaxHearts() > 1 and player:HasFullHearts() and not PST:getTreeSnapshotMod("allstatsFullRedProc", false) then
-        PST:addModifiers({ allstats = tmpTreeMod }, true)
-		PST.modData.treeModSnapshot.allstatsFullRedProc = true
-	elseif PST:getTreeSnapshotMod("allstatsFullRedProc", false) and (player:GetMaxHearts() == 0 or not player:HasFullHearts()) then
-		PST:addModifiers({ allstats = -tmpTreeMod }, true)
-		PST.modData.treeModSnapshot.allstatsFullRedProc = false
-    end
+	if tmpTreeMod ~= 0 then
+		if player:GetMaxHearts() > 1 and player:HasFullHearts() and not PST:getTreeSnapshotMod("allstatsFullRedProc", false) then
+			PST:addModifiers({ allstats = tmpTreeMod, allstatsFullRedProc = true }, true)
+		elseif PST:getTreeSnapshotMod("allstatsFullRedProc", false) and (player:GetMaxHearts() == 0 or not player:HasFullHearts()) then
+			PST:addModifiers({ allstats = -tmpTreeMod, allstatsFullRedProc = false }, true)
+		end
+	end
 
     -- Magdalene's Blessing node (Magdalene's tree)
     if PST:getTreeSnapshotMod("magdaleneBlessing", false) then
@@ -25,7 +25,7 @@ function PST:onAddHearts(player, amount, addHealthType, optional)
 
 	-- Mod: all stats while you have only 1 red heart
 	local tmpBonus = PST:getTreeSnapshotMod("allstatsOneRed", 0)
-	if tmpBonus > 0 then
+	if tmpBonus ~= 0 then
 		if player:GetHearts() == 2 and not PST:getTreeSnapshotMod("allStatsOneRedActive", false) then
 			PST:addModifiers({ allstats = tmpBonus, allStatsOneRedActive = true }, true)
 		elseif player:GetHearts() ~= 2 and PST:getTreeSnapshotMod("allStatsOneRedActive", false) then

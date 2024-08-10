@@ -5,11 +5,27 @@ function PST:getCurrentCharName()
 	return PST.charNames[1 + Isaac.GetPlayer():GetPlayerType()]
 end
 
+-- Attempt to init a non-vanilla character so they can earn XP
+function PST:initUnknownChar(charName, tainted)
+	if PST.charNames[1 + Isaac.GetPlayerTypeByName(charName, tainted)] == nil then
+		PST.charNames[1 + Isaac.GetPlayerTypeByName(charName, tainted)] = charName
+		if not tainted then
+			table.insert(PST.modData.newChars, charName)
+		else
+			table.insert(PST.modData.newCharsTainted, charName)
+		end
+		PST:charInit(charName)
+		PST:save()
+	end
+end
+
 -- Add temporary XP (gets converted to normal xp once room is cleared)
 ---@param xp number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
 ---@param noMult? boolean If true, apply no multipliers to xp
 function PST:addTempXP(xp, showText, noMult)
+	if PST:getCurrentCharData() == nil then return end
+
     local xpMult = 1 + PST:getTreeSnapshotMod("xpgain", 0) / 100
 
 	if not Game():IsHardMode() then
@@ -58,33 +74,35 @@ end
 ---@param showText? boolean Whether to display the +xp floating text
 function PST:addXP(xp, showText)
 	local charData = PST:getCurrentCharData()
-	charData.xp = math.max(0, charData.xp + xp)
-	if showText then
-        local xpStr = string.format("+%.2f xp", xp)
-        if xp % 1 == 0 then
-            xpStr = string.format("+%d xp", xp)
-        end
-		PST:createFloatTextFX(xpStr, Vector.Zero, Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
-	end
+	if charData then
+		charData.xp = math.max(0, charData.xp + xp)
+		if showText then
+			local xpStr = string.format("+%.2f xp", xp)
+			if xp % 1 == 0 then
+				xpStr = string.format("+%d xp", xp)
+			end
+			PST:createFloatTextFX(xpStr, Vector.Zero, Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
+		end
 
-	-- Level up
-	if charData.xp >= charData.xpRequired then
-		local currentChar = PST:getCurrentCharName()
+		-- Level up
+		if charData.xp >= charData.xpRequired then
+			local currentChar = PST:getCurrentCharName()
 
-		sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
-		charData.level = charData.level + 1
-		charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
-		PST.modData.skillPoints = PST.modData.skillPoints + 1
+			sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
+			charData.level = charData.level + 1
+			charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
+			PST.modData.skillPoints = PST.modData.skillPoints + 1
 
-		local xpRemaining = charData.xp - charData.xpRequired
+			local xpRemaining = charData.xp - charData.xpRequired
 
-		-- Next level xp requirement formula
-		charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.1))
+			-- Next level xp requirement formula
+			charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.1))
 
-		-- Add overflowing xp to next level, capped at 50%
-		charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
+			-- Add overflowing xp to next level, capped at 50%
+			charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
 
-		PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
+			PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
+		end
 	end
 end
 

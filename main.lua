@@ -17,6 +17,8 @@ PST.debugOptions = {
 ---@param charName string Character name
 ---@param forceReset? boolean Forces resetting the character's data
 function PST:charInit(charName, forceReset)
+	if not charName then return end
+
 	if PST.modData.charData[charName] == nil or forceReset == true then
 		PST.modData.charData[charName] = {
 			level = 1,
@@ -70,6 +72,20 @@ function PST:load()
 		end
 		PST.modData = tmpJson
 
+		-- Load new character names
+		for _, tmpNewName in ipairs(PST.modData.newChars) do
+			local tmpID = Isaac.GetPlayerTypeByName(tmpNewName)
+			if PST.charNames[1 + tmpID] == nil then
+				PST.charNames[1 + tmpID] = tmpNewName
+			end
+		end
+		for _, tmpNewName in ipairs(PST.modData.newCharsTainted) do
+			local tmpID = Isaac.GetPlayerTypeByName(tmpNewName, true)
+			if PST.charNames[1 + tmpID] == nil then
+				PST.charNames[1 + tmpID] = "T. " .. tmpNewName
+			end
+		end
+
 		loadSuccess = true
 	end
 	PST:updateNodes()
@@ -86,6 +102,8 @@ end
 -- Fetch the current character's skill tree data (makes sure it's initialized)
 function PST:getCurrentCharData()
 	local currentChar = PST:getCurrentCharName()
+	if not currentChar then return nil end
+
 	PST:charInit(currentChar)
 	return PST.modData.charData[currentChar]
 end
@@ -160,9 +178,9 @@ PST:AddCallback(ModCallbacks.MC_NPC_PICK_TARGET, PST.onNPCPickTarget)
 
 -- First load
 PST:load()
-PST:charInit("Isaac")
 
 if Isaac.IsInGame() then
+	PST:firstRenderInit()
 	PST.gameInit = true
 end
 
