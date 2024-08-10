@@ -47,6 +47,12 @@ function PST:gridEntityRockUpdate(entityParam)
                     if tmpMod ~= 0 then
                         PST:addTempXP(tmpMod, true)
                     end
+
+                    -- Mod: +all stats when destroying tinted rocks
+                    tmpMod = PST:getTreeSnapshotMod("tintedRockAllstats", 0)
+                    if tmpMod ~= 0 then
+                        PST:addModifiers({ allstats = tmpMod }, true)
+                    end
                 end
             end
         end

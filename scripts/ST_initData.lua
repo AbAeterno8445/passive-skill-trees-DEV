@@ -187,7 +187,7 @@ function PST:resetMods()
 		fireXP = 0,
 		poopXP = 0,
 		tintedRockXP = 0,
-		tintedRockAllstats = 0, -- TODO
+		tintedRockAllstats = 0,
 		planetariumChance = 0, -- TODO
 		planetariumAllstats = 0, -- TODO
 		secretRoomRandomStat = 0, -- TODO
