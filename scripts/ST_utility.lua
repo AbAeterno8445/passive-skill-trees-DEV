@@ -278,6 +278,11 @@ function PST:getRandomStat(exclude)
 	return statsList[math.random(#statsList)]
 end
 
+function PST:onPlanetariumChance(chance)
+	-- Mod: % increased chance for the planetarium to appear
+	return chance + PST:getTreeSnapshotMod("planetariumChance", 0) / 100
+end
+
 function PST:resetSaveData()
 	PST:RemoveData()
 	PST:load()

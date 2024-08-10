@@ -186,6 +186,7 @@ PST:AddCallback(ModCallbacks.MC_POST_TRIGGER_TRINKET_REMOVED, PST.onTrinketRemov
 PST:AddCallback(ModCallbacks.MC_NPC_PICK_TARGET, PST.onNPCPickTarget)
 PST:AddCallback(ModCallbacks.MC_POST_GRID_ENTITY_POOP_UPDATE, PST.gridEntityPoopUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_GRID_ENTITY_ROCK_UPDATE, PST.gridEntityRockUpdate)
+PST:AddCallback(ModCallbacks.MC_PRE_PLANETARIUM_APPLY_TELESCOPE_LENS, PST.onPlanetariumChance)
 
 -- First load
 PST:load()
