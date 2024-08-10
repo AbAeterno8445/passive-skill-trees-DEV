@@ -3,52 +3,82 @@ local json = require("json")
 PST.trees = {}
 PST.nodeLinks = {}
 
--- Include tree node banks
 include("scripts.tree_data.modifierDescriptions")
-include("scripts.tree_data.globalTreeBank")
-include("scripts.tree_data.isaacTreeBank")
-include("scripts.tree_data.magdaleneTreeBank")
-include("scripts.tree_data.cainTreeBank")
-include("scripts.tree_data.judasTreeBank")
-include("scripts.tree_data.bluebabyTreeBank")
-include("scripts.tree_data.eveTreeBank")
-include("scripts.tree_data.samsonTreeBank")
-include("scripts.tree_data.azazelTreeBank")
-include("scripts.tree_data.lazarusTreeBank")
-include("scripts.tree_data.edenTreeBank")
-include("scripts.tree_data.theLostTreeBank")
-include("scripts.tree_data.lilithTreeBank")
-include("scripts.tree_data.keeperTreeBank")
-include("scripts.tree_data.apollyonTreeBank")
-include("scripts.tree_data.theForgottenTreeBank")
-include("scripts.tree_data.bethanyTreeBank")
-include("scripts.tree_data.jacobEsauTreeBank")
-include("scripts.tree_data.sirenTreeBank")
 
--- Sanitize json data in banks
-for treeID, tree in pairs(PST.trees) do
-    local tmpTreeData = {}
-    for nodeID, nodeStr in pairs(tree) do
-        local node = json.decode(nodeStr)
-        node.pos = Vector(node.pos[1], node.pos[2])
-        tmpTreeData[tonumber(nodeID)] = node
-    end
-    PST.trees[treeID] = tmpTreeData;
+-- Check if node is allocated
+function PST:isNodeAllocated(tree, nodeID)
+    if not PST.modData.treeNodes[tree] then return false end
+    return PST.modData.treeNodes[tree][nodeID]
 end
 
--- Initial extra setup for nodes
-function PST:initTreeNodes(tree)
+-- Update the state for the given tree
+---@param tree? string|number Which tree to update. If nil, update all trees
+---@param noReset? boolean Whether to reset player mods prior to update
+function PST:updateNodes(tree, noReset)
+    if tree == nil then
+        for subTree, _ in pairs(PST.trees) do
+            PST:updateNodes(subTree, true)
+        end
+        return
+    end
+
+    if not noReset then
+        PST:resetMods()
+    end
+
+    local tmpAvailableNodes = {}
     for nodeID, node in pairs(PST.trees[tree]) do
-        node.id = nodeID
+        local allocated = PST:isNodeAllocated(tree, nodeID)
+
+        -- Count allocated nodes as available
+        node.available = allocated or node.alwaysAvailable == true or PST.debugOptions.allAvailable
+        if not node.available then
+            node.sprite.Color = Color(0.4, 0.4, 0.4, 1)
+        else
+            node.sprite.Color = Color(1, 1, 1, 1)
+        end
+
+        if node.adjacent ~= nil and allocated then
+            -- If allocated, make adjacent nodes available
+            for _, subNodeID in ipairs(node.adjacent) do
+                tmpAvailableNodes[subNodeID] = PST.trees[tree][subNodeID]
+            end
+        end
+    end
+
+    -- Update availability
+    for _, node in pairs(tmpAvailableNodes) do
+        node.available = true
+        node.sprite.Color = Color(1, 1, 1, 1)
+    end
+end
+
+-- Initial setup for tree & nodes
+function PST:initTreeNodes(tree)
+    -- Sanitize json data in tree bank
+    local tmpTreeData = {}
+    for nodeID, nodeStr in pairs(PST.trees[tree]) do
+        local node
+        if type(nodeStr) == "string" then
+            node = json.decode(nodeStr)
+        else
+            node = nodeStr
+        end
+        node.pos = Vector(node.pos[1], node.pos[2])
+        tmpTreeData[tonumber(nodeID)] = node
+
+        node.id = tonumber(nodeID)
         node.sprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
         node.sprite:Play("Default", true)
         ---@diagnostic disable-next-line: param-type-mismatch
         node.sprite:SetFrame("Default", tonumber(node.type))
         node.allocatedSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
         node.allocatedSprite:Play("Allocated " .. node.size, true)
+    end
 
-        -- Setup node links
-        local nodeConnections = {}
+    -- Setup node links after they've been initialized
+    local nodeConnections = {}
+    for nodeID, node in pairs(tmpTreeData) do
         if node.adjacent ~= nil then
             for _, adjacentID in ipairs(node.adjacent) do
                 -- Check connection hasn't been made already
@@ -61,7 +91,7 @@ function PST:initTreeNodes(tree)
                 end
 
                 if not connectionDone then
-                    local adjacentNode = PST.trees[tree][adjacentID]
+                    local adjacentNode = tmpTreeData[adjacentID]
                     if adjacentNode ~= nil then
                         local linkType = nil
                         local dirX = adjacentNode.pos.X - node.pos.X
@@ -108,9 +138,9 @@ function PST:initTreeNodes(tree)
             end
         end
     end
-end
-for tree, _ in pairs(PST.trees) do
-    PST:initTreeNodes(tree)
+    PST.trees[tree] = tmpTreeData;
+    PST:resetNodes(tree)
+	PST:updateNodes(tree, true)
 end
 
 -- Reset node allocation for the given tree
@@ -122,7 +152,7 @@ function PST:resetNodes(tree)
         end
         return
     end
-    
+
     if PST.modData.treeNodes[tree] == nil then
         PST.modData.treeNodes[tree] = { [0] = false }
     end
@@ -180,58 +210,11 @@ function PST:addModifiers(modList, addToSnapshot)
     PST:save()
 end
 
--- Update the state for the given tree
----@param tree? string|number Which tree to update. If nil, update all trees
----@param noReset? boolean Whether to reset player mods prior to update
-function PST:updateNodes(tree, noReset)
-    if tree == nil then
-        for subTree, _ in pairs(PST.trees) do
-            PST:updateNodes(subTree, true)
-        end
-        return
-    end
-
-    if not noReset then
-        PST:resetMods()
-    end
-
-    local tmpAvailableNodes = {}
-    for nodeID, node in pairs(PST.trees[tree]) do
-        local allocated = PST:isNodeAllocated(tree, nodeID)
-
-        -- Count allocated nodes as available
-        node.available = allocated or node.alwaysAvailable == true or PST.debugOptions.allAvailable
-        if not node.available then
-            node.sprite.Color = Color(0.4, 0.4, 0.4, 1)
-        else
-            node.sprite.Color = Color(1, 1, 1, 1)
-        end
-
-        if node.adjacent ~= nil and allocated then
-            -- If allocated, make adjacent nodes available
-            for _, subNodeID in ipairs(node.adjacent) do
-                tmpAvailableNodes[subNodeID] = PST.trees[tree][subNodeID]
-            end
-        end
-    end
-
-    -- Update availability
-    for _, node in pairs(tmpAvailableNodes) do
-        node.available = true
-        node.sprite.Color = Color(1, 1, 1, 1)
-    end
-end
-
--- Check if node is allocated
-function PST:isNodeAllocated(tree, nodeID)
-    return PST.modData.treeNodes[tree][nodeID]
-end
-
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
 function PST:isNodeAllocatable(tree, nodeID, allocation)
     local infSP = PST.debugOptions.infSP
     local infRespec = PST.debugOptions.infRespec
-    
+
     if allocation then
         -- Allocation
         if not infSP then
@@ -335,3 +318,26 @@ function PST:isNodeReachable(tree, targetNodeID, exclude, start, visited)
 
     return nodeReachableFound
 end
+
+-- Include Skill Trees API
+include("scripts.tree_data.SkillTreesAPI")
+-- Include base tree node banks
+include("scripts.tree_data.globalTreeBank")
+include("scripts.tree_data.isaacTreeBank")
+include("scripts.tree_data.magdaleneTreeBank")
+include("scripts.tree_data.cainTreeBank")
+include("scripts.tree_data.judasTreeBank")
+include("scripts.tree_data.bluebabyTreeBank")
+include("scripts.tree_data.eveTreeBank")
+include("scripts.tree_data.samsonTreeBank")
+include("scripts.tree_data.azazelTreeBank")
+include("scripts.tree_data.lazarusTreeBank")
+include("scripts.tree_data.edenTreeBank")
+include("scripts.tree_data.theLostTreeBank")
+include("scripts.tree_data.lilithTreeBank")
+include("scripts.tree_data.keeperTreeBank")
+include("scripts.tree_data.apollyonTreeBank")
+include("scripts.tree_data.theForgottenTreeBank")
+include("scripts.tree_data.bethanyTreeBank")
+include("scripts.tree_data.jacobEsauTreeBank")
+include("scripts.tree_data.sirenTreeBank")

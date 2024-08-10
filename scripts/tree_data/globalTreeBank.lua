@@ -1,7 +1,5 @@
 local json = require("json")
-
-PST.nodeLinks.global = {}
-PST.trees.global = json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("global", json.decode([[
 {
 "2": "{\"pos\":[0,-2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+2% XP gain\"],\"modifiers\":{\"xpgain\":2},\"adjacent\":[3,315]}",
 "3": "{\"pos\":[0,-3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+2% XP gain\"],\"modifiers\":{\"xpgain\":2},\"adjacent\":[2,10,283]}",
@@ -230,4 +228,5 @@ PST.trees.global = json.decode([[
 "330": "{\"pos\":[-1,11],\"type\":44,\"size\":\"Small\",\"name\":\"Luck Down\",\"description\":[\"-0.03 luck\"],\"modifiers\":{\"luck\":-0.03},\"adjacent\":[329,333]}",
 "333": "{\"pos\":[0,11],\"type\":43,\"size\":\"Large\",\"name\":\"Cosmic Realignment\",\"description\":[\"Allocate to choose a character. Once chosen, you may receive unlocks as if playing\",\"as that character while using a different one.\",\"Beware the cosmic curse each character brings...\"],\"modifiers\":{\"cosmicRealignment\":true},\"adjacent\":[330]}"
 }
-]]);
+]])
+)

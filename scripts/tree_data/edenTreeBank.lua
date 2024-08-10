@@ -1,7 +1,5 @@
 local json = require("json")
-
-PST.nodeLinks["Eden"] = {}
-PST.trees["Eden"] = json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Eden", json.decode([[
 {
 "2": "{\"pos\":[-1,-1],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[42,3]}",
 "3": "{\"pos\":[-2,-2],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[2,4]}",
@@ -118,3 +116,4 @@ PST.trees["Eden"] = json.decode([[
 "171": "{\"pos\":[5,-16],\"type\":160,\"size\":\"Large\",\"name\":\"Chaotic Treasury\",\"description\":[\"First floor's treasure room contains an additional Chaos item pedestal.\",\"While you have Chaos, treasure rooms spawn an additional item.\",\"Grabbing an item in a treasure room removes all other items in the room.\"],\"modifiers\":{\"chaoticTreasury\":true},\"adjacent\":[107,166]}"
 }
 ]])
+)

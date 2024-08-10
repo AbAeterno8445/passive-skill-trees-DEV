@@ -1,7 +1,5 @@
 local json = require("json")
-
-PST.nodeLinks["The Lost"] = {}
-PST.trees["The Lost"] = json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("The Lost", json.decode([[
 {
 "3": "{\"pos\":[0,0],\"type\":177,\"size\":\"Small\",\"name\":\"Killing Hit Negation\",\"description\":[\"1% chance to negate an incoming hit if it would've killed you.\"],\"modifiers\":{\"killingHitNegation\":1},\"adjacent\":[20],\"alwaysAvailable\":true}",
 "20": "{\"pos\":[0,1],\"type\":177,\"size\":\"Small\",\"name\":\"Killing Hit Negation\",\"description\":[\"1% chance to negate an incoming hit if it would've killed you.\"],\"modifiers\":{\"killingHitNegation\":1},\"adjacent\":[3,21]}",
@@ -101,3 +99,4 @@ PST.trees["The Lost"] = json.decode([[
 "167": "{\"pos\":[-6,9],\"type\":184,\"size\":\"Med\",\"name\":\"Soul Hearts Tears\",\"description\":[\"Soul hearts grant +0.04 tears when collected, up to a total +1.\"],\"modifiers\":{\"soulHeartTears\":0.04},\"adjacent\":[163,165,164,166,117]}"
 }
 ]])
+)

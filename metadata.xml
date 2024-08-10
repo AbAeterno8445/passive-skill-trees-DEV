@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    <name>Passive Skill Trees [BETA]</name>
+    <name>Passive Skill Trees (Repentance) [BETA]</name>
     <directory>passive skill trees</directory>
     <id>3305869734</id>
     <description>XP, leveling, skill points and skill trees. Global passive skill tree + a personal skill tree for each vanilla character. These apply modifiers that can modify your run, from simple stat ups to gameplay-changing alterations.
@@ -43,7 +43,7 @@ Co-op hasn't been tested, but most if not all of the tree effects are applied to
 This mod requires installing Repentogon. You may install it from [url=https://repentogon.com/]here[/url].
 NOTE: you need to install Repentogon following the instructions in the link for the mod to work properly, it's not just a workshop install!
 
-Untested in Afterbirth+, and many node effects are designed around Repentance features.
+Requires Repentance. Afterbirth+ unsupported.
 
 [h2]Power Creep Concerns[/h2]
 While I haven't balanced the trees too heavily, it's likely that this feature introduces a lot of free player power, making runs generally easier. There's room to introduce opt-in difficulty-altering features in the future if there's interest, e.g. something such as balancing the xp curve so that easy runs barely grant xp past a certain level, and making runs more difficult (in correlation with how much tree progress you have) with certain new modifiers grants more xp.

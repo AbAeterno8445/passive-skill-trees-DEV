@@ -1,7 +1,5 @@
 local json = require("json")
-
-PST.nodeLinks["Siren"] = {}
-PST.trees["Siren"] = json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Siren", json.decode([[
 {
 "2": "{\"pos\":[0,0],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[19,23],\"alwaysAvailable\":true}",
 "19": "{\"pos\":[0,1],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[2,20]}",
@@ -111,3 +109,4 @@ PST.trees["Siren"] = json.decode([[
 "286": "{\"pos\":[-4,-10],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.04 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.04},\"adjacent\":[236]}"
 }
 ]])
+)

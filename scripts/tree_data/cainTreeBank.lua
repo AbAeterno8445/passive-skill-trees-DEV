@@ -1,7 +1,5 @@
 local json = require("json")
-
-PST.nodeLinks["Cain"] = {}
-PST.trees["Cain"] = json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Cain", json.decode([[
 {
 "3": "{\"pos\":[2,2],\"type\":72,\"size\":\"Small\",\"name\":\"Random Trinket Spawn\",\"description\":[\"1% chance to spawn a random trinket at the beginning of a floor.\",\"Doesn't apply in first floor.\"],\"modifiers\":{\"trinketSpawn\":1},\"adjacent\":[4,167]}",
 "4": "{\"pos\":[3,2],\"type\":72,\"size\":\"Small\",\"name\":\"Random Trinket Spawn\",\"description\":[\"1% chance to spawn a random trinket at the beginning of a floor.\",\"Doesn't apply in first floor.\"],\"modifiers\":{\"trinketSpawn\":1},\"adjacent\":[3,5]}",
@@ -100,3 +98,4 @@ PST.trees["Cain"] = json.decode([[
 "195": "{\"pos\":[7,-7],\"type\":70,\"size\":\"Large\",\"name\":\"Fickle Fortune\",\"description\":[\"+7% luck while holding a trinket.\",\"Minimum luck is 1 while holding a trinket.\",\"7% chance when hit for your trinket to be dropped.\",\"7% chance for dropped trinkets to vanish.\"],\"modifiers\":{\"fickleFortune\":true},\"adjacent\":[26,175,31,154,32,176]}"
 }
 ]])
+)

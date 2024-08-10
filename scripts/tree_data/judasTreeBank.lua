@@ -1,7 +1,5 @@
 local json = require("json")
-
-PST.nodeLinks["Judas"] = {}
-PST.trees["Judas"] = json.decode([[
+PST.SkillTreesAPI.AddCharacterTree("Judas", json.decode([[
 {
 "3": "{\"pos\":[1,-1],\"type\":84,\"size\":\"Small\",\"name\":\"Dark Judas Speed\",\"description\":[\"+0.5% speed as Dark Judas\"],\"modifiers\":{\"darkJudasSpeed\":0.5},\"adjacent\":[4,199]}",
 "4": "{\"pos\":[2,-2],\"type\":84,\"size\":\"Small\",\"name\":\"Dark Judas Speed\",\"description\":[\"+0.5% speed as Dark Judas\"],\"modifiers\":{\"darkJudasSpeed\":0.5},\"adjacent\":[3,5]}",
@@ -98,3 +96,4 @@ PST.trees["Judas"] = json.decode([[
 "199": "{\"pos\":[0,0],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[3,141,180,17],\"alwaysAvailable\":true}"
 }
 ]])
+)
