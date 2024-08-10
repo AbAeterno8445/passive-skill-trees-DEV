@@ -344,6 +344,14 @@ function PST:onPickupInit(pickup)
                     pickupGone = true
                 end
             end
+        -- Coins
+        elseif variant == PickupVariant.PICKUP_COIN then
+            -- Mod: chance to replace pennies with lucky pennies
+            if subtype == CoinSubType.COIN_PENNY and 100 * math.random() < PST:getTreeSnapshotMod("luckyPennyChance", 0) then
+                pickup:Remove()
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, pickup.Position, pickup.Velocity, nil, CoinSubType.COIN_LUCKYPENNY, Random() + 1)
+                pickupGone = true
+            end
         end
 
         if not pickupGone then
