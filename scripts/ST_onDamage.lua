@@ -128,10 +128,12 @@ function PST:onDamage(target, damage, flag, source)
 
         -- Mod: chance to negate a killing hit from charmed enemies. This can only happen once per room
         if 100 * math.random() < PST:getTreeSnapshotMod("charmedHitNegation", 0) and not PST:getTreeSnapshotMod("charmedHitNegationProc", false) and damage >= tmpHP then
-            if source.IsCharmed or (source.Entity.Parent and EntityRef(source.Entity.Parent).IsCharmed) then
-                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.7)
-                PST:addModifiers({ charmedHitNegationProc = true }, true)
-                return { Damage = 0 }
+            if source and source.Entity then
+                if source.IsCharmed or (source.Entity.Parent and EntityRef(source.Entity.Parent).IsCharmed) then
+                    SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.7)
+                    PST:addModifiers({ charmedHitNegationProc = true }, true)
+                    return { Damage = 0 }
+                end
             end
         end
     else
