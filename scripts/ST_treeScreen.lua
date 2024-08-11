@@ -454,6 +454,7 @@ function PST:treeMenuRenderer()
             else
                 currentTree = "global"
             end
+            PST.cosmicRData.menuOpen = false
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
         else
             sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
