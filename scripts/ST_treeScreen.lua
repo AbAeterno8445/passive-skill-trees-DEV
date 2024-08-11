@@ -51,6 +51,8 @@ local treeControlDescController = {
     "Item + Select: display a list of all active modifiers"
 }
 
+local debugAvailableUpdate = false
+
 local treeMenuOpen = false
 
 local function PST_updateCamZoomOffset()
@@ -652,6 +654,12 @@ function PST:treeMenuRenderer()
     -- Draw total modifiers menu
     elseif totalModsMenuOpen then
         drawNodeBox("Active Modifiers", totalModsList, 16, 16 + totalModsMenuY, true, 1)
+    end
+
+    -- Update tree visibility if debug mode allAvailable changes
+    if debugAvailableUpdate ~= PST.debugOptions.allAvailable then
+        PST:updateNodes(currentTree, true)
+        debugAvailableUpdate = PST.debugOptions.allAvailable
     end
 end
 

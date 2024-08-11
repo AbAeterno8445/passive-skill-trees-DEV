@@ -13,6 +13,15 @@ PST.debugOptions = {
 	drawNodeIDs = false, -- Draw node IDs on the tree screen
 }
 
+local localDebugMode = false
+function PST:toggleDebugMode()
+	localDebugMode = not localDebugMode
+	PST.debugOptions.infSP = localDebugMode
+	PST.debugOptions.infRespec = localDebugMode
+	PST.debugOptions.allAvailable = localDebugMode
+	print("Passive Skill Trees: debug mode now", localDebugMode and "on" or "off")
+end
+
 -- Initialize character data for the given char
 ---@param charName string Character name
 ---@param forceReset? boolean Forces resetting the character's data
