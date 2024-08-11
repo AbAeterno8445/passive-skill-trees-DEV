@@ -113,7 +113,14 @@ function PST:Render()
             local textX = textFX.position.X
             local textY = textFX.position.Y
             if textFX.playerRelative then
-				local worldPos = room:WorldToScreenPosition(Vector(player.Position.X, player.Position.Y))
+				local worldPos
+				if not room:IsMirrorWorld() then
+					worldPos = room:WorldToScreenPosition(Vector(player.Position.X, player.Position.Y))
+				else
+					-- Calculate diametric opposite X if in mirror world
+					local newX = room:GetCenterPos().X - (player.Position.X - room:GetCenterPos().X)
+					worldPos = room:WorldToScreenPosition(Vector(newX, player.Position.Y))
+				end
                 textX = worldPos.X + textFX.position.X - string.len(textFX.text) * 3
                 textY = worldPos.Y + textFX.position.Y - 40
             end
