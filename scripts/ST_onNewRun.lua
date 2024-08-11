@@ -5,12 +5,14 @@ function PST:onNewRun(isContinued)
     end
 
     local player = Isaac.GetPlayer()
+
+    -- Mods that are mutable before beginning a run should be set here
+    local keptMods = {
+        ["Cosmic Realignment"] = { cosmicRealignment = PST.modData.treeMods.cosmicRealignment }
+    }
+
     PST:resetMods()
     if not PST.modData.treeDisabled then
-        -- Mods that are mutable before beginning a run should be set here
-        local keptMods = {
-            ["Cosmic Realignment"] = { cosmicRealignment = PST.modData.treeMods.cosmicRealignment }
-        }
         -- Get snapshot of tree modifiers
         for nodeID, node in pairs(PST.trees["global"]) do
             if PST:isNodeAllocated("global", nodeID) then
