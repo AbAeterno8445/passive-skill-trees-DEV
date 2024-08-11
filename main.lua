@@ -187,6 +187,8 @@ PST:AddCallback(ModCallbacks.MC_NPC_PICK_TARGET, PST.onNPCPickTarget)
 PST:AddCallback(ModCallbacks.MC_POST_GRID_ENTITY_POOP_UPDATE, PST.gridEntityPoopUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_GRID_ENTITY_ROCK_UPDATE, PST.gridEntityRockUpdate)
 PST:AddCallback(ModCallbacks.MC_PRE_PLANETARIUM_APPLY_TELESCOPE_LENS, PST.onPlanetariumChance)
+PST:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, PST.cosmicRMarksRender)
+-- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
 -- First load
 PST:load()

@@ -297,6 +297,45 @@ function PST:arrHasValue(arr, value)
 	return false
 end
 
+-- Render Cosmic Realignment completion marks on relevant characters (original marks take priority)
+local markLayerOverrides = {
+    [CompletionType.ULTRA_GREEDIER] = 8,
+    [CompletionType.DELIRIUM] = 0,
+    [CompletionType.MOTHER] = 10,
+    [CompletionType.BEAST] = 11
+}
+function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
+    local pTypeStr = tostring(playerType)
+    local markPathNormal = "gfx/ui/completion_widget.png"
+    local markPathCosmic = "gfx/ui/skilltrees/completion_widget_cosmic.png"
+    if Game():IsPauseMenuOpen() then
+        markPathNormal = "gfx/ui/completion_widget_pause.png"
+        markPathCosmic = "gfx/ui/skilltrees/completion_widget_pause_cosmic.png"
+    end
+
+    for i=0,14 do
+        local layerID = i + 1
+        if markLayerOverrides[i] ~= nil then
+            layerID = markLayerOverrides[i]
+        end
+
+        if PST.modData.cosmicRCompletions[pTypeStr] ~= nil then
+            local hasMark = Isaac.GetCompletionMark(playerType, i)
+            if PST.modData.cosmicRCompletions[pTypeStr][i .. "hard"] and hasMark < 2 then
+                markSprite:ReplaceSpritesheet(layerID, markPathCosmic, true)
+                markSprite:SetLayerFrame(layerID, 2)
+            elseif PST.modData.cosmicRCompletions[pTypeStr][tostring(i)] and hasMark == 0 then
+                markSprite:ReplaceSpritesheet(layerID, markPathCosmic, true)
+                markSprite:SetLayerFrame(layerID, 1)
+            else
+                markSprite:ReplaceSpritesheet(layerID, markPathNormal, true)
+            end
+        else
+            markSprite:ReplaceSpritesheet(layerID, markPathNormal, true)
+        end
+    end
+end
+
 -- For Siren tree, checks how many "Song of..." nodes you currently have allocated
 function PST:songNodesAllocated(checkSnapshot)
 	local tmpCount = 0
