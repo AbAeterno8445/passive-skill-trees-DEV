@@ -184,7 +184,7 @@ PST.SkillTreesAPI.AddCharacterTree("global", [[
 "275": "{\"pos\":[18,5],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[274,276]}",
 "276": "{\"pos\":[18,6],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.15 luck\"],\"modifiers\":{\"luck\":0.15},\"adjacent\":[275,419]}",
 "278": "{\"pos\":[19,0],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.15 luck\"],\"modifiers\":{\"luck\":0.15},\"adjacent\":[279,431]}",
-"279": "{\"pos\":[18,0],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[270,278]}",
+"279": "{\"pos\":[18,0],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[270,278,444]}",
 "282": "{\"pos\":[-8,-7],\"type\":5,\"size\":\"Med\",\"name\":\"Boss Challenge XP\",\"description\":[\"Apply challenge room XP bonuses to boss challenge rooms.\"],\"modifiers\":{\"bossChallengeXP\":true},\"adjacent\":[41]}",
 "283": "{\"pos\":[1,-3],\"type\":7,\"size\":\"Small\",\"name\":\"Respec Chance\",\"description\":[\"+10% chance to gain a respec point\",\"when completing a floor.\"],\"modifiers\":{\"respecChance\":10},\"adjacent\":[3,284]}",
 "284": "{\"pos\":[2,-3],\"type\":7,\"size\":\"Small\",\"name\":\"Respec Chance\",\"description\":[\"+10% chance to gain a respec point\",\"when completing a floor.\"],\"modifiers\":{\"respecChance\":10},\"adjacent\":[283,285]}",
@@ -286,7 +286,7 @@ PST.SkillTreesAPI.AddCharacterTree("global", [[
 "409": "{\"pos\":[13,-7],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[244,410]}",
 "410": "{\"pos\":[13,-8],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[409,426]}",
 "411": "{\"pos\":[15,-7],\"type\":21,\"size\":\"Small\",\"name\":\"Shot Speed\",\"description\":[\"+0.01 shot speed\"],\"modifiers\":{\"shotSpeed\":0.01},\"adjacent\":[256,412]}",
-"412": "{\"pos\":[15,-8],\"type\":21,\"size\":\"Small\",\"name\":\"Shot Speed\",\"description\":[\"+0.01 shot speed\"],\"modifiers\":{\"shotSpeed\":0.01},\"adjacent\":[411,422]}",
+"412": "{\"pos\":[15,-8],\"type\":21,\"size\":\"Small\",\"name\":\"Shot Speed\",\"description\":[\"+0.01 shot speed\"],\"modifiers\":{\"shotSpeed\":0.01},\"adjacent\":[411,443]}",
 "413": "{\"pos\":[17,-7],\"type\":20,\"size\":\"Small\",\"name\":\"Range\",\"description\":[\"+0.02 range\"],\"modifiers\":{\"range\":0.02},\"adjacent\":[268,414]}",
 "414": "{\"pos\":[17,-8],\"type\":20,\"size\":\"Small\",\"name\":\"Range\",\"description\":[\"+0.02 range\"],\"modifiers\":{\"range\":0.02},\"adjacent\":[413,424]}",
 "415": "{\"pos\":[14,7],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[250,416]}",
@@ -296,7 +296,6 @@ PST.SkillTreesAPI.AddCharacterTree("global", [[
 "419": "{\"pos\":[18,7],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[276,420]}",
 "420": "{\"pos\":[18,8],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[419,421]}",
 "421": "{\"pos\":[18,9],\"type\":316,\"size\":\"Med\",\"name\":\"First Item Luck\",\"description\":[\"+0.07 luck when first obtaining a passive item.\"],\"modifiers\":{\"firstItemLuck\":0.07},\"adjacent\":[420]}",
-"422": "{\"pos\":[15,-9],\"type\":315,\"size\":\"Med\",\"name\":\"First Item Shot Speed\",\"description\":[\"+0.03 shot speed when first obtaining a passive item.\"],\"modifiers\":{\"firstItemShotspeed\":0.03},\"adjacent\":[412]}",
 "423": "{\"pos\":[16,9],\"type\":314,\"size\":\"Med\",\"name\":\"First Item Speed\",\"description\":[\"+0.01 speed when first obtaining a passive item.\"],\"modifiers\":{\"firstItemSpeed\":0.01},\"adjacent\":[418]}",
 "424": "{\"pos\":[17,-9],\"type\":313,\"size\":\"Med\",\"name\":\"First Item Range\",\"description\":[\"+0.03 range when first obtaining a passive item.\"],\"modifiers\":{\"firstItemRange\":0.03},\"adjacent\":[414]}",
 "425": "{\"pos\":[14,9],\"type\":312,\"size\":\"Med\",\"name\":\"First Item Tears\",\"description\":[\"+0.03 tears when first obtaining a passive item.\"],\"modifiers\":{\"firstItemTears\":0.03},\"adjacent\":[416]}",
@@ -304,6 +303,16 @@ PST.SkillTreesAPI.AddCharacterTree("global", [[
 "428": "{\"pos\":[4,9],\"type\":310,\"size\":\"Small\",\"name\":\"Tinted Rock All Stats\",\"description\":[\"+0.01 all stats when blowing up a tinted rock.\"],\"modifiers\":{\"tintedRockAllstats\":0.01},\"adjacent\":[406]}",
 "429": "{\"pos\":[8,3],\"type\":310,\"size\":\"Small\",\"name\":\"Tinted Rock All Stats\",\"description\":[\"+0.01 all stats when blowing up a tinted rock.\"],\"modifiers\":{\"tintedRockAllstats\":0.01},\"adjacent\":[405]}",
 "431": "{\"pos\":[20,0],\"type\":302,\"size\":\"Small\",\"name\":\"Secret Room Floor Luck\",\"description\":[\"+0.1 luck for the current floor when first entering a secret or super secret room.\"],\"modifiers\":{\"secretRoomFloorLuck\":0.1},\"adjacent\":[278]}",
-"434": "{\"pos\":[-23,-8],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[378]}"
+"434": "{\"pos\":[-23,-8],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[378]}",
+"443": "{\"pos\":[15,-9],\"type\":315,\"size\":\"Med\",\"name\":\"First Item Shot Speed\",\"description\":[\"+0.03 shot speed when first obtaining a passive item.\"],\"modifiers\":{\"firstItemShotspeed\":0.03},\"adjacent\":[412]}",
+"444": "{\"pos\":[19,-1],\"type\":317,\"size\":\"Small\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.02 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.02},\"adjacent\":[279,445]}",
+"445": "{\"pos\":[19,-2],\"type\":317,\"size\":\"Small\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.02 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.02},\"adjacent\":[444,446]}",
+"446": "{\"pos\":[19,-3],\"type\":317,\"size\":\"Small\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.02 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.02},\"adjacent\":[445,447]}",
+"447": "{\"pos\":[19,-4],\"type\":317,\"size\":\"Small\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.02 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.02},\"adjacent\":[446,448]}",
+"448": "{\"pos\":[19,-5],\"type\":317,\"size\":\"Small\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.02 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.02},\"adjacent\":[447,451]}",
+"449": "{\"pos\":[19,-7],\"type\":317,\"size\":\"Small\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.02 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.02},\"adjacent\":[451,450]}",
+"450": "{\"pos\":[19,-8],\"type\":317,\"size\":\"Small\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.02 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.02},\"adjacent\":[449,452]}",
+"451": "{\"pos\":[19,-6],\"type\":318,\"size\":\"Med\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.08 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.08},\"adjacent\":[448,449]}",
+"452": "{\"pos\":[19,-9],\"type\":318,\"size\":\"Med\",\"name\":\"Less Shot Speed\",\"description\":[\"-0.08 shot speed\"],\"modifiers\":{\"shotSpeed\":-0.08},\"adjacent\":[450]}"
 }
 ]])
