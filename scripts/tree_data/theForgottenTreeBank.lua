@@ -85,7 +85,7 @@ PST.SkillTreesAPI.AddCharacterTree("The Forgotten", [[
 "145": "{\"pos\":[1,-14],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[144,146]}",
 "146": "{\"pos\":[1,-15],\"type\":32,\"size\":\"Med\",\"name\":\"Tears\",\"description\":[\"+0.05 tears\"],\"modifiers\":{\"tears\":0.05},\"adjacent\":[145,148]}",
 "147": "{\"pos\":[-1,-15],\"type\":30,\"size\":\"Med\",\"name\":\"Damage\",\"description\":[\"+0.05 damage\"],\"modifiers\":{\"damage\":0.05},\"adjacent\":[141,148]}",
-"148": "{\"pos\":[0,-16],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.1 luck\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[147,146,165]}",
+"148": "{\"pos\":[0,-16],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.15 luck\"],\"modifiers\":{\"luck\":0.15},\"adjacent\":[147,146,165]}",
 "150": "{\"pos\":[0,-18],\"type\":251,\"size\":\"Small\",\"name\":\"Inner Flare Slow Duration\",\"description\":[\"+0.1 seconds to Inner Flare slow duration.\"],\"modifiers\":{\"innerFlareSlowDuration\":0.1},\"adjacent\":[152,165]}",
 "151": "{\"pos\":[0,-19],\"type\":251,\"size\":\"Small\",\"name\":\"Inner Flare Slow Duration\",\"description\":[\"+0.1 seconds to Inner Flare slow duration.\"],\"modifiers\":{\"innerFlareSlowDuration\":0.1},\"adjacent\":[152,153]}",
 "152": "{\"pos\":[-1,-19],\"type\":251,\"size\":\"Small\",\"name\":\"Inner Flare Slow Duration\",\"description\":[\"+0.1 seconds to Inner Flare slow duration.\"],\"modifiers\":{\"innerFlareSlowDuration\":0.1},\"adjacent\":[150,151]}",

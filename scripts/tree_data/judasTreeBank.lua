@@ -45,7 +45,7 @@ PST.SkillTreesAPI.AddCharacterTree("Judas", [[
 "115": "{\"pos\":[-6,12],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[114,116]}",
 "116": "{\"pos\":[-6,13],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[115,117]}",
 "117": "{\"pos\":[-6,14],\"type\":29,\"size\":\"Med\",\"name\":\"Speed\",\"description\":[\"+0.04 speed\"],\"modifiers\":{\"speed\":0.04},\"adjacent\":[116]}",
-"132": "{\"pos\":[-5,9],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.1 luck\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[105]}",
+"132": "{\"pos\":[-5,9],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.15 luck\"],\"modifiers\":{\"luck\":0.15},\"adjacent\":[105]}",
 "133": "{\"pos\":[-13,1],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[134,198]}",
 "134": "{\"pos\":[-14,0],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[133,135]}",
 "135": "{\"pos\":[-15,-1],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[134,136]}",
