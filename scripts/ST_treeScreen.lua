@@ -76,11 +76,11 @@ function PST:openTreeMenu()
     treeMenuOpen = true
 end
 
-function PST:closeTreeMenu(mute)
+function PST:closeTreeMenu(mute, force)
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
         MenuManager.SetInputMask(4294967295)
-    elseif not Game():IsPauseMenuOpen() then
+    elseif not Game():IsPauseMenuOpen() and not force then
         return
     else
         Game():GetHUD():SetVisible(true)
@@ -684,8 +684,10 @@ function PST:treeMenuRendering()
         end
     end
 
+    if treeMenuOpen and ((not Isaac.IsInGame() and not isCharMenu) or (Isaac.IsInGame() and not Game():IsPauseMenuOpen())) then
+        PST:closeTreeMenu(true, true)
     -- Input: Open tree menu
-    if PST:isKeybindActive(PSTKeybind.OPEN_TREE) then
+    elseif PST:isKeybindActive(PSTKeybind.OPEN_TREE) then
         if isCharMenu or Game():IsPauseMenuOpen() then
             if treeMenuOpen then
                 PST:closeTreeMenu()
