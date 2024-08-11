@@ -4,6 +4,7 @@ function PST:onNewLevel()
 
     PST.specialNodes.momDeathProc = false
     PST.floorFirstUpdate = true
+    PST:addModifiers({ staticEntitiesCache = { value = {}, set = true } }, true)
 
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then

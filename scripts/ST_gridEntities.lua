@@ -1,7 +1,10 @@
 function PST:getStaticEntityID(entity)
     local stage = Game():GetLevel():GetStage()
     local roomID = Game():GetLevel():GetCurrentRoomIndex()
-    return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(entity.Position.X) .. "." .. tostring(entity.Position.Y)
+    if entity.GetGridIndex then
+        return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(entity:GetGridIndex())
+    end
+    return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(math.floor(entity.Position.X / 40)) .. "." .. tostring(math.floor(entity.Position.Y / 40))
 end
 
 function PST:initStaticEntity(entity)
