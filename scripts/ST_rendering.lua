@@ -52,7 +52,7 @@ function PST:Render()
 	local gamePaused = Game():IsPaused()
 
 	-- XP bar
-	if PST.config.drawXPbar then
+	if PST.config.drawXPbar and Game():GetHUD():IsVisible() then
 		local charData = PST:getCurrentCharData()
 		if charData then
 			local barPos = Vector(112 * screenRatioX, Isaac.GetScreenHeight() - 12)
