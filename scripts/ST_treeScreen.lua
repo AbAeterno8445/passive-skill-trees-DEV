@@ -687,7 +687,7 @@ function PST:treeMenuRendering()
     if treeMenuOpen and ((not Isaac.IsInGame() and not isCharMenu) or (Isaac.IsInGame() and not Game():IsPauseMenuOpen())) then
         PST:closeTreeMenu(true, true)
     -- Input: Open tree menu
-    elseif PST:isKeybindActive(PSTKeybind.OPEN_TREE) then
+    elseif PST:isKeybindActive(PSTKeybind.OPEN_TREE) or (not treeMenuOpen and Input.IsActionTriggered(ButtonAction.ACTION_ITEM, 1)) then
         if isCharMenu or Game():IsPauseMenuOpen() then
             if treeMenuOpen then
                 PST:closeTreeMenu()
@@ -703,7 +703,7 @@ function PST:treeMenuRendering()
             local selCharData = PST.modData.charData[selCharName]
             if selCharData and PST.config.charSelectInfoText then
                 local tmpStr = selCharName .. " LV " .. selCharData.level
-                tmpStr = tmpStr .. " (V / LT to open tree)"
+                tmpStr = tmpStr .. " (V / LT or LB to open tree)"
                 if PST.modData.treeDisabled then
                     tmpStr = tmpStr .. " (tree disabled)"
                 end
@@ -716,7 +716,7 @@ function PST:treeMenuRendering()
             end
         end
     elseif Game():IsPauseMenuOpen() and not treeMenuOpen then
-        local tmpStr = "V / LT to open tree"
+        local tmpStr = "V / LT or LB to open tree"
         miniFont:DrawString(
             tmpStr,
             Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2.5,

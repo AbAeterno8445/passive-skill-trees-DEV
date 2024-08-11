@@ -84,7 +84,12 @@ function PST:load()
 		end
 		-- Load saved config
 		if tmpJson.config then
-			PST.config = tmpJson.config
+			for tmpConfig, configVal in pairs(tmpJson.config) do
+				-- Keybinds should remain as defined in file until they get support for changing
+				if tmpConfig ~= "keybinds" then
+					PST.config[tmpConfig] = configVal
+				end
+			end
 		end
 		PST.modData = tmpJson
 
