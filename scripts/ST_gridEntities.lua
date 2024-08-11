@@ -33,7 +33,7 @@ function PST:gridEntityPoopUpdate(entityParam)
                 -- Mod: +xp when destroying poop
                 local tmpMod = PST:getTreeSnapshotMod("poopXP", 0)
                 if tmpMod > 0 then
-                    PST:addTempXP(tmpMod, true)
+                    PST:addTempXP(tmpMod, true, true)
                 end
             end
         end
@@ -53,7 +53,7 @@ function PST:gridEntityRockUpdate(entityParam)
                     -- Mod: +xp when destroying tinted rocks
                     local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
                     if tmpMod ~= 0 then
-                        PST:addTempXP(tmpMod, true)
+                        PST:addTempXP(tmpMod, true, true)
                     end
 
                     -- Mod: +all stats when destroying tinted rocks
@@ -77,7 +77,7 @@ function PST:onFireRender(entityParam)
                 -- Mod: +xp when destroying a fireplace
                 local tmpBonus = PST:getTreeSnapshotMod("fireXP", 0)
                 if tmpBonus ~= 0 then
-                    PST:addTempXP(tmpBonus, true)
+                    PST:addTempXP(tmpBonus, true, true)
                 end
             end
             staticEntCache[entityID] = entityParam.HitPoints
