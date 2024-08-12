@@ -182,7 +182,6 @@ local curseIDs = {
     LevelCurse.CURSE_OF_DARKNESS,
     LevelCurse.CURSE_OF_LABYRINTH,
     LevelCurse.CURSE_OF_MAZE,
-    LevelCurse.CURSE_OF_THE_CURSED,
     LevelCurse.CURSE_OF_THE_LOST,
     LevelCurse.CURSE_OF_THE_UNKNOWN
 }
