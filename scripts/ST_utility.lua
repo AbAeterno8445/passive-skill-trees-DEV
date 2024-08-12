@@ -2,6 +2,7 @@ local sfx = SFXManager()
 
 -- Get current char name (different to EntityPlayer's GetName() func as it uses a custom name table)
 function PST:getCurrentCharName()
+	if not PST.charNames then return nil end
 	return PST.charNames[1 + Isaac.GetPlayer():GetPlayerType()]
 end
 
@@ -91,21 +92,22 @@ function PST:addXP(xp, showText)
 		-- Level up
 		if charData.xp >= charData.xpRequired then
 			local currentChar = PST:getCurrentCharName()
+			if currentChar then
+				sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
+				charData.level = charData.level + 1
+				charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
+				PST.modData.skillPoints = PST.modData.skillPoints + 1
 
-			sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
-			charData.level = charData.level + 1
-			charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
-			PST.modData.skillPoints = PST.modData.skillPoints + 1
+				local xpRemaining = charData.xp - charData.xpRequired
 
-			local xpRemaining = charData.xp - charData.xpRequired
+				-- Next level xp requirement formula
+				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.1))
 
-			-- Next level xp requirement formula
-			charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.1))
+				-- Add overflowing xp to next level, capped at 50%
+				charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
 
-			-- Add overflowing xp to next level, capped at 50%
-			charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
-
-			PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
+				PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
+			end
 		end
 	end
 end

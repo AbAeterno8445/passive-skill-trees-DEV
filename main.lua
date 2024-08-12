@@ -136,7 +136,10 @@ end
 -- On player init
 function PST:playerInit()
 	local loadSuccess = PST:load()
-	PST:charInit(PST:getCurrentCharName(), not loadSuccess)
+	local charName = PST:getCurrentCharName()
+	if charName then
+		PST:charInit(charName, not loadSuccess)
+	end
 end
 
 -- Fetch the current character's skill tree data (makes sure it's initialized)
