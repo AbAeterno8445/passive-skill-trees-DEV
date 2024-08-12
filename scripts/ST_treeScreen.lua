@@ -8,6 +8,15 @@ miniFont:Load("font/cjk/lanapixel.fnt")
 local treeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
 treeBGSprite:Play("Default", true)
 
+local treeSpaceSprite = Sprite("gfx/ui/skilltrees/tree_space_bg.anm2", true)
+treeSpaceSprite.Color.A = 0.5
+treeSpaceSprite:Play("Default", true)
+
+local treeStarfieldSprite = Sprite("gfx/ui/skilltrees/tree_starfield.anm2", true)
+treeStarfieldSprite.Color.A = 0.6
+
+local treeStarfieldList = {}
+
 local nodeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
 nodeBGSprite:Play("Pixel", true)
 nodeBGSprite.Color.A = 0.7
@@ -73,6 +82,22 @@ function PST:openTreeMenu()
         Game():GetHUD():SetVisible(false)
     end
     sfx:Play(SoundEffect.SOUND_PAPER_IN)
+
+    -- Sprinkle starfield sprites when opening tree
+    treeStarfieldList = {}
+    for _=1,9 do
+        local tmpStarfields = {}
+        for i=1,5 do
+            if math.random() < 100 / (i ^ 2) then
+                table.insert(tmpStarfields, {
+                    sprite = "Starfield" .. tostring(i),
+                    offsetMult = -0.2 - 0.2 * math.random()
+                })
+            end
+        end
+        table.insert(treeStarfieldList, tmpStarfields)
+    end
+
     treeMenuOpen = true
 end
 
@@ -215,6 +240,28 @@ function PST:treeMenuRenderer()
 
     local camCenterX = screenW / 2 + treeCamera.X + camZoomOffset.X
     local camCenterY = screenH / 2 + treeCamera.Y + camZoomOffset.Y
+
+    -- Draw space BG
+    treeSpaceSprite.Scale = Vector(screenW / 600, screenH / 400)
+    local starfieldID = 1
+    for i=-1,1 do
+        for j=-1,1 do
+            local xOff = 600 * j * treeSpaceSprite.Scale.X
+            local yOff = 400 * i * treeSpaceSprite.Scale.Y
+            treeSpaceSprite:Render(Vector((camCenterX - screenW / 2) * -0.1 + xOff, (camCenterY - screenH / 2) * -0.1 + yOff))
+
+            if treeStarfieldList[starfieldID] then
+                for _, tmpStarfield in ipairs(treeStarfieldList[starfieldID]) do
+                    treeStarfieldSprite:Play(tmpStarfield.sprite)
+                    treeStarfieldSprite:Render(Vector(
+                        (camCenterX - screenW / 2) * tmpStarfield.offsetMult + xOff,
+                        (camCenterY - screenH / 2) * tmpStarfield.offsetMult + yOff
+                    ))
+                end
+            end
+            starfieldID = starfieldID + 1
+        end
+    end
 
     -- Draw node links
     for _, nodeLink in ipairs(PST.nodeLinks[currentTree]) do

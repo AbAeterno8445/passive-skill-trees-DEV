@@ -382,4 +382,4 @@ end
 
 function PST:strStartsWith(txt, start)
 	return string.sub(txt, 1, string.len(start)) == start
- end
+end
