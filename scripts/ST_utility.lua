@@ -283,6 +283,12 @@ function PST:onPlanetariumChance(chance)
 	return chance + PST:getTreeSnapshotMod("planetariumChance", 0) / 100
 end
 
+function PST:isFirstOrigStage()
+	local level = Game():GetLevel()
+	return level:GetStage() == LevelStage.STAGE1_1 and (level:GetStageType() == StageType.STAGETYPE_ORIGINAL or
+	level:GetStageType() == StageType.STAGETYPE_AFTERBIRTH or level:GetStageType() == StageType.STAGETYPE_WOTL)
+end
+
 function PST:resetSaveData()
 	PST:RemoveData()
 	PST:load()

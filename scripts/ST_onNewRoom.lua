@@ -132,8 +132,9 @@ function PST:onNewRoom()
 		PST:addModifiers({ keeperBlessingHeals = { value = 0, set = true } }, true)
 	end
 
-	-- Mod: chance for the first floor's treasure room to contain an additional Eraser item pedestal
-	if level:GetStage() == LevelStage.STAGE1_2 and room:GetType() == RoomType.ROOM_TREASURE and not PST:getTreeSnapshotMod("eraserSecondFloorProc", false) then
+	-- Mod: chance for the second floor's treasure room to contain an additional Eraser item pedestal
+	if (level:GetStage() == LevelStage.STAGE1_2 or not PST:isFirstOrigStage()) and
+	room:GetType() == RoomType.ROOM_TREASURE and not PST:getTreeSnapshotMod("eraserSecondFloorProc", false) then
 		if 100 * math.random() < PST:getTreeSnapshotMod("eraserSecondFloor", 0) then
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_ERASER, Random() + 1)

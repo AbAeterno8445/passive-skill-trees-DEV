@@ -72,7 +72,7 @@ function PST:onUpdate()
 		end
 
 		-- After first floor
-		if level:GetStage() > 1 then
+		if not PST:isFirstOrigStage() then
 			-- Mod: chance to reveal map
 			if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) then
 				level:ShowMap()
@@ -126,10 +126,11 @@ function PST:onUpdate()
 			end
 
 			-- Harbinger Locusts node (Apollyon's tree)
-			if PST:getTreeSnapshotMod("harbingerLocusts", false) and level:GetStage() == LevelStage.STAGE1_2 then
+			if PST:getTreeSnapshotMod("harbingerLocusts", false) and not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("harbingerLocustsFloorProc", false) then
 				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
 				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
+				PST:addModifiers({ harbingerLocustsFloorProc = true }, true)
 			end
 		end
 	end

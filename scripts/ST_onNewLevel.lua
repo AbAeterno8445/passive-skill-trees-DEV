@@ -66,7 +66,7 @@ function PST:onNewLevel()
     end
 
     -- Sporadic Growth node (Eden's tree)
-    if PST:getTreeSnapshotMod("sporadicGrowth", false) and floor > 1 then
+    if PST:getTreeSnapshotMod("sporadicGrowth", false) and not PST:isFirstOrigStage() then
         for _=1,2 do
             local tmpStat = PST:getRandomStat()
             PST:addModifiers({ [tmpStat .. "Perc"] = 1 }, true)
@@ -123,7 +123,7 @@ function PST:onNewLevel()
         cosmicRCache.blueBabyHearts = 0
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN) then
         -- Eden, -0.1 to random stat when entering a floor (from 2 onwards)
-        if floor > 1 then
+        if not PST:isFirstOrigStage() then
             local randomStat = PST:getRandomStat()
             PST:addModifiers({ [randomStat] = -0.1 }, true)
         end
@@ -145,7 +145,7 @@ function PST:onNewLevel()
         cosmicRCache.TLostKeeperCoins = 0
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER_B) then
         -- Tainted Keeper, if < 15 coins, lose a heart container, otherwise halve coin count
-        if floor > 1 then
+        if not PST:isFirstOrigStage() then
             if player:GetNumCoins() < 15 then
                 if player:GetMaxHearts() > 2 then
                     player:AddMaxHearts(-2)
