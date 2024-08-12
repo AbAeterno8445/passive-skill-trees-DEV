@@ -107,6 +107,25 @@ function PST:load()
 			end
 		end
 
+		-- Refund allocated nodes that no longer exist
+		for tree, nodes in pairs(PST.modData.treeNodes) do
+			for nodeID, allocated in pairs(nodes) do
+				if PST.trees[tree] ~= nil then
+					if PST.trees[tree][nodeID] == nil and nodeID ~= 0 then
+						if allocated then
+							print("Passive Skill Trees: Found allocated non-existant node ID", nodeID, "for tree [", tree, "]. Refunding skill point.")
+							if tree == "global" then
+								PST.modData.skillPoints = PST.modData.skillPoints + 1
+							elseif PST.modData.charData[tree] then
+								PST.modData.charData[tree].skillPoints = PST.modData.charData[tree].skillPoints + 1
+							end
+						end
+						PST.modData.treeNodes[tree][nodeID] = nil
+					end
+				end
+			end
+		end
+
 		loadSuccess = true
 	end
 	PST:updateNodes()
