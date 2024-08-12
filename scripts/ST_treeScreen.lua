@@ -2,6 +2,13 @@ include("scripts.tree_data.nodes")
 
 local sfx = SFXManager()
 
+local colorDarkGrey = Color(0.4, 0.4, 0.4, 1)
+local colorWhite = Color(1, 1, 1, 1)
+local targetSpaceColor = Color(1, 1, 1, 1)
+local alphaFlash = 1
+local alphaFlashFlip = false
+local flashStep = 0.02
+
 local miniFont = Font()
 miniFont:Load("font/cjk/lanapixel.fnt")
 
@@ -16,6 +23,9 @@ local treeStarfieldSprite = Sprite("gfx/ui/skilltrees/tree_starfield.anm2", true
 treeStarfieldSprite.Color.A = 0.6
 
 local treeStarfieldList = {}
+
+local nodesSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
+nodesSprite:Play("Default", true)
 
 local nodeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
 nodeBGSprite:Play("Pixel", true)
@@ -69,6 +79,9 @@ local function PST_updateCamZoomOffset()
     local translateY = -Isaac.GetScreenHeight() / 2 - treeCamera.Y
     camZoomOffset.X = translateX - translateX * zoomScale
     camZoomOffset.Y = translateY - translateY * zoomScale
+
+    nodesSprite.Scale.X = zoomScale
+    nodesSprite.Scale.Y = zoomScale
 end
 
 function PST:openTreeMenu()
@@ -98,6 +111,7 @@ function PST:openTreeMenu()
         table.insert(treeStarfieldList, tmpStarfields)
     end
 
+    targetSpaceColor = Color(1, 1, 1, 1)
     treeMenuOpen = true
 end
 
@@ -203,6 +217,36 @@ function PST:treeMenuRenderer()
         end
     end
 
+    -- For flashing colors
+    if not alphaFlashFlip then
+        if alphaFlash > 0.2 then alphaFlash = alphaFlash - flashStep else alphaFlashFlip = true end
+    else
+        if alphaFlash < 1 then alphaFlash = alphaFlash + flashStep else alphaFlashFlip = false end
+    end
+
+    -- Space background color shifting
+    if treeSpaceSprite.Color.R < targetSpaceColor.R then
+        treeSpaceSprite.Color.R = treeSpaceSprite.Color.R + flashStep
+        treeStarfieldSprite.Color.R = treeStarfieldSprite.Color.R + flashStep
+    elseif treeSpaceSprite.Color.R > targetSpaceColor.R then
+        treeSpaceSprite.Color.R = treeSpaceSprite.Color.R - flashStep
+        treeStarfieldSprite.Color.R = treeStarfieldSprite.Color.R - flashStep
+    end
+    if treeSpaceSprite.Color.G < targetSpaceColor.G then
+        treeSpaceSprite.Color.G = treeSpaceSprite.Color.G + flashStep
+        treeStarfieldSprite.Color.G = treeStarfieldSprite.Color.G + flashStep
+    elseif treeSpaceSprite.Color.G > targetSpaceColor.G then
+        treeSpaceSprite.Color.G = treeSpaceSprite.Color.G - flashStep
+        treeStarfieldSprite.Color.G = treeStarfieldSprite.Color.G - flashStep
+    end
+    if treeSpaceSprite.Color.B < targetSpaceColor.B then
+        treeSpaceSprite.Color.B = treeSpaceSprite.Color.B + flashStep
+        treeStarfieldSprite.Color.B = treeStarfieldSprite.Color.B + flashStep
+    elseif treeSpaceSprite.Color.B > targetSpaceColor.B then
+        treeSpaceSprite.Color.B = treeSpaceSprite.Color.B - flashStep
+        treeStarfieldSprite.Color.B = treeStarfieldSprite.Color.B - flashStep
+    end
+
     treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
     treeBGSprite:Render(Vector.Zero)
 
@@ -297,14 +341,25 @@ function PST:treeMenuRenderer()
     for _, node in pairs(PST.trees[currentTree]) do
         local nodeX = node.pos.X * 38 * zoomScale
         local nodeY = node.pos.Y * 38 * zoomScale
-        node.sprite.Scale.X = zoomScale
-        node.sprite.Scale.Y = zoomScale
-        node.sprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+
+        if node.available then
+            nodesSprite:SetFrame("Available " .. node.size, 0)
+            nodesSprite.Color = colorDarkGrey
+            nodesSprite.Color.A = alphaFlash
+            nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+        end
+
+        nodesSprite:SetFrame("Default", node.sprite)
+        if not PST:isNodeAllocated(currentTree, node.id) and not node.available then
+            nodesSprite.Color = colorDarkGrey
+        else
+            nodesSprite.Color = colorWhite
+        end
+        nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
 
         if PST:isNodeAllocated(currentTree, node.id) then
-            node.allocatedSprite.Scale.X = zoomScale
-            node.allocatedSprite.Scale.Y = zoomScale
-            node.allocatedSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            nodesSprite:SetFrame("Allocated " .. node.size, 0)
+            nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
         end
 
         local nodeHalf = 15 * zoomScale
@@ -510,8 +565,10 @@ function PST:treeMenuRenderer()
         if selectedCharName and PST.trees[selectedCharName] ~= nil then
             if currentTree == "global" then
                 currentTree = selectedCharName
+                targetSpaceColor = Color(1, 0.5, 1, 1)
             else
                 currentTree = "global"
+                targetSpaceColor = Color(1, 1, 1, 1)
             end
             PST.cosmicRData.menuOpen = false
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)

@@ -32,11 +32,6 @@ function PST:updateNodes(tree, noReset)
 
         -- Count allocated nodes as available
         node.available = allocated or node.alwaysAvailable == true or PST.debugOptions.allAvailable
-        if not node.available then
-            node.sprite.Color = Color(0.4, 0.4, 0.4, 1)
-        else
-            node.sprite.Color = Color(1, 1, 1, 1)
-        end
 
         if node.adjacent ~= nil and allocated then
             -- If allocated, make adjacent nodes available
@@ -49,7 +44,6 @@ function PST:updateNodes(tree, noReset)
     -- Update availability
     for _, node in pairs(tmpAvailableNodes) do
         node.available = true
-        node.sprite.Color = Color(1, 1, 1, 1)
     end
 end
 
@@ -68,12 +62,7 @@ function PST:initTreeNodes(tree)
         tmpTreeData[tonumber(nodeID)] = node
 
         node.id = tonumber(nodeID)
-        node.sprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
-        node.sprite:Play("Default", true)
-        ---@diagnostic disable-next-line: param-type-mismatch
-        node.sprite:SetFrame("Default", tonumber(node.type))
-        node.allocatedSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
-        node.allocatedSprite:Play("Allocated " .. node.size, true)
+        node.sprite = tonumber(node.type)
     end
 
     -- Setup node links after they've been initialized
