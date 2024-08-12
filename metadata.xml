@@ -65,10 +65,12 @@ Requires Repentance. Afterbirth+ unsupported.
 While I haven't balanced the trees too heavily, it's likely that this feature introduces a lot of free player power, making runs generally easier. There's room to introduce opt-in difficulty-altering features in the future if there's interest, e.g. something such as balancing the xp curve so that easy runs barely grant xp past a certain level, and making runs more difficult (in correlation with how much tree progress you have) with certain new modifiers grants more xp.
 
 [h2]For Modders - Custom Skill Trees[/h2]
-I have a little visual node js app, **isaac-skilltreegen**, that lets you create skill trees, and the mod supports coding skill trees for custom characters.
+I have a little visual node js app, [b]isaac-skilltreegen[/b], that lets you create skill trees, and the mod supports coding skill trees for custom characters.
 You can find the app's repo and releases [url=https://github.com/AbAeterno8445/isaac-skilltreegen]Here[/url]. Repo includes usage instructions on its README.
 
 The mod also exposes an API function to initialize generated skill trees. [url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/master/docs/api.md]Here[/url]'s a reference guide for using it.
+
+Unfortunately it's currently not possible to easily create new nodes, and would require editing the nodes image, anm2 file, and coding any new effects yourself - these changes will also probably get lost after an update if you're editing original mod files.
 
 I've also been playing with the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=846760924]Siren character mod[/url] and this mod comes with a skill tree for her out of the box.
 
