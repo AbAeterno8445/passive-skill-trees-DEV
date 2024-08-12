@@ -39,6 +39,10 @@ function PST:gridEntityPoopUpdate(entityParam)
                 -- Mod: +xp when destroying poop
                 local tmpMod = PST:getTreeSnapshotMod("poopXP", 0)
                 if tmpMod > 0 then
+                    -- Reduce poop xp gain if card against humanity was used
+                    if PST:getTreeSnapshotMod("cardAgainstHumanityProc", false) then
+                        tmpMod = tmpMod / 10
+                    end
                     PST:addTempXP(tmpMod, true, true)
                 end
             end

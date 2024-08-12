@@ -115,6 +115,11 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpBonus, floorLuck = { value = 0, set = true } }, true)
     end
 
+    -- Card against humanity proc reset
+    if PST:getTreeSnapshotMod("cardAgainstHumanityProc", false) then
+        PST:addModifiers({ cardAgainstHumanityProc = false }, true)
+    end
+
     -- Cosmic Realignment node
     local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

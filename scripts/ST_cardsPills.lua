@@ -45,6 +45,11 @@ function PST:onUseCard(card, player, useFlags)
     if tmpBonus ~= 0 then
         PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
     end
+
+    -- Card against humanity proc
+    if card == Card.CARD_HUMANITY then
+        PST:addModifiers({ cardAgainstHumanityProc = true }, true)
+    end
 end
 
 function PST:onPillEffect(effect, pillColor)

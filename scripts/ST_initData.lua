@@ -198,6 +198,7 @@ function PST:resetMods()
 		firstItemSpeed = 0,
 		firstItemShotspeed = 0,
 		firstItemLuck = 0,
+		cardAgainstHumanityProc = false,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
