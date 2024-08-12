@@ -213,28 +213,36 @@ function PST:treeMenuRenderer()
     end
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
         if not totalModsMenuOpen then
-            treeCamera.Y = treeCamera.Y - cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.Y > -2000 then
+                treeCamera.Y = treeCamera.Y - cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         else
             totalModsMenuY = math.min(0, totalModsMenuY + cameraSpeed)
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
         if not totalModsMenuOpen then
-            treeCamera.Y = treeCamera.Y + cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.Y < 2000 then
+                treeCamera.Y = treeCamera.Y + cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         else
             totalModsMenuY = totalModsMenuY - cameraSpeed
         end
     end
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
         if not totalModsMenuOpen then
-            treeCamera.X = treeCamera.X - cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.X > -2000 then
+                treeCamera.X = treeCamera.X - cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
         if not totalModsMenuOpen then
-            treeCamera.X = treeCamera.X + cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.X < 2000 then
+                treeCamera.X = treeCamera.X + cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         end
     end
 
@@ -248,14 +256,16 @@ function PST:treeMenuRenderer()
         for j=-1,1 do
             local xOff = 600 * j * treeSpaceSprite.Scale.X
             local yOff = 400 * i * treeSpaceSprite.Scale.Y
-            treeSpaceSprite:Render(Vector((camCenterX - screenW / 2) * -0.1 + xOff, (camCenterY - screenH / 2) * -0.1 + yOff))
+            local startX = camCenterX - screenW / 2
+            local startY = camCenterY - screenH / 2
+            treeSpaceSprite:Render(Vector(startX * -0.1 + xOff, startY * -0.1 + yOff))
 
             if treeStarfieldList[starfieldID] then
                 for _, tmpStarfield in ipairs(treeStarfieldList[starfieldID]) do
                     treeStarfieldSprite:Play(tmpStarfield.sprite)
                     treeStarfieldSprite:Render(Vector(
-                        (camCenterX - screenW / 2) * tmpStarfield.offsetMult + xOff,
-                        (camCenterY - screenH / 2) * tmpStarfield.offsetMult + yOff
+                        startX * tmpStarfield.offsetMult + xOff,
+                        startY * tmpStarfield.offsetMult + yOff
                     ))
                 end
             end
