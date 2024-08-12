@@ -417,6 +417,16 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
         end
+    -- D12
+    elseif itemType == CollectibleType.COLLECTIBLE_D12 then
+        local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
+        for entID, _ in pairs(staticEntCache) do
+            local stage = Game():GetLevel():GetStage()
+            local roomID = Game():GetLevel():GetCurrentRoomDesc().SafeGridIndex
+            if PST:strStartsWith(entID, tostring(stage) .. "." .. tostring(roomID)) then
+                staticEntCache[entID] = -1
+            end
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item

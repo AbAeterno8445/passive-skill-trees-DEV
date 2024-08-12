@@ -1,20 +1,25 @@
 function PST:getStaticEntityID(entity)
     local stage = Game():GetLevel():GetStage()
     local roomID = Game():GetLevel():GetCurrentRoomDesc().SafeGridIndex
+    local tmpIndex = nil
     if entity.GetGridIndex then
-        return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(entity:GetGridIndex())
-    elseif entity.SpawnGridIndex then
-        return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(entity.SpawnGridIndex)
+        tmpIndex = entity:GetGridIndex()
+    elseif entity.SpawnGridIndex and entity.SpawnGridIndex ~= -1 then
+        tmpIndex = entity.SpawnGridIndex
+    else
+        tmpIndex = Game():GetRoom():GetGridIndex(entity.Position)
     end
-    local tmpGridIndex = Game():GetRoom():GetGridIndex(entity.Position)
-    return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(tmpGridIndex)
+    if tmpIndex and tmpIndex ~= -1 then
+        return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(tmpIndex)
+    end
+    return nil
 end
 
 function PST:initStaticEntity(entity)
     local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", nil)
     if staticEntCache then
         local entityID = PST:getStaticEntityID(entity)
-        if not staticEntCache[entityID] then
+        if entityID and not staticEntCache[entityID] then
             staticEntCache[entityID] = -1
         end
         return entityID
@@ -27,9 +32,10 @@ function PST:gridEntityPoopUpdate(entityParam)
     if entityID then
         local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", nil)
         if staticEntCache[entityID] < entityParam.State then
+            local noXP = staticEntCache[entityID] == -1
             staticEntCache[entityID] = entityParam.State
             -- Poop destroyed
-            if staticEntCache[entityID] >= 1000 then
+            if staticEntCache[entityID] >= 1000 and not noXP then
                 -- Mod: +xp when destroying poop
                 local tmpMod = PST:getTreeSnapshotMod("poopXP", 0)
                 if tmpMod > 0 then
@@ -47,9 +53,10 @@ function PST:gridEntityRockUpdate(entityParam)
         if entityID then
             local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", nil)
             if staticEntCache[entityID] ~= entityParam.State then
+                local noXP = staticEntCache[entityID] == -1
                 staticEntCache[entityID] = entityParam.State
                 -- Tinted rock destroyed
-                if staticEntCache[entityID] >= 2 then
+                if staticEntCache[entityID] >= 2 and not noXP then
                     -- Mod: +xp when destroying tinted rocks
                     local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
                     if tmpMod ~= 0 then
