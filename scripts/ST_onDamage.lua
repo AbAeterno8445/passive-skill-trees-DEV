@@ -469,7 +469,7 @@ function PST:onDeath(entity)
             PST.specialNodes.momDeathProc = true
 
             -- Mod: chance for Mom's Heart to additionally drop Birthright (if Mom didn't previously drop it)
-            if not PST:getTreeSnapshotMod("jacobBirthrightProc", false) and 100 * math.random() < PST:getTreeSnapshotMod("jacobBirthright", 0) then
+            if not PST:getTreeSnapshotMod("jacobBirthrightProc", false) and 100 * math.random() < PST:getTreeSnapshotMod("jacobBirthright", 0) / 2 then
                 local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
                 PST:addModifiers({ jacobBirthrightProc = true }, true)
