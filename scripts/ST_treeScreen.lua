@@ -86,6 +86,7 @@ PST.starcursedInvData = {
     open = "",
     menuX = 0,
     menuY = 0,
+    socket = nil,
     hoveredJewel = nil
 }
 
@@ -160,7 +161,6 @@ function PST:closeTreeMenu(mute, force)
     end
     PST.cosmicRData.menuOpen = false
     PST.starcursedInvData.open = ""
-    subMenuPage = 0
     helpOpen = ""
     totalModsMenuOpen = false
     treeMenuOpen = false
@@ -519,6 +519,20 @@ function PST:treeMenuRenderer()
             PST.cosmicRData.charSprite.Scale.Y = zoomScale
             PST.cosmicRData.charSprite:Play(charName, true)
             PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+        else
+            -- Starcursed jewel sockets, draw socketed jewel
+            for _, tmpType in pairs(PSTStarcursedType) do
+                if PST:strStartsWith(node.name, tmpType .. " Socket") then
+                    local socketID = string.sub(node.name, -1)
+                    local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
+                    if socketedJewel and socketedJewel.equipped == socketID then
+                        SCJewelSprite.Scale.X = zoomScale
+                        SCJewelSprite.Scale.Y = zoomScale
+                        SCJewelSprite:Play(tmpType)
+                        SCJewelSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+                    end
+                end
+            end
         end
 
         -- Debug: show node IDs
@@ -575,12 +589,16 @@ function PST:treeMenuRenderer()
     elseif PST.starcursedInvData.open ~= "" then
         local tmpJewelType = PST.starcursedInvData.open
         local tmpJewelPages = math.ceil(#PST.modData.starTreeInventory[tmpJewelType] / jewelsPerPage)
+        local tmpTitle = tmpJewelType .. " Inventory"
+        if PST.starcursedInvData.socket then
+            tmpTitle = tmpJewelType .. " Socket " .. tostring(PST.starcursedInvData.socket)
+        end
         PST:drawNodeSubMenu(
             jewelsPerPage, camCenterX, camCenterY,
             PST.starcursedInvData.menuX, PST.starcursedInvData.menuY,
-            tmpJewelType .. " Inventory",
+            tmpTitle,
             function()
-                -- Draw starcursed jewels
+                -- Draw Starcursed Jewels
                 for i=1,jewelsPerPage do
                     local jewelID = i + subMenuPage * jewelsPerPage
                     local jewelData = PST.modData.starTreeInventory[tmpJewelType][jewelID]
@@ -591,6 +609,7 @@ function PST:treeMenuRenderer()
                         -- Hovered
                         if camCenterX > jewelX - 16 and camCenterX < jewelX + 16 and camCenterY > jewelY - 16 and camCenterY < jewelY + 16 then
                             PST.starcursedInvData.hoveredJewel = jewelData
+                            SCJewelSprite.Color.A = 1
                             PST.cosmicRData.charSprite.Color.A = 1
                             PST.cosmicRData.charSprite:Play("Select", true)
                             PST.cosmicRData.charSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
@@ -598,12 +617,16 @@ function PST:treeMenuRenderer()
                             SCJewelSprite.Color.A = 0.7
                         end
 
+                        SCJewelSprite.Scale.X = 1
+                        SCJewelSprite.Scale.Y = 1
                         SCJewelSprite:Play(tmpJewelType, true)
                         SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
 
                         if jewelData.unidentified then
                             SCJewelSprite:Play("Unidentified", true)
                             SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
+                        elseif jewelData.equipped then
+                            miniFont:DrawString("E", jewelX - treeCamera.X - camZoomOffset.X + 8, jewelY - treeCamera.Y - camZoomOffset.Y, KColor(1, 1, 0.6, 1))
                         end
                     end
                 end
@@ -660,9 +683,25 @@ function PST:treeMenuRenderer()
                     {"Reach level 40 with at least one character to unlock.", KColor(1, 0.6, 0.6, 1)}
                 }
             end
-        elseif hoveredNode.name == "Azure Inventory" or hoveredNode.name == "Crimson Inventory" or
-        hoveredNode.name == "Viridian Inventory" or hoveredNode.name == "Ancient Inventory" then
-            descName = descName .. " (E to open/close inventory)"
+        elseif isAllocated then
+            -- Starcursed inventory/socket nodes
+            for _, tmpType in pairs(PSTStarcursedType) do
+                if PST:strStartsWith(hoveredNode.name, tmpType) then
+                    local isSocket = string.match(hoveredNode.name, "Socket") ~= nil
+                    if isSocket or string.match(hoveredNode.name, "Inventory") ~= nil then
+                        descName = descName .. " (E to open/close inventory)"
+                        if isSocket then
+                            local socketID = string.sub(hoveredNode.name, -1)
+                            local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
+                            if socketedJewel and socketedJewel.equipped == socketID then
+                                tmpDescription = PST:SC_getJewelDescription(socketedJewel)
+                                table.insert(tmpDescription, "Press the Respec Node button to unequip the jewel.")
+                            end
+                        end
+                    end
+                    break
+                end
+            end
         end
         drawNodeBox(descName, tmpDescription or hoveredNode.description, screenW, screenH)
     -- Cosmic Realignment node, hovered character name & curse description
@@ -681,15 +720,7 @@ function PST:treeMenuRenderer()
 
         local jewelData = PST.starcursedInvData.hoveredJewel
         if jewelData then
-            local tmpDescription = {}
-            if not jewelData.unidentified then
-                for _, modData in pairs(jewelData.mods) do
-                    table.insert(tmpDescription, {modData.description, KColor(0.88, 1, 1, 1)})
-                end
-                table.insert(tmpDescription, {"Starmight: " .. tostring(jewelData.starmight), KColor(1, 0.75, 0, 1)})
-            else
-                table.insert(tmpDescription, {"Unidentified. Press E to identify and reveal modifiers.", KColor(1, 0.7, 0.7, 1)})
-            end
+            local tmpDescription = PST:SC_getJewelDescription(jewelData)
             drawNodeBox(jewelData.type .. " Starcursed Jewel", tmpDescription, screenW, screenH)
         end
     elseif subMenuPageButtonHovered ~= "" then
@@ -732,22 +763,30 @@ function PST:treeMenuRenderer()
                     sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                     currentTree = "starTree"
                     PST_centerCamera()
-                -- Star Tree: Open Inventories
-                elseif hoveredNode.name == "Azure Inventory" or hoveredNode.name == "Crimson Inventory" or
-                hoveredNode.name == "Viridian Inventory" or hoveredNode.name == "Ancient Inventory" then
-                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+                else
+                    -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do
                         if PST:strStartsWith(hoveredNode.name, tmpType) then
-                            if PST.starcursedInvData.open ~= tmpType then
-                                subMenuPage = 0
-                                PST.starcursedInvData.open = tmpType
-                                PST.starcursedInvData.menuX = hoveredNode.pos.X * 38
-                                PST.starcursedInvData.menuY = hoveredNode.pos.Y * 38
-                                PST.cosmicRData.menuOpen = false
-                            else
-                                PST.starcursedInvData.open = ""
+                            local isSocket = string.match(hoveredNode.name, "Socket")
+                            if (isSocket or string.match(hoveredNode.name, "Inventory") ~= nil) then
+                                if PST.starcursedInvData.open ~= tmpType then
+                                    PST:SC_sortInventory(tmpType)
+                                    subMenuPage = 0
+                                    PST.starcursedInvData.open = tmpType
+                                    if isSocket then
+                                        PST.starcursedInvData.socket = string.sub(hoveredNode.name, -1)
+                                    else
+                                        PST.starcursedInvData.socket = nil
+                                    end
+                                    PST.starcursedInvData.menuX = hoveredNode.pos.X * 38
+                                    PST.starcursedInvData.menuY = hoveredNode.pos.Y * 38
+                                    PST.cosmicRData.menuOpen = false
+                                else
+                                    PST.starcursedInvData.open = ""
+                                end
+                                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                                break
                             end
-                            break
                         end
                     end
                 end
@@ -769,7 +808,7 @@ function PST:treeMenuRenderer()
             else
                 sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
             end
-        -- Starcursed inventory, identify hovered jewel
+        -- Starcursed inventory, identify/equip hovered jewel
         elseif PST.starcursedInvData.hoveredJewel ~= nil then
             local jewelData = PST.starcursedInvData.hoveredJewel
             if jewelData then
@@ -777,6 +816,10 @@ function PST:treeMenuRenderer()
                     sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                     sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                     PST:SC_identifyJewel(PST.starcursedInvData.hoveredJewel)
+                elseif PST.starcursedInvData.socket then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    PST:SC_equipJewel(jewelData, PST.starcursedInvData.socket)
+                    PST.starcursedInvData.open = ""
                 end
             end
         end
@@ -785,27 +828,44 @@ function PST:treeMenuRenderer()
     -- Input: Respec node
     if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
         if hoveredNode ~= nil then
-            if PST:isNodeAllocatable(currentTree, hoveredNode.id, false) then
-                if not PST.debugOptions.infRespec then
-                    PST.modData.respecPoints = PST.modData.respecPoints - 1
-                end
-                if not PST.debugOptions.infSP then
-                    if currentTree == "global" or currentTree == "starTree" then
-                        PST.modData.skillPoints = PST.modData.skillPoints + 1
-                    else
-                        PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
+            -- Check if node is socketed starcursed jewel
+            local isSocketedJewel = false
+            for _, tmpType in pairs(PSTStarcursedType) do
+                if PST:strStartsWith(hoveredNode.name, tmpType .. " Socket") then
+                    local socketID = string.sub(hoveredNode.name, -1)
+                    local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
+                    if socketedJewel and socketedJewel.equipped == socketID then
+                        -- Socketed jewel - unsocket
+                        socketedJewel.equipped = nil
+                        sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        isSocketedJewel = true
+                        break
                     end
                 end
-                PST:allocateNodeID(currentTree, hoveredNode.id, false)
-                sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+            end
+            if not isSocketedJewel then
+                if PST:isNodeAllocatable(currentTree, hoveredNode.id, false) then
+                    if not PST.debugOptions.infRespec then
+                        PST.modData.respecPoints = PST.modData.respecPoints - 1
+                    end
+                    if not PST.debugOptions.infSP then
+                        if currentTree == "global" or currentTree == "starTree" then
+                            PST.modData.skillPoints = PST.modData.skillPoints + 1
+                        else
+                            PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
+                        end
+                    end
+                    PST:allocateNodeID(currentTree, hoveredNode.id, false)
+                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
 
-                -- Respec Cosmic Realignment node
-                if hoveredNode.name == "Cosmic Realignment" then
-                    PST:addModifiers({ cosmicRealignment = false })
-                    PST.cosmicRData.menuOpen = false
+                    -- Respec Cosmic Realignment node
+                    if hoveredNode.name == "Cosmic Realignment" then
+                        PST:addModifiers({ cosmicRealignment = false })
+                        PST.cosmicRData.menuOpen = false
+                    end
+                elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
+                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
-            elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
-                sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
             end
         end
     end
@@ -823,7 +883,6 @@ function PST:treeMenuRenderer()
             end
             PST.cosmicRData.menuOpen = false
             PST.starcursedInvData.open = ""
-            subMenuPage = 0
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
         else
             sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)

@@ -23,6 +23,30 @@ function PST:SC_addJewel(jewelType)
     return newJewel
 end
 
+function PST:SC_getJewelDescription(jewel)
+    local tmpDescription = {}
+    if not jewel.unidentified then
+        for _, modData in pairs(jewel.mods) do
+            table.insert(tmpDescription, {modData.description, KColor(0.88, 1, 1, 1)})
+        end
+        table.insert(tmpDescription, {"Starmight: " .. tostring(jewel.starmight), KColor(1, 0.75, 0, 1)})
+    else
+        table.insert(tmpDescription, {"Unidentified. Press E to identify and reveal modifiers.", KColor(1, 0.7, 0.7, 1)})
+    end
+    return tmpDescription
+end
+
+function PST:SC_getSocketedJewel(jewelType, socketID)
+    if not PST.modData.starTreeInventory[jewelType] then return nil end
+
+    for _, jewel in ipairs(PST.modData.starTreeInventory[jewelType]) do
+        if jewel.equipped == socketID then
+            return jewel
+        end
+    end
+    return nil
+end
+
 -- Add a single random modifier to a jewel, based on rollable modifiers for its type
 ---@param jewel any Jewel originally created with PST:SC_addJewel.
 ---@param exclusive? boolean Whether to check if rolled mod is already on the jewel.
@@ -100,6 +124,24 @@ function PST:SC_identifyJewel(jewel)
 
     jewel.unidentified = false
     return true
+end
+
+function PST:SC_equipJewel(jewel, socketID)
+    local oldJewel = PST:SC_getSocketedJewel(jewel.type, socketID)
+    if oldJewel then
+        oldJewel.equipped = nil
+    end
+    jewel.equipped = socketID
+end
+
+function PST:SC_sortInventory(jewelType)
+    if not PST.modData.starTreeInventory[jewelType] then return end
+
+    table.sort(PST.modData.starTreeInventory[jewelType], function(a, b)
+        if a.equipped ~= nil and b.equipped == nil then return true
+        elseif not a.unidentified and b.unidentified then return true end
+        return false
+    end)
 end
 
 function PST:SC_isStarTreeUnlocked()
