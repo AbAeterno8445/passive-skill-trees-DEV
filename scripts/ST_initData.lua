@@ -568,3 +568,24 @@ function PST:resetData()
 	}
 	PST:resetMods()
 end
+
+-- External Item Descriptions init
+if EID then
+	-- Starcursed jewel trinkets
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Azure Starcursed Jewel"),
+		"Rolls mods that affect monsters' might in a run.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Crimson Starcursed Jewel"),
+		"Rolls mods that affect monsters' defense in a run.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Viridian Starcursed Jewel"),
+		"Rolls mods that can affect a run directly.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Ancient Starcursed Jewel"),
+		"Can feature unique challenge-like run modifiers.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
+end

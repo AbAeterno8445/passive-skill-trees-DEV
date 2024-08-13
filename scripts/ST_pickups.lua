@@ -52,6 +52,43 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
 
+            -- Starcursed jewel pickups
+            if variant == PickupVariant.PICKUP_TRINKET then
+                if subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") then
+                    -- Azure Starcursed Jewel pickup
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                    pickup:Remove()
+                    PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
+                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                    return { Collide = false, SkipCollisionEffects = true }
+                elseif subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") then
+                    -- Crimson Starcursed Jewel pickup
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                    pickup:Remove()
+                    PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
+                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                    return { Collide = false, SkipCollisionEffects = true }
+                elseif subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") then
+                    -- Viridian Starcursed Jewel pickup
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                    pickup:Remove()
+                    PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
+                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                    return { Collide = false, SkipCollisionEffects = true }
+                elseif subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") then
+                    -- Ancient Starcursed Jewel pickup
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                    pickup:Remove()
+                    PST:createFloatTextFX("+ Ancient Starcursed Jewel", Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
+                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
+                    return { Collide = false, SkipCollisionEffects = true }
+                end
+            end
+
             -- Cosmic Realignment node
             local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
