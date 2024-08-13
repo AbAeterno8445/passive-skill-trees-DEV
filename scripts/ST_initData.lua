@@ -502,6 +502,17 @@ function PST:resetMods()
 		charmedHitNegation = 0,
 		charmedHitNegationProc = false,
 		charmExplosions = 0,
+
+		---- STAR TREE ----
+		starmight = 0,
+		azureStarSockets = 0,
+		crimsonStarSockets = 0,
+		viridianStarSockets = 0,
+		ancientStarSockets = 0,
+		azureStarmight = 0, -- TODO
+		crimsonStarmight = 0, -- TODO
+		viridianStarmight = 0, -- TODO
+		ancientStarmight = 0, -- TODO
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

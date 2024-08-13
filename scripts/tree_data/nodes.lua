@@ -312,6 +312,7 @@ end
 include("scripts.tree_data.SkillTreesAPI")
 -- Include base tree node banks
 include("scripts.tree_data.globalTreeBank")
+include("scripts.tree_data.starTreeBank")
 include("scripts.tree_data.isaacTreeBank")
 include("scripts.tree_data.magdaleneTreeBank")
 include("scripts.tree_data.cainTreeBank")

@@ -93,6 +93,12 @@ local function PST_updateCamZoomOffset()
     nodesSprite.Scale.Y = zoomScale
 end
 
+local function PST_centerCamera()
+    treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2)
+    camZoomOffset.X = 0
+    camZoomOffset.Y = 0
+end
+
 function PST:openTreeMenu()
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
@@ -214,8 +220,12 @@ function PST:treeMenuRenderer()
     local skPoints = PST.modData.skillPoints
     local treeName = "Global Tree"
     if currentTree ~= "global" then
-        skPoints = PST.modData.charData[currentTree].skillPoints
-        treeName = currentTree .. "'s Tree"
+        if currentTree == "starTree" then
+            treeName = "Star Tree (" .. PST:getTreeMod("starmight", 0) .. " total starmight)"
+        else
+            skPoints = PST.modData.charData[currentTree].skillPoints
+            treeName = currentTree .. "'s Tree"
+        end
     end
 
     -- Input: Close tree
@@ -470,6 +480,7 @@ function PST:treeMenuRenderer()
 
         local descName = hoveredNode.name
         local tmpDescription = hoveredNode.description
+        local isAllocated = PST:isNodeAllocated(currentTree, hoveredNode.id)
         -- Cosmic Realignment node, show picked character name & curse description
         if hoveredNode.name == "Cosmic Realignment" then
             if type(cosmicRChar) == "number" then
@@ -484,8 +495,12 @@ function PST:treeMenuRenderer()
                 table.insert(tmpDescription, {
                     "Can now get unlocks as if playing as " .. tmpCharName .. ".", KColor(0.85, 0.85, 1, 1)
                 })
-            elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
+            elseif isAllocated then
                 descName = descName .. " (E to pick character)"
+            end
+        elseif hoveredNode.name == "Star Tree" and isAllocated then
+            if currentTree ~= "starTree" then
+                descName = descName .. " (E to view Star Tree)"
             end
         end
         drawNodeBox(descName, tmpDescription or hoveredNode.description, screenW, screenH)
@@ -509,7 +524,7 @@ function PST:treeMenuRenderer()
         if hoveredNode ~= nil then
             if PST:isNodeAllocatable(currentTree, hoveredNode.id, true) then
                 if not PST.debugOptions.infSP then
-                    if currentTree == "global" then
+                    if currentTree == "global" or currentTree == "starTree" then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
                     else
                         PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints - 1
@@ -531,6 +546,12 @@ function PST:treeMenuRenderer()
                     PST.cosmicRData.menuOpen = not PST.cosmicRData.menuOpen
                     PST.cosmicRData.menuX = hoveredNode.pos.X * 38
                     PST.cosmicRData.menuY = hoveredNode.pos.Y * 38
+                -- Star Tree node, switch to star tree view
+                elseif hoveredNode.name == "Star Tree" and currentTree ~= "starTree" then
+                    targetSpaceColor = Color(0, 1, 1, 1)
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    currentTree = "starTree"
+                    PST_centerCamera()
                 end
             end
         -- Cosmic Realignment node, pick hovered character
@@ -561,7 +582,7 @@ function PST:treeMenuRenderer()
                     PST.modData.respecPoints = PST.modData.respecPoints - 1
                 end
                 if not PST.debugOptions.infSP then
-                    if currentTree == "global" then
+                    if currentTree == "global" or currentTree == "starTree" then
                         PST.modData.skillPoints = PST.modData.skillPoints + 1
                     else
                         PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
@@ -760,9 +781,7 @@ function PST:treeMenuRenderer()
 
     -- Input: Center camera
     if PST:isKeybindActive(PSTKeybind.CENTER_CAMERA) then
-        treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2)
-        camZoomOffset.X = 0
-        camZoomOffset.Y = 0
+        PST_centerCamera()
     end
 
     if not totalModsMenuOpen then
