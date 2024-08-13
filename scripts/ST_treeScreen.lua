@@ -2,9 +2,18 @@ include("scripts.tree_data.nodes")
 
 local sfx = SFXManager()
 
+-- Colors
 local colorDarkGrey = Color(0.4, 0.4, 0.4, 1)
 local colorWhite = Color(1, 1, 1, 1)
 local targetSpaceColor = Color(1, 1, 1, 1)
+
+-- Space movement
+local spaceOffPos = Vector.Zero
+local spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
+local spaceOffStep = 0
+local spaceOffTotalSteps = 1000
+
+-- Flashing effects
 local alphaFlash = 1
 local alphaFlashFlip = false
 local flashStep = 0.02
@@ -112,6 +121,8 @@ function PST:openTreeMenu()
     end
 
     targetSpaceColor = Color(1, 1, 1, 1)
+    spaceOffPos = Vector.Zero
+    spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
     treeMenuOpen = true
 end
 
@@ -247,6 +258,17 @@ function PST:treeMenuRenderer()
         treeStarfieldSprite.Color.B = treeStarfieldSprite.Color.B - flashStep
     end
 
+    -- Space background movement
+    if spaceOffStep < spaceOffTotalSteps / 2 then
+        spaceOffPos = spaceOffPos + spaceOffDir * PST:ParametricBlend(spaceOffStep / spaceOffTotalSteps)
+    elseif spaceOffStep < spaceOffTotalSteps then
+        spaceOffPos = spaceOffPos + spaceOffDir * PST:ParametricBlend((spaceOffTotalSteps - spaceOffStep) / spaceOffTotalSteps)
+    else
+        spaceOffStep = 0
+        spaceOffDir = spaceOffDir * -1
+    end
+    spaceOffStep = spaceOffStep + 1
+
     treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
     treeBGSprite:Render(Vector.Zero)
 
@@ -302,14 +324,14 @@ function PST:treeMenuRenderer()
             local yOff = 400 * i * treeSpaceSprite.Scale.Y
             local startX = camCenterX - screenW / 2
             local startY = camCenterY - screenH / 2
-            treeSpaceSprite:Render(Vector(startX * -0.1 + xOff, startY * -0.1 + yOff))
+            treeSpaceSprite:Render(Vector(startX * -0.1 + xOff + spaceOffPos.X * 0.1, startY * -0.1 + yOff + spaceOffPos.Y * 0.1))
 
             if treeStarfieldList[starfieldID] then
                 for _, tmpStarfield in ipairs(treeStarfieldList[starfieldID]) do
                     treeStarfieldSprite:Play(tmpStarfield.sprite)
                     treeStarfieldSprite:Render(Vector(
-                        startX * tmpStarfield.offsetMult + xOff,
-                        startY * tmpStarfield.offsetMult + yOff
+                        startX * tmpStarfield.offsetMult + xOff + spaceOffPos.X * tmpStarfield.offsetMult,
+                        startY * tmpStarfield.offsetMult + yOff + spaceOffPos.Y * tmpStarfield.offsetMult
                     ))
                 end
             end
@@ -851,6 +873,11 @@ function PST:treePauseMenu()
         OptionsMenu.SetSelectedElement(999)
         return false
     end
+end
+
+function PST:ParametricBlend(t)
+    local sqr = t ^ 2
+    return sqr / (2 * (sqr - t) + 1)
 end
 
 PST:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, PST.treeMenuRendering)
