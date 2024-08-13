@@ -649,9 +649,16 @@ function PST:treeMenuRenderer()
             elseif isAllocated then
                 descName = descName .. " (E to pick character)"
             end
-        elseif hoveredNode.name == "Star Tree" and isAllocated then
-            if currentTree ~= "starTree" then
-                descName = descName .. " (E to view Star Tree)"
+        -- Star Tree node
+        elseif hoveredNode.name == "Star Tree" then
+            if isAllocated then
+                if currentTree ~= "starTree" then
+                    descName = descName .. " (E to view Star Tree)"
+                end
+            elseif not PST:SC_isStarTreeUnlocked() then
+                tmpDescription = {
+                    {"Reach level 40 with at least one character to unlock.", KColor(1, 0.6, 0.6, 1)}
+                }
             end
         elseif hoveredNode.name == "Azure Inventory" or hoveredNode.name == "Crimson Inventory" or
         hoveredNode.name == "Viridian Inventory" or hoveredNode.name == "Ancient Inventory" then

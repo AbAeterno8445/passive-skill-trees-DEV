@@ -66,8 +66,8 @@ PST.SCMods = {
         },
         bossRegen = {
             weight = 100,
-            rolls = {{10, 18}, {30, 40}},
-            mightyRolls = {{10, 14}, {6, 7}},
+            rolls = {{10, 18}, {10, 14}},
+            mightyRolls = {{30, 40}, {6, 7}},
             starmightCalc = function(roll, roll2) return 12 + roll / 5 + (16 - roll2) * 2 end,
             description = "Boss monsters regenerate %d HP every %d seconds."
         },

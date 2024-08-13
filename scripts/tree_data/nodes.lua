@@ -215,6 +215,9 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                 end
             end
         end
+        if PST.trees[tree][nodeID].name == "Star Tree" and not PST:SC_isStarTreeUnlocked() then
+            return false
+        end
         return PST.trees[tree][nodeID].available and not PST:isNodeAllocated(tree, nodeID)
     else
         -- Deallocation (e.g. respec)

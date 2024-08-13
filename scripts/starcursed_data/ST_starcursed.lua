@@ -44,7 +44,7 @@ function PST:SC_addModToJewel(jewel, exclusive)
 
     local tmpWeight = math.random(totalWeight)
     local failsafe = 0
-    while tmpWeight > 0 or failsafe < 1000 do
+    while tmpWeight > 0 and failsafe < 1000 do
         for mod, modData in pairs(PST.SCMods[jewel.type]) do
             if not modData.mightyOnly or (modData.mightyOnly and jewel.mighty) then
                 tmpWeight = tmpWeight - modData.weight
@@ -73,7 +73,7 @@ function PST:SC_addModToJewel(jewel, exclusive)
                     table.insert(tmpRolls, roll)
                 end
 
-                jewel.starmight = jewelData.starmightCalc(table.unpack(tmpRolls))
+                jewel.starmight = jewel.starmight + math.ceil(jewelData.starmightCalc(table.unpack(tmpRolls)))
                 jewel.mods[mod].description = string.format(jewelData.description, table.unpack(tmpRolls))
                 jewel.mods[mod].rolls = tmpRolls
                 break
@@ -100,6 +100,16 @@ function PST:SC_identifyJewel(jewel)
 
     jewel.unidentified = false
     return true
+end
+
+function PST:SC_isStarTreeUnlocked()
+    -- Require at least one character at level 40 to unlock star tree
+    for _, charData in pairs(PST.modData.charData) do
+        if charData.level >= 40 then
+            return true
+        end
+    end
+    return false
 end
 
 function PST:SC_wipeInventories()
