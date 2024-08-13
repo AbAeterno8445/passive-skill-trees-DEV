@@ -82,6 +82,11 @@ function PST:load()
 				tmpJson.treeNodes[k] = tmpTreeNodes
 			end
 		end
+		for k, v in pairs(PST.modData.starTreeInventory) do
+			if tmpJson.starTreeInventory[k] == nil then
+				tmpJson.starTreeInventory[k] = v
+			end
+		end
 		-- Load saved config
 		if tmpJson.config then
 			for tmpConfig, configVal in pairs(tmpJson.config) do

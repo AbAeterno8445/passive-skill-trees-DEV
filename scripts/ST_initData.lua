@@ -565,7 +565,12 @@ function PST:resetData()
 		charData = {},
 
 		-- Star Tree
-		starTreeInventory = {},
+		starTreeInventory = {
+			Crimson = {},
+			Azure = {},
+			Viridian = {},
+			Ancient = {}
+		},
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},

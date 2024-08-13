@@ -9,17 +9,17 @@ PSTStarcursedType = {
 }
 
 -- Adds an unidentified starcursed jewel with the given properties to the Star Tree inventory
----@param type PSTStarcursedType Jewel type
-function PST:SC_addJewel(type)
+---@param jewelType PSTStarcursedType Jewel type
+function PST:SC_addJewel(jewelType)
     local newJewel = {
-        type = type,
+        type = jewelType,
         unidentified = true,
         mods = {},
         fading = 0,
         mighty = false,
         starmight = 0
     }
-    table.insert(PST.modData.starTreeInventory, newJewel)
+    table.insert(PST.modData.starTreeInventory[jewelType], newJewel)
     return newJewel
 end
 
@@ -32,7 +32,7 @@ function PST:SC_addModToJewel(jewel, exclusive)
     local totalWeight = 0
     local availableMods = 0
     for mod, modData in pairs(PST.SCMods[jewel.type]) do
-        if jewel.mods[mod] == nil or not exclusive then
+        if (jewel.mods[mod] == nil or not exclusive) and (not modData.mightyOnly or (modData.mightyOnly and jewel.mighty)) then
             totalWeight = totalWeight + modData.weight
             availableMods = availableMods + 1
         end
@@ -43,9 +43,12 @@ function PST:SC_addModToJewel(jewel, exclusive)
     end
 
     local tmpWeight = math.random(totalWeight)
-    while tmpWeight > 0 do
+    local failsafe = 0
+    while tmpWeight > 0 or failsafe < 1000 do
         for mod, modData in pairs(PST.SCMods[jewel.type]) do
-            tmpWeight = tmpWeight - modData.weight
+            if not modData.mightyOnly or (modData.mightyOnly and jewel.mighty) then
+                tmpWeight = tmpWeight - modData.weight
+            end
             if tmpWeight <= 0 then
                 -- Check if rolled mod is already in jewel, restart rolling if so
                 if exclusive then
@@ -74,8 +77,13 @@ function PST:SC_addModToJewel(jewel, exclusive)
                 jewel.mods[mod].description = string.format(jewelData.description, table.unpack(tmpRolls))
                 jewel.mods[mod].rolls = tmpRolls
                 break
+            else
+                failsafe = failsafe + 1
             end
         end
+    end
+    if failsafe >= 1000 then
+        Console.PrintWarning("Passive Skill Trees: warning, reached failsafe while identifying jewel.")
     end
 end
 
@@ -92,4 +100,14 @@ function PST:SC_identifyJewel(jewel)
 
     jewel.unidentified = false
     return true
+end
+
+function PST:SC_wipeInventories()
+    PST.modData.starTreeInventory = {
+        Crimson = {},
+        Azure = {},
+        Viridian = {},
+        Ancient = {}
+    }
+    PST:save()
 end

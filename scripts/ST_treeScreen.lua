@@ -44,6 +44,8 @@ local cursorSprite = Sprite("gfx/ui/cursor.anm2", true)
 cursorSprite.Color.A = 0.7
 cursorSprite:Play("Idle", true)
 
+local SCJewelSprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
+
 local defaultCamX = -Isaac.GetScreenWidth() / 2
 local defaultCamY = -Isaac.GetScreenHeight() / 2
 local treeCamera = Vector(defaultCamX, defaultCamY)
@@ -78,6 +80,18 @@ local treeControlDescController = {
     "Item + Menu tab: enable/disable tree effects next run",
     "Item + Select: display a list of all active modifiers"
 }
+
+-- Starcursed menus
+PST.starcursedInvData = {
+    open = "",
+    menuX = 0,
+    menuY = 0,
+    hoveredJewel = nil
+}
+
+local jewelsPerPage = 25
+local subMenuPage = 0
+local subMenuPageButtonHovered = ""
 
 local debugAvailableUpdate = false
 
@@ -145,6 +159,8 @@ function PST:closeTreeMenu(mute, force)
         sfx:Play(SoundEffect.SOUND_PAPER_OUT)
     end
     PST.cosmicRData.menuOpen = false
+    PST.starcursedInvData.open = ""
+    subMenuPage = 0
     helpOpen = ""
     totalModsMenuOpen = false
     treeMenuOpen = false
@@ -211,6 +227,101 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
         end
         miniFont:DrawString(tmpStr, drawX + 6, drawY + 14 * i, tmpColor)
     end
+end
+
+-- Draw a sub-menu for certain nodes such as Cosmic Realignment and Starcursed inventories
+---@param menuRows number
+---@param centerX number
+---@param centerY number
+---@param menuX number
+---@param menuY number
+---@param title string
+---@param itemDrawFunc function
+---@param pagination? table -- If provided, "prev" and "next" buttons will be drawn. Table can contain prevFunc and nextFunc which will run when clicking the corresponding button.
+function PST:drawNodeSubMenu(menuRows, centerX, centerY, menuX, menuY, title, itemDrawFunc, pagination)
+    -- Draw BG
+    nodeBGSprite.Scale.X = 164
+    nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(menuRows / 5)
+    nodeBGSprite.Color.A = 0.9
+    local tmpBGX = menuX * zoomScale - 84
+    local tmpBGY = menuY * zoomScale + 14
+    nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
+
+    -- Stop node hovering while cursor is in this menu
+    if centerX >= tmpBGX and centerX <= tmpBGX + nodeBGSprite.Scale.X and
+    centerY >= tmpBGY and centerY <= tmpBGY + nodeBGSprite.Scale.Y then
+        hoveredNode = nil
+    end
+
+    Isaac.RenderText(
+        title,
+        menuX * zoomScale - 54 - treeCamera.X - camZoomOffset.X,
+        menuY * zoomScale + 20 - treeCamera.Y - camZoomOffset.Y,
+        1, 1, 1, 1
+    )
+
+    if pagination then
+        local tmpColor = {1, 1, 1, 1}
+        subMenuPageButtonHovered = ""
+
+        -- Prev page button
+        tmpBGX = menuX * zoomScale - 48
+        tmpBGY = tmpBGY + nodeBGSprite.Scale.Y + 1
+        nodeBGSprite.Scale.X = 40
+        nodeBGSprite.Scale.Y = 18
+        if pagination.prevDisabled then
+            tmpColor = {0.5, 0.5, 0.5, 1}
+        end
+        if centerX >= tmpBGX and centerX <= tmpBGX + nodeBGSprite.Scale.X and
+        centerY >= tmpBGY and centerY <= tmpBGY + nodeBGSprite.Scale.Y then
+            hoveredNode = nil
+            subMenuPageButtonHovered = "prev"
+            if not pagination.prevDisabled then
+                tmpColor = {0.8, 0.8, 1, 1}
+                if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) and pagination.prevFunc then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    pagination.prevFunc()
+                end
+            end
+        end
+
+        nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
+        Isaac.RenderText(
+            "Prev",
+            tmpBGX - treeCamera.X - camZoomOffset.X + 8,
+            tmpBGY - treeCamera.Y - camZoomOffset.Y + 3,
+            table.unpack(tmpColor)
+        )
+
+        -- Next page button
+        tmpColor = {1, 1, 1, 1}
+        tmpBGX = menuX * zoomScale
+        if pagination.nextDisabled then
+            tmpColor = {0.5, 0.5, 0.5, 1}
+        end
+        if centerX >= tmpBGX and centerX <= tmpBGX + nodeBGSprite.Scale.X and
+        centerY >= tmpBGY and centerY <= tmpBGY + nodeBGSprite.Scale.Y then
+            hoveredNode = nil
+            subMenuPageButtonHovered = "next"
+            if not pagination.nextDisabled then
+                tmpColor = {0.8, 1, 1, 1}
+                if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) and pagination.nextFunc then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    pagination.nextFunc()
+                end
+            end
+        end
+
+        nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
+        Isaac.RenderText(
+            "Next",
+            tmpBGX - treeCamera.X - camZoomOffset.X + 9,
+            tmpBGY - treeCamera.Y - camZoomOffset.Y + 3,
+            table.unpack(tmpColor)
+        )
+    end
+
+    if itemDrawFunc then itemDrawFunc() end
 end
 
 function PST:treeMenuRenderer()
@@ -418,60 +529,100 @@ function PST:treeMenuRenderer()
 
     -- Draw Cosmic Realignment menu
     PST.cosmicRData.hoveredCharID = nil
+    PST.starcursedInvData.hoveredJewel = nil
     if PST.cosmicRData.menuOpen then
-        -- Draw BG
-        nodeBGSprite.Scale.X = 164
-        nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(#PST.cosmicRData.characters / 5)
-        nodeBGSprite.Color.A = 0.9
-        local tmpBGX = PST.cosmicRData.menuX * zoomScale - 84
-        local tmpBGY = PST.cosmicRData.menuY * zoomScale + 14
-        nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
-
-        -- Stop node hovering while cursor is in this menu
-        if camCenterX >= tmpBGX and camCenterX <= tmpBGX + nodeBGSprite.Scale.X and
-        camCenterY >= tmpBGY and camCenterY <= tmpBGY + nodeBGSprite.Scale.Y then
-            hoveredNode = nil
-        end
-
-        Isaac.RenderText(
+        PST:drawNodeSubMenu(
+            #PST.cosmicRData.characters,
+            camCenterX, camCenterY,
+            PST.cosmicRData.menuX, PST.cosmicRData.menuY,
             "Cosmic Realignment",
-            PST.cosmicRData.menuX * zoomScale - 54 - treeCamera.X - camZoomOffset.X,
-            PST.cosmicRData.menuY * zoomScale + 20 - treeCamera.Y - camZoomOffset.Y,
-            1, 1, 1, 1
+            function()
+                local i = 1
+                for charID, _ in pairs(PST.cosmicRData.characters) do
+                    local charName = PST.charNames[1 + charID]
+                    local charX = PST.cosmicRData.menuX * zoomScale - 64 + ((i - 1) % 5) * 32
+                    local charY = PST.cosmicRData.menuY * zoomScale + 52 + math.floor((i - 1) / 5) * 32
+
+                    -- Hovered
+                    PST.cosmicRData.charSprite.Scale.X = 1
+                    PST.cosmicRData.charSprite.Scale.Y = 1
+                    if camCenterX > charX - 16 and camCenterX < charX + 16 and camCenterY > charY - 16 and camCenterY < charY + 16 then
+                        PST.cosmicRData.hoveredCharID = charID
+                        PST.cosmicRData.charSprite.Color.A = 1
+                        PST.cosmicRData.charSprite:Play("Select", true)
+                        PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+                    else
+                        PST.cosmicRData.charSprite.Color.A = 0.4
+                    end
+
+                    if not PST:cosmicRIsCharUnlocked(charID) then
+                        PST.cosmicRData.lockedCharSprite:Play(charName, true)
+                        PST.cosmicRData.lockedCharSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+
+                        PST.cosmicRData.charSprite.Color.A = 1
+                        PST.cosmicRData.charSprite:Play("Locked", true)
+                        PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+                    else
+                        PST.cosmicRData.charSprite:Play(charName, true)
+                        PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+                    end
+
+                    i = i + 1
+                end
+            end
         )
+    -- Draw Starcursed inventory menus
+    elseif PST.starcursedInvData.open ~= "" then
+        local tmpJewelType = PST.starcursedInvData.open
+        local tmpJewelPages = math.ceil(#PST.modData.starTreeInventory[tmpJewelType] / jewelsPerPage)
+        PST:drawNodeSubMenu(
+            jewelsPerPage, camCenterX, camCenterY,
+            PST.starcursedInvData.menuX, PST.starcursedInvData.menuY,
+            tmpJewelType .. " Inventory",
+            function()
+                -- Draw starcursed jewels
+                for i=1,jewelsPerPage do
+                    local jewelID = i + subMenuPage * jewelsPerPage
+                    local jewelData = PST.modData.starTreeInventory[tmpJewelType][jewelID]
+                    if jewelData then
+                        local jewelX = PST.starcursedInvData.menuX * zoomScale - 64 + ((i - 1) % 5) * 32
+                        local jewelY = PST.starcursedInvData.menuY * zoomScale + 52 + math.floor((i - 1) / 5) * 32
 
-        local i = 1
-        for charID, _ in pairs(PST.cosmicRData.characters) do
-            local charName = PST.charNames[1 + charID]
-            local charX = PST.cosmicRData.menuX * zoomScale - 64 + ((i - 1) % 5) * 32
-            local charY = PST.cosmicRData.menuY * zoomScale + 52 + math.floor((i - 1) / 5) * 32
+                        -- Hovered
+                        if camCenterX > jewelX - 16 and camCenterX < jewelX + 16 and camCenterY > jewelY - 16 and camCenterY < jewelY + 16 then
+                            PST.starcursedInvData.hoveredJewel = jewelData
+                            PST.cosmicRData.charSprite.Color.A = 1
+                            PST.cosmicRData.charSprite:Play("Select", true)
+                            PST.cosmicRData.charSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
+                        else
+                            SCJewelSprite.Color.A = 0.7
+                        end
 
-            -- Hovered
-            PST.cosmicRData.charSprite.Scale.X = 1
-            PST.cosmicRData.charSprite.Scale.Y = 1
-            if camCenterX > charX - 16 and camCenterX < charX + 16 and camCenterY > charY - 16 and camCenterY < charY + 16 then
-                PST.cosmicRData.hoveredCharID = charID
-                PST.cosmicRData.charSprite.Color.A = 1
-                PST.cosmicRData.charSprite:Play("Select", true)
-                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-            else
-                PST.cosmicRData.charSprite.Color.A = 0.4
-            end
+                        SCJewelSprite:Play(tmpJewelType, true)
+                        SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
 
-            if not PST:cosmicRIsCharUnlocked(charID) then
-                PST.cosmicRData.lockedCharSprite:Play(charName, true)
-                PST.cosmicRData.lockedCharSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-
-                PST.cosmicRData.charSprite.Color.A = 1
-                PST.cosmicRData.charSprite:Play("Locked", true)
-                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-            else
-                PST.cosmicRData.charSprite:Play(charName, true)
-                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-            end
-
-            i = i + 1
-        end
+                        if jewelData.unidentified then
+                            SCJewelSprite:Play("Unidentified", true)
+                            SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
+                        end
+                    end
+                end
+            end,
+            {
+                prevFunc = function()
+                    if subMenuPage > 0 then subMenuPage = subMenuPage - 1 end
+                end,
+                prevDisabled = subMenuPage == 0,
+                nextFunc = function()
+                    if subMenuPage < tmpJewelPages - 1 then
+                        subMenuPage = subMenuPage + 1
+                    end
+                end,
+                nextDisabled = subMenuPage >= tmpJewelPages - 1
+            }
+        )
+    else
+        subMenuPageButtonHovered = ""
     end
 
     -- Cursor and node description
@@ -502,6 +653,9 @@ function PST:treeMenuRenderer()
             if currentTree ~= "starTree" then
                 descName = descName .. " (E to view Star Tree)"
             end
+        elseif hoveredNode.name == "Azure Inventory" or hoveredNode.name == "Crimson Inventory" or
+        hoveredNode.name == "Viridian Inventory" or hoveredNode.name == "Ancient Inventory" then
+            descName = descName .. " (E to open/close inventory)"
         end
         drawNodeBox(descName, tmpDescription or hoveredNode.description, screenW, screenH)
     -- Cosmic Realignment node, hovered character name & curse description
@@ -514,6 +668,25 @@ function PST:treeMenuRenderer()
             tmpDescription = PST.cosmicRData.characters[charID].curseDesc
         end
         drawNodeBox(PST.charNames[1 + charID], tmpDescription, screenW, screenH)
+    -- Starcursed inventory, hovered jewel data
+    elseif PST.starcursedInvData.hoveredJewel ~= nil then
+        cursorSprite:Play("Clicked")
+
+        local jewelData = PST.starcursedInvData.hoveredJewel
+        if jewelData then
+            local tmpDescription = {}
+            if not jewelData.unidentified then
+                for _, modData in pairs(jewelData.mods) do
+                    table.insert(tmpDescription, {modData.description, KColor(0.88, 1, 1, 1)})
+                end
+                table.insert(tmpDescription, {"Starmight: " .. tostring(jewelData.starmight), KColor(1, 0.75, 0, 1)})
+            else
+                table.insert(tmpDescription, {"Unidentified. Press E to identify and reveal modifiers.", KColor(1, 0.7, 0.7, 1)})
+            end
+            drawNodeBox(jewelData.type .. " Starcursed Jewel", tmpDescription, screenW, screenH)
+        end
+    elseif subMenuPageButtonHovered ~= "" then
+        cursorSprite:Play("Clicked")
     else
         cursorSprite:Play("Idle")
     end
@@ -552,6 +725,24 @@ function PST:treeMenuRenderer()
                     sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                     currentTree = "starTree"
                     PST_centerCamera()
+                -- Star Tree: Open Inventories
+                elseif hoveredNode.name == "Azure Inventory" or hoveredNode.name == "Crimson Inventory" or
+                hoveredNode.name == "Viridian Inventory" or hoveredNode.name == "Ancient Inventory" then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+                    for _, tmpType in pairs(PSTStarcursedType) do
+                        if PST:strStartsWith(hoveredNode.name, tmpType) then
+                            if PST.starcursedInvData.open ~= tmpType then
+                                subMenuPage = 0
+                                PST.starcursedInvData.open = tmpType
+                                PST.starcursedInvData.menuX = hoveredNode.pos.X * 38
+                                PST.starcursedInvData.menuY = hoveredNode.pos.Y * 38
+                                PST.cosmicRData.menuOpen = false
+                            else
+                                PST.starcursedInvData.open = ""
+                            end
+                            break
+                        end
+                    end
                 end
             end
         -- Cosmic Realignment node, pick hovered character
@@ -570,6 +761,16 @@ function PST:treeMenuRenderer()
                 PST.cosmicRData.menuOpen = false
             else
                 sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+            end
+        -- Starcursed inventory, identify hovered jewel
+        elseif PST.starcursedInvData.hoveredJewel ~= nil then
+            local jewelData = PST.starcursedInvData.hoveredJewel
+            if jewelData then
+                if jewelData.unidentified then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                    PST:SC_identifyJewel(PST.starcursedInvData.hoveredJewel)
+                end
             end
         end
     end
@@ -614,6 +815,8 @@ function PST:treeMenuRenderer()
                 targetSpaceColor = Color(1, 1, 1, 1)
             end
             PST.cosmicRData.menuOpen = false
+            PST.starcursedInvData.open = ""
+            subMenuPage = 0
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
         else
             sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
