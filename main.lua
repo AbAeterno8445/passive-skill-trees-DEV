@@ -178,6 +178,7 @@ include("scripts.ST_shops")
 include("scripts.ST_cardsPills")
 include("scripts.ST_inputs")
 include("scripts.ST_gridEntities")
+include("scripts.starcursed_data.ST_starcursed")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.onExitGame)

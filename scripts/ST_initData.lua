@@ -241,6 +241,8 @@ function PST:resetMods()
 			TForgottenTracker = { soul = false, bone = false, keeperCoin = false, keeperHeal = false },
 			TBethanyDeadWisps = 0
 		},
+
+		---- CHARACTER TREE MODS ----
         ---- Isaac's tree ----
         isaacBlessing = 0, -- Mom Heart Proc
         magicDie = false,
@@ -561,6 +563,9 @@ function PST:resetData()
 		-- Completion tracker for Cosmic Realignment unlocks
 		cosmicRCompletions = { [0] = {} },
 		charData = {},
+
+		-- Star Tree
+		starTreeInventory = {},
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},
