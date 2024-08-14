@@ -93,8 +93,12 @@ function PST:SC_addModToJewel(jewel, exclusive)
                     rollTable = jewelData.mightyRolls
                 end
                 for _, rollRange in ipairs(rollTable) do
-                    local roll = rollRange[1] + (math.random(math.abs(rollRange[2] - rollRange[1] + 1) - 1))
-                    table.insert(tmpRolls, roll)
+                    if type(rollRange) == "table" then
+                        local roll = rollRange[1] + (math.random(math.abs(rollRange[2] - rollRange[1] + 1) - 1))
+                        table.insert(tmpRolls, roll)
+                    else
+                        table.insert(tmpRolls, rollRange)
+                    end
                 end
 
                 jewel.starmight = jewel.starmight + math.ceil(jewelData.starmightCalc(table.unpack(tmpRolls)))

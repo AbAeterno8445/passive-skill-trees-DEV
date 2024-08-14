@@ -1,10 +1,13 @@
 -- 'Conflict functions' run when a modifier is present on more than 1 equipped jewel, and determine what to do for the total value for each roll when considering all equipped jewels
 local conflictFuncs = {
-    simpleSum = function(roll1, targetRoll1)
-        return roll1 + targetRoll1
+    simpleSum = function(roll, targetRoll)
+        return roll + targetRoll
     end,
-    lowest = function(roll1, targetRoll1)
-        return math.min(roll1, targetRoll1)
+    lowest = function(roll, targetRoll)
+        return math.min(roll, targetRoll)
+    end,
+    highest = function(roll, targetRoll)
+        return math.max(roll, targetRoll)
     end
 }
 
@@ -120,6 +123,96 @@ PST.SCMods = {
             mightyOnly = true,
             starmightCalc = function() return 40 end,
             description = "Monsters receive no damage for 3 seconds every 10 seconds."
+        }
+    },
+    Azure = {
+        mobTurnChampion = { -- TODO
+            weight = 100,
+            rolls = {{15, 25}},
+            mightyRolls = {{35, 50}},
+            starmightCalc = function(roll) return 10 + (roll - 10) end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Normal monsters have a %d%% chance to become champions when entering a room."
+        },
+        mobExtraHitDmg = { -- TODO
+            weight = 100,
+            rolls = {{5, 9}},
+            mightyRolls = {{12, 18}},
+            starmightCalc = function(roll) return 9 + roll * 1.2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Normal non-champion monsters have a %d%% chance to deal an additional 1/2 heart damage when hitting."
+        },
+        champExtraHitDmg = { -- TODO
+            weight = 100,
+            rolls = {{8, 12}},
+            mightyRolls = {{15, 18}},
+            starmightCalc = function(roll) return 10 + roll end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Champion monsters have a %d%% chance to deal an additional 1/2 heart damage when hitting."
+        },
+        bossExtraHitDmg = { -- TODO
+            weight = 100,
+            rolls = {{10, 15}},
+            mightyRolls = {{20, 25}},
+            starmightCalc = function(roll) return 15 + roll * 1.2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Boss monsters have a %d%% chance to deal an additional 1/2 heart damage when hitting."
+        },
+        soulHeartsOnHit = { -- TODO
+            weight = 100,
+            rolls = {{7, 12}},
+            mightyRolls = {{15, 20}},
+            starmightCalc = function(roll) return 8 + (roll - 5) * 1.3 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Monsters have a %d%% chance to remove 1/2 soul hearts when hitting players."
+        },
+        blackHeartsOnHit = { -- TODO
+            weight = 100,
+            rolls = {{7, 12}},
+            mightyRolls = {{15, 20}},
+            starmightCalc = function(roll) return 10 + (roll - 5) * 1.3 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Monsters have a %d%% chance to remove 1/2 black hearts when hitting players."
+        },
+        hoveringTearsOnDeath = { -- TODO - test that rolls without ranges (single numbers) work
+            weight = 100,
+            rolls = {1, {3, 4}},
+            mightyRolls = {3, 7},
+            starmightCalc = function (roll, roll2) return 7 + roll * 3 + roll2 * 2 end,
+            onConflict = {conflictFuncs.highest, conflictFuncs.simpleSum},
+            description = "Non-boss monsters spawn %d static hovering tear(s) on death that last %d seconds."
+        },
+        mobDuplicate = { -- TODO
+            weight = 100,
+            rolls = {{4, 8}},
+            mightyRolls = {{12, 16}},
+            starmightCalc = function(roll) return 10 + (roll - 3) * 2.5 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Non-boss monsters have a %d%% chance of being duplicated when entering a room."
+        },
+        mobSlowOnHit = { -- TODO
+            weight = 100,
+            rolls = {{10, 15}},
+            mightyRolls = {{20, 30}},
+            starmightCalc = function(roll) return 9 + (roll - 8) * 1.2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Monsters have a %d%% chance to slow you on hit for 2 seconds."
+        },
+        mobReduceDmgOnHit = { -- TODO
+            weight = 100,
+            rolls = {{10, 15}},
+            mightyRolls = {{20, 30}},
+            starmightCalc = function(roll) return 10 + (roll - 8) * 1.2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Monsters have a %d%% chance on hit to reduce your damage by 20% for 3 seconds."
+        },
+        roomMobExtraDmgOnHit = { -- TODO
+            weight = 100,
+            rolls = {{1, 2}},
+            mightyOnly = true,
+            starmightCalc = function(roll) return 30 + roll * 8 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "When you get hit by a monster, the next %d hits in the room will deal an additional 1/2 heart damage."
         }
     }
 }

@@ -19,9 +19,6 @@ function PST:onNewRoom()
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpEntity:IsActiveEnemy(false) then
-				if 100 * math.random() < 40 then
-					tmpNPC:MakeChampion(Random() + 1)
-				end
 				local tmpHPMod = 0
 				local tmpHPMult = 1
 				if not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
