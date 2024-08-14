@@ -189,7 +189,7 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
         if type(tmpStr) == "table" then
             tmpStr = description[i][1]
         end
-        if string.len(tmpStr) > string.len(longestStr) then
+        if tmpStr and string.len(tmpStr) > string.len(longestStr) then
             longestStr = tmpStr
         end
     end
@@ -495,10 +495,14 @@ function PST:treeMenuRenderer()
         local nodeY = node.pos.Y * 38 * zoomScale
 
         if node.available then
-            nodesSprite:SetFrame("Available " .. node.size, 0)
-            nodesSprite.Color = colorDarkGrey
-            nodesSprite.Color.A = alphaFlash
-            nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            local hasSP = ((currentTree == "global" or currentTree == "starTree") and PST.modData.skillPoints > 0) or
+                (PST.modData.charData[currentTree] and PST.modData.charData[currentTree].skillPoints > 0)
+            if hasSP then
+                nodesSprite:SetFrame("Available " .. node.size, 0)
+                nodesSprite.Color = colorDarkGrey
+                nodesSprite.Color.A = alphaFlash
+                nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            end
         end
 
         nodesSprite:SetFrame("Default", node.sprite)
