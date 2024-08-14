@@ -10,7 +10,7 @@ end
 function PST:initUnknownChar(charName, tainted)
 	local tmpName = charName
 	if tainted then
-		tmpName = "T. " + charName
+		tmpName = "T. " .. charName
 	end
 	if PST.charNames[1 + Isaac.GetPlayerTypeByName(charName, tainted)] == nil then
 		PST.charNames[1 + Isaac.GetPlayerTypeByName(charName, tainted)] = tmpName
