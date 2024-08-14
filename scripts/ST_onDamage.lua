@@ -140,6 +140,49 @@ function PST:onDamage(target, damage, flag, source)
         local tmpPlayer = Isaac.GetPlayer()
         local dmgMult = 1
 
+        -- Starcursed modifiers
+        if target:IsActiveEnemy(false) then
+            -- Damage reduction
+            local tmpMod = PST:SC_getSnapshotMod("mobDmgReduction", 0)
+            dmgMult = dmgMult - tmpMod / 100
+
+            -- Damage blocking
+            local blockedDamage = false
+            tmpMod = PST:SC_getSnapshotMod("mobBlock", 0)
+            if 100 * math.random() < tmpMod then
+                blockedDamage = true
+            end
+
+            -- First hits blocked
+            tmpMod = PST:SC_getSnapshotMod("mobFirstBlock", 0)
+            if tmpMod > 0 and target.InitSeed then
+                if not PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] then
+                    PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] = 0
+                end
+                if PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] < tmpMod then
+                    PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] = PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] + 1
+                    blockedDamage = true
+                end
+            end
+
+            -- One-shot protection: if the first and only hit this mob ever receives would've killed it, prevent damage and set its health to 10%
+            tmpMod = PST:SC_getSnapshotMod("mobOneShotProt", nil)
+            if tmpMod ~= nil then
+                if target.InitSeed and not PST.specialNodes.oneShotProtectedMobs[target.InitSeed] then
+                    PST.specialNodes.oneShotProtectedMobs[target.InitSeed] = true
+                    if target.HitPoints <= damage * dmgMult then
+                        target.HitPoints = target.MaxHitPoints * 0.1
+                        blockedDamage = true
+                    end
+                end
+            end
+
+            if blockedDamage or PST.specialNodes.mobPeriodicShield then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
+                return { Damage = 0 }
+            end
+        end
+
         if target:IsBoss() then
             -- Mod: chance for Book of Belial to gain a charge when hitting a boss
             local tmpBookSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
@@ -376,7 +419,7 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        return { Damage = damage * math.max(0, dmgMult) }
+        return { Damage = damage * math.max(0.01, dmgMult) }
     end
 end
 

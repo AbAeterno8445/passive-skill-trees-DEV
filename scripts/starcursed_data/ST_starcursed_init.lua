@@ -15,7 +15,7 @@ PST.SCMods = {
             weight = 100,
             rolls = {{3, 10}},
             mightyRolls = {{20, 30}},
-            starmightCalc = function(roll) return 5 + roll / 2 end,
+            starmightCalc = function(roll) return 8 + roll end,
             onConflict = {conflictFuncs.simpleSum},
             description = "Normal monsters have an additional %d HP."
         },
@@ -103,7 +103,7 @@ PST.SCMods = {
             weight = 100,
             rolls = {},
             mightyRolls = {},
-            starmightCalc = function() return 20 end,
+            starmightCalc = function() return 18 end,
             description = "Monsters have one-shot protection."
         },
         mobFirstBlock = {

@@ -229,12 +229,16 @@ function PST:SC_isStarTreeUnlocked()
     return false
 end
 
--- Get starcursed mod from current run snapshot
+-- Get starcursed mod from current run snapshot.
+-- Mods with a single roll return it directly. Mods that feature multiple rolls return a table {roll1, roll2, ...}
 function PST:SC_getSnapshotMod(modName, default)
     local starcursedMods = PST:getTreeSnapshotMod("starcursedMods", nil)
     if starcursedMods then
-        if starcursedMods[default] == nil then return default end
-        return starcursedMods[modName]
+        if starcursedMods[modName] == nil then return default end
+        if #starcursedMods[modName].rolls == 1 then
+            return starcursedMods[modName].rolls[1]
+        end
+        return starcursedMods[modName].rolls
     end
     return default
 end

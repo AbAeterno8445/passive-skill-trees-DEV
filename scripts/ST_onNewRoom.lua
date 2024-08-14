@@ -6,10 +6,41 @@ function PST:onNewRoom()
 	PST.specialNodes.bossHits = 0
 	PST.specialNodes.bossRoomHitsFrom = 0
 	PST.specialNodes.forgottenMeleeTearBuff = 0
+	PST.specialNodes.oneShotProtectedMobs = {}
+	PST.specialNodes.mobFirstHitsBlocked = {}
+	PST.specialNodes.mobPeriodicShield = false
 	floatingTexts = {}
 
 	local player = Isaac.GetPlayer()
 	local room = Game():GetRoom()
+
+	-- Starcursed modifiers
+	if room:GetAliveEnemiesCount() > 0 then
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpEntity:IsActiveEnemy(false) then
+				if 100 * math.random() < 40 then
+					tmpNPC:MakeChampion(Random() + 1)
+				end
+				local tmpHPMod = 0
+				local tmpHPMult = 1
+				if not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
+					tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
+					tmpHPMult = tmpHPMult + PST:SC_getSnapshotMod("mobHPPerc", 0) / 100
+				else
+					if tmpNPC:IsChampion() then
+						tmpHPMult = tmpHPMult + PST:SC_getSnapshotMod("champHPPerc", 0) / 100
+					end
+					if tmpNPC:IsBoss() then
+						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
+						tmpHPMult = tmpHPMult + PST:SC_getSnapshotMod("bossHPPerc", 0) / 100
+					end
+				end
+				tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod) * tmpHPMult
+				tmpEntity.HitPoints = tmpEntity.MaxHitPoints
+			end
+		end
+	end
 
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)

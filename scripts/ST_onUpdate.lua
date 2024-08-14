@@ -144,6 +144,75 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Starcursed mod: monster status cleanse every X seconds
+	local tmpMod = PST:SC_getSnapshotMod("statusCleanse", 0)
+	if tmpMod > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) then
+				tmpNPC:RemoveStatusEffects()
+				tmpNPC:SetColor(Color(0.5, 0.8, 1, 1), 30, 1, true, false)
+			end
+		end
+	end
+	-- Starcursed mod: normal monsters regen X HP every Y seconds
+	tmpMod = PST:SC_getSnapshotMod("mobRegen", {0, 0})
+	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() then
+				tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpMod[1])
+				tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
+			end
+		end
+	end
+	-- Starcursed mod: boss monsters regen X HP every Y seconds
+	tmpMod = PST:SC_getSnapshotMod("bossRegen", {0, 0})
+	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() then
+				tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpMod[1])
+				tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
+			end
+		end
+	end
+	-- Starcursed mod: champions heal 15% HP to nearby non-champion monsters every X seconds
+	tmpMod = PST:SC_getSnapshotMod("championHealers", {0, 0})
+	if tmpMod > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
+		local tmpEntities = Isaac.GetRoomEntities()
+		local tmpChamps = {}
+		for _, tmpEntity in ipairs(tmpEntities) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsChampion() then
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpNPC.Position, Vector.Zero, nil, 1, Random() + 1)
+				table.insert(tmpChamps, tmpNPC)
+			end
+		end
+		for _, tmpEntity in ipairs(tmpEntities) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsChampion() then
+				for _, tmpChamp in ipairs(tmpChamps) do
+					local dist = math.sqrt((tmpNPC.Position.X - tmpChamp.Position.X)^2 + (tmpNPC.Position.Y - tmpChamp.Position.Y)^2)
+					if dist <= 80 then
+						tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpNPC.MaxHitPoints * 0.15)
+						tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
+						break
+					end
+				end
+			end
+		end
+	end
+	-- Starcursed mod: monsters receive no damage for 3 seconds every 10 seconds
+	tmpMod = PST:SC_getSnapshotMod("mobPeriodicShield", nil)
+	if tmpMod ~= nil then
+		if room:GetFrameCount() % 300 >= 150 and room:GetFrameCount() % 300 <= 240 then
+			PST.specialNodes.mobPeriodicShield = true
+		else
+			PST.specialNodes.mobPeriodicShield = false
+		end
+	end
+
 	-- Fickle Fortune node (Cain's tree)
 	if PST:getTreeSnapshotMod("fickleFortune", false) then
 		-- +7% luck while holding a trinket
