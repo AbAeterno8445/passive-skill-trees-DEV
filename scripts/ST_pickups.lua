@@ -208,7 +208,7 @@ function PST:onPickup(pickup, collider, low)
     local variant = pickup.Variant
     local subtype = pickup.SubType
 
-    if player ~= nil then
+    if player ~= nil and not pickup:IsShopItem() then
         if variant == PickupVariant.PICKUP_COIN then
             local coinChance = PST:getTreeSnapshotMod("coinDupe", 0)
             if coinChance > 0 and 100 * math.random() < coinChance then
