@@ -79,6 +79,21 @@ function PST:onNewRun(isContinued)
         tmpMod = PST:SC_getSnapshotMod("lessLuck", 0)
         if tmpMod ~= 0 then tmpSCMods["luck"] = -tmpMod end
 
+        -- Equipped ancient starcursed jewels
+        for i=1,2 do
+            local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
+            if ancientJewel and ancientJewel.rewards then
+                tmpMod = ancientJewel.rewards.xpgain
+                if tmpMod and tmpMod ~= 0 then
+                    local tmpMult = 1
+                    if ancientJewel.rewards.halveXPFirstFloor then
+                        tmpMult = 0.5
+                    end
+                    tmpSCMods["xpgain"] = tmpMod * tmpMult
+                end
+            end
+        end
+
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)
         end
@@ -86,6 +101,12 @@ function PST:onNewRun(isContinued)
 
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
     PST:save()
+
+    -- Reset specialNodes that might be left over
+    PST.specialNodes.SC_circadianSpawnTime = 0
+    PST.specialNodes.SC_circadianSpawnProc = false
+    PST.specialNodes.SC_circadianStatsDown = 0
+    PST.specialNodes.SC_circadianExplImmune = 0
 
     local itemPool = Game():GetItemPool()
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B

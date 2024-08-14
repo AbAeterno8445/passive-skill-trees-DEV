@@ -1044,7 +1044,9 @@ function PST:treeMenuRenderer()
                 table.insert(totalModsList, "")
                 table.insert(totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
                 for _, modData in pairs(starcursedTotalMods.totalMods) do
-                    table.insert(totalModsList, {modData.description, starTreeModsColor})
+                    if type(modData) == "table" then
+                        table.insert(totalModsList, {modData.description, starTreeModsColor})
+                    end
                 end
                 -- Starmight
                 table.insert(totalModsList, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})

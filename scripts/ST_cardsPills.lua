@@ -50,6 +50,16 @@ function PST:onUseCard(card, player, useFlags)
     if card == Card.CARD_HUMANITY then
         PST:addModifiers({ cardAgainstHumanityProc = true }, true)
     end
+
+    -- Ancient starcursed jewel: Circadian Destructor
+    if PST:SC_getSnapshotMod("circadianDestructor", false) and card == Card.CARD_TOWER then
+        if PST.specialNodes.SC_circadianStatsDown > 0 then
+            PST:addModifiers({ allstatsPerc = PST.specialNodes.SC_circadianStatsDown }, true)
+            PST.specialNodes.SC_circadianStatsDown = 0
+        end
+        PST.specialNodes.SC_circadianSpawnProc = false
+        PST.specialNodes.SC_circadianExplImmune = 120
+    end
 end
 
 function PST:onPillEffect(effect, pillColor)

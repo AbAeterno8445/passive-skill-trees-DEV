@@ -312,7 +312,8 @@ PST.SCAncients = {
         description = {
             "Every 48 seconds, spawn XVI - The Tower if you're in a room with monsters.",
             "Card spawning pauses until you use the card.",
-            "Once XVI - The Tower spawns, -1% all stats every second until you use the card, up to -20%."
+            "Once XVI - The Tower spawns, -1% all stats every second until you use the card, up to -20%.",
+            "When you use XVI - The Tower, monsters become immune to explosions for 4 seconds."
         },
         rewards = {
             xpgain = 70,

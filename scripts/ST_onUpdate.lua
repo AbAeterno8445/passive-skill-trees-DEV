@@ -220,6 +220,25 @@ function PST:onUpdate()
 			PST:addModifiers({ damagePerc = 20 }, true)
 		end
 	end
+	-- Ancient starcursed jewel: Circadian Destructor
+	if PST:SC_getSnapshotMod("circadianDestructor", false) then
+		if not PST.specialNodes.SC_circadianSpawnProc then
+			PST.specialNodes.SC_circadianSpawnTime = PST.specialNodes.SC_circadianSpawnTime + 1
+			if PST.specialNodes.SC_circadianSpawnTime >= 1440 then
+				if room:GetAliveEnemiesCount() > 0 then
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, player.Position, Vector.Zero, nil, Card.CARD_TOWER, Random() + 1)
+					PST.specialNodes.SC_circadianSpawnProc = true
+				end
+				PST.specialNodes.SC_circadianSpawnTime = 0
+			end
+		elseif room:GetFrameCount() % 30 == 0 and PST.specialNodes.SC_circadianStatsDown < 20 then
+			PST:addModifiers({ allstatsPerc = -1 }, true)
+			PST.specialNodes.SC_circadianStatsDown = PST.specialNodes.SC_circadianStatsDown + 1
+		end
+		if PST.specialNodes.SC_circadianExplImmune > 0 then
+			PST.specialNodes.SC_circadianExplImmune = PST.specialNodes.SC_circadianExplImmune - 1
+		end
+	end
 
 	-- Fickle Fortune node (Cain's tree)
 	if PST:getTreeSnapshotMod("fickleFortune", false) then

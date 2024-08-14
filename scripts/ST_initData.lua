@@ -540,7 +540,12 @@ function PST:resetMods()
 		mobFirstHitsBlocked = {},
 		mobPeriodicShield = false,
 		mobHitReduceDmg = 0,
-		mobHitRoomExtraDmg = { hits = 0, proc = false }
+		mobHitRoomExtraDmg = { hits = 0, proc = false },
+
+		SC_circadianSpawnTime = 0,
+		SC_circadianSpawnProc = false,
+		SC_circadianStatsDown = 0,
+		SC_circadianExplImmune = 0
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

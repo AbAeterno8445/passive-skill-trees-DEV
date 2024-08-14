@@ -243,6 +243,11 @@ function PST:onDamage(target, damage, flag, source)
                 end
             end
 
+            -- Ancient starcursed jewel: Circadian destructor - explosion immunity
+            if PST.specialNodes.SC_circadianExplImmune > 0 and flag & DamageFlag.DAMAGE_EXPLOSION then
+                blockedDamage = true
+            end
+
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
                 return { Damage = 0 }
