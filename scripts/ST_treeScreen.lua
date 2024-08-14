@@ -90,6 +90,11 @@ PST.starcursedInvData = {
     hoveredJewel = nil
 }
 
+local starcursedTotalMods = nil
+function PST:updateStarTreeTotals()
+    starcursedTotalMods = PST:SC_getTotalJewelMods()
+end
+
 local jewelsPerPage = 25
 local subMenuPage = 0
 local subMenuPageButtonHovered = ""
@@ -332,7 +337,11 @@ function PST:treeMenuRenderer()
     local treeName = "Global Tree"
     if currentTree ~= "global" then
         if currentTree == "starTree" then
-            treeName = "Star Tree (" .. PST:getTreeMod("starmight", 0) .. " total starmight)"
+            local tmpStarmight = 0
+            if starcursedTotalMods then
+                tmpStarmight = starcursedTotalMods.totalStarmight
+            end
+            treeName = "Star Tree (" .. tmpStarmight .. " total starmight)"
         else
             skPoints = PST.modData.charData[currentTree].skillPoints
             treeName = currentTree .. "'s Tree"
@@ -814,11 +823,12 @@ function PST:treeMenuRenderer()
             if jewelData then
                 if jewelData.unidentified then
                     sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
-                    sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                    sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
                     PST:SC_identifyJewel(PST.starcursedInvData.hoveredJewel)
                 elseif PST.starcursedInvData.socket then
                     sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                     PST:SC_equipJewel(jewelData, PST.starcursedInvData.socket)
+                    PST:updateStarTreeTotals()
                     PST.starcursedInvData.open = ""
                 end
             end
@@ -837,7 +847,8 @@ function PST:treeMenuRenderer()
                     if socketedJewel and socketedJewel.equipped == socketID then
                         -- Socketed jewel - unsocket
                         socketedJewel.equipped = nil
-                        sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
+                        PST:updateStarTreeTotals()
                         isSocketedJewel = true
                         break
                     end
@@ -1000,7 +1011,7 @@ function PST:treeMenuRenderer()
                             tmpStr = string.format(tmpLine, tmpModVal, tmpModVal, tmpModVal)
                         end
                         -- Harmonic modifiers, check if disabled
-                        if PST:strStartsWith(tmpLine, "   [Harmonic]") and PST:songNodesAllocated() > 2 then
+                        if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
                             tmpColor = KColor(0.5, 0.5, 0.5, 1)
                         end
                         table.insert(totalModsList, {tmpStr, tmpColor})
@@ -1020,9 +1031,20 @@ function PST:treeMenuRenderer()
                 end
             end
 
+            -- Star tree mods for description table
+            if starcursedTotalMods and next(starcursedTotalMods.totalMods) ~= nil then
+                local starTreeModsColor = KColor(1, 0.8, 0.2, 1)
+                table.insert(totalModsList, "")
+                table.insert(totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
+                for _, modData in pairs(starcursedTotalMods.totalMods) do
+                    table.insert(totalModsList, {modData.description, starTreeModsColor})
+                end
+                table.insert(totalModsList, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
+            end
+
             -- Add Cosmic Realignment mod to description table
             if type(cosmicRChar) == "number" then
-                local tmpCharName = PST.charNames[1 + cosmicRChar]
+                tmpCharName = PST.charNames[1 + cosmicRChar]
                 table.insert(totalModsList, "")
                 table.insert(totalModsList, {
                     "Cosmic Realignment (" .. tmpCharName .. ")",
@@ -1098,6 +1120,7 @@ function PST:treeMenuRendering()
     if not firstRender then
         firstRender = true
         PST:firstRenderInit()
+        PST:updateStarTreeTotals()
 
         if not Isaac.IsInGame() then
             -- Reset input mask if restarting

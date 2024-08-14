@@ -82,8 +82,8 @@ function PST:SC_addModToJewel(jewel, exclusive)
                             break
                         end
                     end
+                    if tmpWeight > 0 then break end
                 end
-
                 local jewelData = PST.SCMods[jewel.type][mod]
 
                 jewel.mods[mod] = {}
@@ -107,7 +107,7 @@ function PST:SC_addModToJewel(jewel, exclusive)
         end
     end
     if failsafe >= 1000 then
-        Console.PrintWarning("Passive Skill Trees: warning, reached failsafe while identifying jewel.")
+        Console.PrintWarning("Passive Skill Trees: warning, reached failsafe while identifying jewel!")
     end
 end
 
@@ -126,12 +126,49 @@ function PST:SC_identifyJewel(jewel)
     return true
 end
 
+-- Generate a list of total modifiers from all equipped jewels
+-- Returns a table { totalMods, totalStarmight }
+function PST:SC_getTotalJewelMods()
+    local tmpMods = {}
+    local tmpStarmight = 0
+    for _, tmpType in pairs(PSTStarcursedType) do
+        for _, jewel in ipairs(PST.modData.starTreeInventory[tmpType]) do
+            -- Equipped jewel
+            if jewel.equipped ~= nil then
+                -- Get mods and handle mod conflicts (identical mods)
+                for mod, modData in pairs(jewel.mods) do
+                    if tmpMods[mod] == nil then
+                        tmpMods[mod] = {
+                            rolls = {},
+                            description = modData.description
+                        }
+                        for _, tmpRoll in ipairs(modData.rolls) do
+                            table.insert(tmpMods[mod].rolls, tmpRoll)
+                        end
+                    else
+                        for i, tmpRoll in ipairs(modData.rolls) do
+                            local conflictFunc = PST.SCMods[tmpType][mod].onConflict[i]
+                            if conflictFunc then
+                                tmpMods[mod].rolls[i] = conflictFunc(tmpRoll, tmpMods[mod].rolls[i])
+                            end
+                        end
+                        tmpMods[mod].description = string.format(PST.SCMods[tmpType][mod].description, table.unpack(tmpMods[mod].rolls))
+                    end
+                end
+                tmpStarmight = tmpStarmight + jewel.starmight
+            end
+        end
+    end
+    return { totalMods = tmpMods, totalStarmight = tmpStarmight }
+end
+
 function PST:SC_equipJewel(jewel, socketID)
     local oldJewel = PST:SC_getSocketedJewel(jewel.type, socketID)
     if oldJewel then
         oldJewel.equipped = nil
     end
     jewel.equipped = socketID
+    PST:save()
 end
 
 function PST:SC_sortInventory(jewelType)
@@ -140,6 +177,9 @@ function PST:SC_sortInventory(jewelType)
     table.sort(PST.modData.starTreeInventory[jewelType], function(a, b)
         if a.equipped ~= nil and b.equipped == nil then return true
         elseif not a.unidentified and b.unidentified then return true end
+        if not a.unidentified and not a.equipped and not b.unidentified and not b.equipped then
+            return a.starmight > b.starmight and b.starmight <= a.starmight
+        end
         return false
     end)
 end
@@ -152,6 +192,16 @@ function PST:SC_isStarTreeUnlocked()
         end
     end
     return false
+end
+
+-- Get starcursed mod from current run snapshot
+function PST:SC_getSnapshotMod(modName, default)
+    local starcursedMods = PST:getTreeSnapshotMod("starcursedMods", nil)
+    if starcursedMods then
+        if starcursedMods[default] == nil then return default end
+        return starcursedMods[modName]
+    end
+    return default
 end
 
 function PST:SC_wipeInventories()

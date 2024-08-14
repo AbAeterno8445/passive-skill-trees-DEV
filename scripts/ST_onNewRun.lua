@@ -56,6 +56,15 @@ function PST:onNewRun(isContinued)
     PST.floorFirstUpdate = true
 
     PST.modData.treeModSnapshot = PST.modData.treeMods
+
+    -- Starcursed jewel mods
+    if not PST.modData.treeDisabled then
+        local starcursedMods = PST:SC_getTotalJewelMods()
+        if next(starcursedMods.totalMods) ~= nil then
+            PST.modData.treeModSnapshot.starcursedMods = starcursedMods.totalMods
+        end
+    end
+
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
     PST:save()
 

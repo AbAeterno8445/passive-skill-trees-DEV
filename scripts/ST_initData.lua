@@ -506,7 +506,6 @@ function PST:resetMods()
 		charmExplosions = 0,
 
 		---- STAR TREE ----
-		starmight = 0,
 		azureStarSockets = 0,
 		crimsonStarSockets = 0,
 		viridianStarSockets = 0,
