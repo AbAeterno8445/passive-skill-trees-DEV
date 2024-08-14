@@ -296,12 +296,18 @@ PST.SCMods = {
             onConflict = {conflictFuncs.simpleSum},
             description = "Shop items cost %d more coins."
         }
-    }
+    },
+    xpgain = "+%d%% xp gain while equipped.",
+    halveXPFirstFloor = "XP bonus from this jewel is halved on the first floor.",
+    deliriumRewards = "Gain %d skill point(s) and %d respecs when defeating Delirium with this jewel equipped.",
+    beastRewards = "Gain %d skill point(s) and %d respecs when defeating The Beast with this jewel equipped.",
 }
 
 PST.SCAncients = {
     circadianDestructor = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 0,
         name = "Circadian Destructor",
         description = {
             "Every 48 seconds, spawn XVI - The Tower if you're in a room with monsters.",
@@ -311,14 +317,14 @@ PST.SCAncients = {
         rewards = {
             xpgain = 70,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 4,
-            respecsBeast = 4
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
     },
     umbra = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 1,
         name = "Umbra",
         description = {
             "Guarantees Curse of Darkness if applicable.",
@@ -330,14 +336,14 @@ PST.SCAncients = {
         rewards = {
             xpgain = 80,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 5,
-            respecsBeast = 5
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
         }
     },
     gazeAverter = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 2,
         name = "Gaze Averter",
         description = {
             "Start with Tiny Planet and My Reflection.",
@@ -347,14 +353,14 @@ PST.SCAncients = {
         rewards = {
             xpgain = 60,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 4,
-            respecsBeast = 4
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
     },
     cursedStarpiece = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 3,
         name = "Cursed Starpiece",
         description = {
             "Starting from the second floor, all treasure rooms contain a Reversed Stars card instead of item pedestals.",
@@ -363,29 +369,30 @@ PST.SCAncients = {
         rewards = {
             xpgain = 60,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 4,
-            respecsBeast = 4
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
     },
     opalescentPurity = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 4,
         name = "Opalescent Purity",
         description = {
-            "Once you pick up or purchase a passive item, remove all other passive items in the floor, including those spawned by effects."
+            "Once you pick up or purchase a passive item, remove all other passive items in the floor, including",
+            "those spawned by effects."
         },
         rewards = {
             xpgain = 100,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 2,
-            skillPointsBeast = 2,
-            respecsDelirium = 6,
-            respecsBeast = 6
+            deliriumRewards = {2, 6},
+            beastRewards = {2, 6}
         }
     },
     iridescentPurity = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 5,
         name = "Iridescent Purity",
         description = {
             "Each passive item you pick up has a 10% chance to be removed when entering the next floor.",
@@ -395,82 +402,84 @@ PST.SCAncients = {
         rewards = {
             xpgain = 80,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 5,
-            respecsBeast = 5
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
         }
     },
     challengerStarpiece = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 6,
         name = "Challenger's Starpiece",
         description = {
             "Spawn a random deadly sin miniboss when clearing a challenge room round.",
-            "After beating Mom, super deadly sin counterparts will tag along the regular ones when clearing a challenge room round.",
-            "If the current room has access to a challenge room, -3% all stats when leaving the room and when entering rooms that aren't",
-            "the challenge room, up to -15%.",
+            "After beating Mom, super deadly sin counterparts will tag along the regular ones when clearing",
+            "a challenge room round.",
+            "If the current room has access to a challenge room, -3% all stats when leaving the room and when",
+            "entering rooms that aren't the challenge room, up to -15%.",
             "Debuff resets upon clearing a challenge room round."
         },
         rewards = {
             xpgain = 40,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 3,
-            respecsBeast = 3
+            deliriumRewards = {1, 3},
+            beastRewards = {1, 3}
         }
     },
     soulWatcher = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 7,
         name = "Soul Watcher",
         description = {
             "Spawn a random Soul Stone at the beginning of the floor.",
             "Soul Watcher's Curse: -40% damage and speed while not holding a Soul Stone.",
-            "Every floor, a random room is designated. When entering it, the Soul Stone will pulse, and using it there",
-            "will remove Soul Watcher's Curse until next floor.",
-            "Leaving the designated room without using the Soul Stone triggers Soul Watcher's Curse regardless of holding one."
+            "Every floor, a random room is designated. When entering it, the Soul Stone will pulse, and",
+            "using it there will remove Soul Watcher's Curse until next floor.",
+            "Leaving the designated room without using the Soul Stone triggers Soul Watcher's Curse,",
+            "regardless of holding one."
         },
         rewards = {
             xpgain = 40,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 3,
-            respecsBeast = 3
+            deliriumRewards = {1, 3},
+            beastRewards = {1, 3}
         }
     },
     luminescentDie = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 8,
         name = "Luminescent Die",
         description = {
             "After clearing the floor's boss room, spawn a Reversed Wheel of Fortune card.",
-            "Entering the next floor without using a Reversed Wheel of Fortune card grants -8% all stats, up to -20%.",
+            "Entering the next floor without using a Reversed Wheel of Fortune card grants -8% all stats,",
+            "up to -20%.",
             "Active debuff gets halved when using a Reversed Wheel of Fortune card."
         },
         rewards = {
             xpgain = 50,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 4,
-            respecsBeast = 4
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
     },
     baubleseeker = { -- TODO
         weight = 100,
+        version = 1,
+        spriteFrame = 9,
         name = "Baubleseeker",
         description = {
             "All item pedestals are replaced with a random trinket.",
-            "10% chance for treasure rooms to contain Mom's Box if you don't currently have it, protected from trinket replacement.",
+            "10% chance for treasure rooms to contain Mom's Box if you don't currently",
+            "have it, protected from trinket replacement.",
             "Smelt trinkets on pickup.",
             "+2% all stats per smelted trinket, up to 50%."
         },
         rewards = {
             xpgain = 60,
             halveXPFirstFloor = true,
-            skillPointsDelirium = 1,
-            skillPointsBeast = 1,
-            respecsDelirium = 4,
-            respecsBeast = 4
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
     }
 }

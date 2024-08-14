@@ -208,6 +208,10 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
 
     local descW = longestStrWidth + 4
     local descH = (miniFont:GetLineHeight() + 2) * (#description + 1) + 4
+    if not absolute and descH + offY > paramY / 2 then
+        drawY = drawY - (descH + offY - paramY / 2)
+    end
+
     nodeBGSprite.Scale.X = descW
     nodeBGSprite.Scale.Y = descH
     nodeBGSprite.Color.A = bgAlpha or 0.7
@@ -245,7 +249,7 @@ end
 ---@param pagination? table -- If provided, "prev" and "next" buttons will be drawn. Table can contain prevFunc and nextFunc which will run when clicking the corresponding button.
 function PST:drawNodeSubMenu(menuRows, centerX, centerY, menuX, menuY, title, itemDrawFunc, pagination)
     -- Draw BG
-    nodeBGSprite.Scale.X = 164
+    nodeBGSprite.Scale.X = 168
     nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(menuRows / 5)
     nodeBGSprite.Color.A = 0.9
     local tmpBGX = menuX * zoomScale - 84
@@ -541,7 +545,7 @@ function PST:treeMenuRenderer()
                     if socketedJewel and socketedJewel.equipped == socketID then
                         SCJewelSprite.Scale.X = zoomScale
                         SCJewelSprite.Scale.Y = zoomScale
-                        SCJewelSprite:Play(tmpType)
+                        PST:SC_setSpriteToJewel(SCJewelSprite, socketedJewel)
                         SCJewelSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
                     end
                 end
@@ -632,7 +636,7 @@ function PST:treeMenuRenderer()
 
                         SCJewelSprite.Scale.X = 1
                         SCJewelSprite.Scale.Y = 1
-                        SCJewelSprite:Play(tmpJewelType, true)
+                        PST:SC_setSpriteToJewel(SCJewelSprite, jewelData)
                         SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
 
                         if jewelData.unidentified then
@@ -745,7 +749,7 @@ function PST:treeMenuRenderer()
         local jewelData = PST.starcursedInvData.hoveredJewel
         if jewelData then
             local tmpDescription = PST:SC_getJewelDescription(jewelData)
-            drawNodeBox(jewelData.type .. " Starcursed Jewel", tmpDescription, screenW, screenH)
+            drawNodeBox(jewelData.name or jewelData.type .. " Starcursed Jewel", tmpDescription, screenW, screenH)
         end
     elseif subMenuPageButtonHovered ~= "" then
         cursorSprite:Play("Clicked")
@@ -1035,7 +1039,7 @@ function PST:treeMenuRenderer()
             end
 
             -- Star tree mods for description table
-            if starcursedTotalMods and next(starcursedTotalMods.totalMods) ~= nil then
+            if starcursedTotalMods and (next(starcursedTotalMods.totalMods) ~= nil or starcursedTotalMods.totalStarmight > 0) then
                 local starTreeModsColor = KColor(1, 0.8, 0.2, 1)
                 table.insert(totalModsList, "")
                 table.insert(totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})

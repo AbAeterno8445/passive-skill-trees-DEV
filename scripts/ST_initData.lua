@@ -575,6 +575,10 @@ function PST:resetData()
 			Viridian = {},
 			Ancient = {}
 		},
+		-- Ancient starcursed jewels identified so far
+		identifiedAncients = {},
+		-- Collected ancient jewel rewards (e.g. skill points when killing X boss)
+		ancientRewards = {},
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},
