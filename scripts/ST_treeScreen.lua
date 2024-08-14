@@ -686,6 +686,17 @@ function PST:treeMenuRenderer()
             if isAllocated then
                 if currentTree ~= "starTree" then
                     descName = descName .. " (E to view Star Tree)"
+                elseif starcursedTotalMods then
+                    -- Append starmight description to Star Tree node
+                    local tmpColor = KColor(1, 0.8, 0.2, 1)
+                    tmpDescription = {table.unpack(hoveredNode.description)}
+                    table.insert(tmpDescription, {"Starmight: " .. starcursedTotalMods.totalStarmight, tmpColor})
+                    for modName, modVal in pairs(PST:SC_getStarmightImplicits(starcursedTotalMods.totalStarmight)) do
+                        local parsedModLines = PST:parseModifierLines(modName, modVal)
+                        for _, tmpLine in ipairs(parsedModLines) do
+                            table.insert(tmpDescription, {"   " .. tmpLine, tmpColor})
+                        end
+                    end
                 end
             elseif not PST:SC_isStarTreeUnlocked() then
                 tmpDescription = {
@@ -752,6 +763,7 @@ function PST:treeMenuRenderer()
                 end
                 PST:allocateNodeID(currentTree, hoveredNode.id, true)
                 sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.5)
+                PST:updateStarTreeTotals()
 
                 -- Lost tree, unlock holy mantle if allocating Sacred Aegis
                 if hoveredNode.name == "Sacred Aegis" and not Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
@@ -868,6 +880,7 @@ function PST:treeMenuRenderer()
                     end
                     PST:allocateNodeID(currentTree, hoveredNode.id, false)
                     sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+                    PST:updateStarTreeTotals()
 
                     -- Respec Cosmic Realignment node
                     if hoveredNode.name == "Cosmic Realignment" then
@@ -1002,28 +1015,14 @@ function PST:treeMenuRenderer()
                     end
                     table.insert(totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
                 end
-                if type(modStr) == "table" then
-                    for _, tmpLine in ipairs(modStr) do
-                        local tmpStr = ""
-                        if PST.treeModDescriptions[tmpModName].addPlus then
-                            tmpStr = string.format(tmpLine, tmpModVal >= 0 and "+" or "", tmpModVal)
-                        else
-                            tmpStr = string.format(tmpLine, tmpModVal, tmpModVal, tmpModVal)
-                        end
-                        -- Harmonic modifiers, check if disabled
-                        if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
-                            tmpColor = KColor(0.5, 0.5, 0.5, 1)
-                        end
-                        table.insert(totalModsList, {tmpStr, tmpColor})
+
+                local parsedModLines = PST:parseModifierLines(tmpModName, tmpModVal)
+                for _, tmpLine in ipairs(parsedModLines) do
+                    -- Harmonic modifiers, check if disabled
+                    if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
+                        tmpColor = KColor(0.5, 0.5, 0.5, 1)
                     end
-                else
-                    local tmpStr = ""
-                    if PST.treeModDescriptions[tmpModName].addPlus then
-                        tmpStr = string.format(modStr, tmpModVal >= 0 and "+" or "", tmpModVal)
-                    else
-                        tmpStr = string.format(modStr, tmpModVal, tmpModVal, tmpModVal)
-                    end
-                    table.insert(totalModsList, {tmpStr, tmpColor})
+                    table.insert(totalModsList, {tmpLine, tmpColor})
                 end
 
                 if PST.modData.momHeartProc[tmpModName] == false then
@@ -1039,7 +1038,15 @@ function PST:treeMenuRenderer()
                 for _, modData in pairs(starcursedTotalMods.totalMods) do
                     table.insert(totalModsList, {modData.description, starTreeModsColor})
                 end
+                -- Starmight
                 table.insert(totalModsList, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
+                table.insert(totalModsList, {"Starmight bonuses:", starTreeModsColor})
+                for modName, modVal in pairs(PST:SC_getStarmightImplicits(starcursedTotalMods.totalStarmight)) do
+                    local parsedModLines = PST:parseModifierLines(modName, modVal)
+                    for _, tmpLine in ipairs(parsedModLines) do
+                        table.insert(totalModsList, {"   " .. tmpLine, starTreeModsColor})
+                    end
+                end
             end
 
             -- Add Cosmic Realignment mod to description table

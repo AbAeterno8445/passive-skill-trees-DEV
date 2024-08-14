@@ -132,9 +132,11 @@ function PST:SC_getTotalJewelMods()
     local tmpMods = {}
     local tmpStarmight = 0
     for _, tmpType in pairs(PSTStarcursedType) do
+        local typeSocketedTotal = 0
         for _, jewel in ipairs(PST.modData.starTreeInventory[tmpType]) do
             -- Equipped jewel
             if jewel.equipped ~= nil then
+                typeSocketedTotal = typeSocketedTotal + 1
                 -- Get mods and handle mod conflicts (identical mods)
                 for mod, modData in pairs(jewel.mods) do
                     if tmpMods[mod] == nil then
@@ -157,6 +159,32 @@ function PST:SC_getTotalJewelMods()
                 end
                 tmpStarmight = tmpStarmight + jewel.starmight
             end
+        end
+
+        -- Mod: +starmight per socketed jewel for each type
+        local tmpStarmightMods = {}
+        for nodeID, isAllocated in pairs(PST.modData.treeNodes["starTree"]) do
+            if isAllocated then
+                for modName, modVal in pairs(PST.trees["starTree"][nodeID].modifiers) do
+                    if modName == "azureStarmight" or modName == "crimsonStarmight" or modName == "viridianStarmight" or modName == "ancientStarmight" then
+                        if tmpStarmightMods[modName] == nil then
+                            tmpStarmightMods[modName] = modVal
+                        else
+                            tmpStarmightMods[modName] = tmpStarmightMods[modName] + modVal
+                        end
+                    end
+                end
+            end
+        end
+
+        if tmpType == PSTStarcursedType.AZURE then
+            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.azureStarmight or 0)
+        elseif tmpType == PSTStarcursedType.CRIMSON then
+            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.crimsonStarmight or 0)
+        elseif tmpType == PSTStarcursedType.VIRIDIAN then
+            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.viridianStarmight or 0)
+        elseif tmpType == PSTStarcursedType.ANCIENT then
+            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.ancientStarmight or 0)
         end
     end
     return { totalMods = tmpMods, totalStarmight = tmpStarmight }
@@ -182,6 +210,13 @@ function PST:SC_sortInventory(jewelType)
         end
         return false
     end)
+end
+
+-- Implicit modifiers granted by having starmight
+function PST:SC_getStarmightImplicits(starmight)
+    return {
+        xpgain = math.ceil(starmight / 3)
+    }
 end
 
 function PST:SC_isStarTreeUnlocked()

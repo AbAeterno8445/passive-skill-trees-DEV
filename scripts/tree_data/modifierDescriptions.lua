@@ -1383,3 +1383,31 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 2859
     }
 }
+
+function PST:parseModifierLines(modName, modVal)
+    local mod = PST.treeModDescriptions[modName]
+    if not mod then return {} end
+
+    local parsedLines = {}
+    local modStr = mod.str
+    if type(modStr) == "table" then
+        for _, tmpLine in ipairs(modStr) do
+            local tmpStr = ""
+            if PST.treeModDescriptions[modName].addPlus then
+                tmpStr = string.format(tmpLine, modVal >= 0 and "+" or "", modVal)
+            else
+                tmpStr = string.format(tmpLine, modVal, modVal, modVal)
+            end
+            table.insert(parsedLines, tmpStr)
+        end
+    else
+        local tmpStr = ""
+        if PST.treeModDescriptions[modName].addPlus then
+            tmpStr = string.format(modStr, modVal >= 0 and "+" or "", modVal)
+        else
+            tmpStr = string.format(modStr, modVal, modVal, modVal)
+        end
+        table.insert(parsedLines, tmpStr)
+    end
+    return parsedLines
+end

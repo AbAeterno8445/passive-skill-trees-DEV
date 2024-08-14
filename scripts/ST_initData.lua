@@ -510,10 +510,10 @@ function PST:resetMods()
 		crimsonStarSockets = 0,
 		viridianStarSockets = 0,
 		ancientStarSockets = 0,
-		azureStarmight = 0, -- TODO
-		crimsonStarmight = 0, -- TODO
-		viridianStarmight = 0, -- TODO
-		ancientStarmight = 0, -- TODO
+		azureStarmight = 0,
+		crimsonStarmight = 0,
+		viridianStarmight = 0,
+		ancientStarmight = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

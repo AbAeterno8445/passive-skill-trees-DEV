@@ -63,6 +63,10 @@ function PST:onNewRun(isContinued)
         if next(starcursedMods.totalMods) ~= nil then
             PST.modData.treeModSnapshot.starcursedMods = starcursedMods.totalMods
         end
+
+        if starcursedMods.totalStarmight > 0 then
+            PST:addModifiers(PST:SC_getStarmightImplicits(starcursedMods.totalStarmight), true)
+        end
     end
 
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
