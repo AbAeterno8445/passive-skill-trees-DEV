@@ -216,7 +216,7 @@ PST.SCMods = {
         }
     },
     Viridian = {
-        floorCurse = { -- TODO
+        floorCurse = {
             weight = 100,
             rolls = {{6, 10}},
             mightyRolls = {{15, 25}},
@@ -224,7 +224,7 @@ PST.SCMods = {
             onConflict = {conflictFuncs.simpleSum},
             description = "%d%% additional chance to receive a random curse when entering a floor."
         },
-        trollBombOnClear = { -- TODO
+        trollBombOnClear = {
             weight = 100,
             rolls = {{8, 15}},
             mightyRolls = {{20, 30}},
@@ -232,7 +232,7 @@ PST.SCMods = {
             onConflict = {conflictFuncs.simpleSum},
             description = "%d%% chance to spawn an additional troll bomb at the center of the room on clear."
         },
-        loseCoinsOnSpend = { -- TODO
+        loseCoinsOnSpend = {
             weight = 100,
             rolls = {{8, 12}, {1, 3}},
             mightyRolls = {{15, 22}, {4, 6}},
@@ -240,39 +240,39 @@ PST.SCMods = {
             onConflict = {conflictFuncs.simpleSum},
             description = "Whenever you lose or spend coins, %d%% chance to lose an additional %d coin(s)."
         },
-        lessDevilRoomChance = { -- TODO
+        lessDevilRoomChance = {
             weight = 100,
-            rolls = {{-5, -10}},
-            mightyRolls = {{-15, -20}},
+            rolls = {{5, 10}},
+            mightyRolls = {{15, 20}},
             starmightCalc = function(roll) return 10 + math.abs(roll) end,
             onConflict = {conflictFuncs.simpleSum},
-            description = "%d%% additional chance to find the devil/angel room."
+            description = "-%d%% additional chance to find the devil/angel room."
         },
-        lessSpeed = { -- TODO
+        lessSpeed = {
             weight = 100,
-            rolls = {{-0.05, -0.08}},
-            mightyRolls = {{-0.1, -0.13}},
+            rolls = {{0.05, 0.08}},
+            mightyRolls = {{0.1, 0.13}},
             starmightCalc = function(roll) return 8 + math.abs(roll * 200) end,
             onConflict = {conflictFuncs.simpleSum},
-            description = "%.2f speed."
+            description = "-%.2f speed."
         },
-        lessDamage = { -- TODO
+        lessDamage = {
             weight = 100,
-            rolls = {{-0.08, -0.15}},
-            mightyRolls = {{-0.3, -0.5}},
+            rolls = {{0.08, 0.15}},
+            mightyRolls = {{0.3, 0.5}},
             starmightCalc = function(roll) return 9 + math.abs(roll * 50) end,
             onConflict = {conflictFuncs.simpleSum},
-            description = "%.2f damage."
+            description = "-%.2f damage."
         },
-        lessLuck = { -- TODO
+        lessLuck = {
             weight = 100,
-            rolls = {{-0.3, -0.7}},
-            mightyRolls = {{-0.9, -1.5}},
+            rolls = {{0.3, 0.7}},
+            mightyRolls = {{0.9, 1.5}},
             starmightCalc = function(roll) return 8 + math.abs(roll * 15) end,
             onConflict = {conflictFuncs.simpleSum},
-            description = "%.2f luck."
+            description = "-%.2f luck."
         },
-        pickupsVanish = { -- TODO
+        pickupsVanish = {
             weight = 100,
             rolls = {{3, 7}},
             mightyRolls = {{10, 15}},
@@ -280,7 +280,7 @@ PST.SCMods = {
             onConflict = {conflictFuncs.simpleSum},
             description = "%d%% chance for coins, keys or bombs to vanish on pickup."
         },
-        heartsVanish = { -- TODO
+        heartsVanish = {
             weight = 100,
             rolls = {{3, 7}},
             mightyRolls = {{10, 15}},
@@ -288,7 +288,7 @@ PST.SCMods = {
             onConflict = {conflictFuncs.simpleSum},
             description = "%d%% chance for heart pickups to vanish when collected."
         },
-        shopExpensive = { -- TODO
+        shopExpensive = {
             weight = 100,
             rolls = {{2, 5}},
             mightyRolls = {{8, 12}},

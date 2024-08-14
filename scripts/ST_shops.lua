@@ -39,3 +39,15 @@ function PST:onShopPurchase(pickupBought, player, spent)
         end
     end
 end
+
+function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
+    local priceMod = 0
+
+    -- Starcursed mod: shop items cost more coins
+    local tmpMod = PST:SC_getSnapshotMod("shopExpensive", 0)
+    if tmpMod ~= 0 then
+        priceMod = priceMod + tmpMod
+    end
+
+    return math.max(1, price + priceMod)
+end

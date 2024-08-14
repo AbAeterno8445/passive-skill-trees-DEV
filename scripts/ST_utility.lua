@@ -382,4 +382,10 @@ end
 
 function PST:strStartsWith(txt, start)
 	return string.sub(txt, 1, string.len(start)) == start
- end
+end
+
+function PST:roundFloat(number, digit)
+	local precision = 10 ^ digit
+	number = number + (precision / 2)
+	return math.floor(number / precision) * precision
+end

@@ -67,6 +67,21 @@ function PST:onNewRun(isContinued)
         if starcursedMods.totalStarmight > 0 then
             PST:addModifiers(PST:SC_getStarmightImplicits(starcursedMods.totalStarmight), true)
         end
+
+        local tmpSCMods = {}
+        -- Less speed
+        local tmpMod = PST:SC_getSnapshotMod("lessSpeed", 0)
+        if tmpMod ~= 0 then tmpSCMods["speed"] = -tmpMod end
+        -- Less damage
+        tmpMod = PST:SC_getSnapshotMod("lessDamage", 0)
+        if tmpMod ~= 0 then tmpSCMods["damage"] = -tmpMod end
+        -- Less luck
+        tmpMod = PST:SC_getSnapshotMod("lessLuck", 0)
+        if tmpMod ~= 0 then tmpSCMods["luck"] = -tmpMod end
+
+        if next(tmpSCMods) ~= nil then
+            PST:addModifiers(tmpSCMods, true)
+        end
     end
 
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)

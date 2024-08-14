@@ -93,6 +93,20 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
 
+            -- Starcursed mod: chance for coins, keys or bombs to vanish on pickup
+            local tmpMod = PST:SC_getSnapshotMod("pickupsVanish", 0)
+            if (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
+            variant == PickupVariant.PICKUP_KEY) and 100 * math.random() < tmpMod then
+                PST:vanishPickup(pickup)
+                return false
+            end
+            -- Starcursed mod: chance for heart pickups to vanish when collected
+            tmpMod = PST:SC_getSnapshotMod("heartsVanish", 0)
+            if variant == PickupVariant.PICKUP_HEART and 100 * math.random() < tmpMod then
+                PST:vanishPickup(pickup)
+                return false
+            end
+
             -- Cosmic Realignment node
             local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)

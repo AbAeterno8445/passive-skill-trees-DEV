@@ -7,6 +7,7 @@ local playerTypeTracker = 0
 local jacobHeartDiffTracker = 0
 local luckTracker = 0
 local familiarsTracker = 0
+local coinTracker = 0
 local holyMantleTracker = false
 
 -- On update
@@ -475,6 +476,19 @@ function PST:onUpdate()
 	end
 	luckTracker = player.Luck
 
+	-- Coin changes
+	if player:GetNumCoins() ~= coinTracker then
+		-- Lost coins
+		if player:GetNumCoins() < coinTracker then
+			-- Starcursed mod: when losing or spending coins, X% chance to additionally lose Y coins
+			tmpMod = PST:SC_getSnapshotMod("loseCoinsOnSpend", {0, 0})
+			if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
+				player:AddCoins(-tmpMod[2])
+			end
+		end
+	end
+	coinTracker = player:GetNumCoins()
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -593,8 +607,15 @@ function PST:onUpdate()
 				end
 			end
 
+			-- Starcursed mod: chance to spawn an additional troll bomb at the center of the room on clear
+			local tmpChance = PST:getTreeSnapshotMod("trollBombOnClear", 0)
+			if 100 * math.random() < tmpChance then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
+				Game():Spawn(EntityType.ENTITY_BOMB, BombVariant.BOMB_TROLL, tmpPos, Vector.Zero, nil, BombSubType.BOMB_TROLL, Random() + 1)
+			end
+
 			-- Mod: chance to heal 1/2 red heart when clearing a room
-			local tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
+			tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
 			if isBossRoom then
 				tmpChance = tmpChance * 2
 			end

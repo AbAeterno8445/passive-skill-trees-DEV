@@ -94,7 +94,12 @@ function PST:SC_addModToJewel(jewel, exclusive)
                 end
                 for _, rollRange in ipairs(rollTable) do
                     if type(rollRange) == "table" then
-                        local roll = rollRange[1] + (math.random(math.abs(rollRange[2] - rollRange[1] + 1) - 1))
+                        local roll
+                        if math.type(rollRange[1]) == "integer" and math.type(rollRange[2]) == "integer" then
+                            roll = rollRange[1] + math.random(math.max(0, math.abs(rollRange[2] - rollRange[1] + 1) - 1))
+                        else
+                            roll = PST:roundFloat(rollRange[1] + math.abs(rollRange[2] - rollRange[1]) * math.random(), -2)
+                        end
                         table.insert(tmpRolls, roll)
                     else
                         table.insert(tmpRolls, rollRange)

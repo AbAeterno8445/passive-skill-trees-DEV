@@ -190,9 +190,15 @@ local curseIDs = {
 }
 function PST:onCurseEval(curses)
     local causeCurse = PST:getTreeSnapshotMod("causeCurse", false)
+
+    -- Starcursed mod: additional chance to receive a random curse when entering a floor
+    local tmpMod = PST:SC_getSnapshotMod("floorCurse", 0)
+    if not causeCurse and 100 * math.random() < tmpMod then
+        causeCurse = true
+    end
+
     if causeCurse and curses == LevelCurse.CURSE_NONE then
         PST:addModifiers({causeCurse = false}, true)
-        
         local newCurse = curseIDs[math.random(#curseIDs)]
         return newCurse
     end
