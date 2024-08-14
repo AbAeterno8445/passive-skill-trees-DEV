@@ -167,6 +167,10 @@ function PST:cosmicRTryUnlock(unlockSource)
 	end
 end
 
+local starcursedEvents = {
+	[CompletionType.DELIRIUM] = "deliriumRewards",
+	[CompletionType.BEAST] = "beastRewards"
+}
 function PST:onCompletionEvent(event)
 	local pType = PST:getTreeSnapshotMod("cosmicRealignment", false)
 
@@ -179,6 +183,30 @@ function PST:onCompletionEvent(event)
 		-- Dark Protection node (Eve's tree)
 		if PST:getTreeSnapshotMod("darkProtection", false) then
 			PST:addModifiers({ darkProtectionProc = false }, true)
+		end
+	end
+
+	-- Ancient starcursed jewel rewards
+	for i=1,2 do
+		local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
+		if ancientJewel and ancientJewel.rewards then
+			local jewelID = ancientJewel.name .. " " .. (ancientJewel.version or "1")
+			if not PST.modData.ancientRewards[jewelID] then
+				PST.modData.ancientRewards[jewelID] = {}
+			end
+
+			-- Skill point and respec point reward mods
+			for tmpEvent, rewardMod in pairs(starcursedEvents) do
+				local tmpRewards = ancientJewel.rewards[rewardMod]
+				if tmpRewards and event == tmpEvent and not PST.modData.ancientRewards[jewelID][rewardMod] then
+					PST.modData.skillPoints = PST.modData.skillPoints + tmpRewards[1]
+					for _, charData in pairs(PST.modData.charData) do
+						charData.skillPoints = charData.skillPoints + tmpRewards[1]
+					end
+					PST.modData.respecPoints = PST.modData.respecPoints + tmpRewards[2]
+					PST.modData.ancientRewards[jewelID][rewardMod] = true
+				end
+			end
 		end
 	end
 
