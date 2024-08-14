@@ -214,5 +214,262 @@ PST.SCMods = {
             onConflict = {conflictFuncs.simpleSum},
             description = "When you get hit by a monster, the next %d hits in the room will deal an additional 1/2 heart damage."
         }
+    },
+    Viridian = {
+        floorCurse = { -- TODO
+            weight = 100,
+            rolls = {{6, 10}},
+            mightyRolls = {{15, 25}},
+            starmightCalc = function(roll) return 9 + roll end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%d%% additional chance to receive a random curse when entering a floor."
+        },
+        trollBombOnClear = { -- TODO
+            weight = 100,
+            rolls = {{8, 15}},
+            mightyRolls = {{20, 30}},
+            starmightCalc = function(roll) return 7 + roll / 2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%d%% chance to spawn an additional troll bomb at the center of the room on clear."
+        },
+        loseCoinsOnSpend = { -- TODO
+            weight = 100,
+            rolls = {{8, 12}, {1, 3}},
+            mightyRolls = {{15, 22}, {4, 6}},
+            starmightCalc = function(roll) return 7 + roll / 2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Whenever you lose or spend coins, %d%% chance to lose an additional %d coin(s)."
+        },
+        lessDevilRoomChance = { -- TODO
+            weight = 100,
+            rolls = {{-5, -10}},
+            mightyRolls = {{-15, -20}},
+            starmightCalc = function(roll) return 10 + math.abs(roll) end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%d%% additional chance to find the devil/angel room."
+        },
+        lessSpeed = { -- TODO
+            weight = 100,
+            rolls = {{-0.05, -0.08}},
+            mightyRolls = {{-0.1, -0.13}},
+            starmightCalc = function(roll) return 8 + math.abs(roll * 200) end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%.2f speed."
+        },
+        lessDamage = { -- TODO
+            weight = 100,
+            rolls = {{-0.08, -0.15}},
+            mightyRolls = {{-0.3, -0.5}},
+            starmightCalc = function(roll) return 9 + math.abs(roll * 50) end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%.2f damage."
+        },
+        lessLuck = { -- TODO
+            weight = 100,
+            rolls = {{-0.3, -0.7}},
+            mightyRolls = {{-0.9, -1.5}},
+            starmightCalc = function(roll) return 8 + math.abs(roll * 15) end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%.2f luck."
+        },
+        pickupsVanish = { -- TODO
+            weight = 100,
+            rolls = {{3, 7}},
+            mightyRolls = {{10, 15}},
+            starmightCalc = function(roll) return 8 + roll * 2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%d%% chance for coins, keys or bombs to vanish on pickup."
+        },
+        heartsVanish = { -- TODO
+            weight = 100,
+            rolls = {{3, 7}},
+            mightyRolls = {{10, 15}},
+            starmightCalc = function(roll) return 12 + roll * 2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%d%% chance for heart pickups to vanish when collected."
+        },
+        shopExpensive = { -- TODO
+            weight = 100,
+            rolls = {{2, 5}},
+            mightyRolls = {{8, 12}},
+            starmightCalc = function(roll) return 7 + roll * 3 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Shop items cost %d more coins."
+        }
+    },
+    Ancient = {
+        circadianDestructor = { -- TODO
+            weight = 100,
+            name = "Circadian Destructor",
+            description = {
+                "Every 48 seconds, spawn XVI - The Tower if you're in a room with monsters.",
+                "Card spawning pauses until you use the card.",
+                "Once XVI - The Tower spawns, -1% all stats every second until you use the card, up to -20%."
+            },
+            rewards = {
+                xpgain = 70,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 4,
+                respecsBeast = 4
+            }
+        },
+        umbra = { -- TODO
+            weight = 100,
+            name = "Umbra",
+            description = {
+                "Guarantees Curse of Darkness if applicable.",
+                "Black Candle can no longer show up.",
+                "While Curse of Darkness is active, -1% all stats when first entering a room, up to -12%",
+                "11% chance to spawn a Night Light when clearing a room, once per floor.",
+                "Remove Night Light when entering a new floor."
+            },
+            rewards = {
+                xpgain = 80,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 5,
+                respecsBeast = 5
+            }
+        },
+        gazeAverter = { -- TODO
+            weight = 100,
+            name = "Gaze Averter",
+            description = {
+                "Start with Tiny Planet and My Reflection.",
+                "-2 damage, shot speed and tears.",
+                "Deal 75% less damage to enemies located in the side of the room you're currently facing."
+            },
+            rewards = {
+                xpgain = 60,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 4,
+                respecsBeast = 4
+            }
+        },
+        cursedStarpiece = { -- TODO
+            weight = 100,
+            name = "Cursed Starpiece",
+            description = {
+                "Starting from the second floor, all treasure rooms contain a Reversed Stars card instead of item pedestals.",
+                "Starting from the second floor, -8% all stats for the current floor while you haven't used Reversed Stars."
+            },
+            rewards = {
+                xpgain = 60,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 4,
+                respecsBeast = 4
+            }
+        },
+        opalescentPurity = { -- TODO
+            weight = 100,
+            name = "Opalescent Purity",
+            description = {
+                "Once you pick up or purchase a passive item, remove all other passive items in the floor, including those spawned by effects."
+            },
+            rewards = {
+                xpgain = 100,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 2,
+                skillPointsBeast = 2,
+                respecsDelirium = 6,
+                respecsBeast = 6
+            }
+        },
+        iridescentPurity = { -- TODO
+            weight = 100,
+            name = "Iridescent Purity",
+            description = {
+                "Each passive item you pick up has a 10% chance to be removed when entering the next floor.",
+                "Chance increases by 10% individually for each item picked in the current floor.",
+                "Items you keep when entering a floor can't be removed by this effect."
+            },
+            rewards = {
+                xpgain = 80,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 5,
+                respecsBeast = 5
+            }
+        },
+        challengerStarpiece = { -- TODO
+            weight = 100,
+            name = "Challenger's Starpiece",
+            description = {
+                "Spawn a random deadly sin miniboss when clearing a challenge room round.",
+                "After beating Mom, super deadly sin counterparts will tag along the regular ones when clearing a challenge room round.",
+                "If the current room has access to a challenge room, -3% all stats when leaving the room and when entering rooms that aren't",
+                "the challenge room, up to -15%.",
+                "Debuff resets upon clearing a challenge room round."
+            },
+            rewards = {
+                xpgain = 40,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 3,
+                respecsBeast = 3
+            }
+        },
+        soulWatcher = { -- TODO
+            weight = 100,
+            name = "Soul Watcher",
+            description = {
+                "Spawn a random Soul Stone at the beginning of the floor.",
+                "Soul Watcher's Curse: -40% damage and speed while not holding a Soul Stone.",
+                "Every floor, a random room is designated. When entering it, the Soul Stone will pulse, and using it there",
+                "will remove Soul Watcher's Curse until next floor.",
+                "Leaving the designated room without using the Soul Stone triggers Soul Watcher's Curse regardless of holding one."
+            },
+            rewards = {
+                xpgain = 40,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 3,
+                respecsBeast = 3
+            }
+        },
+        luminescentDie = { -- TODO
+            weight = 100,
+            name = "Luminescent Die",
+            description = {
+                "After clearing the floor's boss room, spawn a Reversed Wheel of Fortune card.",
+                "Entering the next floor without using a Reversed Wheel of Fortune card grants -8% all stats, up to -20%.",
+                "Active debuff gets halved when using a Reversed Wheel of Fortune card."
+            },
+            rewards = {
+                xpgain = 50,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 4,
+                respecsBeast = 4
+            }
+        },
+        baubleseeker = { -- TODO
+            weight = 100,
+            name = "Baubleseeker",
+            description = {
+                "All item pedestals are replaced with a random trinket.",
+                "10% chance for treasure rooms to contain Mom's Box if you don't currently have it, protected from trinket replacement.",
+                "Smelt trinkets on pickup.",
+                "+2% all stats per smelted trinket, up to 50%."
+            },
+            rewards = {
+                xpgain = 60,
+                halveXPFirstFloor = true,
+                skillPointsDelirium = 1,
+                skillPointsBeast = 1,
+                respecsDelirium = 4,
+                respecsBeast = 4
+            }
+        }
     }
 }
