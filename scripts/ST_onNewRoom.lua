@@ -9,6 +9,7 @@ function PST:onNewRoom()
 	PST.specialNodes.oneShotProtectedMobs = {}
 	PST.specialNodes.mobFirstHitsBlocked = {}
 	PST.specialNodes.mobPeriodicShield = false
+	PST.specialNodes.mobHitRoomExtraDmg = { hits = 0, proc = false }
 	floatingTexts = {}
 
 	local player = Isaac.GetPlayer()
@@ -19,6 +20,20 @@ function PST:onNewRoom()
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpEntity:IsActiveEnemy(false) then
+				-- Chance to duplicate
+				local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
+				if not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
+					local tmpPos = Isaac.GetFreeNearPosition(tmpEntity.Position, 5)
+					Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
+				end
+
+				-- Chance to turn into champion
+				tmpChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
+				if 100 * math.random() < tmpChance then
+					tmpNPC:MakeChampion(Random() + 1)
+				end
+
+				-- HP modifiers
 				local tmpHPMod = 0
 				local tmpHPMult = 1
 				if not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then

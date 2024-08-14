@@ -538,7 +538,9 @@ function PST:resetMods()
 		jacobHeartLuckVal = 0,
 		oneShotProtectedMobs = {},
 		mobFirstHitsBlocked = {},
-		mobPeriodicShield = false
+		mobPeriodicShield = false,
+		mobHitReduceDmg = 0,
+		mobHitRoomExtraDmg = { hits = 0, proc = false }
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

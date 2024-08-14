@@ -136,6 +136,72 @@ function PST:onDamage(target, damage, flag, source)
                 end
             end
         end
+
+        -- Starcursed modifiers
+        if source and source.Entity then
+            local tmpDmg = 0
+            local tmpSource = source.Entity:ToNPC()
+            if not tmpSource and source.Entity.Parent then
+                tmpSource = source.Entity.Parent:ToNPC()
+            end
+            if tmpSource then
+                -- Chance for monsters to also remove 1/2 soul/black heart when hitting
+                local tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
+                if 100 * math.random() < tmpMod then
+                    player:AddSoulHearts(-1)
+                end
+
+                -- Chance for monsters to slow you on hit for 2 seconds
+                tmpMod = PST:SC_getSnapshotMod("mobSlowOnHit", 0)
+                if 100 * math.random() < tmpMod then
+                    player:AddSlowing(EntityRef(tmpSource), 60, 0.9, Color(0.8, 0.8, 1, 1))
+                end
+
+                -- Chance for monsters to reduce your damage by 20% on hit for 3 seconds
+                tmpMod = PST:SC_getSnapshotMod("mobReduceDmgOnHit", 0)
+                if 100 * math.random() < 100 then
+                    if PST.specialNodes.mobHitReduceDmg == 0 then
+                        PST:addModifiers({ damagePerc = -20 }, true)
+                    end
+                    PST.specialNodes.mobHitReduceDmg = 90
+                end
+
+                -- When hit by a monster, the next X hits in the room will deal an additional 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("roomMobExtraDmgOnHit", 0)
+                tmpMod = 2
+                if tmpMod > 0 then
+                    if PST.specialNodes.mobHitRoomExtraDmg.hits > 0 then
+                        tmpDmg = tmpDmg + 1
+                        PST.specialNodes.mobHitRoomExtraDmg.hits = PST.specialNodes.mobHitRoomExtraDmg.hits - 1
+                    elseif not PST.specialNodes.mobHitRoomExtraDmg.proc then
+                        PST.specialNodes.mobHitRoomExtraDmg.hits = tmpMod
+                        PST.specialNodes.mobHitRoomExtraDmg.proc = true
+                    end
+                end
+
+                -- Chance for normal monsters to deal an extra 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
+                if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then
+                    return { Damage = damage + 1 + tmpDmg }
+                end
+
+                -- Chance for champion monsters to deal an extra 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("champExtraHitDmg", 0)
+                if tmpSource:IsChampion() and 100 * math.random() < tmpMod then
+                    return { Damage = damage + 1 + tmpDmg }
+                end
+
+                -- Chance for boss monsters to deal an extra 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("bossExtraHitDmg", 0)
+                if tmpSource:IsBoss() and 100 * math.random() < tmpMod then
+                    return { Damage = damage + 1 + tmpDmg }
+                end
+
+                if tmpDmg > 0 then
+                    return { Damage = damage + tmpDmg }
+                end
+            end
+        end
     else
         local tmpPlayer = Isaac.GetPlayer()
         local dmgMult = 1
@@ -461,6 +527,44 @@ function PST:onDeath(entity)
                 mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
             end
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
+        end
+
+        -- Starcursed mod: spawn X static hovering tears for Y seconds on death
+        local tmpMod = PST:SC_getSnapshotMod("hoveringTearsOnDeath", {0, 0})
+        if tmpMod[1] > 0 and tmpMod[2] > 0 then
+            for _=1,tmpMod[1] do
+                local newTear = Game():Spawn(
+                    EntityType.ENTITY_PROJECTILE,
+                    ProjectileVariant.PROJECTILE_TEAR,
+                    entity.Position + Vector(-6 + 12 * math.random(), -6 + 12 * math.random()),
+                    Vector.Zero,
+                    entity,
+                    TearVariant.BLOOD,
+                    Random() + 1
+                )
+                newTear.Color = Color(1, 0.1, 0.1, 1)
+                newTear:SetPauseTime(math.max(10, 30 * tmpMod[2] - 30))
+            end
+        end
+        -- Starcursed mod: X chance to release Y tears on death
+        tmpMod = PST:SC_getSnapshotMod("tearExplosionOnDeath", {0, 0})
+        if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
+            local tmpSpeed = 4
+            local tmpColor = Color(1, 0.1, 0.1, 1)
+            for i=1,tmpMod[2] do
+                local tmpAng = ((2 * math.pi) / tmpMod[2]) * (i - 1)
+                local tmpVel = Vector(tmpSpeed * math.cos(tmpAng), tmpSpeed * math.sin(tmpAng))
+                local newTear = Game():Spawn(
+                    EntityType.ENTITY_PROJECTILE,
+                    ProjectileVariant.PROJECTILE_TEAR,
+                    entity.Position,
+                    tmpVel,
+                    entity,
+                    TearVariant.BLOOD,
+                    Random() + 1
+                )
+                newTear.Color = tmpColor
+            end
         end
 
         -- Samson temp mods

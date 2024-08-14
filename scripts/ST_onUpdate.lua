@@ -179,7 +179,7 @@ function PST:onUpdate()
 	end
 	-- Starcursed mod: champions heal 15% HP to nearby non-champion monsters every X seconds
 	tmpMod = PST:SC_getSnapshotMod("championHealers", {0, 0})
-	if tmpMod > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
+	if type(tmpMod) == "table" and tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
 		local tmpEntities = Isaac.GetRoomEntities()
 		local tmpChamps = {}
 		for _, tmpEntity in ipairs(tmpEntities) do
@@ -210,6 +210,13 @@ function PST:onUpdate()
 			PST.specialNodes.mobPeriodicShield = true
 		else
 			PST.specialNodes.mobPeriodicShield = false
+		end
+	end
+	-- Starcursed mod: monsters have a chance to reduce your damage by 20% for 3 seconds
+	if PST.specialNodes.mobHitReduceDmg > 0 then
+		PST.specialNodes.mobHitReduceDmg = PST.specialNodes.mobHitReduceDmg - 1
+		if PST.specialNodes.mobHitReduceDmg == 0 then
+			PST:addModifiers({ damagePerc = 20 }, true)
 		end
 	end
 

@@ -1,7 +1,5 @@
 function PST:onNewLevel()
-    local level = Game():GetLevel()
-    local floor = level:GetStage()
-
+    PST.specialNodes.mobHitReduceDmg = 0
     PST.specialNodes.momDeathProc = false
     PST.floorFirstUpdate = true
     PST:addModifiers({ staticEntitiesCache = { value = {}, set = true } }, true)
