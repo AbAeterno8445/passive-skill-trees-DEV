@@ -87,7 +87,8 @@ PST.starcursedInvData = {
     menuX = 0,
     menuY = 0,
     socket = nil,
-    hoveredJewel = nil
+    hoveredJewel = nil,
+    hoveredJewelID = nil
 }
 
 local starcursedTotalMods = nil
@@ -626,6 +627,7 @@ function PST:treeMenuRenderer()
                         -- Hovered
                         if camCenterX > jewelX - 16 and camCenterX < jewelX + 16 and camCenterY > jewelY - 16 and camCenterY < jewelY + 16 then
                             PST.starcursedInvData.hoveredJewel = jewelData
+                            PST.starcursedInvData.hoveredJewelID = jewelID
                             SCJewelSprite.Color.A = 1
                             PST.cosmicRData.charSprite.Color.A = 1
                             PST.cosmicRData.charSprite:Play("Select", true)
@@ -759,6 +761,9 @@ function PST:treeMenuRenderer()
         local jewelData = PST.starcursedInvData.hoveredJewel
         if jewelData then
             local tmpDescription = PST:SC_getJewelDescription(jewelData)
+            if jewelData.type ~= PSTStarcursedType.ANCIENT and not jewelData.unidentified then
+                table.insert(tmpDescription, "Press the Respec Node button to destroy this jewel.")
+            end
             drawNodeBox(jewelData.name or jewelData.type .. " Starcursed Jewel", tmpDescription, screenW, screenH)
         end
     elseif subMenuPageButtonHovered ~= "" then
@@ -909,6 +914,15 @@ function PST:treeMenuRenderer()
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
+            end
+        -- Starcursed inventory, destroy hovered jewel
+        elseif PST.starcursedInvData.hoveredJewel ~= nil then
+            if PST.starcursedInvData.hoveredJewelID and PST.starcursedInvData.hoveredJewel.type and not PST.starcursedInvData.hoveredJewel.unidentified and
+            PST.starcursedInvData.hoveredJewel.type ~= PSTStarcursedType.ANCIENT then
+                table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
+                PST.starcursedInvData.hoveredJewel = nil
+                PST.starcursedInvData.hoveredJewelID = nil
+                sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75, 2, false, 1.5 + 1 * math.random())
             end
         end
     end
