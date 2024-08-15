@@ -348,6 +348,15 @@ function PST:onPickupInit(pickup)
         pickupGone = true
     end
 
+    -- Ancient starcursed jewel: Baubleseeker
+    if not pickupGone and PST:SC_getSnapshotMod("baubleseeker", false) and variant == PickupVariant.PICKUP_COLLECTIBLE and
+    subtype ~= CollectibleType.COLLECTIBLE_MOMS_BOX then
+        pickup:Remove()
+        local tmpTrinket = Game():GetItemPool():GetTrinket()
+        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, Vector.Zero, nil, tmpTrinket, Random() + 1)
+        pickupGone = true
+    end
+
     -- Trinkets
     if variant == PickupVariant.PICKUP_TRINKET then
         -- Fickle Fortune node (Cain's tree), vanish proc
@@ -453,6 +462,7 @@ function PST:onPickupInit(pickup)
     end
 end
 
+local baubleseekerProc = false
 -- Update stats on trinket change
 function PST:onTrinketAdd(player, type, firstTime)
     -- Demonic Souvenirs node (Azazel's tree)
@@ -470,6 +480,23 @@ function PST:onTrinketAdd(player, type, firstTime)
         local tmpBonus = PST:getTreeSnapshotMod("trinketRandLuck", 0)
         if tmpBonus ~= 0 then
             PST:addModifiers({ luck = -tmpBonus + tmpBonus * 2 * math.random() }, true)
+        end
+    end
+
+    -- Ancient starcursed jewel: Baubleseeker
+    if PST:SC_getSnapshotMod("baubleseeker", false) then
+        if not baubleseekerProc then
+            baubleseekerProc = true
+            player:TryRemoveTrinket(type)
+            local wasAdded = player:AddSmeltedTrinket(type, firstTime)
+            if wasAdded then
+                local tmpMod = PST:getTreeSnapshotMod("SC_baubleSeekerBuff", 0)
+                if tmpMod < 15 then
+                    PST:addModifiers({ allstatsPerc = 1, SC_baubleSeekerBuff = 1 }, true)
+                end
+            end
+        else
+            baubleseekerProc = false
         end
     end
 

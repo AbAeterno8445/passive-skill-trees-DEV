@@ -344,6 +344,14 @@ function PST:onNewRoom()
 			end
 		end
 
+		-- Ancient starcursed jewel: Baubleseeker
+		if PST:SC_getSnapshotMod("baubleseeker", false) and room:GetType() == RoomType.ROOM_TREASURE then
+			if not player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) and 100 * math.random() < 10 then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_MOMS_BOX, Random() + 1)
+			end
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage

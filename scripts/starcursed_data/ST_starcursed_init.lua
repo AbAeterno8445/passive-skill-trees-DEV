@@ -454,22 +454,22 @@ PST.SCAncients = {
             beastRewards = {1, 4}
         }
     },
-    baubleseeker = { -- TODO
+    baubleseeker = {
         weight = 100,
         spriteFrame = 9,
         name = "Baubleseeker",
         description = {
-            "All item pedestals are replaced with a random trinket.",
+            "All collectible items are replaced with a random trinket.",
             "10% chance for treasure rooms to contain Mom's Box if you don't currently",
             "have it, protected from trinket replacement.",
             "Smelt trinkets on pickup.",
-            "+2% all stats per smelted trinket, up to 50%."
+            "+1% all stats per smelted trinket, up to 15%."
         },
         rewards = {
-            xpgain = 60,
+            xpgain = 75,
             halveXPFirstFloor = true,
-            deliriumRewards = {1, 4},
-            beastRewards = {1, 4}
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
         }
     }
 }

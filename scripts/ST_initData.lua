@@ -532,7 +532,8 @@ function PST:resetMods()
 		SC_challDebuff = false,
 		SC_challClear = false,
 		SC_luminescentUsedCard = false,
-		SC_luminescentDebuff = 0
+		SC_luminescentDebuff = 0,
+		SC_baubleSeekerBuff = 0
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
