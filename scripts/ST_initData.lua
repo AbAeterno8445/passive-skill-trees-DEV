@@ -562,6 +562,7 @@ function PST:resetMods()
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
 		SC_circadianExplImmune = 0,
+		SC_soulEaterMobs = {}
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

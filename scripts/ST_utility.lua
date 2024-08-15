@@ -190,21 +190,20 @@ function PST:onCompletionEvent(event)
 	for i=1,2 do
 		local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
 		if ancientJewel and ancientJewel.rewards then
-			local jewelID = ancientJewel.name .. " " .. (ancientJewel.version or "1")
-			if not PST.modData.ancientRewards[jewelID] then
-				PST.modData.ancientRewards[jewelID] = {}
+			if not PST.modData.ancientRewards[ancientJewel.name] then
+				PST.modData.ancientRewards[ancientJewel.name] = {}
 			end
 
 			-- Skill point and respec point reward mods
 			for tmpEvent, rewardMod in pairs(starcursedEvents) do
 				local tmpRewards = ancientJewel.rewards[rewardMod]
-				if tmpRewards and event == tmpEvent and not PST.modData.ancientRewards[jewelID][rewardMod] then
+				if tmpRewards and event == tmpEvent and not PST.modData.ancientRewards[ancientJewel.name][rewardMod] then
 					PST.modData.skillPoints = PST.modData.skillPoints + tmpRewards[1]
 					for _, charData in pairs(PST.modData.charData) do
 						charData.skillPoints = charData.skillPoints + tmpRewards[1]
 					end
 					PST.modData.respecPoints = PST.modData.respecPoints + tmpRewards[2]
-					PST.modData.ancientRewards[jewelID][rewardMod] = true
+					PST.modData.ancientRewards[ancientJewel.name][rewardMod] = true
 
 					sfx:Play(SoundEffect.SOUND_THUMBSUP)
 					PST:createFloatTextFX("Ancient jewel objective complete!", Vector.Zero, Color(1, 0.9, 0.5, 1), 0.13, 160, true)

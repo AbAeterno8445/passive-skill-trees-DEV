@@ -808,7 +808,9 @@ function PST:treeMenuRenderer()
                             local isSocket = string.match(hoveredNode.name, "Socket")
                             if (isSocket or string.match(hoveredNode.name, "Inventory") ~= nil) then
                                 if PST.starcursedInvData.open ~= tmpType then
-                                    PST:SC_sortInventory(tmpType)
+                                    if tmpType ~= PSTStarcursedType.ANCIENT then
+                                        PST:SC_sortInventory(tmpType)
+                                    end
                                     subMenuPage = 0
                                     PST.starcursedInvData.open = tmpType
                                     if isSocket then

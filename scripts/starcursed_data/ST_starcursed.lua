@@ -46,9 +46,8 @@ function PST:SC_getJewelDescription(jewel)
                         else
                             descStr = string.format(PST.SCMods[tmpRewardMod], tmpRewardModVal)
                         end
-                        if jewel.name and jewel.version then
-                            local jewelID = jewel.name .. " " .. jewel.version
-                            if PST.modData.ancientRewards[jewelID] and PST.modData.ancientRewards[jewelID][tmpRewardMod] then
+                        if jewel.name then
+                            if PST.modData.ancientRewards[jewel.name] and PST.modData.ancientRewards[jewel.name][tmpRewardMod] then
                                 descStr = descStr .. " (Done)"
                                 tmpColor = KColor(1, 0.9, 0.5, 1)
                             end
@@ -162,7 +161,7 @@ function PST:SC_getNewAncient()
     local availableAncients = 0
     for ancientID, ancientData in pairs(PST.SCAncients) do
         local identifiedVer = PST.modData.identifiedAncients[ancientID]
-        if not identifiedVer or (identifiedVer and identifiedVer ~= ancientData.version) then
+        if not identifiedVer then
             totalWeight = totalWeight + ancientData.weight
             availableAncients = availableAncients + 1
         end
@@ -172,10 +171,10 @@ function PST:SC_getNewAncient()
     local tmpWeight = math.random(totalWeight)
     for ancientID, ancientData in pairs(PST.SCAncients) do
         local identifiedVer = PST.modData.identifiedAncients[ancientID]
-        if not identifiedVer or (identifiedVer and identifiedVer ~= ancientData.version) then
+        if not identifiedVer then
             tmpWeight = tmpWeight - ancientData.weight
             if tmpWeight <= 0 then
-                PST.modData.identifiedAncients[ancientID] = ancientData.version or 1
+                PST.modData.identifiedAncients[ancientID] = true
                 return ancientData
             end
         end
@@ -208,7 +207,6 @@ function PST:SC_identifyJewel(jewel)
             jewel.description = newAncient.description
             jewel.rewards = newAncient.rewards
             jewel.spriteFrame = newAncient.spriteFrame
-            jewel.version = newAncient.version
         else
             jewel.name = "Faded Starpiece"
             jewel.description = {"This jewel's energy has almost faded out..."}

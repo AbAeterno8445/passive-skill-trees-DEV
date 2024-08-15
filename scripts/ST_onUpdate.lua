@@ -251,6 +251,17 @@ function PST:onUpdate()
 			PST.specialNodes.SC_circadianExplImmune = PST.specialNodes.SC_circadianExplImmune - 1
 		end
 	end
+	-- Ancient starcursed jewel: Soul Watcher
+	if PST:SC_getSnapshotMod("soulWatcher", false) then
+		if room:GetFrameCount() % 300 == 0 and #PST.specialNodes.SC_soulEaterMobs > 0 then
+			for _, tmpSoulEater in ipairs(PST.specialNodes.SC_soulEaterMobs) do
+				if tmpSoulEater.mob:IsBoss() then
+					Game():Spawn(EntityType.ENTITY_ATTACKFLY, 0, tmpSoulEater.mob.Position, Vector.Zero, nil, 0, Random() + 1)
+					break
+				end
+			end
+		end
+	end
 
 	-- Fickle Fortune node (Cain's tree)
 	if PST:getTreeSnapshotMod("fickleFortune", false) then

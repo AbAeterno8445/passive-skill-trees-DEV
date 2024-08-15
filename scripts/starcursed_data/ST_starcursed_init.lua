@@ -306,7 +306,6 @@ PST.SCMods = {
 PST.SCAncients = {
     circadianDestructor = {
         weight = 100,
-        version = 1,
         spriteFrame = 0,
         name = "Circadian Destructor",
         description = {
@@ -324,7 +323,6 @@ PST.SCAncients = {
     },
     umbra = {
         weight = 100,
-        version = 1,
         spriteFrame = 1,
         name = "Umbra",
         description = {
@@ -343,7 +341,6 @@ PST.SCAncients = {
     },
     gazeAverter = {
         weight = 100,
-        version = 1,
         spriteFrame = 2,
         name = "Gaze Averter",
         description = {
@@ -360,7 +357,6 @@ PST.SCAncients = {
     },
     cursedStarpiece = {
         weight = 100,
-        version = 1,
         spriteFrame = 3,
         name = "Cursed Starpiece",
         description = {
@@ -380,7 +376,6 @@ PST.SCAncients = {
     },
     opalescentPurity = {
         weight = 100,
-        version = 1,
         spriteFrame = 4,
         name = "Opalescent Purity",
         description = {
@@ -396,7 +391,6 @@ PST.SCAncients = {
     },
     iridescentPurity = {
         weight = 100,
-        version = 1,
         spriteFrame = 5,
         name = "Iridescent Purity",
         description = {
@@ -412,7 +406,6 @@ PST.SCAncients = {
     },
     challengerStarpiece = {
         weight = 100,
-        version = 1,
         spriteFrame = 6,
         name = "Challenger's Starpiece",
         description = {
@@ -430,32 +423,28 @@ PST.SCAncients = {
     },
     soulWatcher = { -- TODO
         weight = 100,
-        version = 1,
         spriteFrame = 7,
         name = "Soul Watcher",
         description = {
-            "Spawn a random Soul Stone at the beginning of the floor.",
-            "Soul Watcher's Curse: -40% damage and speed while not holding a Soul Stone.",
-            "Every floor, a random room is designated. When entering it, the Soul Stone will pulse, and",
-            "using it there will remove Soul Watcher's Curse until next floor.",
-            "Leaving the designated room without using the Soul Stone triggers Soul Watcher's Curse,",
-            "regardless of holding one."
+            "When you enter a room with monsters, a random monster becomes a Soul Eater.",
+            "Non-boss Soul Eater monsters have 20% increased HP.",
+            "Soul Eater monsters gain 4 HP, 4% HP and 2% speed when a nearby monster dies, up to 20 times.",
+            "Bosses are Soul Eaters, and spawn an attack fly every 10 seconds."
         },
         rewards = {
-            xpgain = 40,
-            deliriumRewards = {1, 3},
-            beastRewards = {1, 3}
+            xpgain = 85,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
         }
     },
     luminescentDie = { -- TODO
         weight = 100,
-        version = 1,
         spriteFrame = 8,
         name = "Luminescent Die",
         description = {
             "After clearing the floor's boss room, spawn a Reversed Wheel of Fortune card.",
-            "Entering the next floor without using a Reversed Wheel of Fortune card grants -8% all stats,",
-            "up to -20%.",
+            "Entering the next floor without using a Reversed Wheel of Fortune card grants -10% all stats,",
+            "up to -40%.",
             "Active debuff gets halved when using a Reversed Wheel of Fortune card."
         },
         rewards = {
@@ -467,7 +456,6 @@ PST.SCAncients = {
     },
     baubleseeker = { -- TODO
         weight = 100,
-        version = 1,
         spriteFrame = 9,
         name = "Baubleseeker",
         description = {

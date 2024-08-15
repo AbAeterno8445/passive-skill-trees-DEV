@@ -10,16 +10,21 @@ function PST:onNewRoom()
 	PST.specialNodes.mobFirstHitsBlocked = {}
 	PST.specialNodes.mobPeriodicShield = false
 	PST.specialNodes.mobHitRoomExtraDmg = { hits = 0, proc = false }
-	floatingTexts = {}
+	PST.specialNodes.SC_soulEaterMobs = {}
 
 	local player = Isaac.GetPlayer()
 	local room = Game():GetRoom()
 
 	-- Starcursed modifiers
 	if room:GetAliveEnemiesCount() > 0 then
+		local mobsList = {}
+		local soulEaterList = {}
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpEntity:IsActiveEnemy(false) then
+				if not tmpNPC:IsBoss() then table.insert(mobsList, tmpNPC)
+				else table.insert(soulEaterList, tmpNPC) end
+
 				-- Chance to duplicate
 				local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
 				if not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
@@ -50,6 +55,23 @@ function PST:onNewRoom()
 				end
 				tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod) * tmpHPMult
 				tmpEntity.HitPoints = tmpEntity.MaxHitPoints
+			end
+		end
+
+		-- Ancient starcursed jewel: Soul Watcher
+		if PST:SC_getSnapshotMod("soulWatcher", false) then
+			if #mobsList > 0 then
+				local tmpSoulEater = mobsList[math.random(#mobsList)]
+				table.insert(soulEaterList, tmpSoulEater)
+			end
+			for _, tmpMob in ipairs(soulEaterList) do
+				tmpMob.Scale = tmpMob.Scale * 1.12
+				tmpMob:SetColor(Color(0.86, 0.71, 0.93, 1), -1, 0, false)
+				if not tmpMob:IsBoss() then
+					tmpMob.MaxHitPoints = tmpMob.MaxHitPoints * 1.2
+					tmpMob.HitPoints = tmpMob.MaxHitPoints
+				end
+				table.insert(PST.specialNodes.SC_soulEaterMobs, { mob = tmpMob, souls = 0})
 			end
 		end
 	end

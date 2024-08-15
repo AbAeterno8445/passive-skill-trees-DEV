@@ -581,6 +581,27 @@ function PST:onDeath(entity)
                 newTear.Color = tmpColor
             end
         end
+        -- Ancient starcursed jewel: Soul Watcher
+        if PST:SC_getSnapshotMod("soulWatcher", false) then
+            for i, tmpSoulEater in ipairs(PST.specialNodes.SC_soulEaterMobs) do
+                if tmpSoulEater.mob.InitSeed == entity.InitSeed then
+                    PST.specialNodes.SC_soulEaterMobs[i] = nil
+                elseif tmpSoulEater.souls < 20 then
+                    local dist = math.sqrt((tmpSoulEater.mob.Position.X - entity.Position.X)^2 + (tmpSoulEater.mob.Position.Y - entity.Position.Y)^2)
+                    if dist <= 140 then
+                        tmpSoulEater.souls = tmpSoulEater.souls + 1
+                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpSoulEater.mob.Position, Vector.Zero, nil, 1, Random() + 1)
+                        SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.3)
+
+                        local HPBoost = 4 + tmpSoulEater.mob.MaxHitPoints * 0.04
+                        tmpSoulEater.mob.MaxHitPoints = tmpSoulEater.mob.MaxHitPoints + HPBoost
+                        tmpSoulEater.mob.HitPoints = math.min(tmpSoulEater.mob.MaxHitPoints, tmpSoulEater.mob.HitPoints + HPBoost)
+                        tmpSoulEater.mob.Scale = tmpSoulEater.mob.Scale + 0.02
+                        tmpSoulEater.mob:SetSpeedMultiplier(tmpSoulEater.mob:GetSpeedMultiplier() + tmpSoulEater.souls * 0.02)
+                    end
+                end
+            end
+        end
 
         -- Samson temp mods
         if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then
