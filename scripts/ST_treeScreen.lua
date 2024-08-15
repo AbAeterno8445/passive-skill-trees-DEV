@@ -102,6 +102,8 @@ local subMenuPageButtonHovered = ""
 
 local debugAvailableUpdate = false
 
+local fullDataResetHeld = 0
+
 local treeMenuOpen = false
 
 local function PST_updateCamZoomOffset()
@@ -723,8 +725,8 @@ function PST:treeMenuRenderer()
             -- Starcursed inventory/socket nodes
             for _, tmpType in pairs(PSTStarcursedType) do
                 if PST:strStartsWith(hoveredNode.name, tmpType) then
-                    local isSocket = string.match(hoveredNode.name, "Socket") ~= nil
-                    if isSocket or string.match(hoveredNode.name, "Inventory") ~= nil then
+                    local isSocket = string.find(hoveredNode.name, "Socket") ~= nil
+                    if isSocket or string.find(hoveredNode.name, "Inventory") ~= nil then
                         if isSocket then
                             local setName = false
                             local socketID = string.sub(hoveredNode.name, -1)
@@ -819,8 +821,8 @@ function PST:treeMenuRenderer()
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do
                         if PST:strStartsWith(hoveredNode.name, tmpType) then
-                            local isSocket = string.match(hoveredNode.name, "Socket")
-                            if (isSocket or string.match(hoveredNode.name, "Inventory") ~= nil) then
+                            local isSocket = string.find(hoveredNode.name, "Socket")
+                            if (isSocket or string.find(hoveredNode.name, "Inventory") ~= nil) then
                                 if PST.starcursedInvData.open ~= tmpType then
                                     if tmpType ~= PSTStarcursedType.ANCIENT then
                                         PST:SC_sortInventory(tmpType)
@@ -934,6 +936,22 @@ function PST:treeMenuRenderer()
                 sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75, 2, false, 1.5 + 1 * math.random())
             end
         end
+    end
+
+    -- Mod data reset: hold Respec input on "Leveling Of Isaac" node for 7 seconds
+    if hoveredNode and PST:isKeybindActive(PSTKeybind.RESPEC_NODE, true) and hoveredNode.name == "Leveling Of Isaac" then
+        fullDataResetHeld = fullDataResetHeld + 1
+        if fullDataResetHeld % 60 == 0 then
+            SFXManager():Play(SoundEffect.SOUND_1UP, 0.5, 2, false, 1 - 0.1 * fullDataResetHeld / 60)
+        end
+        if fullDataResetHeld == 420 then
+            PST:closeTreeMenu()
+            SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.8)
+            PST:resetSaveData()
+            fullDataResetHeld = 0
+        end
+    else
+        fullDataResetHeld = 0
     end
 
     -- Input: Switch tree

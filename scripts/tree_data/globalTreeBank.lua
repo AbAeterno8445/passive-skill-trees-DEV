@@ -135,7 +135,7 @@ PST.SkillTreesAPI.AddCharacterTree("global", [[
 "308": "{\"pos\":[-15,6],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[207]}",
 "309": "{\"pos\":[-21,0],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[159]}",
 "310": "{\"pos\":[-15,-6],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[155]}",
-"315": "{\"pos\":[0,0],\"type\":6,\"size\":\"Large\",\"name\":\"Leveling Of Isaac\",\"description\":[\"+0.02 all stats\"],\"modifiers\":{\"allstats\":0.02},\"adjacent\":[66,171,316,383,473,485],\"alwaysAvailable\":true}",
+"315": "{\"pos\":[0,0],\"type\":6,\"size\":\"Large\",\"name\":\"Leveling Of Isaac\",\"description\":[\"+0.02 all stats.\",\"While hovering this node, hold the Respec Node button for 7 seconds\",\"to reset ALL tree mod data from this save.\"],\"modifiers\":{\"allstats\":0.02},\"adjacent\":[66,171,316,383,473,485],\"alwaysAvailable\":true}",
 "316": "{\"pos\":[2,0],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[315,317]}",
 "317": "{\"pos\":[3,0],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[316,214]}",
 "318": "{\"pos\":[16,1],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[225,319]}",
