@@ -113,7 +113,7 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", [[
 "214": "{\"pos\":[4,-4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[215]}",
 "215": "{\"pos\":[4,-3],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[216,214]}",
 "216": "{\"pos\":[4,-2],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[197,215]}",
-"219": "{\"pos\":[-5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[196]}",
-"220": "{\"pos\":[5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[197]}"
+"219": "{\"pos\":[-5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[196]}",
+"220": "{\"pos\":[5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[197]}"
 }
 ]])

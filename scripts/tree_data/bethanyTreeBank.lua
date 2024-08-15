@@ -107,7 +107,7 @@ PST.SkillTreesAPI.AddCharacterTree("Bethany", [[
 "150": "{\"pos\":[5,-1],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[149]}",
 "153": "{\"pos\":[-6,-4],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[143]}",
 "154": "{\"pos\":[6,-4],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[144]}",
-"155": "{\"pos\":[-5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[143]}",
-"156": "{\"pos\":[5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[144]}"
+"155": "{\"pos\":[-5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[143]}",
+"156": "{\"pos\":[5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[144]}"
 }
 ]])

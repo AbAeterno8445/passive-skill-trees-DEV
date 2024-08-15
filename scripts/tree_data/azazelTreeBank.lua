@@ -125,7 +125,7 @@ PST.SkillTreesAPI.AddCharacterTree("Azazel", [[
 "205": "{\"pos\":[7,-8],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[204]}",
 "206": "{\"pos\":[-4,-6],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[198]}",
 "207": "{\"pos\":[4,-6],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[199]}",
-"208": "{\"pos\":[-5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[198]}",
-"209": "{\"pos\":[5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[199]}"
+"208": "{\"pos\":[-5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[198]}",
+"209": "{\"pos\":[5,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[199]}"
 }
 ]])

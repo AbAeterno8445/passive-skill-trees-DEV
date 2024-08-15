@@ -102,10 +102,10 @@ function PST:addXP(xpParam, showText)
 				local xpRemaining = charData.xp - charData.xpRequired
 
 				-- Next level xp requirement formula
-				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.15))
+				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.1))
 
-				-- Add overflowing xp to next level, capped at 50%
-				charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
+				-- Add overflowing xp to next level, capped at 40%
+				charData.xp = math.min(math.floor(charData.xpRequired * 0.4), xpRemaining)
 
 				PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
 			end
