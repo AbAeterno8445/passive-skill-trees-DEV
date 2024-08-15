@@ -606,8 +606,8 @@ function PST:onUpdate()
 			-- Final round clear
 			if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
 				-- Challenge room XP reward
-				local challengeXP = PST:getTreeSnapshotMod("challengeXP", 0);
-				local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false);
+				local challengeXP = PST:getTreeSnapshotMod("challengeXP", 0)
+				local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false)
 				if challengeXP > 0 and (not level:HasBossChallenge() or (level:HasBossChallenge() and bossChallengeXP)) then
 					PST:addTempXP(challengeXP, true, true)
 				end
