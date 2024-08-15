@@ -13,7 +13,8 @@ function PST:onNewRun(isContinued)
     }
 
     PST:resetMods()
-    if not PST.modData.treeDisabled then
+    local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and Isaac.GetChallenge() == 0) or PST.config.treeOnChallenges)
+    if treeActive then
         local globalTrees = {"global", "starTree"}
         -- Get snapshot of tree modifiers
         for _, tmpTree in ipairs(globalTrees) do
@@ -62,7 +63,7 @@ function PST:onNewRun(isContinued)
     PST.modData.treeModSnapshot = PST.modData.treeMods
 
     -- Starcursed jewel mods
-    if not PST.modData.treeDisabled then
+    if treeActive then
         local starcursedMods = PST:SC_getTotalJewelMods()
         if next(starcursedMods.totalMods) ~= nil then
             PST.modData.treeModSnapshot.starcursedMods = starcursedMods.totalMods

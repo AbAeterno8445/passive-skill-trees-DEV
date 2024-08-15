@@ -8,6 +8,9 @@ PST.config = {
     -- Draw selected character level info at the bottom of the screen during character selection
     charSelectInfoText = true,
 
+    -- Whether tree mods are applied in challenges
+    treeOnChallenges = false,
+
     -- XP multiplier option
     xpMult = 1,
 
@@ -197,6 +200,28 @@ function PST:initModConfigMenu()
             Info = {"Draw char info text in character select screen"}
         }
     )
+    -- Tree enabled on challenges setting
+    ModConfigMenu.RemoveSetting(PST.modName, nil, "treeOnChallenges")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        nil,
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "treeOnChallenges",
+            CurrentSetting = function()
+                return PST.config.treeOnChallenges
+            end,
+            Display = function()
+                return "Apply trees on challenges: " .. (PST.config.treeOnChallenges and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.treeOnChallenges = b
+                PST:save()
+            end,
+            Info = {"Whether tree node effects are applied in challenges", "Default off"}
+        }
+    )
+
     local xpMultOptions = {}
     for i=0,20 do
         table.insert(xpMultOptions, 1 + i * 0.1)
