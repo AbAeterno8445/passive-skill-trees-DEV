@@ -10,17 +10,26 @@ PSTStarcursedType = {
 
 -- Adds an unidentified starcursed jewel with the given properties to the Star Tree inventory
 ---@param jewelType PSTStarcursedType Jewel type
-function PST:SC_addJewel(jewelType)
+function PST:SC_addJewel(jewelType, isMighty, fading)
     local newJewel = {
         type = jewelType,
         unidentified = true,
         mods = {},
-        fading = 0,
-        mighty = false,
+        fading = fading or 0,
+        mighty = isMighty or false,
         starmight = 0
     }
     table.insert(PST.modData.starTreeInventory[jewelType], newJewel)
     return newJewel
+end
+
+function PST:SC_identifiedAllAncients()
+    for ancientID, _ in pairs(PST.SCAncients) do
+        if not PST.modData.identifiedAncients[ancientID] then
+            return false
+        end
+    end
+    return true
 end
 
 local nonAncient = {PSTStarcursedType.AZURE, PSTStarcursedType.CRIMSON, PSTStarcursedType.VIRIDIAN}
@@ -31,12 +40,17 @@ end
 function PST:SC_dropRandomJewelAt(position, ancientChance)
     if not PST:getTreeSnapshotMod("enableSCJewels", false) then return end
 
+    local ancientChanceModded = ancientChance + PST:getTreeSnapshotMod("SC_SMAncientChance", 0)
+    if PST:SC_identifiedAllAncients() then
+        ancientChanceModded = ancientChanceModded / 5
+    end
+
     local newJewelType = Isaac.GetTrinketIdByName(PST:SC_getRandomJewelType() .. " Starcursed Jewel")
-    if 100 * math.random() < ancientChance then
+    if 100 * math.random() < ancientChanceModded then
         newJewelType = Isaac.GetTrinketIdByName(PSTStarcursedType.ANCIENT .. " Starcursed Jewel")
     end
     if newJewelType ~= -1 then
-        local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+        local tmpPos = Isaac.GetFreeNearPosition(position, 40)
         Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, newJewelType, Random() + 1)
     end
 end
@@ -143,7 +157,7 @@ function PST:SC_addModToJewel(jewel, exclusive)
                 jewel.mods[mod] = {}
                 local tmpRolls = {}
                 local rollTable = jewelData.rolls
-                if jewel.mighty then
+                if jewel.mighty and not modData.mightyOnly then
                     rollTable = jewelData.mightyRolls
                 end
                 for _, rollRange in ipairs(rollTable) do
@@ -337,9 +351,16 @@ end
 
 -- Implicit modifiers granted by having starmight
 function PST:SC_getStarmightImplicits(starmight)
-    return {
+    local tmpImplicits = {
         xpgain = math.ceil(starmight / 3)
     }
+    if starmight >= 50 then
+        tmpImplicits["SC_SMMightyChance"] = math.min(15, 2 + starmight / 20)
+    end
+    if starmight >= 100 then
+        tmpImplicits["SC_SMAncientChance"] = starmight / 90
+    end
+    return tmpImplicits
 end
 
 function PST:SC_isStarTreeUnlocked()

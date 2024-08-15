@@ -54,12 +54,13 @@ function PST:prePickup(pickup, collider, low)
 
             -- Starcursed jewel pickups
             if variant == PickupVariant.PICKUP_TRINKET then
+                local isMighty = 100 * math.random() < PST:getTreeSnapshotMod("SC_SMMightyChance", 0)
                 if subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") then
                     -- Azure Starcursed Jewel pickup
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.AZURE)
+                    PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
                     PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                     return { Collide = false, SkipCollisionEffects = true }
@@ -68,7 +69,7 @@ function PST:prePickup(pickup, collider, low)
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.CRIMSON)
+                    PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
                     PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                     return { Collide = false, SkipCollisionEffects = true }
@@ -77,7 +78,7 @@ function PST:prePickup(pickup, collider, low)
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.VIRIDIAN)
+                    PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
                     PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                     return { Collide = false, SkipCollisionEffects = true }
@@ -86,7 +87,7 @@ function PST:prePickup(pickup, collider, low)
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.ANCIENT)
+                    PST:SC_addJewel(PSTStarcursedType.ANCIENT, false, 0)
                     PST:createFloatTextFX("+ Ancient Starcursed Jewel", Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
                     return { Collide = false, SkipCollisionEffects = true }

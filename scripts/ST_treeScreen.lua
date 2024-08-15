@@ -644,8 +644,13 @@ function PST:treeMenuRenderer()
                         if jewelData.unidentified then
                             SCJewelSprite:Play("Unidentified", true)
                             SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
-                        elseif jewelData.equipped then
-                            miniFont:DrawString("E", jewelX - treeCamera.X - camZoomOffset.X + 8, jewelY - treeCamera.Y - camZoomOffset.Y, KColor(1, 1, 0.6, 1))
+                        else
+                            if jewelData.equipped then
+                                miniFont:DrawString("E", jewelX - treeCamera.X - camZoomOffset.X + 8, jewelY - treeCamera.Y - camZoomOffset.Y, KColor(1, 1, 0.6, 1))
+                            end
+                            if jewelData.mighty then
+                                miniFont:DrawString("*", jewelX - treeCamera.X - camZoomOffset.X + 8, jewelY - treeCamera.Y - camZoomOffset.Y - 16, KColor(0.6, 1, 1, 1))
+                            end
                         end
                     end
                 end
@@ -764,7 +769,11 @@ function PST:treeMenuRenderer()
             if jewelData.type ~= PSTStarcursedType.ANCIENT and not jewelData.unidentified then
                 table.insert(tmpDescription, "Press the Respec Node button to destroy this jewel.")
             end
-            drawNodeBox(jewelData.name or jewelData.type .. " Starcursed Jewel", tmpDescription, screenW, screenH)
+            local jewelTitle = jewelData.name or jewelData.type .. " Starcursed Jewel"
+            if jewelData.mighty then
+                jewelTitle = jewelTitle .. " (Mighty)"
+            end
+            drawNodeBox(jewelTitle, tmpDescription, screenW, screenH)
         end
     elseif subMenuPageButtonHovered ~= "" then
         cursorSprite:Play("Clicked")

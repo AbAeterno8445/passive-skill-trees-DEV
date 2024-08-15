@@ -1381,6 +1381,16 @@ PST.treeModDescriptions = {
             "dealing 4 damage and charming nearby enemies"
         },
         category = "charTree", sort = 2859
+    },
+    
+    ---- STARMIGHT ----
+    SC_SMMightyChance = {
+        str = "%2.f%% chance for found Starcursed Jewels to be mighty",
+        category = "extra", sort = 5000
+    },
+    SC_SMAncientChance = {
+        str = "%.2f%% additional chance to find Ancient Starcursed Jewels",
+        category = "extra", sort = 5001
     }
 }
 
