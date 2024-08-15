@@ -82,6 +82,18 @@ function PST:onUseCard(card, player, useFlags)
             end
         end
     end
+
+    -- Ancient starcursed jewel: Luminescent Die
+    if PST:SC_getSnapshotMod("luminescentDie", false) then
+        PST:addModifiers({ SC_luminescentUsedCard = true }, true)
+        local tmpMod = PST:getTreeSnapshotMod("SC_luminescentDebuff", 0)
+        if tmpMod > 0 then
+            PST:addModifiers({
+                allstatsPerc = tmpMod / 2,
+                SC_luminescentDebuff = { value = tmpMod / 2, set = true }
+            }, true)
+        end
+    end
 end
 
 function PST:onPillEffect(effect, pillColor)

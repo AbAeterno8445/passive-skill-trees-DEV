@@ -636,6 +636,12 @@ function PST:onUpdate()
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
 				PST.specialNodes.bossGreedSpawned = true
 			end
+
+			-- Ancient starcursed jewel: Luminescent Die
+			if PST:SC_getSnapshotMod("luminescentDie", false) then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_REVERSE_WHEEL_OF_FORTUNE, Random() + 1)
+			end
 		end
 
 		-- Once-per-clear effects

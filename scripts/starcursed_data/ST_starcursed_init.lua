@@ -421,7 +421,7 @@ PST.SCAncients = {
             beastRewards = {1, 4}
         }
     },
-    soulWatcher = { -- TODO
+    soulWatcher = {
         weight = 100,
         spriteFrame = 7,
         name = "Soul Watcher",
@@ -437,7 +437,7 @@ PST.SCAncients = {
             beastRewards = {1, 5}
         }
     },
-    luminescentDie = { -- TODO
+    luminescentDie = {
         weight = 100,
         spriteFrame = 8,
         name = "Luminescent Die",
