@@ -394,15 +394,14 @@ PST.SCAncients = {
             beastRewards = {2, 6}
         }
     },
-    iridescentPurity = { -- TODO
+    iridescentPurity = {
         weight = 100,
         version = 1,
         spriteFrame = 5,
         name = "Iridescent Purity",
         description = {
-            "Each passive item you pick up has a 10% chance to be removed when entering the next floor.",
-            "Chance increases by 10% individually for each item picked in the current floor.",
-            "Items you keep when entering a floor can't be removed by this effect."
+            "Each passive item you pick up has a 15% chance to be removed when entering the next floor.",
+            "Chance increases by 15% individually for each item picked in the current floor."
         },
         rewards = {
             xpgain = 80,

@@ -49,6 +49,19 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_opalescentProc = false }, true)
     end
 
+    -- Ancient starcursed jewel: Iridescent Purity
+    if PST:SC_getSnapshotMod("iridescentPurity", false) then
+        local iridescentItems = PST:getTreeSnapshotMod("SC_iridescentItems", nil)
+        if iridescentItems and #iridescentItems > 0 then
+            for i, itemType in ipairs(iridescentItems) do
+                if 100 * math.random() < 15 * i then
+                    player:RemoveCollectible(itemType)
+                end
+            end
+            PST.modData.treeModSnapshot.SC_iridescentItems = {}
+        end
+    end
+
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)
