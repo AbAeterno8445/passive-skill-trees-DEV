@@ -248,6 +248,17 @@ function PST:onDamage(target, damage, flag, source)
                 blockedDamage = true
             end
 
+            -- Ancient starcursed jewel: Gaze Averter
+            if PST:SC_getSnapshotMod("gazeAverter", false) then
+                local dir = tmpPlayer:GetHeadDirection()
+                if dir == Direction.LEFT and target.Position.X < tmpPlayer.Position.X or
+                dir == Direction.RIGHT and target.Position.X > tmpPlayer.Position.X or
+                dir == Direction.UP and target.Position.Y < tmpPlayer.Position.Y or
+                dir == Direction.DOWN and target.Position.Y > tmpPlayer.Position.Y then
+                    dmgMult = dmgMult - 0.75
+                end
+            end
+
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
                 return { Damage = 0 }

@@ -718,13 +718,20 @@ function PST:treeMenuRenderer()
                 if PST:strStartsWith(hoveredNode.name, tmpType) then
                     local isSocket = string.match(hoveredNode.name, "Socket") ~= nil
                     if isSocket or string.match(hoveredNode.name, "Inventory") ~= nil then
-                        descName = descName .. " (E to open/close inventory)"
                         if isSocket then
+                            local setName = false
                             local socketID = string.sub(hoveredNode.name, -1)
                             local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
                             if socketedJewel and socketedJewel.equipped == socketID then
                                 tmpDescription = PST:SC_getJewelDescription(socketedJewel)
                                 table.insert(tmpDescription, "Press the Respec Node button to unequip the jewel.")
+                                if socketedJewel.name then
+                                    descName = descName .. " - " .. socketedJewel.name
+                                    setName = true
+                                end
+                            end
+                            if not setName then
+                                descName = descName .. " (E to open/close inventory)"
                             end
                         end
                     end

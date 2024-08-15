@@ -6,6 +6,22 @@ function PST:onNewLevel()
     PST.floorFirstUpdate = true
     PST:addModifiers({ staticEntitiesCache = { value = {}, set = true } }, true)
 
+    -- Equipped ancient starcursed jewels - 'unhalve' xp from first floor
+    if not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("SC_firstFloorXPHalvedProc", false) then
+        for i=1,2 do
+            local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
+            if ancientJewel and ancientJewel.rewards then
+                tmpMod = ancientJewel.rewards.xpgain
+                if tmpMod and tmpMod ~= 0 and ancientJewel.rewards.halveXPFirstFloor then
+                    PST:addModifiers({
+                        xpgain = tmpMod / 2,
+                        SC_firstFloorXPHalvedProc = true
+                    }, true)
+                end
+            end
+        end
+    end
+
     -- Ancient starcursed jewel: Umbra (reset)
     if PST:SC_getSnapshotMod("umbra", false) then
         local tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)

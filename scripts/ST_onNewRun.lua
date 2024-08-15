@@ -99,6 +99,15 @@ function PST:onNewRun(isContinued)
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE)
             Game():GetLevel():AddCurse(LevelCurse.CURSE_OF_DARKNESS, false)
         end
+        -- Ancient starcursed jewel: Gaze Averter
+        if PST:SC_getSnapshotMod("gazeAverter", false) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_TINY_PLANET)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_MY_REFLECTION)
+            if tmpSCMods["damage"] then tmpSCMods["damage"] = tmpSCMods["damage"] - 2
+            else tmpSCMods["damage"] = -2 end
+            if tmpSCMods["range"] then tmpSCMods["range"] = tmpSCMods["range"] - 10
+            else tmpSCMods["range"] = -10 end
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

@@ -322,7 +322,7 @@ PST.SCAncients = {
             beastRewards = {1, 4}
         }
     },
-    umbra = { -- TODO
+    umbra = {
         weight = 100,
         version = 1,
         spriteFrame = 1,
@@ -341,14 +341,14 @@ PST.SCAncients = {
             beastRewards = {1, 5}
         }
     },
-    gazeAverter = { -- TODO
+    gazeAverter = {
         weight = 100,
         version = 1,
         spriteFrame = 2,
         name = "Gaze Averter",
         description = {
             "Start with Tiny Planet and My Reflection.",
-            "-2 damage, shot speed and tears.",
+            "-2 damage and -10 range.",
             "Deal 75% less damage to enemies located in the side of the room you're currently facing."
         },
         rewards = {

@@ -516,6 +516,7 @@ function PST:resetMods()
 		ancientStarmight = 0,
 
 		---- Starcursed jewel helpers ----
+		SC_firstFloorXPHalvedProc = false,
 		SC_circadianStatsDown = 0,
 		SC_umbraStatsDown = 0,
 		SC_umbraNightLightSpawn = false
