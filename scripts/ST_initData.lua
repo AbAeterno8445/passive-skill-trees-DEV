@@ -210,7 +210,8 @@ function PST:resetMods()
 		bossChallengeUnlock = 0,
 		bossChallengeUnlockProc = false,
 		floorSmeltTrinket = 0,
-		shopSaving = 0, -- TODO
+		shopSaving = 0,
+		shopSavingCache = {},
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 

@@ -50,6 +50,26 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
             priceMod = priceMod + tmpMod
         end
 
+        -- Mod: chance for a shop item to cost 2-4 less coins
+        tmpMod = PST:getTreeSnapshotMod("shopSaving", 0)
+        -- Make proc rarer in greed mode
+        if Game():IsGreedMode() then tmpMod = tmpMod / 3 end
+
+        if tmpMod > 0 then
+            local shopCache = PST:getTreeSnapshotMod("shopSavingCache", nil)
+            if shopCache then
+                local itemID = tostring(pickupVariant) .. "." .. tostring(subtype) .. "." .. tostring(shopID)
+                if not shopCache[itemID] then
+                    if 100 * math.random() < tmpMod then
+                        shopCache[itemID] = 2 + (math.random(3) - 1)
+                    else
+                        shopCache[itemID] = 0
+                    end
+                end
+                priceMod = priceMod - shopCache[itemID]
+            end
+        end
+
         return math.max(1, price + priceMod)
     end
 end

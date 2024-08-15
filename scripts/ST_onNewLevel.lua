@@ -5,7 +5,10 @@ function PST:onNewLevel()
     PST.specialNodes.momDeathProc = false
 	PST:resetFloatingTexts()
     PST.floorFirstUpdate = true
-    PST:addModifiers({ staticEntitiesCache = { value = {}, set = true } }, true)
+    PST:addModifiers({
+        staticEntitiesCache = { value = {}, set = true },
+        shopCache = { value = {}, set = true }
+    }, true)
 
     -- Equipped ancient starcursed jewels - 'unhalve' xp from first floor
     if not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("SC_firstFloorXPHalvedProc", false) then
