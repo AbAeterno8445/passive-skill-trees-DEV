@@ -23,6 +23,7 @@ function PST:SC_addJewel(jewelType)
     return newJewel
 end
 
+-- Generate a table with description lines for the given jewel, based on its type and mods
 function PST:SC_getJewelDescription(jewel)
     local tmpDescription = {}
     if not jewel.unidentified then
@@ -36,8 +37,8 @@ function PST:SC_getJewelDescription(jewel)
             end
             if jewel.rewards then
                 local tmpRewardList = {}
-                local tmpColor = KColor(0.5, 0.9, 1, 1)
                 for tmpRewardMod, tmpRewardModVal in pairs(jewel.rewards) do
+                    local tmpColor = KColor(0.5, 0.9, 1, 1)
                     if PST.SCMods[tmpRewardMod] then
                         local descStr
                         if type(tmpRewardModVal) == "table" then
@@ -45,13 +46,22 @@ function PST:SC_getJewelDescription(jewel)
                         else
                             descStr = string.format(PST.SCMods[tmpRewardMod], tmpRewardModVal)
                         end
-                        table.insert(tmpRewardList, descStr)
+                        if jewel.name and jewel.version then
+                            local jewelID = jewel.name .. " " .. jewel.version
+                            if PST.modData.ancientRewards[jewelID] and PST.modData.ancientRewards[jewelID][tmpRewardMod] then
+                                descStr = descStr .. " (Done)"
+                                tmpColor = KColor(1, 0.9, 0.5, 1)
+                            end
+                        end
+                        table.insert(tmpRewardList, {descStr, tmpColor})
                     end
                 end
                 table.sort(tmpRewardList, function(a, b)
-                    return string.len(a) < string.len(b)
+                    return string.len(a[1]) < string.len(b[1])
                 end)
-                for _, tmpLine in ipairs(tmpRewardList) do table.insert(tmpDescription, {tmpLine, tmpColor}) end
+                for _, tmpLine in ipairs(tmpRewardList) do
+                    table.insert(tmpDescription, tmpLine)
+                end
             end
         end
         if jewel.starmight ~= 0 then
@@ -198,6 +208,7 @@ function PST:SC_identifyJewel(jewel)
             jewel.description = newAncient.description
             jewel.rewards = newAncient.rewards
             jewel.spriteFrame = newAncient.spriteFrame
+            jewel.version = newAncient.version
         else
             jewel.name = "Faded Starpiece"
             jewel.description = {"This jewel's energy has almost faded out..."}

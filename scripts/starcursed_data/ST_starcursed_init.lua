@@ -304,7 +304,7 @@ PST.SCMods = {
 }
 
 PST.SCAncients = {
-    circadianDestructor = { -- TODO
+    circadianDestructor = {
         weight = 100,
         version = 1,
         spriteFrame = 0,

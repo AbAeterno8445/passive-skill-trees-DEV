@@ -208,8 +208,8 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
 
     local descW = longestStrWidth + 4
     local descH = (miniFont:GetLineHeight() + 2) * (#description + 1) + 4
-    if not absolute and descH + offY > paramY / 2 then
-        drawY = drawY - (descH + offY - paramY / 2)
+    if not absolute and descH + offY > paramY / 2 - 24 then
+        drawY = drawY - (descH + offY - paramY / 2 + 24)
     end
 
     nodeBGSprite.Scale.X = descW

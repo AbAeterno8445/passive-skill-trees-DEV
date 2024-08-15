@@ -205,6 +205,9 @@ function PST:onCompletionEvent(event)
 					end
 					PST.modData.respecPoints = PST.modData.respecPoints + tmpRewards[2]
 					PST.modData.ancientRewards[jewelID][rewardMod] = true
+
+					sfx:Play(SoundEffect.SOUND_THUMBSUP)
+					PST:createFloatTextFX("Ancient jewel objective complete!", Vector.Zero, Color(1, 0.9, 0.5, 1), 0.13, 160, true)
 				end
 			end
 		end
