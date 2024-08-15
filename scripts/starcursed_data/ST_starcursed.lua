@@ -364,6 +364,8 @@ function PST:SC_getStarmightImplicits(starmight)
 end
 
 function PST:SC_isStarTreeUnlocked()
+    if PST.debugOptions.allAvailable then return true end
+
     -- Character level requirement to unlock star tree
     for _, charData in pairs(PST.modData.charData) do
         if charData.level >= PST.SCStarTreeUnlockLevel then
