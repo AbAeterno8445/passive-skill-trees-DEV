@@ -718,7 +718,7 @@ function PST:treeMenuRenderer()
                 end
             elseif not PST:SC_isStarTreeUnlocked() then
                 tmpDescription = {
-                    {"Reach level 40 with at least one character to unlock.", KColor(1, 0.6, 0.6, 1)}
+                    {"Reach level " .. tostring(PST.SCStarTreeUnlockLevel) .. " with at least one character to unlock.", KColor(1, 0.6, 0.6, 1)}
                 }
             end
         elseif isAllocated then

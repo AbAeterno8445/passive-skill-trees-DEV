@@ -481,3 +481,5 @@ PST.SCDropRates = {
     bossrush = function() return { regular = 50, ancient = 15 } end,
     planetarium = function() return { regular = 20, ancient = 10 } end
 }
+
+PST.SCStarTreeUnlockLevel = 30

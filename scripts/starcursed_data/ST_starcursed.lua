@@ -364,9 +364,9 @@ function PST:SC_getStarmightImplicits(starmight)
 end
 
 function PST:SC_isStarTreeUnlocked()
-    -- Require at least one character at level 40 to unlock star tree
+    -- Character level requirement to unlock star tree
     for _, charData in pairs(PST.modData.charData) do
-        if charData.level >= 40 then
+        if charData.level >= PST.SCStarTreeUnlockLevel then
             return true
         end
     end
