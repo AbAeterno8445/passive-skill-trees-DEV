@@ -37,6 +37,13 @@ function PST:onNewLevel()
         end
     end
 
+    -- Ancient starcursed jewel: Cursed Starpiece
+    if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() then
+        if not PST:getTreeSnapshotMod("SC_cursedStarpieceDebuff", false) then
+            PST:addModifiers({ allstatsPerc = -12, SC_cursedStarpieceDebuff = true }, true)
+        end
+    end
+
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)

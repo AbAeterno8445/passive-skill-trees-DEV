@@ -195,7 +195,7 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
     end
     local longestStrWidth = 8 + offX + miniFont:GetStringWidth(longestStr)
     if longestStrWidth > paramX / 2 then
-        offX = offX - (longestStrWidth - paramX / 2)
+        offX = offX - (longestStrWidth - paramX / 2 + 8)
     end
 
     -- Draw description background
@@ -733,6 +733,8 @@ function PST:treeMenuRenderer()
                             if not setName then
                                 descName = descName .. " (E to open/close inventory)"
                             end
+                        else
+                            descName = descName .. " (E to open/close inventory)"
                         end
                     end
                     break

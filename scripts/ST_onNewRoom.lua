@@ -297,6 +297,20 @@ function PST:onNewRoom()
 			end
 		end
 
+		if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() and room:GetType() == RoomType.ROOM_TREASURE then
+			local firstItem = true
+			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+				local tmpItem = tmpEntity:ToPickup()
+				if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+					if firstItem then
+						Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpItem.Position, Vector.Zero, nil, Card.CARD_REVERSE_STARS, Random() + 1)
+						firstItem = false
+					end
+					tmpItem:Remove()
+				end
+			end
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage

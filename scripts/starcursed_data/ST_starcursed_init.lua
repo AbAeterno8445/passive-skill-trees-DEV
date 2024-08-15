@@ -358,17 +358,21 @@ PST.SCAncients = {
             beastRewards = {1, 4}
         }
     },
-    cursedStarpiece = { -- TODO
+    cursedStarpiece = {
         weight = 100,
         version = 1,
         spriteFrame = 3,
         name = "Cursed Starpiece",
         description = {
-            "Starting from the second floor, all treasure rooms contain a Reversed Stars card instead of item pedestals.",
-            "Starting from the second floor, -8% all stats for the current floor while you haven't used Reversed Stars."
+            "Starting from the second floor, all treasure rooms contain a Reversed Stars card",
+            "instead of item pedestals.",
+            "Starting from the second floor, -12% all stats for the current floor while you",
+            "haven't used Reversed Stars.",
+            "Reversed Stars has a 100% chance to remove an additional item. If used in a treasure",
+            "room, lower this chance to 35%."
         },
         rewards = {
-            xpgain = 60,
+            xpgain = 70,
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}

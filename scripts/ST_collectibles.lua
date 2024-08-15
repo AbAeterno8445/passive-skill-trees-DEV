@@ -170,7 +170,7 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
                 familiarCount = familiarCount + playerCollectibles[tmpType]
             end
             if familiarCount > 0 then
-                local tmpMod = 1 / (2 ^ familiarCount)
+                tmpMod = 1 / (2 ^ familiarCount)
                 PST:addModifiers({ tears = tmpMod, range = tmpMod, shotSpeed = tmpMod }, true)
             end
         end

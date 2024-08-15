@@ -60,6 +60,28 @@ function PST:onUseCard(card, player, useFlags)
         PST.specialNodes.SC_circadianSpawnProc = false
         PST.specialNodes.SC_circadianExplImmune = 120
     end
+
+    -- Ancient starcursed jewel: Cursed Starpiece
+    if PST:SC_getSnapshotMod("cursedStarpiece", false) and card == Card.CARD_REVERSE_STARS then
+        if PST:getTreeSnapshotMod("SC_cursedStarpieceDebuff", false) then
+            PST:addModifiers({ allstatsPerc = 12, SC_cursedStarpieceDebuff = false }, true)
+        end
+
+        local tmpChance = 100
+        if Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
+            tmpChance = 35
+        end
+        if 100 * math.random() < tmpChance then
+            local playerCollectibles = player:GetCollectiblesList()
+            local removableCollectibles = {}
+            for itemID, tmpItemCount in ipairs(playerCollectibles) do
+                if tmpItemCount > 0 then table.insert(removableCollectibles, itemID) end
+            end
+            if #removableCollectibles > 0 then
+                player:RemoveCollectible(removableCollectibles[math.random(#removableCollectibles)])
+            end
+        end
+    end
 end
 
 function PST:onPillEffect(effect, pillColor)
