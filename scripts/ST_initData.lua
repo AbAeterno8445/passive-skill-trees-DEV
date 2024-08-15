@@ -146,6 +146,9 @@ PST.deadlySinBosses = {
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
 
+-- For trinket pickup updates
+PST.trinketUpdateProc = 0
+
 function PST:resetMods()
 	-- List of available tree modifiers
 	PST.modData.treeMods = {
@@ -206,7 +209,7 @@ function PST:resetMods()
 		cardAgainstHumanityProc = false,
 		bossChallengeUnlock = 0,
 		bossChallengeUnlockProc = false,
-		floorSmeltTrinket = 0, -- TODO
+		floorSmeltTrinket = 0,
 		shopSaving = 0, -- TODO
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle

@@ -878,4 +878,10 @@ function PST:onUpdate()
 	elseif room:GetAliveEnemiesCount() > 0 then
 		clearRoomProc = false
 	end
+
+	-- Trinket updates
+	if PST.trinketUpdateProc > 0 and Game():GetFrameCount() > PST.trinketUpdateProc + 1 then
+		PST.trinketUpdateProc = 0
+		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+	end
 end
