@@ -8,6 +8,9 @@ PST.config = {
     -- Draw selected character level info at the bottom of the screen during character selection
     charSelectInfoText = true,
 
+    -- XP multiplier option
+    xpMult = 1,
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed
@@ -192,6 +195,41 @@ function PST:initModConfigMenu()
                 PST:save()
             end,
             Info = {"Draw char info text in character select screen"}
+        }
+    )
+    local xpMultOptions = {}
+    for i=0,20 do
+        table.insert(xpMultOptions, 1 + i * 0.1)
+    end
+    local function getTableIndex(tbl, val)
+        for i, v in ipairs(tbl) do
+            if v == val then
+                return i
+            end
+        end
+        return 0
+    end
+    -- XP multiplier setting
+    ModConfigMenu.RemoveSetting(PST.modName, nil, "xpMult")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        nil,
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "xpMult",
+            CurrentSetting = function()
+                return getTableIndex(xpMultOptions, PST.config.xpMult)
+            end,
+            Minimum = 1,
+            Maximum = #xpMultOptions,
+            Display = function()
+                return "XP Multiplier: " .. tostring(PST.config.xpMult)
+            end,
+            OnChange = function(n)
+                PST.config.xpMult = xpMultOptions[n]
+                PST:save()
+            end,
+            Info = {"XP Multiplier applied to most XP gains", "Default 1"}
         }
     )
 end

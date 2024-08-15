@@ -731,7 +731,7 @@ function PST:treeMenuRenderer()
                             local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
                             if socketedJewel and socketedJewel.equipped == socketID then
                                 tmpDescription = PST:SC_getJewelDescription(socketedJewel)
-                                table.insert(tmpDescription, "Press the Respec Node button to unequip the jewel.")
+                                table.insert(tmpDescription, "Press the Respec Node button to unsocket the jewel.")
                                 if socketedJewel.name then
                                     descName = descName .. " - " .. socketedJewel.name
                                     setName = true

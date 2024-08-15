@@ -75,11 +75,12 @@ function PST:addTempXP(xp, showText, noMult)
 end
 
 -- Add XP
----@param xp number Amount of XP to add
+---@param xpParam number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
-function PST:addXP(xp, showText)
+function PST:addXP(xpParam, showText)
 	local charData = PST:getCurrentCharData()
 	if charData then
+		local xp = xpParam * (PST.config.xpMult or 1)
 		charData.xp = math.max(0, charData.xp + xp)
 		if showText then
 			local xpStr = string.format("+%.2f xp", xp)
