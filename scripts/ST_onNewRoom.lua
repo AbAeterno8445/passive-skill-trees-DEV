@@ -321,6 +321,12 @@ function PST:onNewRoom()
 
 	-- First room entry
 	if room:IsFirstVisit() then
+		-- Starcursed jewel in planetariums
+		if room:GetType() == RoomType.ROOM_PLANETARIUM and 100 * math.random() < PST.SCDropRates.planetarium().regular then
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.planetarium().ancient)
+		end
+
 		-- Ancient starcursed jewel: Umbra
 		if PST:SC_getSnapshotMod("umbra", false) and level:GetCurses() & LevelCurse.CURSE_OF_DARKNESS and
 		not player:HasCollectible(CollectibleType.COLLECTIBLE_NIGHT_LIGHT) then
