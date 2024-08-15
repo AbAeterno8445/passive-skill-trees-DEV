@@ -1142,6 +1142,9 @@ function PST:treeMenuRendering()
     local isCharMenu = false
     if not Isaac.IsInGame() then
         isCharMenu = MenuManager.GetActiveMenu() == MainMenuType.CHARACTER
+        if CharacterMenu.GetActiveStatus then
+            isCharMenu = isCharMenu and CharacterMenu.GetActiveStatus() == 0
+        end
     end
 
     -- First MC_MAIN_MENU_RENDER call
