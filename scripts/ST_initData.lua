@@ -2,7 +2,7 @@
 PST.modName = "Passive Skill Trees"
 PST.modData = {}
 PST.selectedMenuChar = -1
-PST.startXPRequired = 32
+PST.startXPRequired = 34
 PST.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
@@ -204,6 +204,10 @@ function PST:resetMods()
 		firstItemShotspeed = 0,
 		firstItemLuck = 0,
 		cardAgainstHumanityProc = false,
+		bossChallengeUnlock = 0,
+		bossChallengeUnlockProc = false,
+		floorSmeltTrinket = 0, -- TODO
+		shopSaving = 0, -- TODO
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 

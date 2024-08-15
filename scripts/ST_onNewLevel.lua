@@ -195,6 +195,13 @@ function PST:onNewLevel()
         PST:addModifiers({ cardAgainstHumanityProc = false }, true)
     end
 
+    -- Mod: chance to unlock boss challenge room regardless of hearts
+    if 100 * math.random() < PST:getTreeSnapshotMod("bossChallengeUnlock", 0) then
+        PST:addModifiers({ bossChallengeUnlockProc = true }, true)
+    elseif PST:getTreeSnapshotMod("bossChallengeUnlockProc", false) then
+        PST:addModifiers({ bossChallengeUnlockProc = false }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

@@ -319,6 +319,16 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Mod: chance to unlock boss challenge rooms regardless of hearts
+	if PST:getTreeSnapshotMod("bossChallengeUnlockProc", false) and level:HasBossChallenge() then
+		for i=0,7 do
+			local tmpDoor = room:GetDoor(i)
+			if tmpDoor and tmpDoor.TargetRoomType == RoomType.ROOM_CHALLENGE then
+				tmpDoor:TryUnlock(player, true)
+			end
+		end
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
