@@ -415,7 +415,7 @@ function PST:onNewRoom()
 			local randomStat = PST:getRandomStat()
 			local tmpAdd = 1
 			if randomStat == "speed" then
-				tmpAdd = 0.1
+				tmpAdd = 0.2
 			end
 
 			-- Hell's favour mod
