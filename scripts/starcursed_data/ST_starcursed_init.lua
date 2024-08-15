@@ -473,3 +473,10 @@ PST.SCAncients = {
         }
     }
 }
+
+PST.SCDropRates = {
+    championKill = function() return { regular = 1, ancient = 0.5 } end,
+    boss = function(stage) return { regular = 8 + stage, ancient = 7 } end,
+    challenge = function(stage) return { regular = 2 + stage, ancient = 2 } end,
+    bossrush = function() return { regular = 50, ancient = 15 } end
+}

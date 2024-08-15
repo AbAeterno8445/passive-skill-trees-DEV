@@ -610,18 +610,12 @@ function PST:onUpdate()
 				PST:addTempXP(challengeXP, true, true)
 			end
 
-			-- Ancient starcursed jewel: Challenger's Starpiece
-			if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) then
-				if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
-					local tmpVariant = 0
-					if level:GetStage() >= 7 then
-						tmpVariant = 1
-					end
-					Game():Spawn(
-						PST.deadlySinBosses[math.random(#PST.deadlySinBosses)],
-						tmpVariant, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1
-					)
-					PST:addModifiers({ SC_challClear = true }, true)
+			-- Final round clear
+			if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
+				-- Starcursed jewel drop
+				if 100 * math.random() < PST.SCDropRates.challenge(level:GetStage()).regular then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.challenge(level:GetStage()).ancient)
 				end
 			end
 		-- Boss rooms
@@ -636,20 +630,15 @@ function PST:onUpdate()
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
 				PST.specialNodes.bossGreedSpawned = true
 			end
-
-			-- Ancient starcursed jewel: Luminescent Die
-			if PST:SC_getSnapshotMod("luminescentDie", false) then
-				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_REVERSE_WHEEL_OF_FORTUNE, Random() + 1)
-			end
 		end
 
 		-- Once-per-clear effects
 		if not clearRoomProc and PST.modData.xpObtained > 0 then
 			local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
 
-			-- Respec chance
+			-- Boss room
 			if isBossRoom then
+				-- Respec chance
 				local respecChance = PST:getTreeSnapshotMod("respecChance", 15)
 				if not PST:getTreeSnapshotMod("relearning", false) then
 					local tmpRespecs = 0
@@ -667,6 +656,42 @@ function PST:onUpdate()
 				else
 					-- Relearning node, count as completed floor
 					PST:addModifiers({ relearningFloors = 1 }, true)
+				end
+
+				-- Ancient starcursed jewel: Luminescent Die
+				if PST:SC_getSnapshotMod("luminescentDie", false) then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_REVERSE_WHEEL_OF_FORTUNE, Random() + 1)
+				end
+
+				-- Starcursed jewel drop
+				if 100 * math.random() < PST.SCDropRates.boss(level:GetStage()).regular then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
+				end
+			-- Boss rush
+			elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
+				-- Starcursed jewel drop
+				if 100 * math.random() < PST.SCDropRates.bossrush().regular then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.bossrush().ancient)
+				end
+			-- Challenge room
+			elseif room:GetType() == RoomType.ROOM_CHALLENGE then
+				-- Final round clear
+				if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
+					-- Ancient starcursed jewel: Challenger's Starpiece
+					if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) then
+						local tmpVariant = 0
+						if level:GetStage() >= 7 then
+							tmpVariant = 1
+						end
+						Game():Spawn(
+							PST.deadlySinBosses[math.random(#PST.deadlySinBosses)],
+							tmpVariant, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1
+						)
+						PST:addModifiers({ SC_challClear = true }, true)
+					end
 				end
 			end
 

@@ -14,19 +14,22 @@ function PST:onNewRun(isContinued)
 
     PST:resetMods()
     if not PST.modData.treeDisabled then
+        local globalTrees = {"global", "starTree"}
         -- Get snapshot of tree modifiers
-        for nodeID, node in pairs(PST.trees["global"]) do
-            if PST:isNodeAllocated("global", nodeID) then
-                local kept = false
-                for keptName, keptVal in pairs(keptMods) do
-                    if node.name == keptName then
-                        PST:addModifiers(keptVal)
-                        kept = true
-                        break
+        for _, tmpTree in ipairs(globalTrees) do
+            for nodeID, node in pairs(PST.trees[tmpTree]) do
+                if PST:isNodeAllocated(tmpTree, nodeID) then
+                    local kept = false
+                    for keptName, keptVal in pairs(keptMods) do
+                        if node.name == keptName then
+                            PST:addModifiers(keptVal)
+                            kept = true
+                            break
+                        end
                     end
-                end
-                if not kept then
-                    PST:addModifiers(node.modifiers)
+                    if not kept then
+                        PST:addModifiers(node.modifiers)
+                    end
                 end
             end
         end

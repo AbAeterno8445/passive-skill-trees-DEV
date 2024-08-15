@@ -23,6 +23,24 @@ function PST:SC_addJewel(jewelType)
     return newJewel
 end
 
+local nonAncient = {PSTStarcursedType.AZURE, PSTStarcursedType.CRIMSON, PSTStarcursedType.VIRIDIAN}
+function PST:SC_getRandomJewelType()
+    return nonAncient[math.random(#nonAncient)]
+end
+
+function PST:SC_dropRandomJewelAt(position, ancientChance)
+    if not PST:getTreeSnapshotMod("enableSCJewels", false) then return end
+
+    local newJewelType = Isaac.GetTrinketIdByName(PST:SC_getRandomJewelType() .. " Starcursed Jewel")
+    if 100 * math.random() < ancientChance then
+        newJewelType = Isaac.GetTrinketIdByName(PSTStarcursedType.ANCIENT .. " Starcursed Jewel")
+    end
+    if newJewelType ~= -1 then
+        local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, newJewelType, Random() + 1)
+    end
+end
+
 -- Generate a table with description lines for the given jewel, based on its type and mods
 function PST:SC_getJewelDescription(jewel)
     local tmpDescription = {}

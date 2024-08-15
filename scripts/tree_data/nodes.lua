@@ -11,6 +11,18 @@ function PST:isNodeAllocated(tree, nodeID)
     return PST.modData.treeNodes[tree][nodeID]
 end
 
+-- Check if node with given name is allocated
+function PST:isNodeNameAllocated(tree, nodeName)
+    if not PST.modData.treeNodes[tree] then return false end
+    for nodeID, allocated in pairs(PST.modData.treeNodes[tree]) do
+        local targetNode = PST.trees[tree][nodeID]
+        if allocated and targetNode and targetNode.name == nodeName then
+            return true
+        end
+    end
+    return false
+end
+
 -- Update the state for the given tree
 ---@param tree? string|number Which tree to update. If nil, update all trees
 ---@param noReset? boolean Whether to reset player mods prior to update
@@ -231,9 +243,11 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         if adjacentNodes ~= nil then
             local adjacentReachable = true
             for _, adjacentID in ipairs(adjacentNodes) do
-                if PST:isNodeAllocated(tree, adjacentID) and not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
-                    adjacentReachable = false
-                    break
+                if PST:isNodeAllocated(tree, adjacentID) then
+                    if PST.trees[tree][nodeID].alwaysAvailable or not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
+                        adjacentReachable = false
+                        break
+                    end
                 end
             end
             if not adjacentReachable then

@@ -544,6 +544,11 @@ function PST:onDeath(entity)
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
+        -- Chance for champions to drop a random starcursed jewel
+        local tmpNPC = entity:ToNPC()
+        if tmpNPC and tmpNPC:IsChampion() and 100 * math.random() < PST.SCDropRates.championKill().regular then
+            PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill().ancient)
+        end
         -- Starcursed mod: spawn X static hovering tears for Y seconds on death
         local tmpMod = PST:SC_getSnapshotMod("hoveringTearsOnDeath", {0, 0})
         if tmpMod[1] > 0 and tmpMod[2] > 0 then
