@@ -34,7 +34,7 @@ function PST:addTempXP(xp, showText, noMult)
     local xpMult = 1 + PST:getTreeSnapshotMod("xpgain", 0) / 100
 
 	if not Game():IsHardMode() then
-		xpMult = xpMult - 0.25
+		xpMult = xpMult - 0.4
 	end
 
 	-- Extra challenge room XP gain mod
