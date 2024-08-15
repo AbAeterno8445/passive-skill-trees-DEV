@@ -1,6 +1,6 @@
 PST.SkillTreesAPI.AddCharacterTree("Eve", [[
 {
-"2": "{\"pos\":[0,0],\"type\":113,\"size\":\"Small\",\"name\":\"Luck On Room Clear Below Full\",\"description\":[\"+0.01 luck when clearing a room below full red hearts.\"],\"modifiers\":{\"luckOnClearBelowFull\":0.01},\"adjacent\":[100,164],\"alwaysAvailable\":true}",
+"2": "{\"pos\":[0,0],\"type\":113,\"size\":\"Small\",\"name\":\"Luck On Room Clear Below Full\",\"description\":[\"+0.01 luck when clearing a room below full red hearts.\"],\"modifiers\":{\"luckOnClearBelowFull\":0.01},\"adjacent\":[100,164,188,186],\"alwaysAvailable\":true}",
 "20": "{\"pos\":[0,-17],\"type\":104,\"size\":\"Large\",\"name\":\"Carrion Avian\",\"description\":[\"+0.15 damage when dead bird kills an enemy, up to +3. Resets every floor.\",\"If dead bird kills a boss, gain a permanent +0.6 damage instead.\"],\"modifiers\":{\"carrionAvian\":true},\"adjacent\":[178]}",
 "45": "{\"pos\":[-1,-16],\"type\":107,\"size\":\"Small\",\"name\":\"Active Dead Bird Damage\",\"description\":[\"+0.02 damage while dead bird is active\"],\"modifiers\":{\"activeDeadBirdDamage\":0.02},\"adjacent\":[46,49,178]}",
 "46": "{\"pos\":[-2,-15],\"type\":107,\"size\":\"Small\",\"name\":\"Active Dead Bird Damage\",\"description\":[\"+0.02 damage while dead bird is active\"],\"modifiers\":{\"activeDeadBirdDamage\":0.02},\"adjacent\":[45,47,50]}",
@@ -91,6 +91,22 @@ PST.SkillTreesAPI.AddCharacterTree("Eve", [[
 "182": "{\"pos\":[2,-14],\"type\":112,\"size\":\"Small\",\"name\":\"Dead Bird Damage\",\"description\":[\"Dead bird deals an additional 1% of your damage per tick.\"],\"modifiers\":{\"deadBirdInheritDamage\":1},\"adjacent\":[181]}",
 "183": "{\"pos\":[3,-14],\"type\":112,\"size\":\"Small\",\"name\":\"Dead Bird Damage\",\"description\":[\"Dead bird deals an additional 1% of your damage per tick.\"],\"modifiers\":{\"deadBirdInheritDamage\":1},\"adjacent\":[181,184]}",
 "184": "{\"pos\":[3,-13],\"type\":112,\"size\":\"Small\",\"name\":\"Dead Bird Damage\",\"description\":[\"Dead bird deals an additional 1% of your damage per tick.\"],\"modifiers\":{\"deadBirdInheritDamage\":1},\"adjacent\":[183,185]}",
-"185": "{\"pos\":[4,-12],\"type\":112,\"size\":\"Small\",\"name\":\"Dead Bird Damage\",\"description\":[\"Dead bird deals an additional 1% of your damage per tick.\"],\"modifiers\":{\"deadBirdInheritDamage\":1},\"adjacent\":[184]}"
+"185": "{\"pos\":[4,-12],\"type\":112,\"size\":\"Small\",\"name\":\"Dead Bird Damage\",\"description\":[\"Dead bird deals an additional 1% of your damage per tick.\"],\"modifiers\":{\"deadBirdInheritDamage\":1},\"adjacent\":[184]}",
+"186": "{\"pos\":[2,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[2,187]}",
+"187": "{\"pos\":[3,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[186,191]}",
+"188": "{\"pos\":[-2,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[2,189]}",
+"189": "{\"pos\":[-3,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[188,190]}",
+"190": "{\"pos\":[-4,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[189,196,194,192]}",
+"191": "{\"pos\":[4,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[187,197,193,195]}",
+"192": "{\"pos\":[-4,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[190]}",
+"193": "{\"pos\":[4,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[191]}",
+"194": "{\"pos\":[-5,-1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[190]}",
+"195": "{\"pos\":[5,-1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[191]}",
+"196": "{\"pos\":[-5,0],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[190,198]}",
+"197": "{\"pos\":[5,0],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[191,199]}",
+"198": "{\"pos\":[-6,0],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[196,200]}",
+"199": "{\"pos\":[6,0],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[197,201]}",
+"200": "{\"pos\":[-7,0],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[198]}",
+"201": "{\"pos\":[7,0],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[199]}"
 }
 ]])

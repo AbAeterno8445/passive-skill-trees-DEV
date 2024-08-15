@@ -92,6 +92,22 @@ PST.SkillTreesAPI.AddCharacterTree("Judas", [[
 "194": "{\"pos\":[-7,7],\"type\":88,\"size\":\"Small\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.01 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.01},\"adjacent\":[193,105]}",
 "197": "{\"pos\":[-6,2],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.1 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.1},\"adjacent\":[184,185]}",
 "198": "{\"pos\":[-12,2],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.1 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.1},\"adjacent\":[189,133,190]}",
-"199": "{\"pos\":[0,0],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[3,141,180,17],\"alwaysAvailable\":true}"
+"199": "{\"pos\":[0,0],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[3,141,180,17,200,202],\"alwaysAvailable\":true}",
+"200": "{\"pos\":[0,-2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[199,201]}",
+"201": "{\"pos\":[0,-3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[200,204]}",
+"202": "{\"pos\":[0,2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[199,203]}",
+"203": "{\"pos\":[0,3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[202,205]}",
+"204": "{\"pos\":[0,-4],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[201,212,207,209]}",
+"205": "{\"pos\":[0,4],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[203,211,210,206]}",
+"206": "{\"pos\":[1,4],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[205]}",
+"207": "{\"pos\":[-1,-4],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[204]}",
+"209": "{\"pos\":[1,-4],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[204]}",
+"210": "{\"pos\":[-1,4],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[205]}",
+"211": "{\"pos\":[1,5],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[205,213]}",
+"212": "{\"pos\":[-1,-5],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[204,214]}",
+"213": "{\"pos\":[0,5],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[211,215]}",
+"214": "{\"pos\":[0,-5],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[212,216]}",
+"215": "{\"pos\":[-1,5],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[213]}",
+"216": "{\"pos\":[1,-5],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[214]}"
 }
 ]])

@@ -1,6 +1,6 @@
 PST.SkillTreesAPI.AddCharacterTree("Siren", [[
 {
-"2": "{\"pos\":[0,0],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[19,23],\"alwaysAvailable\":true}",
+"2": "{\"pos\":[0,0],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[19,23,299,301],\"alwaysAvailable\":true}",
 "19": "{\"pos\":[0,1],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[2,20]}",
 "20": "{\"pos\":[0,2],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[19,21]}",
 "21": "{\"pos\":[0,3],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[20,22]}",
@@ -105,6 +105,22 @@ PST.SkillTreesAPI.AddCharacterTree("Siren", [[
 "248": "{\"pos\":[-2,-12],\"type\":291,\"size\":\"Small\",\"name\":\"Charmed Retaliation\",\"description\":[\"When a charmed enemy hits you, return 0.4 damage.\"],\"modifiers\":{\"charmedRetaliation\":0.4},\"adjacent\":[247,236]}",
 "249": "{\"pos\":[13,4],\"type\":284,\"size\":\"Large\",\"name\":\"Dark Songstress\",\"description\":[\"Non-charmed enemies receive 8% less damage.\",\"Killing a charmed enemy has an 8% chance to grant 1 charge to Siren's Song.\",\"Using Siren's Song removes this effect and grants +8% damage and speed for the current room.\"],\"modifiers\":{\"darkSongstress\":true},\"adjacent\":[75]}",
 "285": "{\"pos\":[4,-8],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.04 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.04},\"adjacent\":[157]}",
-"286": "{\"pos\":[-4,-10],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.04 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.04},\"adjacent\":[236]}"
+"286": "{\"pos\":[-4,-10],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.04 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.04},\"adjacent\":[236]}",
+"299": "{\"pos\":[0,-2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[2,300]}",
+"300": "{\"pos\":[0,-3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[299,303]}",
+"301": "{\"pos\":[-2,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[2,302]}",
+"302": "{\"pos\":[-3,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[301,304]}",
+"303": "{\"pos\":[0,-4],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[300,311,308,305]}",
+"304": "{\"pos\":[-4,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[302,309,307,315]}",
+"305": "{\"pos\":[-1,-5],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[303]}",
+"307": "{\"pos\":[-5,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[304]}",
+"308": "{\"pos\":[0,-5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[303]}",
+"309": "{\"pos\":[-4,-1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[304]}",
+"311": "{\"pos\":[-1,-4],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[303,313]}",
+"313": "{\"pos\":[-2,-4],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[311,318]}",
+"315": "{\"pos\":[-4,1],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[304,316]}",
+"316": "{\"pos\":[-4,2],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[315,317]}",
+"317": "{\"pos\":[-5,3],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[316]}",
+"318": "{\"pos\":[-3,-3],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[313]}"
 }
 ]])

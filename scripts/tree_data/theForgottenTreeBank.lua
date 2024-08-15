@@ -1,7 +1,7 @@
 PST.SkillTreesAPI.AddCharacterTree("The Forgotten", [[
 {
 "49": "{\"pos\":[-1,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[50,184]}",
-"50": "{\"pos\":[-2,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[49,51]}",
+"50": "{\"pos\":[-2,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[49,51,202]}",
 "51": "{\"pos\":[-3,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[50,52]}",
 "52": "{\"pos\":[-4,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[51,53]}",
 "53": "{\"pos\":[-5,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[52,54]}",
@@ -36,7 +36,7 @@ PST.SkillTreesAPI.AddCharacterTree("The Forgotten", [[
 "96": "{\"pos\":[-10,-4],\"type\":248,\"size\":\"Small\",\"name\":\"Forgotten Soul Tears\",\"description\":[\"+0.01 tears with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulTears\":0.01},\"adjacent\":[95,97]}",
 "97": "{\"pos\":[-10,-3],\"type\":248,\"size\":\"Small\",\"name\":\"Forgotten Soul Tears\",\"description\":[\"+0.01 tears with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulTears\":0.01},\"adjacent\":[96,77]}",
 "98": "{\"pos\":[1,0],\"type\":249,\"size\":\"Small\",\"name\":\"Soul Bone Damage\",\"description\":[\"+0.01 damage with The Soul per remaining bone heart.\"],\"modifiers\":{\"theSoulBoneDamage\":0.01},\"adjacent\":[99,184]}",
-"99": "{\"pos\":[2,0],\"type\":249,\"size\":\"Small\",\"name\":\"Soul Bone Damage\",\"description\":[\"+0.01 damage with The Soul per remaining bone heart.\"],\"modifiers\":{\"theSoulBoneDamage\":0.01},\"adjacent\":[98,100]}",
+"99": "{\"pos\":[2,0],\"type\":249,\"size\":\"Small\",\"name\":\"Soul Bone Damage\",\"description\":[\"+0.01 damage with The Soul per remaining bone heart.\"],\"modifiers\":{\"theSoulBoneDamage\":0.01},\"adjacent\":[98,100,204]}",
 "100": "{\"pos\":[3,0],\"type\":249,\"size\":\"Small\",\"name\":\"Soul Bone Damage\",\"description\":[\"+0.01 damage with The Soul per remaining bone heart.\"],\"modifiers\":{\"theSoulBoneDamage\":0.01},\"adjacent\":[99,101]}",
 "101": "{\"pos\":[4,0],\"type\":249,\"size\":\"Small\",\"name\":\"Soul Bone Damage\",\"description\":[\"+0.01 damage with The Soul per remaining bone heart.\"],\"modifiers\":{\"theSoulBoneDamage\":0.01},\"adjacent\":[100,102]}",
 "102": "{\"pos\":[5,0],\"type\":249,\"size\":\"Small\",\"name\":\"Soul Bone Damage\",\"description\":[\"+0.01 damage with The Soul per remaining bone heart.\"],\"modifiers\":{\"theSoulBoneDamage\":0.01},\"adjacent\":[101,108]}",
@@ -116,6 +116,22 @@ PST.SkillTreesAPI.AddCharacterTree("The Forgotten", [[
 "198": "{\"pos\":[2,-8],\"type\":246,\"size\":\"Small\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 0.2%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":0.2},\"adjacent\":[197,201]}",
 "199": "{\"pos\":[0,-5],\"type\":252,\"size\":\"Med\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 1%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":1},\"adjacent\":[188,133,189,194]}",
 "200": "{\"pos\":[-1,-8],\"type\":252,\"size\":\"Med\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 1%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":1},\"adjacent\":[193]}",
-"201": "{\"pos\":[1,-8],\"type\":252,\"size\":\"Med\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 1%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":1},\"adjacent\":[198]}"
+"201": "{\"pos\":[1,-8],\"type\":252,\"size\":\"Med\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 1%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":1},\"adjacent\":[198]}",
+"202": "{\"pos\":[-2,2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[50,203]}",
+"203": "{\"pos\":[-2,3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[202,206]}",
+"204": "{\"pos\":[2,2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[99,205]}",
+"205": "{\"pos\":[2,3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[204,207]}",
+"206": "{\"pos\":[-3,4],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[203,212,208,210]}",
+"207": "{\"pos\":[3,4],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[205,213,209,211]}",
+"208": "{\"pos\":[-4,3],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[206]}",
+"209": "{\"pos\":[4,3],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[207]}",
+"210": "{\"pos\":[-4,5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[206]}",
+"211": "{\"pos\":[4,5],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[207]}",
+"212": "{\"pos\":[-4,4],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[206,214]}",
+"213": "{\"pos\":[4,4],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[207,215]}",
+"214": "{\"pos\":[-5,4],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[212,216]}",
+"215": "{\"pos\":[5,4],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[213,217]}",
+"216": "{\"pos\":[-6,4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[214]}",
+"217": "{\"pos\":[6,4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[215]}"
 }
 ]])

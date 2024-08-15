@@ -135,7 +135,7 @@ PST.SkillTreesAPI.AddCharacterTree("global", [[
 "308": "{\"pos\":[-15,6],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[207]}",
 "309": "{\"pos\":[-21,0],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[159]}",
 "310": "{\"pos\":[-15,-6],\"type\":42,\"size\":\"Med\",\"name\":\"Grab Bags\",\"description\":[\"+0.25% chance to spawn a grab-bag when collecting a pickup\"],\"modifiers\":{\"grabBag\":0.25},\"adjacent\":[155]}",
-"315": "{\"pos\":[0,0],\"type\":6,\"size\":\"Large\",\"name\":\"Leveling Of Isaac\",\"description\":[\"+0.02 all stats\"],\"modifiers\":{\"allstats\":0.02},\"adjacent\":[66,171,316,383,473],\"alwaysAvailable\":true}",
+"315": "{\"pos\":[0,0],\"type\":6,\"size\":\"Large\",\"name\":\"Leveling Of Isaac\",\"description\":[\"+0.02 all stats\"],\"modifiers\":{\"allstats\":0.02},\"adjacent\":[66,171,316,383,473,485],\"alwaysAvailable\":true}",
 "316": "{\"pos\":[2,0],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[315,317]}",
 "317": "{\"pos\":[3,0],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[316,214]}",
 "318": "{\"pos\":[16,1],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[225,319]}",
@@ -238,6 +238,22 @@ PST.SkillTreesAPI.AddCharacterTree("global", [[
 "469": "{\"pos\":[-9,-10],\"type\":8,\"size\":\"Med\",\"name\":\"Respec Chance\",\"description\":[\"+30% chance to gain a respec point\",\"when completing a floor.\"],\"modifiers\":{\"respecChance\":30},\"adjacent\":[464]}",
 "470": "{\"pos\":[-4,-10],\"type\":8,\"size\":\"Med\",\"name\":\"Respec Chance\",\"description\":[\"+30% chance to gain a respec point\",\"when completing a floor.\"],\"modifiers\":{\"respecChance\":30},\"adjacent\":[468]}",
 "472": "{\"pos\":[-3,-5],\"type\":9,\"size\":\"Large\",\"name\":\"Relearning\",\"description\":[\"Can no longer gain respec points from completing floors.\",\"Gain 10 respec points when winning a run, and\",\"additionally gain 2 respec points per completed floor in that run.\"],\"modifiers\":{\"relearning\":true},\"adjacent\":[460]}",
-"473": "{\"pos\":[0,-2],\"type\":319,\"size\":\"Large\",\"name\":\"Star Tree\",\"description\":[\"Begin your communion with the stars.\",\"Once allocated, press allocate again to view the Star Tree.\"],\"modifiers\":{},\"adjacent\":[315],\"alwaysAvailable\":true}"
+"473": "{\"pos\":[0,-2],\"type\":319,\"size\":\"Large\",\"name\":\"Star Tree\",\"description\":[\"Begin your communion with the stars.\",\"Once allocated, press allocate again to view the Star Tree.\"],\"modifiers\":{},\"adjacent\":[315],\"alwaysAvailable\":true}",
+"477": "{\"pos\":[5,-4],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[487]}",
+"482": "{\"pos\":[4,-5],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[487,483]}",
+"483": "{\"pos\":[4,-6],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[482,484]}",
+"484": "{\"pos\":[4,-7],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[483]}",
+"485": "{\"pos\":[2,-2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[315,486]}",
+"486": "{\"pos\":[3,-3],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[485,487]}",
+"487": "{\"pos\":[4,-4],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[486,482,477,488,489]}",
+"488": "{\"pos\":[5,-5],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[487]}",
+"489": "{\"pos\":[3,-5],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[487,490]}",
+"490": "{\"pos\":[2,-6],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[489,491]}",
+"491": "{\"pos\":[1,-7],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[490,494,492,493]}",
+"492": "{\"pos\":[0,-8],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[491]}",
+"493": "{\"pos\":[0,-7],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[491]}",
+"494": "{\"pos\":[1,-8],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[491,495]}",
+"495": "{\"pos\":[1,-9],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[494,496]}",
+"496": "{\"pos\":[1,-10],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[495]}"
 }
 ]])

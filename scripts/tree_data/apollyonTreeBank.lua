@@ -93,7 +93,7 @@ PST.SkillTreesAPI.AddCharacterTree("Apollyon", [[
 "175": "{\"pos\":[-8,9],\"type\":32,\"size\":\"Med\",\"name\":\"Tears\",\"description\":[\"+0.05 tears\"],\"modifiers\":{\"tears\":0.05},\"adjacent\":[174]}",
 "176": "{\"pos\":[7,11],\"type\":20,\"size\":\"Small\",\"name\":\"Range\",\"description\":[\"+0.02 range\"],\"modifiers\":{\"range\":0.02},\"adjacent\":[146,177]}",
 "177": "{\"pos\":[8,11],\"type\":26,\"size\":\"Med\",\"name\":\"Range\",\"description\":[\"+0.1 range\"],\"modifiers\":{\"range\":0.1},\"adjacent\":[176]}",
-"178": "{\"pos\":[0,0],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[104,1,31,180],\"alwaysAvailable\":true}",
+"178": "{\"pos\":[0,0],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[104,1,31,180,215,217],\"alwaysAvailable\":true}",
 "179": "{\"pos\":[8,-14],\"type\":222,\"size\":\"Large\",\"name\":\"Null\",\"description\":[\"When entering a floor, if Void hasn't absorbed any active items, gain +5% all stats, up to 15%.\",\"If Void has absorbed active items, 50% chance to gain an extra charge when clearing a room.\",\"-10% all stats while not holding Void.\"],\"modifiers\":{\"null\":true},\"adjacent\":[214]}",
 "180": "{\"pos\":[1,-1],\"type\":226,\"size\":\"Small\",\"name\":\"Void Annihilation\",\"description\":[\"4% chance for Void to instantly kill a random non-boss enemy in the room on use.\"],\"modifiers\":{\"voidAnnihilation\":4},\"adjacent\":[178,181]}",
 "181": "{\"pos\":[2,-2],\"type\":226,\"size\":\"Small\",\"name\":\"Void Annihilation\",\"description\":[\"4% chance for Void to instantly kill a random non-boss enemy in the room on use.\"],\"modifiers\":{\"voidAnnihilation\":4},\"adjacent\":[180,182]}",
@@ -127,6 +127,22 @@ PST.SkillTreesAPI.AddCharacterTree("Apollyon", [[
 "211": "{\"pos\":[-6,-12],\"type\":237,\"size\":\"Med\",\"name\":\"First Floor Eraser\",\"description\":[\"5% chance for the second floor's treasure room to additionally contain an Eraser\",\"item pedestal.\"],\"modifiers\":{\"eraserSecondFloor\":5},\"adjacent\":[201]}",
 "212": "{\"pos\":[-6,-6],\"type\":237,\"size\":\"Med\",\"name\":\"First Floor Eraser\",\"description\":[\"5% chance for the second floor's treasure room to additionally contain an Eraser\",\"item pedestal.\"],\"modifiers\":{\"eraserSecondFloor\":5},\"adjacent\":[204]}",
 "213": "{\"pos\":[6,-6],\"type\":237,\"size\":\"Med\",\"name\":\"First Floor Eraser\",\"description\":[\"5% chance for the second floor's treasure room to additionally contain an Eraser\",\"item pedestal.\"],\"modifiers\":{\"eraserSecondFloor\":5},\"adjacent\":[207]}",
-"214": "{\"pos\":[6,-12],\"type\":237,\"size\":\"Med\",\"name\":\"First Floor Eraser\",\"description\":[\"5% chance for the second floor's treasure room to additionally contain an Eraser\",\"item pedestal.\"],\"modifiers\":{\"eraserSecondFloor\":5},\"adjacent\":[210,179]}"
+"214": "{\"pos\":[6,-12],\"type\":237,\"size\":\"Med\",\"name\":\"First Floor Eraser\",\"description\":[\"5% chance for the second floor's treasure room to additionally contain an Eraser\",\"item pedestal.\"],\"modifiers\":{\"eraserSecondFloor\":5},\"adjacent\":[210,179]}",
+"215": "{\"pos\":[-2,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[178,216]}",
+"216": "{\"pos\":[-3,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[215,219]}",
+"217": "{\"pos\":[2,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[178,218]}",
+"218": "{\"pos\":[3,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[217,220]}",
+"219": "{\"pos\":[-4,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[216,225,223,221]}",
+"220": "{\"pos\":[4,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[218,230,222,224]}",
+"221": "{\"pos\":[-4,-1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[219]}",
+"222": "{\"pos\":[4,-1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[220]}",
+"223": "{\"pos\":[-5,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[219]}",
+"224": "{\"pos\":[5,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[220]}",
+"225": "{\"pos\":[-5,0],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[219,226]}",
+"226": "{\"pos\":[-6,0],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[225,228]}",
+"227": "{\"pos\":[6,0],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[230,229]}",
+"228": "{\"pos\":[-7,0],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[226]}",
+"229": "{\"pos\":[7,0],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[227]}",
+"230": "{\"pos\":[5,0],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[220,227]}"
 }
 ]])

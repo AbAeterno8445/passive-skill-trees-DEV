@@ -2,7 +2,7 @@ PST.SkillTreesAPI.AddCharacterTree("Lilith", [[
 {
 "1": "{\"pos\":[0,0],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[2],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[0,-1],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[1,3]}",
-"3": "{\"pos\":[0,-2],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[2,4]}",
+"3": "{\"pos\":[0,-2],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[2,4,163,161]}",
 "4": "{\"pos\":[0,-3],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[3,5]}",
 "5": "{\"pos\":[0,-4],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[4,6]}",
 "6": "{\"pos\":[0,-5],\"type\":203,\"size\":\"Med\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.05 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.05},\"adjacent\":[5,7,8,9]}",
@@ -93,6 +93,22 @@ PST.SkillTreesAPI.AddCharacterTree("Lilith", [[
 "155": "{\"pos\":[-10,-12],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.15 luck\"],\"modifiers\":{\"luck\":0.15},\"adjacent\":[160]}",
 "157": "{\"pos\":[0,-22],\"type\":189,\"size\":\"Large\",\"name\":\"Minion Maneuvering\",\"description\":[\"+3% speed per active familiar, up to 15%.\",\"Using the box of friends doubles the maximum bonus for the current room.\"],\"modifiers\":{\"minionManeuvering\":true},\"adjacent\":[138]}",
 "159": "{\"pos\":[9,-12],\"type\":190,\"size\":\"Large\",\"name\":\"Heavy Friends\",\"description\":[\"Start with BFFS!\",\"-25% speed\"],\"modifiers\":{\"speedPerc\":-25,\"heavyFriends\":true},\"adjacent\":[92,154]}",
-"160": "{\"pos\":[-9,-12],\"type\":191,\"size\":\"Large\",\"name\":\"Daemon Army\",\"description\":[\"Start with an additional Incubus.\",\"Mom drops an additional Incubus on defeat.\",\"Baby familiar items other than Incubus no longer show up.\"],\"modifiers\":{\"daemonArmy\":true},\"adjacent\":[97,155]}"
+"160": "{\"pos\":[-9,-12],\"type\":191,\"size\":\"Large\",\"name\":\"Daemon Army\",\"description\":[\"Start with an additional Incubus.\",\"Mom drops an additional Incubus on defeat.\",\"Baby familiar items other than Incubus no longer show up.\"],\"modifiers\":{\"daemonArmy\":true},\"adjacent\":[97,155]}",
+"161": "{\"pos\":[2,-2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[3,162]}",
+"162": "{\"pos\":[3,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[161,166]}",
+"163": "{\"pos\":[-2,-2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[3,164]}",
+"164": "{\"pos\":[-3,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[163,165]}",
+"165": "{\"pos\":[-3,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[164,171,169,167]}",
+"166": "{\"pos\":[3,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[162,172,170,168]}",
+"167": "{\"pos\":[-3,1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[165]}",
+"168": "{\"pos\":[3,1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[166]}",
+"169": "{\"pos\":[-4,1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[165]}",
+"170": "{\"pos\":[4,1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[166]}",
+"171": "{\"pos\":[-4,0],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[165,173]}",
+"172": "{\"pos\":[4,0],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[166,174]}",
+"173": "{\"pos\":[-5,0],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[171,175]}",
+"174": "{\"pos\":[5,0],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[172,176]}",
+"175": "{\"pos\":[-6,0],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[173]}",
+"176": "{\"pos\":[6,0],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[174]}"
 }
 ]])

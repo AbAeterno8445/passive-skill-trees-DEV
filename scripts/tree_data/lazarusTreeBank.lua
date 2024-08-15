@@ -2,10 +2,10 @@ PST.SkillTreesAPI.AddCharacterTree("Lazarus", [[
 {
 "1": "{\"pos\":[0,0],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[2,5,134],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[-1,-1],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[1,3]}",
-"3": "{\"pos\":[-2,-2],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[2,4]}",
+"3": "{\"pos\":[-2,-2],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[2,4,153]}",
 "4": "{\"pos\":[-3,-3],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[3,8]}",
 "5": "{\"pos\":[1,-1],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[1,6]}",
-"6": "{\"pos\":[2,-2],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[5,7]}",
+"6": "{\"pos\":[2,-2],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[5,7,151]}",
 "7": "{\"pos\":[3,-3],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[6,9]}",
 "8": "{\"pos\":[-3,-4],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[4,10]}",
 "9": "{\"pos\":[3,-4],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[7,11]}",
@@ -95,6 +95,22 @@ PST.SkillTreesAPI.AddCharacterTree("Lazarus", [[
 "143": "{\"pos\":[1,6],\"type\":151,\"size\":\"Small\",\"name\":\"Plan C\",\"description\":[\"1% chance for Mom to drop Plan C when defeated.\"],\"modifiers\":{\"momPlanC\":1},\"adjacent\":[145,144]}",
 "144": "{\"pos\":[2,6],\"type\":151,\"size\":\"Small\",\"name\":\"Plan C\",\"description\":[\"1% chance for Mom to drop Plan C when defeated.\"],\"modifiers\":{\"momPlanC\":1},\"adjacent\":[143]}",
 "145": "{\"pos\":[0,6],\"type\":159,\"size\":\"Med\",\"name\":\"Plan C\",\"description\":[\"5% chance for Mom to drop Plan C when defeated.\"],\"modifiers\":{\"momPlanC\":5},\"adjacent\":[138,139,143,141,121,122]}",
-"146": "{\"pos\":[0,12],\"type\":144,\"size\":\"Large\",\"name\":\"A True Ending?\",\"description\":[\"First floor's boss, Mom and Mom's Heart drop a Suicide King card when defeated.\",\"+2% all stats as Lazarus Risen per Suicide King card used.\"],\"modifiers\":{\"aTrueEnding\":true},\"adjacent\":[126]}"
+"146": "{\"pos\":[0,12],\"type\":144,\"size\":\"Large\",\"name\":\"A True Ending?\",\"description\":[\"First floor's boss, Mom and Mom's Heart drop a Suicide King card when defeated.\",\"+2% all stats as Lazarus Risen per Suicide King card used.\"],\"modifiers\":{\"aTrueEnding\":true},\"adjacent\":[126]}",
+"151": "{\"pos\":[3,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[6,152]}",
+"152": "{\"pos\":[4,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[151,156]}",
+"153": "{\"pos\":[-3,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[3,154]}",
+"154": "{\"pos\":[-4,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[153,155]}",
+"155": "{\"pos\":[-5,-1],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[154,161,159,157]}",
+"156": "{\"pos\":[5,-1],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[152,162,158,160]}",
+"157": "{\"pos\":[-5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[155]}",
+"158": "{\"pos\":[5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[156]}",
+"159": "{\"pos\":[-6,-2],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[155]}",
+"160": "{\"pos\":[6,-2],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[156]}",
+"161": "{\"pos\":[-6,-1],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[155,163]}",
+"162": "{\"pos\":[6,-1],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[156,164]}",
+"163": "{\"pos\":[-7,-1],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[161,165]}",
+"164": "{\"pos\":[7,-1],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[162,166]}",
+"165": "{\"pos\":[-8,-1],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[163]}",
+"166": "{\"pos\":[8,-1],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[164]}"
 }
 ]])

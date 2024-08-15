@@ -1,7 +1,7 @@
 PST.SkillTreesAPI.AddCharacterTree("Isaac", [[
 {
 "4": "{\"pos\":[0,0],\"type\":50,\"size\":\"Small\",\"name\":\"All Stats\",\"description\":[\"+0.01 all stats\"],\"modifiers\":{\"allstats\":0.01},\"adjacent\":[19,138,171],\"alwaysAvailable\":true}",
-"19": "{\"pos\":[0,-1],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[4,25]}",
+"19": "{\"pos\":[0,-1],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[4,25,194,192]}",
 "25": "{\"pos\":[0,-2],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[19,37,32,26]}",
 "26": "{\"pos\":[-1,-3],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[25,27]}",
 "27": "{\"pos\":[-2,-4],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[26,28]}",
@@ -98,6 +98,22 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", [[
 "188": "{\"pos\":[4,-10],\"type\":33,\"size\":\"Small\",\"name\":\"Mapping Chance\",\"description\":[\"+1% chance for the map to be revealed upon entering a floor\",\"Works from the second floor onwards\"],\"modifiers\":{\"mapChance\":1},\"adjacent\":[187,189]}",
 "189": "{\"pos\":[5,-10],\"type\":33,\"size\":\"Small\",\"name\":\"Mapping Chance\",\"description\":[\"+1% chance for the map to be revealed upon entering a floor\",\"Works from the second floor onwards\"],\"modifiers\":{\"mapChance\":1},\"adjacent\":[188,191]}",
 "190": "{\"pos\":[-6,-10],\"type\":34,\"size\":\"Med\",\"name\":\"Mapping Chance\",\"description\":[\"+4% chance for the map to be revealed upon entering a floor\",\"Works from the second floor onwards\"],\"modifiers\":{\"mapChance\":4},\"adjacent\":[185]}",
-"191": "{\"pos\":[6,-10],\"type\":34,\"size\":\"Med\",\"name\":\"Mapping Chance\",\"description\":[\"+4% chance for the map to be revealed upon entering a floor\",\"Works from the second floor onwards\"],\"modifiers\":{\"mapChance\":4},\"adjacent\":[189]}"
+"191": "{\"pos\":[6,-10],\"type\":34,\"size\":\"Med\",\"name\":\"Mapping Chance\",\"description\":[\"+4% chance for the map to be revealed upon entering a floor\",\"Works from the second floor onwards\"],\"modifiers\":{\"mapChance\":4},\"adjacent\":[189]}",
+"192": "{\"pos\":[2,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[19,193]}",
+"193": "{\"pos\":[3,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[192,197]}",
+"194": "{\"pos\":[-2,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[19,195]}",
+"195": "{\"pos\":[-3,-1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[194,196]}",
+"196": "{\"pos\":[-4,-1],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[195,211,206,219]}",
+"197": "{\"pos\":[4,-1],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[193,216,207,220]}",
+"206": "{\"pos\":[-5,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[196]}",
+"207": "{\"pos\":[5,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[197]}",
+"211": "{\"pos\":[-4,-2],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[196,212]}",
+"212": "{\"pos\":[-4,-3],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[211,213]}",
+"213": "{\"pos\":[-4,-4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[212]}",
+"214": "{\"pos\":[4,-4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[215]}",
+"215": "{\"pos\":[4,-3],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[216,214]}",
+"216": "{\"pos\":[4,-2],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[197,215]}",
+"219": "{\"pos\":[-5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[196]}",
+"220": "{\"pos\":[5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room round.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[197]}"
 }
 ]])
