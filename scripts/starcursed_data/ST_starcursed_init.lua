@@ -378,14 +378,14 @@ PST.SCAncients = {
             beastRewards = {1, 4}
         }
     },
-    opalescentPurity = { -- TODO
+    opalescentPurity = {
         weight = 100,
         version = 1,
         spriteFrame = 4,
         name = "Opalescent Purity",
         description = {
-            "Once you pick up or purchase a passive item, remove all other passive items in the floor, including",
-            "those spawned by effects."
+            "Once you pick up or purchase a collectible item, remove all other items in the floor,",
+            "including those spawned by effects."
         },
         rewards = {
             xpgain = 100,

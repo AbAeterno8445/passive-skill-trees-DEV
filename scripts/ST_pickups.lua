@@ -340,8 +340,15 @@ function PST:onPickupInit(pickup)
     local variant = pickup.Variant
     local subtype = pickup.SubType
 
-    -- Trinkets
     local pickupGone = false
+    -- Ancient starcursed jewel: Opalescent Purity
+    if PST:SC_getSnapshotMod("opalescentPurity", false) and PST:getTreeSnapshotMod("SC_opalescentProc", false) and
+    variant == PickupVariant.PICKUP_COLLECTIBLE then
+        pickup:Remove()
+        pickupGone = true
+    end
+
+    -- Trinkets
     if variant == PickupVariant.PICKUP_TRINKET then
         -- Fickle Fortune node (Cain's tree), vanish proc
         if PST:getTreeSnapshotMod("fickleFortune", false) and PST.specialNodes.fickleFortuneVanish then

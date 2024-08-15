@@ -33,6 +33,13 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         end
     end
 
+    local removeOtherRoomItems = false
+    -- Ancient starcursed jewel: Opalescent Purity
+    if PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) then
+        removeOtherRoomItems = true
+        PST:addModifiers({ SC_opalescentProc = true }, true)
+    end
+
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
         if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT and charge == 0 then
@@ -52,6 +59,10 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
     -- Chaotic Treasury node (Eden's tree)
     if PST:getTreeSnapshotMod("chaoticTreasury", false) and Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
         -- When grabbing an item in a treasure room, remove all other items
+        removeOtherRoomItems = true
+    end
+
+    if removeOtherRoomItems then
         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
             if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
                 Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)

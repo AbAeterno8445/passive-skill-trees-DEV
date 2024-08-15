@@ -520,7 +520,8 @@ function PST:resetMods()
 		SC_circadianStatsDown = 0,
 		SC_umbraStatsDown = 0,
 		SC_umbraNightLightSpawn = false,
-		SC_cursedStarpieceDebuff = false
+		SC_cursedStarpieceDebuff = false,
+		SC_opalescentProc = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

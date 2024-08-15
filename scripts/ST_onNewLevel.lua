@@ -44,6 +44,11 @@ function PST:onNewLevel()
         end
     end
 
+    -- Ancient starcursed jewel: Opalescent Purity
+    if PST:getTreeSnapshotMod("SC_opalescentProc", false) then
+        PST:addModifiers({ SC_opalescentProc = false }, true)
+    end
+
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)
