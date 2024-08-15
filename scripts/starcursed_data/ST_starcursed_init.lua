@@ -410,24 +410,22 @@ PST.SCAncients = {
             beastRewards = {1, 5}
         }
     },
-    challengerStarpiece = { -- TODO
+    challengerStarpiece = {
         weight = 100,
         version = 1,
         spriteFrame = 6,
         name = "Challenger's Starpiece",
         description = {
-            "Spawn a random deadly sin miniboss when clearing a challenge room round.",
-            "After beating Mom, super deadly sin counterparts will tag along the regular ones when clearing",
-            "a challenge room round.",
-            "If the current room has access to a challenge room, -3% all stats when leaving the room and when",
-            "entering rooms that aren't the challenge room, up to -15%.",
-            "Debuff resets upon clearing a challenge room round."
+            "When entering a floor, teleport to the challenge room.",
+            "Your damage is halved while outside the challenge room if the latter isn't cleared.",
+            "A random deadly sin miniboss spawns after clearing the final round in challenge rooms.",
+            "From the 7th floor onwards, spawn a random super deadly sin instead."
         },
         rewards = {
-            xpgain = 40,
+            xpgain = 60,
             halveXPFirstFloor = true,
-            deliriumRewards = {1, 3},
-            beastRewards = {1, 3}
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
     },
     soulWatcher = { -- TODO

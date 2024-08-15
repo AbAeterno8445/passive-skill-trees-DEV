@@ -54,6 +54,16 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Ancient starcursed jewel: Challenger's Starpiece
+	if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) and
+	PST:getTreeSnapshotMod("SC_levelHasChall", false) then
+		if room:GetType() ~= RoomType.ROOM_CHALLENGE and not PST:getTreeSnapshotMod("SC_challDebuff", false) then
+			PST:addModifiers({ damagePerc = -50, SC_challDebuff = true }, true)
+		elseif room:GetType() == RoomType.ROOM_CHALLENGE and PST:getTreeSnapshotMod("SC_challDebuff", false) then
+			PST:addModifiers({ damagePerc = 50, SC_challDebuff = false }, true)
+		end
+	end
+
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
 	if tmpTreeMod ~= 0 then
@@ -297,6 +307,7 @@ function PST:onNewRoom()
 			end
 		end
 
+		-- Ancient starcursed jewel: Cursed Starpiece
 		if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() and room:GetType() == RoomType.ROOM_TREASURE then
 			local firstItem = true
 			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do

@@ -72,8 +72,20 @@ function PST:onUpdate()
        		Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, TrinketType.TRINKET_SWALLOWED_PENNY, Random() + 1)
 		end
 
-		-- After first floor
+		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
+			-- Ancient starcursed jewel: Challenger Starpiece
+			if PST:SC_getSnapshotMod("challengerStarpiece", false) then
+				local tmpRoomIdx = level:QueryRoomTypeIndex(RoomType.ROOM_CHALLENGE, false, RNG())
+				local challRoom = level:GetRoomByIdx(tmpRoomIdx)
+				if challRoom and challRoom.Data.Type == RoomType.ROOM_CHALLENGE then
+					PST:addModifiers({ SC_levelHasChall = true }, true)
+					Game():StartRoomTransition(tmpRoomIdx, Direction.NO_DIRECTION, RoomTransitionAnim.TELEPORT)
+				else
+					PST:addModifiers({ SC_levelHasChall = false }, true)
+				end
+			end
+
 			-- Mod: chance to reveal map
 			if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) then
 				level:ShowMap()
@@ -585,6 +597,21 @@ function PST:onUpdate()
 			local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false);
 			if challengeXP > 0 and (not level:HasBossChallenge() or (level:HasBossChallenge() and bossChallengeXP)) then
 				PST:addTempXP(challengeXP, true, true)
+			end
+
+			-- Ancient starcursed jewel: Challenger's Starpiece
+			if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) then
+				if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
+					local tmpVariant = 0
+					if level:GetStage() >= 7 then
+						tmpVariant = 1
+					end
+					Game():Spawn(
+						PST.deadlySinBosses[math.random(#PST.deadlySinBosses)],
+						tmpVariant, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1
+					)
+					PST:addModifiers({ SC_challClear = true }, true)
+				end
 			end
 		-- Boss rooms
 		elseif room:GetType() == RoomType.ROOM_BOSS then

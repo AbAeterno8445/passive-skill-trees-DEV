@@ -159,7 +159,7 @@ function PST:onDamage(target, damage, flag, source)
 
                 -- Chance for monsters to reduce your damage by 20% on hit for 3 seconds
                 tmpMod = PST:SC_getSnapshotMod("mobReduceDmgOnHit", 0)
-                if 100 * math.random() < 100 then
+                if 100 * math.random() < tmpMod then
                     if PST.specialNodes.mobHitReduceDmg == 0 then
                         PST:addModifiers({ damagePerc = -20 }, true)
                     end
@@ -168,7 +168,6 @@ function PST:onDamage(target, damage, flag, source)
 
                 -- When hit by a monster, the next X hits in the room will deal an additional 1/2 heart damage
                 tmpMod = PST:SC_getSnapshotMod("roomMobExtraDmgOnHit", 0)
-                tmpMod = 2
                 if tmpMod > 0 then
                     if PST.specialNodes.mobHitRoomExtraDmg.hits > 0 then
                         tmpDmg = tmpDmg + 1

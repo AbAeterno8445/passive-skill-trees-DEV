@@ -137,6 +137,11 @@ PST.locustTrinkets = {
 	TrinketType.TRINKET_LOCUST_OF_DEATH, TrinketType.TRINKET_LOCUST_OF_FAMINE, TrinketType.TRINKET_LOCUST_OF_PESTILENCE,
 	TrinketType.TRINKET_LOCUST_OF_WRATH, TrinketType.TRINKET_LOCUST_OF_CONQUEST
 }
+PST.deadlySinBosses = {
+	EntityType.ENTITY_ENVY, EntityType.ENTITY_GLUTTONY, EntityType.ENTITY_WRATH,
+	EntityType.ENTITY_PRIDE, EntityType.ENTITY_LUST, EntityType.ENTITY_GREED,
+	EntityType.ENTITY_SLOTH
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -522,7 +527,10 @@ function PST:resetMods()
 		SC_umbraNightLightSpawn = false,
 		SC_cursedStarpieceDebuff = false,
 		SC_opalescentProc = false,
-		SC_iridescentItems = {}
+		SC_iridescentItems = {},
+		SC_levelHasChall = false,
+		SC_challDebuff = false,
+		SC_challClear = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
