@@ -5,6 +5,7 @@ function PST:onNewRun(isContinued)
     end
 
     local player = Isaac.GetPlayer()
+    local itemPool = Game():GetItemPool()
 
     -- Mods that are mutable before beginning a run should be set here
     local keptMods = {
@@ -93,6 +94,11 @@ function PST:onNewRun(isContinued)
                 end
             end
         end
+        -- Ancient starcursed jewel: Umbra
+        if PST:SC_getSnapshotMod("umbra", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE)
+            Game():GetLevel():AddCurse(LevelCurse.CURSE_OF_DARKNESS, false)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)
@@ -105,10 +111,8 @@ function PST:onNewRun(isContinued)
     -- Reset specialNodes that might be left over
     PST.specialNodes.SC_circadianSpawnTime = 0
     PST.specialNodes.SC_circadianSpawnProc = false
-    PST.specialNodes.SC_circadianStatsDown = 0
     PST.specialNodes.SC_circadianExplImmune = 0
 
-    local itemPool = Game():GetItemPool()
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 
     -- Intermittent Conceptions node (Isaac's tree)

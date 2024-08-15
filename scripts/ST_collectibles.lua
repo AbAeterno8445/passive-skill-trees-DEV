@@ -25,6 +25,14 @@ end
 function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
     if not PST.gameInit then return end
 
+    -- Ancient starcursed jewel: Umbra
+    if PST:SC_getSnapshotMod("umbra", false) then
+        local tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)
+        if tmpMod > 0 then
+            PST:addModifiers({ allstatsPerc = tmpMod, SC_umbraStatsDown = { value = 0, set = true } }, true)
+        end
+    end
+
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
         if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT and charge == 0 then

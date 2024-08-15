@@ -633,6 +633,15 @@ function PST:onUpdate()
 				Game():Spawn(EntityType.ENTITY_BOMB, BombVariant.BOMB_TROLL, tmpPos, Vector.Zero, nil, BombSubType.BOMB_TROLL, Random() + 1)
 			end
 
+			-- Ancient starcursed jewel: Umbra
+			if PST:SC_getSnapshotMod("umbra", false) then
+				if not PST:getTreeSnapshotMod("SC_umbraNightLightSpawn", false) and 100 * math.random() < 12 then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_NIGHT_LIGHT, Random() + 1)
+					PST:addModifiers({ SC_umbraNightLightSpawn = true }, true)
+				end
+			end
+
 			-- Mod: chance to heal 1/2 red heart when clearing a room
 			tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
 			if isBossRoom then

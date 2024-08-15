@@ -514,6 +514,11 @@ function PST:resetMods()
 		crimsonStarmight = 0,
 		viridianStarmight = 0,
 		ancientStarmight = 0,
+
+		---- Starcursed jewel helpers ----
+		SC_circadianStatsDown = 0,
+		SC_umbraStatsDown = 0,
+		SC_umbraNightLightSpawn = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -544,8 +549,7 @@ function PST:resetMods()
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
-		SC_circadianStatsDown = 0,
-		SC_circadianExplImmune = 0
+		SC_circadianExplImmune = 0,
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

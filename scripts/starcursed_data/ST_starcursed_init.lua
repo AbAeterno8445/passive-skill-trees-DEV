@@ -330,12 +330,12 @@ PST.SCAncients = {
         description = {
             "Guarantees Curse of Darkness if applicable.",
             "Black Candle can no longer show up.",
-            "While Curse of Darkness is active, -1% all stats when first entering a room, up to -12%",
-            "11% chance to spawn a Night Light when clearing a room, once per floor.",
+            "While Curse of Darkness is active, -2% all stats when first entering a room, up to -20%",
+            "12% chance to spawn a Night Light when clearing a room, once per floor.",
             "Remove Night Light when entering a new floor."
         },
         rewards = {
-            xpgain = 80,
+            xpgain = 70,
             halveXPFirstFloor = true,
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}

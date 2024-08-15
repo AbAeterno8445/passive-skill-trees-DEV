@@ -208,8 +208,8 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
 
     local descW = longestStrWidth + 4
     local descH = (miniFont:GetLineHeight() + 2) * (#description + 1) + 4
-    if not absolute and descH + offY > paramY / 2 - 24 then
-        drawY = drawY - (descH + offY - paramY / 2 + 24)
+    if not absolute and descH + offY > paramY / 2 - 8 then
+        drawY = drawY - (descH + offY - paramY / 2 + 8)
     end
 
     nodeBGSprite.Scale.X = descW
@@ -666,6 +666,7 @@ function PST:treeMenuRenderer()
     end
 
     -- Cursor and node description
+    cursorSprite:Render(Vector(screenW / 2, screenH / 2))
     if hoveredNode ~= nil then
         cursorSprite:Play("Clicked")
 
@@ -756,7 +757,6 @@ function PST:treeMenuRenderer()
     else
         cursorSprite:Play("Idle")
     end
-    cursorSprite:Render(Vector(screenW / 2, screenH / 2))
 
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then

@@ -289,6 +289,14 @@ function PST:onNewRoom()
 
 	-- First room entry
 	if room:IsFirstVisit() then
+		-- Ancient starcursed jewel: Umbra
+		if PST:SC_getSnapshotMod("umbra", false) and level:GetCurses() & LevelCurse.CURSE_OF_DARKNESS and
+		not player:HasCollectible(CollectibleType.COLLECTIBLE_NIGHT_LIGHT) then
+			if PST:getTreeSnapshotMod("SC_umbraStatsDown", 0) < 20 then
+				PST:addModifiers({ allstatsPerc = -2, SC_umbraStatsDown = 2 }, true)
+			end
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage

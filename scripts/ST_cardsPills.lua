@@ -53,9 +53,9 @@ function PST:onUseCard(card, player, useFlags)
 
     -- Ancient starcursed jewel: Circadian Destructor
     if PST:SC_getSnapshotMod("circadianDestructor", false) and card == Card.CARD_TOWER then
-        if PST.specialNodes.SC_circadianStatsDown > 0 then
-            PST:addModifiers({ allstatsPerc = PST.specialNodes.SC_circadianStatsDown }, true)
-            PST.specialNodes.SC_circadianStatsDown = 0
+        local tmpMod = PST:getTreeSnapshotMod("SC_circadianStatsDown", 0)
+        if tmpMod > 0 then
+            PST:addModifiers({ allstatsPerc = tmpMod, SC_circadianStatsDown = { value = 0, set = true } }, true)
         end
         PST.specialNodes.SC_circadianSpawnProc = false
         PST.specialNodes.SC_circadianExplImmune = 120

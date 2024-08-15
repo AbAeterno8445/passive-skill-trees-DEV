@@ -1,8 +1,25 @@
 function PST:onNewLevel()
+    local player = Isaac.GetPlayer()
+
     PST.specialNodes.mobHitReduceDmg = 0
     PST.specialNodes.momDeathProc = false
     PST.floorFirstUpdate = true
     PST:addModifiers({ staticEntitiesCache = { value = {}, set = true } }, true)
+
+    -- Ancient starcursed jewel: Umbra (reset)
+    if PST:SC_getSnapshotMod("umbra", false) then
+        local tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)
+        if tmpMod > 0 then
+            PST:addModifiers({
+                allstatsPerc = tmpMod,
+                SC_umbraStatsDown = { value = 0, set = true },
+                SC_umbraNightLightSpawn = false
+            }, true)
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_NIGHT_LIGHT) then
+            player:RemoveCollectible(CollectibleType.COLLECTIBLE_NIGHT_LIGHT)
+        end
+    end
 
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
@@ -119,7 +136,6 @@ function PST:onNewLevel()
     end
 
     -- Cosmic Realignment node
-    local player = Isaac.GetPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
         -- Blue baby, reset non-soul heart pickups
@@ -195,6 +211,11 @@ function PST:onCurseEval(curses)
     local tmpMod = PST:SC_getSnapshotMod("floorCurse", 0)
     if not causeCurse and 100 * math.random() < tmpMod then
         causeCurse = true
+    end
+
+    -- Ancient starcursed jewel: Umbra
+    if PST:SC_getSnapshotMod("umbra", false) then
+        curses = curses | LevelCurse.CURSE_OF_DARKNESS
     end
 
     if causeCurse and curses == LevelCurse.CURSE_NONE then
