@@ -243,9 +243,8 @@ function PST:onUpdate()
 				end
 				PST.specialNodes.SC_circadianSpawnTime = 0
 			end
-		elseif room:GetFrameCount() % 30 == 0 and PST.specialNodes.SC_circadianStatsDown < 20 then
-			PST:addModifiers({ allstatsPerc = -1 }, true)
-			PST.specialNodes.SC_circadianStatsDown = PST.specialNodes.SC_circadianStatsDown + 1
+		elseif room:GetFrameCount() % 30 == 0 and PST:getTreeSnapshotMod("SC_circadianStatsDown", 0) < 20 then
+			PST:addModifiers({ allstatsPerc = -1, SC_circadianStatsDown = 1 }, true)
 		end
 		if PST.specialNodes.SC_circadianExplImmune > 0 then
 			PST.specialNodes.SC_circadianExplImmune = PST.specialNodes.SC_circadianExplImmune - 1
