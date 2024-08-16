@@ -41,9 +41,9 @@ function PST:addTempXP(xp, showText, noMult)
 	local room = Game():GetRoom()
 	if room:GetType() == RoomType.ROOM_CHALLENGE then
 		xpMult = xpMult + PST:getTreeSnapshotMod("challengeXPgain", 0) / 100
-	-- -75% xp gain in boss rush
+	-- -40% xp gain in boss rush
 	elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
-		xpMult = xpMult - 0.75
+		xpMult = xpMult - 0.4
 	end
 
 	-- Quick wit mod
