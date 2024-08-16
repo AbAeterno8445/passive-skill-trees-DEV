@@ -298,9 +298,9 @@ PST.treeModDescriptions = {
         str = {
             "Intermittent Conceptions:",
             "    Begin the game with Birthright",
-            "    When first obtaining an item, remove Birthright",
-            "    When next obtaining an item, receive Birthright again",
-            "    Effect cycles"
+            "    When first entering a room containing item pedestals, remove birthright",
+            "    After picking up 2 passive items, receive birthright again",
+            "    Effect repeats"
         },
         category = "charTree", sort = 2002
     },
