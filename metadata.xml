@@ -129,6 +129,8 @@ The mod comes with a few debug settings which make testing its features easier. 
 [*][b]infSP:[/b] No longer spend or require skill points for nodes
 [*][b]infRespec:[/b] No longer spend or require respec points for nodes
 [*][b]allAvailable:[/b] Makes all nodes available at all times, regardless of connections
+[*][b]treeOnChallenges:[/b] Makes tree effects apply to challenges. Default off
+[*][b]xpMult:[/b] XP multiplier, default 1. Supports Mod Config Menu to set between 1 and 3
 [/list]
 
 There's also the PST_config.lua file, where you can also find some extra settings such as whether to draw the xp bar, floating texts, and char info in character select, as well as re-configuring the keybinds used in the tree screen, in case of conflicts.
