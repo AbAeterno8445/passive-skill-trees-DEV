@@ -476,10 +476,10 @@ PST.SCAncients = {
 
 PST.SCDropRates = {
     championKill = function() return { regular = 1, ancient = 0.5 } end,
-    boss = function(stage) return { regular = 8 + stage, ancient = 7 } end,
-    challenge = function(stage) return { regular = 10 + stage, ancient = 4 } end,
-    bossrush = function() return { regular = 50, ancient = 15 } end,
-    planetarium = function() return { regular = 20, ancient = 10 } end
+    boss = function(stage) return { regular = 12 + stage, ancient = 7 } end,
+    challenge = function(stage) return { regular = 20 + stage, ancient = 4 } end,
+    bossrush = function() return { regular = 80, ancient = 15 } end,
+    planetarium = function() return { regular = 33, ancient = 10 } end
 }
 
 PST.SCStarTreeUnlockLevel = 30

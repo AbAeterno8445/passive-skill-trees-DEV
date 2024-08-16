@@ -155,7 +155,7 @@ PST.treeModDescriptions = {
         category = "xp", sort = 101
     },
     challengeXP = {
-        str = "%d xp gained when completing a challenge room round",
+        str = "%d xp gained when completing a challenge room",
         category = "xp", sort = 102
     },
     challengeXPgain = {
