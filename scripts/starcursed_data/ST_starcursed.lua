@@ -63,13 +63,28 @@ function PST:SC_getJewelDescription(jewel)
             for _, modData in pairs(jewel.mods) do
                 table.insert(tmpDescription, {modData.description, KColor(0.88, 1, 1, 1)})
             end
-        elseif jewel.description then
-            for _, tmpLine in ipairs(jewel.description) do
-                table.insert(tmpDescription, {tmpLine, KColor(1, 0.7, 0.3, 1)})
+        else
+            local tmpAncient = nil
+            -- Try to fetch original ancient data first, else use gem's
+            if jewel.name then
+                for _, ancient in pairs(PST.SCAncients) do
+                    if ancient.name == jewel.name then
+                        tmpAncient = ancient
+                        break
+                    end
+                end
             end
-            if jewel.rewards then
+            if not tmpAncient then
+                tmpAncient = jewel
+            end
+            if tmpAncient.description then
+                for _, tmpLine in ipairs(tmpAncient.description) do
+                    table.insert(tmpDescription, {tmpLine, KColor(1, 0.7, 0.3, 1)})
+                end
+            end
+            if tmpAncient.rewards then
                 local tmpRewardList = {}
-                for tmpRewardMod, tmpRewardModVal in pairs(jewel.rewards) do
+                for tmpRewardMod, tmpRewardModVal in pairs(tmpAncient.rewards) do
                     local tmpColor = KColor(0.5, 0.9, 1, 1)
                     if PST.SCMods[tmpRewardMod] then
                         local descStr
@@ -78,8 +93,8 @@ function PST:SC_getJewelDescription(jewel)
                         else
                             descStr = string.format(PST.SCMods[tmpRewardMod], tmpRewardModVal)
                         end
-                        if jewel.name then
-                            if PST.modData.ancientRewards[jewel.name] and PST.modData.ancientRewards[jewel.name][tmpRewardMod] then
+                        if tmpAncient.name then
+                            if PST.modData.ancientRewards[tmpAncient.name] and PST.modData.ancientRewards[tmpAncient.name][tmpRewardMod] then
                                 descStr = descStr .. " (Done)"
                                 tmpColor = KColor(1, 0.9, 0.5, 1)
                             end

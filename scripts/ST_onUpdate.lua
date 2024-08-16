@@ -723,7 +723,7 @@ function PST:onUpdate()
 
 			-- Ancient starcursed jewel: Umbra
 			if PST:SC_getSnapshotMod("umbra", false) then
-				if not PST:getTreeSnapshotMod("SC_umbraNightLightSpawn", false) and 100 * math.random() < 12 then
+				if not PST:getTreeSnapshotMod("SC_umbraNightLightSpawn", false) and 100 * math.random() < 16 then
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_NIGHT_LIGHT, Random() + 1)
 					PST:addModifiers({ SC_umbraNightLightSpawn = true }, true)
