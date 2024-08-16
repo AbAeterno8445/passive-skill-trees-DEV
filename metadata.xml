@@ -88,9 +88,14 @@ There's also the PST_config.lua file, where you can find some extra settings suc
 
 Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787]Mod Config Menu Pure[/url] to toggle PST_config.lua settings.
 
+[h2]Special Thanks/Credits[/h2]
+[list]
+[*]karsiori, for the Free Pixel Art Gem Pack (used in starcursed update) - you can find it [url=https://karsiori.itch.io/free-pixel-art-gem-pack]Here[/url].
+[/list]
+
 [h2]Support[/h2]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Player Characters"/>
