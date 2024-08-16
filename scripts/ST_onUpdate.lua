@@ -797,7 +797,7 @@ function PST:onUpdate()
 
 			-- Null node (Apollyon's tree)
 			-- Mod: chance to gain an additional active item charge when clearing a room
-			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and 100 * math.random() < 100)
+			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and 100 * math.random() < 50)
 			or (100 * math.random() < PST:getTreeSnapshotMod("chargeOnClear", 0)) then
 				if player:GetBatteryCharge(0) == 0 then
 					player:AddActiveCharge(1, 0, true, false, false)
