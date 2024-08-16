@@ -22,11 +22,12 @@
 ### **How to obtain Starcursed Jewels:**
 
 - Occasionally found wherever you'd find a random trinket drop.
-- Killing champion monsters: 1% chance to find a random jewel.
-- Clear boss room: (12 + floor)% chance to find a random jewel.
-- Clear challenge room: (20 + floor)% base chance to find a random jewel.
-- Clear boss rush: 80% chance to find a random jewel.
-- Planetariums: 33% chance to contain one.
+- Killing champion monsters.
+- Clearing boss room.
+- Clearing challenge rooms.
+- Clearing boss rush.
+- Planetariums have a chance to contain one.
+- Chances tend to be higher the deeper the floor you're in.
 
 ### **Starmight:**
 
