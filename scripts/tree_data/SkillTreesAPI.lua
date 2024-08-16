@@ -20,5 +20,19 @@ PST.SkillTreesAPI = {
 
         PST:initTreeNodes(charName)
         return true
+    end,
+
+    -- Check if a node with the given name is allocated in the given tree
+    ---@param tree string Name of the target tree, usually equal to the character's name. Non-character trees include "global" and "starTree"
+    ---@param nodeName string Name of the target node
+    IsNodeAllocated = function(tree, nodeName)
+        return PST:isNodeNameAllocated(tree, nodeName)
+    end,
+
+    -- Get a mod's current value within a run (runs use a snapshot of all trees it began with)
+    ---@param mod string Name of the modifier applied by an allocated node
+    ---@param default any Default value to be returned if the modifier is not found
+    GetTreeSnapshotMod = function(mod, default)
+        return PST:getTreeSnapshotMod(mod, default)
     end
 }
