@@ -3,7 +3,7 @@
     <name>Passive Skill Trees (Repentance) [BETA]</name>
     <directory>passive skill trees</directory>
     <id>3305869734</id>
-    <description>XP, leveling, skill points and skill trees. Global passive skill tree + a personal skill tree for each vanilla character. These apply modifiers that can modify your run, from simple stat ups to gameplay-changing alterations.
+    <description>XP, leveling, skill points and skill trees. Global passive skill tree + a personal skill tree for vanilla characters. These apply modifiers that can modify your run, from simple stat ups to gameplay-changing alterations.
 
 [h1]Passive Skill Trees[/h1]
 [h2]General Overview:[/h2]
@@ -49,53 +49,7 @@ This de-incentivizes for example using a relatively easy character to go and unl
 These unlocks grant a 'pseudo' blue completion mark to the target character so you may keep track, but original marks take priority, and thus isn't exactly a shortcut for an easier 100% file per se.
 
 [h2]Version 0.2.0 - Starcursed Update[/h2]
-[h3]Star Tree:[/h3]
-[list]
-[*]New "Star Tree" sub-tree that you can access from the global tree. Node requires reaching level 30 with any character to allocate.
-[*]Once the Star Tree is unlocked, its first node unlocks [b]Starcursed Jewels[/b], which can now start dropping from certain sources.
-[*]Tree features inventory and socket nodes - once allocated, press allocate again while hovering them to open an inventory dedicated to jewels.
-[/list]
-
-[h3]Starcursed Jewels:[/h3]
-[list]
-[*]Stellar detritus condensed into small gemstones containing residual ancient cosmic energy.
-[*]Technically trinkets but these are collected on collision, and get added to your Star Tree's inventory.
-[*]Jewels roll with different modifiers which mainly affect the difficulty of the run, and feature a [b]Starmight[/b] counter that is higher the more difficult the rolled mods.
-[*]Starcursed Jewels can be socketed in their respective socket nodes within the Star Tree, and apply their modifiers once socketed.
-[*]Jewels can appear in 4 variants:
-[*][b]Crimson Starcursed Jewels:[/b] these roll modifiers altering the vitality and defense of monsters in the run (e.g. normal/boss mobs have more HP, monsters gain damage reduction, etc.)
-[*][b]Azure Starcursed Jewels:[/b] these roll modifiers altering the might of monsters in the run (e.g. normal/boss mobs have a chance to deal 1/2 heart additional damage, enemies deal extra damage to soul hearts, etc.)
-[*][b]Viridian Starcursed Jewels:[/b] these roll modifiers altering features of the run itself (e.g. extra chance to receive a curse, less chance to find devil/angel rooms, shop items are more expensive, etc.)
-[*][b]Ancient Starcursed Jewels:[/b] a rare variant, these are a set of jewels that apply specific unique effects with rewards associated to completing runs with them equipped, akin to challenges.
-[*]Non-Ancient jewels can also come as a [b]Mighty[/b] variant, featuring higher rolls and exclusive modifiers, and generally higher starmight.
-[/list]
-
-[h3]How to obtain Starcursed Jewels:[/h3]
-[list]
-[*]Occasionally found wherever you'd find a random trinket drop.
-[*]Killing champion monsters: 1% chance to find a random jewel.
-[*]Clear boss room: (12 + floor)% chance to find a random jewel.
-[*]Clear challenge room: (20 + floor)% base chance to find a random jewel.
-[*]Clear boss rush: 80% chance to find a random jewel.
-[*]Planetariums: 33% chance to contain one.
-[/list]
-
-[h3]Starmight:[/h3]
-[list]
-[*]Non-ancient jewels come with a Starmight counter, which is higher the more difficult its featured modifiers.
-[*]Having socketed jewels with starmight grants some implicit bonuses, depending on total starmight:
-[*]- (starmight / 3)% additional XP gain
-[*]- At and above 50 starmight, (2 + starmight / 20)% chance for jewels to drop as [b]Mighty[/b].
-[*]- At and above 100 starmight, (starmight / 90)% additional chance to find ancient jewels.
-[/list]
-
-[h3]Ancient Starcursed Jewels:[/h3]
-[list]
-[*]Set of unique jewels, there's currently 10 different ones to find.
-[*]The modifiers these have are akin to challenges, modifying the run significantly.
-[*]Feature one-time rewards such as "Gain 1 skill point and X respec points when defeating Delirium with this jewel equipped.".
-[*]Once you've found them all, chance to find ancients is reduced by 80% until more are introduced (as you cannot have duplicates of these).
-[/list]
+[url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/dev/docs/starcursed-update.md]Read the new features for 0.2.0 here.[/url]
 
 [h2]BETA release[/h2]
 This is an early release of the mod, and with this many moving pieces, it may contain a fair few bugs and weird interactions! Let me know if you find any of these during gameplay.
@@ -129,11 +83,9 @@ The mod comes with a few debug settings which make testing its features easier. 
 [*][b]infSP:[/b] No longer spend or require skill points for nodes
 [*][b]infRespec:[/b] No longer spend or require respec points for nodes
 [*][b]allAvailable:[/b] Makes all nodes available at all times, regardless of connections
-[*][b]treeOnChallenges:[/b] Makes tree effects apply to challenges. Default off
-[*][b]xpMult:[/b] XP multiplier, default 1. Supports Mod Config Menu to set between 1 and 3
 [/list]
 
-There's also the PST_config.lua file, where you can also find some extra settings such as whether to draw the xp bar, floating texts, and char info in character select, as well as re-configuring the keybinds used in the tree screen, in case of conflicts.
+There's also the PST_config.lua file, where you can find some extra settings such as whether to draw the xp bar, floating texts, char info in character select, xp multiplier, as well as re-configuring the keybinds used in the tree screen, in case of conflicts.
 
 Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787]Mod Config Menu Pure[/url] to toggle PST_config.lua settings.
 
