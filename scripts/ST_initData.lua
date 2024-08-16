@@ -229,7 +229,7 @@ function PST:resetMods()
 		-- Helper vars for Cosmic Realignment effects
 		cosmicRCache = {
 			lazarusHasDied = false,
-			blueBabyPickups = 0,
+			blueBabyHearts = 0,
 			eveActive = false,
 			samsonDmg = 0,
 			lilithActive = false,
