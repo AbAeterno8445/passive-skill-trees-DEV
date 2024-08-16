@@ -479,7 +479,8 @@ PST.SCDropRates = {
     boss = function(stage) return { regular = 12 + stage * 2, ancient = 7 } end,
     challenge = function(stage) return { regular = 20 + stage * 2, ancient = 4 } end,
     bossrush = function() return { regular = 80, ancient = 15 } end,
-    planetarium = function() return { regular = 33, ancient = 10 } end
+    planetarium = function() return { regular = 33, ancient = 10 } end,
+    curseRoom = function(stage) return { regular = 10 + stage, ancient = 2 } end,
 }
 
 PST.SCStarTreeUnlockLevel = 30
