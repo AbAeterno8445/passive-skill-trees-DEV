@@ -54,14 +54,13 @@ These unlocks grant a 'pseudo' blue completion mark to the target character so y
 [h2]BETA release[/h2]
 This is an early release of the mod, and with this many moving pieces, it may contain a fair few bugs and weird interactions! Let me know if you find any of these during gameplay.
 
-I'm also rather new to the Isaac modding scene, so there might be conflicts with other popular mods as I haven't tested those too extensively. I am using External Item Descriptions and Achievement Portraits, so those should be fine.
+I'm also rather new to the Isaac modding scene, so there might be conflicts with other popular mods as I haven't tested those too extensively.
 
 Co-op hasn't been tested, but most if not all of the tree effects are applied to the main player, meaning co-op players don't get trees of their own and could have to adjust their gameplay to synergize with the host's tree.
 
 [h2]Requirements[/h2]
 This mod requires installing Repentogon. You may install it from [url=https://repentogon.com/]here[/url].
 NOTE: you need to install Repentogon following the instructions in the link for the mod to work properly, it's not just a workshop install!
-
 Requires Repentance. Afterbirth+ unsupported.
 
 [h2]For Modders - Custom Skill Trees[/h2]
@@ -89,7 +88,7 @@ There's also the PST_config.lua file, where you can find some extra settings suc
 
 Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787]Mod Config Menu Pure[/url] to toggle PST_config.lua settings.
 
-[h3]Support[/h3]
+[h2]Support[/h2]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
     <version>0.2.0</version>
     <visibility>Public</visibility>

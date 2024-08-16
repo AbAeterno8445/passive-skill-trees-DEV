@@ -3,7 +3,7 @@
 ### **Star Tree:**
 
 - New "Star Tree" sub-tree that you can access from the global tree. Node requires reaching level 30 with any character to allocate.
-- Once the Star Tree is unlocked, its first node unlocks [b]Starcursed Jewels[/b], which can now start dropping from certain sources.
+- Once the Star Tree is unlocked, its first node unlocks **Starcursed Jewels**, which can now start dropping from certain sources.
 - Tree features inventory and socket nodes - once allocated, press allocate again while hovering them to open an inventory dedicated to jewels.
 
 ### **Starcursed Jewels:**
@@ -17,7 +17,7 @@
   - **Azure Starcursed Jewels:** these roll modifiers altering the might of monsters in the run (e.g. normal/boss mobs have a chance to deal 1/2 heart additional damage, enemies deal extra damage to soul hearts, etc.)
   - **Viridian Starcursed Jewels:** these roll modifiers altering features of the run itself (e.g. extra chance to receive a curse, less chance to find devil/angel rooms, shop items are more expensive, etc.)
   - **Ancient Starcursed Jewels:** a rare variant, these are a set of jewels that apply specific unique effects with rewards associated to completing runs with them equipped, akin to challenges.
-- Non-Ancient jewels can also come as a [b]Mighty[/b] variant, featuring higher rolls and exclusive modifiers, and generally higher starmight.
+- Non-Ancient jewels can also come as a **Mighty** variant, featuring higher rolls and exclusive modifiers, and generally higher starmight.
 
 ### **How to obtain Starcursed Jewels:**
 
