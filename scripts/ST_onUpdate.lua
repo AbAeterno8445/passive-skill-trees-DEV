@@ -216,10 +216,10 @@ function PST:onUpdate()
 			end
 		end
 	end
-	-- Starcursed mod: monsters receive no damage for 3 seconds every 10 seconds
+	-- Starcursed mod: monsters receive no damage for 2 seconds every 10 seconds
 	tmpMod = PST:SC_getSnapshotMod("mobPeriodicShield", nil)
 	if tmpMod ~= nil then
-		if room:GetFrameCount() % 300 >= 150 and room:GetFrameCount() % 300 <= 240 then
+		if room:GetFrameCount() % 300 >= 180 and room:GetFrameCount() % 300 <= 240 then
 			PST.specialNodes.mobPeriodicShield = true
 		else
 			PST.specialNodes.mobPeriodicShield = false

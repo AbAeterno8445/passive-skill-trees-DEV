@@ -50,7 +50,7 @@ PST.SCMods = {
             weight = 100,
             rolls = {{8, 15}},
             mightyRolls = {{25, 40}},
-            starmightCalc = function(roll) return 10 + math.ceil(roll * 1.2) end,
+            starmightCalc = function(roll) return 10 + math.ceil(roll * 2) end,
             onConflict = {conflictFuncs.simpleSum},
             description = "Boss monsters have %d%% increased HP."
         },
@@ -121,8 +121,8 @@ PST.SCMods = {
             weight = 100,
             rolls = {},
             mightyOnly = true,
-            starmightCalc = function() return 40 end,
-            description = "Monsters receive no damage for 3 seconds every 10 seconds."
+            starmightCalc = function() return 50 end,
+            description = "Monsters receive no damage for 2 seconds every 10 seconds."
         }
     },
     Azure = {
