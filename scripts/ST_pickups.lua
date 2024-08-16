@@ -205,6 +205,8 @@ function PST:prePickup(pickup, collider, low)
 end
 
 function PST:onPickup(pickup, collider, low)
+    if pickup:GetSprite():GetAnimation() ~= "Collect" then return end
+
     local player = collider:ToPlayer()
     local variant = pickup.Variant
     local subtype = pickup.SubType
