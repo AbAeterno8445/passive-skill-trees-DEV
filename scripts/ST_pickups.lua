@@ -192,7 +192,7 @@ function PST:prePickup(pickup, collider, low)
                 if isKeeper and variant == PickupVariant.PICKUP_COIN then
                     if not cosmicRCache.TForgottenTracker.keeperCoin then
                         cosmicRCache.TForgottenTracker.keeperCoin = true
-                        player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                        player:AddCacheFlags(PST.allstatsCache, true)
                     end
                     if player:GetHearts() < player:GetMaxHearts() and not cosmicRCache.TForgottenTracker.keeperHeal then
                         player:AddHearts(-2)

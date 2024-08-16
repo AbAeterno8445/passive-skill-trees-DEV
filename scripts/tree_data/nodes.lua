@@ -187,9 +187,9 @@ function PST:addModifiers(modList, addToSnapshot)
         end
 
         -- Determine flags to check
-        if addToSnapshot and tmpFlags ~= CacheFlag.CACHE_ALL then
+        if addToSnapshot and tmpFlags ~= PST.allstatsCache then
             if modName == "allstats" or modName == "allstatsPerc" then
-                tmpFlags = CacheFlag.CACHE_ALL
+                tmpFlags = PST.allstatsCache
             elseif modName == "damage" or modName == "damagePerc" then
                 tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
             elseif modName == "speed" or modName == "speedPerc" then

@@ -261,7 +261,7 @@ function PST:onNewLevel()
             if tmpEntity.Type == EntityType.ENTITY_FAMILIAR and tmpEntity.Variant == FamiliarVariant.ABYSS_LOCUST then
                 tmpEntity:Remove()
                 cosmicRCache.TApollyonLocusts = math.max(0, cosmicRCache.TApollyonLocusts - 1)
-                player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                player:AddCacheFlags(PST.allstatsCache, true)
                 break
             end
         end

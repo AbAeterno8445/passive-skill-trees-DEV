@@ -392,7 +392,7 @@ function PST:onUpdate()
 	-- Familiar quantity update
 	local tmpTotal = PST:getTreeSnapshotMod("totalFamiliars", 0)
 	if tmpTotal ~= familiarsTracker then
-		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+		player:AddCacheFlags(PST.allstatsCache, true)
 	end
 	familiarsTracker = tmpTotal
 
@@ -512,7 +512,7 @@ function PST:onUpdate()
 		-- Mod: +% all stats when luck changes
 		tmpStats = PST:getTreeSnapshotMod("mightOfFortune", 0)
 		if tmpStats ~= 0 then
-			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+			player:AddCacheFlags(PST.allstatsCache, true)
 		end
 	end
 	luckTracker = player.Luck
@@ -556,7 +556,7 @@ function PST:onUpdate()
 			local debuffVal = math.max(-40, math.min(cosmicRCache.forgottenKeeperDebuff, player:GetNumBlueFlies() * -4))
 			if cosmicRCache.forgottenKeeperDebuff ~= debuffVal then
 				cosmicRCache.forgottenKeeperDebuff = debuffVal
-				player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+				player:AddCacheFlags(PST.allstatsCache, true)
 			end
 		end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
@@ -564,7 +564,7 @@ function PST:onUpdate()
 		local tmpItemCount = math.max(0, player:GetCollectibleCount() - 8)
 		if tmpItemCount ~= cosmicRCache.TIsaacItems then
         	cosmicRCache.TIsaacItems = tmpItemCount
-			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+			player:AddCacheFlags(PST.allstatsCache, true)
 		end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
 		-- Tainted Cain, -2 luck if not holding Bag of Crafting
@@ -851,7 +851,7 @@ function PST:onUpdate()
 				local debuffVal = math.max(-40, math.min(0, player:GetNumBlueFlies() * -4))
 				if cosmicRCache.forgottenKeeperDebuff ~= debuffVal then
 					cosmicRCache.forgottenKeeperDebuff = debuffVal
-					player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+					player:AddCacheFlags(PST.allstatsCache, true)
 				end
 			end
 		elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
@@ -861,7 +861,7 @@ function PST:onUpdate()
 				player:TakeDamage(math.min(2, totalHP - 1), 0, EntityRef(player), 0)
 			end
 			cosmicRCache.TSamsonBuffer = 0
-			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+			player:AddCacheFlags(PST.allstatsCache, true)
 		elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
 			-- Tainted Lazarus, switch health banks
 			if not isKeeper and PST.modData.xpObtained > 0 then
@@ -901,6 +901,6 @@ function PST:onUpdate()
 	-- Trinket updates
 	if PST.trinketUpdateProc > 0 and Game():GetFrameCount() > PST.trinketUpdateProc + 1 then
 		PST.trinketUpdateProc = 0
-		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+		player:AddCacheFlags(PST.allstatsCache, true)
 	end
 end

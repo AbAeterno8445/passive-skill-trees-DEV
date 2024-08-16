@@ -103,11 +103,11 @@ function PST:onNewRoom()
 		if room:GetAliveEnemiesCount() > 0 and 100 * math.random() < tmpTreeMod then
 			if not PST:getTreeSnapshotMod("allstatsRoomProc", false) then
 				PST:addModifiers({ allstatsPerc = 4, allstatsRoomProc = true }, true)
-				player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+				player:AddCacheFlags(PST.allstatsCache, true)
 			end
 		elseif PST:getTreeSnapshotMod("allstatsRoomProc", false) then
 			PST:addModifiers({ allstatsPerc = -4, allstatsRoomProc = false}, true)
-			player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+			player:AddCacheFlags(PST.allstatsCache, true)
 		end
 	end
 
@@ -328,7 +328,7 @@ function PST:onNewRoom()
 		-- Tainted Forgotten, as Keeper: reset trackers
 		cosmicRCache.TForgottenTracker.keeperCoin = false
 		cosmicRCache.TForgottenTracker.keeperHeal = false
-		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+		player:AddCacheFlags(PST.allstatsCache, true)
 	end
 
 	-- Quick Wit node, start timer

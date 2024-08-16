@@ -83,7 +83,7 @@ function PST:onDamage(target, damage, flag, source)
             if room:GetAliveEnemiesCount() > 0 and cosmicRCache.TSamsonBuffer > -20 then
                 cosmicRCache.TSamsonBuffer = cosmicRCache.TSamsonBuffer - 5
                 PST:save()
-                player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                player:AddCacheFlags(PST.allstatsCache, true)
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN_B) then
             -- Tainted Eden, shuffle stat reduction
@@ -96,7 +96,7 @@ function PST:onDamage(target, damage, flag, source)
             end
             local tmpStat = PST:getRandomStat()
             cosmicRCache.TEdenDebuff[tmpStat .. "Perc"] = math.floor(-25 * math.random())
-            player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+            player:AddCacheFlags(PST.allstatsCache, true)
         end
 
         -- Mod: chance to nullify hit that wakes dead bird
@@ -740,7 +740,7 @@ function PST:onDeath(entity)
             if cosmicRCache.TSamsonBuffer < 10 then
                 cosmicRCache.TSamsonBuffer = cosmicRCache.TSamsonBuffer + 2
                 PST:save()
-                tmpPlayer:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                tmpPlayer:AddCacheFlags(PST.allstatsCache, true)
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
             -- Tainted Forgotten, bosses drop an additional soul heart

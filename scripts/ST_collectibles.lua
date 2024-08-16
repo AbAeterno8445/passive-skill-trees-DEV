@@ -136,8 +136,8 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     -- Mod: +% all stats per item obtained by the opposing brother, up to 15%
     local tmpMod = PST:getTreeSnapshotMod("jacobItemAllstats", 0)
     if tmpMod ~= 0 and player:GetOtherTwin() then
-        player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
-        player:GetOtherTwin():AddCacheFlags(CacheFlag.CACHE_ALL, true)
+        player:AddCacheFlags(PST.allstatsCache, true)
+        player:GetOtherTwin():AddCacheFlags(PST.allstatsCache, true)
     end
 
     -- Mod: +stat when first obtaining an item
@@ -201,7 +201,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
             player:AddLocust(itemType, player.Position)
             cosmicRCache.TApollyonLocusts = cosmicRCache.TApollyonLocusts + 1
             PST:save()
-            player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+            player:AddCacheFlags(PST.allstatsCache, true)
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY_B) then
         -- Tainted Bethany, convert passive collectibles to Lemegeton wisps
@@ -254,7 +254,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                     end
                 end
                 PST:save()
-                Isaac.GetPlayer():AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                Isaac.GetPlayer():AddCacheFlags(PST.allstatsCache, true)
             end
         end
 
@@ -389,7 +389,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
             if consumedLocust then
-                player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+                player:AddCacheFlags(PST.allstatsCache, true)
             end
         end
 

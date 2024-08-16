@@ -119,7 +119,7 @@ function PST:onNewRun(isContinued)
         end
     end
 
-    player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+    player:AddCacheFlags(PST.allstatsCache, true)
     PST:save()
 
     -- Reset specialNodes that might be left over
