@@ -36,6 +36,8 @@ local treeStarfieldList = {}
 local nodesSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
 nodesSprite:Play("Default", true)
 
+local nodesExtraSprite = Sprite("gfx/ui/skilltrees/nodes/nodes_extra.anm2", true)
+
 local nodeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
 nodeBGSprite:Play("Pixel", true)
 nodeBGSprite.Color.A = 0.7
@@ -114,6 +116,8 @@ local function PST_updateCamZoomOffset()
 
     nodesSprite.Scale.X = zoomScale
     nodesSprite.Scale.Y = zoomScale
+    nodesExtraSprite.Scale.X = zoomScale
+    nodesExtraSprite.Scale.Y = zoomScale
     for _, imgSprite in pairs(PST.customNodeImages) do
         imgSprite.Scale.X = zoomScale
         imgSprite.Scale.Y = zoomScale
@@ -514,10 +518,10 @@ function PST:treeMenuRenderer()
             local hasSP = ((currentTree == "global" or currentTree == "starTree") and PST.modData.skillPoints > 0) or
                 (PST.modData.charData[currentTree] and PST.modData.charData[currentTree].skillPoints > 0)
             if hasSP then
-                tmpSprite:SetFrame("Available " .. node.size, 0)
-                tmpSprite.Color = colorDarkGrey
-                tmpSprite.Color.A = alphaFlash
-                tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+                nodesExtraSprite:SetFrame("Available " .. node.size, 0)
+                nodesExtraSprite.Color = colorDarkGrey
+                nodesExtraSprite.Color.A = alphaFlash
+                nodesExtraSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
             end
         end
 
@@ -530,8 +534,8 @@ function PST:treeMenuRenderer()
         tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
 
         if PST:isNodeAllocated(currentTree, node.id) then
-            tmpSprite:SetFrame("Allocated " .. node.size, 0)
-            tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)
+            nodesExtraSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
         end
 
         local nodeHalf = 15 * zoomScale
