@@ -538,6 +538,10 @@ function PST:onDeath(entity)
             local mult = 1
             if entity:IsBoss() then
                 mult = mult + PST:getTreeSnapshotMod("xpgainBoss", 0) / 100
+                local roomType = Game():GetRoom():GetType()
+                if not roomType == RoomType.ROOM_MINIBOSS and not roomType == RoomType.ROOM_BOSS then
+                    mult = mult - 0.6
+                end
             else
                 mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
             end

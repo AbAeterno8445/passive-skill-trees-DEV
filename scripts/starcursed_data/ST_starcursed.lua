@@ -366,8 +366,12 @@ end
 
 -- Implicit modifiers granted by having starmight
 function PST:SC_getStarmightImplicits(starmight)
+    local diminishedSM = 0
+    if starmight >= 250 then
+        diminishedSM = (starmight - 250) ^ 0.65
+    end
     local tmpImplicits = {
-        xpgain = math.ceil(starmight / 3)
+        xpgain = math.ceil(math.min(250, starmight) / 3) + diminishedSM
     }
     if starmight >= 50 then
         tmpImplicits["SC_SMMightyChance"] = math.min(15, 2 + starmight / 20)
