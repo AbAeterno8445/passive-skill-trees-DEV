@@ -26,7 +26,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     if not PST.gameInit then return end
 
     -- Ancient starcursed jewel: Umbra
-    if PST:SC_getSnapshotMod("umbra", false) then
+    if PST:SC_getSnapshotMod("umbra", false) and itemType == CollectibleType.COLLECTIBLE_NIGHT_LIGHT then
         local tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)
         if tmpMod > 0 then
             PST:addModifiers({ allstatsPerc = tmpMod, SC_umbraStatsDown = { value = 0, set = true } }, true)
