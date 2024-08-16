@@ -48,8 +48,57 @@ Once allocated, you can pick (with an UI menu) any unlocked character and earn t
 This de-incentivizes for example using a relatively easy character to go and unlock all of, say, tainted lost's stuff.
 These unlocks grant a 'pseudo' blue completion mark to the target character so you may keep track, but original marks take priority, and thus isn't exactly a shortcut for an easier 100% file per se.
 
+[h2]Version 0.2.0 - Starcursed Update[/h2]
+[h3]Star Tree:[/h3]
+[list]
+[*]New "Star Tree" sub-tree that you can access from the global tree. Node requires reaching level 30 with any character to allocate.
+[*]Once the Star Tree is unlocked, its first node unlocks [b]Starcursed Jewels[/b], which can now start dropping from certain sources.
+[*]Tree features inventory and socket nodes - once allocated, press allocate again while hovering them to open an inventory dedicated to jewels.
+[/list]
+
+[h3]Starcursed Jewels:[/h3]
+[list]
+[*]Stellar detritus condensed into small gemstones containing residual ancient cosmic energy.
+[*]Technically trinkets but these are collected on collision, and get added to your Star Tree's inventory.
+[*]Jewels roll with different modifiers which mainly affect the difficulty of the run, and feature a [b]Starmight[/b] counter that is higher the more difficult the rolled mods.
+[*]Starcursed Jewels can be socketed in their respective socket nodes within the Star Tree, and apply their modifiers once socketed.
+[*]Jewels can appear in 4 variants:
+[*][b]Crimson Starcursed Jewels:[/b] these roll modifiers altering the vitality and defense of monsters in the run (e.g. normal/boss mobs have more HP, monsters gain damage reduction, etc.)
+[*][b]Azure Starcursed Jewels:[/b] these roll modifiers altering the might of monsters in the run (e.g. normal/boss mobs have a chance to deal 1/2 heart additional damage, enemies deal extra damage to soul hearts, etc.)
+[*][b]Viridian Starcursed Jewels:[/b] these roll modifiers altering features of the run itself (e.g. extra chance to receive a curse, less chance to find devil/angel rooms, shop items are more expensive, etc.)
+[*][b]Ancient Starcursed Jewels:[/b] a rare variant, these are a set of jewels that apply specific unique effects with rewards associated to completing runs with them equipped, akin to challenges.
+[*]Non-Ancient jewels can also come as a [b]Mighty[/b] variant, featuring higher rolls and exclusive modifiers, and generally higher starmight.
+[/list]
+
+[h3]How to obtain Starcursed Jewels:[/h3]
+[list]
+[*]Occasionally found wherever you'd find a random trinket drop.
+[*]Killing champion monsters: 1% chance to find a random jewel.
+[*]Clear boss room: (12 + floor)% chance to find a random jewel.
+[*]Clear challenge room: (20 + floor)% base chance to find a random jewel.
+[*]Clear boss rush: 80% chance to find a random jewel.
+[*]Planetariums: 33% chance to contain one.
+[/list]
+
+[h3]Starmight:[/h3]
+[list]
+[*]Non-ancient jewels come with a Starmight counter, which is higher the more difficult its featured modifiers.
+[*]Having socketed jewels with starmight grants some implicit bonuses, depending on total starmight:
+[*]- (starmight / 3)% additional XP gain
+[*]- At and above 50 starmight, (2 + starmight / 20)% chance for jewels to drop as [b]Mighty[/b].
+[*]- At and above 100 starmight, (starmight / 90)% additional chance to find ancient jewels.
+[/list]
+
+[h3]Ancient Starcursed Jewels:[/h3]
+[list]
+[*]Set of unique jewels, there's currently 10 different ones to find.
+[*]The modifiers these have are akin to challenges, modifying the run significantly.
+[*]Feature one-time rewards such as "Gain 1 skill point and X respec points when defeating Delirium with this jewel equipped.".
+[*]Once you've found them all, chance to find ancients is reduced by 80% until more are introduced (as you cannot have duplicates of these).
+[/list]
+
 [h2]BETA release[/h2]
-This is a very early release of the mod, and with this many moving pieces, it may contain a fair few bugs and weird interactions! Let me know if you find any of these during gameplay.
+This is an early release of the mod, and with this many moving pieces, it may contain a fair few bugs and weird interactions! Let me know if you find any of these during gameplay.
 
 I'm also rather new to the Isaac modding scene, so there might be conflicts with other popular mods as I haven't tested those too extensively. I am using External Item Descriptions and Achievement Portraits, so those should be fine.
 
@@ -61,9 +110,6 @@ NOTE: you need to install Repentogon following the instructions in the link for 
 
 Requires Repentance. Afterbirth+ unsupported.
 
-[h2]Power Creep Concerns[/h2]
-While I haven't balanced the trees too heavily, it's likely that this feature introduces a lot of free player power, making runs generally easier. There's room to introduce opt-in difficulty-altering features in the future if there's interest, e.g. something such as balancing the xp curve so that easy runs barely grant xp past a certain level, and making runs more difficult (in correlation with how much tree progress you have) with certain new modifiers grants more xp.
-
 [h2]For Modders - Custom Skill Trees[/h2]
 I have a little visual node js app, [b]isaac-skilltreegen[/b], that lets you create skill trees, and the mod supports coding skill trees for custom characters.
 You can find the app's repo and releases [url=https://github.com/AbAeterno8445/isaac-skilltreegen]Here[/url]. Repo includes usage instructions on its README.
@@ -73,6 +119,9 @@ The mod also exposes an API function to initialize generated skill trees. [url=h
 Unfortunately it's currently not possible to easily create new nodes, and would require editing the nodes image, anm2 file, and coding any new effects yourself - these changes will also probably get lost after an update if you're editing original mod files.
 
 I've also been playing with the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=846760924]Siren character mod[/url] and this mod comes with a skill tree for her out of the box.
+
+[h2]Resetting Mod Data[/h2]
+You can hover over the "Leveling Of Isaac" node (central node in global tree), and hold the Respec Node button for 7 seconds to reset ALL tree related data for your current save. Use with care!
 
 [h2]Debugging and Config[/h2]
 The mod comes with a few debug settings which make testing its features easier. In the mod directory, main.lua file, at the top you can find a PST.debugOptions table with some variables you can set to 'true', such as:
@@ -86,9 +135,9 @@ There's also the PST_config.lua file, where you can also find some extra setting
 
 Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787]Mod Config Menu Pure[/url] to toggle PST_config.lua settings.
 
-[h3]Support[/h3]
+[h2]Support[/h2]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
-    <version>0.1.8</version>
+    <version>0.2.0</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Player Characters"/>
