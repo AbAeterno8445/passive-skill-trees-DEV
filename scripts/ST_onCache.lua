@@ -392,10 +392,10 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
         -- SHOT SPEED
         local tmpMod = PST:getTreeSnapshotMod("shotSpeed", 0) + dynamicMods.shotSpeed + allstats
-        local tmpMult = 1 + allstatsPerc / 100
-        tmpMult = tmpMult + PST:getTreeSnapshotMod("shotSpeedPerc", 0) / 100
-        tmpMult = tmpMult + dynamicMods.shotSpeedPerc / 100
-        player.ShotSpeed = (player.ShotSpeed + tmpMod) * math.max(0.05, tmpMult)
+        local tmpMult = 1 + allstatsPerc / 200
+        tmpMult = tmpMult + PST:getTreeSnapshotMod("shotSpeedPerc", 0) / 200
+        tmpMult = tmpMult + dynamicMods.shotSpeedPerc / 200
+        player.ShotSpeed = (player.ShotSpeed + tmpMod / 2) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- MOVEMENT SPEED
