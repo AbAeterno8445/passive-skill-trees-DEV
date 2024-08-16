@@ -34,16 +34,16 @@ function PST:addTempXP(xp, showText, noMult)
     local xpMult = 1 + PST:getTreeSnapshotMod("xpgain", 0) / 100
 
 	if not Game():IsHardMode() then
-		xpMult = xpMult - 0.25
+		xpMult = xpMult - 0.4
 	end
 
 	-- Extra challenge room XP gain mod
 	local room = Game():GetRoom()
 	if room:GetType() == RoomType.ROOM_CHALLENGE then
 		xpMult = xpMult + PST:getTreeSnapshotMod("challengeXPgain", 0) / 100
-	-- -40% xp gain in boss rush
+	-- -75% xp gain in boss rush
 	elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
-		xpMult = xpMult - 0.4
+		xpMult = xpMult - 0.75
 	end
 
 	-- Quick wit mod
@@ -75,11 +75,12 @@ function PST:addTempXP(xp, showText, noMult)
 end
 
 -- Add XP
----@param xp number Amount of XP to add
+---@param xpParam number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
-function PST:addXP(xp, showText)
+function PST:addXP(xpParam, showText)
 	local charData = PST:getCurrentCharData()
 	if charData then
+		local xp = xpParam * (PST.config.xpMult or 1)
 		charData.xp = math.max(0, charData.xp + xp)
 		if showText then
 			local xpStr = string.format("+%.2f xp", xp)
@@ -103,8 +104,8 @@ function PST:addXP(xp, showText)
 				-- Next level xp requirement formula
 				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.1))
 
-				-- Add overflowing xp to next level, capped at 50%
-				charData.xp = math.min(math.floor(charData.xpRequired * 0.5), xpRemaining)
+				-- Add overflowing xp to next level, capped at 40%
+				charData.xp = math.min(math.floor(charData.xpRequired * 0.4), xpRemaining)
 
 				PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
 			end
@@ -167,6 +168,10 @@ function PST:cosmicRTryUnlock(unlockSource)
 	end
 end
 
+local starcursedEvents = {
+	[CompletionType.DELIRIUM] = "deliriumRewards",
+	[CompletionType.BEAST] = "beastRewards"
+}
 function PST:onCompletionEvent(event)
 	local pType = PST:getTreeSnapshotMod("cosmicRealignment", false)
 
@@ -179,6 +184,32 @@ function PST:onCompletionEvent(event)
 		-- Dark Protection node (Eve's tree)
 		if PST:getTreeSnapshotMod("darkProtection", false) then
 			PST:addModifiers({ darkProtectionProc = false }, true)
+		end
+	end
+
+	-- Ancient starcursed jewel rewards
+	for i=1,2 do
+		local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
+		if ancientJewel and ancientJewel.rewards then
+			if not PST.modData.ancientRewards[ancientJewel.name] then
+				PST.modData.ancientRewards[ancientJewel.name] = {}
+			end
+
+			-- Skill point and respec point reward mods
+			for tmpEvent, rewardMod in pairs(starcursedEvents) do
+				local tmpRewards = ancientJewel.rewards[rewardMod]
+				if tmpRewards and event == tmpEvent and not PST.modData.ancientRewards[ancientJewel.name][rewardMod] then
+					PST.modData.skillPoints = PST.modData.skillPoints + tmpRewards[1]
+					for _, charData in pairs(PST.modData.charData) do
+						charData.skillPoints = charData.skillPoints + tmpRewards[1]
+					end
+					PST.modData.respecPoints = PST.modData.respecPoints + tmpRewards[2]
+					PST.modData.ancientRewards[ancientJewel.name][rewardMod] = true
+
+					sfx:Play(SoundEffect.SOUND_THUMBSUP)
+					PST:createFloatTextFX("Ancient jewel objective complete!", Vector.Zero, Color(1, 0.9, 0.5, 1), 0.13, 160, true)
+				end
+			end
 		end
 	end
 
@@ -382,4 +413,10 @@ end
 
 function PST:strStartsWith(txt, start)
 	return string.sub(txt, 1, string.len(start)) == start
- end
+end
+
+function PST:roundFloat(number, digit)
+	local precision = 10 ^ digit
+	number = number + (precision / 2)
+	return math.floor(number / precision) * precision
+end

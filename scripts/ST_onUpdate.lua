@@ -7,6 +7,7 @@ local playerTypeTracker = 0
 local jacobHeartDiffTracker = 0
 local luckTracker = 0
 local familiarsTracker = 0
+local coinTracker = 0
 local holyMantleTracker = false
 
 -- On update
@@ -71,8 +72,20 @@ function PST:onUpdate()
        		Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, TrinketType.TRINKET_SWALLOWED_PENNY, Random() + 1)
 		end
 
-		-- After first floor
+		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
+			-- Ancient starcursed jewel: Challenger Starpiece
+			if PST:SC_getSnapshotMod("challengerStarpiece", false) then
+				local tmpRoomIdx = level:QueryRoomTypeIndex(RoomType.ROOM_CHALLENGE, false, RNG())
+				local challRoom = level:GetRoomByIdx(tmpRoomIdx)
+				if challRoom and challRoom.Data.Type == RoomType.ROOM_CHALLENGE then
+					PST:addModifiers({ SC_levelHasChall = true }, true)
+					Game():StartRoomTransition(tmpRoomIdx, Direction.NO_DIRECTION, RoomTransitionAnim.TELEPORT)
+				else
+					PST:addModifiers({ SC_levelHasChall = false }, true)
+				end
+			end
+
 			-- Mod: chance to reveal map
 			if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) then
 				level:ShowMap()
@@ -141,6 +154,112 @@ function PST:onUpdate()
 		local tmpFamiliars = PST:getRoomFamiliars()
 		if tmpFamiliars ~= PST:getTreeSnapshotMod("totalFamiliars", 0) then
 			PST:addModifiers({ totalFamiliars = { value = tmpFamiliars, set = true } }, true)
+		end
+	end
+
+	-- Starcursed mod: monster status cleanse every X seconds
+	local tmpMod = PST:SC_getSnapshotMod("statusCleanse", 0)
+	if tmpMod > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) then
+				tmpNPC:RemoveStatusEffects()
+				tmpNPC:SetColor(Color(0.5, 0.8, 1, 1), 30, 1, true, false)
+			end
+		end
+	end
+	-- Starcursed mod: normal monsters regen X HP every Y seconds
+	tmpMod = PST:SC_getSnapshotMod("mobRegen", {0, 0})
+	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() then
+				tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpMod[1])
+				tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
+			end
+		end
+	end
+	-- Starcursed mod: boss monsters regen X HP every Y seconds
+	tmpMod = PST:SC_getSnapshotMod("bossRegen", {0, 0})
+	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() then
+				tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpMod[1])
+				tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
+			end
+		end
+	end
+	-- Starcursed mod: champions heal 15% HP to nearby non-champion monsters every X seconds
+	tmpMod = PST:SC_getSnapshotMod("championHealers", {0, 0})
+	if type(tmpMod) == "table" and tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
+		local tmpEntities = Isaac.GetRoomEntities()
+		local tmpChamps = {}
+		for _, tmpEntity in ipairs(tmpEntities) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsChampion() then
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpNPC.Position, Vector.Zero, nil, 1, Random() + 1)
+				table.insert(tmpChamps, tmpNPC)
+			end
+		end
+		for _, tmpEntity in ipairs(tmpEntities) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsChampion() then
+				for _, tmpChamp in ipairs(tmpChamps) do
+					local dist = math.sqrt((tmpNPC.Position.X - tmpChamp.Position.X)^2 + (tmpNPC.Position.Y - tmpChamp.Position.Y)^2)
+					if dist <= 80 then
+						tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpNPC.MaxHitPoints * 0.15)
+						tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
+						break
+					end
+				end
+			end
+		end
+	end
+	-- Starcursed mod: monsters receive no damage for 3 seconds every 10 seconds
+	tmpMod = PST:SC_getSnapshotMod("mobPeriodicShield", nil)
+	if tmpMod ~= nil then
+		if room:GetFrameCount() % 300 >= 150 and room:GetFrameCount() % 300 <= 240 then
+			PST.specialNodes.mobPeriodicShield = true
+		else
+			PST.specialNodes.mobPeriodicShield = false
+		end
+	end
+	-- Starcursed mod: monsters have a chance to reduce your damage by 20% for 3 seconds
+	if PST.specialNodes.mobHitReduceDmg > 0 then
+		PST.specialNodes.mobHitReduceDmg = PST.specialNodes.mobHitReduceDmg - 1
+		if PST.specialNodes.mobHitReduceDmg == 0 then
+			PST:addModifiers({ damagePerc = 20 }, true)
+		end
+	end
+	-- Ancient starcursed jewel: Circadian Destructor
+	if PST:SC_getSnapshotMod("circadianDestructor", false) then
+		if not PST.specialNodes.SC_circadianSpawnProc then
+			PST.specialNodes.SC_circadianSpawnTime = PST.specialNodes.SC_circadianSpawnTime + 1
+			if PST.specialNodes.SC_circadianSpawnTime >= 1440 then
+				if room:GetAliveEnemiesCount() > 0 then
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, player.Position, Vector.Zero, nil, Card.CARD_TOWER, Random() + 1)
+					PST.specialNodes.SC_circadianSpawnProc = true
+				end
+				PST.specialNodes.SC_circadianSpawnTime = 0
+			end
+		elseif room:GetFrameCount() % 30 == 0 and PST.specialNodes.SC_circadianStatsDown < 20 then
+			PST:addModifiers({ allstatsPerc = -1 }, true)
+			PST.specialNodes.SC_circadianStatsDown = PST.specialNodes.SC_circadianStatsDown + 1
+		end
+		if PST.specialNodes.SC_circadianExplImmune > 0 then
+			PST.specialNodes.SC_circadianExplImmune = PST.specialNodes.SC_circadianExplImmune - 1
+		end
+	end
+	-- Ancient starcursed jewel: Soul Watcher
+	if PST:SC_getSnapshotMod("soulWatcher", false) then
+		if room:GetFrameCount() % 300 == 0 and #PST.specialNodes.SC_soulEaterMobs > 0 then
+			for _, tmpSoulEater in ipairs(PST.specialNodes.SC_soulEaterMobs) do
+				if tmpSoulEater.mob:IsBoss() then
+					Game():Spawn(EntityType.ENTITY_ATTACKFLY, 0, tmpSoulEater.mob.Position, Vector.Zero, nil, 0, Random() + 1)
+					break
+				end
+			end
 		end
 	end
 
@@ -399,6 +518,19 @@ function PST:onUpdate()
 	end
 	luckTracker = player.Luck
 
+	-- Coin changes
+	if player:GetNumCoins() ~= coinTracker then
+		-- Lost coins
+		if player:GetNumCoins() < coinTracker then
+			-- Starcursed mod: when losing or spending coins, X% chance to additionally lose Y coins
+			tmpMod = PST:SC_getSnapshotMod("loseCoinsOnSpend", {0, 0})
+			if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
+				player:AddCoins(-tmpMod[2])
+			end
+		end
+	end
+	coinTracker = player:GetNumCoins()
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -471,11 +603,20 @@ function PST:onUpdate()
 		local level = Game():GetLevel()
 		-- Challenge rooms
 		if room:GetType() == RoomType.ROOM_CHALLENGE then
-			-- Challenge room XP reward
-			local challengeXP = PST:getTreeSnapshotMod("challengeXP", 0);
-			local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false);
-			if challengeXP > 0 and (not level:HasBossChallenge() or (level:HasBossChallenge() and bossChallengeXP)) then
-				PST:addTempXP(challengeXP, true, true)
+			-- Final round clear
+			if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
+				-- Challenge room XP reward
+				local challengeXP = PST:getTreeSnapshotMod("challengeXP", 0)
+				local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false)
+				if challengeXP > 0 and (not level:HasBossChallenge() or (level:HasBossChallenge() and bossChallengeXP)) then
+					PST:addTempXP(challengeXP, true, true)
+				end
+
+				-- Starcursed jewel drop
+				if 100 * math.random() < PST.SCDropRates.challenge(level:GetStage()).regular then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.challenge(level:GetStage()).ancient)
+				end
 			end
 		-- Boss rooms
 		elseif room:GetType() == RoomType.ROOM_BOSS then
@@ -495,8 +636,9 @@ function PST:onUpdate()
 		if not clearRoomProc and PST.modData.xpObtained > 0 then
 			local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
 
-			-- Respec chance
+			-- Boss room
 			if isBossRoom then
+				-- Respec chance
 				local respecChance = PST:getTreeSnapshotMod("respecChance", 15)
 				if not PST:getTreeSnapshotMod("relearning", false) then
 					local tmpRespecs = 0
@@ -515,10 +657,62 @@ function PST:onUpdate()
 					-- Relearning node, count as completed floor
 					PST:addModifiers({ relearningFloors = 1 }, true)
 				end
+
+				-- Ancient starcursed jewel: Luminescent Die
+				if PST:SC_getSnapshotMod("luminescentDie", false) then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_REVERSE_WHEEL_OF_FORTUNE, Random() + 1)
+				end
+
+				-- Starcursed jewel drop
+				if 100 * math.random() < PST.SCDropRates.boss(level:GetStage()).regular then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
+				end
+			-- Boss rush
+			elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
+				-- Starcursed jewel drop
+				if 100 * math.random() < PST.SCDropRates.bossrush().regular then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.bossrush().ancient)
+				end
+			-- Challenge room
+			elseif room:GetType() == RoomType.ROOM_CHALLENGE then
+				-- Final round clear
+				if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
+					-- Ancient starcursed jewel: Challenger's Starpiece
+					if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) then
+						local tmpVariant = 0
+						if level:GetStage() >= 7 then
+							tmpVariant = 1
+						end
+						Game():Spawn(
+							PST.deadlySinBosses[math.random(#PST.deadlySinBosses)],
+							tmpVariant, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1
+						)
+						PST:addModifiers({ SC_challClear = true }, true)
+					end
+				end
+			end
+
+			-- Starcursed mod: chance to spawn an additional troll bomb at the center of the room on clear
+			local tmpChance = PST:getTreeSnapshotMod("trollBombOnClear", 0)
+			if 100 * math.random() < tmpChance then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
+				Game():Spawn(EntityType.ENTITY_BOMB, BombVariant.BOMB_TROLL, tmpPos, Vector.Zero, nil, BombSubType.BOMB_TROLL, Random() + 1)
+			end
+
+			-- Ancient starcursed jewel: Umbra
+			if PST:SC_getSnapshotMod("umbra", false) then
+				if not PST:getTreeSnapshotMod("SC_umbraNightLightSpawn", false) and 100 * math.random() < 12 then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_NIGHT_LIGHT, Random() + 1)
+					PST:addModifiers({ SC_umbraNightLightSpawn = true }, true)
+				end
 			end
 
 			-- Mod: chance to heal 1/2 red heart when clearing a room
-			local tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
+			tmpChance = PST:getTreeSnapshotMod("healOnClear", 0)
 			if isBossRoom then
 				tmpChance = tmpChance * 2
 			end
@@ -603,7 +797,7 @@ function PST:onUpdate()
 
 			-- Null node (Apollyon's tree)
 			-- Mod: chance to gain an additional active item charge when clearing a room
-			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and 100 * math.random() < 100)
+			if (PST:getTreeSnapshotMod("null", false) and PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and 100 * math.random() < 50)
 			or (100 * math.random() < PST:getTreeSnapshotMod("chargeOnClear", 0)) then
 				if player:GetBatteryCharge(0) == 0 then
 					player:AddActiveCharge(1, 0, true, false, false)
@@ -683,5 +877,11 @@ function PST:onUpdate()
 		clearRoomProc = true
 	elseif room:GetAliveEnemiesCount() > 0 then
 		clearRoomProc = false
+	end
+
+	-- Trinket updates
+	if PST.trinketUpdateProc > 0 and Game():GetFrameCount() > PST.trinketUpdateProc + 1 then
+		PST.trinketUpdateProc = 0
+		player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
 	end
 end

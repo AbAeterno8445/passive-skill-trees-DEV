@@ -136,9 +136,133 @@ function PST:onDamage(target, damage, flag, source)
                 end
             end
         end
+
+        -- Starcursed modifiers
+        if source and source.Entity then
+            local tmpDmg = 0
+            local tmpSource = source.Entity:ToNPC()
+            if not tmpSource and source.Entity.Parent then
+                tmpSource = source.Entity.Parent:ToNPC()
+            end
+            if tmpSource then
+                -- Chance for monsters to also remove 1/2 soul/black heart when hitting
+                local tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
+                if 100 * math.random() < tmpMod then
+                    player:AddSoulHearts(-1)
+                end
+
+                -- Chance for monsters to slow you on hit for 2 seconds
+                tmpMod = PST:SC_getSnapshotMod("mobSlowOnHit", 0)
+                if 100 * math.random() < tmpMod then
+                    player:AddSlowing(EntityRef(tmpSource), 60, 0.9, Color(0.8, 0.8, 1, 1))
+                end
+
+                -- Chance for monsters to reduce your damage by 20% on hit for 3 seconds
+                tmpMod = PST:SC_getSnapshotMod("mobReduceDmgOnHit", 0)
+                if 100 * math.random() < tmpMod then
+                    if PST.specialNodes.mobHitReduceDmg == 0 then
+                        PST:addModifiers({ damagePerc = -20 }, true)
+                    end
+                    PST.specialNodes.mobHitReduceDmg = 90
+                end
+
+                -- When hit by a monster, the next X hits in the room will deal an additional 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("roomMobExtraDmgOnHit", 0)
+                if tmpMod > 0 then
+                    if PST.specialNodes.mobHitRoomExtraDmg.hits > 0 then
+                        tmpDmg = tmpDmg + 1
+                        PST.specialNodes.mobHitRoomExtraDmg.hits = PST.specialNodes.mobHitRoomExtraDmg.hits - 1
+                    elseif not PST.specialNodes.mobHitRoomExtraDmg.proc then
+                        PST.specialNodes.mobHitRoomExtraDmg.hits = tmpMod
+                        PST.specialNodes.mobHitRoomExtraDmg.proc = true
+                    end
+                end
+
+                -- Chance for normal monsters to deal an extra 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
+                if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then
+                    return { Damage = damage + 1 + tmpDmg }
+                end
+
+                -- Chance for champion monsters to deal an extra 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("champExtraHitDmg", 0)
+                if tmpSource:IsChampion() and 100 * math.random() < tmpMod then
+                    return { Damage = damage + 1 + tmpDmg }
+                end
+
+                -- Chance for boss monsters to deal an extra 1/2 heart damage
+                tmpMod = PST:SC_getSnapshotMod("bossExtraHitDmg", 0)
+                if tmpSource:IsBoss() and 100 * math.random() < tmpMod then
+                    return { Damage = damage + 1 + tmpDmg }
+                end
+
+                if tmpDmg > 0 then
+                    return { Damage = damage + tmpDmg }
+                end
+            end
+        end
     else
         local tmpPlayer = Isaac.GetPlayer()
         local dmgMult = 1
+
+        -- Starcursed modifiers
+        if target:IsActiveEnemy(false) then
+            -- Damage reduction
+            local tmpMod = PST:SC_getSnapshotMod("mobDmgReduction", 0)
+            dmgMult = dmgMult - tmpMod / 100
+
+            -- Damage blocking
+            local blockedDamage = false
+            tmpMod = PST:SC_getSnapshotMod("mobBlock", 0)
+            if 100 * math.random() < tmpMod then
+                blockedDamage = true
+            end
+
+            -- First hits blocked
+            tmpMod = PST:SC_getSnapshotMod("mobFirstBlock", 0)
+            if tmpMod > 0 and target.InitSeed then
+                if not PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] then
+                    PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] = 0
+                end
+                if PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] < tmpMod then
+                    PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] = PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] + 1
+                    blockedDamage = true
+                end
+            end
+
+            -- One-shot protection: if the first and only hit this mob ever receives would've killed it, prevent damage and set its health to 10%
+            tmpMod = PST:SC_getSnapshotMod("mobOneShotProt", nil)
+            if tmpMod ~= nil then
+                if target.InitSeed and not PST.specialNodes.oneShotProtectedMobs[target.InitSeed] then
+                    PST.specialNodes.oneShotProtectedMobs[target.InitSeed] = true
+                    if target.HitPoints <= damage * dmgMult then
+                        target.HitPoints = target.MaxHitPoints * 0.1
+                        blockedDamage = true
+                    end
+                end
+            end
+
+            -- Ancient starcursed jewel: Circadian destructor - explosion immunity
+            if PST.specialNodes.SC_circadianExplImmune > 0 and flag & DamageFlag.DAMAGE_EXPLOSION then
+                blockedDamage = true
+            end
+
+            -- Ancient starcursed jewel: Gaze Averter
+            if PST:SC_getSnapshotMod("gazeAverter", false) then
+                local dir = tmpPlayer:GetHeadDirection()
+                if dir == Direction.LEFT and target.Position.X < tmpPlayer.Position.X or
+                dir == Direction.RIGHT and target.Position.X > tmpPlayer.Position.X or
+                dir == Direction.UP and target.Position.Y < tmpPlayer.Position.Y or
+                dir == Direction.DOWN and target.Position.Y > tmpPlayer.Position.Y then
+                    dmgMult = dmgMult - 0.75
+                end
+            end
+
+            if blockedDamage or PST.specialNodes.mobPeriodicShield then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
+                return { Damage = 0 }
+            end
+        end
 
         if target:IsBoss() then
             -- Mod: chance for Book of Belial to gain a charge when hitting a boss
@@ -376,7 +500,7 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        return { Damage = damage * math.max(0, dmgMult) }
+        return { Damage = damage * math.max(0.01, dmgMult) }
     end
 end
 
@@ -418,6 +542,70 @@ function PST:onDeath(entity)
                 mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
             end
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
+        end
+
+        -- Chance for champions to drop a random starcursed jewel
+        local tmpNPC = entity:ToNPC()
+        if tmpNPC and tmpNPC:IsChampion() and 100 * math.random() < PST.SCDropRates.championKill().regular then
+            PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill().ancient)
+        end
+        -- Starcursed mod: spawn X static hovering tears for Y seconds on death
+        local tmpMod = PST:SC_getSnapshotMod("hoveringTearsOnDeath", {0, 0})
+        if tmpMod[1] > 0 and tmpMod[2] > 0 then
+            for _=1,tmpMod[1] do
+                local newTear = Game():Spawn(
+                    EntityType.ENTITY_PROJECTILE,
+                    ProjectileVariant.PROJECTILE_TEAR,
+                    entity.Position + Vector(-6 + 12 * math.random(), -6 + 12 * math.random()),
+                    Vector.Zero,
+                    entity,
+                    TearVariant.BLOOD,
+                    Random() + 1
+                )
+                newTear.Color = Color(1, 0.1, 0.1, 1)
+                newTear:SetPauseTime(math.max(10, 30 * tmpMod[2] - 30))
+            end
+        end
+        -- Starcursed mod: X chance to release Y tears on death
+        tmpMod = PST:SC_getSnapshotMod("tearExplosionOnDeath", {0, 0})
+        if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
+            local tmpSpeed = 4
+            local tmpColor = Color(1, 0.1, 0.1, 1)
+            for i=1,tmpMod[2] do
+                local tmpAng = ((2 * math.pi) / tmpMod[2]) * (i - 1)
+                local tmpVel = Vector(tmpSpeed * math.cos(tmpAng), tmpSpeed * math.sin(tmpAng))
+                local newTear = Game():Spawn(
+                    EntityType.ENTITY_PROJECTILE,
+                    ProjectileVariant.PROJECTILE_TEAR,
+                    entity.Position,
+                    tmpVel,
+                    entity,
+                    TearVariant.BLOOD,
+                    Random() + 1
+                )
+                newTear.Color = tmpColor
+            end
+        end
+        -- Ancient starcursed jewel: Soul Watcher
+        if PST:SC_getSnapshotMod("soulWatcher", false) then
+            for i, tmpSoulEater in ipairs(PST.specialNodes.SC_soulEaterMobs) do
+                if tmpSoulEater.mob.InitSeed == entity.InitSeed then
+                    PST.specialNodes.SC_soulEaterMobs[i] = nil
+                elseif tmpSoulEater.souls < 20 then
+                    local dist = math.sqrt((tmpSoulEater.mob.Position.X - entity.Position.X)^2 + (tmpSoulEater.mob.Position.Y - entity.Position.Y)^2)
+                    if dist <= 140 then
+                        tmpSoulEater.souls = tmpSoulEater.souls + 1
+                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpSoulEater.mob.Position, Vector.Zero, nil, 1, Random() + 1)
+                        SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.3)
+
+                        local HPBoost = 4 + tmpSoulEater.mob.MaxHitPoints * 0.04
+                        tmpSoulEater.mob.MaxHitPoints = tmpSoulEater.mob.MaxHitPoints + HPBoost
+                        tmpSoulEater.mob.HitPoints = math.min(tmpSoulEater.mob.MaxHitPoints, tmpSoulEater.mob.HitPoints + HPBoost)
+                        tmpSoulEater.mob.Scale = tmpSoulEater.mob.Scale + 0.02
+                        tmpSoulEater.mob:SetSpeedMultiplier(tmpSoulEater.mob:GetSpeedMultiplier() + tmpSoulEater.souls * 0.02)
+                    end
+                end
+            end
         end
 
         -- Samson temp mods

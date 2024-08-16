@@ -3,6 +3,11 @@ local floatTextDelayDefault = 22
 local floatTextDelay = 0
 local floatTextQueue = {}
 
+function PST:resetFloatingTexts()
+	floatingTexts = {}
+	floatTextQueue = {}
+end
+
 -- Create a floating fading text
 ---@param text string -- Text to display
 ---@param position Vector -- Text position

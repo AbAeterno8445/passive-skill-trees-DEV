@@ -5,6 +5,7 @@ function PST:onNewRun(isContinued)
     end
 
     local player = Isaac.GetPlayer()
+    local itemPool = Game():GetItemPool()
 
     -- Mods that are mutable before beginning a run should be set here
     local keptMods = {
@@ -12,20 +13,24 @@ function PST:onNewRun(isContinued)
     }
 
     PST:resetMods()
-    if not PST.modData.treeDisabled then
+    local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and Isaac.GetChallenge() == 0) or PST.config.treeOnChallenges)
+    if treeActive then
+        local globalTrees = {"global", "starTree"}
         -- Get snapshot of tree modifiers
-        for nodeID, node in pairs(PST.trees["global"]) do
-            if PST:isNodeAllocated("global", nodeID) then
-                local kept = false
-                for keptName, keptVal in pairs(keptMods) do
-                    if node.name == keptName then
-                        PST:addModifiers(keptVal)
-                        kept = true
-                        break
+        for _, tmpTree in ipairs(globalTrees) do
+            for nodeID, node in pairs(PST.trees[tmpTree]) do
+                if PST:isNodeAllocated(tmpTree, nodeID) then
+                    local kept = false
+                    for keptName, keptVal in pairs(keptMods) do
+                        if node.name == keptName then
+                            PST:addModifiers(keptVal)
+                            kept = true
+                            break
+                        end
                     end
-                end
-                if not kept then
-                    PST:addModifiers(node.modifiers)
+                    if not kept then
+                        PST:addModifiers(node.modifiers)
+                    end
                 end
             end
         end
@@ -56,10 +61,72 @@ function PST:onNewRun(isContinued)
     PST.floorFirstUpdate = true
 
     PST.modData.treeModSnapshot = PST.modData.treeMods
+
+    -- Starcursed jewel mods
+    if treeActive then
+        local starcursedMods = PST:SC_getTotalJewelMods()
+        if next(starcursedMods.totalMods) ~= nil then
+            PST.modData.treeModSnapshot.starcursedMods = starcursedMods.totalMods
+        end
+        PST.modData.treeModSnapshot.starmight = starcursedMods.totalStarmight
+
+        if starcursedMods.totalStarmight > 0 then
+            PST:addModifiers(PST:SC_getStarmightImplicits(starcursedMods.totalStarmight), true)
+        end
+
+        local tmpSCMods = {}
+        -- Less speed
+        local tmpMod = PST:SC_getSnapshotMod("lessSpeed", 0)
+        if tmpMod ~= 0 then tmpSCMods["speed"] = -tmpMod end
+        -- Less damage
+        tmpMod = PST:SC_getSnapshotMod("lessDamage", 0)
+        if tmpMod ~= 0 then tmpSCMods["damage"] = -tmpMod end
+        -- Less luck
+        tmpMod = PST:SC_getSnapshotMod("lessLuck", 0)
+        if tmpMod ~= 0 then tmpSCMods["luck"] = -tmpMod end
+
+        -- Equipped ancient starcursed jewels
+        for i=1,2 do
+            local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
+            if ancientJewel and ancientJewel.rewards then
+                tmpMod = ancientJewel.rewards.xpgain
+                if tmpMod and tmpMod ~= 0 then
+                    local tmpMult = 1
+                    if ancientJewel.rewards.halveXPFirstFloor then
+                        tmpMult = 0.5
+                    end
+                    tmpSCMods["xpgain"] = tmpMod * tmpMult
+                end
+            end
+        end
+        -- Ancient starcursed jewel: Umbra
+        if PST:SC_getSnapshotMod("umbra", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE)
+            Game():GetLevel():AddCurse(LevelCurse.CURSE_OF_DARKNESS, false)
+        end
+        -- Ancient starcursed jewel: Gaze Averter
+        if PST:SC_getSnapshotMod("gazeAverter", false) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_TINY_PLANET)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_MY_REFLECTION)
+            if tmpSCMods["damage"] then tmpSCMods["damage"] = tmpSCMods["damage"] - 2
+            else tmpSCMods["damage"] = -2 end
+            if tmpSCMods["range"] then tmpSCMods["range"] = tmpSCMods["range"] - 10
+            else tmpSCMods["range"] = -10 end
+        end
+
+        if next(tmpSCMods) ~= nil then
+            PST:addModifiers(tmpSCMods, true)
+        end
+    end
+
     player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
     PST:save()
 
-    local itemPool = Game():GetItemPool()
+    -- Reset specialNodes that might be left over
+    PST.specialNodes.SC_circadianSpawnTime = 0
+    PST.specialNodes.SC_circadianSpawnProc = false
+    PST.specialNodes.SC_circadianExplImmune = 0
+
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 
     -- Intermittent Conceptions node (Isaac's tree)

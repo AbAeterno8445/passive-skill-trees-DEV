@@ -2,11 +2,39 @@ include("scripts.tree_data.nodes")
 
 local sfx = SFXManager()
 
+-- Colors
+local colorDarkGrey = Color(0.4, 0.4, 0.4, 1)
+local colorWhite = Color(1, 1, 1, 1)
+local targetSpaceColor = Color(1, 1, 1, 1)
+
+-- Space movement
+local spaceOffPos = Vector.Zero
+local spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
+local spaceOffStep = 0
+local spaceOffTotalSteps = 1000
+
+-- Flashing effects
+local alphaFlash = 1
+local alphaFlashFlip = false
+local flashStep = 0.02
+
 local miniFont = Font()
 miniFont:Load("font/cjk/lanapixel.fnt")
 
 local treeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
 treeBGSprite:Play("Default", true)
+
+local treeSpaceSprite = Sprite("gfx/ui/skilltrees/tree_space_bg.anm2", true)
+treeSpaceSprite.Color.A = 0.5
+treeSpaceSprite:Play("Default", true)
+
+local treeStarfieldSprite = Sprite("gfx/ui/skilltrees/tree_starfield.anm2", true)
+treeStarfieldSprite.Color.A = 0.6
+
+local treeStarfieldList = {}
+
+local nodesSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
+nodesSprite:Play("Default", true)
 
 local nodeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
 nodeBGSprite:Play("Pixel", true)
@@ -15,6 +43,8 @@ nodeBGSprite.Color.A = 0.7
 local cursorSprite = Sprite("gfx/ui/cursor.anm2", true)
 cursorSprite.Color.A = 0.7
 cursorSprite:Play("Idle", true)
+
+local SCJewelSprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
 
 local defaultCamX = -Isaac.GetScreenWidth() / 2
 local defaultCamY = -Isaac.GetScreenHeight() / 2
@@ -51,7 +81,28 @@ local treeControlDescController = {
     "Item + Select: display a list of all active modifiers"
 }
 
+-- Starcursed menus
+PST.starcursedInvData = {
+    open = "",
+    menuX = 0,
+    menuY = 0,
+    socket = nil,
+    hoveredJewel = nil,
+    hoveredJewelID = nil
+}
+
+local starcursedTotalMods = nil
+function PST:updateStarTreeTotals()
+    starcursedTotalMods = PST:SC_getTotalJewelMods()
+end
+
+local jewelsPerPage = 25
+local subMenuPage = 0
+local subMenuPageButtonHovered = ""
+
 local debugAvailableUpdate = false
+
+local fullDataResetHeld = 0
 
 local treeMenuOpen = false
 
@@ -60,6 +111,15 @@ local function PST_updateCamZoomOffset()
     local translateY = -Isaac.GetScreenHeight() / 2 - treeCamera.Y
     camZoomOffset.X = translateX - translateX * zoomScale
     camZoomOffset.Y = translateY - translateY * zoomScale
+
+    nodesSprite.Scale.X = zoomScale
+    nodesSprite.Scale.Y = zoomScale
+end
+
+local function PST_centerCamera()
+    treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2)
+    camZoomOffset.X = 0
+    camZoomOffset.Y = 0
 end
 
 function PST:openTreeMenu()
@@ -73,6 +133,25 @@ function PST:openTreeMenu()
         Game():GetHUD():SetVisible(false)
     end
     sfx:Play(SoundEffect.SOUND_PAPER_IN)
+
+    -- Sprinkle starfield sprites when opening tree
+    treeStarfieldList = {}
+    for _=1,9 do
+        local tmpStarfields = {}
+        for i=1,5 do
+            if math.random() < 100 / (i ^ 2) then
+                table.insert(tmpStarfields, {
+                    sprite = "Starfield" .. tostring(i),
+                    offsetMult = -0.2 - 0.2 * math.random()
+                })
+            end
+        end
+        table.insert(treeStarfieldList, tmpStarfields)
+    end
+
+    targetSpaceColor = Color(1, 1, 1, 1)
+    spaceOffPos = Vector.Zero
+    spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
     treeMenuOpen = true
 end
 
@@ -89,6 +168,7 @@ function PST:closeTreeMenu(mute, force)
         sfx:Play(SoundEffect.SOUND_PAPER_OUT)
     end
     PST.cosmicRData.menuOpen = false
+    PST.starcursedInvData.open = ""
     helpOpen = ""
     totalModsMenuOpen = false
     treeMenuOpen = false
@@ -112,13 +192,13 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
         if type(tmpStr) == "table" then
             tmpStr = description[i][1]
         end
-        if string.len(tmpStr) > string.len(longestStr) then
+        if tmpStr and string.len(tmpStr) > string.len(longestStr) then
             longestStr = tmpStr
         end
     end
     local longestStrWidth = 8 + offX + miniFont:GetStringWidth(longestStr)
     if longestStrWidth > paramX / 2 then
-        offX = offX - (longestStrWidth - paramX / 2)
+        offX = offX - (longestStrWidth - paramX / 2 + 8)
     end
 
     -- Draw description background
@@ -131,6 +211,10 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
 
     local descW = longestStrWidth + 4
     local descH = (miniFont:GetLineHeight() + 2) * (#description + 1) + 4
+    if not absolute and descH + offY > paramY / 2 - 8 then
+        drawY = drawY - (descH + offY - paramY / 2 + 8)
+    end
+
     nodeBGSprite.Scale.X = descW
     nodeBGSprite.Scale.Y = descH
     nodeBGSprite.Color.A = bgAlpha or 0.7
@@ -157,6 +241,101 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
     end
 end
 
+-- Draw a sub-menu for certain nodes such as Cosmic Realignment and Starcursed inventories
+---@param menuRows number
+---@param centerX number
+---@param centerY number
+---@param menuX number
+---@param menuY number
+---@param title string
+---@param itemDrawFunc function
+---@param pagination? table -- If provided, "prev" and "next" buttons will be drawn. Table can contain prevFunc and nextFunc which will run when clicking the corresponding button.
+function PST:drawNodeSubMenu(menuRows, centerX, centerY, menuX, menuY, title, itemDrawFunc, pagination)
+    -- Draw BG
+    nodeBGSprite.Scale.X = 168
+    nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(menuRows / 5)
+    nodeBGSprite.Color.A = 0.9
+    local tmpBGX = menuX * zoomScale - 84
+    local tmpBGY = menuY * zoomScale + 14
+    nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
+
+    -- Stop node hovering while cursor is in this menu
+    if centerX >= tmpBGX and centerX <= tmpBGX + nodeBGSprite.Scale.X and
+    centerY >= tmpBGY and centerY <= tmpBGY + nodeBGSprite.Scale.Y then
+        hoveredNode = nil
+    end
+
+    Isaac.RenderText(
+        title,
+        menuX * zoomScale - 54 - treeCamera.X - camZoomOffset.X,
+        menuY * zoomScale + 20 - treeCamera.Y - camZoomOffset.Y,
+        1, 1, 1, 1
+    )
+
+    if pagination then
+        local tmpColor = {1, 1, 1, 1}
+        subMenuPageButtonHovered = ""
+
+        -- Prev page button
+        tmpBGX = menuX * zoomScale - 48
+        tmpBGY = tmpBGY + nodeBGSprite.Scale.Y + 1
+        nodeBGSprite.Scale.X = 40
+        nodeBGSprite.Scale.Y = 18
+        if pagination.prevDisabled then
+            tmpColor = {0.5, 0.5, 0.5, 1}
+        end
+        if centerX >= tmpBGX and centerX <= tmpBGX + nodeBGSprite.Scale.X and
+        centerY >= tmpBGY and centerY <= tmpBGY + nodeBGSprite.Scale.Y then
+            hoveredNode = nil
+            subMenuPageButtonHovered = "prev"
+            if not pagination.prevDisabled then
+                tmpColor = {0.8, 0.8, 1, 1}
+                if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) and pagination.prevFunc then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    pagination.prevFunc()
+                end
+            end
+        end
+
+        nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
+        Isaac.RenderText(
+            "Prev",
+            tmpBGX - treeCamera.X - camZoomOffset.X + 8,
+            tmpBGY - treeCamera.Y - camZoomOffset.Y + 3,
+            table.unpack(tmpColor)
+        )
+
+        -- Next page button
+        tmpColor = {1, 1, 1, 1}
+        tmpBGX = menuX * zoomScale
+        if pagination.nextDisabled then
+            tmpColor = {0.5, 0.5, 0.5, 1}
+        end
+        if centerX >= tmpBGX and centerX <= tmpBGX + nodeBGSprite.Scale.X and
+        centerY >= tmpBGY and centerY <= tmpBGY + nodeBGSprite.Scale.Y then
+            hoveredNode = nil
+            subMenuPageButtonHovered = "next"
+            if not pagination.nextDisabled then
+                tmpColor = {0.8, 1, 1, 1}
+                if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) and pagination.nextFunc then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    pagination.nextFunc()
+                end
+            end
+        end
+
+        nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
+        Isaac.RenderText(
+            "Next",
+            tmpBGX - treeCamera.X - camZoomOffset.X + 9,
+            tmpBGY - treeCamera.Y - camZoomOffset.Y + 3,
+            table.unpack(tmpColor)
+        )
+    end
+
+    if itemDrawFunc then itemDrawFunc() end
+end
+
 function PST:treeMenuRenderer()
     local screenW = Isaac.GetScreenWidth()
     local screenH = Isaac.GetScreenHeight()
@@ -164,8 +343,16 @@ function PST:treeMenuRenderer()
     local skPoints = PST.modData.skillPoints
     local treeName = "Global Tree"
     if currentTree ~= "global" then
-        skPoints = PST.modData.charData[currentTree].skillPoints
-        treeName = currentTree .. "'s Tree"
+        if currentTree == "starTree" then
+            local tmpStarmight = 0
+            if starcursedTotalMods then
+                tmpStarmight = starcursedTotalMods.totalStarmight
+            end
+            treeName = "Star Tree (" .. tmpStarmight .. " total starmight)"
+        else
+            skPoints = PST.modData.charData[currentTree].skillPoints
+            treeName = currentTree .. "'s Tree"
+        end
     end
 
     -- Input: Close tree
@@ -178,6 +365,47 @@ function PST:treeMenuRenderer()
         end
     end
 
+    -- For flashing colors
+    if not alphaFlashFlip then
+        if alphaFlash > 0.2 then alphaFlash = alphaFlash - flashStep else alphaFlashFlip = true end
+    else
+        if alphaFlash < 1 then alphaFlash = alphaFlash + flashStep else alphaFlashFlip = false end
+    end
+
+    -- Space background color shifting
+    if treeSpaceSprite.Color.R < targetSpaceColor.R then
+        treeSpaceSprite.Color.R = treeSpaceSprite.Color.R + flashStep
+        treeStarfieldSprite.Color.R = treeStarfieldSprite.Color.R + flashStep
+    elseif treeSpaceSprite.Color.R > targetSpaceColor.R then
+        treeSpaceSprite.Color.R = treeSpaceSprite.Color.R - flashStep
+        treeStarfieldSprite.Color.R = treeStarfieldSprite.Color.R - flashStep
+    end
+    if treeSpaceSprite.Color.G < targetSpaceColor.G then
+        treeSpaceSprite.Color.G = treeSpaceSprite.Color.G + flashStep
+        treeStarfieldSprite.Color.G = treeStarfieldSprite.Color.G + flashStep
+    elseif treeSpaceSprite.Color.G > targetSpaceColor.G then
+        treeSpaceSprite.Color.G = treeSpaceSprite.Color.G - flashStep
+        treeStarfieldSprite.Color.G = treeStarfieldSprite.Color.G - flashStep
+    end
+    if treeSpaceSprite.Color.B < targetSpaceColor.B then
+        treeSpaceSprite.Color.B = treeSpaceSprite.Color.B + flashStep
+        treeStarfieldSprite.Color.B = treeStarfieldSprite.Color.B + flashStep
+    elseif treeSpaceSprite.Color.B > targetSpaceColor.B then
+        treeSpaceSprite.Color.B = treeSpaceSprite.Color.B - flashStep
+        treeStarfieldSprite.Color.B = treeStarfieldSprite.Color.B - flashStep
+    end
+
+    -- Space background movement
+    if spaceOffStep < spaceOffTotalSteps / 2 then
+        spaceOffPos = spaceOffPos + spaceOffDir * PST:ParametricBlend(spaceOffStep / spaceOffTotalSteps)
+    elseif spaceOffStep < spaceOffTotalSteps then
+        spaceOffPos = spaceOffPos + spaceOffDir * PST:ParametricBlend((spaceOffTotalSteps - spaceOffStep) / spaceOffTotalSteps)
+    else
+        spaceOffStep = 0
+        spaceOffDir = spaceOffDir * -1
+    end
+    spaceOffStep = spaceOffStep + 1
+
     treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
     treeBGSprite:Render(Vector.Zero)
 
@@ -188,33 +416,65 @@ function PST:treeMenuRenderer()
     end
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
         if not totalModsMenuOpen then
-            treeCamera.Y = treeCamera.Y - cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.Y > -2000 then
+                treeCamera.Y = treeCamera.Y - cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         else
             totalModsMenuY = math.min(0, totalModsMenuY + cameraSpeed)
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
         if not totalModsMenuOpen then
-            treeCamera.Y = treeCamera.Y + cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.Y < 2000 then
+                treeCamera.Y = treeCamera.Y + cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         else
             totalModsMenuY = totalModsMenuY - cameraSpeed
         end
     end
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
         if not totalModsMenuOpen then
-            treeCamera.X = treeCamera.X - cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.X > -2000 then
+                treeCamera.X = treeCamera.X - cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
         if not totalModsMenuOpen then
-            treeCamera.X = treeCamera.X + cameraSpeed
-            PST_updateCamZoomOffset()
+            if treeCamera.X < 2000 then
+                treeCamera.X = treeCamera.X + cameraSpeed
+                PST_updateCamZoomOffset()
+            end
         end
     end
 
     local camCenterX = screenW / 2 + treeCamera.X + camZoomOffset.X
     local camCenterY = screenH / 2 + treeCamera.Y + camZoomOffset.Y
+
+    -- Draw space BG
+    treeSpaceSprite.Scale = Vector(screenW / 600, screenH / 400)
+    local starfieldID = 1
+    for i=-1,1 do
+        for j=-1,1 do
+            local xOff = 600 * j * treeSpaceSprite.Scale.X
+            local yOff = 400 * i * treeSpaceSprite.Scale.Y
+            local startX = camCenterX - screenW / 2
+            local startY = camCenterY - screenH / 2
+            treeSpaceSprite:Render(Vector(startX * -0.1 + xOff + spaceOffPos.X * 0.1, startY * -0.1 + yOff + spaceOffPos.Y * 0.1))
+
+            if treeStarfieldList[starfieldID] then
+                for _, tmpStarfield in ipairs(treeStarfieldList[starfieldID]) do
+                    treeStarfieldSprite:Play(tmpStarfield.sprite)
+                    treeStarfieldSprite:Render(Vector(
+                        startX * tmpStarfield.offsetMult + xOff + spaceOffPos.X * tmpStarfield.offsetMult,
+                        startY * tmpStarfield.offsetMult + yOff + spaceOffPos.Y * tmpStarfield.offsetMult
+                    ))
+                end
+            end
+            starfieldID = starfieldID + 1
+        end
+    end
 
     -- Draw node links
     for _, nodeLink in ipairs(PST.nodeLinks[currentTree]) do
@@ -240,14 +500,29 @@ function PST:treeMenuRenderer()
     for _, node in pairs(PST.trees[currentTree]) do
         local nodeX = node.pos.X * 38 * zoomScale
         local nodeY = node.pos.Y * 38 * zoomScale
-        node.sprite.Scale.X = zoomScale
-        node.sprite.Scale.Y = zoomScale
-        node.sprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+
+        if node.available then
+            local hasSP = ((currentTree == "global" or currentTree == "starTree") and PST.modData.skillPoints > 0) or
+                (PST.modData.charData[currentTree] and PST.modData.charData[currentTree].skillPoints > 0)
+            if hasSP then
+                nodesSprite:SetFrame("Available " .. node.size, 0)
+                nodesSprite.Color = colorDarkGrey
+                nodesSprite.Color.A = alphaFlash
+                nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            end
+        end
+
+        nodesSprite:SetFrame("Default", node.sprite)
+        if not PST:isNodeAllocated(currentTree, node.id) and not node.available then
+            nodesSprite.Color = colorDarkGrey
+        else
+            nodesSprite.Color = colorWhite
+        end
+        nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
 
         if PST:isNodeAllocated(currentTree, node.id) then
-            node.allocatedSprite.Scale.X = zoomScale
-            node.allocatedSprite.Scale.Y = zoomScale
-            node.allocatedSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            nodesSprite:SetFrame("Allocated " .. node.size, 0)
+            nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
         end
 
         local nodeHalf = 15 * zoomScale
@@ -264,6 +539,20 @@ function PST:treeMenuRenderer()
             PST.cosmicRData.charSprite.Scale.Y = zoomScale
             PST.cosmicRData.charSprite:Play(charName, true)
             PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+        else
+            -- Starcursed jewel sockets, draw socketed jewel
+            for _, tmpType in pairs(PSTStarcursedType) do
+                if PST:strStartsWith(node.name, tmpType .. " Socket") then
+                    local socketID = string.sub(node.name, -1)
+                    local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
+                    if socketedJewel and socketedJewel.equipped == socketID then
+                        SCJewelSprite.Scale.X = zoomScale
+                        SCJewelSprite.Scale.Y = zoomScale
+                        PST:SC_setSpriteToJewel(SCJewelSprite, socketedJewel)
+                        SCJewelSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+                    end
+                end
+            end
         end
 
         -- Debug: show node IDs
@@ -274,68 +563,125 @@ function PST:treeMenuRenderer()
 
     -- Draw Cosmic Realignment menu
     PST.cosmicRData.hoveredCharID = nil
+    PST.starcursedInvData.hoveredJewel = nil
     if PST.cosmicRData.menuOpen then
-        -- Draw BG
-        nodeBGSprite.Scale.X = 164
-        nodeBGSprite.Scale.Y = 24 + 32 * math.ceil(#PST.cosmicRData.characters / 5)
-        nodeBGSprite.Color.A = 0.9
-        local tmpBGX = PST.cosmicRData.menuX * zoomScale - 84
-        local tmpBGY = PST.cosmicRData.menuY * zoomScale + 14
-        nodeBGSprite:Render(Vector(tmpBGX - treeCamera.X - camZoomOffset.X, tmpBGY - treeCamera.Y - camZoomOffset.Y))
-
-        -- Stop node hovering while cursor is in this menu
-        if camCenterX >= tmpBGX and camCenterX <= tmpBGX + nodeBGSprite.Scale.X and
-        camCenterY >= tmpBGY and camCenterY <= tmpBGY + nodeBGSprite.Scale.Y then
-            hoveredNode = nil
-        end
-
-        Isaac.RenderText(
+        PST:drawNodeSubMenu(
+            #PST.cosmicRData.characters,
+            camCenterX, camCenterY,
+            PST.cosmicRData.menuX, PST.cosmicRData.menuY,
             "Cosmic Realignment",
-            PST.cosmicRData.menuX * zoomScale - 54 - treeCamera.X - camZoomOffset.X,
-            PST.cosmicRData.menuY * zoomScale + 20 - treeCamera.Y - camZoomOffset.Y,
-            1, 1, 1, 1
+            function()
+                local i = 1
+                for charID, _ in pairs(PST.cosmicRData.characters) do
+                    local charName = PST.charNames[1 + charID]
+                    local charX = PST.cosmicRData.menuX * zoomScale - 64 + ((i - 1) % 5) * 32
+                    local charY = PST.cosmicRData.menuY * zoomScale + 52 + math.floor((i - 1) / 5) * 32
+
+                    -- Hovered
+                    PST.cosmicRData.charSprite.Scale.X = 1
+                    PST.cosmicRData.charSprite.Scale.Y = 1
+                    if camCenterX > charX - 16 and camCenterX < charX + 16 and camCenterY > charY - 16 and camCenterY < charY + 16 then
+                        PST.cosmicRData.hoveredCharID = charID
+                        PST.cosmicRData.charSprite.Color.A = 1
+                        PST.cosmicRData.charSprite:Play("Select", true)
+                        PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+                    else
+                        PST.cosmicRData.charSprite.Color.A = 0.4
+                    end
+
+                    if not PST:cosmicRIsCharUnlocked(charID) then
+                        PST.cosmicRData.lockedCharSprite:Play(charName, true)
+                        PST.cosmicRData.lockedCharSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+
+                        PST.cosmicRData.charSprite.Color.A = 1
+                        PST.cosmicRData.charSprite:Play("Locked", true)
+                        PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+                    else
+                        PST.cosmicRData.charSprite:Play(charName, true)
+                        PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
+                    end
+
+                    i = i + 1
+                end
+            end
         )
-
-        local i = 1
-        for charID, _ in pairs(PST.cosmicRData.characters) do
-            local charName = PST.charNames[1 + charID]
-            local charX = PST.cosmicRData.menuX * zoomScale - 64 + ((i - 1) % 5) * 32
-            local charY = PST.cosmicRData.menuY * zoomScale + 52 + math.floor((i - 1) / 5) * 32
-
-            -- Hovered
-            PST.cosmicRData.charSprite.Scale.X = 1
-            PST.cosmicRData.charSprite.Scale.Y = 1
-            if camCenterX > charX - 16 and camCenterX < charX + 16 and camCenterY > charY - 16 and camCenterY < charY + 16 then
-                PST.cosmicRData.hoveredCharID = charID
-                PST.cosmicRData.charSprite.Color.A = 1
-                PST.cosmicRData.charSprite:Play("Select", true)
-                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-            else
-                PST.cosmicRData.charSprite.Color.A = 0.4
-            end
-
-            if not PST:cosmicRIsCharUnlocked(charID) then
-                PST.cosmicRData.lockedCharSprite:Play(charName, true)
-                PST.cosmicRData.lockedCharSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-
-                PST.cosmicRData.charSprite.Color.A = 1
-                PST.cosmicRData.charSprite:Play("Locked", true)
-                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-            else
-                PST.cosmicRData.charSprite:Play(charName, true)
-                PST.cosmicRData.charSprite:Render(Vector(charX - treeCamera.X - camZoomOffset.X, charY - treeCamera.Y - camZoomOffset.Y))
-            end
-
-            i = i + 1
+    -- Draw Starcursed inventory menus
+    elseif PST.starcursedInvData.open ~= "" then
+        local tmpJewelType = PST.starcursedInvData.open
+        local tmpJewelPages = math.ceil(#PST.modData.starTreeInventory[tmpJewelType] / jewelsPerPage)
+        local tmpTitle = tmpJewelType .. " Inventory"
+        if PST.starcursedInvData.socket then
+            tmpTitle = tmpJewelType .. " Socket " .. tostring(PST.starcursedInvData.socket)
         end
+        PST:drawNodeSubMenu(
+            jewelsPerPage, camCenterX, camCenterY,
+            PST.starcursedInvData.menuX, PST.starcursedInvData.menuY,
+            tmpTitle,
+            function()
+                -- Draw Starcursed Jewels
+                for i=1,jewelsPerPage do
+                    local jewelID = i + subMenuPage * jewelsPerPage
+                    local jewelData = PST.modData.starTreeInventory[tmpJewelType][jewelID]
+                    if jewelData then
+                        local jewelX = PST.starcursedInvData.menuX * zoomScale - 64 + ((i - 1) % 5) * 32
+                        local jewelY = PST.starcursedInvData.menuY * zoomScale + 52 + math.floor((i - 1) / 5) * 32
+
+                        -- Hovered
+                        if camCenterX > jewelX - 16 and camCenterX < jewelX + 16 and camCenterY > jewelY - 16 and camCenterY < jewelY + 16 then
+                            PST.starcursedInvData.hoveredJewel = jewelData
+                            PST.starcursedInvData.hoveredJewelID = jewelID
+                            SCJewelSprite.Color.A = 1
+                            PST.cosmicRData.charSprite.Color.A = 1
+                            PST.cosmicRData.charSprite:Play("Select", true)
+                            PST.cosmicRData.charSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
+                        else
+                            SCJewelSprite.Color.A = 0.7
+                        end
+
+                        SCJewelSprite.Scale.X = 1
+                        SCJewelSprite.Scale.Y = 1
+                        PST:SC_setSpriteToJewel(SCJewelSprite, jewelData)
+                        SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
+
+                        if jewelData.unidentified then
+                            SCJewelSprite:Play("Unidentified", true)
+                            SCJewelSprite:Render(Vector(jewelX - treeCamera.X - camZoomOffset.X, jewelY - treeCamera.Y - camZoomOffset.Y))
+                        else
+                            if jewelData.equipped then
+                                miniFont:DrawString("E", jewelX - treeCamera.X - camZoomOffset.X + 8, jewelY - treeCamera.Y - camZoomOffset.Y, KColor(1, 1, 0.6, 1))
+                            end
+                            if jewelData.mighty then
+                                miniFont:DrawString("*", jewelX - treeCamera.X - camZoomOffset.X + 8, jewelY - treeCamera.Y - camZoomOffset.Y - 16, KColor(0.6, 1, 1, 1))
+                            end
+                        end
+                    end
+                end
+            end,
+            {
+                prevFunc = function()
+                    if subMenuPage > 0 then subMenuPage = subMenuPage - 1 end
+                end,
+                prevDisabled = subMenuPage == 0,
+                nextFunc = function()
+                    if subMenuPage < tmpJewelPages - 1 then
+                        subMenuPage = subMenuPage + 1
+                    end
+                end,
+                nextDisabled = subMenuPage >= tmpJewelPages - 1
+            }
+        )
+    else
+        subMenuPageButtonHovered = ""
     end
 
     -- Cursor and node description
+    cursorSprite:Render(Vector(screenW / 2, screenH / 2))
     if hoveredNode ~= nil then
         cursorSprite:Play("Clicked")
 
         local descName = hoveredNode.name
         local tmpDescription = hoveredNode.description
+        local isAllocated = PST:isNodeAllocated(currentTree, hoveredNode.id)
         -- Cosmic Realignment node, show picked character name & curse description
         if hoveredNode.name == "Cosmic Realignment" then
             if type(cosmicRChar) == "number" then
@@ -350,8 +696,58 @@ function PST:treeMenuRenderer()
                 table.insert(tmpDescription, {
                     "Can now get unlocks as if playing as " .. tmpCharName .. ".", KColor(0.85, 0.85, 1, 1)
                 })
-            elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
+            elseif isAllocated then
                 descName = descName .. " (E to pick character)"
+            end
+        -- Star Tree node
+        elseif hoveredNode.name == "Star Tree" then
+            if isAllocated then
+                if currentTree ~= "starTree" then
+                    descName = descName .. " (E to view Star Tree)"
+                elseif starcursedTotalMods then
+                    -- Append starmight description to Star Tree node
+                    local tmpColor = KColor(1, 0.8, 0.2, 1)
+                    tmpDescription = {table.unpack(hoveredNode.description)}
+                    table.insert(tmpDescription, {"Starmight: " .. starcursedTotalMods.totalStarmight, tmpColor})
+                    for modName, modVal in pairs(PST:SC_getStarmightImplicits(starcursedTotalMods.totalStarmight)) do
+                        local parsedModLines = PST:parseModifierLines(modName, modVal)
+                        for _, tmpLine in ipairs(parsedModLines) do
+                            table.insert(tmpDescription, {"   " .. tmpLine, tmpColor})
+                        end
+                    end
+                end
+            elseif not PST:SC_isStarTreeUnlocked() then
+                tmpDescription = {
+                    {"Reach level " .. tostring(PST.SCStarTreeUnlockLevel) .. " with at least one character to unlock.", KColor(1, 0.6, 0.6, 1)}
+                }
+            end
+        elseif isAllocated then
+            -- Starcursed inventory/socket nodes
+            for _, tmpType in pairs(PSTStarcursedType) do
+                if PST:strStartsWith(hoveredNode.name, tmpType) then
+                    local isSocket = string.find(hoveredNode.name, "Socket") ~= nil
+                    if isSocket or string.find(hoveredNode.name, "Inventory") ~= nil then
+                        if isSocket then
+                            local setName = false
+                            local socketID = string.sub(hoveredNode.name, -1)
+                            local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
+                            if socketedJewel and socketedJewel.equipped == socketID then
+                                tmpDescription = PST:SC_getJewelDescription(socketedJewel)
+                                table.insert(tmpDescription, "Press the Respec Node button to unsocket the jewel.")
+                                if socketedJewel.name then
+                                    descName = descName .. " - " .. socketedJewel.name
+                                    setName = true
+                                end
+                            end
+                            if not setName then
+                                descName = descName .. " (E to open/close inventory)"
+                            end
+                        else
+                            descName = descName .. " (E to open/close inventory)"
+                        end
+                    end
+                    break
+                end
             end
         end
         drawNodeBox(descName, tmpDescription or hoveredNode.description, screenW, screenH)
@@ -365,17 +761,34 @@ function PST:treeMenuRenderer()
             tmpDescription = PST.cosmicRData.characters[charID].curseDesc
         end
         drawNodeBox(PST.charNames[1 + charID], tmpDescription, screenW, screenH)
+    -- Starcursed inventory, hovered jewel data
+    elseif PST.starcursedInvData.hoveredJewel ~= nil then
+        cursorSprite:Play("Clicked")
+
+        local jewelData = PST.starcursedInvData.hoveredJewel
+        if jewelData then
+            local tmpDescription = PST:SC_getJewelDescription(jewelData)
+            if jewelData.type ~= PSTStarcursedType.ANCIENT and not jewelData.unidentified then
+                table.insert(tmpDescription, "Press the Respec Node button to destroy this jewel.")
+            end
+            local jewelTitle = jewelData.name or jewelData.type .. " Starcursed Jewel"
+            if jewelData.mighty then
+                jewelTitle = jewelTitle .. " (Mighty)"
+            end
+            drawNodeBox(jewelTitle, tmpDescription, screenW, screenH)
+        end
+    elseif subMenuPageButtonHovered ~= "" then
+        cursorSprite:Play("Clicked")
     else
         cursorSprite:Play("Idle")
     end
-    cursorSprite:Render(Vector(screenW / 2, screenH / 2))
 
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
         if hoveredNode ~= nil then
             if PST:isNodeAllocatable(currentTree, hoveredNode.id, true) then
                 if not PST.debugOptions.infSP then
-                    if currentTree == "global" then
+                    if currentTree == "global" or currentTree == "starTree" then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
                     else
                         PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints - 1
@@ -383,6 +796,7 @@ function PST:treeMenuRenderer()
                 end
                 PST:allocateNodeID(currentTree, hoveredNode.id, true)
                 sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.5)
+                PST:updateStarTreeTotals()
 
                 -- Lost tree, unlock holy mantle if allocating Sacred Aegis
                 if hoveredNode.name == "Sacred Aegis" and not Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
@@ -397,6 +811,40 @@ function PST:treeMenuRenderer()
                     PST.cosmicRData.menuOpen = not PST.cosmicRData.menuOpen
                     PST.cosmicRData.menuX = hoveredNode.pos.X * 38
                     PST.cosmicRData.menuY = hoveredNode.pos.Y * 38
+                -- Star Tree node, switch to star tree view
+                elseif hoveredNode.name == "Star Tree" and currentTree ~= "starTree" then
+                    targetSpaceColor = Color(0, 1, 1, 1)
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    currentTree = "starTree"
+                    PST_centerCamera()
+                else
+                    -- Star Tree: Open Inventories
+                    for _, tmpType in pairs(PSTStarcursedType) do
+                        if PST:strStartsWith(hoveredNode.name, tmpType) then
+                            local isSocket = string.find(hoveredNode.name, "Socket")
+                            if (isSocket or string.find(hoveredNode.name, "Inventory") ~= nil) then
+                                if PST.starcursedInvData.open ~= tmpType then
+                                    if tmpType ~= PSTStarcursedType.ANCIENT then
+                                        PST:SC_sortInventory(tmpType)
+                                    end
+                                    subMenuPage = 0
+                                    PST.starcursedInvData.open = tmpType
+                                    if isSocket then
+                                        PST.starcursedInvData.socket = string.sub(hoveredNode.name, -1)
+                                    else
+                                        PST.starcursedInvData.socket = nil
+                                    end
+                                    PST.starcursedInvData.menuX = hoveredNode.pos.X * 38
+                                    PST.starcursedInvData.menuY = hoveredNode.pos.Y * 38
+                                    PST.cosmicRData.menuOpen = false
+                                else
+                                    PST.starcursedInvData.open = ""
+                                end
+                                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                                break
+                            end
+                        end
+                    end
                 end
             end
         -- Cosmic Realignment node, pick hovered character
@@ -416,35 +864,94 @@ function PST:treeMenuRenderer()
             else
                 sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
             end
+        -- Starcursed inventory, identify/equip hovered jewel
+        elseif PST.starcursedInvData.hoveredJewel ~= nil then
+            local jewelData = PST.starcursedInvData.hoveredJewel
+            if jewelData then
+                if jewelData.unidentified then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
+                    PST:SC_identifyJewel(PST.starcursedInvData.hoveredJewel)
+                elseif PST.starcursedInvData.socket then
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    PST:SC_equipJewel(jewelData, PST.starcursedInvData.socket)
+                    PST:updateStarTreeTotals()
+                    PST.starcursedInvData.open = ""
+                end
+            end
         end
     end
 
     -- Input: Respec node
     if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
         if hoveredNode ~= nil then
-            if PST:isNodeAllocatable(currentTree, hoveredNode.id, false) then
-                if not PST.debugOptions.infRespec then
-                    PST.modData.respecPoints = PST.modData.respecPoints - 1
-                end
-                if not PST.debugOptions.infSP then
-                    if currentTree == "global" then
-                        PST.modData.skillPoints = PST.modData.skillPoints + 1
-                    else
-                        PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
+            -- Check if node is socketed starcursed jewel
+            local isSocketedJewel = false
+            for _, tmpType in pairs(PSTStarcursedType) do
+                if PST:strStartsWith(hoveredNode.name, tmpType .. " Socket") then
+                    local socketID = string.sub(hoveredNode.name, -1)
+                    local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
+                    if socketedJewel and socketedJewel.equipped == socketID then
+                        -- Socketed jewel - unsocket
+                        socketedJewel.equipped = nil
+                        sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
+                        PST:updateStarTreeTotals()
+                        isSocketedJewel = true
+                        break
                     end
                 end
-                PST:allocateNodeID(currentTree, hoveredNode.id, false)
-                sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+            end
+            if not isSocketedJewel then
+                if PST:isNodeAllocatable(currentTree, hoveredNode.id, false) then
+                    if not PST.debugOptions.infRespec then
+                        PST.modData.respecPoints = PST.modData.respecPoints - 1
+                    end
+                    if not PST.debugOptions.infSP then
+                        if currentTree == "global" or currentTree == "starTree" then
+                            PST.modData.skillPoints = PST.modData.skillPoints + 1
+                        else
+                            PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
+                        end
+                    end
+                    PST:allocateNodeID(currentTree, hoveredNode.id, false)
+                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+                    PST:updateStarTreeTotals()
 
-                -- Respec Cosmic Realignment node
-                if hoveredNode.name == "Cosmic Realignment" then
-                    PST:addModifiers({ cosmicRealignment = false })
-                    PST.cosmicRData.menuOpen = false
+                    -- Respec Cosmic Realignment node
+                    if hoveredNode.name == "Cosmic Realignment" then
+                        PST:addModifiers({ cosmicRealignment = false })
+                        PST.cosmicRData.menuOpen = false
+                    end
+                elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
+                    sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
-            elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
-                sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
+            end
+        -- Starcursed inventory, destroy hovered jewel
+        elseif PST.starcursedInvData.hoveredJewel ~= nil then
+            if PST.starcursedInvData.hoveredJewelID and PST.starcursedInvData.hoveredJewel.type and not PST.starcursedInvData.hoveredJewel.unidentified and
+            PST.starcursedInvData.hoveredJewel.type ~= PSTStarcursedType.ANCIENT then
+                table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
+                PST.starcursedInvData.hoveredJewel = nil
+                PST.starcursedInvData.hoveredJewelID = nil
+                sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75, 2, false, 1.5 + 1 * math.random())
             end
         end
+    end
+
+    -- Mod data reset: hold Respec input on "Leveling Of Isaac" node for 7 seconds
+    if hoveredNode and PST:isKeybindActive(PSTKeybind.RESPEC_NODE, true) and hoveredNode.name == "Leveling Of Isaac" then
+        fullDataResetHeld = fullDataResetHeld + 1
+        if fullDataResetHeld % 60 == 0 then
+            SFXManager():Play(SoundEffect.SOUND_1UP, 0.5, 2, false, 1 - 0.1 * fullDataResetHeld / 60)
+        end
+        if fullDataResetHeld == 420 then
+            PST:closeTreeMenu()
+            SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.8)
+            PST:resetSaveData()
+            fullDataResetHeld = 0
+        end
+    else
+        fullDataResetHeld = 0
     end
 
     -- Input: Switch tree
@@ -453,10 +960,13 @@ function PST:treeMenuRenderer()
         if selectedCharName and PST.trees[selectedCharName] ~= nil then
             if currentTree == "global" then
                 currentTree = selectedCharName
+                targetSpaceColor = Color(1, 0.5, 1, 1)
             else
                 currentTree = "global"
+                targetSpaceColor = Color(1, 1, 1, 1)
             end
             PST.cosmicRData.menuOpen = false
+            PST.starcursedInvData.open = ""
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
         else
             sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
@@ -565,28 +1075,14 @@ function PST:treeMenuRenderer()
                     end
                     table.insert(totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
                 end
-                if type(modStr) == "table" then
-                    for _, tmpLine in ipairs(modStr) do
-                        local tmpStr = ""
-                        if PST.treeModDescriptions[tmpModName].addPlus then
-                            tmpStr = string.format(tmpLine, tmpModVal >= 0 and "+" or "", tmpModVal)
-                        else
-                            tmpStr = string.format(tmpLine, tmpModVal, tmpModVal, tmpModVal)
-                        end
-                        -- Harmonic modifiers, check if disabled
-                        if PST:strStartsWith(tmpLine, "   [Harmonic]") and PST:songNodesAllocated() > 2 then
-                            tmpColor = KColor(0.5, 0.5, 0.5, 1)
-                        end
-                        table.insert(totalModsList, {tmpStr, tmpColor})
+
+                local parsedModLines = PST:parseModifierLines(tmpModName, tmpModVal)
+                for _, tmpLine in ipairs(parsedModLines) do
+                    -- Harmonic modifiers, check if disabled
+                    if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
+                        tmpColor = KColor(0.5, 0.5, 0.5, 1)
                     end
-                else
-                    local tmpStr = ""
-                    if PST.treeModDescriptions[tmpModName].addPlus then
-                        tmpStr = string.format(modStr, tmpModVal >= 0 and "+" or "", tmpModVal)
-                    else
-                        tmpStr = string.format(modStr, tmpModVal, tmpModVal, tmpModVal)
-                    end
-                    table.insert(totalModsList, {tmpStr, tmpColor})
+                    table.insert(totalModsList, {tmpLine, tmpColor})
                 end
 
                 if PST.modData.momHeartProc[tmpModName] == false then
@@ -594,9 +1090,30 @@ function PST:treeMenuRenderer()
                 end
             end
 
+            -- Star tree mods for description table
+            if starcursedTotalMods and (next(starcursedTotalMods.totalMods) ~= nil or starcursedTotalMods.totalStarmight > 0) then
+                local starTreeModsColor = KColor(1, 0.8, 0.2, 1)
+                table.insert(totalModsList, "")
+                table.insert(totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
+                for _, modData in pairs(starcursedTotalMods.totalMods) do
+                    if type(modData) == "table" then
+                        table.insert(totalModsList, {modData.description, starTreeModsColor})
+                    end
+                end
+                -- Starmight
+                table.insert(totalModsList, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
+                table.insert(totalModsList, {"Starmight bonuses:", starTreeModsColor})
+                for modName, modVal in pairs(PST:SC_getStarmightImplicits(starcursedTotalMods.totalStarmight)) do
+                    local parsedModLines = PST:parseModifierLines(modName, modVal)
+                    for _, tmpLine in ipairs(parsedModLines) do
+                        table.insert(totalModsList, {"   " .. tmpLine, starTreeModsColor})
+                    end
+                end
+            end
+
             -- Add Cosmic Realignment mod to description table
             if type(cosmicRChar) == "number" then
-                local tmpCharName = PST.charNames[1 + cosmicRChar]
+                tmpCharName = PST.charNames[1 + cosmicRChar]
                 table.insert(totalModsList, "")
                 table.insert(totalModsList, {
                     "Cosmic Realignment (" .. tmpCharName .. ")",
@@ -624,9 +1141,7 @@ function PST:treeMenuRenderer()
 
     -- Input: Center camera
     if PST:isKeybindActive(PSTKeybind.CENTER_CAMERA) then
-        treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2)
-        camZoomOffset.X = 0
-        camZoomOffset.Y = 0
+        PST_centerCamera()
     end
 
     if not totalModsMenuOpen then
@@ -668,12 +1183,16 @@ function PST:treeMenuRendering()
     local isCharMenu = false
     if not Isaac.IsInGame() then
         isCharMenu = MenuManager.GetActiveMenu() == MainMenuType.CHARACTER
+        if CharacterMenu.GetActiveStatus then
+            isCharMenu = isCharMenu and CharacterMenu.GetActiveStatus() == 0
+        end
     end
 
     -- First MC_MAIN_MENU_RENDER call
     if not firstRender then
         firstRender = true
         PST:firstRenderInit()
+        PST:updateStarTreeTotals()
 
         if not Isaac.IsInGame() then
             -- Reset input mask if restarting
@@ -737,6 +1256,11 @@ function PST:treePauseMenu()
         OptionsMenu.SetSelectedElement(999)
         return false
     end
+end
+
+function PST:ParametricBlend(t)
+    local sqr = t ^ 2
+    return sqr / (2 * (sqr - t) + 1)
 end
 
 PST:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, PST.treeMenuRendering)

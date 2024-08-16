@@ -11,6 +11,18 @@ function PST:isNodeAllocated(tree, nodeID)
     return PST.modData.treeNodes[tree][nodeID]
 end
 
+-- Check if node with given name is allocated
+function PST:isNodeNameAllocated(tree, nodeName)
+    if not PST.modData.treeNodes[tree] then return false end
+    for nodeID, allocated in pairs(PST.modData.treeNodes[tree]) do
+        local targetNode = PST.trees[tree][nodeID]
+        if allocated and targetNode and targetNode.name == nodeName then
+            return true
+        end
+    end
+    return false
+end
+
 -- Update the state for the given tree
 ---@param tree? string|number Which tree to update. If nil, update all trees
 ---@param noReset? boolean Whether to reset player mods prior to update
@@ -32,11 +44,6 @@ function PST:updateNodes(tree, noReset)
 
         -- Count allocated nodes as available
         node.available = allocated or node.alwaysAvailable == true or PST.debugOptions.allAvailable
-        if not node.available then
-            node.sprite.Color = Color(0.4, 0.4, 0.4, 1)
-        else
-            node.sprite.Color = Color(1, 1, 1, 1)
-        end
 
         if node.adjacent ~= nil and allocated then
             -- If allocated, make adjacent nodes available
@@ -49,7 +56,6 @@ function PST:updateNodes(tree, noReset)
     -- Update availability
     for _, node in pairs(tmpAvailableNodes) do
         node.available = true
-        node.sprite.Color = Color(1, 1, 1, 1)
     end
 end
 
@@ -68,12 +74,7 @@ function PST:initTreeNodes(tree)
         tmpTreeData[tonumber(nodeID)] = node
 
         node.id = tonumber(nodeID)
-        node.sprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
-        node.sprite:Play("Default", true)
-        ---@diagnostic disable-next-line: param-type-mismatch
-        node.sprite:SetFrame("Default", tonumber(node.type))
-        node.allocatedSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
-        node.allocatedSprite:Play("Allocated " .. node.size, true)
+        node.sprite = tonumber(node.type)
     end
 
     -- Setup node links after they've been initialized
@@ -218,13 +219,16 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
     if allocation then
         -- Allocation
         if not infSP then
-            if tree == "global" and PST.modData.skillPoints <= 0 then
+            if (tree == "global" or tree == "starTree") and PST.modData.skillPoints <= 0 then
                 return false
-            elseif tree ~= "global" and PST.modData.charData[tree] ~= nil then
+            elseif tree ~= "global" and tree ~= "starTree" and PST.modData.charData[tree] ~= nil then
                 if PST.modData.charData[tree].skillPoints <= 0 then
                     return false
                 end
             end
+        end
+        if PST.trees[tree][nodeID].name == "Star Tree" and not PST:SC_isStarTreeUnlocked() then
+            return false
         end
         return PST.trees[tree][nodeID].available and not PST:isNodeAllocated(tree, nodeID)
     else
@@ -239,9 +243,11 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         if adjacentNodes ~= nil then
             local adjacentReachable = true
             for _, adjacentID in ipairs(adjacentNodes) do
-                if PST:isNodeAllocated(tree, adjacentID) and not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
-                    adjacentReachable = false
-                    break
+                if PST:isNodeAllocated(tree, adjacentID) then
+                    if PST.trees[tree][nodeID].alwaysAvailable or not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
+                        adjacentReachable = false
+                        break
+                    end
                 end
             end
             if not adjacentReachable then
@@ -323,6 +329,7 @@ end
 include("scripts.tree_data.SkillTreesAPI")
 -- Include base tree node banks
 include("scripts.tree_data.globalTreeBank")
+include("scripts.tree_data.starTreeBank")
 include("scripts.tree_data.isaacTreeBank")
 include("scripts.tree_data.magdaleneTreeBank")
 include("scripts.tree_data.cainTreeBank")

@@ -22,28 +22,57 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
     end
 end
 
-function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
+function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, player)
     if not PST.gameInit then return end
+
+    -- Ancient starcursed jewel: Umbra
+    if PST:SC_getSnapshotMod("umbra", false) then
+        local tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)
+        if tmpMod > 0 then
+            PST:addModifiers({ allstatsPerc = tmpMod, SC_umbraStatsDown = { value = 0, set = true } }, true)
+        end
+    end
+
+    local removeOtherRoomItems = false
+    -- Ancient starcursed jewel: Opalescent Purity
+    if PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) then
+        removeOtherRoomItems = true
+        PST:addModifiers({ SC_opalescentProc = true }, true)
+    end
+
+    -- Ancient starcursed jewel: Iridescent Purity
+    if PST:SC_getSnapshotMod("iridescentPurity", false) then
+        local iridescentItems = PST:getTreeSnapshotMod("SC_iridescentItems", nil)
+        if iridescentItems then
+            table.insert(iridescentItems, itemType)
+        end
+    end
 
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
-        if type ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT and charge == 0 then
-            if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-                player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-            else
-                player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT, 0, false)
+        if itemType ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT and charge == 0 then
+            PST:addModifiers({ intermittentProc = 1 }, true)
+            if PST:getTreeSnapshotMod("intermittentProc", 0) >= 2 then
+                PST:addModifiers({ intermittentProc = { value = 0, set = true }}, true)
+                if not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+                end
             end
         end
     end
 
     -- Mod: +luck per held poop item - update player
-    if PST:arrHasValue(PST.poopItems, type) then
+    if PST:arrHasValue(PST.poopItems, itemType) then
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
     end
 
     -- Chaotic Treasury node (Eden's tree)
     if PST:getTreeSnapshotMod("chaoticTreasury", false) and Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
         -- When grabbing an item in a treasure room, remove all other items
+        removeOtherRoomItems = true
+    end
+
+    if removeOtherRoomItems then
         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
             if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
                 Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
@@ -85,13 +114,13 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
 
     -- Spectral Advantage node (The Lost's tree)
     if PST:getTreeSnapshotMod("spectralAdvantage", false) then
-        if type == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+        if itemType == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
             PST:addModifiers({ tearsPerc = 8 }, true)
         else
             local tmpTotal = PST:getTreeSnapshotMod("spectralAdvantageHearts", 0)
             if tmpTotal < 20 then
                 for tmpItemType, heartsGiven in pairs(PST.heartUpItems) do
-                    if type == tmpItemType then
+                    if itemType == tmpItemType then
                         PST:addModifiers({
                             damagePerc = math.min(2 * heartsGiven, 40 - tmpTotal * 2),
                             luck = math.min(0.15 * heartsGiven, 3 - tmpTotal * 0.15),
@@ -155,21 +184,21 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH_B) then
         -- Tainted Lilith, reduce debuff when obtaining a baby familiar
-        if PST:arrHasValue(PST.babyFamiliarItems, type) then
+        if PST:arrHasValue(PST.babyFamiliarItems, itemType) then
             local playerCollectibles = player:GetCollectiblesList()
             local familiarCount = 0
             for _, tmpType in ipairs(PST.babyFamiliarItems) do
                 familiarCount = familiarCount + playerCollectibles[tmpType]
             end
             if familiarCount > 0 then
-                local tmpMod = 1 / (2 ^ familiarCount)
+                tmpMod = 1 / (2 ^ familiarCount)
                 PST:addModifiers({ tears = tmpMod, range = tmpMod, shotSpeed = tmpMod }, true)
             end
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON_B) then
         -- Tainted Apollyon, spawn a locust familiar tied to the grabbed collectible
         if firstTime then
-            player:AddLocust(type, player.Position)
+            player:AddLocust(itemType, player.Position)
             cosmicRCache.TApollyonLocusts = cosmicRCache.TApollyonLocusts + 1
             PST:save()
             player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
@@ -177,8 +206,8 @@ function PST:onGrabCollectible(type, charge, firstTime, slot, varData, player)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY_B) then
         -- Tainted Bethany, convert passive collectibles to Lemegeton wisps
         if charge == 0 then
-            player:RemoveCollectible(type)
-            player:AddItemWisp(type, player.Position)
+            player:RemoveCollectible(itemType)
+            player:AddItemWisp(itemType, player.Position)
         end
     end
 end

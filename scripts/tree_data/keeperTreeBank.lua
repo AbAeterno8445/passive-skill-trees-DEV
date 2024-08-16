@@ -3,7 +3,7 @@ PST.SkillTreesAPI.AddCharacterTree("Keeper", [[
 "1": "{\"pos\":[0,0],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[2],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[1,-1],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[1,3]}",
 "3": "{\"pos\":[2,-2],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[2,4]}",
-"4": "{\"pos\":[3,-2],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[3,5]}",
+"4": "{\"pos\":[3,-2],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[3,5,208]}",
 "5": "{\"pos\":[4,-3],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[4,6]}",
 "6": "{\"pos\":[4,-4],\"type\":215,\"size\":\"Med\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.04 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.04},\"adjacent\":[5,11,34]}",
 "11": "{\"pos\":[4,-5],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[6,12]}",
@@ -111,6 +111,22 @@ PST.SkillTreesAPI.AddCharacterTree("Keeper", [[
 "204": "{\"pos\":[-9,-8],\"type\":213,\"size\":\"Small\",\"name\":\"Blue Fly Death Damage\",\"description\":[\"+0.01 damage whenever a blue fly dies, up to +1.2. Resets every floor.\"],\"modifiers\":{\"blueFlyDeathDamage\":0.01},\"adjacent\":[203,196]}",
 "205": "{\"pos\":[-9,-4],\"type\":213,\"size\":\"Small\",\"name\":\"Blue Fly Death Damage\",\"description\":[\"+0.01 damage whenever a blue fly dies, up to +1.2. Resets every floor.\"],\"modifiers\":{\"blueFlyDeathDamage\":0.01},\"adjacent\":[201,206]}",
 "206": "{\"pos\":[-9,-3],\"type\":213,\"size\":\"Small\",\"name\":\"Blue Fly Death Damage\",\"description\":[\"+0.01 damage whenever a blue fly dies, up to +1.2. Resets every floor.\"],\"modifiers\":{\"blueFlyDeathDamage\":0.01},\"adjacent\":[205,207]}",
-"207": "{\"pos\":[-9,-2],\"type\":213,\"size\":\"Small\",\"name\":\"Blue Fly Death Damage\",\"description\":[\"+0.01 damage whenever a blue fly dies, up to +1.2. Resets every floor.\"],\"modifiers\":{\"blueFlyDeathDamage\":0.01},\"adjacent\":[206,197]}"
+"207": "{\"pos\":[-9,-2],\"type\":213,\"size\":\"Small\",\"name\":\"Blue Fly Death Damage\",\"description\":[\"+0.01 damage whenever a blue fly dies, up to +1.2. Resets every floor.\"],\"modifiers\":{\"blueFlyDeathDamage\":0.01},\"adjacent\":[206,197]}",
+"208": "{\"pos\":[3,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[4,209,210]}",
+"209": "{\"pos\":[3,1],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[208,211]}",
+"210": "{\"pos\":[4,0],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[208,212]}",
+"211": "{\"pos\":[3,2],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[209,213]}",
+"212": "{\"pos\":[5,0],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[210,219,214,217]}",
+"213": "{\"pos\":[3,3],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[211,218,216,215]}",
+"214": "{\"pos\":[5,-1],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[212]}",
+"215": "{\"pos\":[2,3],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[213]}",
+"216": "{\"pos\":[2,4],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[213]}",
+"217": "{\"pos\":[6,-1],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[212]}",
+"218": "{\"pos\":[3,4],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[213,220]}",
+"219": "{\"pos\":[6,0],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[212,221]}",
+"220": "{\"pos\":[3,5],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[218,222]}",
+"221": "{\"pos\":[7,0],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[219,223]}",
+"222": "{\"pos\":[3,6],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[220]}",
+"223": "{\"pos\":[8,0],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[221]}"
 }
 ]])

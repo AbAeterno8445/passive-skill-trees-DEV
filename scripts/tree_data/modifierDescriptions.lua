@@ -155,7 +155,7 @@ PST.treeModDescriptions = {
         category = "xp", sort = 101
     },
     challengeXP = {
-        str = "%d xp gained when completing a challenge room round",
+        str = "%d xp gained when completing a challenge room",
         category = "xp", sort = 102
     },
     challengeXPgain = {
@@ -1381,5 +1381,43 @@ PST.treeModDescriptions = {
             "dealing 4 damage and charming nearby enemies"
         },
         category = "charTree", sort = 2859
+    },
+    
+    ---- STARMIGHT ----
+    SC_SMMightyChance = {
+        str = "%2.f%% chance for found Starcursed Jewels to be mighty",
+        category = "extra", sort = 5000
+    },
+    SC_SMAncientChance = {
+        str = "%.2f%% additional chance to find Ancient Starcursed Jewels",
+        category = "extra", sort = 5001
     }
 }
+
+function PST:parseModifierLines(modName, modVal)
+    local mod = PST.treeModDescriptions[modName]
+    if not mod then return {} end
+
+    local parsedLines = {}
+    local modStr = mod.str
+    if type(modStr) == "table" then
+        for _, tmpLine in ipairs(modStr) do
+            local tmpStr = ""
+            if PST.treeModDescriptions[modName].addPlus then
+                tmpStr = string.format(tmpLine, modVal >= 0 and "+" or "", modVal)
+            else
+                tmpStr = string.format(tmpLine, modVal, modVal, modVal)
+            end
+            table.insert(parsedLines, tmpStr)
+        end
+    else
+        local tmpStr = ""
+        if PST.treeModDescriptions[modName].addPlus then
+            tmpStr = string.format(modStr, modVal >= 0 and "+" or "", modVal)
+        else
+            tmpStr = string.format(modStr, modVal, modVal, modVal)
+        end
+        table.insert(parsedLines, tmpStr)
+    end
+    return parsedLines
+end

@@ -410,6 +410,6 @@ function PST:onCache(player, cacheFlag)
             -- Magdalene, set base movement speed to 0.85
             baseSpeed = 0.85
         end
-        player.MoveSpeed = (baseSpeed + tmpMod) * math.max(0.05, tmpMult)
+        player.MoveSpeed = (baseSpeed + tmpMod / 2) * math.max(0.05, tmpMult)
     end
 end

@@ -2,7 +2,7 @@
 PST.modName = "Passive Skill Trees"
 PST.modData = {}
 PST.selectedMenuChar = -1
-PST.startXPRequired = 32
+PST.startXPRequired = 34
 PST.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
@@ -137,9 +137,17 @@ PST.locustTrinkets = {
 	TrinketType.TRINKET_LOCUST_OF_DEATH, TrinketType.TRINKET_LOCUST_OF_FAMINE, TrinketType.TRINKET_LOCUST_OF_PESTILENCE,
 	TrinketType.TRINKET_LOCUST_OF_WRATH, TrinketType.TRINKET_LOCUST_OF_CONQUEST
 }
+PST.deadlySinBosses = {
+	EntityType.ENTITY_ENVY, EntityType.ENTITY_GLUTTONY, EntityType.ENTITY_WRATH,
+	EntityType.ENTITY_PRIDE, EntityType.ENTITY_LUST, EntityType.ENTITY_GREED,
+	EntityType.ENTITY_SLOTH
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
+
+-- For trinket pickup updates
+PST.trinketUpdateProc = 0
 
 function PST:resetMods()
 	-- List of available tree modifiers
@@ -199,6 +207,11 @@ function PST:resetMods()
 		firstItemShotspeed = 0,
 		firstItemLuck = 0,
 		cardAgainstHumanityProc = false,
+		bossChallengeUnlock = 0,
+		bossChallengeUnlockProc = false,
+		floorSmeltTrinket = 0,
+		shopSaving = 0,
+		shopSavingCache = {},
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
@@ -241,6 +254,8 @@ function PST:resetMods()
 			TForgottenTracker = { soul = false, bone = false, keeperCoin = false, keeperHeal = false },
 			TBethanyDeadWisps = 0
 		},
+
+		---- CHARACTER TREE MODS ----
         ---- Isaac's tree ----
         isaacBlessing = 0, -- Mom Heart Proc
         magicDie = false,
@@ -249,6 +264,7 @@ function PST:resetMods()
             value = 0
         },
         intermittentConceptions = false,
+		intermittentProc = 0,
         allstatsBirthright = 0,
         allstatsRoom = 0,
         allstatsRoomProc = false,
@@ -502,6 +518,35 @@ function PST:resetMods()
 		charmedHitNegation = 0,
 		charmedHitNegationProc = false,
 		charmExplosions = 0,
+
+		---- STAR TREE ----
+		azureStarSockets = 0,
+		crimsonStarSockets = 0,
+		viridianStarSockets = 0,
+		ancientStarSockets = 0,
+		azureStarmight = 0,
+		crimsonStarmight = 0,
+		viridianStarmight = 0,
+		ancientStarmight = 0,
+
+		---- Starcursed jewel helpers ----
+		starmight = 0,
+		enableSCJewels = false,
+		SC_SMMightyChance = 0,
+		SC_SMAncientChance = 0,
+		SC_firstFloorXPHalvedProc = false,
+		SC_circadianStatsDown = 0,
+		SC_umbraStatsDown = 0,
+		SC_umbraNightLightSpawn = false,
+		SC_cursedStarpieceDebuff = false,
+		SC_opalescentProc = false,
+		SC_iridescentItems = {},
+		SC_levelHasChall = false,
+		SC_challDebuff = false,
+		SC_challClear = false,
+		SC_luminescentUsedCard = false,
+		SC_luminescentDebuff = 0,
+		SC_baubleSeekerBuff = 0
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -524,6 +569,16 @@ function PST:resetMods()
 		jacobNearEsauBuff = false,
 		coordinationHits = { jacob = 0, esau = 0 },
 		jacobHeartLuckVal = 0,
+		oneShotProtectedMobs = {},
+		mobFirstHitsBlocked = {},
+		mobPeriodicShield = false,
+		mobHitReduceDmg = 0,
+		mobHitRoomExtraDmg = { hits = 0, proc = false },
+
+		SC_circadianSpawnTime = 0,
+		SC_circadianSpawnProc = false,
+		SC_circadianExplImmune = 0,
+		SC_soulEaterMobs = {}
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false
@@ -551,9 +606,42 @@ function PST:resetData()
 		cosmicRCompletions = { [0] = {} },
 		charData = {},
 
+		-- Star Tree
+		starTreeInventory = {
+			Crimson = {},
+			Azure = {},
+			Viridian = {},
+			Ancient = {}
+		},
+		-- Ancient starcursed jewels identified so far
+		identifiedAncients = {},
+		-- Collected ancient jewel rewards (e.g. skill points when killing X boss)
+		ancientRewards = {},
+
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},
 		newCharsTainted = {}
 	}
 	PST:resetMods()
+end
+
+-- External Item Descriptions init
+if EID then
+	-- Starcursed jewel trinkets
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Azure Starcursed Jewel"),
+		"Rolls mods that affect monsters' might in a run.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Crimson Starcursed Jewel"),
+		"Rolls mods that affect monsters' defense in a run.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Viridian Starcursed Jewel"),
+		"Rolls mods that can affect a run directly.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
+	EID:addTrinket(
+		Isaac.GetTrinketIdByName("Ancient Starcursed Jewel"),
+		"Can feature unique challenge-like run modifiers.#Gets added unidentified to your Star Tree inventory once picked up."
+	)
 end

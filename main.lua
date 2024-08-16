@@ -82,6 +82,11 @@ function PST:load()
 				tmpJson.treeNodes[k] = tmpTreeNodes
 			end
 		end
+		for k, v in pairs(PST.modData.starTreeInventory) do
+			if tmpJson.starTreeInventory[k] == nil then
+				tmpJson.starTreeInventory[k] = v
+			end
+		end
 		-- Load saved config
 		if tmpJson.config then
 			for tmpConfig, configVal in pairs(tmpJson.config) do
@@ -178,6 +183,7 @@ include("scripts.ST_shops")
 include("scripts.ST_cardsPills")
 include("scripts.ST_inputs")
 include("scripts.ST_gridEntities")
+include("scripts.starcursed_data.ST_starcursed")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.onExitGame)
@@ -224,6 +230,7 @@ PST:AddCallback(ModCallbacks.MC_POST_GRID_ENTITY_POOP_UPDATE, PST.gridEntityPoop
 PST:AddCallback(ModCallbacks.MC_POST_GRID_ENTITY_ROCK_UPDATE, PST.gridEntityRockUpdate)
 PST:AddCallback(ModCallbacks.MC_PRE_PLANETARIUM_APPLY_TELESCOPE_LENS, PST.onPlanetariumChance)
 PST:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, PST.cosmicRMarksRender)
+PST:AddCallback(ModCallbacks.MC_GET_SHOP_ITEM_PRICE, PST.onShopItemPrice)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
 -- First load
