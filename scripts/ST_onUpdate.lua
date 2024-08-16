@@ -600,6 +600,7 @@ function PST:onUpdate()
 		PST.modData.spawnKills = 0
 
 		local level = Game():GetLevel()
+		local jewelDrop = false
 		-- Challenge rooms
 		if room:GetType() == RoomType.ROOM_CHALLENGE then
 			-- Final round clear
@@ -615,6 +616,7 @@ function PST:onUpdate()
 				if 100 * math.random() < PST.SCDropRates.challenge(level:GetStage()).regular then
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.challenge(level:GetStage()).ancient)
+					jewelDrop = true
 				end
 			end
 		-- Boss rooms
@@ -637,6 +639,7 @@ function PST:onUpdate()
 				if 100 * math.random() < PST.SCDropRates.bossrush().regular then
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.bossrush().ancient)
+					jewelDrop = true
 				end
 			end
 		end
@@ -695,6 +698,19 @@ function PST:onUpdate()
 						)
 						PST:addModifiers({ SC_challClear = true }, true)
 					end
+				end
+			end
+
+			-- Starcursed jewel drop
+			if not jewelDrop and not PST:isFirstOrigStage() then
+				tmpMod = PST:getTreeSnapshotMod("SC_jewelDropOnClear", 0)
+				if 100 * math.random() < tmpMod then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, 1)
+					PST:addModifiers({ SC_jewelDropOnClear = { value = 0, set = true } }, true)
+					jewelDrop = true
+				elseif 100 * math.random() < 25 and tmpMod < 20 then
+					PST:addModifiers({ SC_jewelDropOnClear = 1 }, true)
 				end
 			end
 
