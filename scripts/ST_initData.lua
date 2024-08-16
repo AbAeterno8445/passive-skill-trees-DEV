@@ -187,6 +187,7 @@ function PST:resetMods()
 		floorLuck = 0,
 
 		staticEntitiesCache = {}, -- For storing the state of 'static entities' such as fireplaces, poop and tinted rocks
+		roomClearProc = false,
 
 		luckyPennyChance = 0,
 		cardFloorLuck = 0,

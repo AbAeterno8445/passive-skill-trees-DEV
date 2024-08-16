@@ -630,10 +630,21 @@ function PST:onUpdate()
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
 				PST.specialNodes.bossGreedSpawned = true
 			end
+		-- Boss rush
+		elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
+			-- Boss rush clear
+			if Ambush.GetCurrentWave() >= Ambush.GetMaxBossrushWaves() then
+				-- Starcursed jewel drop
+				if 100 * math.random() < PST.SCDropRates.bossrush().regular then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.bossrush().ancient)
+				end
+			end
 		end
 
 		-- Once-per-clear effects
-		if not clearRoomProc and PST.modData.xpObtained > 0 then
+		if not PST:getTreeSnapshotMod("roomClearProc", false) and PST.modData.xpObtained > 0 then
+			PST:addModifiers({ roomClearProc = true }, true)
 			local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
 
 			-- Boss room
@@ -668,13 +679,6 @@ function PST:onUpdate()
 				if 100 * math.random() < PST.SCDropRates.boss(level:GetStage()).regular then
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
-				end
-			-- Boss rush
-			elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
-				-- Starcursed jewel drop
-				if 100 * math.random() < PST.SCDropRates.bossrush().regular then
-					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.bossrush().ancient)
 				end
 			-- Challenge room
 			elseif room:GetType() == RoomType.ROOM_CHALLENGE then

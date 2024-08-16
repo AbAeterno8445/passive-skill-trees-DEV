@@ -16,6 +16,8 @@ function PST:onNewRoom()
 	local room = Game():GetRoom()
 	local roomEntities = {}
 
+	PST:addModifiers({ roomClearProc = false }, true)
+
 	-- Optimize GetRoomEntities
 	local function PST_FetchRoomEntities()
 		if #roomEntities == 0 then
