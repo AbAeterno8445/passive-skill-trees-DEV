@@ -34,7 +34,7 @@
 
 - Non-ancient jewels come with a Starmight counter, which is higher the more difficult its featured modifiers.
 - Having socketed jewels with starmight grants some implicit bonuses, depending on total starmight:
-  - (starmight / 3)% additional XP gain
+  - (starmight / 3)% additional XP gain, but has diminishing returns past 250
   - At and above 50 starmight, (2 + starmight / 20)% chance for jewels to drop as **Mighty**, up to 15%.
   - At and above 100 starmight, (starmight / 90)% additional chance to find ancient jewels.
 
