@@ -31,7 +31,7 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", [[
 "55": "{\"pos\":[-2,-11],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[54,56]}",
 "56": "{\"pos\":[-3,-11],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[55,57]}",
 "57": "{\"pos\":[-4,-11],\"type\":29,\"size\":\"Med\",\"name\":\"Speed\",\"description\":[\"+0.04 speed\"],\"modifiers\":{\"speed\":0.04},\"adjacent\":[56,96]}",
-"80": "{\"pos\":[0,-17],\"type\":48,\"size\":\"Large\",\"name\":\"Intermittent Conceptions\",\"description\":[\"Begin the game with Birthright.\",\"When first obtaining an item, remove birthright.\",\"When next obtaining an item, receive birthright again.\",\"Effect cycles.\"],\"modifiers\":{\"intermittentConceptions\":true},\"adjacent\":[102]}",
+"80": "{\"pos\":[0,-17],\"type\":48,\"size\":\"Large\",\"name\":\"Intermittent Conceptions\",\"description\":[\"Begin the game with Birthright.\",\"When first entering a room containing item pedestals, remove birthright.\",\"After picking up 2 passive items, receive birthright again.\",\"Effect repeats.\"],\"modifiers\":{\"intermittentConceptions\":true},\"adjacent\":[102]}",
 "92": "{\"pos\":[1,-11],\"type\":20,\"size\":\"Small\",\"name\":\"Range\",\"description\":[\"+0.02 range\"],\"modifiers\":{\"range\":0.02},\"adjacent\":[53,93]}",
 "93": "{\"pos\":[2,-11],\"type\":20,\"size\":\"Small\",\"name\":\"Range\",\"description\":[\"+0.02 range\"],\"modifiers\":{\"range\":0.02},\"adjacent\":[92,94]}",
 "94": "{\"pos\":[3,-11],\"type\":20,\"size\":\"Small\",\"name\":\"Range\",\"description\":[\"+0.02 range\"],\"modifiers\":{\"range\":0.02},\"adjacent\":[93,95]}",

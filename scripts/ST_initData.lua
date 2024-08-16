@@ -264,6 +264,7 @@ function PST:resetMods()
             value = 0
         },
         intermittentConceptions = false,
+		intermittentProc = 0,
         allstatsBirthright = 0,
         allstatsRoom = 0,
         allstatsRoomProc = false,

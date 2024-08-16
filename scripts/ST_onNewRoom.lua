@@ -14,12 +14,21 @@ function PST:onNewRoom()
 
 	local player = Isaac.GetPlayer()
 	local room = Game():GetRoom()
+	local roomEntities = {}
+
+	-- Optimize GetRoomEntities
+	local function PST_FetchRoomEntities()
+		if #roomEntities == 0 then
+			roomEntities = Isaac.GetRoomEntities()
+		end
+		return roomEntities
+	end
 
 	-- Starcursed modifiers
 	if room:GetAliveEnemiesCount() > 0 then
 		local mobsList = {}
 		local soulEaterList = {}
-		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpEntity:IsActiveEnemy(false) then
 				if not tmpNPC:IsBoss() then table.insert(mobsList, tmpNPC)
@@ -100,11 +109,23 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Intermittent Conceptions node (Isaac's tree)
+	if PST:getTreeSnapshotMod("intermittentConceptions", false) then
+		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+			if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+					player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+					break
+				end
+			end
+		end
+	end
+
 	-- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) and room:GetType() == RoomType.ROOM_TREASURE then
 		if not PST:getTreeSnapshotMod("impromptuGamblerProc", false) then
 			PST.specialNodes.impromptuGamblerItems = {}
-			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
 					table.insert(
 						PST.specialNodes.impromptuGamblerItems,
@@ -348,7 +369,7 @@ function PST:onNewRoom()
 		-- Ancient starcursed jewel: Cursed Starpiece
 		if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() and room:GetType() == RoomType.ROOM_TREASURE then
 			local firstItem = true
-			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				local tmpItem = tmpEntity:ToPickup()
 				if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE then
 					if firstItem then
@@ -449,7 +470,7 @@ function PST:onNewRoom()
 			if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
 				-- Tainted Isaac, remove items from first treasure room entered
 				if not cosmicRCache.TIsaacProc then
-					for _, entity in ipairs(Isaac.GetRoomEntities()) do
+					for _, entity in ipairs(PST_FetchRoomEntities()) do
 						if entity.Type == EntityType.ENTITY_PICKUP and entity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
 							entity:Remove()
 						end
