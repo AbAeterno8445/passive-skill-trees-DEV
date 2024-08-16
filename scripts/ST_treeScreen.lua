@@ -1094,21 +1094,29 @@ function PST:treeMenuRenderer()
             -- Star tree mods for description table
             if starcursedTotalMods and (next(starcursedTotalMods.totalMods) ~= nil or starcursedTotalMods.totalStarmight > 0) then
                 local starTreeModsColor = KColor(1, 0.8, 0.2, 1)
+                local starTreeMods = {}
                 table.insert(totalModsList, "")
                 table.insert(totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
                 for _, modData in pairs(starcursedTotalMods.totalMods) do
                     if type(modData) == "table" then
-                        table.insert(totalModsList, {modData.description, starTreeModsColor})
+                        table.insert(starTreeMods, {modData.description, starTreeModsColor})
                     end
                 end
+                table.sort(starTreeMods, function(a, b)
+                    if not a[1] or not b[1] then return false end
+                    return a[1] < b[1]
+                end)
                 -- Starmight
-                table.insert(totalModsList, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
-                table.insert(totalModsList, {"Starmight bonuses:", starTreeModsColor})
+                table.insert(starTreeMods, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
+                table.insert(starTreeMods, {"Starmight bonuses:", starTreeModsColor})
                 for modName, modVal in pairs(PST:SC_getStarmightImplicits(starcursedTotalMods.totalStarmight)) do
                     local parsedModLines = PST:parseModifierLines(modName, modVal)
                     for _, tmpLine in ipairs(parsedModLines) do
-                        table.insert(totalModsList, {"   " .. tmpLine, starTreeModsColor})
+                        table.insert(starTreeMods, {"   " .. tmpLine, starTreeModsColor})
                     end
+                end
+                for _, item in ipairs(starTreeMods) do
+                    table.insert(totalModsList, item)
                 end
             end
 

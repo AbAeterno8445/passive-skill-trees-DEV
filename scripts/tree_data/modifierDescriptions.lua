@@ -1385,7 +1385,7 @@ PST.treeModDescriptions = {
     
     ---- STARMIGHT ----
     SC_SMMightyChance = {
-        str = "%2.f%% chance for found Starcursed Jewels to be mighty",
+        str = "%2.f%% chance for found Starcursed Jewels to be Mighty",
         category = "extra", sort = 5000
     },
     SC_SMAncientChance = {
