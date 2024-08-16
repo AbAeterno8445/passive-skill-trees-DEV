@@ -316,7 +316,7 @@ function PST:onCurseEval(curses)
     -- Apollyon's Blessing node (Apollyon's tree)
     if PST:getTreeSnapshotMod("apollyonBlessing", false) then
         -- Curse of blind immunity
-        curses = curses ~ LevelCurse.CURSE_OF_BLIND
+        curses = curses &~ LevelCurse.CURSE_OF_BLIND
     end
 
     return curses
