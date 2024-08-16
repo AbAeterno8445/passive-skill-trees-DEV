@@ -26,6 +26,7 @@
 - Clearing boss room.
 - Clearing challenge rooms.
 - Clearing boss rush.
+- Curse rooms have a chance to contain one.
 - Planetariums have a chance to contain one.
 - Chances tend to be higher the deeper the floor you're in.
 
