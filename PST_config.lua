@@ -8,6 +8,9 @@ PST.config = {
     -- Draw selected character level info at the bottom of the screen during character selection
     charSelectInfoText = true,
 
+    -- Draw tree opening controls text on pause menu
+    drawPauseText = true,
+
     -- Whether tree mods are applied in challenges
     treeOnChallenges = false,
 
@@ -198,6 +201,27 @@ function PST:initModConfigMenu()
                 PST:save()
             end,
             Info = {"Draw char info text in character select screen"}
+        }
+    )
+    -- Draw pause menu controls text setting
+    ModConfigMenu.RemoveSetting(PST.modName, nil, "drawPauseText")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        nil,
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "drawPauseText",
+            CurrentSetting = function()
+                return PST.config.drawPauseText
+            end,
+            Display = function()
+                return "Draw pause menu controls: " .. (PST.config.drawPauseText and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.drawPauseText = b
+                PST:save()
+            end,
+            Info = {"Draw pause menu text showing tree opening controls"}
         }
     )
     -- Tree enabled on challenges setting

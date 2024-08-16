@@ -1235,7 +1235,7 @@ function PST:treeMenuRendering()
                 )
             end
         end
-    elseif Game():IsPauseMenuOpen() and not treeMenuOpen then
+    elseif Game():IsPauseMenuOpen() and not treeMenuOpen and PST.config.drawPauseText then
         local tmpStr = "V / LT or LB to open tree"
         miniFont:DrawString(
             tmpStr,
