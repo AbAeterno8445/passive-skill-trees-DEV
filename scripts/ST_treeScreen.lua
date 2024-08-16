@@ -898,6 +898,7 @@ function PST:treeMenuRenderer()
                         sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
                         PST:updateStarTreeTotals()
                         isSocketedJewel = true
+                        PST:save()
                         break
                     end
                 end
