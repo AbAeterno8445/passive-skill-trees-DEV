@@ -60,8 +60,12 @@ function PST:onNewRoom()
 						tmpHPMult = tmpHPMult + PST:SC_getSnapshotMod("champHPPerc", 0) / 100
 					end
 					if tmpNPC:IsBoss() then
-						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
-						tmpHPMult = tmpHPMult + PST:SC_getSnapshotMod("bossHPPerc", 0) / 100
+						local firstFloorMult = 1
+						if PST:isFirstOrigStage() then
+							firstFloorMult = 0.5
+						end
+						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0) * firstFloorMult
+						tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * firstFloorMult) / 100
 					end
 				end
 				tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod) * tmpHPMult
