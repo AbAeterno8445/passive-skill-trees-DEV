@@ -546,8 +546,9 @@ function PST:onDeath(entity)
 
         -- Chance for champions to drop a random starcursed jewel
         local tmpNPC = entity:ToNPC()
-        if tmpNPC and tmpNPC:IsChampion() and 100 * math.random() < PST.SCDropRates.championKill().regular then
-            PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill().ancient)
+        local levelStage = Game():GetLevel():GetStage()
+        if tmpNPC and tmpNPC:IsChampion() and 100 * math.random() < PST.SCDropRates.championKill(levelStage).regular then
+            PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill(levelStage).ancient)
         end
         -- Starcursed mod: spawn X static hovering tears for Y seconds on death
         local tmpMod = PST:SC_getSnapshotMod("hoveringTearsOnDeath", {0, 0})
