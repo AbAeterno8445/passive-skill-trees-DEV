@@ -102,7 +102,11 @@ function PST:addXP(xpParam, showText)
 				local xpRemaining = charData.xp - charData.xpRequired
 
 				-- Next level xp requirement formula
-				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ 1.1))
+				local lvlFactor = 1.1
+				if charData.level >= 30 then
+					lvlFactor = 1.15
+				end
+				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ lvlFactor))
 
 				-- Add overflowing xp to next level, capped at 40%
 				charData.xp = math.min(math.floor(charData.xpRequired * 0.4), xpRemaining)
