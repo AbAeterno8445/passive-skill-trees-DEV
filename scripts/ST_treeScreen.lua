@@ -125,7 +125,7 @@ end
 function PST:openTreeMenu()
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
-        MenuManager.SetInputMask(0)
+        MenuManager.SetInputMask(ButtonActionBitwise.ACTION_FULLSCREEN | ButtonActionBitwise.ACTION_MUTE)
     elseif not Game():IsPauseMenuOpen() then
         return
     else
@@ -1197,7 +1197,7 @@ function PST:treeMenuRendering()
 
         if not Isaac.IsInGame() then
             -- Reset input mask if restarting
-            if MenuManager.GetInputMask() == 0 then
+            if MenuManager.GetInputMask() ~= 4294967295 then
                 ---@diagnostic disable-next-line: param-type-mismatch
                 MenuManager.SetInputMask(4294967295)
             end
