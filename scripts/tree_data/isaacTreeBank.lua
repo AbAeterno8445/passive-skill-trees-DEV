@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Isaac", [[
+PST.SkillTreesAPI.AddCharacterTree("Isaac", false, [[
 {
 "4": "{\"pos\":[0,0],\"type\":50,\"size\":\"Small\",\"name\":\"All Stats\",\"description\":[\"+0.01 all stats\"],\"modifiers\":{\"allstats\":0.01},\"adjacent\":[19,138,171],\"alwaysAvailable\":true}",
 "19": "{\"pos\":[0,-1],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[4,25,194,192]}",

@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("???", [[
+PST.SkillTreesAPI.AddCharacterTree("???", false, [[
 {
 "1": "{\"pos\":[0,0],\"type\":93,\"size\":\"Small\",\"name\":\"Soul Heart on Pill/Card\",\"description\":[\"0.5% chance to receive half a soul heart when using a pill or card.\"],\"modifiers\":{\"soulOnCardPill\":0.5},\"adjacent\":[2,40,62,87],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[0,-2],\"type\":93,\"size\":\"Small\",\"name\":\"Soul Heart on Pill/Card\",\"description\":[\"0.3% chance to receive half a soul heart when using a pill or card.\"],\"modifiers\":{\"soulOnCardPill\":0.3},\"adjacent\":[1,6]}",

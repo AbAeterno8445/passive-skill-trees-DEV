@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Cain", [[
+PST.SkillTreesAPI.AddCharacterTree("Cain", false, [[
 {
 "3": "{\"pos\":[2,2],\"type\":72,\"size\":\"Small\",\"name\":\"Random Trinket Spawn\",\"description\":[\"1% chance to spawn a random trinket at the beginning of a floor.\",\"Doesn't apply in first floor.\"],\"modifiers\":{\"trinketSpawn\":1},\"adjacent\":[4,167]}",
 "4": "{\"pos\":[3,2],\"type\":72,\"size\":\"Small\",\"name\":\"Random Trinket Spawn\",\"description\":[\"1% chance to spawn a random trinket at the beginning of a floor.\",\"Doesn't apply in first floor.\"],\"modifiers\":{\"trinketSpawn\":1},\"adjacent\":[3,5]}",

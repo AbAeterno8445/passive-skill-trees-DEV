@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Azazel", [[
+PST.SkillTreesAPI.AddCharacterTree("Azazel", false, [[
 {
 "1": "{\"pos\":[0,0],\"type\":133,\"size\":\"Small\",\"name\":\"Black Heart On Deals\",\"description\":[\"2% chance to gain an additional black heart when spending hearts for items, such as devil deals.\"],\"modifiers\":{\"blackHeartOnDeals\":2},\"adjacent\":[3,7,24,34,102,180],\"alwaysAvailable\":true}",
 "3": "{\"pos\":[-1,-1],\"type\":133,\"size\":\"Small\",\"name\":\"Black Heart On Deals\",\"description\":[\"1% chance to gain an additional black heart when spending hearts for items, such as devil deals.\"],\"modifiers\":{\"blackHeartOnDeals\":1},\"adjacent\":[1,4]}",

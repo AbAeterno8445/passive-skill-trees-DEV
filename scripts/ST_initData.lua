@@ -15,6 +15,9 @@ PST.charNames = {
 }
 PST.allstatsCache = CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED | CacheFlag.CACHE_RANGE | CacheFlag.CACHE_RANGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SHOTSPEED | CacheFlag.CACHE_LUCK
 
+-- For custom mod images
+PST.customNodeImages = {}
+
 -- Initialization performed on the first menu render call
 function PST:firstRenderInit()
 	-- Init mod char names here

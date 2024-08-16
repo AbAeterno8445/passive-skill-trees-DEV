@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Samson", [[
+PST.SkillTreesAPI.AddCharacterTree("Samson", false, [[
 {
 "75": "{\"pos\":[7,-15],\"type\":116,\"size\":\"Large\",\"name\":\"Rage Buildup\",\"description\":[\"+0.02 damage when hitting an enemy, up to +3.\",\"Getting hit resets the bonus.\"],\"modifiers\":{\"rageBuildup\":true},\"adjacent\":[189]}",
 "95": "{\"pos\":[-8,-13],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[96,155]}",

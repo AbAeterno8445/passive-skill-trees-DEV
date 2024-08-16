@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Bethany", [[
+PST.SkillTreesAPI.AddCharacterTree("Bethany", false, [[
 {
 "2": "{\"pos\":[0,0],\"type\":262,\"size\":\"Small\",\"name\":\"Room Clear Soul Charge\",\"description\":[\"0.5% chance to gain a Soul Charge on room clear.\"],\"modifiers\":{\"soulChargeOnClear\":0.5},\"adjacent\":[3],\"alwaysAvailable\":true}",
 "3": "{\"pos\":[0,-2],\"type\":262,\"size\":\"Small\",\"name\":\"Room Clear Soul Charge\",\"description\":[\"0.5% chance to gain a Soul Charge on room clear.\"],\"modifiers\":{\"soulChargeOnClear\":0.5},\"adjacent\":[2,4,5]}",

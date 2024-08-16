@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Apollyon", [[
+PST.SkillTreesAPI.AddCharacterTree("Apollyon", false, [[
 {
 "1": "{\"pos\":[-1,-1],\"type\":224,\"size\":\"Small\",\"name\":\"Void Blue Flies\",\"description\":[\"1% chance for Void to spawn 4 blue flies on use.\"],\"modifiers\":{\"voidBlueFlies\":1},\"adjacent\":[2,178]}",
 "2": "{\"pos\":[-2,-2],\"type\":224,\"size\":\"Small\",\"name\":\"Void Blue Flies\",\"description\":[\"1% chance for Void to spawn 4 blue flies on use.\"],\"modifiers\":{\"voidBlueFlies\":1},\"adjacent\":[1,3]}",

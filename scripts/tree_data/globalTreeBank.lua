@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("global", [[
+PST.SkillTreesAPI.AddCharacterTree("global", false, [[
 {
 "66": "{\"pos\":[-2,0],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[67,315]}",
 "67": "{\"pos\":[-3,0],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[66,68]}",

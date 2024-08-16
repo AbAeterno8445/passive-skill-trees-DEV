@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("starTree", [[
+PST.SkillTreesAPI.AddCharacterTree("starTree", false, [[
 {
 "4": "{\"pos\":[-1,-3],\"type\":323,\"size\":\"Small\",\"name\":\"Azure Starmight\",\"description\":[\"+0.5 starmight per socketed Azure Starcursed Jewel.\"],\"modifiers\":{\"azureStarmight\":0.5},\"adjacent\":[5,208]}",
 "5": "{\"pos\":[-2,-4],\"type\":323,\"size\":\"Small\",\"name\":\"Azure Starmight\",\"description\":[\"+0.5 starmight per socketed Azure Starcursed Jewel.\"],\"modifiers\":{\"azureStarmight\":0.5},\"adjacent\":[4,13]}",

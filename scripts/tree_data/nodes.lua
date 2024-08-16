@@ -75,6 +75,11 @@ function PST:initTreeNodes(tree)
 
         node.id = tonumber(nodeID)
         node.sprite = tonumber(node.type)
+
+        -- Nodes using custom images have their type set to 5000+
+        if node.customID ~= nil then
+            node.sprite = node.sprite % 1000
+        end
     end
 
     -- Setup node links after they've been initialized

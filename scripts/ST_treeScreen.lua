@@ -114,6 +114,10 @@ local function PST_updateCamZoomOffset()
 
     nodesSprite.Scale.X = zoomScale
     nodesSprite.Scale.Y = zoomScale
+    for _, imgSprite in pairs(PST.customNodeImages) do
+        imgSprite.Scale.X = zoomScale
+        imgSprite.Scale.Y = zoomScale
+    end
 end
 
 local function PST_centerCamera()
@@ -501,28 +505,33 @@ function PST:treeMenuRenderer()
         local nodeX = node.pos.X * 38 * zoomScale
         local nodeY = node.pos.Y * 38 * zoomScale
 
+        local tmpSprite = nodesSprite
+        if node.customID and PST.customNodeImages[node.customID] then
+            tmpSprite = PST.customNodeImages[node.customID]
+        end
+
         if node.available then
             local hasSP = ((currentTree == "global" or currentTree == "starTree") and PST.modData.skillPoints > 0) or
                 (PST.modData.charData[currentTree] and PST.modData.charData[currentTree].skillPoints > 0)
             if hasSP then
-                nodesSprite:SetFrame("Available " .. node.size, 0)
-                nodesSprite.Color = colorDarkGrey
-                nodesSprite.Color.A = alphaFlash
-                nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+                tmpSprite:SetFrame("Available " .. node.size, 0)
+                tmpSprite.Color = colorDarkGrey
+                tmpSprite.Color.A = alphaFlash
+                tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
             end
         end
 
-        nodesSprite:SetFrame("Default", node.sprite)
+        tmpSprite:SetFrame("Default", node.sprite)
         if not PST:isNodeAllocated(currentTree, node.id) and not node.available then
-            nodesSprite.Color = colorDarkGrey
+            tmpSprite.Color = colorDarkGrey
         else
-            nodesSprite.Color = colorWhite
+            tmpSprite.Color = colorWhite
         end
-        nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+        tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
 
         if PST:isNodeAllocated(currentTree, node.id) then
-            nodesSprite:SetFrame("Allocated " .. node.size, 0)
-            nodesSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            tmpSprite:SetFrame("Allocated " .. node.size, 0)
+            tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
         end
 
         local nodeHalf = 15 * zoomScale

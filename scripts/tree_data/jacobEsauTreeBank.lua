@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Jacob & Esau", [[
+PST.SkillTreesAPI.AddCharacterTree("Jacob & Esau", false, [[
 {
 "29": "{\"pos\":[4,-3],\"type\":276,\"size\":\"Small\",\"name\":\"Birthright\",\"description\":[\"0.5% chance for Mom to additionally drop Birthright when defeated.\",\"If Mom doesn't drop Birthright, roll for half the chance again when defeating Mom's heart.\"],\"modifiers\":{\"jacobBirthright\":0.5},\"adjacent\":[30,139]}",
 "30": "{\"pos\":[5,-3],\"type\":276,\"size\":\"Small\",\"name\":\"Birthright\",\"description\":[\"0.5% chance for Mom to additionally drop Birthright when defeated.\",\"If Mom doesn't drop Birthright, roll for half the chance again when defeating Mom's heart.\"],\"modifiers\":{\"jacobBirthright\":0.5},\"adjacent\":[29,31]}",

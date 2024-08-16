@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Keeper", [[
+PST.SkillTreesAPI.AddCharacterTree("Keeper", false, [[
 {
 "1": "{\"pos\":[0,0],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[2],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[1,-1],\"type\":208,\"size\":\"Small\",\"name\":\"Item Purchase Luck\",\"description\":[\"+0.01 luck when you purchase an item.\"],\"modifiers\":{\"itemPurchaseLuck\":0.01},\"adjacent\":[1,3]}",

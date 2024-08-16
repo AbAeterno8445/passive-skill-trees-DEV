@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("The Lost", [[
+PST.SkillTreesAPI.AddCharacterTree("The Lost", false, [[
 {
 "3": "{\"pos\":[0,0],\"type\":177,\"size\":\"Small\",\"name\":\"Killing Hit Negation\",\"description\":[\"1% chance to negate an incoming hit if it would've killed you.\"],\"modifiers\":{\"killingHitNegation\":1},\"adjacent\":[20],\"alwaysAvailable\":true}",
 "20": "{\"pos\":[0,1],\"type\":177,\"size\":\"Small\",\"name\":\"Killing Hit Negation\",\"description\":[\"1% chance to negate an incoming hit if it would've killed you.\"],\"modifiers\":{\"killingHitNegation\":1},\"adjacent\":[3,21,168,170]}",

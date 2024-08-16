@@ -11,11 +11,11 @@ The mod once loaded exposes a PST.SkillTreesAPI object that grants some helper f
 
   ```lua
   function initBobSkillTree()
-      if PST.SkillTreesAPI == nil then
+      if PST == nil then
           return
       end
 
-      PST.SkillTreesAPI.AddCharacterTree("Bob", [[
+      PST.SkillTreesAPI.AddCharacterTree("Bob", false, [[
           ...Generated tree JSON data...
       ]])
   end

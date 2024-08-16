@@ -2,9 +2,10 @@ local json = require("json")
 PST.SkillTreesAPI = {
     -- Attempts to associate a tree to the given character name. Returns true if successful, false otherwise.
     ---@param charName string Character name to associate with the tree
+    ---@param replace boolean If true, replace existing trees associated to the given name
     ---@param treeData any JSON string or decoded object with tree data (ideally from the skilltreegen app)
-    AddCharacterTree = function(charName, treeData)
-        if PST.trees[charName] ~= nil then
+    AddCharacterTree = function(charName, replace, treeData)
+        if PST.trees[charName] ~= nil and not replace then
             Console.PrintWarning("Passive Skill Trees: could not initialize tree for " .. charName ..", character name already initialized!")
             return false
         end
@@ -34,5 +35,15 @@ PST.SkillTreesAPI = {
     ---@param default any Default value to be returned if the modifier is not found
     GetTreeSnapshotMod = function(mod, default)
         return PST:getTreeSnapshotMod(mod, default)
+    end,
+
+    -- Initialize an image containing custom nodes
+    ---@param customID string "Custom Identifier" field that matching nodes should have
+    ---@param sprite Sprite Target sprite to get the nodes from
+    InitCustomNodeImage = function(customID, sprite)
+        if PST.customNodeImages[customID] ~= nil then
+            Console.PrintWarning("Passive Skill Trees: WARNING - Initialized custom node images with existing custom ID " .. customID .. ".")
+        end
+        PST.customNodeImages[customID] = sprite
     end
 }

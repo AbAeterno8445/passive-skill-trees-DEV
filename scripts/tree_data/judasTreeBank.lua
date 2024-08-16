@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Judas", [[
+PST.SkillTreesAPI.AddCharacterTree("Judas", false, [[
 {
 "3": "{\"pos\":[1,-1],\"type\":84,\"size\":\"Small\",\"name\":\"Dark Judas Speed\",\"description\":[\"+0.5% speed as Dark Judas\"],\"modifiers\":{\"darkJudasSpeed\":0.5},\"adjacent\":[4,199]}",
 "4": "{\"pos\":[2,-2],\"type\":84,\"size\":\"Small\",\"name\":\"Dark Judas Speed\",\"description\":[\"+0.5% speed as Dark Judas\"],\"modifiers\":{\"darkJudasSpeed\":0.5},\"adjacent\":[3,5]}",

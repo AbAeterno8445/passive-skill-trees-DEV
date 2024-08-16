@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Siren", [[
+PST.SkillTreesAPI.AddCharacterTree("Siren", false, [[
 {
 "2": "{\"pos\":[0,0],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[19,23,299,301],\"alwaysAvailable\":true}",
 "19": "{\"pos\":[0,1],\"type\":289,\"size\":\"Small\",\"name\":\"Luck On Charmed Kill\",\"description\":[\"0.5% chance for charmed enemies to grant an additional 0.01 luck on kill.\"],\"modifiers\":{\"luckOnCharmedKill\":0.5},\"adjacent\":[2,20]}",

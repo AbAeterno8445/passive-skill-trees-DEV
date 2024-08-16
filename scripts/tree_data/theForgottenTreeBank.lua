@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("The Forgotten", [[
+PST.SkillTreesAPI.AddCharacterTree("The Forgotten", false, [[
 {
 "49": "{\"pos\":[-1,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[50,184]}",
 "50": "{\"pos\":[-2,0],\"type\":247,\"size\":\"Small\",\"name\":\"Forgotten Soul Damage\",\"description\":[\"+0.01 damage with The Forgotten per remaining soul/black heart.\"],\"modifiers\":{\"forgottenSoulDamage\":0.01},\"adjacent\":[49,51,202]}",

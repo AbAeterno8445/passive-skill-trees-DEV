@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Lilith", [[
+PST.SkillTreesAPI.AddCharacterTree("Lilith", false, [[
 {
 "1": "{\"pos\":[0,0],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[2],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[0,-1],\"type\":197,\"size\":\"Small\",\"name\":\"Box Of Friends All Stats\",\"description\":[\"+0.01 all stats after using box of friends. Resets every room.\"],\"modifiers\":{\"boxOfFriendsAllStats\":0.01},\"adjacent\":[1,3]}",

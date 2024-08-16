@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Magdalene", [[
+PST.SkillTreesAPI.AddCharacterTree("Magdalene", false, [[
 {
 "1": "{\"pos\":[0,0],\"type\":67,\"size\":\"Small\",\"name\":\"Room Clear Heal\",\"description\":[\"0.4% chance to heal 1/2 red heart when clearing a room.\",\"Double the chance and healing on boss rooms.\"],\"modifiers\":{\"healOnClear\":0.4},\"adjacent\":[32,128],\"alwaysAvailable\":true}",
 "6": "{\"pos\":[-2,-2],\"type\":67,\"size\":\"Small\",\"name\":\"Room Clear Heal\",\"description\":[\"0.1% chance to heal 1/2 red heart when clearing a room.\",\"Double the chance and healing on boss rooms.\"],\"modifiers\":{\"healOnClear\":0.1},\"adjacent\":[32,7,141]}",

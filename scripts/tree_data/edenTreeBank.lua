@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Eden", [[
+PST.SkillTreesAPI.AddCharacterTree("Eden", false, [[
 {
 "2": "{\"pos\":[-1,-1],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[42,3]}",
 "3": "{\"pos\":[-2,-2],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[2,4]}",

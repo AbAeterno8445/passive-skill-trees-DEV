@@ -1,4 +1,4 @@
-PST.SkillTreesAPI.AddCharacterTree("Lazarus", [[
+PST.SkillTreesAPI.AddCharacterTree("Lazarus", false, [[
 {
 "1": "{\"pos\":[0,0],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[2,5,134],\"alwaysAvailable\":true}",
 "2": "{\"pos\":[-1,-1],\"type\":149,\"size\":\"Small\",\"name\":\"Lazarus Luck\",\"description\":[\"+0.02 luck. Halve this bonus as Lazarus Risen.\"],\"modifiers\":{\"lazarusLuck\":0.02},\"adjacent\":[1,3]}",
