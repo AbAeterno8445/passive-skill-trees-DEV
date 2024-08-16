@@ -696,6 +696,7 @@ function PST:treeMenuRenderer()
                 table.insert(tmpDescription, {
                     "Can now get unlocks as if playing as " .. tmpCharName .. ".", KColor(0.85, 0.85, 1, 1)
                 })
+                table.insert(tmpDescription, "Press the Respec Node button to deselect this character.")
             elseif isAllocated then
                 descName = descName .. " (E to pick character)"
             end
@@ -903,24 +904,24 @@ function PST:treeMenuRenderer()
             end
             if not isSocketedJewel then
                 if PST:isNodeAllocatable(currentTree, hoveredNode.id, false) then
-                    if not PST.debugOptions.infRespec then
-                        PST.modData.respecPoints = PST.modData.respecPoints - 1
-                    end
-                    if not PST.debugOptions.infSP then
-                        if currentTree == "global" or currentTree == "starTree" then
-                            PST.modData.skillPoints = PST.modData.skillPoints + 1
-                        else
-                            PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
-                        end
-                    end
-                    PST:allocateNodeID(currentTree, hoveredNode.id, false)
-                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
-                    PST:updateStarTreeTotals()
-
                     -- Respec Cosmic Realignment node
-                    if hoveredNode.name == "Cosmic Realignment" then
+                    if hoveredNode.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
                         PST:addModifiers({ cosmicRealignment = false })
-                        PST.cosmicRData.menuOpen = false
+                        sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    else
+                        if not PST.debugOptions.infRespec then
+                            PST.modData.respecPoints = PST.modData.respecPoints - 1
+                        end
+                        if not PST.debugOptions.infSP then
+                            if currentTree == "global" or currentTree == "starTree" then
+                                PST.modData.skillPoints = PST.modData.skillPoints + 1
+                            else
+                                PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
+                            end
+                        end
+                        PST:allocateNodeID(currentTree, hoveredNode.id, false)
+                        sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+                        PST:updateStarTreeTotals()
                     end
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
