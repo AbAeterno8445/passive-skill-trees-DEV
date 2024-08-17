@@ -220,6 +220,14 @@ function PST:resetMods()
 		beggarLuckTotal = 0,
 		vurpProc = false,
 
+		curseAllstats = 0,
+		curseAllstatsActive = false,
+		curseRoomSpikesOut = 0, -- TODO
+		goldenKeyConvert = 0, -- TODO
+		sacrificeRoomHearts = 0, -- TODO
+		sacrificeRoomHeartsSpawned = 0, -- TODO
+		naturalCurseCleanse = 0, -- TODO
+
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
 		-- 'Keystone' nodes

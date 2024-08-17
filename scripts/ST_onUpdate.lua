@@ -9,6 +9,7 @@ local luckTracker = 0
 local familiarsTracker = 0
 local coinTracker = 0
 local holyMantleTracker = false
+local lvlCurseTracker = -1
 
 -- On update
 local clearRoomProc = false
@@ -32,6 +33,7 @@ function PST:onUpdate()
 		luckTracker = 0
 		familiarsTracker = 0
 		PST.specialNodes.jacobHeartLuckVal = 0
+		lvlCurseTracker = -1
 
 		local level = Game():GetLevel()
 		-- Mod: chance to reveal the arcade room's location if it is present
@@ -529,6 +531,21 @@ function PST:onUpdate()
 		end
 	end
 	coinTracker = player:GetNumCoins()
+
+	-- Level curse changes
+	local tmpCurses = Game():GetLevel():GetCurses()
+	if tmpCurses ~= lvlCurseTracker then
+		-- Mod: all stats while a level curse is present
+		tmpMod = PST:getTreeSnapshotMod("curseAllstats", 0)
+		if tmpMod ~= 0 then
+			if tmpCurses ~= 0 and not PST:getTreeSnapshotMod("curseAllstatsActive", false) then
+				PST:addModifiers({ allstatsPerc = tmpMod, curseAllstatsActive = true }, true)
+			elseif tmpCurses == 0 and PST:getTreeSnapshotMod("curseAllstatsActive", false) then
+				PST:addModifiers({ allstatsPerc = -tmpMod, curseAllstatsActive = false }, true)
+			end
+		end
+	end
+	lvlCurseTracker = tmpCurses
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
