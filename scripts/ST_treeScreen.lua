@@ -510,7 +510,8 @@ function PST:treeMenuRenderer()
             tmpSprite = PST.customNodeImages[node.customID]
         end
 
-        if node.available then
+        local nodeAllocated = PST:isNodeAllocated(currentTree, node.id)
+        if node.available and not nodeAllocated then
             local hasSP = ((currentTree == "global" or currentTree == "starTree") and PST.modData.skillPoints > 0) or
                 (PST.modData.charData[currentTree] and PST.modData.charData[currentTree].skillPoints > 0)
             if hasSP then
@@ -522,7 +523,7 @@ function PST:treeMenuRenderer()
         end
 
         tmpSprite:SetFrame("Default", node.sprite)
-        if not PST:isNodeAllocated(currentTree, node.id) and not node.available then
+        if not nodeAllocated and not node.available then
             tmpSprite.Color = colorDarkGrey
         else
             tmpSprite.Color = colorWhite
@@ -530,6 +531,8 @@ function PST:treeMenuRenderer()
         tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
 
         if PST:isNodeAllocated(currentTree, node.id) then
+            nodesExtraSprite.Color = colorWhite
+            nodesExtraSprite.Color.A = 1
             nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)
             nodesExtraSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
         end
