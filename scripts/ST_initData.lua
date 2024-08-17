@@ -229,7 +229,7 @@ function PST:resetMods()
 		goldenKeyConvertProc = false,
 		sacrificeRoomHearts = 0,
 		sacrificeRoomHeartsSpawned = 0,
-		naturalCurseCleanse = 0, -- TODO
+		naturalCurseCleanse = 0,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
