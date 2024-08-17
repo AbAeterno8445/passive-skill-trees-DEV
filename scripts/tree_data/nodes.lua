@@ -331,6 +331,7 @@ function PST:isNodeReachable(tree, targetNodeID, exclude, start, visited)
 end
 
 -- Include Skill Trees API
+PST.loadingBaseTrees = true
 include("scripts.tree_data.SkillTreesAPI")
 -- Include base tree node banks
 include("scripts.tree_data.globalTreeBank")
@@ -353,3 +354,4 @@ include("scripts.tree_data.theForgottenTreeBank")
 include("scripts.tree_data.bethanyTreeBank")
 include("scripts.tree_data.jacobEsauTreeBank")
 include("scripts.tree_data.sirenTreeBank")
+PST.loadingBaseTrees = false

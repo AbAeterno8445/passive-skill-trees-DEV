@@ -5,9 +5,13 @@ PST.SkillTreesAPI = {
     ---@param replace boolean If true, replace existing trees associated to the given name
     ---@param treeData any JSON string or decoded object with tree data (ideally from the skilltreegen app)
     AddCharacterTree = function(charName, replace, treeData)
+        local reloadMod = false
         if PST.trees[charName] ~= nil and not replace then
             Console.PrintWarning("Passive Skill Trees: could not initialize tree for " .. charName ..", character name already initialized!")
             return false
+        elseif not PST.loadingBaseTrees then
+            -- Reload if custom char tree
+            reloadMod = true
         end
         PST.nodeLinks[charName] = {}
 
@@ -20,6 +24,7 @@ PST.SkillTreesAPI = {
         PST.trees[charName] = tmpTreeData
 
         PST:initTreeNodes(charName)
+        if reloadMod then PST:load() end
         return true
     end,
 
