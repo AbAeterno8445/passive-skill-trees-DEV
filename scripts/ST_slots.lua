@@ -76,9 +76,10 @@ function PST:onSlotUpdate(slot)
         else
             -- Beggar luck mod
             local beggarLuck = PST:getTreeSnapshotMod("beggarLuck", 0)
-            if isBeggar and beggarLuck > 0 then
+            local tmpTotal = PST:getTreeSnapshotMod("beggarLuckTotal", 0)
+            if isBeggar and beggarLuck > 0 and tmpTotal < 1 then
                 if spentCoins or spentHearts or spentKeys or spentBombs then
-                    PST:addModifiers({ luck = beggarLuck }, true)
+                    PST:addModifiers({ luck = beggarLuck, beggarLuckTotal = beggarLuck }, true)
                 end
             end
 
