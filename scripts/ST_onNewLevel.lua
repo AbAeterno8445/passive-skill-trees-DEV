@@ -223,6 +223,19 @@ function PST:onNewLevel()
         end
     end
 
+    -- Mod: chance to convert all curse room spiked doors to regular ones
+    if 100 * math.random() < PST:getTreeSnapshotMod("curseRoomSpikesOut", 0) then
+        PST:addModifiers({ curseRoomSpikesOutProc = true }, true)
+    elseif PST:getTreeSnapshotMod("curseRoomSpikesOut", 0) then
+        PST:addModifiers({ curseRoomSpikesOutProc = false }, true)
+    end
+
+    -- Reset list for cursed room spike removal modifier
+    local tmpMod = PST:getTreeSnapshotMod("curseSpikesOutList", nil)
+    if tmpMod then
+        PST:addModifiers({ curseSpikesOutList = { value = {}, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

@@ -354,6 +354,26 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Mod: chance to turn adjacent curse room spiked door into a regular one
+	if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
+		local spikesOutList = PST:getTreeSnapshotMod("curseSpikesOutList", nil)
+		local roomIdx = level:GetCurrentRoomDesc().GridIndex
+		for i=0,7 do
+			local tmpDoor = room:GetDoor(i)
+			if tmpDoor and (PST:arrHasValue(spikesOutList, tmpDoor.TargetRoomIndex) or tmpDoor.TargetRoomType == RoomType.ROOM_CURSE) then
+				if spikesOutList then
+					if not PST:arrHasValue(spikesOutList, roomIdx) then
+						table.insert(spikesOutList, roomIdx)
+					end
+					if not PST:arrHasValue(spikesOutList, tmpDoor.TargetRoomIndex) then
+						table.insert(spikesOutList, tmpDoor.TargetRoomIndex)
+					end
+				end
+				tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, RoomType.ROOM_DEFAULT)
+			end
+		end
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
