@@ -241,6 +241,12 @@ function PST:onNewLevel()
         PST:addModifiers({ goldenKeyConvertProc = false }, true)
     end
 
+    -- Mod: chance to spawn a red heart when using a sacrifice room, up to 4 times (reset)
+    tmpMod = PST:getTreeSnapshotMod("sacrificeRoomHeartsSpawned", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ sacrificeRoomHeartsSpawned = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

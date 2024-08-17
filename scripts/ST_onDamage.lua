@@ -71,6 +71,17 @@ function PST:onDamage(target, damage, flag, source)
             player:AddCoins(-math.random(3))
         end
 
+        -- Sacrifice room
+        if room:GetType() == RoomType.ROOM_SACRIFICE and (flag & DamageFlag.DAMAGE_SPIKES) ~= 0 then
+            -- Mod: chance to spawn a red heart when using a sacrifice room, up to 4 times
+            if 100 * math.random() < PST:getTreeSnapshotMod("sacrificeRoomHearts", 0) then
+                if PST:getTreeSnapshotMod("sacrificeRoomHeartsSpawned", 0) < 4 then
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, room:GetCenterPos(), RandomVector() * 3, nil, HeartSubType.HEART_FULL, Random() + 1)
+                    PST:addModifiers({ sacrificeRoomHeartsSpawned = 1 }, true)
+                end
+            end
+        end
+
         -- Cosmic Realignment node
 	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
             -- Samson, -0.15 damage when hit, up to -0.9
