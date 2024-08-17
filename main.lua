@@ -130,6 +130,7 @@ function PST:load()
 				end
 			end
 		end
+		PST:updateStarTreeTotals()
 
 		loadSuccess = true
 	end
