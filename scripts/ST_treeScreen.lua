@@ -118,10 +118,6 @@ local function PST_updateCamZoomOffset()
     nodesSprite.Scale.Y = zoomScale
     nodesExtraSprite.Scale.X = zoomScale
     nodesExtraSprite.Scale.Y = zoomScale
-    for _, imgSprite in pairs(PST.customNodeImages) do
-        imgSprite.Scale.X = zoomScale
-        imgSprite.Scale.Y = zoomScale
-    end
 end
 
 local function PST_centerCamera()
@@ -571,6 +567,13 @@ function PST:treeMenuRenderer()
         -- Debug: show node IDs
         if PST.debugOptions.drawNodeIDs then
             Isaac.RenderText(tostring(node.id), nodeX - treeCamera.X - camZoomOffset.X - 12, nodeY - treeCamera.Y - camZoomOffset.Y - 12, 1, 1, 1, 1)
+        end
+    end
+    -- Update custom images scale
+    for _, imgSprite in pairs(PST.customNodeImages) do
+        if imgSprite.Scale.X ~= zoomScale then
+            imgSprite.Scale.X = zoomScale
+            imgSprite.Scale.Y = zoomScale
         end
     end
 
