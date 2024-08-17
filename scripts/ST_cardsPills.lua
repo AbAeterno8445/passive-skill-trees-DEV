@@ -114,14 +114,21 @@ function PST:onUsePill(pillEffect, player, useFlags)
         end
     end
 
-    -- Mod: chance to receive half a soul heart when using a card or pill
-    if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
-        player:AddSoulHearts(1)
-    end
+    -- Vurp once per floor
+    if pillEffect ~= PillEffect.PILLEFFECT_VURP or (pillEffect == PillEffect.PILLEFFECT_VURP and not PST:getTreeSnapshotMod("vurpProc", false)) then
+        if pillEffect == PillEffect.PILLEFFECT_VURP then
+            PST:addModifiers({ vurpProc = true }, true)
+        end
 
-    -- Mod: % luck for the current floor when using a pill
-    tmpBonus = PST:getTreeSnapshotMod("pillFloorLuck", 0)
-    if tmpBonus ~= 0 then
-        PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
+        -- Mod: chance to receive half a soul heart when using a card or pill
+        if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
+            player:AddSoulHearts(1)
+        end
+
+        -- Mod: % luck for the current floor when using a pill
+        tmpBonus = PST:getTreeSnapshotMod("pillFloorLuck", 0)
+        if tmpBonus ~= 0 then
+            PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
+        end
     end
 end
