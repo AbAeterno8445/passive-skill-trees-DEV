@@ -244,7 +244,11 @@ function PST:SC_identifyJewel(jewel)
     end
 
     if jewel.type ~= PSTStarcursedType.ANCIENT then
-        for _=1,2 do
+        local maxMods = 2
+        if 100 * math.random() < 10 then
+            maxMods = 3
+        end
+        for _=1,maxMods do
             PST:SC_addModToJewel(jewel, true)
         end
     else
