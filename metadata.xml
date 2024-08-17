@@ -63,13 +63,12 @@ This mod requires installing Repentogon. You may install it from [url=https://re
 NOTE: you need to install Repentogon following the instructions in the link for the mod to work properly, it's not just a workshop install!
 Requires Repentance. Afterbirth+ unsupported.
 
-[h2]For Modders - Custom Skill Trees[/h2]
+[h2]For Modders - API & Custom Skill Trees[/h2]
 I have a little visual node js app, [b]isaac-skilltreegen[/b], that lets you create skill trees, and the mod supports coding skill trees for custom characters.
 You can find the app's repo and releases [url=https://github.com/AbAeterno8445/isaac-skilltreegen]Here[/url]. Repo includes usage instructions on its README.
 
-The mod also exposes an API function to initialize generated skill trees. [url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/master/docs/api.md]Here[/url]'s a reference guide for using it.
-
-Unfortunately it's currently not possible to easily create new nodes, and would require editing the nodes image, anm2 file, and coding any new effects yourself - these changes will also probably get lost after an update if you're editing original mod files.
+The mod exposes some API functions to initialize generated skill trees. [url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/dev/docs/api.md]Here[/url]'s a reference guide for using it.
+[url=https://github.com/AbAeterno8445/isaac-custom-skilltree-example]Example mod that showcases API usage.[/url]
 
 I've also been playing with the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=846760924]Siren character mod[/url] and this mod comes with a skill tree for her out of the box.
 
