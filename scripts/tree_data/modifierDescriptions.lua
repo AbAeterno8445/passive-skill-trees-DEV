@@ -223,7 +223,7 @@ PST.treeModDescriptions = {
         category = "xp", sort = 151
     },
 
-    ---- EXTRA CATEGORY ----
+    ---- EXTRA (MISCELLANEOUS) CATEGORY ----
     devilChance = {
         str = "%.2f%% extra chance to spawn a devil/angel room",
         category = "extra", sort = 1000
@@ -271,6 +271,10 @@ PST.treeModDescriptions = {
             "Entering an devil room will trigger a curse on the next floor"
         },
         category = "extra", sort = 1101
+    },
+    enableSCJewels = {
+        str = "Starcursed jewels can drop.",
+        category = "extra", sort = 1200
     },
 
     ---- ISAAC'S TREE ----
