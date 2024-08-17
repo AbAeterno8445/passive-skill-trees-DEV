@@ -61,3 +61,9 @@ Add a description to the given modifier, to be displayed in the tree's "Active M
 - **descriptionFormat:** String or list of formatted strings to be processed by string.format(). The latter is fed the modifier value when displaying the text.
 - **addPlus:** If true, send a "+" string before the mod value to the description's string.format() call, only if the mod value is positive. Useful for mods that can go negative.
 - **sortValue:** Number used for sorting, the higher it is, the lower the text's order of appearance.
+
+# Example Mod
+
+Small mod that showcases usage of this API with a simple use case:
+
+https://github.com/AbAeterno8445/isaac-custom-skilltree-example
