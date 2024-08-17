@@ -416,6 +416,12 @@ function PST:SC_getSnapshotMod(modName, default)
     return default
 end
 
+function PST:SC_debugAddMod(modName, value)
+    if PST.modData.treeModSnapshot.starcursedMods then
+        PST.modData.treeModSnapshot.starcursedMods[modName] = value
+    end
+end
+
 function PST:SC_wipeInventories()
     PST.modData.starTreeInventory = {
         Crimson = {},

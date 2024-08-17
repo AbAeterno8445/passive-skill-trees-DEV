@@ -99,6 +99,8 @@ function PST:onNewRoom()
 		elseif room:GetType() == RoomType.ROOM_CHALLENGE and PST:getTreeSnapshotMod("SC_challDebuff", false) then
 			PST:addModifiers({ damagePerc = 50, SC_challDebuff = false }, true)
 		end
+	elseif PST:getTreeSnapshotMod("SC_challDebuff", false) then
+		PST:addModifiers({ damagePerc = 50, SC_challDebuff = false }, true)
 	end
 
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
