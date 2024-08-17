@@ -150,8 +150,8 @@ PST.deadlySinBosses = {
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
 
--- For trinket pickup updates
-PST.trinketUpdateProc = 0
+-- For cache updates that need to happen a couple frames later
+PST.delayedCacheUpdate = 0
 
 function PST:resetMods()
 	-- List of available tree modifiers

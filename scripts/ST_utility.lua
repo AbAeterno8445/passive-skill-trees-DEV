@@ -24,6 +24,13 @@ function PST:initUnknownChar(charName, tainted)
 	end
 end
 
+-- Updates all stat caches a frame after this is called
+function PST:updateCacheDelayed()
+	if PST.delayedCacheUpdate == 0 then
+		PST.delayedCacheUpdate = Game():GetFrameCount()
+	end
+end
+
 -- Add temporary XP (gets converted to normal xp once room is cleared)
 ---@param xp number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text

@@ -503,9 +503,7 @@ function PST:onTrinketAdd(player, type, firstTime)
         end
     end
 
-    if PST.trinketUpdateProc == 0 then
-        PST.trinketUpdateProc = Game():GetFrameCount()
-    end
+    PST:updateCacheDelayed()
 end
 function PST:onTrinketRemove(player, type)
     -- Demonic Souvenirs node (Azazel's tree)
@@ -518,7 +516,5 @@ function PST:onTrinketRemove(player, type)
         PST:addModifiers({ luck = -PST:getTreeSnapshotMod("evilTrinketLuck", 0) }, true)
     end
 
-    if PST.trinketUpdateProc == 0 then
-        PST.trinketUpdateProc = Game():GetFrameCount()
-    end
+    PST:updateCacheDelayed()
 end

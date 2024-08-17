@@ -898,9 +898,9 @@ function PST:onUpdate()
 		clearRoomProc = false
 	end
 
-	-- Trinket updates
-	if PST.trinketUpdateProc > 0 and Game():GetFrameCount() > PST.trinketUpdateProc + 1 then
-		PST.trinketUpdateProc = 0
+	-- Delayed cache update
+	if PST.delayedCacheUpdate > 0 and Game():GetFrameCount() > PST.delayedCacheUpdate + 1 then
+		PST.delayedCacheUpdate = 0
 		player:AddCacheFlags(PST.allstatsCache, true)
 	end
 end

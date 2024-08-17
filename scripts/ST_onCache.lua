@@ -113,6 +113,11 @@ function PST:onCache(player, cacheFlag)
 		end
     -- DAMAGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
+        -- Mod: damage while dead bird is active
+        if PST.specialNodes.deadBirdActive and PST:getTreeSnapshotMod("activeDeadBirdDamage", 0) ~= 0 then
+            dynamicMods.damage = dynamicMods.damage + PST:getTreeSnapshotMod("activeDeadBirdDamage", 0)
+        end
+
         -- Hearty node (Samson's tree)
         if PST:getTreeSnapshotMod("hearty", false) then
             dynamicMods.damagePerc = dynamicMods.damagePerc - 1.5 * player:GetHearts()
@@ -158,6 +163,11 @@ function PST:onCache(player, cacheFlag)
         end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
+        -- Mod: speed while dead bird is active
+        if PST.specialNodes.deadBirdActive and PST:getTreeSnapshotMod("activeDeadBirdSpeed", 0) ~= 0 then
+            dynamicMods.speed = dynamicMods.speed + PST:getTreeSnapshotMod("activeDeadBirdSpeed", 0)
+        end
+
         -- Minion Maneuvering node (Lilith's tree)
         if PST:getTreeSnapshotMod("minionManeuvering", false) then
             local maxBonus = PST.specialNodes.minionManeuveringMaxBonus
@@ -170,6 +180,11 @@ function PST:onCache(player, cacheFlag)
         end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+        -- Mod: tears while dead bird is active
+        if PST.specialNodes.deadBirdActive and PST:getTreeSnapshotMod("activeDeadBirdTears", 0) ~= 0 then
+            dynamicMods.tears = dynamicMods.tears + PST:getTreeSnapshotMod("activeDeadBirdTears", 0)
+        end
+
         -- Mod: +% tears per active Incubus familiar
         tmpTreeMod = PST:getTreeSnapshotMod("activeIncubusTears", 0)
         if tmpTreeMod > 0 then
@@ -201,6 +216,18 @@ function PST:onCache(player, cacheFlag)
         -- Coordination node (Jacob & Esau's tree)
         if PST.specialNodes.coordinationHits.jacob >= 5 and player:GetPlayerType() == PlayerType.PLAYER_ESAU then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + 10
+        end
+    -- RANGE CACHE
+    elseif cacheFlag == CacheFlag.CACHE_RANGE then
+        -- Mod: range while dead bird is active
+        if PST.specialNodes.deadBirdActive and PST:getTreeSnapshotMod("activeDeadBirdRange", 0) ~= 0 then
+            dynamicMods.range = dynamicMods.range + PST:getTreeSnapshotMod("activeDeadBirdRange", 0)
+        end
+    -- SHOTSPEED CACHE
+    elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
+        -- Mod: shot speed while dead bird is active
+        if PST.specialNodes.deadBirdActive and PST:getTreeSnapshotMod("activeDeadBirdShotspeed", 0) ~= 0 then
+            dynamicMods.shotSpeed = dynamicMods.shotSpeed + PST:getTreeSnapshotMod("activeDeadBirdShotspeed", 0)
         end
     end
 
