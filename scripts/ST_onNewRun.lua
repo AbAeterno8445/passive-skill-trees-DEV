@@ -1,6 +1,7 @@
 function PST:onNewRun(isContinued)
     if isContinued then
         PST.gameInit = true
+        PST:onNewRoom()
         return
     end
 
@@ -351,4 +352,8 @@ function PST:onNewRun(isContinued)
 
     PST:closeTreeMenu(true)
     PST.gameInit = true
+
+    -- Initial level & room funcs
+    PST:onNewLevel()
+    PST:onNewRoom()
 end

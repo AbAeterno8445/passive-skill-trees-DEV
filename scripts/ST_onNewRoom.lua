@@ -1,5 +1,7 @@
 -- On new room
 function PST:onNewRoom()
+    if not PST.gameInit then return end
+
 	PST.modData.spawnKills = 0
 	PST.modData.xpObtained = 0
 	PST.specialNodes.quickWit.pauseTime = 0

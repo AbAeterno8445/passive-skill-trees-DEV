@@ -1,4 +1,6 @@
 function PST:onNewLevel()
+    if not PST.gameInit then return end
+
     local player = Isaac.GetPlayer()
 
     PST.specialNodes.mobHitReduceDmg = 0
