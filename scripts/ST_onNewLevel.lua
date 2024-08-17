@@ -236,6 +236,11 @@ function PST:onNewLevel()
         PST:addModifiers({ curseSpikesOutList = { value = {}, set = true } }, true)
     end
 
+    -- Mod: chance to convert keys to golden keys, once per floor (reset)
+    if PST:getTreeSnapshotMod("goldenKeyConvertProc", false) then
+        PST:addModifiers({ goldenKeyConvertProc = false }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

@@ -222,10 +222,11 @@ function PST:resetMods()
 
 		curseAllstats = 0,
 		curseAllstatsActive = false,
-		curseRoomSpikesOut = 0, -- TODO
+		curseRoomSpikesOut = 0,
 		curseSpikesOutList = {},
 		curseRoomSpikesOutProc = false,
-		goldenKeyConvert = 0, -- TODO
+		goldenKeyConvert = 0,
+		goldenKeyConvertProc = false,
 		sacrificeRoomHearts = 0, -- TODO
 		sacrificeRoomHeartsSpawned = 0, -- TODO
 		naturalCurseCleanse = 0, -- TODO

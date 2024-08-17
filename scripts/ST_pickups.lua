@@ -427,6 +427,16 @@ function PST:onPickupInit(pickup)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, pickup.Position, pickup.Velocity, nil, CoinSubType.COIN_LUCKYPENNY, Random() + 1)
                 pickupGone = true
             end
+        -- Keys
+        elseif variant == PickupVariant.PICKUP_KEY then
+            -- Mod: chance to replace keys with golden keys, once per floor
+            if not pickupGone and subtype == KeySubType.KEY_NORMAL and 100 * math.random() < PST:getTreeSnapshotMod("goldenKeyConvert", 0) and
+            not PST:getTreeSnapshotMod("goldenKeyConvertProc", false) then
+                pickup:Remove()
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, pickup.Position, pickup.Velocity, nil, KeySubType.KEY_GOLDEN, Random() + 1)
+                PST:addModifiers({ goldenKeyConvertProc = true }, true)
+                pickupGone = true
+            end
         end
 
         if not pickupGone then
