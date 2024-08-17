@@ -17,7 +17,8 @@
   - **Azure Starcursed Jewels:** these roll modifiers altering the might of monsters in the run (e.g. normal/boss mobs have a chance to deal 1/2 heart additional damage, enemies deal extra damage to soul hearts, etc.)
   - **Viridian Starcursed Jewels:** these roll modifiers altering features of the run itself (e.g. extra chance to receive a curse, less chance to find devil/angel rooms, shop items are more expensive, etc.)
   - **Ancient Starcursed Jewels:** a rare variant, these are a set of jewels that apply specific unique effects with rewards associated to completing runs with them equipped, akin to challenges.
-- Non-Ancient jewels can also come as a **Mighty** variant, featuring higher rolls and exclusive modifiers, and generally higher starmight.
+- Non-ancient jewels can also come as a **Mighty** variant, featuring higher rolls and exclusive modifiers, and generally higher starmight.
+- Non-ancient jewels roll 2 modifiers, and have a 10% chance to roll 3 instead.
 
 ### **How to obtain Starcursed Jewels:**
 
