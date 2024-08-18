@@ -741,6 +741,14 @@ function PST:treeMenuRenderer()
                     {"Reach level " .. tostring(PST.SCStarTreeUnlockLevel) .. " with at least one character to unlock.", KColor(1, 0.6, 0.6, 1)}
                 }
             end
+        -- Golden Trinket node, show whether golden trinkets are unlocked
+        elseif hoveredNode.name == "Golden Trinkets" then
+            tmpDescription = {table.unpack(hoveredNode.description)}
+            if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
+                table.insert(tmpDescription, {"Golden trinkets are unlocked.", KColor(0.6, 1, 0.6, 1)})
+            else
+                table.insert(tmpDescription, {"Golden trinkets are not unlocked.", KColor(1, 0.6, 0.6, 1)})
+            end
         elseif isAllocated then
             -- Starcursed inventory/socket nodes
             for _, tmpType in pairs(PSTStarcursedType) do

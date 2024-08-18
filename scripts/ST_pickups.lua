@@ -376,6 +376,17 @@ function PST:onPickupInit(pickup)
                 pickup:Remove()
                 local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, pickup.Velocity, nil, tmpLocust, Random() + 1)
+                pickupGone = true
+            end
+        end
+
+        -- Mod: chance for trinkets to drop as golden, if you have them unlocked
+        if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
+            if firstSpawn and not pickupGone and 100 * math.random() < PST:getTreeSnapshotMod("goldenTrinkets", 0) and not isShop and
+            (subtype & TrinketType.TRINKET_GOLDEN_FLAG) == 0 then
+                pickup:Remove()
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, pickup.Velocity, nil, subtype | TrinketType.TRINKET_GOLDEN_FLAG, Random() + 1)
+                pickupGone = true
             end
         end
     else
