@@ -85,11 +85,11 @@ PST.treeModDescriptions = {
         category = "condStats", sort = 10
     },
     cardFloorLuck = {
-        str = "%d%% increased luck for the current floor when you use a card",
+        str = "%d%% increased luck for the current floor when you use a card, up to 15%% (shared with pill luck modifiers)",
         category = "condStats", sort = 11
     },
     pillFloorLuck = {
-        str = "%d%% increased luck for the current floor when you use a pill",
+        str = "%d%% increased luck for the current floor when you use a pill, up to 15%% (shared with card luck modifiers)",
         category = "condStats", sort = 11
     },
     secretRoomFloorLuck = {
@@ -420,7 +420,7 @@ PST.treeModDescriptions = {
     impromptuGambler = {
         str = {
             "Impromptu Gambler:",
-            "    Spawn a crane game in treasure rooms. These can grant any unlocked item, but cost 8 coins to use",
+            "    Spawn a crane game in treasure rooms. These can grant any unlocked item, but take an additional 3 coins on use, if possible",
             "    Interacting with the crane game removes the room's regular items",
             "    Grabbing the regular item removes the crane game"
         },
