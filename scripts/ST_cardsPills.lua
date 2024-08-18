@@ -42,7 +42,7 @@ function PST:onUseCard(card, player, useFlags)
 
     -- Mod: % luck for the current floor when using a card
     tmpBonus = PST:getTreeSnapshotMod("cardFloorLuck", 0)
-    if tmpBonus ~= 0 then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("floorLuckPerc", 0) < 15 then
         PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
     end
 
@@ -96,7 +96,11 @@ function PST:onUseCard(card, player, useFlags)
     end
 end
 
+local isGoldPill = false
 function PST:onPillEffect(effect, pillColor)
+    if pillColor == PillColor.PILL_GOLD then
+        isGoldPill = true
+    end
     -- Blue Gambit node (Blue Baby's tree)
     if PST:getTreeSnapshotMod("blueGambit", false) then
         if not PST:getTreeSnapshotMod("blueGambitPillProc", false) then
@@ -114,21 +118,27 @@ function PST:onUsePill(pillEffect, player, useFlags)
         end
     end
 
-    -- Vurp once per floor
-    if pillEffect ~= PillEffect.PILLEFFECT_VURP or (pillEffect == PillEffect.PILLEFFECT_VURP and not PST:getTreeSnapshotMod("vurpProc", false)) then
-        if pillEffect == PillEffect.PILLEFFECT_VURP then
-            PST:addModifiers({ vurpProc = true }, true)
-        end
+    -- Exclude gold pills
+    if isGoldPill then
+        isGoldPill = false
+    else
+        -- Vurp once per floor
+        print("HERE")
+        if pillEffect ~= PillEffect.PILLEFFECT_VURP or (pillEffect == PillEffect.PILLEFFECT_VURP and not PST:getTreeSnapshotMod("vurpProc", false)) then
+            if pillEffect == PillEffect.PILLEFFECT_VURP then
+                PST:addModifiers({ vurpProc = true }, true)
+            end
 
-        -- Mod: chance to receive half a soul heart when using a card or pill
-        if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
-            player:AddSoulHearts(1)
-        end
+            -- Mod: chance to receive half a soul heart when using a card or pill
+            if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
+                player:AddSoulHearts(1)
+            end
 
-        -- Mod: % luck for the current floor when using a pill
-        tmpBonus = PST:getTreeSnapshotMod("pillFloorLuck", 0)
-        if tmpBonus ~= 0 then
-            PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
+            -- Mod: % luck for the current floor when using a pill
+            tmpBonus = PST:getTreeSnapshotMod("pillFloorLuck", 0)
+            if tmpBonus ~= 0 and PST:getTreeSnapshotMod("floorLuckPerc", 0) < 15 then
+                PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
+            end
         end
     end
 end
