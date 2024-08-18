@@ -96,6 +96,16 @@ function PST:onUseCard(card, player, useFlags)
     end
 end
 
+function PST:blueGambitPillSwap(oldColor, oldEffect, newColor)
+    PST:addModifiers({
+        blueGambitPillProc = true,
+        blueGambitPillSwap = {
+            value = { old = oldColor, oldEffect = oldEffect, new = newColor },
+            set = true
+        }
+    }, true)
+end
+
 local isGoldPill = false
 function PST:onPillEffect(effect, pillColor)
     if pillColor == PillColor.PILL_GOLD then
@@ -104,8 +114,15 @@ function PST:onPillEffect(effect, pillColor)
     -- Blue Gambit node (Blue Baby's tree)
     if PST:getTreeSnapshotMod("blueGambit", false) then
         if not PST:getTreeSnapshotMod("blueGambitPillProc", false) then
-            PST:addModifiers({ blueGambitPillProc = true }, true)
-            return PillEffect.PILLEFFECT_BALLS_OF_STEEL
+            local oldPillCol = pillColor
+            ---@diagnostic disable-next-line: undefined-field
+            local newPillCol = Game():GetItemPool():GetPillColor(PillEffect.PILLEFFECT_BALLS_OF_STEEL)
+            PST:blueGambitPillSwap(oldPillCol, effect, newPillCol)
+        end
+        local blueGambitPillSwap = PST:getTreeSnapshotMod("blueGambitPillSwap", nil)
+        if blueGambitPillSwap then
+            if pillColor == blueGambitPillSwap.old then return PillEffect.PILLEFFECT_BALLS_OF_STEEL
+            elseif pillColor == blueGambitPillSwap.new then return blueGambitPillSwap.oldEffect end
         end
     end
 end

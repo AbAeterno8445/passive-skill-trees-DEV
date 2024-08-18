@@ -389,6 +389,23 @@ function PST:onPickupInit(pickup)
                 pickupGone = true
             end
         end
+    -- Pills
+    elseif variant == PickupVariant.PICKUP_PILL then
+        -- Blue Gambit node (Blue Baby's tree)
+        if PST:getTreeSnapshotMod("blueGambit", false) and not PST:getTreeSnapshotMod("blueGambitPillProc", false) then
+            ---@diagnostic disable-next-line: undefined-field
+            local newColor = Game():GetItemPool():GetPillColor(PillEffect.PILLEFFECT_BALLS_OF_STEEL)
+            PST:blueGambitPillSwap(subtype, Game():GetItemPool():GetPillEffect(subtype, Isaac.GetPlayer()), newColor)
+        end
+    -- Cards
+    elseif variant == PickupVariant.PICKUP_TAROTCARD then
+        -- Blue Gambit node (Blue Baby's tree)
+        if PST:getTreeSnapshotMod("blueGambit", false) and not PST:getTreeSnapshotMod("blueGambitCardProc", false) then
+            PST:addModifiers({ blueGambitCardProc = true }, true)
+            pickup:Remove()
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, pickup.Position, pickup.Velocity, nil, Card.CARD_HIEROPHANT, Random() + 1)
+            pickupGone = true
+        end
     else
         -- Hearts
         if variant == PickupVariant.PICKUP_HEART then

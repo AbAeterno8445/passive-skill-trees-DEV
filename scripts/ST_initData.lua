@@ -329,6 +329,7 @@ function PST:resetMods()
 		lostBlackHeartsLuck = 0,
 		---- Blue Baby's Tree ----
 		blueGambit = false,
+		blueGambitPillSwap = { old = nil, new = nil },
 		blueGambitCardProc = false,
 		blueGambitPillProc = false,
 		brownBlessing = false,
