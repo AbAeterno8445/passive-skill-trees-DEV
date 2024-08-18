@@ -949,6 +949,7 @@ function PST:treeMenuRenderer()
                         end
                         PST:allocateNodeID(currentTree, hoveredNode.id, false)
                         sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
+                        PST.starcursedInvData.open = ""
                         PST:updateStarTreeTotals()
                     end
                 elseif PST:isNodeAllocated(currentTree, hoveredNode.id) then
@@ -959,10 +960,14 @@ function PST:treeMenuRenderer()
         elseif PST.starcursedInvData.hoveredJewel ~= nil then
             if PST.starcursedInvData.hoveredJewelID and PST.starcursedInvData.hoveredJewel.type and not PST.starcursedInvData.hoveredJewel.unidentified and
             PST.starcursedInvData.hoveredJewel.type ~= PSTStarcursedType.ANCIENT then
-                table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
-                PST.starcursedInvData.hoveredJewel = nil
-                PST.starcursedInvData.hoveredJewelID = nil
-                sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75, 2, false, 1.5 + 1 * math.random())
+                if not PST.starcursedInvData.hoveredJewel.equipped then
+                    table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
+                    PST.starcursedInvData.hoveredJewel = nil
+                    PST.starcursedInvData.hoveredJewelID = nil
+                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75, 2, false, 1.5 + 1 * math.random())
+                else
+                    PST.starcursedInvData.hoveredJewel.equipped = nil
+                end
             end
         end
     end
