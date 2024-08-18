@@ -143,6 +143,11 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "condStats", sort = 15
     },
+    curseAllstats = {
+        str = "%s%.2f%% all stats while a level curse is present.",
+        addPlus = true,
+        category = "condStats", sort = 16
+    },
 
     ---- XP CATEGORY ----
     xpgain = {
@@ -272,6 +277,34 @@ PST.treeModDescriptions = {
         },
         category = "extra", sort = 1101
     },
+    curseRoomSpikesOut = {
+        str = "When entering a floor containing curse rooms, %d%% chance to change all spiked doors to regular ones.",
+        category = "extra", sort = 1102
+    },
+    goldenKeyConvert = {
+        str = "%.2f%% chance for dropped keys to be replaced with a golden key, once per floor.",
+        category = "extra", sort = 1103
+    },
+    sacrificeRoomHearts = {
+        str = "%d%% chance for a red heart to drop when using a sacrifice room, up to 4 times.",
+        category = "extra", sort = 1104
+    },
+    naturalCurseCleanse = {
+        str = {
+            "When entering a floor, %d%% chance to receive no natural curses.",
+            "    Does not prevent curses caused by other special effects."
+        },
+        category = "extra", sort = 1105
+    },
+    goldenTrinkets = {
+        str = {
+            "When a trinket drops, %.2f%% additional chance to replace it with its golden version.",
+            "    Requires having golden trinkets unlocked."
+        },
+        category = "extra", sort = 1106
+    },
+
+    -- Starcursed jewels enabled
     enableSCJewels = {
         str = "Starcursed jewels can drop.",
         category = "extra", sort = 1200
