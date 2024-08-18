@@ -123,7 +123,6 @@ function PST:onUsePill(pillEffect, player, useFlags)
         isGoldPill = false
     else
         -- Vurp once per floor
-        print("HERE")
         if pillEffect ~= PillEffect.PILLEFFECT_VURP or (pillEffect == PillEffect.PILLEFFECT_VURP and not PST:getTreeSnapshotMod("vurpProc", false)) then
             if pillEffect == PillEffect.PILLEFFECT_VURP then
                 PST:addModifiers({ vurpProc = true }, true)

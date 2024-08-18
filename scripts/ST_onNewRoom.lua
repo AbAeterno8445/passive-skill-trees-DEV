@@ -149,6 +149,7 @@ function PST:onNewRoom()
 			local newCrane = Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
 			SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND, 0.7)
+			newCrane:SetSize(0.6, Vector(0.6, 0.6), 1)
 
 			local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_NULL, false, Random() + 1)
 			newCrane:ToSlot():SetPrizeCollectible(newItem)
