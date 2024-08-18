@@ -317,6 +317,8 @@ local curseIDs = {
     LevelCurse.CURSE_OF_THE_UNKNOWN
 }
 function PST:onCurseEval(curses)
+    if not PST.gameInit then return curses end
+
     local causeCurse = PST:getTreeSnapshotMod("causeCurse", false)
     local curseChance = 0
 
@@ -335,18 +337,27 @@ function PST:onCurseEval(curses)
         curses = curses | LevelCurse.CURSE_OF_DARKNESS
     end
 
-    if causeCurse and curses == LevelCurse.CURSE_NONE then
-        PST:addModifiers({causeCurse = false}, true)
-        local newCurse = curseIDs[math.random(#curseIDs)]
-        return newCurse
-    end
-
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
         -- Tainted Cain, roll for curse of the blind
         local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
         if 100 * math.random() < 100 - cosmicRCache.TCainUses * 10 then
             curses = curses | LevelCurse.CURSE_OF_BLIND
+        end
+    end
+
+    if causeCurse then
+        PST:addModifiers({ causeCurse = false }, true)
+        if curses == LevelCurse.CURSE_NONE then
+            local level = Game():GetLevel()
+            local newCurse = LevelCurse.CURSE_NONE
+            while newCurse == LevelCurse.CURSE_NONE do
+                newCurse = curseIDs[math.random(#curseIDs)]
+                if (newCurse & LevelCurse.CURSE_OF_LABYRINTH) > 0 and not level:CanStageHaveCurseOfLabyrinth(level:GetStage()) then
+                    newCurse = LevelCurse.CURSE_NONE
+                end
+            end
+            curses = curses | newCurse
         end
     end
 
