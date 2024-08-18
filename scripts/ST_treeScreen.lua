@@ -1200,9 +1200,9 @@ function PST:treeMenuRenderer()
 
     -- Draw help menu
     if helpOpen == "keyboard" then
-        drawNodeBox("Tree Controls", treeControlDesc, screenW / 2, screenH / 2)
+        drawNodeBox("Tree Controls", treeControlDesc, screenW / 2, screenH * 3/4)
     elseif helpOpen == "controller" then
-        drawNodeBox("Tree Controls (Controller)", treeControlDescController, screenW / 2, screenH / 2)
+        drawNodeBox("Tree Controls (Controller)", treeControlDescController, screenW / 2, screenH * 3/4)
     -- Draw total modifiers menu
     elseif totalModsMenuOpen then
         drawNodeBox("Active Modifiers", totalModsList, 16, 16 + totalModsMenuY, true, 1)
