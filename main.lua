@@ -242,7 +242,7 @@ if Isaac.IsInGame() then
 	PST.gameInit = true
 end
 
-print("Initialized Passive Skill Trees.")
+print("Initialized Passive Skill Trees", PST.modVersion)
 for optName, enabled in pairs(PST.debugOptions) do
 	if enabled then
 		Console.PrintWarning("Passive Skill Trees: " .. optName .. " debug option is enabled")
