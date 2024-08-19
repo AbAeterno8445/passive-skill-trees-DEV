@@ -248,7 +248,7 @@ function PST:onNewLevel()
     end
 
     -- Mod: chance to reveal map
-    if 100 * math.random() < 50 then
+    if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) then
         PST:addModifiers({ mapRevealed = true }, true)
     elseif PST:getTreeSnapshotMod("mapRevealed", false) then
         PST:addModifiers({ mapRevealed = false }, true)
