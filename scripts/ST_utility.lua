@@ -38,7 +38,7 @@ end
 function PST:addTempXP(xp, showText, noMult)
 	if PST:getCurrentCharData() == nil then return end
 
-    local xpMult = 1 + PST:getTreeSnapshotMod("xpgain", 0) / 100
+    local xpMult = (PST.config.xpMult or 1) + PST:getTreeSnapshotMod("xpgain", 0) / 100
 
 	-- -40% xp gain outside hard mode
 	if not Game():IsHardMode() then
@@ -94,7 +94,7 @@ end
 function PST:addXP(xpParam, showText)
 	local charData = PST:getCurrentCharData()
 	if charData then
-		local xp = xpParam * (PST.config.xpMult or 1)
+		local xp = xpParam
 		charData.xp = math.max(0, charData.xp + xp)
 		if showText then
 			local xpStr = string.format("+%.2f xp", xp)
