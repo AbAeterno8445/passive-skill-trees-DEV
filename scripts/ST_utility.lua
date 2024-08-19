@@ -128,11 +128,11 @@ function PST:addXP(xpParam, showText)
 				end
 				if charData.level >= 90 then
 					expFactor = 1.135
-					lvlFactor = 0.85
+					lvlFactor = 0.9
 				end
 				if charData.level >= 100 then
 					expFactor = 1.15
-					lvlFactor = 0.9
+					lvlFactor = 0.95
 				end
 				if charData.level >= 120 then
 					expFactor = 1.16
