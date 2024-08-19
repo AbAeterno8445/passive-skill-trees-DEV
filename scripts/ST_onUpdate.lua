@@ -89,7 +89,7 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to reveal map
-			if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) then
+			if PST:getTreeSnapshotMod("mapRevealed", false) then
 				level:ShowMap()
 				PST:createFloatTextFX("Map revealed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
 			end

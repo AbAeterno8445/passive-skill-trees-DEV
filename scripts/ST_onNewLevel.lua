@@ -247,6 +247,13 @@ function PST:onNewLevel()
         PST:addModifiers({ sacrificeRoomHeartsSpawned = { value = 0, set = true } }, true)
     end
 
+    -- Mod: chance to reveal map
+    if 100 * math.random() < 50 then
+        PST:addModifiers({ mapRevealed = true }, true)
+    elseif PST:getTreeSnapshotMod("mapRevealed", false) then
+        PST:addModifiers({ mapRevealed = false }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
