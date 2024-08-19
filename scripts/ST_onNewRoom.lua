@@ -48,6 +48,7 @@ function PST:onNewRoom()
 
 				-- Chance to turn into champion
 				tmpChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
+				tmpChance = tmpChance + PST:getTreeSnapshotMod("championChance", 0)
 				if 100 * math.random() < tmpChance and tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
 					tmpNPC:MakeChampion(Random() + 1)
 				end
@@ -55,23 +56,23 @@ function PST:onNewRoom()
 				-- HP modifiers
 				local tmpHPMod = 0
 				local tmpHPMult = 1
+				local firstFloorMult = 1
+				if PST:isFirstOrigStage() then
+					firstFloorMult = 0.5
+				end
 				if not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
 					tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
-					tmpHPMult = tmpHPMult + PST:SC_getSnapshotMod("mobHPPerc", 0) / 100
+					tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * firstFloorMult) / 100
 				else
 					if tmpNPC:IsChampion() then
-						tmpHPMult = tmpHPMult + PST:SC_getSnapshotMod("champHPPerc", 0) / 100
+						tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * firstFloorMult) / 100
 					end
 					if tmpNPC:IsBoss() then
-						local firstFloorMult = 1
-						if PST:isFirstOrigStage() then
-							firstFloorMult = 0.5
-						end
-						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0) * firstFloorMult
+						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
 						tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * firstFloorMult) / 100
 					end
 				end
-				tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod) * tmpHPMult
+				tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod * firstFloorMult) * tmpHPMult
 				tmpEntity.HitPoints = tmpEntity.MaxHitPoints
 			end
 		end
