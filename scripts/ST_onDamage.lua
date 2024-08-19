@@ -580,6 +580,7 @@ function PST:onDeath(entity)
                 )
                 newTear.Color = Color(1, 0.1, 0.1, 1)
                 newTear:SetPauseTime(math.max(10, 30 * tmpMod[2] - 30))
+                table.insert(PST.specialNodes.SC_hoveringTears, newTear)
             end
         end
         -- Starcursed mod: X chance to release Y tears on death

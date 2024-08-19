@@ -857,6 +857,15 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)
+		if #PST.specialNodes.SC_hoveringTears > 0 then
+			for _, tmpTear in ipairs(PST.specialNodes.SC_hoveringTears) do
+				if tmpTear then
+					tmpTear:SetPauseTime(0)
+				end
+			end
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
 			-- The Forgotten, reset Keeper debuff
