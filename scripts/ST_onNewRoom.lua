@@ -14,6 +14,7 @@ function PST:onNewRoom()
 	PST.specialNodes.mobHitRoomExtraDmg = { hits = 0, proc = false }
 	PST.specialNodes.SC_soulEaterMobs = {}
 	PST.specialNodes.SC_hoveringTears = {}
+	PST.specialNodes.SC_exploderTears = {}
 
 	local player = Isaac.GetPlayer()
 	local room = Game():GetRoom()

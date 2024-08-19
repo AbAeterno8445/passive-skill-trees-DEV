@@ -590,22 +590,20 @@ function PST:onDeath(entity)
         -- Starcursed mod: X chance to release Y tears on death
         tmpMod = PST:SC_getSnapshotMod("tearExplosionOnDeath", {0, 0})
         if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
-            local tmpSpeed = 4
-            local tmpColor = Color(1, 0.1, 0.1, 1)
-            for i=1,tmpMod[2] do
-                local tmpAng = ((2 * math.pi) / tmpMod[2]) * (i - 1)
-                local tmpVel = Vector(tmpSpeed * math.cos(tmpAng), tmpSpeed * math.sin(tmpAng))
-                local newTear = Game():Spawn(
-                    EntityType.ENTITY_PROJECTILE,
-                    ProjectileVariant.PROJECTILE_TEAR,
-                    entity.Position,
-                    tmpVel,
-                    entity,
-                    TearVariant.BLOOD,
-                    Random() + 1
-                )
-                newTear.Color = tmpColor
-            end
+            local newTear = Game():Spawn(
+                EntityType.ENTITY_TEAR,
+                TearVariant.BALLOON,
+                entity.Position,
+                Vector.Zero,
+                entity,
+                0,
+                Random() + 1
+            );
+            SFXManager():Play(SoundEffect.SOUND_HEARTOUT, 0.9)
+            newTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_GROW)
+            newTear:ToTear().FallingSpeed = -25
+            newTear:ToTear().FallingAcceleration = 0.75
+            table.insert(PST.specialNodes.SC_exploderTears, newTear.InitSeed)
         end
         -- Ancient starcursed jewel: Soul Watcher
         if PST:SC_getSnapshotMod("soulWatcher", false) then
