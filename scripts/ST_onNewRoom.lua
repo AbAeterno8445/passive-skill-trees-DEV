@@ -48,7 +48,7 @@ function PST:onNewRoom()
 
 				-- Chance to turn into champion
 				tmpChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
-				if 100 * math.random() < tmpChance then
+				if 100 * math.random() < tmpChance and tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
 					tmpNPC:MakeChampion(Random() + 1)
 				end
 
