@@ -84,7 +84,8 @@ PST.SCMods = {
             mightyRolls = {{5, 7}, {6, 7}},
             starmightCalc = function(roll, roll2) return 9 + roll + (12 - roll2) * 2 end,
             onConflict = {conflictFuncs.simpleSum, conflictFuncs.lowest},
-            description = "Normal monsters regenerate %d HP every %d seconds."
+            description = "Normal monsters regenerate %d HP every %d seconds.",
+            disabled = true
         },
         bossRegen = {
             weight = 100,
@@ -92,7 +93,8 @@ PST.SCMods = {
             mightyRolls = {{30, 40}, {6, 7}},
             starmightCalc = function(roll, roll2) return 12 + roll / 5 + (16 - roll2) * 2 end,
             onConflict = {conflictFuncs.simpleSum, conflictFuncs.lowest},
-            description = "Boss monsters regenerate %d HP every %d seconds."
+            description = "Boss monsters regenerate %d HP every %d seconds.",
+            disabled = true
         },
         championHealers = {
             weight = 100,

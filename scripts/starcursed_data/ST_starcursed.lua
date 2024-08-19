@@ -139,7 +139,7 @@ function PST:SC_addModToJewel(jewel, exclusive)
     local totalWeight = 0
     local availableMods = 0
     for mod, modData in pairs(PST.SCMods[jewel.type]) do
-        if (jewel.mods[mod] == nil or not exclusive) and (not modData.mightyOnly or (modData.mightyOnly and jewel.mighty)) then
+        if (jewel.mods[mod] == nil or not exclusive) and not modData.disabled and (not modData.mightyOnly or (modData.mightyOnly and jewel.mighty)) then
             totalWeight = totalWeight + modData.weight
             availableMods = availableMods + 1
         end
@@ -153,7 +153,7 @@ function PST:SC_addModToJewel(jewel, exclusive)
     local failsafe = 0
     while tmpWeight > 0 and failsafe < 1000 do
         for mod, modData in pairs(PST.SCMods[jewel.type]) do
-            if not modData.mightyOnly or (modData.mightyOnly and jewel.mighty) then
+            if not modData.disabled and not modData.mightyOnly or (modData.mightyOnly and jewel.mighty) then
                 tmpWeight = tmpWeight - modData.weight
             end
             if tmpWeight <= 0 then
