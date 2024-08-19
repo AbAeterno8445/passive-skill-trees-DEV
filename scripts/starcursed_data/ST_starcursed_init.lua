@@ -111,6 +111,13 @@ PST.SCMods = {
             starmightCalc = function() return 18 end,
             description = "Monsters have one-shot protection."
         },
+        mobExplosionDR = {
+            weight = 100,
+            rolls = {{8, 14}},
+            mightyRolls = {{16, 22}},
+            starmightCalc = function(roll) return 8 + roll end,
+            description = "Monsters receive %d%% less damage from explosions."
+        },
         mobFirstBlock = {
             weight = 100,
             rolls = {{1, 3}},

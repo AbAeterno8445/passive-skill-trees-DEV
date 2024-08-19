@@ -222,6 +222,12 @@ function PST:onDamage(target, damage, flag, source)
             local tmpMod = PST:SC_getSnapshotMod("mobDmgReduction", 0)
             dmgMult = dmgMult - tmpMod / 100
 
+            -- Damage reduction from explosions
+            tmpMod = PST:SC_getSnapshotMod("mobExplosionDR", 0)
+            if (flag & DamageFlag.DAMAGE_EXPLOSION) ~= 0 and tmpMod ~= 0 then
+                dmgMult = dmgMult - tmpMod / 100
+            end
+
             -- Damage blocking
             local blockedDamage = false
             local partialBlock = false
@@ -255,7 +261,7 @@ function PST:onDamage(target, damage, flag, source)
             end
 
             -- Ancient starcursed jewel: Circadian destructor - explosion immunity
-            if PST.specialNodes.SC_circadianExplImmune > 0 and flag & DamageFlag.DAMAGE_EXPLOSION then
+            if PST.specialNodes.SC_circadianExplImmune > 0 and (flag & DamageFlag.DAMAGE_EXPLOSION) ~= 0 then
                 blockedDamage = true
             end
 
