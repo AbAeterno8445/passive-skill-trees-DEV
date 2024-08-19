@@ -224,9 +224,10 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Damage blocking
             local blockedDamage = false
+            local partialBlock = false
             tmpMod = PST:SC_getSnapshotMod("mobBlock", 0)
             if 100 * math.random() < tmpMod then
-                blockedDamage = true
+                partialBlock = true
             end
 
             -- First hits blocked
@@ -237,7 +238,7 @@ function PST:onDamage(target, damage, flag, source)
                 end
                 if PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] < tmpMod then
                     PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] = PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] + 1
-                    blockedDamage = true
+                    partialBlock = true
                 end
             end
 
@@ -272,6 +273,9 @@ function PST:onDamage(target, damage, flag, source)
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
                 return { Damage = 0 }
+            elseif partialBlock then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.4)
+                return { Damage = damage * dmgMult * 0.35 }
             end
         end
 
