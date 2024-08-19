@@ -130,6 +130,7 @@ function PST:load()
 				end
 			end
 		end
+		PST:oldJewelReplacements()
 		PST:updateStarTreeTotals()
 
 		loadSuccess = true

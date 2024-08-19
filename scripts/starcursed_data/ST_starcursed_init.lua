@@ -280,7 +280,16 @@ PST.SCMods = {
             mightyRolls = {{10, 15}},
             starmightCalc = function(roll) return 8 + roll * 2 end,
             onConflict = {conflictFuncs.simpleSum},
-            description = "%d%% chance for coins, keys or bombs to vanish on pickup."
+            description = "%d%% chance for coins, keys or bombs to vanish on pickup.",
+            disabled = true
+        },
+        pickupScarcity = {
+            weight = 100,
+            rolls = {{3, 7}},
+            mightyRolls = {{10, 15}},
+            starmightCalc = function(roll) return 8 + roll * 2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%d%% coin, key and bomb scarcity."
         },
         heartsVanish = {
             weight = 100,
@@ -288,7 +297,17 @@ PST.SCMods = {
             mightyRolls = {{10, 15}},
             starmightCalc = function(roll) return 12 + roll * 2 end,
             onConflict = {conflictFuncs.simpleSum},
-            description = "%d%% chance for heart pickups to vanish when collected."
+            description = "%d%% chance for heart pickups to vanish when collected.",
+            disabled = true
+        },
+        heartScarcity = {
+            weight = 100,
+            rolls = {{3, 7}},
+            mightyRolls = {{10, 15}},
+            starmightCalc = function(roll) return 12 + roll * 2 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "%d%% heart pickup scarcity.",
+            disabled = true
         },
         shopExpensive = {
             weight = 100,

@@ -407,10 +407,25 @@ function PST:onPickupInit(pickup)
             pickupGone = true
         end
     else
+        -- Starcursed mod: coin, key and bomb scarcity
+        local tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
+        if (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
+        variant == PickupVariant.PICKUP_KEY) and 100 * math.random() < tmpMod then
+            pickup:Remove()
+            pickupGone = true
+        end
+
         -- Hearts
         if variant == PickupVariant.PICKUP_HEART then
+            -- Starcursed mod: heart scarcity
+            tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
+            if 100 * math.random() < tmpMod then
+                pickup:Remove()
+                pickupGone = true
+            end
+
             -- Sacrifice Darkness node (Judas' tree)
-            if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
+            if not pickupGone and PST:getTreeSnapshotMod("sacrificeDarkness", false) then
                 -- 35% chance to replace dropped soul hearts with black hearts
                 if firstSpawn and not isShop and subtype == HeartSubType.HEART_SOUL and 100 * math.random() < 35 then
                     pickup:Remove()

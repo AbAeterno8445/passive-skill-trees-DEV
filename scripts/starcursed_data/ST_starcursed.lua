@@ -60,8 +60,15 @@ function PST:SC_getJewelDescription(jewel)
     local tmpDescription = {}
     if not jewel.unidentified then
         if jewel.type ~= PSTStarcursedType.ANCIENT then
-            for _, modData in pairs(jewel.mods) do
-                table.insert(tmpDescription, {modData.description, KColor(0.88, 1, 1, 1)})
+            for modName, modData in pairs(jewel.mods) do
+                if PST.SCMods[jewel.type] and PST.SCMods[jewel.type][modName] then
+                    local modDescription = PST.SCMods[jewel.type][modName].description
+                    if modDescription then
+                        table.insert(tmpDescription, {
+                            string.format(modDescription, table.unpack(modData.rolls)), KColor(0.88, 1, 1, 1)
+                        })
+                    end
+                end
             end
         else
             local tmpAncient = nil
@@ -133,7 +140,7 @@ end
 -- Add a single random modifier to a jewel, based on rollable modifiers for its type
 ---@param jewel any Jewel originally created with PST:SC_addJewel.
 ---@param exclusive? boolean Whether to check if rolled mod is already on the jewel.
-function PST:SC_addModToJewel(jewel, exclusive)
+function PST:SC_addRandModToJewel(jewel, exclusive)
     if not PST.SCMods[jewel.type] then return end
 
     local totalWeight = 0
@@ -190,7 +197,6 @@ function PST:SC_addModToJewel(jewel, exclusive)
                 end
 
                 jewel.starmight = jewel.starmight + math.ceil(jewelData.starmightCalc(table.unpack(tmpRolls)))
-                jewel.mods[mod].description = string.format(jewelData.description, table.unpack(tmpRolls))
                 jewel.mods[mod].rolls = tmpRolls
                 break
             else
@@ -249,7 +255,7 @@ function PST:SC_identifyJewel(jewel)
             maxMods = 3
         end
         for _=1,maxMods do
-            PST:SC_addModToJewel(jewel, true)
+            PST:SC_addRandModToJewel(jewel, true)
         end
     else
         local newAncient = PST:SC_getNewAncient()
@@ -287,10 +293,7 @@ function PST:SC_getTotalJewelMods()
                     -- Get mods and handle mod conflicts (identical mods)
                     for mod, modData in pairs(jewel.mods) do
                         if tmpMods[mod] == nil then
-                            tmpMods[mod] = {
-                                rolls = {},
-                                description = modData.description
-                            }
+                            tmpMods[mod] = { rolls = {} }
                             for _, tmpRoll in ipairs(modData.rolls) do
                                 table.insert(tmpMods[mod].rolls, tmpRoll)
                             end
@@ -301,8 +304,8 @@ function PST:SC_getTotalJewelMods()
                                     tmpMods[mod].rolls[i] = conflictFunc(tmpRoll, tmpMods[mod].rolls[i])
                                 end
                             end
-                            tmpMods[mod].description = string.format(PST.SCMods[tmpType][mod].description, table.unpack(tmpMods[mod].rolls))
                         end
+                        tmpMods[mod].description = string.format(PST.SCMods[tmpType][mod].description, table.unpack(tmpMods[mod].rolls))
                     end
                 -- Add ancient jewels as mods, using their keys from PST.SCAncients, set to true
                 elseif jewel.name then
@@ -421,6 +424,28 @@ function PST:SC_debugAddMod(modName, value)
         PST.modData.treeModSnapshot.starcursedMods = {}
     end
     PST.modData.treeModSnapshot.starcursedMods[modName] = value
+end
+
+-- Replace all instances of an old modifier in all inventory jewels to a new one.
+---@param oldMod string Old modifier key
+---@param newMod? string | nil New modifier key, leave as nil to remove old modifiers
+function PST:replaceAllJewelMods(oldMod, newMod)
+    for _, invJewels in pairs(PST.modData.starTreeInventory) do
+        for _, tmpJewel in ipairs(invJewels) do
+            if tmpJewel.mods and tmpJewel.mods[oldMod] then
+                if newMod ~= nil then
+                    tmpJewel.mods[newMod] = tmpJewel.mods[oldMod]
+                end
+                tmpJewel.mods[oldMod] = nil
+            end
+        end
+    end
+end
+
+-- Replace old unwanted mods from all jewels with new versions
+function PST:oldJewelReplacements()
+    PST:replaceAllJewelMods("pickupsVanish", "pickupScarcity")
+    PST:replaceAllJewelMods("heartsVanish", "heartScarcity")
 end
 
 function PST:SC_wipeInventories()
