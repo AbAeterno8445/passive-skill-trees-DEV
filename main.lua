@@ -39,11 +39,18 @@ function PST:charInit(charName, forceReset)
 end
 
 -- Save mod data
+local lastSave = 0
 function PST:save()
+	-- Limit saving to once every 200 ms
+	if lastSave ~= 0 and os.clock() - lastSave < 0.2 then
+		return
+	end
+
 	-- Save config
 	PST.modData.config = PST.config
 
 	PST:SaveData(json.encode(PST.modData))
+	lastSave = os.clock()
 end
 
 -- Load mod data
