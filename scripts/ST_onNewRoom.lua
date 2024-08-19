@@ -39,18 +39,20 @@ function PST:onNewRoom()
 				if not tmpNPC:IsBoss() then table.insert(mobsList, tmpNPC)
 				else table.insert(soulEaterList, tmpNPC) end
 
-				-- Chance to duplicate
-				local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
-				if not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
-					local tmpPos = Isaac.GetFreeNearPosition(tmpEntity.Position, 5)
-					Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
-				end
+				if room:GetType() ~= RoomType.ROOM_BOSS then
+					-- Chance to duplicate
+					local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
+					if not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
+						local tmpPos = Isaac.GetFreeNearPosition(tmpEntity.Position, 5)
+						Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
+					end
 
-				-- Chance to turn into champion
-				tmpChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
-				tmpChance = tmpChance + PST:getTreeSnapshotMod("championChance", 0)
-				if 100 * math.random() < tmpChance and tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
-					tmpNPC:MakeChampion(Random() + 1)
+					-- Chance to turn into champion
+					tmpChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
+					tmpChance = tmpChance + PST:getTreeSnapshotMod("championChance", 0)
+					if 100 * math.random() < tmpChance and tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
+						tmpNPC:MakeChampion(Random() + 1)
+					end
 				end
 
 				-- HP modifiers
