@@ -188,6 +188,7 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
     -- Base offset from center cursor
     local offX = 4
     local offY = 10
+    local tmpScale = 1
 
     -- Calculate longest description line, and offset accordingly
     local longestStr = name
@@ -206,7 +207,7 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
     end
 
     -- Draw description background
-    local drawX = paramX / 2 + offX
+    local drawX = math.max(4, paramX / 2 + offX)
     local drawY = paramY / 2 + offY
     if absolute then
         drawX = paramX
@@ -219,12 +220,17 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
         drawY = drawY - (descH + offY - paramY / 2 + 8)
     end
 
-    nodeBGSprite.Scale.X = descW
-    nodeBGSprite.Scale.Y = descH
+    -- Scale down if box overflows screen width
+    if not absolute and descW > paramX then
+        tmpScale = PST:roundFloat(paramX / descW, -2)
+    end
+
+    nodeBGSprite.Scale.X = descW * tmpScale
+    nodeBGSprite.Scale.Y = descH * tmpScale
     nodeBGSprite.Color.A = bgAlpha or 0.7
     nodeBGSprite:Render(Vector(drawX - 2, drawY - 2))
 
-    miniFont:DrawString(name, drawX, drawY, KColor(1, 1, 1, 1))
+    miniFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, KColor(1, 1, 1, 1))
     for i = 1, #description do
         local tmpStr = description[i]
         local tmpColor = KColor(1, 1, 1, 1)
@@ -241,7 +247,7 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
                 end
             end
         end
-        miniFont:DrawString(tmpStr, drawX + 6, drawY + 14 * i, tmpColor)
+        miniFont:DrawStringScaled(tmpStr, drawX + 6 * tmpScale, drawY + 14 * tmpScale * i, tmpScale, tmpScale, tmpColor)
     end
 end
 
