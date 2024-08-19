@@ -66,6 +66,16 @@ function PST:getLevelXPReq(level)
 	return xpRequired
 end
 
+-- Updates all characters' xp requirement values to current formula
+function PST:updateAllCharsXPReq()
+	for _, charData in pairs(PST.modData.charData) do
+		charData.xpRequired = PST:getLevelXPReq(charData.level)
+		if charData.xp >= charData.xpRequired then
+			charData.xp = charData.xpRequired - 1
+		end
+	end
+end
+
 -- Add temporary XP (gets converted to normal xp once room is cleared)
 ---@param xp number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text

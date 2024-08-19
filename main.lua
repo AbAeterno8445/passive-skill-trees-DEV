@@ -130,8 +130,10 @@ function PST:load()
 				end
 			end
 		end
+		-- Post-load data update funcs
 		PST:oldJewelReplacements()
 		PST:updateStarTreeTotals()
+		PST:updateAllCharsXPReq()
 
 		loadSuccess = true
 	end
