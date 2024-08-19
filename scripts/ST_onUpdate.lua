@@ -256,7 +256,7 @@ function PST:onUpdate()
 	if PST:SC_getSnapshotMod("soulWatcher", false) then
 		if room:GetFrameCount() % 300 == 0 and #PST.specialNodes.SC_soulEaterMobs > 0 then
 			for _, tmpSoulEater in ipairs(PST.specialNodes.SC_soulEaterMobs) do
-				if tmpSoulEater.mob:IsBoss() then
+				if tmpSoulEater.mob:IsBoss() and not tmpSoulEater.mob.Type == EntityType.ENTITY_GIDEON then
 					Game():Spawn(EntityType.ENTITY_ATTACKFLY, 0, tmpSoulEater.mob.Position, Vector.Zero, nil, 0, Random() + 1)
 					break
 				end

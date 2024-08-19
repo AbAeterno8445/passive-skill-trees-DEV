@@ -417,9 +417,10 @@ function PST:SC_getSnapshotMod(modName, default)
 end
 
 function PST:SC_debugAddMod(modName, value)
-    if PST.modData.treeModSnapshot.starcursedMods then
-        PST.modData.treeModSnapshot.starcursedMods[modName] = value
+    if not PST.modData.treeModSnapshot.starcursedMods then
+        PST.modData.treeModSnapshot.starcursedMods = {}
     end
+    PST.modData.treeModSnapshot.starcursedMods[modName] = value
 end
 
 function PST:SC_wipeInventories()

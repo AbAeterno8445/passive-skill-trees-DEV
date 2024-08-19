@@ -83,13 +83,15 @@ function PST:onNewRoom()
 				table.insert(soulEaterList, tmpSoulEater)
 			end
 			for _, tmpMob in ipairs(soulEaterList) do
-				tmpMob.Scale = tmpMob.Scale * 1.12
-				tmpMob:SetColor(Color(0.86, 0.71, 0.93, 1), -1, 0, false)
-				if not tmpMob:IsBoss() then
-					tmpMob.MaxHitPoints = tmpMob.MaxHitPoints * 1.2
-					tmpMob.HitPoints = tmpMob.MaxHitPoints
+				if tmpMob.Type ~= EntityType.ENTITY_GIDEON then
+					tmpMob.Scale = tmpMob.Scale * 1.12
+					tmpMob:SetColor(Color(0.86, 0.71, 0.93, 1), -1, 0, false)
+					if not tmpMob:IsBoss() then
+						tmpMob.MaxHitPoints = tmpMob.MaxHitPoints * 1.2
+						tmpMob.HitPoints = tmpMob.MaxHitPoints
+					end
+					table.insert(PST.specialNodes.SC_soulEaterMobs, { mob = tmpMob, souls = 0})
 				end
-				table.insert(PST.specialNodes.SC_soulEaterMobs, { mob = tmpMob, souls = 0})
 			end
 		end
 	end
