@@ -31,6 +31,41 @@ function PST:updateCacheDelayed()
 	end
 end
 
+-- Get the required XP for the given level
+function PST:getLevelXPReq(level)
+	if level <= 1 then return PST.startXPRequired end
+
+	local xpRequired = PST.startXPRequired
+	local expFactor = 1.08
+	local lvlFactor = 0.6
+	if level >= 30 then
+		expFactor = 1.09
+		lvlFactor = 0.7
+	end
+	if level >= 60 then
+		expFactor = 1.11
+		lvlFactor = 0.8
+	end
+	if level >= 90 then
+		expFactor = 1.135
+		lvlFactor = 0.9
+	end
+	if level >= 100 then
+		expFactor = 1.15
+		lvlFactor = 0.95
+	end
+	if level >= 120 then
+		expFactor = 1.16
+		lvlFactor = 1
+	end
+	if level >= 200 then
+		expFactor = 1.3
+		lvlFactor = 1.2
+	end
+	xpRequired = math.ceil(PST.startXPRequired * (level ^ expFactor) * lvlFactor)
+	return xpRequired
+end
+
 -- Add temporary XP (gets converted to normal xp once room is cleared)
 ---@param xp number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
@@ -116,29 +151,7 @@ function PST:addXP(xpParam, showText)
 				local xpRemaining = charData.xp - charData.xpRequired
 
 				-- Next level xp requirement formula
-				local expFactor = 1.08
-				local lvlFactor = 0.6
-				if charData.level >= 30 then
-					expFactor = 1.09
-					lvlFactor = 0.7
-				end
-				if charData.level >= 60 then
-					expFactor = 1.11
-					lvlFactor = 0.8
-				end
-				if charData.level >= 90 then
-					expFactor = 1.135
-					lvlFactor = 0.9
-				end
-				if charData.level >= 100 then
-					expFactor = 1.15
-					lvlFactor = 0.95
-				end
-				if charData.level >= 120 then
-					expFactor = 1.16
-					lvlFactor = 1
-				end
-				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ expFactor) * lvlFactor)
+				charData.xpRequired = PST:getLevelXPReq(charData.level)
 
 				-- Add overflowing xp to next level, capped at 33%
 				charData.xp = math.min(math.floor(charData.xpRequired * 0.33), xpRemaining)
