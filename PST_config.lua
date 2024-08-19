@@ -269,7 +269,7 @@ function PST:initModConfigMenu()
             CurrentSetting = function()
                 return getTableIndex(xpMultOptions, PST.config.xpMult)
             end,
-            Minimum = 1,
+            Minimum = 0.3,
             Maximum = #xpMultOptions,
             Display = function()
                 return "XP Multiplier: " .. tostring(PST.config.xpMult)

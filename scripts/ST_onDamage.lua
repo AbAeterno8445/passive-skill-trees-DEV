@@ -536,7 +536,7 @@ function PST:onDeath(entity)
         local addXP = false
         if not (entity:IsBoss() and entity.Parent) or entity.Type == EntityType.ENTITY_LARRYJR then
             if entity.SpawnerType ~= 0 then
-                if PST.modData.spawnKills < 10 then
+                if PST.modData.spawnKills < 12 then
                     PST.modData.spawnKills = PST.modData.spawnKills + 1
                     addXP = true
                 end

@@ -40,8 +40,15 @@ function PST:addTempXP(xp, showText, noMult)
 
     local xpMult = 1 + PST:getTreeSnapshotMod("xpgain", 0) / 100
 
+	-- -40% xp gain outside hard mode
 	if not Game():IsHardMode() then
 		xpMult = xpMult - 0.4
+	else
+		-- Hard mode floor xp bonus, +2.5% per floor past first (except boss rush)
+		if Game():GetRoom():GetType() ~= RoomType.ROOM_BOSSRUSH then
+			local stage = Game():GetLevel():GetStage()
+			xpMult = xpMult + math.max(0, (stage - 1) * 0.025)
+		end
 	end
 
 	-- Extra challenge room XP gain mod
@@ -109,14 +116,32 @@ function PST:addXP(xpParam, showText)
 				local xpRemaining = charData.xp - charData.xpRequired
 
 				-- Next level xp requirement formula
-				local lvlFactor = 1.1
+				local expFactor = 1.08
+				local lvlFactor = 0.6
 				if charData.level >= 30 then
-					lvlFactor = 1.15
+					expFactor = 1.09
+					lvlFactor = 0.7
 				end
-				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ lvlFactor))
+				if charData.level >= 60 then
+					expFactor = 1.11
+					lvlFactor = 0.8
+				end
+				if charData.level >= 90 then
+					expFactor = 1.135
+					lvlFactor = 0.85
+				end
+				if charData.level >= 100 then
+					expFactor = 1.15
+					lvlFactor = 0.9
+				end
+				if charData.level >= 120 then
+					expFactor = 1.16
+					lvlFactor = 1
+				end
+				charData.xpRequired = math.ceil(PST.startXPRequired * (charData.level ^ expFactor) * lvlFactor)
 
-				-- Add overflowing xp to next level, capped at 40%
-				charData.xp = math.min(math.floor(charData.xpRequired * 0.4), xpRemaining)
+				-- Add overflowing xp to next level, capped at 33%
+				charData.xp = math.min(math.floor(charData.xpRequired * 0.33), xpRemaining)
 
 				PST:createFloatTextFX("Level up!", Vector.Zero, Color(1, 1, 1, 0.7), 0.17, 100, true)
 			end
