@@ -265,7 +265,7 @@ function PST:onCache(player, cacheFlag)
 
     -- Locust buff nodes
     for _, tmpLocust in ipairs(PST.locustTrinkets) do
-        local tmpLocustNum = player:GetSmeltedTrinkets()[tmpLocust].trinketAmount
+        local tmpLocustNum = player:GetSmeltedTrinkets()[tmpLocust &~ TrinketType.TRINKET_GOLDEN_FLAG].trinketAmount
         for i=0,1 do
             if player:GetTrinket(i) == tmpLocust then
                 tmpLocustNum = tmpLocustNum + 1

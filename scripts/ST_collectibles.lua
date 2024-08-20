@@ -390,7 +390,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             local consumedLocust = false
             for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
                 if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_TRINKET then
-                    if PST:arrHasValue(PST.locustTrinkets, tmpEntity.SubType) then
+                    if PST:arrHasValue(PST.locustTrinkets, tmpEntity.SubType &~ TrinketType.TRINKET_GOLDEN_FLAG) then
                         Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
                         tmpEntity:Remove()
                         player:AddSmeltedTrinket(tmpEntity.SubType)
