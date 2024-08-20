@@ -55,7 +55,7 @@ function PST:prePickup(pickup, collider, low)
             -- Starcursed jewel pickups
             if variant == PickupVariant.PICKUP_TRINKET then
                 local isMighty = 100 * math.random() < PST:getTreeSnapshotMod("SC_SMMightyChance", 0)
-                if subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") then
+                if subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
                     -- Azure Starcursed Jewel pickup
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
@@ -64,7 +64,7 @@ function PST:prePickup(pickup, collider, low)
                     PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                     return { Collide = false, SkipCollisionEffects = true }
-                elseif subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") then
+                elseif subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
                     -- Crimson Starcursed Jewel pickup
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
@@ -73,7 +73,7 @@ function PST:prePickup(pickup, collider, low)
                     PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                     return { Collide = false, SkipCollisionEffects = true }
-                elseif subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") then
+                elseif subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
                     -- Viridian Starcursed Jewel pickup
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
@@ -82,7 +82,7 @@ function PST:prePickup(pickup, collider, low)
                     PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                     return { Collide = false, SkipCollisionEffects = true }
-                elseif subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") then
+                elseif subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
                     -- Ancient Starcursed Jewel pickup
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
