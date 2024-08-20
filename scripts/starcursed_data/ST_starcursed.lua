@@ -238,7 +238,16 @@ function PST:SC_setSpriteToJewel(sprite, jewel)
     if jewel.type ~= PSTStarcursedType.ANCIENT then
         sprite:Play(jewel.type)
     elseif not jewel.unidentified and jewel.spriteFrame then
-        sprite:SetFrame("Ancients", jewel.spriteFrame)
+        local found = false
+        for _, tmpAncient in pairs(PST.SCAncients) do
+            if tmpAncient.name == jewel.name then
+                sprite:SetFrame("Ancients", tmpAncient.spriteFrame)
+                found = true
+            end
+        end
+        if not found and jewel.spriteFrame then
+            sprite:SetFrame("Ancients", jewel.spriteFrame)
+        end
     else
         sprite:Play("AncientUnid")
     end
