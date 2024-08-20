@@ -456,6 +456,9 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 staticEntCache[entID] = -1
             end
         end
+    -- D7
+    elseif itemType == CollectibleType.COLLECTIBLE_D7 then
+        PST:addModifiers({ d7Proc = true }, true)
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item

@@ -315,6 +315,11 @@ function PST:onNewRoom()
 		PST:addModifiers({ charmedHitNegationProc = false }, true)
 	end
 
+	-- Reset d7 proc
+	if PST:getTreeSnapshotMod("d7Proc", false) then
+		PST:addModifiers({ d7Proc = false }, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

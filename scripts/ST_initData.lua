@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.17"
+PST.modVersion = "v0.2.18"
 PST.modData = {}
 PST.selectedMenuChar = -1
 PST.startXPRequired = 34
@@ -233,6 +233,7 @@ function PST:resetMods()
 		naturalCurseCleanse = 0,
 		goldenTrinkets = 0,
 		championChance = 0,
+		d7Proc = false,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
