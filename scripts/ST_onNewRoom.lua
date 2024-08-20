@@ -383,7 +383,8 @@ function PST:onNewRoom()
 		local roomIdx = level:GetCurrentRoomDesc().GridIndex
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
-			if tmpDoor and (PST:arrHasValue(spikesOutList, tmpDoor.TargetRoomIndex) or tmpDoor.TargetRoomType == RoomType.ROOM_CURSE) then
+			if tmpDoor and (PST:arrHasValue(spikesOutList, tmpDoor.TargetRoomIndex) or tmpDoor.TargetRoomType == RoomType.ROOM_CURSE or
+			(room:GetType() == RoomType.ROOM_CURSE and tmpDoor.TargetRoomType == RoomType.ROOM_DEFAULT)) then
 				if spikesOutList then
 					if not PST:arrHasValue(spikesOutList, roomIdx) then
 						table.insert(spikesOutList, roomIdx)
