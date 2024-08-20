@@ -147,6 +147,16 @@ PST.deadlySinBosses = {
 	EntityType.ENTITY_PRIDE, EntityType.ENTITY_LUST, EntityType.ENTITY_GREED,
 	EntityType.ENTITY_SLOTH
 }
+PST.bookItems = {
+	CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK, CollectibleType.COLLECTIBLE_BIBLE,
+	CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL, CollectibleType.COLLECTIBLE_BOOK_OF_REVELATIONS,
+	CollectibleType.COLLECTIBLE_BOOK_OF_SECRETS, CollectibleType.COLLECTIBLE_BOOK_OF_SHADOWS,
+	CollectibleType.COLLECTIBLE_BOOK_OF_SIN, CollectibleType.COLLECTIBLE_BOOK_OF_THE_DEAD,
+	CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES, CollectibleType.COLLECTIBLE_NECRONOMICON,
+	CollectibleType.COLLECTIBLE_HOW_TO_JUMP, CollectibleType.COLLECTIBLE_SATANIC_BIBLE,
+	CollectibleType.COLLECTIBLE_TELEPATHY_BOOK, CollectibleType.COLLECTIBLE_MONSTER_MANUAL,
+	CollectibleType.COLLECTIBLE_LEMEGETON
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -570,7 +580,9 @@ function PST:resetMods()
 		SC_challClear = false,
 		SC_luminescentUsedCard = false,
 		SC_luminescentDebuff = 0,
-		SC_baubleSeekerBuff = 0
+		SC_baubleSeekerBuff = 0,
+		SC_chroniclerRooms = 0,
+		SC_chroniclerDebuff = 0,
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

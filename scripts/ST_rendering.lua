@@ -8,6 +8,9 @@ function PST:resetFloatingTexts()
 	floatTextQueue = {}
 end
 
+local miniFont = Font()
+miniFont:Load("font/cjk/lanapixel.fnt")
+
 -- Create a floating fading text
 ---@param text string -- Text to display
 ---@param position Vector -- Text position
@@ -48,6 +51,9 @@ xpbarSprite:Play("BarEmpty", true)
 xpbarFullSprite:Play("BarFull", true)
 xpbarTempSprite:Play("BarTemp", true)
 
+local chroniclerUISprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
+chroniclerUISprite:Play("Chronicler UI", true)
+
 -- Rendering function
 function PST:Render()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
@@ -57,7 +63,8 @@ function PST:Render()
 	local gamePaused = Game():IsPaused()
 
 	-- XP bar
-	if PST.config.drawXPbar and Game():GetHUD():IsVisible() then
+	local hudVisible = Game():GetHUD():IsVisible()
+	if PST.config.drawXPbar and hudVisible then
 		local charData = PST:getCurrentCharData()
 		if charData then
 			local barPos = Vector(112 * screenRatioX, Isaac.GetScreenHeight() - 12)
@@ -98,6 +105,22 @@ function PST:Render()
 		elseif quickWitData.pauseTime > 0 then
 			quickWitData.startTime = quickWitData.startTime + os.clock() - quickWitData.pauseTime
 			quickWitData.pauseTime = 0
+		end
+	end
+
+	-- Ancient starcursed jewel: Chronicler Stone UI
+	if hudVisible then
+		if PST:SC_getSnapshotMod("chroniclerStone", false) then
+			local remaining = math.max(0, PST:getTreeSnapshotMod("SC_chroniclerRooms", 0))
+			local tmpColor = KColor(1, 0.6, 0.6, 1)
+			if remaining == 0 then
+				tmpColor = KColor(0.6, 0.9, 1, 1)
+			end
+
+			local drawX = 16 * screenRatioX
+			local drawY = Isaac.GetScreenHeight() - 16 * screenRatioY
+			chroniclerUISprite:Render(Vector(drawX, drawY))
+			miniFont:DrawString(tostring(remaining), drawX + 7 * screenRatioX, drawY - 6 * screenRatioY, tmpColor)
 		end
 	end
 

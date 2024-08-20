@@ -114,6 +114,14 @@ function PST:onNewRoom()
 		PST:addModifiers({ damagePerc = 50, SC_challDebuff = false }, true)
 	end
 
+	-- Ancient starcursed jewel: Chronicler Stone
+	if room:IsFirstVisit() and PST:SC_getSnapshotMod("chroniclerStone", false) then
+		local tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
+		if tmpMod > 0 then
+			PST:addModifiers({ SC_chroniclerRooms = -1 }, true)
+		end
+	end
+
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
 	if tmpTreeMod ~= 0 then

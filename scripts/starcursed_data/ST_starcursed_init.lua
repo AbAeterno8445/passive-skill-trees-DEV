@@ -508,6 +508,70 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
+    },
+    chroniclerStone = {
+        weight = 100,
+        spriteFrame = 11,
+        name = "Chronicler Stone",
+        description = {
+            "Every floor, a certain amount of rooms must be explored.",
+            "When entering the next floor, if you've explored less than the ordained amount, receive -1% all stats",
+            "per unexplored room, up to a total -50%.",
+            "Grabbing book items for the first time halves your current debuff from this effect, if present."
+        },
+        rewards = {
+            xpgain = 60,
+            halveXPFirstFloor = true,
+            deliriumRewards = {0, 10},
+            beastRewards = {2, 0}
+        }
+    },
+    itThatWasTaken = {
+        weight = 100,
+        spriteFrame = 12,
+        name = "It That Was Taken",
+        description = {
+            "When clearing a room, 12% chance for a group of blood monsters to ambush you.",
+            "Chance increases by 4% when entering a new floor.",
+            "Lose this jewel when dying while an ambush is active."
+        },
+        rewards = {
+            xpgain = 70,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
+        }
+    },
+    martianUltimatum = {
+        weight = 100,
+        spriteFrame = 13,
+        name = "Martian Ultimatum",
+        description = {
+            "Start with Mars.",
+            "Every 4 to 8 seconds while in a room with monsters, spawn a pattern of static harmless tears around you.",
+            "After 1.5 seconds, the tears fire towards your direction, dealing contact damage.",
+            "-0.05 speed when hit, up to -0.25. Resets every room."
+        },
+        rewards = {
+            xpgain = 80,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
+        }
+    },
+    starReaper = {
+        weight = 100,
+        spriteFrame = 14,
+        name = "Star Reaper",
+        description = {
+            "Start with Death's List.",
+            "Deal half as much damage to unmarked enemies.",
+            "Killing an unmarked enemy grants -1% all stats, up to -25%. Clearing a room halves the current debuff.",
+            "Killing an unmarked enemy restarts Death's List."
+        },
+        rewards = {
+            xpgain = 60,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
+        }
     }
 }
 

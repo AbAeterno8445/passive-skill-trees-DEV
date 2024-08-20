@@ -86,6 +86,18 @@ function PST:onNewLevel()
         end
     end
 
+    -- Ancient starcursed jewel: Chronicler Stone
+    if PST:SC_getSnapshotMod("chroniclerStone", false) then
+        local tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0) < 50 then
+            local tmpAdd = math.min(tmpMod, 50 - PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0))
+            PST:addModifiers({ allstatsPerc = -tmpAdd, SC_chroniclerDebuff = tmpAdd }, true)
+        end
+
+        local levelRooms = math.max(2, Game():GetLevel():GetRoomCount() - 4)
+        PST:addModifiers({ SC_chroniclerRooms = { value = levelRooms, set = true } }, true)
+    end
+
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)

@@ -110,6 +110,12 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         if tmpBonus ~= 0 then
             PST:addModifiers({ luck = -tmpBonus + tmpBonus * 2 * math.random() }, true)
         end
+
+        -- Ancient starcursed jewel: Chronicler Stone (halve debuff when first grabbing a book item)
+        local tmpMod = PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0)
+        if tmpMod > 0 and PST:arrHasValue(PST.bookItems, itemType) then
+            PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_chroniclerDebuff = -tmpMod / 2 }, true)
+        end
     end
 
     -- Spectral Advantage node (The Lost's tree)
