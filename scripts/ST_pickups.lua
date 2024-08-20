@@ -354,9 +354,13 @@ function PST:onPickupInit(pickup)
     -- Ancient starcursed jewel: Baubleseeker
     if not pickupGone and PST:SC_getSnapshotMod("baubleseeker", false) and variant == PickupVariant.PICKUP_COLLECTIBLE and
     subtype ~= CollectibleType.COLLECTIBLE_MOMS_BOX then
+        local tmpShopID = pickup.ShopItemId
         pickup:Remove()
         local tmpTrinket = Game():GetItemPool():GetTrinket()
-        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, Vector.Zero, nil, tmpTrinket, Random() + 1)
+        local newTrinket = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, Vector.Zero, nil, tmpTrinket, Random() + 1)
+        if isShop then
+            newTrinket:ToPickup():MakeShopItem(tmpShopID)
+        end
         pickupGone = true
     end
 

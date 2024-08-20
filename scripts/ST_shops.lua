@@ -50,6 +50,11 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
             priceMod = priceMod + tmpMod
         end
 
+        -- Ancient starcursed jewel: Baubleseeker
+        if pickupVariant == PickupVariant.PICKUP_TRINKET and PST:SC_getSnapshotMod("baubleseeker", false) then
+            priceMod = priceMod + 3
+        end
+
         -- Mod: chance for a shop item to cost 2-4 less coins
         tmpMod = PST:getTreeSnapshotMod("shopSaving", 0)
         -- Make proc rarer in greed mode

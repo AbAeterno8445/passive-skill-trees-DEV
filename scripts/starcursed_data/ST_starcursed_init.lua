@@ -496,7 +496,7 @@ PST.SCAncients = {
         spriteFrame = 9,
         name = "Baubleseeker",
         description = {
-            "All collectible items are replaced with a random trinket.",
+            "All collectible items are replaced with a random trinket. Shop trinkets cost 3 more coins than usual.",
             "10% chance for treasure rooms to contain Mom's Box if you don't currently",
             "have it, protected from trinket replacement.",
             "Smelt trinkets on pickup.",
