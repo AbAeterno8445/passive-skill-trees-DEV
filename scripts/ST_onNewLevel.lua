@@ -272,6 +272,11 @@ function PST:onNewLevel()
         PST:addModifiers({ mapRevealed = false }, true)
     end
 
+    -- Mod: chance to reroll active items into random passive items (reset)
+    if PST:getTreeSnapshotMod("activeItemRerolled", 0) > 0 then
+        PST:addModifiers({ activeItemRerolled = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

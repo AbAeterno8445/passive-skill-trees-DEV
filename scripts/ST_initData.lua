@@ -250,6 +250,8 @@ function PST:resetMods()
 		naturalCurseCleanse = 0,
 		goldenTrinkets = 0,
 		championChance = 0,
+		activeItemReroll = 0,
+		activeItemRerolled = 0,
 		d7Proc = false,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle

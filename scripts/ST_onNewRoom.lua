@@ -451,6 +451,31 @@ function PST:onNewRoom()
 			end
 		end
 
+		-- Mod: chance to reroll active item pedestals into passive items, if you're holding an active item
+		tmpMod = PST:getTreeSnapshotMod("activeItemReroll", 0)
+		if PST:getTreeSnapshotMod("activeItemRerolled", 0) < 2 and 100 * math.random() < 100 and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) > 0 then
+			local itemPool = Game():GetItemPool()
+			local rolledItems = {}
+			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+				if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+					if Isaac.GetItemConfig():GetCollectible(tmpEntity.SubType).Type == ItemType.ITEM_ACTIVE then
+						local addedItem = false
+						while not addedItem do
+							local newItem = itemPool:GetCollectible(itemPool:GetPoolForRoom(room:GetType(), Random() + 1))
+							if not PST:arrHasValue(rolledItems, newItem) then
+								tmpEntity:Remove()
+								Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpEntity.Position, Vector.Zero, nil, newItem, Random() + 1)
+								PST:addModifiers({ activeItemRerolled = 1 }, true)
+
+								table.insert(rolledItems, newItem)
+								addedItem = true
+							end
+						end
+					end
+				end
+			end
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage
