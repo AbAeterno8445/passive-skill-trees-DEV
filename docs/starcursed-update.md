@@ -22,7 +22,6 @@
 
 ### **How to obtain Starcursed Jewels:**
 
-- Occasionally found wherever you'd find a random trinket drop.
 - Killing champion monsters: (3 + floor / 3)% chance
 - Clearing rooms after first floor: starts at 0%, 25% chance to get +1% chance when clearing a room, up to 20% - on drop, resets back to 0%
 - Clearing boss room: (15 + floor \* 2)% chance
