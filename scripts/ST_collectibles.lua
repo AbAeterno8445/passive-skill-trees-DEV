@@ -36,15 +36,19 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     local removeOtherRoomItems = false
     -- Ancient starcursed jewel: Opalescent Purity
     if PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) then
-        removeOtherRoomItems = true
-        PST:addModifiers({ SC_opalescentProc = true }, true)
+        if not PST:arrHasValue(PST.progressionItems) then
+            removeOtherRoomItems = true
+            PST:addModifiers({ SC_opalescentProc = true }, true)
+        end
     end
 
     -- Ancient starcursed jewel: Iridescent Purity
     if PST:SC_getSnapshotMod("iridescentPurity", false) then
-        local iridescentItems = PST:getTreeSnapshotMod("SC_iridescentItems", nil)
-        if iridescentItems then
-            table.insert(iridescentItems, itemType)
+        if not PST:arrHasValue(PST.progressionItems) then
+            local iridescentItems = PST:getTreeSnapshotMod("SC_iridescentItems", nil)
+            if iridescentItems then
+                table.insert(iridescentItems, itemType)
+            end
         end
     end
 
@@ -74,7 +78,8 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
 
     if removeOtherRoomItems then
         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
-            if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+            if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
+            not PST:arrHasValue(PST.progressionItems, tmpEntity.Type) then
                 Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
                 tmpEntity:Remove()
             end

@@ -157,6 +157,13 @@ PST.bookItems = {
 	CollectibleType.COLLECTIBLE_TELEPATHY_BOOK, CollectibleType.COLLECTIBLE_MONSTER_MANUAL,
 	CollectibleType.COLLECTIBLE_LEMEGETON
 }
+PST.progressionItems = {
+	CollectibleType.COLLECTIBLE_KEY_PIECE_1, CollectibleType.COLLECTIBLE_KEY_PIECE_2,
+	CollectibleType.COLLECTIBLE_POLAROID, CollectibleType.COLLECTIBLE_NEGATIVE,
+	CollectibleType.COLLECTIBLE_RED_KEY, CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_1,
+	CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_2, CollectibleType.COLLECTIBLE_DADS_NOTE,
+	CollectibleType.COLLECTIBLE_DOGMA
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false

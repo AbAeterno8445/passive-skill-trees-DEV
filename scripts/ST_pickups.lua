@@ -346,14 +346,14 @@ function PST:onPickupInit(pickup)
     local pickupGone = false
     -- Ancient starcursed jewel: Opalescent Purity
     if PST:SC_getSnapshotMod("opalescentPurity", false) and PST:getTreeSnapshotMod("SC_opalescentProc", false) and
-    variant == PickupVariant.PICKUP_COLLECTIBLE then
+    variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, subtype) then
         pickup:Remove()
         pickupGone = true
     end
 
     -- Ancient starcursed jewel: Baubleseeker
     if not pickupGone and PST:SC_getSnapshotMod("baubleseeker", false) and variant == PickupVariant.PICKUP_COLLECTIBLE and
-    subtype ~= CollectibleType.COLLECTIBLE_MOMS_BOX then
+    subtype ~= CollectibleType.COLLECTIBLE_MOMS_BOX and not PST:arrHasValue(PST.progressionItems, subtype) then
         local tmpShopID = pickup.ShopItemId
         pickup:Remove()
         local tmpTrinket = Game():GetItemPool():GetTrinket()
