@@ -1,6 +1,6 @@
 <items gfxroot="gfx/items/" version="1">
-    <trinket description="Ancient cosmic energy lingers on..." gfx="trinket_azure_starcursed_jewel.png" id="1" name="Azure Starcursed Jewel" />
-    <trinket description="Ancient cosmic energy lingers on..." gfx="trinket_crimson_starcursed_jewel.png" id="2" name="Crimson Starcursed Jewel" />
-    <trinket description="Ancient cosmic energy lingers on..." gfx="trinket_viridian_starcursed_jewel.png" id="3" name="Viridian Starcursed Jewel" />
-    <trinket description="The stars gaze back..." gfx="trinket_ancient_starcursed_jewel.png" id="4" name="Ancient Starcursed Jewel" />
+    <trinket description="Ancient cosmic energy lingers on..." gfx="trinket_azure_starcursed_jewel.png" id="1" name="Azure Starcursed Jewel" achievement="99999" />
+    <trinket description="Ancient cosmic energy lingers on..." gfx="trinket_crimson_starcursed_jewel.png" id="2" name="Crimson Starcursed Jewel" achievement="99999" />
+    <trinket description="Ancient cosmic energy lingers on..." gfx="trinket_viridian_starcursed_jewel.png" id="3" name="Viridian Starcursed Jewel" achievement="99999" />
+    <trinket description="The stars gaze back..." gfx="trinket_ancient_starcursed_jewel.png" id="4" name="Ancient Starcursed Jewel" achievement="99999" />
 </items>
