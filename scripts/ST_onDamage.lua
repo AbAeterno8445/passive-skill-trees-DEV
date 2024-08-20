@@ -555,8 +555,13 @@ function PST:onDeath(entity)
             end
         end
 
-        if addXP then
+        if addXP and not PST:getTreeSnapshotMod("d7Proc", false) then
             local mult = 1
+            -- Reduce xp for certain bosses
+            if entity.Type == EntityType.ENTITY_PEEP then
+                mult = 0.33
+            end
+
             if entity:IsBoss() then
                 mult = mult + PST:getTreeSnapshotMod("xpgainBoss", 0) / 100
                 local roomType = Game():GetRoom():GetType()
