@@ -148,6 +148,11 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
+        -- Ancient starcursed jewel: Martian Ultimatum
+        if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
+            PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
+        end
+
         -- Starcursed modifiers
         if source and source.Entity then
             local tmpDmg = 0

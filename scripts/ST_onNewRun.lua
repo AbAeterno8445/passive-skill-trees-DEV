@@ -143,6 +143,10 @@ function PST:onNewRun(isContinued)
             else tmpSCMods["speedPerc"] = tmpReduction end
             tmpSCMods["SC_glaceDebuff"] = -tmpReduction
         end
+        -- Ancient starcursed jewel: Martian Ultimatum
+        if PST:SC_getSnapshotMod("martianUltimatum", false) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_MARS)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

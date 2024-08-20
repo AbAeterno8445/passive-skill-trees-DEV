@@ -590,6 +590,7 @@ function PST:resetMods()
 		SC_baubleSeekerBuff = 0,
 		SC_chroniclerRooms = 0,
 		SC_chroniclerDebuff = 0,
+		SC_martianDebuff = 0
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -624,7 +625,11 @@ function PST:resetMods()
 		SC_soulEaterMobs = {},
 		SC_hoveringTears = {},
 		SC_exploderTears = {},
-		SC_glaceDebuff = 0
+		SC_glaceDebuff = 0,
+		SC_martianTimer = 0,
+		SC_martianProc = false,
+		SC_martianTears = {},
+		SC_martianFX = {}
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

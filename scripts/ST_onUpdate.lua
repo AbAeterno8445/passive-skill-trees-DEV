@@ -157,6 +157,11 @@ function PST:onUpdate()
 		if tmpFamiliars ~= PST:getTreeSnapshotMod("totalFamiliars", 0) then
 			PST:addModifiers({ totalFamiliars = { value = tmpFamiliars, set = true } }, true)
 		end
+
+		-- Ancient starcursed jewel: Martian Ultimatum
+		if PST:SC_getSnapshotMod("martianUltimatum", false) and PST.specialNodes.SC_martianTimer == 0 then
+			PST.specialNodes.SC_martianTimer = 30 * (3 + math.random(5))
+		end
 	end
 
 	-- Starcursed mod: monster status cleanse every X seconds
@@ -262,6 +267,73 @@ function PST:onUpdate()
 				end
 			end
 		end
+	end
+	-- Ancient starcursed jewel: Martian Ultimatum
+	if PST:SC_getSnapshotMod("martianUltimatum", false) and room:GetFrameCount() > 1 then
+		if PST.specialNodes.SC_martianTimer > 0 then
+			PST.specialNodes.SC_martianTimer = PST.specialNodes.SC_martianTimer - 1
+			for _, tmpTear in ipairs(PST.specialNodes.SC_martianTears) do
+				if tmpTear then
+					tmpTear.Color = Color(1, 0.25, 0.25, tmpTear.Color.A + 0.01)
+				end
+			end
+			for _, tmpSprite in ipairs(PST.specialNodes.SC_martianFX) do
+				if not tmpSprite.sprite:IsFinished() then
+					tmpSprite.sprite:Render(room:WorldToScreenPosition(tmpSprite.pos))
+					tmpSprite.sprite:Update()
+				end
+			end
+		elseif not PST.specialNodes.SC_martianProc and room:GetAliveEnemiesCount() > 0 then
+			PST.specialNodes.SC_martianTimer = 60
+            PST.specialNodes.SC_martianProc = true
+			local tearAmt = 2 + math.random(7)
+			local tearDist = 140
+			for i=1,tearAmt do
+				local tmpFXSprite = Sprite("gfx/items/martian_ultimatum_fx.anm2", true)
+				tmpFXSprite:Play("Default", true)
+				local tearAng = (2 * math.pi) / tearAmt * (i - 1)
+				local tearX = player.Position.X + tearDist * math.cos(tearAng)
+				local tearY = player.Position.Y + tearDist * math.sin(tearAng)
+				local newTear = Game():Spawn(EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_TEAR, Vector(tearX, tearY), Vector.Zero, nil, 0, Random() + 1)
+				newTear:ToProjectile().FallingAccel = -0.1
+				newTear:ToProjectile():AddProjectileFlags(ProjectileFlags.CANT_HIT_PLAYER)
+				newTear.Color = Color(1, 0.25, 0.25, 0.1)
+				table.insert(PST.specialNodes.SC_martianTears, newTear)
+				table.insert(PST.specialNodes.SC_martianFX, {
+					sprite = tmpFXSprite,
+					pos = Vector(tearX, tearY)
+				})
+			end
+			SFXManager():Play(SoundEffect.SOUND_LIGHTBOLT_CHARGE, 0.85, 2, false, 0.8)
+		end
+	end
+
+	if PST.specialNodes.SC_martianProc and PST.specialNodes.SC_martianTimer == 0 then
+		if room:GetAliveEnemiesCount() > 0 then
+			PST.specialNodes.SC_martianTimer = 30 * (3 + math.random(5))
+		end
+		PST.specialNodes.SC_martianProc = false
+		PST.specialNodes.SC_martianFX = {}
+
+		local tearSpeed = 7
+		for _, tmpTear in ipairs(PST.specialNodes.SC_martianTears) do
+			if tmpTear:Exists() then
+				local tearVel = (player.Position - tmpTear.Position):Normalized() * tearSpeed
+				local newTear = Game():Spawn(
+					EntityType.ENTITY_PROJECTILE,
+					ProjectileVariant.PROJECTILE_TEAR,
+					tmpTear.Position,
+					tearVel,
+					nil,
+					0,
+					Random() + 1
+				)
+				newTear.Color = tmpTear.Color
+				tmpTear:Remove()
+			end
+		end
+		SFXManager():Play(SoundEffect.SOUND_TEARS_FIRE)
+		PST.specialNodes.SC_martianTears = {}
 	end
 
 	-- Fickle Fortune node (Cain's tree)

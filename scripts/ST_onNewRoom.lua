@@ -15,6 +15,8 @@ function PST:onNewRoom()
 	PST.specialNodes.SC_soulEaterMobs = {}
 	PST.specialNodes.SC_hoveringTears = {}
 	PST.specialNodes.SC_exploderTears = {}
+	PST.specialNodes.SC_martianFX = {}
+	PST.specialNodes.SC_martianTears = {}
 
 	local player = Isaac.GetPlayer()
 	local room = Game():GetRoom()
@@ -120,6 +122,12 @@ function PST:onNewRoom()
 		if tmpMod > 0 then
 			PST:addModifiers({ SC_chroniclerRooms = -1 }, true)
 		end
+	end
+
+	-- Ancient starcursed jewel: Martian Ultimatum
+	local tmpMod = PST:getTreeSnapshotMod("SC_martianDebuff", 0)
+	if PST:SC_getSnapshotMod("martianUltimatum", false) and tmpMod > 0 then
+		PST:addModifiers({ speed = tmpMod, SC_martianDebuff = { value = 0, set = true } }, true)
 	end
 
 	-- Mod: chance to gain +4% all stats when entering a room with monsters

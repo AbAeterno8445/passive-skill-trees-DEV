@@ -526,7 +526,7 @@ PST.SCAncients = {
             beastRewards = {2, 0}
         }
     },
-    itThatWasTaken = {
+    --[[itThatWasTaken = {
         weight = 100,
         spriteFrame = 12,
         name = "It That Was Taken",
@@ -540,7 +540,7 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
-    },
+    },]]
     martianUltimatum = {
         weight = 100,
         spriteFrame = 14,
@@ -548,7 +548,7 @@ PST.SCAncients = {
         description = {
             "Start with Mars.",
             "Every 4 to 8 seconds while in a room with monsters, spawn a pattern of static harmless tears around you.",
-            "After 1.5 seconds, the tears fire towards your direction, dealing contact damage.",
+            "After 2 seconds, the tears fire towards your direction, dealing contact damage.",
             "-0.05 speed when hit, up to -0.25. Resets every room."
         },
         rewards = {
@@ -557,7 +557,7 @@ PST.SCAncients = {
             beastRewards = {1, 5}
         }
     },
-    starReaper = {
+    --[[starReaper = {
         weight = 100,
         spriteFrame = 13,
         name = "Star Reaper",
@@ -572,7 +572,7 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
-    },
+    },]]
     glace = {
         weight = 100,
         spriteFrame = 16,
