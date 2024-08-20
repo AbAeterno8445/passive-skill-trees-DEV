@@ -616,7 +616,8 @@ function PST:resetMods()
 		SC_circadianExplImmune = 0,
 		SC_soulEaterMobs = {},
 		SC_hoveringTears = {},
-		SC_exploderTears = {}
+		SC_exploderTears = {},
+		SC_glaceDebuff = 0
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

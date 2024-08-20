@@ -132,6 +132,17 @@ function PST:onNewRun(isContinued)
             if tmpSCMods["range"] then tmpSCMods["range"] = tmpSCMods["range"] - 10
             else tmpSCMods["range"] = -10 end
         end
+        -- Ancient starcursed jewel: Glace
+        if PST:SC_getSnapshotMod("glace", false) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_URANUS)
+            player:AddSmeltedTrinket(TrinketType.TRINKET_ICE_CUBE)
+            local tmpReduction = -50
+            if tmpSCMods["tearsPerc"] then tmpSCMods["tearsPerc"] = tmpSCMods["tearsPerc"] + tmpReduction
+            else tmpSCMods["tearsPerc"] = tmpReduction end
+            if tmpSCMods["speedPerc"] then tmpSCMods["speedPerc"] = tmpSCMods["speedPerc"] + tmpReduction
+            else tmpSCMods["speedPerc"] = tmpReduction end
+            tmpSCMods["SC_glaceDebuff"] = -tmpReduction
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

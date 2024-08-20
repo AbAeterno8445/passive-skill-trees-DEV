@@ -637,6 +637,12 @@ function PST:onDeath(entity)
                 end
             end
         end
+        -- Ancient starcursed jewel: Glace
+        if PST:SC_getSnapshotMod("glace", false) then
+            if entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN) and PST:getTreeSnapshotMod("SC_glaceDebuff", 0) > 0 then
+                PST:addModifiers({ speedPerc = 0.5, tearsPerc = 0.5, SC_glaceDebuff = -0.5 }, true)
+            end
+        end
 
         -- Samson temp mods
         if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then

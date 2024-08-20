@@ -543,7 +543,7 @@ PST.SCAncients = {
     },
     martianUltimatum = {
         weight = 100,
-        spriteFrame = 13,
+        spriteFrame = 14,
         name = "Martian Ultimatum",
         description = {
             "Start with Mars.",
@@ -559,13 +559,27 @@ PST.SCAncients = {
     },
     starReaper = {
         weight = 100,
-        spriteFrame = 14,
+        spriteFrame = 13,
         name = "Star Reaper",
         description = {
             "Start with Death's List.",
             "Deal half as much damage to unmarked enemies.",
             "Killing an unmarked enemy grants -1% all stats, up to -25%. Clearing a room halves the current debuff.",
             "Killing an unmarked enemy restarts Death's List."
+        },
+        rewards = {
+            xpgain = 60,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
+        }
+    },
+    glace = {
+        weight = 100,
+        spriteFrame = 16,
+        name = "Glace",
+        description = {
+            "Start with Uranus and a smelted Ice Cube.",
+            "-50% speed and tears. Destroying a frozen enemy reduces this debuff by 0.5%. Resets every floor."
         },
         rewards = {
             xpgain = 60,

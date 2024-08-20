@@ -98,6 +98,12 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_chroniclerRooms = { value = levelRooms, set = true } }, true)
     end
 
+    -- Ancient starcursed jewel: Glace
+    if PST:SC_getSnapshotMod("glace", false) then
+        local tmpDebuff = 50 - PST:getTreeSnapshotMod("SC_glaceDebuff", 0)
+        PST:addModifiers({ tearsPerc = -tmpDebuff, speedPerc = -tmpDebuff, SC_glaceDebuff = tmpDebuff }, true)
+    end
+
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)
