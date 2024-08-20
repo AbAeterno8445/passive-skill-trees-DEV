@@ -116,6 +116,7 @@ PST.SCMods = {
             rolls = {{8, 14}},
             mightyRolls = {{16, 22}},
             starmightCalc = function(roll) return 8 + roll end,
+            onConflict = {conflictFuncs.simpleSum},
             description = "Monsters receive %d%% less damage from explosions."
         },
         mobFirstBlock = {
@@ -323,6 +324,14 @@ PST.SCMods = {
             starmightCalc = function(roll) return 7 + roll * 3 end,
             onConflict = {conflictFuncs.simpleSum},
             description = "Shop items cost %d more coins."
+        },
+        itemPoolRemoval = {
+            weight = 90,
+            rolls = {{1, 4}, {3, 4}},
+            mightyOnly = true,
+            starmightCalc = function(roll, roll2) return 10 + roll * 5 + roll2 * 6 end,
+            onConflict = {conflictFuncs.simpleSum, conflictFuncs.highest},
+            description = "When starting a run, remove %d random item(s) of quality %d from all item pools."
         }
     },
     xpgain = "+%d%% xp gain while equipped.",

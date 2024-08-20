@@ -86,6 +86,24 @@ function PST:onNewRun(isContinued)
         tmpMod = PST:SC_getSnapshotMod("lessLuck", 0)
         if tmpMod ~= 0 then tmpSCMods["luck"] = -tmpMod end
 
+        -- Item pool removals
+        tmpMod = PST:SC_getSnapshotMod("itemPoolRemoval", {0, 0})
+        if tmpMod[1] > 0 and tmpMod[2] > 0 then
+            local pickedItems = 0
+            local failsafe = 0
+            while pickedItems < tmpMod[1] do
+                local tmpItem = itemPool:GetCollectible(math.random(ItemPoolType.NUM_ITEMPOOLS) - 1)
+                if Isaac.GetItemConfig():GetCollectible(tmpItem).Quality == tmpMod[2] then
+                    itemPool:RemoveCollectible(tmpItem)
+                    pickedItems = pickedItems + 1
+                end
+                failsafe = failsafe + 1
+                if failsafe > 5000 then
+                    break
+                end
+            end
+        end
+
         -- Equipped ancient starcursed jewels
         for i=1,2 do
             local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
