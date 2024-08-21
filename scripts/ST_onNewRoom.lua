@@ -22,7 +22,11 @@ function PST:onNewRoom()
 	local room = Game():GetRoom()
 	local roomEntities = {}
 
-	PST:addModifiers({ roomClearProc = false }, true)
+	if room:GetAliveEnemiesCount() == 0 then
+		PST:addModifiers({ roomClearProc = true }, true)
+	else
+		PST:addModifiers({ roomClearProc = false }, true)
+	end
 
 	-- Optimize GetRoomEntities
 	local function PST_FetchRoomEntities()
