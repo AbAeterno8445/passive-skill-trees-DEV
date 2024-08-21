@@ -457,7 +457,7 @@ function PST:onNewRoom()
 			local itemPool = Game():GetItemPool()
 			local rolledItems = {}
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
-				if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+				if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
 					if Isaac.GetItemConfig():GetCollectible(tmpEntity.SubType).Type == ItemType.ITEM_ACTIVE then
 						local addedItem = false
 						while not addedItem do

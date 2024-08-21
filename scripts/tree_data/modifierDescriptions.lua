@@ -303,6 +303,18 @@ PST.treeModDescriptions = {
         },
         category = "extra", sort = 1106
     },
+    championChance = {
+        str = "%.2f%% additional chance for monsters to become champions.",
+        category = "extra", sort = 1107
+    },
+    activeItemReroll = {
+        str = {
+            "When first entering a room, %.2f%% chance to reroll active item pedestals into random passive items",
+            "if you are holding an active item.",
+            "    This effect can reroll up to 2 items per floor."
+        },
+        category = "extra", sort = 1108
+    },
 
     -- Starcursed jewels enabled
     enableSCJewels = {
