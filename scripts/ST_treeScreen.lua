@@ -70,7 +70,11 @@ local treeControlDesc = {
     "R: respec hovered node",
     "Q: switch to selected character's tree",
     "Shift + Q: enable/disable tree effects next run",
-    "Shift + H: display a list of all active modifiers"
+    "Shift + H: display a list of all active modifiers",
+    "",
+    "Notes:",
+    "The first character you level up to 30 grants global SP for every level.",
+    "Afterwards, other characters must level past 30 to start granting global SP."
 }
 local treeControlDescController = {
     "Joystick / Dpad: pan camera",
@@ -80,7 +84,11 @@ local treeControlDescController = {
     "Item + Menu action: respec hovered node",
     "Menu tab: switch to selected character's tree",
     "Item + Menu tab: enable/disable tree effects next run",
-    "Item + Select: display a list of all active modifiers"
+    "Item + Select: display a list of all active modifiers",
+    "",
+    "Notes:",
+    "The first character you level up to 30 grants global SP for every level.",
+    "Afterwards, other characters must level past 30 to start granting global SP."
 }
 
 -- Starcursed menus
@@ -1211,9 +1219,9 @@ function PST:treeMenuRenderer()
 
     -- Draw help menu
     if helpOpen == "keyboard" then
-        drawNodeBox("Tree Controls", treeControlDesc, screenW / 2, screenH * 3/4)
+        drawNodeBox("Tree Controls", treeControlDesc, 16, 40, true, 1)
     elseif helpOpen == "controller" then
-        drawNodeBox("Tree Controls (Controller)", treeControlDescController, screenW / 2, screenH * 3/4)
+        drawNodeBox("Tree Controls (Controller)", treeControlDescController, 16, 40, true, 1)
     -- Draw total modifiers menu
     elseif totalModsMenuOpen then
         drawNodeBox("Active Modifiers", totalModsList, 16, 16 + totalModsMenuY, true, 1)

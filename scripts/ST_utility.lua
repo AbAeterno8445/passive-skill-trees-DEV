@@ -156,7 +156,14 @@ function PST:addXP(xpParam, showText)
 				sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
 				charData.level = charData.level + 1
 				charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
-				PST.modData.skillPoints = PST.modData.skillPoints + 1
+
+				local highestLevel = 1
+				for _, tmpChar in pairs(PST.modData.charData) do
+					if tmpChar.level > highestLevel then highestLevel = tmpChar.level end
+				end
+				if charData.level == highestLevel or charData.level > 30 then
+					PST.modData.skillPoints = PST.modData.skillPoints + 1
+				end
 
 				local xpRemaining = charData.xp - charData.xpRequired
 
