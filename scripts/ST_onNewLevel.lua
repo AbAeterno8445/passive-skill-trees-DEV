@@ -225,16 +225,6 @@ function PST:onNewLevel()
         PST:addModifiers({ bossChallengeUnlockProc = false }, true)
     end
 
-    -- Mod: chance to smelt currently held trinkets
-    if 100 * math.random() < PST:getTreeSnapshotMod("floorSmeltTrinket", 0) then
-        local tmpTrinket = player:GetTrinket(0)
-        if tmpTrinket and tmpTrinket > 0 then
-            if player:AddSmeltedTrinket(tmpTrinket) then
-                player:TryRemoveTrinket(tmpTrinket)
-            end
-        end
-    end
-
     -- Mod: chance to convert all curse room spiked doors to regular ones
     if 100 * math.random() < PST:getTreeSnapshotMod("curseRoomSpikesOut", 0) then
         PST:addModifiers({ curseRoomSpikesOutProc = true }, true)

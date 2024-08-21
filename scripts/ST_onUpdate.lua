@@ -113,6 +113,17 @@ function PST:onUpdate()
 				PST:createFloatTextFX("Map revealed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
 			end
 
+			-- Mod: chance to smelt currently held trinkets
+			if 100 * math.random() < PST:getTreeSnapshotMod("floorSmeltTrinket", 0) then
+				local tmpTrinket = player:GetTrinket(0)
+				if tmpTrinket and tmpTrinket > 0 then
+					if player:AddSmeltedTrinket(tmpTrinket) then
+						player:TryRemoveTrinket(tmpTrinket)
+						PST:createFloatTextFX("Trinket smelted!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+					end
+				end
+			end
+
 			-- Mod: chance to spawn a Blood Donation Machine at the start of a floor
 			if 100 * math.random() < PST:getTreeSnapshotMod("bloodMachineSpawn", 0) then
 				local tmpPos = room:GetCenterPos()
