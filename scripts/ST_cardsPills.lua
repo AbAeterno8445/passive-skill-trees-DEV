@@ -83,6 +83,23 @@ function PST:onUseCard(card, player, useFlags)
         end
     end
 
+    -- Ancient starcursed jewel: Baubleseeker (remove smelted trinket with rev stars and spawn random trinket)
+    if PST:SC_getSnapshotMod("baubleseeker", false) and card == Card.CARD_REVERSE_STARS then
+        local smelted = {}
+        for trinketID, tmpTrinket in pairs(player:GetSmeltedTrinkets()) do
+            if tmpTrinket.trinketAmount > 0 or tmpTrinket.goldenTrinketAmount > 0 then
+                table.insert(smelted, trinketID)
+            end
+        end
+        if #smelted > 0 then
+            player:TryRemoveSmeltedTrinket(smelted[math.random(#smelted)])
+            PST:addModifiers({ allstatsPerc = -1, SC_baubleSeekerBuff = -1 }, true)
+            local tmpTrinket = Game():GetItemPool():GetTrinket()
+            local tmpPos = Game():GetRoom():FindFreePickupSpawnPosition(player.Position)
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpTrinket, Random() + 1)
+        end
+    end
+
     -- Ancient starcursed jewel: Luminescent Die
     if PST:SC_getSnapshotMod("luminescentDie", false) then
         PST:addModifiers({ SC_luminescentUsedCard = true }, true)
