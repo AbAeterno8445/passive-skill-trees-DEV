@@ -391,5 +391,10 @@ function PST:onCurseEval(curses)
         curses = curses &~ LevelCurse.CURSE_OF_BLIND
     end
 
+    -- Ancient starcursed jewel: Sanguinis
+    if PST:SC_getSnapshotMod("sanguinis", false) then
+        curses = curses | LevelCurse.CURSE_OF_THE_CURSED
+    end
+
     return curses
 end

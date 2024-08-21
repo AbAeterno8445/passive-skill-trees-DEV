@@ -147,6 +147,10 @@ function PST:onNewRun(isContinued)
         if PST:SC_getSnapshotMod("martianUltimatum", false) then
             player:AddCollectible(CollectibleType.COLLECTIBLE_MARS)
         end
+        -- Ancient starcursed jewel: Sanguinis
+        if PST:SC_getSnapshotMod("sanguinis", false) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

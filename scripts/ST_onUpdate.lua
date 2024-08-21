@@ -36,6 +36,11 @@ function PST:onUpdate()
 		lvlCurseTracker = -1
 
 		local level = Game():GetLevel()
+		-- Ancient starcursed jewel: Sanguinis
+		if PST:SC_getSnapshotMod("sanguinis", false) and PST:isFirstOrigStage() then
+			Game():GetLevel():AddCurse(LevelCurse.CURSE_OF_THE_CURSED, false)
+		end
+
 		-- Mod: chance to reveal the arcade room's location if it is present
 		if 100 * math.random() < PST:getTreeSnapshotMod("arcadeReveal", 0) then
 			local arcadeIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ARCADE, false, RNG())

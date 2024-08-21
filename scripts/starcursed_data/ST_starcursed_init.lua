@@ -526,21 +526,20 @@ PST.SCAncients = {
             beastRewards = {2, 0}
         }
     },
-    --[[itThatWasTaken = {
+    sanguinis = {
         weight = 100,
         spriteFrame = 12,
-        name = "It That Was Taken",
+        name = "Sanguinis",
         description = {
-            "When clearing a room, 12% chance for a group of blood monsters to ambush you.",
-            "Chance increases by 4% when entering a new floor.",
-            "Lose this jewel when dying while an ambush is active."
+            "Guarantees Curse of the Cursed, if applicable, turning doorways into spiked doorways.",
+            "Start with holy mantle."
         },
         rewards = {
-            xpgain = 70,
+            xpgain = 60,
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
-    },]]
+    },
     martianUltimatum = {
         weight = 100,
         spriteFrame = 14,
@@ -557,20 +556,16 @@ PST.SCAncients = {
             beastRewards = {1, 5}
         }
     },
-    --[[starReaper = {
+    --[[strangeWarpstone = {
         weight = 100,
         spriteFrame = 13,
-        name = "Star Reaper",
+        name = "Strange Warpstone",
         description = {
-            "Start with Death's List.",
-            "Deal half as much damage to unmarked enemies.",
-            "Killing an unmarked enemy grants -1% all stats, up to -25%. Clearing a room halves the current debuff.",
-            "Killing an unmarked enemy restarts Death's List."
+            "Guarantees Curse of the Giant if applicable.",
+            "Black Candle can no longer show up."
         },
         rewards = {
-            xpgain = 60,
-            deliriumRewards = {1, 5},
-            beastRewards = {1, 5}
+            xpgain = 20
         }
     },]]
     glace = {
