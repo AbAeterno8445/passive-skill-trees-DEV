@@ -66,8 +66,8 @@ PST.SCMods = {
             weight = 100,
             rolls = {{8, 10}},
             mightyRolls = {{3, 4}},
-            starmightCalc = function(roll) return 7 + (11 - roll) * 4 end,
-            onConflict = {conflictFuncs.simpleSum},
+            starmightCalc = function(roll) return 7 + (11 - roll) * 2 end,
+            onConflict = {conflictFuncs.lowest},
             description = "Every %d seconds in a room, status effects are cleansed from monsters."
         },
         mobBlock = {
@@ -108,7 +108,7 @@ PST.SCMods = {
             weight = 100,
             rolls = {},
             mightyRolls = {},
-            starmightCalc = function() return 18 end,
+            starmightCalc = function() return 16 end,
             description = "Monsters have one-shot protection."
         },
         mobExplosionDR = {
