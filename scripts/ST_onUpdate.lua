@@ -88,6 +88,20 @@ function PST:onUpdate()
 				end
 			end
 
+			-- Ancient starcursed jewel: Cursed Starpiece
+			if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() then
+				if not PST:getTreeSnapshotMod("SC_cursedStarpieceDebuff", false) then
+					-- Halve debuff if no treasure room in level
+					local tmpRoomIdx = level:QueryRoomTypeIndex(RoomType.ROOM_TREASURE, false, RNG())
+					local treasureRoom = level:GetRoomByIdx(tmpRoomIdx)
+					if treasureRoom and treasureRoom.Data.Type == RoomType.ROOM_TREASURE then
+						PST:addModifiers({ allstatsPerc = -12, SC_cursedStarpieceDebuff = true }, true)
+					else
+						PST:addModifiers({ allstatsPerc = -6, SC_cursedStarpieceDebuff = true }, true)
+					end
+				end
+			end
+
 			-- Mod: chance to reveal map
 			if PST:getTreeSnapshotMod("mapRevealed", false) then
 				level:ShowMap()

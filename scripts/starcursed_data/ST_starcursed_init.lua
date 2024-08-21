@@ -400,7 +400,7 @@ PST.SCAncients = {
             "Starting from the second floor, all treasure rooms contain a Reversed Stars card",
             "instead of item pedestals.",
             "Starting from the second floor, -12% all stats for the current floor while you",
-            "haven't used Reversed Stars.",
+            "haven't used Reversed Stars. Apply -6% instead if the floor doesn't have a treasure room.",
             "Reversed Stars has a 100% chance to remove an additional item. If used in a treasure",
             "room, lower this chance to 35%."
         },

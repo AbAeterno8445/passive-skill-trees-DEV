@@ -2,6 +2,7 @@ function PST:onNewLevel()
     if not PST.gameInit then return end
 
     local player = Isaac.GetPlayer()
+    local level = Game():GetLevel()
 
     PST.specialNodes.mobHitReduceDmg = 0
     PST.specialNodes.momDeathProc = false
@@ -43,13 +44,6 @@ function PST:onNewLevel()
         end
     end
 
-    -- Ancient starcursed jewel: Cursed Starpiece
-    if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() then
-        if not PST:getTreeSnapshotMod("SC_cursedStarpieceDebuff", false) then
-            PST:addModifiers({ allstatsPerc = -12, SC_cursedStarpieceDebuff = true }, true)
-        end
-    end
-
     -- Ancient starcursed jewel: Opalescent Purity
     if PST:getTreeSnapshotMod("SC_opalescentProc", false) then
         PST:addModifiers({ SC_opalescentProc = false }, true)
@@ -74,7 +68,7 @@ function PST:onNewLevel()
     end
 
     -- Ancient starcursed jewel: Luminescent Die
-    if PST:SC_getSnapshotMod("luminescentDie", false) and not Game():GetLevel():IsAscent() then
+    if PST:SC_getSnapshotMod("luminescentDie", false) and not level:IsAscent() then
         if PST:getTreeSnapshotMod("SC_luminescentUsedCard", false) then
             PST:addModifiers({ SC_luminescentUsedCard = false }, true)
         else
@@ -94,7 +88,7 @@ function PST:onNewLevel()
             PST:addModifiers({ allstatsPerc = -tmpAdd, SC_chroniclerDebuff = tmpAdd }, true)
         end
 
-        local levelRooms = math.max(2, Game():GetLevel():GetRoomCount() - 4)
+        local levelRooms = math.max(2, level:GetRoomCount() - 4)
         PST:addModifiers({ SC_chroniclerRooms = { value = levelRooms, set = true } }, true)
     end
 
