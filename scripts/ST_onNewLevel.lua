@@ -74,7 +74,7 @@ function PST:onNewLevel()
     end
 
     -- Ancient starcursed jewel: Luminescent Die
-    if PST:SC_getSnapshotMod("luminescentDie", false) then
+    if PST:SC_getSnapshotMod("luminescentDie", false) and not Game():GetLevel():IsAscent() then
         if PST:getTreeSnapshotMod("SC_luminescentUsedCard", false) then
             PST:addModifiers({ SC_luminescentUsedCard = false }, true)
         else
