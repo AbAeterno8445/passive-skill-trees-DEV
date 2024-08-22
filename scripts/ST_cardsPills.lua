@@ -95,7 +95,7 @@ function PST:onUseCard(card, player, useFlags)
             player:TryRemoveSmeltedTrinket(smelted[math.random(#smelted)])
             PST:addModifiers({ allstatsPerc = -1, SC_baubleSeekerBuff = -1 }, true)
             local tmpTrinket = Game():GetItemPool():GetTrinket()
-            local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position)
+            local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 20)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpTrinket, Random() + 1)
         end
     end

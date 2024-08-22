@@ -407,13 +407,13 @@ function PST:onNewRoom()
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
 		if room:GetType() == RoomType.ROOM_PLANETARIUM and 100 * math.random() < PST.SCDropRates.planetarium().regular then
-			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 			PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.planetarium().ancient)
 		end
 
 		-- Starcursed jewel in curse rooms
 		if room:GetType() == RoomType.ROOM_CURSE and 100 * math.random() < PST.SCDropRates.curseRoom(level:GetStage()).regular then
-			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 			PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.curseRoom(level:GetStage()).ancient)
 		end
 

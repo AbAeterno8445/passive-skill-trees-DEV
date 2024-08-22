@@ -700,7 +700,7 @@ function PST:onUpdate()
 				if not PST:getTreeSnapshotMod("SC_challClear", false) then
 					-- Starcursed jewel drop
 					if 100 * math.random() < PST.SCDropRates.challenge(level:GetStage()).regular then
-						local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+						local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 						PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.challenge(level:GetStage()).ancient)
 						jewelDrop = true
 					end
@@ -737,7 +737,7 @@ function PST:onUpdate()
 			if Ambush.GetCurrentWave() >= Ambush.GetMaxBossrushWaves() then
 				-- Starcursed jewel drop
 				if 100 * math.random() < PST.SCDropRates.bossrush().regular then
-					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.bossrush().ancient)
 					jewelDrop = true
 				end
@@ -773,13 +773,13 @@ function PST:onUpdate()
 
 				-- Ancient starcursed jewel: Luminescent Die
 				if PST:SC_getSnapshotMod("luminescentDie", false) then
-					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_REVERSE_WHEEL_OF_FORTUNE, Random() + 1)
 				end
 
 				-- Starcursed jewel drop
 				if 100 * math.random() < PST.SCDropRates.boss(level:GetStage()).regular then
-					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
 				end
 			end
@@ -788,12 +788,12 @@ function PST:onUpdate()
 			if not jewelDrop and not PST:isFirstOrigStage() then
 				tmpMod = PST:getTreeSnapshotMod("SC_jewelDropOnClear", 0)
 				if 100 * math.random() < tmpMod then
-					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 					PST:SC_dropRandomJewelAt(tmpPos, 1)
 					PST:addModifiers({ SC_jewelDropOnClear = { value = 0, set = true } }, true)
 					jewelDrop = true
 				elseif 100 * math.random() < 25 and tmpMod < 20 then
-					PST:addModifiers({ SC_jewelDropOnClear = 1 }, true)
+					PST:addModifiers({ SC_jewelDropOnClear = 0.5 }, true)
 				end
 			end
 

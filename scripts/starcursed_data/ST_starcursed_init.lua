@@ -586,14 +586,14 @@ PST.SCAncients = {
 }
 
 PST.SCDropRates = {
-    championKill = function(stage) return { regular = 3 + stage / 3, ancient = 1 } end,
-    boss = function(stage) return { regular = 15 + stage * 2, ancient = 7 } end,
-    challenge = function(stage) return { regular = 33 + stage * 3, ancient = 4 } end,
+    championKill = function(stage) return { regular = 1.5 + stage / 4, ancient = 1 } end,
+    boss = function(stage) return { regular = 9 + stage * 1.5, ancient = 7 } end,
+    challenge = function(stage) return { regular = 20 + stage * 2, ancient = 4 } end,
     bossrush = function() return { regular = 85, ancient = 15 } end,
     planetarium = function() return { regular = 33, ancient = 10 } end,
     curseRoom = function(stage)
         if PST:isFirstOrigStage() then return { regular = 0, ancient = 0 } end
-        return { regular = 10 + stage, ancient = 2 }
+        return { regular = 8 + stage / 2, ancient = 2 }
     end,
 }
 

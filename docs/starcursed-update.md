@@ -22,12 +22,12 @@
 
 ### **How to obtain Starcursed Jewels:**
 
-- Killing champion monsters: (3 + floor / 3)% chance
-- Clearing rooms after first floor: starts at 0%, 25% chance to get +1% chance when clearing a room, up to 20% - on drop, resets back to 0%
-- Clearing boss room: (15 + floor \* 2)% chance
-- Clearing challenge rooms: (33 + floor \* 3) chance
+- Killing champion monsters: (1.5 + floor / 4)% chance
+- Clearing rooms after first floor: starts at 0%, 25% chance to get +0.5% chance when clearing a room, up to 15% - on drop, resets back to 0%
+- Clearing boss room: (9 + floor \* 1.5)% chance
+- Clearing challenge rooms: (20 + floor \* 2) chance
 - Clearing boss rush: 85% chance
-- Curse rooms: (10 + floor)% chance of containing one.
+- Curse rooms: (8 + floor / 2)% chance of containing one.
 - Planetariums: 33% chance of containing one.
 
 ### **Starmight:**
