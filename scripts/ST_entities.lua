@@ -35,3 +35,10 @@ function PST:postNPCInit(npc)
         npc.HitPoints = npc.HitPoints - math.min(npc.HitPoints / 2, npc.MaxHitPoints * (PST:getTreeSnapshotMod("greedLowerHealth", 0) / 100))
     end
 end
+
+function PST:familiarInit(familiar)
+    -- Spider Mod node, prevent spider familiar from spawning
+    if PST:getTreeSnapshotMod("spiderMod", false) and familiar.Type == EntityType.ENTITY_FAMILIAR and familiar.Variant == FamiliarVariant.SPIDER_MOD then
+        familiar:Remove()
+    end
+end

@@ -274,6 +274,12 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ speedPerc = 7 }, true)
     end
 
+    -- Spider Mod node
+    if PST:getTreeSnapshotMod("spiderMod", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then
