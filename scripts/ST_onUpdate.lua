@@ -11,8 +11,19 @@ local lvlCurseTracker = -1
 -- On update
 local clearRoomProc = false
 function PST:onUpdate()
-	local room = Game():GetRoom()
-	local player = Isaac.GetPlayer()
+	local level = PST.level
+	if not level then
+		PST.level = Game():GetLevel()
+		level = PST.level
+	end
+
+	local room = PST.room
+	if not room then
+		PST.room = Game():GetRoom()
+		room = PST.room
+	end
+
+	local player = PST:getPlayer()
 
 	-- First update when entering floor
 	if PST.floorFirstUpdate then
@@ -24,14 +35,14 @@ function PST:onUpdate()
 		PST.specialNodes.jacobHeartLuckVal = 0
 		lvlCurseTracker = -1
 
-		local level = Game():GetLevel()
 		-- Ancient starcursed jewel: Sanguinis
 		if PST:SC_getSnapshotMod("sanguinis", false) and PST:isFirstOrigStage() then
-			Game():GetLevel():AddCurse(LevelCurse.CURSE_OF_THE_CURSED, false)
+			level:AddCurse(LevelCurse.CURSE_OF_THE_CURSED, false)
 		end
 
 		-- Mod: chance to reveal the arcade room's location if it is present
-		if 100 * math.random() < PST:getTreeSnapshotMod("arcadeReveal", 0) then
+		local tmpMod = PST:getTreeSnapshotMod("arcadeReveal", 0)
+		if tmpMod > 0 and 100 * math.random() < tmpMod then
 			local arcadeIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ARCADE, false, RNG())
 			local arcadeRoom = level:GetRoomByIdx(arcadeIdx)
 			if arcadeRoom then
@@ -41,7 +52,8 @@ function PST:onUpdate()
 		end
 
 		-- Mod: chance to reveal the shop room's location if it is present
-		if 100 * math.random() < PST:getTreeSnapshotMod("shopReveal", 0) then
+		tmpMod = PST:getTreeSnapshotMod("shopReveal", 0)
+		if tmpMod > 0 and 100 * math.random() < tmpMod then
 			local shopIdx = level:QueryRoomTypeIndex(RoomType.ROOM_SHOP, false, RNG())
 			local shopRoom = level:GetRoomByIdx(shopIdx)
 			if shopRoom then
@@ -103,7 +115,8 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to smelt currently held trinkets
-			if 100 * math.random() < PST:getTreeSnapshotMod("floorSmeltTrinket", 0) then
+			tmpMod = PST:getTreeSnapshotMod("floorSmeltTrinket", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
 				local tmpTrinket = player:GetTrinket(0)
 				if tmpTrinket and tmpTrinket > 0 then
 					if player:AddSmeltedTrinket(tmpTrinket) then
@@ -114,7 +127,8 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to spawn a Blood Donation Machine at the start of a floor
-			if 100 * math.random() < PST:getTreeSnapshotMod("bloodMachineSpawn", 0) then
+			tmpMod = PST:getTreeSnapshotMod("bloodMachineSpawn", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
 				local tmpPos = room:GetCenterPos()
 				tmpPos.Y = tmpPos.Y - 40
 				Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.BLOOD_DONATION_MACHINE, tmpPos, Vector.Zero, nil, 0, Random() + 1)
@@ -123,7 +137,8 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to spawn a random trinket at the start of a floor
-			if 100 * math.random() < PST:getTreeSnapshotMod("trinketSpawn", 0) then
+			tmpMod = PST:getTreeSnapshotMod("trinketSpawn", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
 				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
        			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, Game():GetItemPool():GetTrinket(), Random() + 1)
 			end
@@ -152,7 +167,8 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to spawn Eden's Blessing at the beginning of the floor
-			if 100 * math.random() < PST:getTreeSnapshotMod("edenBlessingSpawn", 0) and not PST:getTreeSnapshotMod("edenBlessingSpawned", false) then
+			tmpMod = PST:getTreeSnapshotMod("edenBlessingSpawn", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod and not PST:getTreeSnapshotMod("edenBlessingSpawned", false) then
 				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_EDENS_BLESSING, Random() + 1)
@@ -579,8 +595,8 @@ function PST:onUpdate()
 		if tmpStats ~= 0 then
 			player:AddCacheFlags(PST.allstatsCache, true)
 		end
+		luckTracker = player.Luck
 	end
-	luckTracker = player.Luck
 
 	-- Coin changes
 	if player:GetNumCoins() ~= coinTracker then
@@ -592,11 +608,11 @@ function PST:onUpdate()
 				player:AddCoins(-tmpMod[2])
 			end
 		end
+		coinTracker = player:GetNumCoins()
 	end
-	coinTracker = player:GetNumCoins()
 
 	-- Level curse changes
-	local tmpCurses = Game():GetLevel():GetCurses()
+	local tmpCurses = level:GetCurses()
 	if tmpCurses ~= lvlCurseTracker then
 		-- Mod: all stats while a level curse is present
 		tmpMod = PST:getTreeSnapshotMod("curseAllstats", 0)
@@ -607,8 +623,8 @@ function PST:onUpdate()
 				PST:addModifiers({ allstatsPerc = -tmpMod, curseAllstatsActive = false }, true)
 			end
 		end
+		lvlCurseTracker = tmpCurses
 	end
-	lvlCurseTracker = tmpCurses
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
@@ -679,7 +695,6 @@ function PST:onUpdate()
 	if room:GetAliveEnemiesCount() == 0 and (not clearRoomProc or PST.modData.xpObtained > 0) then
 		PST.modData.spawnKills = 0
 
-		local level = Game():GetLevel()
 		local jewelDrop = false
 		-- Challenge rooms
 		if room:GetType() == RoomType.ROOM_CHALLENGE then
@@ -792,7 +807,7 @@ function PST:onUpdate()
 
 			-- Starcursed mod: chance to spawn an additional troll bomb at the center of the room on clear
 			local tmpChance = PST:getTreeSnapshotMod("trollBombOnClear", 0)
-			if 100 * math.random() < tmpChance then
+			if tmpChance > 0 and 100 * math.random() < tmpChance then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
 				Game():Spawn(EntityType.ENTITY_BOMB, BombVariant.BOMB_TROLL, tmpPos, Vector.Zero, nil, BombSubType.BOMB_TROLL, Random() + 1)
 			end
@@ -811,7 +826,7 @@ function PST:onUpdate()
 			if isBossRoom then
 				tmpChance = tmpChance * 2
 			end
-			if 100 * math.random() < tmpChance then
+			if tmpChance > 0 and 100 * math.random() < tmpChance then
 				player:AddHearts(1)
 				if isBossRoom then
 					player:AddHearts(1)
@@ -823,7 +838,7 @@ function PST:onUpdate()
 			if isBossRoom then
 				tmpChance = tmpChance * 2
 			end
-			if 100 * math.random() < tmpChance then
+			if tmpChance > 0 and 100 * math.random() < tmpChance then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
 			end
@@ -867,7 +882,8 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to spawn 1/2 red heard as Lazarus, or 1/2 soul heart as Lazarus Risen
-			if 100 * math.random() < PST:getTreeSnapshotMod("lazarusClearHearts", 0) then
+			tmpMod = PST:getTreeSnapshotMod("lazarusClearHearts", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
@@ -884,8 +900,9 @@ function PST:onUpdate()
 				end
 			end
 
-			-- Mod: chance to spawn a soul heart on room clear
-			if 100 * math.random() < PST:getTreeSnapshotMod("soulHeartOnClear", 0) then
+			-- Mod: chance to spawn a soulheart on room clear
+			tmpMod = PST:getTreeSnapshotMod("soulHeartOnClear", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
 			end
@@ -900,12 +917,14 @@ function PST:onUpdate()
 			end
 
 			-- Mod: chance to gain a soul charge when clearing a room
-			if 100 * math.random() < PST:getTreeSnapshotMod("soulChargeOnClear", 0) then
+			tmpMod = PST:getTreeSnapshotMod("soulChargeOnClear", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
 				player:AddSoulCharge(1)
 			end
 
 			-- Song of Darkness node (Siren's tree)
-			if PST:getTreeSnapshotMod("songOfDarkness", false) and 100 * math.random() < PST:getTreeSnapshotMod("songOfDarknessChance", 2) then
+			tmpMod = PST:getTreeSnapshotMod("songOfDarknessChance", 2)
+			if PST:getTreeSnapshotMod("songOfDarkness", false) and tmpMod > 0 and 100 * math.random() < tmpMod then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_BLACK, Random() + 1)
 			end

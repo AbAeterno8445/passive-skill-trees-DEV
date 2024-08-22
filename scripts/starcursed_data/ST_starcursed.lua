@@ -46,7 +46,7 @@ function PST:SC_dropRandomJewelAt(position, ancientChance)
     end
 
     local newJewelType = Isaac.GetTrinketIdByName(PST:SC_getRandomJewelType() .. " Starcursed Jewel")
-    if 100 * math.random() < ancientChanceModded then
+    if ancientChanceModded > 0 and 100 * math.random() < ancientChanceModded then
         newJewelType = Isaac.GetTrinketIdByName(PSTStarcursedType.ANCIENT .. " Starcursed Jewel")
     end
     if newJewelType ~= -1 then

@@ -12,9 +12,9 @@ local heartTracker = {
 
 function PST:resetHeartUpdater()
     for i=1,2 do
-        local player = Isaac.GetPlayer()
+        local player = PST:getPlayer()
         if i == 2 then
-            player = Isaac.GetPlayer():GetOtherTwin()
+            player = player:GetOtherTwin()
         end
         if not player then break end
 
@@ -30,14 +30,14 @@ function PST:resetHeartUpdater()
 end
 
 function PST:onHeartUpdate(force)
-    local player = Isaac.GetPlayer()
+    local player = PST:getPlayer()
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
     local heartUpdated = false
 
     for i=1,2 do
         if i == 2 then
-            player = Isaac.GetPlayer():GetOtherTwin()
+            player = player:GetOtherTwin()
         end
         if not player then break end
         local tmpTwin = player:GetOtherTwin()

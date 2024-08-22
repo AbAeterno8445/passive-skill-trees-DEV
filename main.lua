@@ -170,6 +170,9 @@ end
 function PST:onExitGame()
 	PST:save()
 	PST.gameInit = false
+	PST.player = nil
+	PST.level = nil
+	PST.room = nil
 end
 
 include("scripts.ST_utility")

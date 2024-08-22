@@ -18,8 +18,10 @@ function PST:onNewRoom()
 	PST.specialNodes.SC_martianFX = {}
 	PST.specialNodes.SC_martianTears = {}
 
-	local player = Isaac.GetPlayer()
+	local player = PST:getPlayer()
 	local room = Game():GetRoom()
+	PST.room = room
+
 	local roomEntities = {}
 
 	if room:GetAliveEnemiesCount() == 0 then
@@ -504,7 +506,6 @@ function PST:onNewRoom()
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage
-			player = Isaac.GetPlayer()
 			if room:GetAliveEnemiesCount() > 0 and player:GetHearts() > 4 then
 				player:TakeDamage(1, 0, EntityRef(player), 0)
 			end

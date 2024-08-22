@@ -1,11 +1,12 @@
 -- Check for the grabBag tree mod, and roll to spawn one on the player
 function PST:tryGrabBag()
+    local player = PST:getPlayer()
     local grabBagChance = PST:getTreeSnapshotMod("grabBag", 0)
     if grabBagChance > 0 and 100 * math.random() < grabBagChance then
         Game():Spawn(
             EntityType.ENTITY_PICKUP,
             PickupVariant.PICKUP_GRAB_BAG,
-            Isaac.GetPlayer().Position,
+            player.Position,
             Vector.Zero,
             nil,
             SackSubType.SACK_NORMAL,
@@ -397,9 +398,10 @@ function PST:onPickupInit(pickup)
     elseif variant == PickupVariant.PICKUP_PILL then
         -- Blue Gambit node (Blue Baby's tree)
         if PST:getTreeSnapshotMod("blueGambit", false) and not PST:getTreeSnapshotMod("blueGambitPillProc", false) then
+            local player = PST:getPlayer()
             ---@diagnostic disable-next-line: undefined-field
             local newColor = Game():GetItemPool():GetPillColor(PillEffect.PILLEFFECT_BALLS_OF_STEEL)
-            PST:blueGambitPillSwap(subtype, Game():GetItemPool():GetPillEffect(subtype, Isaac.GetPlayer()), newColor)
+            PST:blueGambitPillSwap(subtype, Game():GetItemPool():GetPillEffect(subtype, player), newColor)
         end
     -- Cards
     elseif variant == PickupVariant.PICKUP_TAROTCARD then
@@ -459,7 +461,7 @@ function PST:onPickupInit(pickup)
             -- Soul Trickle node (Bethany's tree)
             if firstSpawn and not pickupGone and PST:getTreeSnapshotMod("soulTrickle", false) and
             (subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF) then
-                local player = Isaac.GetPlayer()
+                local player = PST:getPlayer()
                 if player:GetHearts() == player:GetMaxHearts() and not isShop and 100 * math.random() < 30 then
                     pickup:Remove()
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_SOUL, Random() + 1)

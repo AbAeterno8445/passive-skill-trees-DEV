@@ -1,9 +1,10 @@
 function PST:onNewLevel()
     if not PST.gameInit then return end
 
-    local player = Isaac.GetPlayer()
+    local player = PST:getPlayer()
     local level = Game():GetLevel()
 
+    PST.level = level
     PST.specialNodes.mobHitReduceDmg = 0
     PST.specialNodes.momDeathProc = false
 	PST:resetFloatingTexts()

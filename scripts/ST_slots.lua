@@ -18,9 +18,9 @@ function PST:onSlotUpdate(slot)
 
     -- Player collided with slot
     if slot:GetTouch() > 0 then
-        local player = Isaac.GetPlayer()
+        local player = PST:getPlayer()
         local playerHearts = player:GetHearts() + player:GetSoulHearts() + player:GetEternalHearts() + player:GetBoneHearts()
-        
+
         local spentCoins = player:GetNumCoins() < lastResources.coins
         local spentHearts = playerHearts < lastResources.hearts
         local spentKeys = player:GetNumKeys() < lastResources.keys
@@ -32,7 +32,7 @@ function PST:onSlotUpdate(slot)
             if PST:getTreeSnapshotMod("bloodDonor", false) then
                 SFXManager():Play(SoundEffect.SOUND_BEEP)
                 player:AddActiveCharge(1, 0, true, false, false)
-                if Isaac.GetPlayer():GetActiveItem(0) == CollectibleType.COLLECTIBLE_YUM_HEART and 100 * math.random() < 50 then
+                if player:GetActiveItem(0) == CollectibleType.COLLECTIBLE_YUM_HEART and 100 * math.random() < 50 then
                     player:AddActiveCharge(1, 0, true, false, false)
                 end
             end
@@ -44,7 +44,8 @@ function PST:onSlotUpdate(slot)
             end
 
             -- Mod: chance to spawn an additional nickel when using a Blood Donation Machine
-            if 100 * math.random() < PST:getTreeSnapshotMod("bloodDonationNickel", 0) then
+            tmpTreeMod = PST:getTreeSnapshotMod("bloodDonationNickel", 0)
+            if tmpTreeMod > 0 and 100 * math.random() < tmpTreeMod then
                 local tmpPos = Isaac.GetFreeNearPosition(slot.Position, 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
             end
@@ -95,7 +96,8 @@ function PST:onSlotUpdate(slot)
         if spentCoins and (slot.Variant == SlotVariant.FORTUNE_TELLING_MACHINE or slot.Variant == SlotVariant.SHOP_RESTOCK_MACHINE or
         slot.Variant == SlotVariant.SLOT_MACHINE or slot.Variant == SlotVariant.CRANE_GAME) then
             -- Mod: chance for machines that use coins to cost nothing on use
-            if 100 * math.random() < PST:getTreeSnapshotMod("freeMachinesChance", 0) then
+            local tmpMod = PST:getTreeSnapshotMod("freeMachinesChance", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
                 player:AddCoins(lastResources.coins - player:GetNumCoins())
                 PST:createFloatTextFX("Free use!", Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 50, true)
                 SFXManager():Play(SoundEffect.SOUND_PENNYPICKUP)

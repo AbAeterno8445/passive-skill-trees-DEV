@@ -1,9 +1,37 @@
 local sfx = SFXManager()
 
+function PST:getPlayer()
+	local player = PST.player
+	if not player then
+		PST.player = Isaac.GetPlayer()
+		player = PST.player
+	end
+	return player
+end
+
+function PST:getLevel()
+	local level = PST.level
+	if not level then
+		PST.level = Game():GetLevel()
+		level = PST.level
+	end
+	return level
+end
+
+function PST:getRoom()
+	local room = PST.room
+	if not room then
+		PST.room = Game():GetRoom()
+		room = PST.room
+	end
+	return room
+end
+
 -- Get current char name (different to EntityPlayer's GetName() func as it uses a custom name table)
 function PST:getCurrentCharName()
 	if not PST.charNames then return nil end
-	return PST.charNames[1 + Isaac.GetPlayer():GetPlayerType()]
+	local player = PST:getPlayer()
+	return PST.charNames[1 + player:GetPlayerType()]
 end
 
 -- Attempt to init a non-vanilla character so they can earn XP
@@ -201,7 +229,7 @@ end
 -- Also returns false if the player is currently playing as the given character.
 ---@param character PlayerType
 function PST:cosmicRCharPicked(character)
-	local player = Isaac.GetPlayer()
+	local player = PST:getPlayer()
 	if player:GetPlayerType() == character then
 		return false
 	end
@@ -217,8 +245,9 @@ end
 
 -- Attempt to unlock an achievement associated with the currently selected Cosmic Realignment character
 function PST:cosmicRTryUnlock(unlockSource)
+	local player = PST:getPlayer()
 	local cosmicRChar = PST:getTreeSnapshotMod("cosmicRealignment", false)
-	if type(cosmicRChar) == "number" and Isaac.GetPlayer():GetPlayerType() ~= cosmicRChar then
+	if type(cosmicRChar) == "number" and player:GetPlayerType() ~= cosmicRChar then
 		local tmpData = PST.cosmicRData.characters
 		if tmpData[cosmicRChar].unlocks ~= nil then
 			if tmpData[cosmicRChar].unlocks[unlockSource] ~= nil then
@@ -337,7 +366,7 @@ function PST:onNPCPickTarget(NPC, target)
 		if PST:getTreeSnapshotMod("statuePilgrimage", false) then
 			-- If Esau is transformed by Gnawed Leaf, make enemy target Jacob instead
 			if player:GetPlayerType() == PlayerType.PLAYER_ESAU and PST.specialNodes.esauIsStatue then
-				local mainPlayer = Isaac.GetPlayer()
+				local mainPlayer = PST:getPlayer()
 				if mainPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
 					return mainPlayer
 				end

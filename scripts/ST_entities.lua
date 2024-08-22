@@ -14,7 +14,7 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
 
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY) then
-        local player = Isaac.GetPlayer()
+        local player = PST:getPlayer()
         -- Bethany, as Keeper: -0.01 luck whenever a blue fly spawns, up to -2
         if type == EntityType.ENTITY_FAMILIAR and variant == FamiliarVariant.BLUE_FLY and
         (player:GetPlayerType() == PlayerType.PLAYER_KEEPER or

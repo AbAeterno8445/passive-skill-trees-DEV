@@ -141,7 +141,8 @@ function PST:openTreeMenu()
     elseif not Game():IsPauseMenuOpen() then
         return
     else
-        PST.selectedMenuChar = Isaac.GetPlayer():GetPlayerType()
+        local player = PST:getPlayer()
+        PST.selectedMenuChar = player:GetPlayerType()
         Game():GetHUD():SetVisible(false)
     end
     sfx:Play(SoundEffect.SOUND_PAPER_IN)

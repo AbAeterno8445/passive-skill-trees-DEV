@@ -211,7 +211,8 @@ function PST:addModifiers(modList, addToSnapshot)
         end
     end
     if tmpFlags ~= 0 and addToSnapshot then
-        Isaac.GetPlayer():AddCacheFlags(tmpFlags, true)
+        local player = PST:getPlayer()
+        player:AddCacheFlags(tmpFlags, true)
     end
     PST:save()
 end

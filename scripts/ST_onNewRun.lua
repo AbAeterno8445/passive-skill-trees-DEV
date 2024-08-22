@@ -1,5 +1,6 @@
 function PST:onNewRun(isContinued)
     if isContinued then
+        PST.player = Isaac.GetPlayer()
         PST.gameInit = true
         PST:onNewRoom()
         return
@@ -394,6 +395,7 @@ function PST:onNewRun(isContinued)
     end
 
     PST:closeTreeMenu(true)
+    PST.player = player
     PST.gameInit = true
 
     -- Initial level & room funcs

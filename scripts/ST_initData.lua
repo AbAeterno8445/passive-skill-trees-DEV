@@ -15,6 +15,9 @@ PST.charNames = {
 	"T. Jacob", "T. Forgotten"
 }
 PST.allstatsCache = CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED | CacheFlag.CACHE_RANGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SHOTSPEED | CacheFlag.CACHE_LUCK
+PST.player = nil
+PST.room = nil
+PST.level = nil
 
 -- For custom mod images
 PST.customNodeImages = {}

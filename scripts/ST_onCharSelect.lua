@@ -1,6 +1,6 @@
 -- On selecting a character in menu (uses completion mark render callback)
 function PST:onCharSelect(_, _, _, charID)
-	if Isaac.GetPlayer() == nil then
+	if not Isaac.IsInGame() then
 		if MenuManager.GetActiveMenu() == MainMenuType.CHARACTER and (charID ~= PST.selectedMenuChar or (charID == 0 and PST.modData.charData["Isaac"] == nil)) then
 			local charName = PST.charNames[1 + charID]
 			if charName ~= nil then

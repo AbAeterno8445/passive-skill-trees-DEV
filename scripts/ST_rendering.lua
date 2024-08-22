@@ -134,8 +134,7 @@ function PST:Render()
     end
 
 	if #floatingTexts > 0 then
-		local player = Isaac.GetPlayer()
-
+		local player = PST:getPlayer()
         for i = #floatingTexts, 1, -1 do
             local textFX = floatingTexts[i]
             local textX = textFX.position.X

@@ -265,7 +265,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                     end
                 end
                 PST:save()
-                Isaac.GetPlayer():AddCacheFlags(PST.allstatsCache, true)
+                player:AddCacheFlags(PST.allstatsCache, true)
             end
         end
 
@@ -492,7 +492,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- Cosmic Realignment tainted unlock on red key home
     if itemType == CollectibleType.COLLECTIBLE_RED_KEY and Game():GetLevel():GetStage() == LevelStage.STAGE8 then
         local cosmicRChar = PST:getTreeSnapshotMod("cosmicRealignment", false)
-        if type(cosmicRChar) == "number" and Isaac.GetPlayer():GetPlayerType() ~= cosmicRChar then
+        if type(cosmicRChar) == "number" and player:GetPlayerType() ~= cosmicRChar then
             local taintedUnlock = PST.cosmicRData.characters[cosmicRChar].unlocks.tainted
             if taintedUnlock ~= nil then
                 PST:cosmicRTryUnlock("tainted")

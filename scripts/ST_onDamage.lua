@@ -218,7 +218,7 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
     else
-        local tmpPlayer = Isaac.GetPlayer()
+        local tmpPlayer = PST:getPlayer()
         local dmgMult = 1
 
         -- Starcursed modifiers
@@ -728,7 +728,7 @@ function PST:onDeath(entity)
 
         -- Killed charmed enemy
         if EntityRef(entity).IsCharmed then
-            local tmpPlayer = Isaac.GetPlayer()
+            local tmpPlayer = PST:getPlayer()
 
             -- Dark Songstress node
             if PST:getTreeSnapshotMod("darkSongstress", false) and not PST:getTreeSnapshotMod("darkSongstressActive", false) then
@@ -775,7 +775,7 @@ function PST:onDeath(entity)
 
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
-            local tmpPlayer = Isaac.GetPlayer()
+            local tmpPlayer = PST:getPlayer()
             -- Tainted Samson, +2% all stats when killing a monster, up to 10%
             if cosmicRCache.TSamsonBuffer < 10 then
                 cosmicRCache.TSamsonBuffer = cosmicRCache.TSamsonBuffer + 2

@@ -5,7 +5,7 @@ function PST:onShopPurchase(pickupBought, player, spent)
         -- Mod: chance to steal shop item instead of purchasing
         if room:GetType() == RoomType.ROOM_SHOP then
             local stealChance = PST:getTreeSnapshotMod("stealChance", 0)
-            if 100 * math.random() < stealChance then
+            if stealChance > 0 and 100 * math.random() < stealChance then
                 player:AddCoins(spent)
                 PST:addModifiers({ luck = spent / 100 }, true)
 
@@ -29,12 +29,14 @@ function PST:onShopPurchase(pickupBought, player, spent)
         end
 
         -- Mod: chance to keep 1-3 coins when purchasing an item
-        if 100 * math.random() < PST:getTreeSnapshotMod("purchaseKeepCoins", 0) then
+        tmpMod = PST:getTreeSnapshotMod("purchaseKeepCoins", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
             player:AddCoins(math.random(3))
         end
     elseif spent < 0 then
         -- Mod: chance to gain a black heart when spending hearts on deals
-        if 100 * math.random() < PST:getTreeSnapshotMod("blackHeartOnDeals", 0) then
+        local tmpMod = PST:getTreeSnapshotMod("blackHeartOnDeals", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
             player:AddBlackHearts(2)
         end
     end
