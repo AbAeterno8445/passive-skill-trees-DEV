@@ -546,7 +546,7 @@ function PST:onDeath(entity)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
             PST:addModifiers({ luck = -0.5 }, true)
         end
-    elseif entity:IsActiveEnemy(true) then
+    elseif entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY then
         -- Enemy death
         local addXP = false
         if not (entity:IsBoss() and entity.Parent) or entity.Type == EntityType.ENTITY_LARRYJR then
