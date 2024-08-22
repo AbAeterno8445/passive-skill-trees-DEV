@@ -253,7 +253,6 @@ function PST:resetMods()
 		curseAllstats = 0,
 		curseAllstatsActive = false,
 		curseRoomSpikesOut = 0,
-		curseSpikesOutList = {},
 		curseRoomSpikesOutProc = false,
 		goldenKeyConvert = 0,
 		goldenKeyConvertProc = false,

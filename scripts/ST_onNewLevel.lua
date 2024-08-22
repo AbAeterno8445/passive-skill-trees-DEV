@@ -232,12 +232,6 @@ function PST:onNewLevel()
         PST:addModifiers({ curseRoomSpikesOutProc = false }, true)
     end
 
-    -- Reset list for cursed room spike removal modifier
-    local tmpMod = PST:getTreeSnapshotMod("curseSpikesOutList", nil)
-    if tmpMod then
-        PST:addModifiers({ curseSpikesOutList = { value = {}, set = true } }, true)
-    end
-
     -- Mod: chance to convert keys to golden keys, once per floor (reset)
     if PST:getTreeSnapshotMod("goldenKeyConvertProc", false) then
         PST:addModifiers({ goldenKeyConvertProc = false }, true)

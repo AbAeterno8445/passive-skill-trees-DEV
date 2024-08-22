@@ -380,7 +380,8 @@ function PST:onNewRoom()
 	end
 
 	-- Mod: chance to unlock boss challenge rooms regardless of hearts
-	if (PST:getTreeSnapshotMod("bossChallengeUnlockProc", false) and level:HasBossChallenge()) or PST:SC_getSnapshotMod("challengerStarpiece", false) then
+	if level:GetDimension() ~= Dimension.MIRROR and ((PST:getTreeSnapshotMod("bossChallengeUnlockProc", false) and level:HasBossChallenge())
+	or PST:SC_getSnapshotMod("challengerStarpiece", false)) then
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
 			if tmpDoor and tmpDoor.TargetRoomType == RoomType.ROOM_CHALLENGE then
@@ -391,20 +392,10 @@ function PST:onNewRoom()
 
 	-- Mod: chance to turn adjacent curse room spiked door into a regular one
 	if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
-		local spikesOutList = PST:getTreeSnapshotMod("curseSpikesOutList", nil)
-		local roomIdx = level:GetCurrentRoomDesc().GridIndex
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
-			if tmpDoor and (PST:arrHasValue(spikesOutList, tmpDoor.TargetRoomIndex) or tmpDoor.TargetRoomType == RoomType.ROOM_CURSE or
+			if tmpDoor and (tmpDoor.TargetRoomType == RoomType.ROOM_CURSE or
 			(room:GetType() == RoomType.ROOM_CURSE and tmpDoor.TargetRoomType == RoomType.ROOM_DEFAULT)) then
-				if spikesOutList then
-					if not PST:arrHasValue(spikesOutList, roomIdx) then
-						table.insert(spikesOutList, roomIdx)
-					end
-					if not PST:arrHasValue(spikesOutList, tmpDoor.TargetRoomIndex) then
-						table.insert(spikesOutList, tmpDoor.TargetRoomIndex)
-					end
-				end
 				tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, RoomType.ROOM_DEFAULT)
 			end
 		end
