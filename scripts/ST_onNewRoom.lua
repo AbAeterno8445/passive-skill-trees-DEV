@@ -63,7 +63,7 @@ function PST:onNewRoom()
 				end
 
 				-- HP modifiers
-				if not tmpNPC.Type == EntityType.ENTITY_GIDEON then
+				if tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
 					local tmpHPMod = 0
 					local tmpHPMult = 1
 					local firstFloorMult = 1
