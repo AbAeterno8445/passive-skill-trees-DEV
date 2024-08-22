@@ -30,12 +30,54 @@ function PST:onUpdate()
 			level:AddCurse(LevelCurse.CURSE_OF_THE_CURSED, false)
 		end
 
+		-- Ancient starcursed jewel: Luminescent Die
+		if PST:SC_getSnapshotMod("luminescentDie", false) and not level:IsAscent() then
+			if PST:getTreeSnapshotMod("SC_luminescentUsedCard", false) then
+				PST:addModifiers({ SC_luminescentUsedCard = false }, true)
+			else
+				local tmpMod = PST:getTreeSnapshotMod("SC_luminescentDebuff", 0)
+				if tmpMod < 40 then
+					local tmpAdd = math.min(10, 40 - tmpMod)
+					PST:addModifiers({ allstatsPerc = -tmpAdd, SC_luminescentDebuff = tmpAdd }, true)
+				end
+			end
+		end
+
+		-- Ancient starcursed jewel: Chronicler Stone
+		if PST:SC_getSnapshotMod("chroniclerStone", false) then
+			tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
+			if tmpMod > 0 and PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0) < 50 then
+				local tmpAdd = math.min(tmpMod, 50 - PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0))
+				PST:addModifiers({ allstatsPerc = -tmpAdd, SC_chroniclerDebuff = tmpAdd }, true)
+			end
+			local levelRooms = math.max(2, level:GetRoomCount() - 4)
+			PST:addModifiers({ SC_chroniclerRooms = { value = levelRooms, set = true } }, true)
+		end
+
+		-- Ancient starcursed jewel: Glace
+		if PST:SC_getSnapshotMod("glace", false) then
+			local tmpDebuff = 50 - PST:getTreeSnapshotMod("SC_glaceDebuff", 0)
+			PST:addModifiers({ tearsPerc = -tmpDebuff, speedPerc = -tmpDebuff, SC_glaceDebuff = tmpDebuff }, true)
+		end
+
+		-- Ancient starcursed jewel: Crimson Warpstone
+		if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+			local debuffAmt = 30
+			local ultraIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ULTRASECRET, false, RNG())
+			local ultraSecretRoom = level:GetRoomByIdx(ultraIdx)
+			if ultraSecretRoom and ultraSecretRoom.Data.Type == RoomType.ROOM_ULTRASECRET then
+				debuffAmt = 20
+			end
+			local tmpDebuff = debuffAmt - PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)
+			PST:addModifiers({ allstatsPerc = -tmpDebuff, SC_crimsonWarpDebuff = tmpDebuff }, true)
+		end
+
 		-- Mod: chance to reveal the arcade room's location if it is present
 		local tmpMod = PST:getTreeSnapshotMod("arcadeReveal", 0)
 		if tmpMod > 0 and 100 * math.random() < tmpMod then
 			local arcadeIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ARCADE, false, RNG())
 			local arcadeRoom = level:GetRoomByIdx(arcadeIdx)
-			if arcadeRoom then
+			if arcadeRoom and arcadeRoom.Data.Type == RoomType.ROOM_ARCADE then
 				arcadeRoom.DisplayFlags = 1 << 2
 				level:UpdateVisibility()
 			end
@@ -46,7 +88,7 @@ function PST:onUpdate()
 		if tmpMod > 0 and 100 * math.random() < tmpMod then
 			local shopIdx = level:QueryRoomTypeIndex(RoomType.ROOM_SHOP, false, RNG())
 			local shopRoom = level:GetRoomByIdx(shopIdx)
-			if shopRoom then
+			if shopRoom and shopRoom.Data.Type == RoomType.ROOM_SHOP then
 				shopRoom.DisplayFlags = 1 << 2
 				level:UpdateVisibility()
 			end
@@ -365,6 +407,14 @@ function PST:onUpdate()
 		end
 		SFXManager():Play(SoundEffect.SOUND_TEARS_FIRE)
 		PST.specialNodes.SC_martianTears = {}
+	end
+
+	-- Ancient starcursed jewel: Crimson Warpstone
+	if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+		tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyDrop", 0)
+		if tmpMod > 1 and room:GetFrameCount() % 30 == 0 then
+			PST:addModifiers({ SC_crimsonWarpKeyDrop = -0.5 }, true)
+		end
 	end
 
 	-- Fickle Fortune node (Cain's tree)
@@ -810,6 +860,15 @@ function PST:onUpdate()
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_NIGHT_LIGHT, Random() + 1)
 					PST:addModifiers({ SC_umbraNightLightSpawn = true }, true)
+				end
+			end
+
+			-- Ancient starcursed jewel: Crimson Warpstone
+			if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+				tmpChance = PST:getTreeSnapshotMod("SC_crimsonWarpKeyDrop", 0)
+				if tmpChance > 0 and 100 * math.random() < tmpChance then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_CRACKED_KEY, Random() + 1)
 				end
 			end
 

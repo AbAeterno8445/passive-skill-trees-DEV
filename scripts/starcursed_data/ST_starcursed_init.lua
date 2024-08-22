@@ -557,18 +557,24 @@ PST.SCAncients = {
             beastRewards = {1, 5}
         }
     },
-    --[[strangeWarpstone = {
+    crimsonWarpstone = {
         weight = 100,
         spriteFrame = 13,
-        name = "Strange Warpstone",
+        name = "Crimson Warpstone",
         description = {
-            "Guarantees Curse of the Giant if applicable.",
-            "Black Candle can no longer show up."
+            "Replace treasure room and shop items with Cracked Keys.",
+            "15% chance to drop a Cracked Key when clearing a room.",
+            "Base key drop chance increases every floor, and decreases by 0.5% per second while in an uncleared room.",
+            "-30% all stats. Entering a red room reduces this debuff by 2.5%. Resets every floor.",
+            "Entering an ultra secret room removes the debuff for the current floor.",
+            --"Reduce debuff by 10% if the floor contains no ultra secret rooms."
         },
         rewards = {
-            xpgain = 20
+            xpgain = 50,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
-    },]]
+    },
     glace = {
         weight = 100,
         spriteFrame = 16,

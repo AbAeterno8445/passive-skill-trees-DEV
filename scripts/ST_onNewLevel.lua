@@ -68,37 +68,6 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_challClear = false }, true)
     end
 
-    -- Ancient starcursed jewel: Luminescent Die
-    if PST:SC_getSnapshotMod("luminescentDie", false) and not level:IsAscent() then
-        if PST:getTreeSnapshotMod("SC_luminescentUsedCard", false) then
-            PST:addModifiers({ SC_luminescentUsedCard = false }, true)
-        else
-            local tmpMod = PST:getTreeSnapshotMod("SC_luminescentDebuff", 0)
-            if tmpMod < 40 then
-                local tmpAdd = math.min(10, 40 - tmpMod)
-                PST:addModifiers({ allstatsPerc = -tmpAdd, SC_luminescentDebuff = tmpAdd }, true)
-            end
-        end
-    end
-
-    -- Ancient starcursed jewel: Chronicler Stone
-    if PST:SC_getSnapshotMod("chroniclerStone", false) then
-        local tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
-        if tmpMod > 0 and PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0) < 50 then
-            local tmpAdd = math.min(tmpMod, 50 - PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0))
-            PST:addModifiers({ allstatsPerc = -tmpAdd, SC_chroniclerDebuff = tmpAdd }, true)
-        end
-
-        local levelRooms = math.max(2, level:GetRoomCount() - 4)
-        PST:addModifiers({ SC_chroniclerRooms = { value = levelRooms, set = true } }, true)
-    end
-
-    -- Ancient starcursed jewel: Glace
-    if PST:SC_getSnapshotMod("glace", false) then
-        local tmpDebuff = 50 - PST:getTreeSnapshotMod("SC_glaceDebuff", 0)
-        PST:addModifiers({ tearsPerc = -tmpDebuff, speedPerc = -tmpDebuff, SC_glaceDebuff = tmpDebuff }, true)
-    end
-
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)

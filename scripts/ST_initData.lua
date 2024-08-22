@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.24"
+PST.modVersion = "v0.2.25"
 PST.modData = {}
 PST.selectedMenuChar = -1
 PST.startXPRequired = 34
@@ -645,7 +645,9 @@ function PST:resetMods()
 		SC_martianTimer = 0,
 		SC_martianProc = false,
 		SC_martianTears = {},
-		SC_martianFX = {}
+		SC_martianFX = {},
+		SC_crimsonWarpDebuff = 0,
+		SC_crimsonWarpKeyDrop = 0
 	}
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

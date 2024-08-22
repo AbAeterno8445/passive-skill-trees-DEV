@@ -478,6 +478,32 @@ function PST:onNewRoom()
 			end
 		end
 
+		-- Ancient starcursed jewel: Crimson Warpstone
+		if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+			if room:GetAliveEnemiesCount() > 0 then
+				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 15 + level:GetStage() / 2, set = true } }, true)
+			end
+
+			if room:GetType() == RoomType.ROOM_TREASURE or room:GetType() == RoomType.ROOM_SHOP then
+				for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+					local tmpItem = tmpEntity:ToPickup()
+					if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+						tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true)
+					end
+				end
+			elseif room:GetType() == RoomType.ROOM_ULTRASECRET then
+				local tmpDebuff = PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)
+				if tmpDebuff > 0 then
+					PST:addModifiers({ allstatsPerc = tmpDebuff, SC_crimsonWarpDebuff = { value = 0, set = true } }, true)
+				end
+			elseif (level:GetCurrentRoomDesc().Flags & (1 << 10)) > 0 then
+				local tmpDebuff = PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)
+				if tmpDebuff > 0 then
+					PST:addModifiers({ allstatsPerc = 2.5, SC_crimsonWarpDebuff = -2.5 }, true)
+				end
+			end
+		end
+
 		-- Mod: chance to reroll active item pedestals into passive items, if you're holding an active item
 		tmpMod = PST:getTreeSnapshotMod("activeItemReroll", 0)
 		if PST:getTreeSnapshotMod("activeItemRerolled", 0) < 2 and 100 * math.random() < tmpMod and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) > 0 then
