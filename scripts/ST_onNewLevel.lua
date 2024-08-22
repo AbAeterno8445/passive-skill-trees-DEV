@@ -10,7 +10,7 @@ function PST:onNewLevel()
     PST.floorFirstUpdate = true
     PST:addModifiers({
         staticEntitiesCache = { value = {}, set = true },
-        shopCache = { value = {}, set = true }
+        shopSavingCache = { value = {}, set = true }
     }, true)
 
     -- Equipped ancient starcursed jewels - 'unhalve' xp from first floor
