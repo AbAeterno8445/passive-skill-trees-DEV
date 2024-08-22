@@ -487,18 +487,18 @@ function PST:onNewRoom()
 
 		-- Mod: chance to reroll active item pedestals into passive items, if you're holding an active item
 		tmpMod = PST:getTreeSnapshotMod("activeItemReroll", 0)
-		if PST:getTreeSnapshotMod("activeItemRerolled", 0) < 2 and 100 * math.random() < 100 and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) > 0 then
+		if PST:getTreeSnapshotMod("activeItemRerolled", 0) < 2 and 100 * math.random() < tmpMod and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) > 0 then
 			local itemPool = Game():GetItemPool()
 			local rolledItems = {}
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
-				if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
+				local tmpPickup = tmpEntity:ToPickup()
+				if tmpPickup and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
 					if Isaac.GetItemConfig():GetCollectible(tmpEntity.SubType).Type == ItemType.ITEM_ACTIVE then
 						local addedItem = false
 						while not addedItem do
 							local newItem = itemPool:GetCollectible(itemPool:GetPoolForRoom(room:GetType(), Random() + 1))
-							if not PST:arrHasValue(rolledItems, newItem) then
-								tmpEntity:Remove()
-								Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpEntity.Position, Vector.Zero, nil, newItem, Random() + 1)
+							if not PST:arrHasValue(rolledItems, newItem) and Isaac.GetItemConfig():GetCollectible(newItem).Type ~= ItemType.ITEM_ACTIVE then
+								tmpPickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true, true)
 								PST:addModifiers({ activeItemRerolled = 1 }, true)
 
 								table.insert(rolledItems, newItem)

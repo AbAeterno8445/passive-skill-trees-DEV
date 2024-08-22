@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.22"
+PST.modVersion = "v0.2.23"
 PST.modData = {}
 PST.selectedMenuChar = -1
 PST.startXPRequired = 34
