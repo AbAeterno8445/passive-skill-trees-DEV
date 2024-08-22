@@ -447,6 +447,7 @@ PST.SCAncients = {
         name = "Challenger's Starpiece",
         description = {
             "When entering a floor, teleport to the challenge room.",
+            "When first entering a challenge room, drops a key if there are only locked chests, or a bomb if only stone chests.",
             "Your damage is halved while outside the challenge room if the latter isn't cleared.",
             "A random deadly sin miniboss spawns after clearing the final round in challenge rooms.",
             "From the 7th floor onwards, spawn a random super deadly sin instead."

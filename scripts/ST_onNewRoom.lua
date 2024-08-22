@@ -432,6 +432,36 @@ function PST:onNewRoom()
 			end
 		end
 
+		-- Ancient starcursed jewel: Challenger Starpiece
+		if PST:SC_getSnapshotMod("challengerStarpiece", false) and room:GetType() == RoomType.ROOM_CHALLENGE then
+			-- Spawn a key if challenge room has no regular chests, and has locked chests, or a bomb if it has stone chests
+			local chestSetup = {
+				locked = false,
+				regular = false,
+				bomb = false
+			}
+			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+				if tmpEntity.Type == EntityType.ENTITY_PICKUP then
+					if PST:arrHasValue(PST.regularChests, tmpEntity.Variant) then
+						chestSetup.regular = true
+						break
+					elseif PST:arrHasValue(PST.lockedChests, tmpEntity.Variant) then
+						chestSetup.locked = true
+					elseif tmpEntity.Variant == PickupVariant.PICKUP_BOMBCHEST then
+						chestSetup.bomb = true
+					end
+				end
+			end
+			if not chestSetup.regular then
+				local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
+				if chestSetup.locked then
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, tmpPos, Vector.Zero, nil, KeySubType.KEY_NORMAL, Random() + 1)
+				elseif chestSetup.bomb then
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, tmpPos, Vector.Zero, nil, BombSubType.BOMB_NORMAL, Random() + 1)
+				end
+			end
+		end
+
 		-- Ancient starcursed jewel: Cursed Starpiece
 		if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() and room:GetType() == RoomType.ROOM_TREASURE then
 			local firstItem = true

@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.21"
+PST.modVersion = "v0.2.22"
 PST.modData = {}
 PST.selectedMenuChar = -1
 PST.startXPRequired = 34
@@ -168,6 +168,13 @@ PST.progressionItems = {
 	CollectibleType.COLLECTIBLE_RED_KEY, CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_1,
 	CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_2, CollectibleType.COLLECTIBLE_DADS_NOTE,
 	CollectibleType.COLLECTIBLE_DOGMA
+}
+PST.regularChests = {
+	PickupVariant.PICKUP_CHEST, PickupVariant.PICKUP_REDCHEST, PickupVariant.PICKUP_SPIKEDCHEST,
+	PickupVariant.PICKUP_MIMICCHEST, PickupVariant.PICKUP_WOODENCHEST, PickupVariant.PICKUP_HAUNTEDCHEST
+}
+PST.lockedChests = {
+	PickupVariant.PICKUP_LOCKEDCHEST, PickupVariant.PICKUP_ETERNALCHEST, PickupVariant.PICKUP_MEGACHEST
 }
 
 -- First update when entering a new floor
