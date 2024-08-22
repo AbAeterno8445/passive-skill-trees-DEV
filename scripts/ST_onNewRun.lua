@@ -61,7 +61,7 @@ function PST:onNewRun(isContinued)
 
     PST.floorFirstUpdate = true
 
-    PST.modData.treeModSnapshot = PST.modData.treeMods
+    PST.modData.treeModSnapshot = PST:copyTable(PST.modData.treeMods)
 
     -- Starcursed jewel mods
     if treeActive then

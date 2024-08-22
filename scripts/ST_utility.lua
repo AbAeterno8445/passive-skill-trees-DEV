@@ -486,3 +486,15 @@ function PST:roundFloat(number, digit)
 	number = number + (precision / 2)
 	return math.floor(number / precision) * precision
 end
+
+function PST:copyTable(dataTable)
+	local tmpTable = {}
+	if type(dataTable) == "table" then
+	  	for k, v in pairs(dataTable) do
+			tmpTable[k] = PST:copyTable(v)
+		end
+	else
+	  	tmpTable = dataTable
+	end
+	return tmpTable
+end
