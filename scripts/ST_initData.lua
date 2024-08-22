@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.20"
+PST.modVersion = "v0.2.21"
 PST.modData = {}
 PST.selectedMenuChar = -1
 PST.startXPRequired = 34
@@ -615,7 +615,6 @@ function PST:resetMods()
 		bossGreedSpawned = false,
 		spiritEbbHits = { soul = 0, forgotten = 0 },
 		forgottenMeleeTearBuff = 0,
-		heartLinkProc = false,
 		esauIsStatue = false,
 		jacobNearEsauBuff = false,
 		coordinationHits = { jacob = 0, esau = 0 },

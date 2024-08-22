@@ -1,8 +1,5 @@
 local sfx = SFXManager()
 
-local blackHeartTracker = 0
-local soulHeartTracker = 0
-local boneHeartTracker = 0
 local playerTypeTracker = 0
 local jacobHeartDiffTracker = 0
 local luckTracker = 0
@@ -17,18 +14,10 @@ function PST:onUpdate()
 	local room = Game():GetRoom()
 	local player = Isaac.GetPlayer()
 
-	-- First heart-related functions update
-	if not PST.modData.firstHeartUpdate then
-		PST:onAddHearts(player, 0, 0)
-		PST.modData.firstHeartUpdate = true
-	end
-
 	-- First update when entering floor
 	if PST.floorFirstUpdate then
 		PST.floorFirstUpdate = false
-		blackHeartTracker = 0
-		soulHeartTracker = 0
-		boneHeartTracker = 0
+		PST:resetHeartUpdater()
 		jacobHeartDiffTracker = 0
 		luckTracker = 0
 		familiarsTracker = 0
@@ -192,6 +181,12 @@ function PST:onUpdate()
 		if PST:SC_getSnapshotMod("martianUltimatum", false) and PST.specialNodes.SC_martianTimer == 0 then
 			PST.specialNodes.SC_martianTimer = 30 * (3 + math.random(5))
 		end
+	end
+
+	-- First heart-related functions update
+	if not PST.modData.firstHeartUpdate then
+		PST:onHeartUpdate(true)
+		PST.modData.firstHeartUpdate = true
 	end
 
 	-- Starcursed mod: monster status cleanse every X seconds
@@ -396,30 +391,8 @@ function PST:onUpdate()
 		end
 	end
 
-	-- Black heart quantity updates
-	if player:GetBlackHearts() ~= blackHeartTracker then
-		-- Mod: +luck whenever you lose black hearts
-		local lostBlackHeartsLuck = PST:getTreeSnapshotMod("lostBlackHeartsLuck", 0)
-		if lostBlackHeartsLuck > 0 and player:GetBlackHearts() < blackHeartTracker then
-			PST:addModifiers({ luck = lostBlackHeartsLuck }, true)
-		end
-
-		-- Song of Darkness node (Siren's tree) [Harmonic modifier]
-		if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:songNodesAllocated(true) <= 2 then
-			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
-		end
-	end
-	blackHeartTracker = player:GetBlackHearts()
-
-	-- Slipping Essence node (Blue Baby's tree)
-	if PST:getTreeSnapshotMod("slippingEssence", false) then
-		local slippingEssenceLost = PST:getTreeSnapshotMod("slippingEssenceLost", 0)
-		if player:GetSoulHearts() < soulHeartTracker and 100 * math.random() < 100 / (2 ^ slippingEssenceLost) then
-			PST:addModifiers({ slippingEssenceLost = 1, luck = -0.1 }, true)
-			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, player.Position, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
-		end
-	end
-	soulHeartTracker = player:GetSoulHearts()
+	-- Heart updates
+	PST:onHeartUpdate()
 
 	-- Samson temp mods
 	local tmpTime = PST:getTreeSnapshotMod("samsonTempTime", 0)
@@ -525,18 +498,6 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = 10, nullDebuff = false }, true)
 		end
 	end
-
-	-- Soulful node (The Forgotten's tree)
-	if PST:getTreeSnapshotMod("soulful", false) then
-		if player:GetBoneHearts() < boneHeartTracker and player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL then
-			for _=1, boneHeartTracker - player:GetBoneHearts() do
-				local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
-				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
-				PST:addModifiers({ luck = -0.25 }, true)
-			end
-		end
-	end
-	boneHeartTracker = player:GetBoneHearts()
 
 	-- Inner Flare node (The Forgotten's tree)
 	if PST:getTreeSnapshotMod("innerFlare", false) then
