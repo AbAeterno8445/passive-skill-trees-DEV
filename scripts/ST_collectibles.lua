@@ -11,9 +11,8 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY_B) then
         -- Tainted ???, first floor treasure room guarantees a poop item, second floor onwards is a 50% chance
-        local floor = Game():GetLevel():GetStage()
-        local room = Game():GetRoom()
-        if room:GetType() == RoomType.ROOM_TREASURE and (floor == 1 or (floor > 1 and 100 * math.random() < 50)) then
+        local floor = PST:getLevel():GetStage()
+        if PST:getRoom():GetType() == RoomType.ROOM_TREASURE and (floor == 1 or (floor > 1 and 100 * math.random() < 50)) then
             local tmpItem = itemPool:GetCollectibleFromList(PST.poopItems, Random() + 1, CollectibleType.COLLECTIBLE_BREAKFAST, true, false)
             if tmpItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
                 return tmpItem
@@ -71,7 +70,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     end
 
     -- Chaotic Treasury node (Eden's tree)
-    if PST:getTreeSnapshotMod("chaoticTreasury", false) and Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
+    if PST:getTreeSnapshotMod("chaoticTreasury", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
         -- When grabbing an item in a treasure room, remove all other items
         removeOtherRoomItems = true
     end
@@ -88,7 +87,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
 
     -- Mod: +random stat when collecting a treasure/shop room item
     if firstTime then
-        local roomType = Game():GetRoom():GetType()
+        local roomType = PST:getRoom():GetType()
         local tmpBonus = PST:getTreeSnapshotMod("treasureShopItemStat", 0)
         local tmpBonusPerc = PST:getTreeSnapshotMod("treasureShopItemStatPerc", 0)
         if (roomType == RoomType.ROOM_TREASURE or roomType == RoomType.ROOM_SHOP) and (tmpBonus ~= 0 or tmpBonusPerc ~= 0) then
@@ -237,7 +236,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         if PST:getTreeSnapshotMod("magicDie", false) then
             local magicDieData = PST:getTreeSnapshotMod("magicDieData", nil)
             if magicDieData then
-                local tmpRoomType = Game():GetRoom():GetType()
+                local tmpRoomType = PST:getRoom():GetType()
                 if tmpRoomType == RoomType.ROOM_BOSS and magicDieData.source ~= "none" then
                     -- Boss room with existing buff, augment it by 3
                     magicDieData.value = magicDieData.value + 3
@@ -461,8 +460,9 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     elseif itemType == CollectibleType.COLLECTIBLE_D12 then
         local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
         for entID, _ in pairs(staticEntCache) do
-            local stage = Game():GetLevel():GetStage()
-            local roomID = Game():GetLevel():GetCurrentRoomDesc().SafeGridIndex
+            local level = PST:getLevel()
+            local stage = level:GetStage()
+            local roomID = level:GetCurrentRoomDesc().SafeGridIndex
             if PST:strStartsWith(entID, tostring(stage) .. "." .. tostring(roomID)) then
                 staticEntCache[entID] = -1
             end
@@ -490,7 +490,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     end
 
     -- Cosmic Realignment tainted unlock on red key home
-    if itemType == CollectibleType.COLLECTIBLE_RED_KEY and Game():GetLevel():GetStage() == LevelStage.STAGE8 then
+    if itemType == CollectibleType.COLLECTIBLE_RED_KEY and PST:getLevel():GetStage() == LevelStage.STAGE8 then
         local cosmicRChar = PST:getTreeSnapshotMod("cosmicRealignment", false)
         if type(cosmicRChar) == "number" and player:GetPlayerType() ~= cosmicRChar then
             local taintedUnlock = PST.cosmicRData.characters[cosmicRChar].unlocks.tainted

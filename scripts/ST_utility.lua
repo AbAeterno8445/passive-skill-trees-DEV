@@ -111,6 +111,8 @@ end
 function PST:addTempXP(xp, showText, noMult)
 	if PST:getCurrentCharData() == nil then return end
 
+	local room = PST:getRoom()
+	local roomType = room:GetType()
     local xpMult = (PST.config.xpMult or 1) + PST:getTreeSnapshotMod("xpgain", 0) / 100
 
 	-- -40% xp gain outside hard mode
@@ -118,18 +120,17 @@ function PST:addTempXP(xp, showText, noMult)
 		xpMult = xpMult - 0.4
 	else
 		-- Hard mode floor xp bonus, +2.5% per floor past first (except boss rush)
-		if Game():GetRoom():GetType() ~= RoomType.ROOM_BOSSRUSH then
-			local stage = Game():GetLevel():GetStage()
+		if roomType ~= RoomType.ROOM_BOSSRUSH then
+			local stage = PST:getLevel():GetStage()
 			xpMult = xpMult + math.max(0, (stage - 1) * 0.025)
 		end
 	end
 
 	-- Extra challenge room XP gain mod
-	local room = Game():GetRoom()
-	if room:GetType() == RoomType.ROOM_CHALLENGE then
+	if roomType == RoomType.ROOM_CHALLENGE then
 		xpMult = xpMult + PST:getTreeSnapshotMod("challengeXPgain", 0) / 100
 	-- -40% xp gain in boss rush
-	elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
+	elseif roomType == RoomType.ROOM_BOSSRUSH then
 		xpMult = xpMult - 0.4
 	end
 
@@ -412,7 +413,7 @@ function PST:onPlanetariumChance(chance)
 end
 
 function PST:isFirstOrigStage()
-	local level = Game():GetLevel()
+	local level = PST:getLevel()
 	return level:GetStage() == LevelStage.STAGE1_1 and (level:GetStageType() == StageType.STAGETYPE_ORIGINAL or
 	level:GetStageType() == StageType.STAGETYPE_AFTERBIRTH or level:GetStageType() == StageType.STAGETYPE_WOTL)
 end

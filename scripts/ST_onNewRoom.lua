@@ -222,7 +222,7 @@ function PST:onNewRoom()
 	end
 
 	-- Chaotic Treasury node (Eden's tree)
-	local level = Game():GetLevel()
+	local level = PST:getLevel()
 	if PST:getTreeSnapshotMod("chaoticTreasury", false) and room:GetType() == RoomType.ROOM_TREASURE and
 	not PST:getTreeSnapshotMod("chaoticTreasuryProc", false) then
 		if level:GetStage() == LevelStage.STAGE1_1 then

@@ -59,7 +59,7 @@ function PST:Render()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
 	local screenRatioY = Isaac.GetScreenHeight() / 270
 
-	local room = Game():GetRoom()
+	local room = PST:getRoom()
 	local gamePaused = Game():IsPaused()
 
 	-- XP bar
@@ -96,7 +96,8 @@ function PST:Render()
 	local hasQuickWit = quickWitMod[1] ~= 0 or quickWitMod[2] ~= 0
 
 	-- Pause quick wit
-	if hasQuickWit and room:GetType() ~= RoomType.ROOM_BOSS and room:GetType() ~= RoomType.ROOM_BOSSRUSH then
+	local roomType = room:GetType()
+	if hasQuickWit and roomType ~= RoomType.ROOM_BOSS and roomType ~= RoomType.ROOM_BOSSRUSH then
 		local quickWitData = PST.specialNodes.quickWit
 		if gamePaused then
 			if quickWitData.pauseTime == 0 then

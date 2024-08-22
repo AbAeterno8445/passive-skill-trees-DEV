@@ -1,6 +1,6 @@
 function PST:onShopPurchase(pickupBought, player, spent)
     if spent > 0 then
-        local room = Game():GetRoom()
+        local room = PST:getRoom()
 
         -- Mod: chance to steal shop item instead of purchasing
         if room:GetType() == RoomType.ROOM_SHOP then

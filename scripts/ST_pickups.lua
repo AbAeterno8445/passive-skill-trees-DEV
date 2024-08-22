@@ -10,7 +10,7 @@ function PST:tryGrabBag()
             Vector.Zero,
             nil,
             SackSubType.SACK_NORMAL,
-            Game():GetRoom():GetSpawnSeed()
+            PST:getRoom():GetSpawnSeed()
         )
     end
 end
@@ -35,7 +35,7 @@ function PST:prePickup(pickup, collider, low)
         -- Collectibles
         if variant == PickupVariant.PICKUP_COLLECTIBLE then
             -- Impromptu Gambler node (Cain's tree)
-            if PST:getTreeSnapshotMod("impromptuGambler", false) and Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
+            if PST:getTreeSnapshotMod("impromptuGambler", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
                 -- Remove crane games
                 for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
                     if tmpEntity.Type == EntityType.ENTITY_SLOT and tmpEntity.Variant == SlotVariant.CRANE_GAME then
@@ -338,7 +338,7 @@ function PST:onPickup(pickup, collider, low)
 end
 
 function PST:onPickupInit(pickup)
-    local room = Game():GetRoom()
+    local room = PST:getRoom()
     local firstSpawn = room:GetFrameCount() >= 0 or room:IsFirstVisit()
     local isShop = room:GetType() == RoomType.ROOM_SHOP
     local variant = pickup.Variant

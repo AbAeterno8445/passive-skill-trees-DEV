@@ -1,7 +1,7 @@
 -- On entity damage
 function PST:onDamage(target, damage, flag, source)
     local player = target:ToPlayer()
-    local room = Game():GetRoom()
+    local room = PST:getRoom()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
 
     -- Player gets hit
@@ -548,6 +548,8 @@ function PST:onDeath(entity)
         end
     elseif entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY then
         -- Enemy death
+        local room = PST:getRoom()
+
         local addXP = false
         if not (entity:IsBoss() and entity.Parent) or entity.Type == EntityType.ENTITY_LARRYJR then
             if entity.SpawnerType ~= 0 then
@@ -569,7 +571,7 @@ function PST:onDeath(entity)
 
             if entity:IsBoss() then
                 mult = mult + PST:getTreeSnapshotMod("xpgainBoss", 0) / 100
-                local roomType = Game():GetRoom():GetType()
+                local roomType = room:GetType()
                 if not roomType == RoomType.ROOM_MINIBOSS and not roomType == RoomType.ROOM_BOSS then
                     mult = mult - 0.6
                 end
@@ -581,7 +583,7 @@ function PST:onDeath(entity)
 
         -- Chance for champions to drop a random starcursed jewel
         local tmpNPC = entity:ToNPC()
-        local levelStage = Game():GetLevel():GetStage()
+        local levelStage = PST:getLevel():GetStage()
         if tmpNPC and tmpNPC:IsChampion() and 100 * math.random() < PST.SCDropRates.championKill(levelStage).regular then
             PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill(levelStage).ancient)
         end
@@ -669,27 +671,27 @@ function PST:onDeath(entity)
 
             -- Mod: chance for Mom to drop Plan C when defeated
             if 100 * math.random() < PST:getTreeSnapshotMod("momPlanC", 0) then
-                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_PLAN_C, Random() + 1)
             end
 
             -- Daemon Army node (Lilith's tree)
             if PST:getTreeSnapshotMod("daemonArmy", false) then
                 -- Mom drops an additional Incubus
-                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_INCUBUS, Random() + 1)
             end
 
             -- Harbinger Locusts node (Apollyon's tree)
 			if PST:getTreeSnapshotMod("harbingerLocusts", false) then
-				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
 			end
 
             -- Mod: chance for mom to additionally drop Birthright
             if 100 * math.random() < PST:getTreeSnapshotMod("jacobBirthright", 0) then
-                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
                 PST:addModifiers({ jacobBirthrightProc = true }, true)
             end
@@ -699,7 +701,7 @@ function PST:onDeath(entity)
 
             -- Mod: chance for Mom's Heart to additionally drop Birthright (if Mom didn't previously drop it)
             if not PST:getTreeSnapshotMod("jacobBirthrightProc", false) and 100 * math.random() < PST:getTreeSnapshotMod("jacobBirthright", 0) / 2 then
-                local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
                 PST:addModifiers({ jacobBirthrightProc = true }, true)
             end

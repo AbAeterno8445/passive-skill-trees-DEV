@@ -11,18 +11,8 @@ local lvlCurseTracker = -1
 -- On update
 local clearRoomProc = false
 function PST:onUpdate()
-	local level = PST.level
-	if not level then
-		PST.level = Game():GetLevel()
-		level = PST.level
-	end
-
-	local room = PST.room
-	if not room then
-		PST.room = Game():GetRoom()
-		room = PST.room
-	end
-
+	local level = PST:getLevel()
+	local room = PST:getRoom()
 	local player = PST:getPlayer()
 
 	-- First update when entering floor
@@ -66,7 +56,7 @@ function PST:onUpdate()
 		if PST:getTreeSnapshotMod("demonicSouvenirs", false) then
 			-- Spawn The Empress card every other floor, and spawn a random unlocked evil trinket on the second floor you enter
 			if not PST:getTreeSnapshotMod("demonicSouvenirsProc", false) then
-				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_EMPRESS, Random() + 1)
 				PST:addModifiers({ demonicSouvenirsProc = true }, true)
 			else
@@ -76,7 +66,7 @@ function PST:onUpdate()
 
 		-- Gulp! node (Keeper's tree)
 		if PST:getTreeSnapshotMod("gulp") and level:GetStage() % 2 ~= 0 then
-			local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
        		Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, TrinketType.TRINKET_SWALLOWED_PENNY, Random() + 1)
 		end
 
@@ -139,14 +129,14 @@ function PST:onUpdate()
 			-- Mod: chance to spawn a random trinket at the start of a floor
 			tmpMod = PST:getTreeSnapshotMod("trinketSpawn", 0)
 			if tmpMod > 0 and 100 * math.random() < tmpMod then
-				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
        			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, Game():GetItemPool():GetTrinket(), Random() + 1)
 			end
 
 			-- Demonic Souvenirs node (Azazel's tree)
 			if PST:getTreeSnapshotMod("demonicSouvenirs", false) and not PST:getTreeSnapshotMod("demonicSouvenirsTrinket", false) then
 				-- Spawn random evil trinket on the second floor you enter
-				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				local tmpTrinket = PST.evilTrinkets[math.random(#PST.evilTrinkets)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpTrinket, Random() + 1)
 				PST:addModifiers({ demonicSouvenirsTrinket = true }, true)
@@ -169,7 +159,7 @@ function PST:onUpdate()
 			-- Mod: chance to spawn Eden's Blessing at the beginning of the floor
 			tmpMod = PST:getTreeSnapshotMod("edenBlessingSpawn", 0)
 			if tmpMod > 0 and 100 * math.random() < tmpMod and not PST:getTreeSnapshotMod("edenBlessingSpawned", false) then
-				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_EDENS_BLESSING, Random() + 1)
 				PST:addModifiers({ edenBlessingSpawned = true }, true)
@@ -177,7 +167,7 @@ function PST:onUpdate()
 
 			-- Harbinger Locusts node (Apollyon's tree)
 			if PST:getTreeSnapshotMod("harbingerLocusts", false) and not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("harbingerLocustsFloorProc", false) then
-				local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
 				PST:addModifiers({ harbingerLocustsFloorProc = true }, true)
@@ -895,7 +885,7 @@ function PST:onUpdate()
 			-- Starblessed node (Eden's tree)
 			if PST:getTreeSnapshotMod("starblessed", false) then
 				if isBossRoom and level:GetStage() == LevelStage.STAGE1_1 then
-					local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos(), 40)
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_STARS, Random() + 1)
 				end
 			end

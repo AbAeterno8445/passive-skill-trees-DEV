@@ -53,7 +53,7 @@ function PST:onSlotUpdate(slot)
         elseif slot.Variant == SlotVariant.CRANE_GAME and spentCoins then
             -- Impromptu Gambler node (Cain's tree)
             if PST:getTreeSnapshotMod("impromptuGambler", false) then
-                if Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
+                if PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
                     player:AddCoins(-3)
 
                     -- Remove natural treasure room items

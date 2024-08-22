@@ -1,5 +1,5 @@
 function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, seed)
-    if Game():GetRoom():GetFrameCount() > 1 then
+    if PST:getRoom():GetFrameCount() > 1 then
         -- Dead bird spawn, set active
         if type == EntityType.ENTITY_FAMILIAR and variant == FamiliarVariant.DEAD_BIRD and not PST.specialNodes.deadBirdActive then
             PST.specialNodes.deadBirdActive = true

@@ -68,7 +68,7 @@ function PST:onUseCard(card, player, useFlags)
         end
 
         local tmpChance = 100
-        if Game():GetRoom():GetType() == RoomType.ROOM_TREASURE then
+        if PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
             tmpChance = 35
         end
         if 100 * math.random() < tmpChance then
@@ -95,7 +95,7 @@ function PST:onUseCard(card, player, useFlags)
             player:TryRemoveSmeltedTrinket(smelted[math.random(#smelted)])
             PST:addModifiers({ allstatsPerc = -1, SC_baubleSeekerBuff = -1 }, true)
             local tmpTrinket = Game():GetItemPool():GetTrinket()
-            local tmpPos = Game():GetRoom():FindFreePickupSpawnPosition(player.Position)
+            local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpTrinket, Random() + 1)
         end
     end
