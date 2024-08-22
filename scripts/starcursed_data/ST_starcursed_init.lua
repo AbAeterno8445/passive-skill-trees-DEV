@@ -577,7 +577,7 @@ PST.SCAncients = {
     },
     glace = {
         weight = 100,
-        spriteFrame = 16,
+        spriteFrame = 15,
         name = "Glace",
         description = {
             "Start with Uranus and a smelted Ice Cube.",
@@ -585,6 +585,21 @@ PST.SCAncients = {
         },
         rewards = {
             xpgain = 60,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
+        }
+    },
+    saturnianLuminite = {
+        weight = 100,
+        spriteFrame = 16,
+        name = "Saturnian Luminite",
+        description = {
+            "Start with Saturnus and Spear of Destiny.",
+            "Cannot shoot tears, and base damage is set to 0.25.",
+            "Every 4 seconds while in a room with monsters, reset Saturnus' ring of tears."
+        },
+        rewards = {
+            xpgain = 75,
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }

@@ -152,6 +152,12 @@ function PST:onNewRun(isContinued)
         if PST:SC_getSnapshotMod("sanguinis", false) then
             player:AddCollectible(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
         end
+        -- Ancient starcursed jewel: Saturnian Luminite
+        if PST:SC_getSnapshotMod("saturnianLuminite", false) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_SATURNUS)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_SPEAR_OF_DESTINY)
+            player:SetCanShoot(false)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

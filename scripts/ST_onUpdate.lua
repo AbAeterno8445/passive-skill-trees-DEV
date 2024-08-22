@@ -229,6 +229,11 @@ function PST:onUpdate()
 		if PST:SC_getSnapshotMod("martianUltimatum", false) and PST.specialNodes.SC_martianTimer == 0 then
 			PST.specialNodes.SC_martianTimer = 30 * (3 + math.random(5))
 		end
+
+		-- Ancient starcursed jewel: Saturnian Luminite
+		if PST:SC_getSnapshotMod("saturnianLuminite") then
+			player:SetCanShoot(false)
+		end
 	end
 
 	-- First heart-related functions update
@@ -414,6 +419,14 @@ function PST:onUpdate()
 		tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyDrop", 0)
 		if tmpMod > 1 and room:GetFrameCount() % 30 == 0 then
 			PST:addModifiers({ SC_crimsonWarpKeyDrop = -0.5 }, true)
+		end
+	end
+	-- Ancient starcursed jewel: Saturnian Luminite
+	if PST:SC_getSnapshotMod("saturnianLuminite", false) and room:GetAliveEnemiesCount() > 0 then
+		local tmpDelay = 120
+		if room:GetFrameCount() % tmpDelay == 0 then
+			player:RemoveCollectible(CollectibleType.COLLECTIBLE_SATURNUS)
+			player:AddCollectible(CollectibleType.COLLECTIBLE_SATURNUS)
 		end
 	end
 

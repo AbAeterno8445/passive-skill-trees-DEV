@@ -382,7 +382,13 @@ function PST:onCache(player, cacheFlag)
         local tmpMult = 1 + allstatsPerc / 100
         tmpMult = tmpMult + PST:getTreeSnapshotMod("damagePerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.damagePerc / 100
-        player.Damage = (player.Damage + tmpMod) * math.max(0.05, tmpMult)
+
+        local baseDmg = player.Damage
+        -- Ancient starcursed jewel: Saturnian Luminite
+        if PST:SC_getSnapshotMod("saturnianLuminite", false) then
+            baseDmg = 0.25
+        end
+        player.Damage = (baseDmg + tmpMod) * math.max(0.05, tmpMult)
 
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- TEARS (MaxFireDelay)
