@@ -697,23 +697,25 @@ function PST:onUpdate()
 					PST:addTempXP(challengeXP, true)
 				end
 
-				-- Starcursed jewel drop
-				if 100 * math.random() < PST.SCDropRates.challenge(level:GetStage()).regular then
-					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.challenge(level:GetStage()).ancient)
-					jewelDrop = true
-				end
-
-				-- Ancient starcursed jewel: Challenger's Starpiece
-				if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) then
-					local tmpVariant = 0
-					if level:GetStage() >= 7 then
-						tmpVariant = 1
+				if not PST:getTreeSnapshotMod("SC_challClear", false) then
+					-- Starcursed jewel drop
+					if 100 * math.random() < PST.SCDropRates.challenge(level:GetStage()).regular then
+						local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+						PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.challenge(level:GetStage()).ancient)
+						jewelDrop = true
 					end
-					Game():Spawn(
-						PST.deadlySinBosses[math.random(#PST.deadlySinBosses)],
-						tmpVariant, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1
-					)
+
+					-- Ancient starcursed jewel: Challenger's Starpiece
+					if PST:SC_getSnapshotMod("challengerStarpiece", false) then
+						local tmpVariant = 0
+						if level:GetStage() >= 7 then
+							tmpVariant = 1
+						end
+						Game():Spawn(
+							PST.deadlySinBosses[math.random(#PST.deadlySinBosses)],
+							tmpVariant, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1
+						)
+					end
 					PST:addModifiers({ SC_challClear = true }, true)
 				end
 			end

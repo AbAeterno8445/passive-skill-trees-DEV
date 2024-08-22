@@ -63,8 +63,8 @@ function PST:onNewLevel()
         end
     end
 
-    -- Ancient starcursed jewel: Challenger's Starpiece
-    if PST:SC_getSnapshotMod("challengerStarpiece", false) then
+    -- Challenge room clear proc
+    if PST:SC_getSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)
     end
 
