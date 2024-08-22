@@ -810,7 +810,7 @@ function PST:treeMenuRenderer()
         local jewelData = PST.starcursedInvData.hoveredJewel
         if jewelData then
             local tmpDescription = PST:SC_getJewelDescription(jewelData)
-            if jewelData.type ~= PSTStarcursedType.ANCIENT and not jewelData.unidentified then
+            if (jewelData.type ~= PSTStarcursedType.ANCIENT or jewelData.name == "Faded Starpiece") and not jewelData.unidentified then
                 table.insert(tmpDescription, "Press the Respec Node button to destroy this jewel.")
             end
             local jewelTitle = jewelData.name or jewelData.type .. " Starcursed Jewel"
@@ -973,7 +973,7 @@ function PST:treeMenuRenderer()
         -- Starcursed inventory, destroy hovered jewel
         elseif PST.starcursedInvData.hoveredJewel ~= nil then
             if PST.starcursedInvData.hoveredJewelID and PST.starcursedInvData.hoveredJewel.type and not PST.starcursedInvData.hoveredJewel.unidentified and
-            PST.starcursedInvData.hoveredJewel.type ~= PSTStarcursedType.ANCIENT then
+            (PST.starcursedInvData.hoveredJewel.type ~= PSTStarcursedType.ANCIENT or PST.starcursedInvData.hoveredJewel.name == "Faded Starpiece") then
                 if not PST.starcursedInvData.hoveredJewel.equipped then
                     table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
                     PST.starcursedInvData.hoveredJewel = nil
