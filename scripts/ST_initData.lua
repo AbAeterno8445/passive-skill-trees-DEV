@@ -1,6 +1,7 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
 PST.modVersion = "v0.2.27"
+PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
 PST.startXPRequired = 34
@@ -689,7 +690,10 @@ function PST:resetData()
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},
-		newCharsTainted = {}
+		newCharsTainted = {},
+
+		-- Last mod version installed
+		lastVersion = ""
 	}
 	PST:resetMods()
 end

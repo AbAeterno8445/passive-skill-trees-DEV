@@ -1,4 +1,7 @@
 include("scripts.tree_data.nodes")
+include("scripts.ST_changelog")
+
+local changelogPopup = false
 
 local sfx = SFXManager()
 
@@ -58,7 +61,7 @@ local currentTree = "global"
 local hoveredNode = nil
 
 local totalModsMenuOpen = false
-local totalModsMenuY = 0
+local menuScrollY = 0
 local totalModsList = {}
 
 local helpOpen = ""
@@ -71,6 +74,7 @@ local treeControlDesc = {
     "Q: switch to selected character's tree",
     "Shift + Q: enable/disable tree effects next run",
     "Shift + H: display a list of all active modifiers",
+    "Shift + C: show mod changelog",
     "",
     "Notes:",
     "The first character you level up to 30 grants global SP for every level.",
@@ -166,6 +170,12 @@ function PST:openTreeMenu()
     spaceOffPos = Vector.Zero
     spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
     treeMenuOpen = true
+
+    -- New version changelog popup
+    if PST.isNewVersion and not changelogPopup and PST.config.changelogPopup then
+        changelogPopup = true
+        helpOpen = "changelog"
+    end
 end
 
 function PST:closeTreeMenu(mute, force)
@@ -379,6 +389,9 @@ function PST:treeMenuRenderer()
         if totalModsMenuOpen then
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
             totalModsMenuOpen = false
+        elseif helpOpen == "changelog" then
+            sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+            helpOpen = ""
         else
             PST:closeTreeMenu()
         end
@@ -434,33 +447,33 @@ function PST:treeMenuRenderer()
         cameraSpeed = 8 * (1 + 1 - zoomScale)
     end
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
-        if not totalModsMenuOpen then
+        if not totalModsMenuOpen and helpOpen ~= "changelog" then
             if treeCamera.Y > -2000 then
                 treeCamera.Y = treeCamera.Y - cameraSpeed
                 PST_updateCamZoomOffset()
             end
         else
-            totalModsMenuY = math.min(0, totalModsMenuY + cameraSpeed)
+            menuScrollY = math.min(0, menuScrollY + cameraSpeed)
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
-        if not totalModsMenuOpen then
+        if not totalModsMenuOpen and helpOpen ~= "changelog" then
             if treeCamera.Y < 2000 then
                 treeCamera.Y = treeCamera.Y + cameraSpeed
                 PST_updateCamZoomOffset()
             end
         else
-            totalModsMenuY = totalModsMenuY - cameraSpeed
+            menuScrollY = menuScrollY - cameraSpeed
         end
     end
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
-        if not totalModsMenuOpen then
+        if not totalModsMenuOpen and helpOpen ~= "changelog" then
             if treeCamera.X > -2000 then
                 treeCamera.X = treeCamera.X - cameraSpeed
                 PST_updateCamZoomOffset()
             end
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
-        if not totalModsMenuOpen then
+        if not totalModsMenuOpen and helpOpen ~= "changelog" then
             if treeCamera.X < 2000 then
                 treeCamera.X = treeCamera.X + cameraSpeed
                 PST_updateCamZoomOffset()
@@ -1047,10 +1060,18 @@ function PST:treeMenuRenderer()
             helpOpen = ""
         end
         totalModsMenuOpen = false
+    -- Input: Toggle changelog
+    elseif PST:isKeybindActive(PSTKeybind.TOGGLE_CHANGELOG) then
+        if helpOpen ~= "changelog" then
+            helpOpen = "changelog"
+        else
+            helpOpen = ""
+        end
+        totalModsMenuOpen = false
     -- Input: Toggle total modifiers menu
     elseif PST:isKeybindActive(PSTKeybind.TOGGLE_TOTAL_MODS) then
         helpOpen = ""
-        totalModsMenuY = 0
+        menuScrollY = 0
         totalModsMenuOpen = not totalModsMenuOpen
         sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
 
@@ -1201,7 +1222,7 @@ function PST:treeMenuRenderer()
         PST_centerCamera()
     end
 
-    if not totalModsMenuOpen then
+    if not totalModsMenuOpen and helpOpen ~= "changelog" then
         -- HUD data
         Isaac.RenderText(
             "Skill points: " .. skPoints .. " / Respecs: " .. PST.modData.respecPoints,
@@ -1223,9 +1244,12 @@ function PST:treeMenuRenderer()
         drawNodeBox("Tree Controls", treeControlDesc, 16, 40, true, 1)
     elseif helpOpen == "controller" then
         drawNodeBox("Tree Controls (Controller)", treeControlDescController, 16, 40, true, 1)
+    -- Draw changelog
+    elseif helpOpen == "changelog" then
+        drawNodeBox("CHANGELOG (Press Menu Back or Shift + C to close)", PST:getChangelogList(), 16, 16 + menuScrollY, true, 1)
     -- Draw total modifiers menu
     elseif totalModsMenuOpen then
-        drawNodeBox("Active Modifiers", totalModsList, 16, 16 + totalModsMenuY, true, 1)
+        drawNodeBox("Active Modifiers", totalModsList, 16, 16 + menuScrollY, true, 1)
     end
 
     -- Update tree visibility if debug mode allAvailable changes

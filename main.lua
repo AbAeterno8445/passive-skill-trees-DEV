@@ -103,6 +103,11 @@ function PST:load()
 				end
 			end
 		end
+		-- New version
+		if not tmpJson.lastVersion or tmpJson.lastVersion ~= PST.modVersion then
+			tmpJson.lastVersion = PST.modVersion
+			PST.isNewVersion = true
+		end
 		PST.modData = tmpJson
 
 		-- Load new character names

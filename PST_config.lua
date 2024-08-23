@@ -17,6 +17,9 @@ PST.config = {
     -- XP multiplier option
     xpMult = 1,
 
+    -- Make changelog pop up when on new version updates
+    changelogPopup = true,
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed
@@ -109,6 +112,10 @@ PST.config = {
             shift = true,
             controllerAction = ButtonAction.ACTION_MAP,
             actionItem = true
+        },
+        toggleChangelog = {
+            keyboardButton = Keyboard.KEY_C,
+            shift = true,
         }
     }
 }
@@ -131,7 +138,8 @@ PSTKeybind = {
     TOGGLE_HELP_CONTROLLER = "toggleHelpController",
     ZOOM_IN = "zoomIn",
     ZOOM_OUT = "zoomOut",
-    TOGGLE_TOTAL_MODS = "toggleTotalMods"
+    TOGGLE_TOTAL_MODS = "toggleTotalMods",
+    TOGGLE_CHANGELOG = "toggleChangelog"
 }
 
 -- Support for Mod Config Menu
@@ -243,6 +251,27 @@ function PST:initModConfigMenu()
                 PST:save()
             end,
             Info = {"Whether tree node effects are applied in challenges", "Default off"}
+        }
+    )
+    -- Changelog popup on new version setting
+    ModConfigMenu.RemoveSetting(PST.modName, nil, "changelogPopup")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        nil,
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "changelogPopup",
+            CurrentSetting = function()
+                return PST.config.changelogPopup
+            end,
+            Display = function()
+                return "Changelog popup on update: " .. (PST.config.changelogPopup and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.changelogPopup = b
+                PST:save()
+            end,
+            Info = {"Whether to have the changelog pop up in the tree screen when a new update arrives"}
         }
     )
 
