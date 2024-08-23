@@ -42,6 +42,9 @@ function PST:onShopPurchase(pickupBought, player, spent)
     end
 end
 
+local bannedSavingItems = {
+    [PickupVariant.PICKUP_TAROTCARD] = Card.CARD_CRACKED_KEY
+}
 function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
     if price > 0 then
         local priceMod = 0
@@ -62,7 +65,8 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
         -- Make proc rarer in greed mode
         if Game():IsGreedMode() then tmpMod = tmpMod / 3 end
 
-        if tmpMod > 0 then
+        local isBanned = bannedSavingItems[pickupVariant] ~= nil and bannedSavingItems[pickupVariant] == subtype
+        if tmpMod > 0 and not isBanned then
             local shopCache = PST:getTreeSnapshotMod("shopSavingCache", nil)
             if shopCache then
                 local itemID = tostring(pickupVariant) .. "." .. tostring(subtype) .. "." .. tostring(shopID)
@@ -78,5 +82,15 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
         end
 
         return math.max(1, price + priceMod)
+    end
+end
+
+function PST:onShopRestock(partial)
+    -- Ancient starcursed jewel: Crimson Warpstone
+    for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+        local tmpItem = tmpEntity:ToPickup()
+        if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
+            tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true)
+        end
     end
 end
