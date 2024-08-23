@@ -370,7 +370,7 @@ function PST:treeMenuRenderer()
     local screenH = Isaac.GetScreenHeight()
 
     local skPoints = PST.modData.skillPoints
-    local treeName = "Global Tree"
+    local treeName = "Global Tree - LV " .. PST.modData.level
     if currentTree ~= "global" then
         if currentTree == "starTree" then
             local tmpStarmight = 0
