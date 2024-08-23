@@ -337,7 +337,7 @@ function PST:onDamage(target, damage, flag, source)
                 -- For tears shot by familiars
                 tmpFamiliar = source.Entity.SpawnerEntity:ToFamiliar()
             end
-            if tmpFamiliar and target:IsActiveEnemy(false) and target:IsVulnerableEnemy() then
+            if tmpFamiliar and target:IsActiveEnemy(false) and target:IsVulnerableEnemy() and target.Type ~= EntityType.ENTITY_BLOOD_PUPPY then
                 -- Carrion Avian node (Eve's tree)
                 if PST:getTreeSnapshotMod("carrionAvian", false) then
                     if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
