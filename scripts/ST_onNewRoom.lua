@@ -460,7 +460,7 @@ function PST:onNewRoom()
 			local firstItem = true
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				local tmpItem = tmpEntity:ToPickup()
-				if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+				if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
 					if firstItem then
 						Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpItem.Position, Vector.Zero, nil, Card.CARD_REVERSE_STARS, Random() + 1)
 						firstItem = false
