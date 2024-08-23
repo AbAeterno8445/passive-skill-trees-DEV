@@ -271,7 +271,7 @@ function PST:allocateNodeID(tree, nodeID, allocation)
     end
 
     PST.modData.treeNodes[tree][nodeID] = allocation
-    PST:updateNodes(tree)
+    PST:updateNodes(tree, true)
     PST:save()
 end
 
