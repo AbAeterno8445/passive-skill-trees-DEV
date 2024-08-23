@@ -3,6 +3,14 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.31",
+        "- Added a new Ancient Jewel: \"Nullstone\".",
+        "",
+
+        "v0.2.30",
+        "- Version jump to attempt workshop auto update.",
+        "",
+
         "v0.2.29",
         "- Added global XP and levels, separate from character levels.",
         "    - Global levels are the source of global skill points now, instead of character levels.",
