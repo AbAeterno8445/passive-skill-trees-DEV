@@ -59,7 +59,8 @@ function PST:onSlotUpdate(slot)
                     -- Remove natural treasure room items
                     if #PST.specialNodes.impromptuGamblerItems > 0 then
                         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
-                            if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+                            if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
+                            not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
                                 local tmpX = math.floor(tmpEntity.Position.X / 40)
                                 local tmpY = math.floor(tmpEntity.Position.Y / 40)
                                 for _, itemPos in ipairs(PST.specialNodes.impromptuGamblerItems) do

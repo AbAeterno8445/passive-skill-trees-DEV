@@ -487,7 +487,7 @@ function PST:onNewRoom()
 			if room:GetType() == RoomType.ROOM_TREASURE or room:GetType() == RoomType.ROOM_SHOP then
 				for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 					local tmpItem = tmpEntity:ToPickup()
-					if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+					if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
 						tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true)
 					end
 				end
@@ -506,7 +506,7 @@ function PST:onNewRoom()
 
 		-- Mod: chance to reroll active item pedestals into passive items, if you're holding an active item
 		tmpMod = PST:getTreeSnapshotMod("activeItemReroll", 0)
-		if PST:getTreeSnapshotMod("activeItemRerolled", 0) < 2 and 100 * math.random() < tmpMod and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) > 0 then
+		if tmpMod > 0 and PST:getTreeSnapshotMod("activeItemRerolled", 0) < 2 and 100 * math.random() < tmpMod and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) > 0 then
 			local itemPool = Game():GetItemPool()
 			local rolledItems = {}
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
