@@ -94,6 +94,14 @@ function PST:getLevelXPReq(level)
 	return xpRequired
 end
 
+-- Get the required XP for the given level (global tree)
+function PST:getGlobalLevelXPReq(level)
+	if level <= 1 then return PST.startXPRequired end
+
+	local xpRequired = PST.startXPRequired + (level - 1) * 10 + ((level - 1) / 5) ^ 1.6
+	return math.ceil(xpRequired)
+end
+
 -- Updates all characters' xp requirement values to current formula
 function PST:updateAllCharsXPReq()
 	for _, charData in pairs(PST.modData.charData) do
@@ -101,6 +109,21 @@ function PST:updateAllCharsXPReq()
 		if charData.xp >= charData.xpRequired then
 			charData.xp = charData.xpRequired - 1
 		end
+	end
+	-- Update global level
+	local projectedLevel = PST.modData.skillPoints
+	for _, allocated in pairs(PST.modData.treeNodes["global"]) do
+		if allocated then projectedLevel = projectedLevel + 1 end
+	end
+	for _, allocated in pairs(PST.modData.treeNodes["starTree"]) do
+		if allocated then projectedLevel = projectedLevel + 1 end
+	end
+	if PST.modData.level < projectedLevel then
+		PST.modData.level = projectedLevel
+	end
+	PST.modData.xpRequired = PST:getGlobalLevelXPReq(PST.modData.level)
+	if PST.modData.xp >= PST.modData.xpRequired then
+		PST.modData.xp = PST.modData.xpRequired - 1
 	end
 end
 
@@ -170,6 +193,7 @@ function PST:addXP(xpParam, showText)
 	if charData then
 		local xp = xpParam
 		charData.xp = math.max(0, charData.xp + xp)
+		PST.modData.xp = math.max(0, PST.modData.xp + xp)
 		if showText then
 			local xpStr = string.format("+%.2f xp", xp)
 			if xp % 1 == 0 then
@@ -178,21 +202,13 @@ function PST:addXP(xpParam, showText)
 			PST:createFloatTextFX(xpStr, Vector.Zero, Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
 		end
 
-		-- Level up
+		-- Character level up
 		if charData.xp >= charData.xpRequired then
 			local currentChar = PST:getCurrentCharName()
 			if currentChar then
 				sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
 				charData.level = charData.level + 1
 				charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
-
-				local highestLevel = 1
-				for _, tmpChar in pairs(PST.modData.charData) do
-					if tmpChar.level > highestLevel then highestLevel = tmpChar.level end
-				end
-				if charData.level == highestLevel or charData.level > 30 then
-					PST.modData.skillPoints = PST.modData.skillPoints + 1
-				end
 
 				local xpRemaining = charData.xp - charData.xpRequired
 
@@ -204,6 +220,23 @@ function PST:addXP(xpParam, showText)
 
 				PST:createFloatTextFX("Level up!", Vector.Zero, Color(0.7, 0.85, 1, 0.7), 0.17, 100, true)
 			end
+		end
+
+		-- Global level up
+		if PST.modData.xp >= PST.modData.xpRequired then
+			sfx:Play(SoundEffect.SOUND_1UP, 0.9)
+			PST.modData.level = PST.modData.level + 1
+			PST.modData.skillPoints = PST.modData.skillPoints + 1
+
+			local xpRemaining = PST.modData.xp - PST.modData.xpRequired
+
+			-- Next level xp requirement formula
+			PST.modData.xpRequired = PST:getGlobalLevelXPReq(PST.modData.level)
+
+			-- Add overflowing xp to next level, capped at 33%
+			PST.modData.xp = math.min(math.floor(PST.modData.xpRequired * 0.33), xpRemaining)
+
+			PST:createFloatTextFX("Global level up!", Vector.Zero, Color(0.1, 0.4, 1, 0.7), 0.17, 100, true)
 		end
 	end
 end

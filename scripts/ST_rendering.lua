@@ -11,6 +11,9 @@ end
 local miniFont = Font()
 miniFont:Load("font/cjk/lanapixel.fnt")
 
+local luaminiFont = Font()
+luaminiFont:Load("font/luaminioutlined.fnt")
+
 -- Create a floating fading text
 ---@param text string -- Text to display
 ---@param position Vector -- Text position
@@ -60,7 +63,7 @@ function PST:Render()
 	local screenRatioY = Isaac.GetScreenHeight() / 270
 
 	local room = PST:getRoom()
-	local gamePaused = Game():IsPaused()
+	--local gamePaused = Game():IsPaused()
 
 	-- XP bar
 	local hudVisible = Game():GetHUD():IsVisible()
@@ -68,30 +71,46 @@ function PST:Render()
 		local charData = PST:getCurrentCharData()
 		if charData then
 			local barPos = Vector(112 * screenRatioX, Isaac.GetScreenHeight() - 12)
-			local barPercent = math.min(1, charData.xp / math.max(1, charData.xpRequired))
+			local barPerc = math.min(1, charData.xp / math.max(1, charData.xpRequired))
+			local barPercGlobal = math.min(1, PST.modData.xp / math.max(1, PST.modData.xpRequired))
 			local barScale = Vector(screenRatioX, math.min(1, screenRatioY))
 
+			xpbarTempSprite.Scale = barScale
+			xpbarFullSprite.Scale = barScale
 			xpbarSprite.Scale = barScale
 			xpbarSprite:Render(barPos)
 
 			if PST.modData.xpObtained > 0 then
+				-- Character temp xp bar
 				local tempBarPercent = math.min(1, (charData.xp + PST.modData.xpObtained) / math.max(1, charData.xpRequired))
-				xpbarTempSprite.Scale = barScale
-				xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 32), Vector(barWidth, 16))
+				xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 8), Vector(barWidth, 16))
+
+				-- Global temp xp bar
+				tempBarPercent = math.min(1, (PST.modData.xp + PST.modData.xpObtained) / math.max(1, PST.modData.xpRequired))
+				xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 16), Vector(barWidth, 8))
 			end
 
+			-- Character xp
 			if charData.xp > 0 then
-				xpbarFullSprite.Scale = barScale
-				xpbarFullSprite:Render(barPos, Vector(barWidth * barPercent, 16), Vector(barWidth, 16))
+				xpbarFullSprite:Render(barPos, Vector(barWidth * barPerc, 8), Vector(barWidth, 16))
+			end
+
+			-- Global xp
+			if PST.modData.xp > 0 then
+				xpbarFullSprite:Render(barPos, Vector(barWidth * barPercGlobal, 16), Vector(barWidth, 8))
 			end
 
 			-- Level text
 			local levelStr = "LV " .. charData.level
-			Isaac.RenderText(levelStr, barPos.X - (3 + string.len(levelStr) * 8) * screenRatioX, barPos.Y - 6, 1, 1, 1, 0.7)
+			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) - 6, barPos.Y - 12, 1, 1, KColor(0.84, 0.5, 1, 0.7))
+
+			-- Global level text
+			levelStr = "G.LV " .. PST.modData.level
+			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) - 6, barPos.Y - 5, 1, 1, KColor(0.1, 0.4, 1, 0.7))
 		end
 	end
 
-	-- Quick wit mod
+	--[[ Quick wit mod
 	local quickWitMod = PST:getTreeSnapshotMod("quickWit", {0, 0})
 	local hasQuickWit = quickWitMod[1] ~= 0 or quickWitMod[2] ~= 0
 
@@ -107,7 +126,7 @@ function PST:Render()
 			quickWitData.startTime = quickWitData.startTime + os.clock() - quickWitData.pauseTime
 			quickWitData.pauseTime = 0
 		end
-	end
+	end]]
 
 	-- Ancient starcursed jewel: Chronicler Stone UI
 	if hudVisible then

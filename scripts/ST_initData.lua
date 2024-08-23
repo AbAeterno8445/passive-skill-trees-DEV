@@ -693,6 +693,9 @@ end
 function PST:resetData()
 	PST.modData = {
 		xpObtained = 0,
+		level = 1,
+		xp = 0,
+		xpRequired = PST.startXPRequired,
 		skillPoints = 0,
 		respecPoints = 4,
 		spawnKills = 0,
