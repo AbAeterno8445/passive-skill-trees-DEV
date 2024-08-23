@@ -484,7 +484,11 @@ function PST:onNewRoom()
 		-- Ancient starcursed jewel: Crimson Warpstone
 		if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
 			if room:GetAliveEnemiesCount() > 0 then
-				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 15 + level:GetStage() / 2, set = true } }, true)
+				local tmpBonus = 0
+				if level:GetStage() >= 7 and not level:IsAscent() and (level:GetCurrentRoomDesc().Flags & (1 << 10)) == 0 then
+					tmpBonus = 20
+				end
+				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 15 + tmpBonus + level:GetStage() / 2, set = true } }, true)
 			end
 
 			if room:GetType() == RoomType.ROOM_TREASURE or room:GetType() == RoomType.ROOM_SHOP then
