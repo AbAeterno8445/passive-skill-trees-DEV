@@ -63,6 +63,15 @@ function PST:onNewLevel()
         end
     end
 
+    -- Ancient starcursed jewel: Nullstone
+    local tmpTreeMod = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
+    if tmpTreeMod and #tmpTreeMod > 0 then
+        PST:addModifiers({ SC_nullstoneEnemies = { value = {}, set = true } }, true)
+    end
+    if PST:getTreeSnapshotMod("SC_nullstoneClear", false) then
+        PST:addModifiers({ SC_nullstoneClear = false }, true)
+    end
+
     -- Challenge room clear proc
     if PST:SC_getSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)

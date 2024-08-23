@@ -604,6 +604,22 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
+    },
+    nullstone = {
+        weight = 100,
+        spriteFrame = 17,
+        name = "Nullstone",
+        description = {
+            "The first enemy you kill in a room gets temporally nullified.",
+            "When entering the boss room, spawn the first enemy you nullified.",
+            "When killing a nullified enemy in the boss room, spawn the next one in the sequence."
+        },
+        rewards = {
+            xpgain = 45,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

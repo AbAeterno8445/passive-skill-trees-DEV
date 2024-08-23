@@ -17,6 +17,8 @@ function PST:onNewRoom()
 	PST.specialNodes.SC_exploderTears = {}
 	PST.specialNodes.SC_martianFX = {}
 	PST.specialNodes.SC_martianTears = {}
+	PST.specialNodes.SC_nullstoneCurrentSpawn = nil
+	PST.specialNodes.SC_nullstoneSpawned = 0
 
 	local player = PST:getPlayer()
 	local room = Game():GetRoom()
@@ -137,6 +139,30 @@ function PST:onNewRoom()
 	local tmpMod = PST:getTreeSnapshotMod("SC_martianDebuff", 0)
 	if PST:SC_getSnapshotMod("martianUltimatum", false) and tmpMod > 0 then
 		PST:addModifiers({ speed = tmpMod, SC_martianDebuff = { value = 0, set = true } }, true)
+	end
+
+	-- Ancient starcursed jewel: Nullstone
+	if PST:SC_getSnapshotMod("nullstone", false) then
+		-- Reset proc
+		if PST:getTreeSnapshotMod("SC_nullstoneProc", false) then
+			PST:addModifiers({ SC_nullstoneProc = false }, true)
+		end
+		-- Spawn first nullified enemy in boss room
+		if room:GetType() == RoomType.ROOM_BOSS and room:GetAliveBossesCount() > 0 and not PST:getTreeSnapshotMod("SC_nullstoneClear", false) then
+			local nullstoneList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
+            local currentSpawn = PST.specialNodes.SC_nullstoneCurrentSpawn
+			if nullstoneList and #nullstoneList > 0 and not currentSpawn then
+				local spawnEntry = nullstoneList[1]
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
+				local newSpawn = Game():Spawn(spawnEntry.type, spawnEntry.variant, tmpPos, Vector.Zero, nil, spawnEntry.subtype, Random() + 1)
+				if spawnEntry.champion >= 0 then
+					newSpawn:ToNPC():MakeChampion(Random() + 1, spawnEntry.champion, true)
+				end
+				newSpawn.Color = Color(0.1, 0.1, 0.1, 1, 0.1, 0.1, 0.1)
+				PST.specialNodes.SC_nullstoneCurrentSpawn = newSpawn
+				PST.specialNodes.SC_nullstoneSpawned = 2
+			end
+		end
 	end
 
 	-- Mod: chance to gain +4% all stats when entering a room with monsters

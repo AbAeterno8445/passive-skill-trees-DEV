@@ -803,6 +803,11 @@ function PST:onUpdate()
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
 				PST.specialNodes.bossGreedSpawned = true
 			end
+
+			-- Ancient starcursed jewel: Nullstone
+			if PST:SC_getSnapshotMod("nullstone", false) then
+				PST:addModifiers({ SC_nullstoneClear = true }, true)
+			end
 		-- Boss rush
 		elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
 			-- Boss rush clear

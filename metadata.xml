@@ -35,6 +35,7 @@ While in the tree screen:
 [*]Q: switch to the selected character's tree, if they have one
 [*]Shift + Q: enable/disable tree effects next run
 [*]Shift + H: display a list of all active modifiers affecting the next run
+[*]Shift + C: show changelog
 [/list]
 
 [h2]Important Node: Cosmic Realignment[/h2]
@@ -94,7 +95,7 @@ Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787]
 
 [h2]Support[/h2]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
-    <version>0.2.29</version>
+    <version>0.2.31</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Player Characters"/>

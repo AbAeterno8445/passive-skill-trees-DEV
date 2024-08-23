@@ -143,6 +143,21 @@ function PST:Render()
 			miniFont:DrawString(tostring(remaining), drawX + 7 * screenRatioX, drawY - 6 * screenRatioY, tmpColor)
 		end
 	end
+	-- Ancient starcursed jewel: Nullstone (poof FX)
+	if PST.specialNodes.SC_nullstonePoofFX then
+		local fxPos = Vector(PST.specialNodes.SC_nullstonePoofFX.x, PST.specialNodes.SC_nullstonePoofFX.y)
+		if fxPos.X ~= 0 or fxPos.Y ~= 0 then
+			if PST.specialNodes.SC_nullstonePoofFX.sprite and not PST.specialNodes.SC_nullstonePoofFX.sprite:IsFinished() then
+				PST.specialNodes.SC_nullstonePoofFX.sprite:Render(room:WorldToScreenPosition(fxPos))
+				PST.specialNodes.SC_nullstonePoofFX.sprite:Update()
+			end
+			if PST.specialNodes.SC_nullstonePoofFX.stoneSprite and PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color.A > 0 then
+				local newAlpha = math.max(0, PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color.A - 0.03)
+				PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, newAlpha)
+				PST.specialNodes.SC_nullstonePoofFX.stoneSprite:Render(room:WorldToScreenPosition(fxPos))
+			end
+		end
+	end
 
 	-- Manage floating texts
     if floatTextDelay > 0 then

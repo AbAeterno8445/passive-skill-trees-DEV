@@ -651,6 +651,50 @@ function PST:onDeath(entity)
                 PST:addModifiers({ speedPerc = 0.5, tearsPerc = 0.5, SC_glaceDebuff = -0.5 }, true)
             end
         end
+        -- Ancient starcursed jewel: Nullstone
+        if PST:SC_getSnapshotMod("nullstone", false) then
+            -- Add enemy from non-boss room to nullstone list
+            if not PST:getTreeSnapshotMod("SC_nullstoneProc", false) and not PST:getTreeSnapshotMod("SC_nullstoneClear", false) and
+            not entity.Parent and not entity:IsBoss() and room:GetType() ~= RoomType.ROOM_BOSS then
+                local nullstoneEnemyList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
+                if nullstoneEnemyList then
+                    table.insert(nullstoneEnemyList, {
+                        type = entity.Type,
+                        variant = entity.Variant,
+                        subtype = entity.SubType,
+                        champion = tmpNPC:GetChampionColorIdx()
+                    })
+                    PST:addModifiers({ SC_nullstoneProc = true }, true)
+                    SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.7, 2, false, 1.08)
+
+                    PST.specialNodes.SC_nullstonePoofFX.x = entity.Position.X
+                    PST.specialNodes.SC_nullstonePoofFX.y = entity.Position.Y
+                    PST.specialNodes.SC_nullstonePoofFX.sprite:Play("Poof", true)
+                    PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 1)
+                end
+            -- Spawn next enemy in sequence if killing nullified enemy in boss room
+            elseif not PST:getTreeSnapshotMod("SC_nullstoneClear", false) and room:GetType() == RoomType.ROOM_BOSS
+            and room:GetAliveBossesCount() > 0 then
+                local nullstoneList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
+                local currentSpawn = PST.specialNodes.SC_nullstoneCurrentSpawn
+                if currentSpawn and currentSpawn.InitSeed == entity.InitSeed and nullstoneList and
+                nullstoneList[PST.specialNodes.SC_nullstoneSpawned] ~= nil then
+                    local spawnEntry = nullstoneList[PST.specialNodes.SC_nullstoneSpawned]
+                    local tmpPos = Isaac.GetFreeNearPosition(entity.Position, 8)
+                    local newSpawn = Game():Spawn(spawnEntry.type, spawnEntry.variant, tmpPos, Vector.Zero, nil, spawnEntry.subtype, Random() + 1)
+                    if spawnEntry.champion >= 0 then
+                        newSpawn:ToNPC():MakeChampion(newSpawn.InitSeed, spawnEntry.champion, true)
+                    end
+                    newSpawn.Color = Color(0.1, 0.1, 0.1, 1, 0.1, 0.1, 0.1)
+                    PST.specialNodes.SC_nullstoneCurrentSpawn = newSpawn
+                    PST.specialNodes.SC_nullstoneSpawned = PST.specialNodes.SC_nullstoneSpawned + 1
+
+                    PST.specialNodes.SC_nullstonePoofFX.x = entity.Position.X
+                    PST.specialNodes.SC_nullstonePoofFX.y = entity.Position.Y
+                    PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 1)
+                end
+            end
+        end
 
         -- Samson temp mods
         if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then

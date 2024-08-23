@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.29"
+PST.modVersion = "v0.2.31"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -645,7 +645,10 @@ function PST:resetMods()
 		SC_chroniclerRooms = 0,
 		SC_chroniclerDebuff = 0,
 		SC_martianDebuff = 0,
-		SC_saturnianSpeedDown = false
+		SC_saturnianSpeedDown = false,
+		SC_nullstoneEnemies = {},
+		SC_nullstoneProc = false,
+		SC_nullstoneClear = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -685,8 +688,21 @@ function PST:resetMods()
 		SC_martianTears = {},
 		SC_martianFX = {},
 		SC_crimsonWarpDebuff = 0,
-		SC_crimsonWarpKeyDrop = 0
+		SC_crimsonWarpKeyDrop = 0,
+		SC_nullstonePoofFX = {
+			sprite = Sprite("gfx/1000.016_poof02_bloodcloud.anm2", true),
+			stoneSprite = Sprite("gfx/items/starcursed_jewels.anm2", true),
+			x = 0, y = 0
+		},
+		SC_nullstoneSpawned = 0,
+		SC_nullstoneCurrentSpawn = nil
 	}
+	-- Init sprites
+	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)
+	PST.specialNodes.SC_nullstonePoofFX.sprite.PlaybackSpeed = 0.5
+	PST.specialNodes.SC_nullstonePoofFX.stoneSprite:SetFrame("Ancients", 17)
+	PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 0)
+
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false
 	PST.gameInit = Isaac.IsInGame()
