@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "- Shop restocks while using Crimson Warpstone now properly replace new items with cracked keys.",
         "- Cracked keys in shops can no longer be affected by \"shop saving\" nodes.",
         "- Old jewel regen mods should no longer work on Gideon.",
+        "- Gideon is now excluded from all mob on-damage checks.",
         "",
         "v0.2.26",
         "- Added a new Ancient Jewel: \"Saturnian Luminite\".",
