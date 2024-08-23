@@ -217,7 +217,7 @@ function PST:onDamage(target, damage, flag, source)
                 end
             end
         end
-    else
+    elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
         local tmpPlayer = PST:getPlayer()
         local dmgMult = 1
 
