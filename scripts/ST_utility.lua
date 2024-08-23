@@ -507,12 +507,10 @@ function PST:GetBlackHeartCount(player)
     return black_count
 end
 
-function PST:NPCChampionAvailable(npc, bossOnly)
+function PST:NPCChampionAvailable(npc)
 	local tmpBlacklist = PST.noChampionMobs
 	if npc:IsBoss() then
 		tmpBlacklist = PST.noChampionBosses
-	elseif bossOnly then
-		return true
 	end
 	for _, mobData in ipairs(tmpBlacklist) do
 		if type(mobData) == "table" then
