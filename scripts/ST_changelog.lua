@@ -2,6 +2,11 @@ function PST:getChangelogList()
     local changelog = {
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
+
+        "v0.2.29",
+        "- Crimson Warpstone now affects items in angel rooms as well.",
+        "",
+
         "v0.2.28",
         "- Crimson Warpstone: chance to drop Cracked Keys on room clear now gains a bonus from the",
         "Womb and onwards. Bonus doesn't apply while in the ascent or in red rooms themselves.",
@@ -11,6 +16,7 @@ function PST:getChangelogList()
         "- Fixed Cursed Starpiece (ancient jewel) converting progression items such as key pieces, polaroid, etc.",
         "- Fixed shop restocked items becoming cracked keys, even without Crimson Warpstone.",
         "",
+
         "v0.2.27",
         "- Added changelog list & popup to tree screen.",
         "- Crimson Warpstone no longer converts progression items.",
@@ -19,13 +25,16 @@ function PST:getChangelogList()
         "- Old jewel regen mods should no longer work on Gideon.",
         "- Gideon is now excluded from all mob on-damage checks.",
         "",
+
         "v0.2.26",
         "- Added a new Ancient Jewel: \"Saturnian Luminite\".",
         "- Fixed Glace (ancient jewel) sprite frame.",
         "",
+
         "v0.2.25",
         "- Added a new Ancient Jewel: \"Crimson Warpstone\".",
         "",
+
         "v0.2.24",
         "- Rebalanced jewel drop rates.",
         "- Optimized calls to player, room and level fetching, and random procs. Might help performance a bit.",
@@ -33,6 +42,7 @@ function PST:getChangelogList()
         "- Fixed certain gamebreaking effects still affecting Gideon, such as more HP or Soul Eater.",
         "- Fixed jewels dropping multiple times in challenge rooms when using Challenger's Starpiece.",
         "",
+
         "v0.2.23",
         "- Added a new large node to the tree: \"Spider Mod!\".",
         "- The \"Chance to reroll active items into random passive items, if you're holding an active item.\"",
