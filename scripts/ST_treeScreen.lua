@@ -1228,6 +1228,7 @@ function PST:treeMenuRenderer()
             "Skill points: " .. skPoints .. " / Respecs: " .. PST.modData.respecPoints,
             8, 8, 1, 1, 1, 1
         )
+        miniFont:DrawString(PST.modVersion, screenW - 4 - miniFont:GetStringWidth(PST.modVersion), 4, KColor(1, 1, 1, 0.9))
         Isaac.RenderText(treeName, 8, 24, 1, 1, 1, 1)
         if PST.modData.treeDisabled then
             Isaac.RenderText("Tree effects disabled", 8, 40, 1, 0.4, 0.4, 1)
