@@ -596,6 +596,7 @@ PST.SCAncients = {
         description = {
             "Start with Saturnus and Spear of Destiny.",
             "Cannot shoot tears, and base damage is set to 0.25.",
+            "If you don't have flight, grants wings and -15% speed.",
             "Every 4 seconds while in a room with monsters, reset Saturnus' ring of tears."
         },
         rewards = {

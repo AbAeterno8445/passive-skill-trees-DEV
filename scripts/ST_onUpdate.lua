@@ -233,6 +233,15 @@ function PST:onUpdate()
 		-- Ancient starcursed jewel: Saturnian Luminite
 		if PST:SC_getSnapshotMod("saturnianLuminite") then
 			player:SetCanShoot(false)
+			if not player:IsFlying() then
+				player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_TRANSCENDENCE, false)
+				player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_FATE)
+				if not PST:getTreeSnapshotMod("SC_saturnianSpeedDown", false) then
+					PST:addModifiers({ speedPerc = -15, SC_saturnianSpeedDown = true }, true)
+				end
+			elseif PST:getTreeSnapshotMod("SC_saturnianSpeedDown", false) then
+				PST:addModifiers({ speedPerc = 15, SC_saturnianSpeedDown = false }, true)
+			end
 		end
 	end
 

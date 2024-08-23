@@ -644,7 +644,8 @@ function PST:resetMods()
 		SC_baubleSeekerBuff = 0,
 		SC_chroniclerRooms = 0,
 		SC_chroniclerDebuff = 0,
-		SC_martianDebuff = 0
+		SC_martianDebuff = 0,
+		SC_saturnianSpeedDown = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
