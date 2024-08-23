@@ -507,6 +507,25 @@ function PST:GetBlackHeartCount(player)
     return black_count
 end
 
+function PST:NPCChampionAvailable(npc, bossOnly)
+	local tmpBlacklist = PST.noChampionMobs
+	if npc:IsBoss() then
+		tmpBlacklist = PST.noChampionBosses
+	elseif bossOnly then
+		return true
+	end
+	for _, mobData in ipairs(tmpBlacklist) do
+		if type(mobData) == "table" then
+			if npc.Type == mobData[1] and npc.SubType == mobData[2] then
+				return false
+			end
+		elseif npc.Type == mobData then
+			return false
+		end
+	end
+	return true
+end
+
 function PST:strStartsWith(txt, start)
 	return string.sub(txt, 1, string.len(start)) == start
 end

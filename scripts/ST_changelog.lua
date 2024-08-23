@@ -1,6 +1,10 @@
 function PST:getChangelogList()
     local changelog = {
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
+        "v0.2.28",
+        "- Fixed Cursed Starpiece (ancient jewel) converting progression items such as key pieces, polaroid, etc.",
+        "- Fixed \"Chance to turn monsters into champion.\" modifiers affecting mobs that can't naturally",
+        "become champions.",
         "",
         "v0.2.27",
         "- Added changelog list & popup to tree screen.",

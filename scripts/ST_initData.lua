@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.27"
+PST.modVersion = "v0.2.28"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -179,6 +179,42 @@ PST.regularChests = {
 }
 PST.lockedChests = {
 	PickupVariant.PICKUP_LOCKEDCHEST, PickupVariant.PICKUP_ETERNALCHEST, PickupVariant.PICKUP_MEGACHEST
+}
+PST.noChampionMobs = {
+	EntityType.ENTITY_ARMYFLY, EntityType.ENTITY_ATTACKFLY, EntityType.ENTITY_BEGOTTEN, EntityType.ENTITY_DIP,
+	EntityType.ENTITY_BIGSPIDER, EntityType.ENTITY_BISHOP, {EntityType.ENTITY_KNIGHT, 3}, EntityType.ENTITY_DEATHS_HEAD,
+	{EntityType.ENTITY_SUCKER, 5}, EntityType.ENTITY_BUTTLICKER, EntityType.ENTITY_ROCK_SPIDER, EntityType.ENTITY_STONEY,
+	EntityType.ENTITY_SQUIRT, EntityType.ENTITY_DART_FLY, EntityType.ENTITY_DINGA, EntityType.ENTITY_DRIP,
+	EntityType.ENTITY_CHARGER_L2, EntityType.ENTITY_EMBRYO, EntityType.ENTITY_ETERNALFLY, EntityType.ENTITY_FISSURE,
+	EntityType.ENTITY_GRUB, EntityType.ENTITY_HENRY, EntityType.ENTITY_HOMUNCULUS, EntityType.ENTITY_HUSH_FLY,
+	EntityType.ENTITY_WILLO, EntityType.ENTITY_WILLO_L2, EntityType.ENTITY_PORTAL, EntityType.ENTITY_MASK,
+	EntityType.ENTITY_HEART, EntityType.ENTITY_MOMS_HAND, EntityType.ENTITY_MOMS_DEAD_HAND, EntityType.ENTITY_MOTER,
+	EntityType.ENTITY_MRMAW, EntityType.ENTITY_MR_MINE, EntityType.ENTITY_NEEDLE, EntityType.ENTITY_NERVE_ENDING,
+	EntityType.ENTITY_POOFER, EntityType.ENTITY_RED_GHOST, EntityType.ENTITY_RING_OF_FLIES, EntityType.ENTITY_SHADY,
+	EntityType.ENTITY_SMALL_MAGGOT, EntityType.ENTITY_SMALL_LEECH, {EntityType.ENTITY_WALL_CREEP, 1}, EntityType.ENTITY_SPIDER,
+	EntityType.ENTITY_SPLURT, EntityType.ENTITY_STRIDER, EntityType.ENTITY_SWARM, EntityType.ENTITY_SWARM_SPIDER,
+	EntityType.ENTITY_SWINGER, EntityType.ENTITY_WIZOOB,
+	-- Tainted variants
+	{EntityType.ENTITY_BOOMFLY, 6}, {EntityType.ENTITY_FACELESS, 1}, {EntityType.ENTITY_HOPPER, 3}, {EntityType.ENTITY_MOLE, 1},
+	{EntityType.ENTITY_MULLIGAN, 3}, {EntityType.ENTITY_POOTER, 2}, {EntityType.ENTITY_ROUND_WORM, 2}, {EntityType.ENTITY_WALL_CREEP, 3},
+	{EntityType.ENTITY_SPITTY, 1}, {EntityType.ENTITY_SUB_HORF, 1}, {EntityType.ENTITY_SUCKER, 7}, {EntityType.ENTITY_ROUND_WORM, 3}
+}
+PST.noChampionBosses = {
+	EntityType.ENTITY_FALLEN, EntityType.ENTITY_HEADLESS_HORSEMAN, EntityType.ENTITY_GEMINI, EntityType.ENTITY_DINGLE,
+	EntityType.ENTITY_GURGLING, EntityType.ENTITY_BABY_PLUM, EntityType.ENTITY_LIL_BLUB, {EntityType.ENTITY_PIN, 3},
+	EntityType.ENTITY_RAINMAKER, EntityType.ENTITY_MIN_MIN, EntityType.ENTITY_CLOG, EntityType.ENTITY_COLOSTOMIA,
+	EntityType.ENTITY_TURDLET, {EntityType.ENTITY_CHUB, 1}, {EntityType.ENTITY_WIDOW, 1}, EntityType.ENTITY_DARK_ONE,
+	EntityType.ENTITY_BIG_HORN, EntityType.ENTITY_RAG_MEGA, EntityType.ENTITY_BUMBINO, EntityType.ENTITY_REAP_CREEP,
+	{EntityType.ENTITY_LARRYJR, 2}, EntityType.ENTITY_HORNFEL, EntityType.ENTITY_GIDEON, {EntityType.ENTITY_POLYCEPHALUS, 1},
+	{EntityType.ENTITY_LARRYJR, 3}, EntityType.ENTITY_SINGE, EntityType.ENTITY_CLUTCH, EntityType.ENTITY_LOKI,
+	{EntityType.ENTITY_MONSTRO2, 1}, EntityType.ENTITY_ADVERSARY, EntityType.ENTITY_SISTERS_VIS, EntityType.ENTITY_SIREN,
+	EntityType.ENTITY_HERETIC, EntityType.ENTITY_VISAGE, EntityType.ENTITY_HORNY_BOYS, EntityType.ENTITY_BLASTOCYST_BIG,
+	EntityType.ENTITY_BLASTOCYST_MEDIUM, EntityType.ENTITY_BLASTOCYST_SMALL, EntityType.ENTITY_MAMA_GURDY, EntityType.ENTITY_MR_FRED,
+	EntityType.ENTITY_DADDYLONGLEGS, {EntityType.ENTITY_FISTULA_BIG, 1}, EntityType.ENTITY_MATRIARCH, {EntityType.ENTITY_WAR, 1},
+	EntityType.ENTITY_MOMS_HEART, EntityType.ENTITY_HUSH, EntityType.ENTITY_ROTGUT, EntityType.ENTITY_CHIMERA,
+	EntityType.ENTITY_SCOURGE, EntityType.ENTITY_MOTHER, EntityType.ENTITY_SATAN, EntityType.ENTITY_ISAAC,
+	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN, EntityType.ENTITY_MEGA_SATAN_2, EntityType.ENTITY_ULTRA_GREED,
+	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_DOGMA, EntityType.ENTITY_BEAST
 }
 
 -- First update when entering a new floor
