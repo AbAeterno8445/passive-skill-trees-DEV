@@ -258,7 +258,7 @@ function PST:onUpdate()
 	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
-			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() then
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() and not tmpNPC.Type == EntityType.ENTITY_GIDEON then
 				tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpMod[1])
 				tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
 			end
@@ -269,7 +269,7 @@ function PST:onUpdate()
 	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
-			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() then
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() and not tmpNPC.Type == EntityType.ENTITY_GIDEON then
 				tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpMod[1])
 				tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
 			end
@@ -289,7 +289,7 @@ function PST:onUpdate()
 		end
 		for _, tmpEntity in ipairs(tmpEntities) do
 			local tmpNPC = tmpEntity:ToNPC()
-			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsChampion() then
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsChampion() and not tmpNPC.Type == EntityType.ENTITY_GIDEON then
 				for _, tmpChamp in ipairs(tmpChamps) do
 					local dist = math.sqrt((tmpNPC.Position.X - tmpChamp.Position.X)^2 + (tmpNPC.Position.Y - tmpChamp.Position.Y)^2)
 					if dist <= 80 then
