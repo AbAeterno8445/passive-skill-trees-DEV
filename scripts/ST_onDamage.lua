@@ -337,7 +337,7 @@ function PST:onDamage(target, damage, flag, source)
                 -- For tears shot by familiars
                 tmpFamiliar = source.Entity.SpawnerEntity:ToFamiliar()
             end
-            if tmpFamiliar then
+            if tmpFamiliar and target:IsActiveEnemy(false) and target:IsVulnerableEnemy() then
                 -- Carrion Avian node (Eve's tree)
                 if PST:getTreeSnapshotMod("carrionAvian", false) then
                     if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
@@ -360,7 +360,8 @@ function PST:onDamage(target, damage, flag, source)
                 end
 
                 -- Mod: chance for enemies killed by familiars to drop an additional 1/2 soul heart
-                if target.SpawnerType == 0 and target.HitPoints <= damage * dmgMult and 100 * math.random() < PST:getTreeSnapshotMod("familiarKillSoulHeart", 0) then
+                local tmpMod = PST:getTreeSnapshotMod("familiarKillSoulHeart", 0)
+                if tmpMod > 0 and target.SpawnerType == 0 and target.HitPoints <= damage * dmgMult and 100 * math.random() < tmpMod then
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                 end
 
