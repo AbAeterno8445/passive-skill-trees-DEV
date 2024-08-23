@@ -1246,7 +1246,7 @@ function PST:treeMenuRenderer()
         drawNodeBox("Tree Controls (Controller)", treeControlDescController, 16, 40, true, 1)
     -- Draw changelog
     elseif helpOpen == "changelog" then
-        drawNodeBox("CHANGELOG (Press Menu Back or Shift + C to close)", PST:getChangelogList(), 16, 16 + menuScrollY, true, 1)
+        drawNodeBox("CHANGELOG (Press Menu Back or Shift + C to close)", PST:getChangelogList(), 8, 8 + menuScrollY, true, 1)
     -- Draw total modifiers menu
     elseif totalModsMenuOpen then
         drawNodeBox("Active Modifiers", totalModsList, 16, 16 + menuScrollY, true, 1)
