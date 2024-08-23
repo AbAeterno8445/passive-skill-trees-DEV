@@ -4,7 +4,14 @@ function PST:getChangelogList()
         "",
 
         "v0.2.29",
-        "- Crimson Warpstone now affects items in angel rooms as well.",
+        "- Added global XP and levels, separate from character levels.",
+        "    - Global levels are the source of global skill points now, instead of character levels.",
+        "- Crimson Warpstone (ancient jewel) now affects items in angel rooms as well.",
+        "- Saturnian Luminite (ancient jewel) now has the following modifier:",
+        "\"If you don't have flight, grants wings and -15% speed.\"",
+        "- Fixed familiar on-hit/kill modifiers affecting inactive/dead enemies and blood puppy.",
+        "- Fixed spending skill points/respecs mid-run causing 'on new room' or 'on new level' effects",
+        "to stop triggering at all until quitting then continuing the run.",
         "",
 
         "v0.2.28",
