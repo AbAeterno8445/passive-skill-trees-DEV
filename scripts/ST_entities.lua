@@ -7,11 +7,6 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
         end
     end
 
-    -- Familiar quantity update
-    if PST.gameInit and type == EntityType.ENTITY_FAMILIAR  then
-        PST:addModifiers({ totalFamiliars = 1 }, true)
-    end
-
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY) then
         local player = PST:getPlayer()
@@ -38,7 +33,11 @@ end
 
 function PST:familiarInit(familiar)
     -- Spider Mod node, prevent spider familiar from spawning
-    if PST:getTreeSnapshotMod("spiderMod", false) and familiar.Type == EntityType.ENTITY_FAMILIAR and familiar.Variant == FamiliarVariant.SPIDER_MOD then
+    if PST:getTreeSnapshotMod("spiderMod", false) and familiar.Variant == FamiliarVariant.SPIDER_MOD then
         familiar:Remove()
+    else
+        -- Familiar quantity update
+        PST:addModifiers({ totalFamiliars = 1 }, true)
+        PST:updateCacheDelayed()
     end
 end
