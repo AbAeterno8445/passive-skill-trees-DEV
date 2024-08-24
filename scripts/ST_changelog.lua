@@ -5,10 +5,15 @@ function PST:getChangelogList()
 
         "v0.2.32",
         "- Baubleseeker (ancient jewel) now spawns a chest if it replaces an item pedestal in a challenge room.",
+        "- Sanguinis (ancient jewel) now prevents black candle from showing up.",
+        "- Opalescent Purity (ancient jewel) no longer removes other floor items when grabbing progression items.",
+        "- Opalescent Purity should now only trigger when colliding with item pedestals or purchasing items,",
+        "instead of any item addition.",
         "- Fixed certain socketed jewels not being unsocketed when pressing respec from the inventory.",
         "- Fixed familiar-related effects triggering multiple times, such as +luck per familiar.",
         "- Fixed cracked/red key creating spiked doors in curse rooms even if the \"Chance to replace spiked",
         "doorways with regular ones.\" modifier was active.",
+        "- Fixed Apollyon's Eraser nodes' name and proc condition.",
         "",
 
         "v0.2.31",
