@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.32",
+        "- Baubleseeker (ancient jewel) now spawns a chest if it replaces an item pedestal in a challenge room.",
+        "- Fixed certain jewels not being unsocketed when pressing respec.",
+        "",
+
         "v0.2.31",
         "- Added a new Ancient Jewel: \"Nullstone\".",
         "",
