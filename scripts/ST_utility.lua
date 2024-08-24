@@ -271,7 +271,7 @@ function PST:cosmicRCharPicked(character)
 end
 
 function PST:cosmicRIsCharUnlocked(char)
-	if not PST.cosmicRData.characters[char].unlockReq then
+	if not PST.cosmicRData.characters[char].unlockReq or PST.debugOptions.cosmicRUnlocked then
 		return true
 	end
 	return Isaac.GetPersistentGameData():Unlocked(PST.cosmicRData.characters[char].unlockReq)

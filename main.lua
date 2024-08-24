@@ -10,6 +10,7 @@ PST.debugOptions = {
 	infSP = false, -- No longer spend or require skill points for nodes
 	infRespec = false, -- No longer spend or require respec points for nodes
 	allAvailable = false, -- Makes all nodes available
+	cosmicRUnlocked = false, -- Removes character unlock requirement from the Cosmic Realignment node
 	drawNodeIDs = false, -- Draw node IDs on the tree screen
 }
 
@@ -19,6 +20,7 @@ function PST:toggleDebugMode()
 	PST.debugOptions.infSP = localDebugMode
 	PST.debugOptions.infRespec = localDebugMode
 	PST.debugOptions.allAvailable = localDebugMode
+	PST.debugOptions.cosmicRUnlocked = localDebugMode
 	print("Passive Skill Trees: debug mode now", localDebugMode and "on" or "off")
 end
 
