@@ -5,7 +5,7 @@ function PST:getChangelogList()
 
         "v0.2.32",
         "- Baubleseeker (ancient jewel) now spawns a chest if it replaces an item pedestal in a challenge room.",
-        "- Fixed certain jewels not being unsocketed when pressing respec.",
+        "- Fixed certain socketed jewels not being unsocketed when pressing respec from the inventory.",
         "- Fixed familiar-related effects triggering multiple times, such as +luck per familiar.",
         "",
 
