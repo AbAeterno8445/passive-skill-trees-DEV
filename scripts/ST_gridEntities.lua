@@ -67,7 +67,7 @@ function PST:gridEntityRockUpdate(entityParam)
                     -- Mod: +xp when destroying tinted rocks
                     local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
                     if tmpMod ~= 0 then
-                        PST:addTempXP(tmpMod, true, true)
+                        PST:addTempXP(tmpMod, true)
                     end
 
                     -- Mod: +all stats when destroying tinted rocks

@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.34",
+        "- XP from blowing up tinted rocks is now affected by xp gain bonuses.",
+        "",
+
         "v0.2.33",
         "- Nullstone (ancient jewel) now nullifies the highest hp enemy in each room instead of the first.",
         "- Reworked Crimson Warpstone (ancient jewel).",
