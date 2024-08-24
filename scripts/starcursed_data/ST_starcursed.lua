@@ -367,6 +367,28 @@ function PST:SC_equipJewel(jewel, socketID)
     PST:save()
 end
 
+function PST:SC_canDestroyJewel(jewel)
+    if not jewel.type then return true end
+    if jewel.unidentified or jewel.equipped then return false end
+
+    if jewel.type == PSTStarcursedType.ANCIENT then
+        if jewel.name == "Faded Starpiece" then
+            return true
+        else
+            -- Allow destruction of old ancients no longer in use
+            local inUse = false
+            for _, tmpAncient in pairs(PST.SCAncients) do
+                if jewel.name == tmpAncient.name then
+                    inUse = true
+                    break
+                end
+            end
+            return not inUse
+        end
+    end
+    return true
+end
+
 function PST:SC_sortInventory(jewelType)
     if not PST.modData.starTreeInventory[jewelType] then return end
 

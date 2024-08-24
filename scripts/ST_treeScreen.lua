@@ -824,7 +824,7 @@ function PST:treeMenuRenderer()
         local jewelData = PST.starcursedInvData.hoveredJewel
         if jewelData then
             local tmpDescription = PST:SC_getJewelDescription(jewelData)
-            if (jewelData.type ~= PSTStarcursedType.ANCIENT or jewelData.name == "Faded Starpiece") and not jewelData.unidentified then
+            if PST:SC_canDestroyJewel(jewelData) then
                 table.insert(tmpDescription, "Press the Respec Node button to destroy this jewel.")
             end
             local jewelTitle = jewelData.name or jewelData.type .. " Starcursed Jewel"
@@ -863,7 +863,7 @@ function PST:treeMenuRenderer()
             else
                 -- Cosmic Realignment node, open/close menu
                 if hoveredNode.name == "Cosmic Realignment" then
-                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                     PST.cosmicRData.menuOpen = not PST.cosmicRData.menuOpen
                     PST.cosmicRData.menuX = hoveredNode.pos.X * 38
                     PST.cosmicRData.menuY = hoveredNode.pos.Y * 38
@@ -915,7 +915,7 @@ function PST:treeMenuRenderer()
                         cosmicRealignment = { value = true, set = true }
                     })
                 end
-                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                 PST.cosmicRData.menuOpen = false
             else
                 sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
@@ -984,18 +984,20 @@ function PST:treeMenuRenderer()
                     sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end
-        -- Starcursed inventory, destroy hovered jewel
+        -- Starcursed inventory, attempt to destroy hovered jewel
         elseif PST.starcursedInvData.hoveredJewel ~= nil then
-            if PST.starcursedInvData.hoveredJewelID and PST.starcursedInvData.hoveredJewel.type and not PST.starcursedInvData.hoveredJewel.unidentified and
-            (PST.starcursedInvData.hoveredJewel.type ~= PSTStarcursedType.ANCIENT or PST.starcursedInvData.hoveredJewel.name == "Faded Starpiece") then
-                if not PST.starcursedInvData.hoveredJewel.equipped then
-                    table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
-                    PST.starcursedInvData.hoveredJewel = nil
-                    PST.starcursedInvData.hoveredJewelID = nil
-                    sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75, 2, false, 1.5 + 1 * math.random())
-                else
-                    PST.starcursedInvData.hoveredJewel.equipped = nil
+            if not PST.starcursedInvData.hoveredJewel.equipped then
+                if PST.starcursedInvData.hoveredJewelID and PST:SC_canDestroyJewel(PST.starcursedInvData.hoveredJewel) then
+                    if not PST.starcursedInvData.hoveredJewel.equipped then
+                        table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
+                        PST.starcursedInvData.hoveredJewel = nil
+                        PST.starcursedInvData.hoveredJewelID = nil
+                        sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75, 2, false, 1.5 + 1 * math.random())
+                    end
                 end
+            else
+                PST.starcursedInvData.hoveredJewel.equipped = nil
+                sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
             end
         end
     end
@@ -1029,7 +1031,7 @@ function PST:treeMenuRenderer()
             end
             PST.cosmicRData.menuOpen = false
             PST.starcursedInvData.open = ""
-            sfx:Play(SoundEffect.SOUND_BUTTON_PRESS, 1)
+            sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
         else
             sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
         end
