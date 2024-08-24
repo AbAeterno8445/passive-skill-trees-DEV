@@ -47,10 +47,10 @@ function PST:onUpdate()
 		if PST:SC_getSnapshotMod("chroniclerStone", false) then
 			tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
 			if tmpMod > 0 and PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0) < 50 then
-				local tmpAdd = math.min(tmpMod, 50 - PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0))
+				local tmpAdd = math.min(tmpMod * 4, 50 - PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0))
 				PST:addModifiers({ allstatsPerc = -tmpAdd, SC_chroniclerDebuff = tmpAdd }, true)
 			end
-			local levelRooms = math.max(2, level:GetRoomCount() - 4)
+			local levelRooms = math.max(2, level:GetRoomCount() - 3)
 			PST:addModifiers({ SC_chroniclerRooms = { value = levelRooms, set = true } }, true)
 		end
 

@@ -520,7 +520,7 @@ PST.SCAncients = {
         name = "Chronicler Stone",
         description = {
             "Every floor, a certain amount of rooms must be explored.",
-            "When entering the next floor, if you've explored less than the ordained amount, receive -1% all stats",
+            "When entering the next floor, if you've explored less than the ordained amount, receive -4% all stats",
             "per unexplored room, up to a total -50%.",
             "Grabbing book items for the first time halves your current debuff from this effect, if present."
         },

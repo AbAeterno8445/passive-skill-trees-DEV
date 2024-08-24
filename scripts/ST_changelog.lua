@@ -5,6 +5,9 @@ function PST:getChangelogList()
 
         "v0.2.33",
         "- Nullstone (ancient jewel) now nullifies the highest hp enemy in each room instead of the first.",
+        "- Reworked Crimson Warpstone (ancient jewel).",
+        "- Cracked Keys no longer trigger most card-related modifiers.",
+        "- Adjusted Chronicler Stone (ancient jewel) debuff and room requirement.",
         "- Monster on-kill effects no longer proc from friendly monster deaths, including xp gain.",
         "- Fixed \"status effects are cleansed from monsters\" jewel modifier turning friendly monsters",
         "into enemies.",
