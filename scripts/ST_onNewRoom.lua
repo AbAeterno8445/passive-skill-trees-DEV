@@ -425,9 +425,12 @@ function PST:onNewRoom()
 	if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
-			if tmpDoor and (tmpDoor.TargetRoomType == RoomType.ROOM_CURSE or
-			(room:GetType() == RoomType.ROOM_CURSE and tmpDoor.TargetRoomType == RoomType.ROOM_DEFAULT)) then
-				tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, RoomType.ROOM_DEFAULT)
+			if tmpDoor then
+				if room:GetType() == RoomType.ROOM_CURSE then
+					tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, tmpDoor.TargetRoomType)
+				elseif tmpDoor.TargetRoomType == RoomType.ROOM_CURSE then
+					tmpDoor:SetRoomTypes(room:GetType(), RoomType.ROOM_DEFAULT)
+				end
 			end
 		end
 	end

@@ -51,6 +51,21 @@ function PST:onUseCard(card, player, useFlags)
         PST:addModifiers({ cardAgainstHumanityProc = true }, true)
     end
 
+    local room = PST:getRoom()
+    -- Mod: chance to turn adjacent curse room spiked door into a regular one
+    if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
+        for i=0,7 do
+            local tmpDoor = room:GetDoor(i)
+            if tmpDoor then
+                if room:GetType() == RoomType.ROOM_CURSE then
+                    tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, tmpDoor.TargetRoomType)
+                elseif tmpDoor.TargetRoomType == RoomType.ROOM_CURSE then
+                    tmpDoor:SetRoomTypes(room:GetType(), RoomType.ROOM_DEFAULT)
+                end
+            end
+        end
+    end
+
     -- Ancient starcursed jewel: Circadian Destructor
     if PST:SC_getSnapshotMod("circadianDestructor", false) and card == Card.CARD_TOWER then
         local tmpMod = PST:getTreeSnapshotMod("SC_circadianStatsDown", 0)
@@ -68,7 +83,7 @@ function PST:onUseCard(card, player, useFlags)
         end
 
         local tmpChance = 100
-        if PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
+        if room:GetType() == RoomType.ROOM_TREASURE then
             tmpChance = 35
         end
         if 100 * math.random() < tmpChance then
@@ -95,7 +110,7 @@ function PST:onUseCard(card, player, useFlags)
             player:TryRemoveSmeltedTrinket(smelted[math.random(#smelted)])
             PST:addModifiers({ allstatsPerc = -1, SC_baubleSeekerBuff = -1 }, true)
             local tmpTrinket = Game():GetItemPool():GetTrinket()
-            local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 20)
+            local tmpPos = room:FindFreePickupSpawnPosition(player.Position, 20)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpTrinket, Random() + 1)
         end
     end

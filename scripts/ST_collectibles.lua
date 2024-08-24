@@ -470,6 +470,22 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- D7
     elseif itemType == CollectibleType.COLLECTIBLE_D7 then
         PST:addModifiers({ d7Proc = true }, true)
+    -- Red Key
+    elseif itemType == CollectibleType.COLLECTIBLE_RED_KEY then
+        local room = PST:getRoom()
+        -- Mod: chance to turn adjacent curse room spiked door into a regular one
+        if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
+            for i=0,7 do
+                local tmpDoor = room:GetDoor(i)
+                if tmpDoor then
+                    if room:GetType() == RoomType.ROOM_CURSE then
+                        tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, tmpDoor.TargetRoomType)
+                    elseif tmpDoor.TargetRoomType == RoomType.ROOM_CURSE then
+                        tmpDoor:SetRoomTypes(room:GetType(), RoomType.ROOM_DEFAULT)
+                    end
+                end
+            end
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item
