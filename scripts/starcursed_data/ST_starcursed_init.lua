@@ -340,6 +340,10 @@ PST.SCMods = {
     beastRewards = "Gain %d skill point(s) and %d respecs when defeating The Beast with this jewel equipped.",
 }
 
+-- Order to display ancient jewel rewards in
+PST.SCAncientRewardsSorted = {
+    "xpgain", "halveXPFirstFloor", "deliriumRewards", "beastRewards"
+}
 PST.SCAncients = {
     circadianDestructor = {
         weight = 100,

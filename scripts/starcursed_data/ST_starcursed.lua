@@ -90,14 +90,16 @@ function PST:SC_getJewelDescription(jewel)
                 end
             end
             if tmpAncient.rewards then
-                local tmpRewardList = {}
-                for tmpRewardMod, tmpRewardModVal in pairs(tmpAncient.rewards) do
-                    local tmpColor = KColor(0.5, 0.9, 1, 1)
-                    if PST.SCMods[tmpRewardMod] then
+                for _, tmpRewardMod in ipairs(PST.SCAncientRewardsSorted) do
+                    local tmpRewardModVal = tmpAncient.rewards[tmpRewardMod]
+                    if PST.SCMods[tmpRewardMod] ~= nil and tmpRewardModVal then
+                        local tmpColor = KColor(0.5, 0.9, 1, 1)
                         local descStr
                         if type(tmpRewardModVal) == "table" then
+                            ---@diagnostic disable-next-line: param-type-mismatch
                             descStr = string.format(PST.SCMods[tmpRewardMod], table.unpack(tmpRewardModVal))
                         else
+                            ---@diagnostic disable-next-line: param-type-mismatch
                             descStr = string.format(PST.SCMods[tmpRewardMod], tmpRewardModVal)
                         end
                         if tmpAncient.name then
@@ -106,14 +108,8 @@ function PST:SC_getJewelDescription(jewel)
                                 tmpColor = KColor(1, 0.9, 0.5, 1)
                             end
                         end
-                        table.insert(tmpRewardList, {descStr, tmpColor})
+                        table.insert(tmpDescription, {descStr, tmpColor})
                     end
-                end
-                table.sort(tmpRewardList, function(a, b)
-                    return string.len(a[1]) < string.len(b[1])
-                end)
-                for _, tmpLine in ipairs(tmpRewardList) do
-                    table.insert(tmpDescription, tmpLine)
                 end
             end
         end
