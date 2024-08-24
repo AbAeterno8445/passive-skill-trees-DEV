@@ -381,7 +381,7 @@ function PST:onPickupInit(pickup)
     if not pickupGone and PST:SC_getSnapshotMod("baubleseeker", false) and variant == PickupVariant.PICKUP_COLLECTIBLE and
     subtype ~= CollectibleType.COLLECTIBLE_MOMS_BOX and not PST:arrHasValue(PST.progressionItems, subtype) then
         local tmpTrinket = Game():GetItemPool():GetTrinket()
-        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpTrinket, true, true)
+        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpTrinket, true, true, true)
         if room:GetType() == RoomType.ROOM_CHALLENGE then
             local tmpPos = room:FindFreePickupSpawnPosition(pickup.Position, 20)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, tmpPos, Vector.Zero, nil, 0, Random() + 1)

@@ -101,7 +101,7 @@ function PST:onShopRestock(partial)
         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
             local tmpItem = tmpEntity:ToPickup()
             if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
-                tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true)
+                tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true, true)
             end
         end
     end

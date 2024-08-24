@@ -538,7 +538,7 @@ function PST:onNewRoom()
 				for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 					local tmpItem = tmpEntity:ToPickup()
 					if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
-						tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true)
+						tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true, true)
 					end
 				end
 			elseif room:GetType() == RoomType.ROOM_ULTRASECRET then
