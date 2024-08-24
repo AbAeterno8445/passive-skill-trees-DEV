@@ -154,6 +154,14 @@ function PST:onDamage(target, damage, flag, source)
             PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
         end
 
+        -- Ancient starcursed jewel: Crimson Warpstone
+        if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+            tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyDrop", 0)
+            if tmpMod > 0 then
+                PST:addModifiers({ SC_crimsonWarpKeyDrop = -15 }, true)
+            end
+        end
+
         -- Starcursed modifiers
         if source and source.Entity then
             local tmpDmg = 0

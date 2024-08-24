@@ -689,6 +689,7 @@ function PST:resetMods()
 		SC_martianFX = {},
 		SC_crimsonWarpDebuff = 0,
 		SC_crimsonWarpKeyDrop = 0,
+		SC_crimsonWarpKeyStacks = 0,
 		SC_nullstonePoofFX = {
 			sprite = Sprite("gfx/1000.016_poof02_bloodcloud.anm2", true),
 			stoneSprite = Sprite("gfx/items/starcursed_jewels.anm2", true),

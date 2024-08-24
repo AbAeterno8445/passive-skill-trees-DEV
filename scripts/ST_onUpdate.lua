@@ -423,13 +423,6 @@ function PST:onUpdate()
 		PST.specialNodes.SC_martianTears = {}
 	end
 
-	-- Ancient starcursed jewel: Crimson Warpstone
-	if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
-		tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyDrop", 0)
-		if tmpMod > 1 and room:GetFrameCount() % 30 == 0 then
-			PST:addModifiers({ SC_crimsonWarpKeyDrop = -0.5 }, true)
-		end
-	end
 	-- Ancient starcursed jewel: Saturnian Luminite
 	if PST:SC_getSnapshotMod("saturnianLuminite", false) and room:GetAliveEnemiesCount() > 0 then
 		local tmpDelay = 120

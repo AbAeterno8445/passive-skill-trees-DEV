@@ -95,6 +95,20 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
 
+            -- Ancient starcursed jewel: Crimson Warpstone
+            if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+                if pickup.Variant == PickupVariant.PICKUP_TAROTCARD and pickup.SubType == Card.CARD_CRACKED_KEY and not pickup:IsShopItem() and
+                (player:GetCard(0) == Card.CARD_CRACKED_KEY or player:GetCard(1) == Card.CARD_CRACKED_KEY) then
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(1, 0.2, 0.2, 1, 1, 0.2, 0.2)
+                    pickup:Remove()
+                    PST:addModifiers({ SC_crimsonWarpKeyStacks = 1 }, true)
+                    PST:createFloatTextFX("+ Cracked Key", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 100, true)
+                    SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.2)
+                    return { Collide = false, SkipCollisionEffects = true }
+                end
+            end
+
             -- Starcursed mod: chance for coins, keys or bombs to vanish on pickup
             local tmpMod = PST:SC_getSnapshotMod("pickupsVanish", 0)
             if tmpMod > 0 and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or

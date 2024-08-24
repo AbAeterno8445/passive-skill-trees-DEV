@@ -527,11 +527,11 @@ function PST:onNewRoom()
 		-- Ancient starcursed jewel: Crimson Warpstone
 		if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
 			if room:GetAliveEnemiesCount() > 0 then
-				local tmpBonus = 0
-				if level:GetStage() >= 7 and not level:IsAscent() and (level:GetCurrentRoomDesc().Flags & (1 << 10)) == 0 then
-					tmpBonus = 20
+				local tmpBonus = (level:GetStage() - 1) * 1.7
+				if (level:GetCurrentRoomDesc().Flags & (1 << 10)) > 0 then
+					tmpBonus = -15
 				end
-				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 15 + tmpBonus + level:GetStage() / 2, set = true } }, true)
+				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 35 + tmpBonus, set = true } }, true)
 			end
 
 			if room:GetType() == RoomType.ROOM_TREASURE or room:GetType() == RoomType.ROOM_SHOP or room:GetType() == RoomType.ROOM_ANGEL then
@@ -544,7 +544,7 @@ function PST:onNewRoom()
 			elseif room:GetType() == RoomType.ROOM_ULTRASECRET then
 				local tmpDebuff = PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)
 				if tmpDebuff > 0 then
-					PST:addModifiers({ allstatsPerc = tmpDebuff, SC_crimsonWarpDebuff = { value = 0, set = true } }, true)
+					PST:addModifiers({ allstatsPerc = tmpDebuff / 2, SC_crimsonWarpDebuff = -tmpDebuff / 2 }, true)
 				end
 			elseif (level:GetCurrentRoomDesc().Flags & (1 << 10)) > 0 then
 				local tmpDebuff = PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)

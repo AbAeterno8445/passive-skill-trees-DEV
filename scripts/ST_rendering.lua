@@ -14,6 +14,9 @@ miniFont:Load("font/cjk/lanapixel.fnt")
 local luaminiFont = Font()
 luaminiFont:Load("font/luaminioutlined.fnt")
 
+local tempestasFont = Font()
+tempestasFont:Load("font/pftempestasevencondensed.fnt")
+
 -- Create a floating fading text
 ---@param text string -- Text to display
 ---@param position Vector -- Text position
@@ -157,6 +160,11 @@ function PST:Render()
 				PST.specialNodes.SC_nullstonePoofFX.stoneSprite:Render(room:WorldToScreenPosition(fxPos))
 			end
 		end
+	end
+	-- Ancient starcursed jewel: Crimson Warpstone (cracked key stacks text)
+	local tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyStacks", 0)
+	if tmpMod > 0 and PST:getPlayer():GetCard(0) == Card.CARD_CRACKED_KEY then
+		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
 	end
 
 	-- Manage floating texts

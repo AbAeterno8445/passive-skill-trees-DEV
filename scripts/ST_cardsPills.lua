@@ -11,26 +11,26 @@ end
 function PST:onUseCard(card, player, useFlags)
     -- Blue Gambit node (Blue Baby's tree)
     if PST:getTreeSnapshotMod("blueGambit", false) then
-        if card ~= Card.CARD_HIEROPHANT and 100 * math.random() < 20 then
+        if card ~= Card.CARD_HIEROPHANT and card ~= Card.CARD_CRACKED_KEY and 100 * math.random() < 20 then
             player:TakeDamage(1, 0, EntityRef(player), 0)
         end
     end
 
-    -- Mod: chance to receive half a soul hart when using a card or pill
-    if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) then
+    -- Mod: chance to receive half a soul heart when using a card or pill
+    if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) and card ~= Card.CARD_CRACKED_KEY then
         player:AddSoulHearts(1)
     end
 
     -- Mod: +damage when using a card, up to +3. Resets every floor
     local tmpBonus = PST:getTreeSnapshotMod("cardFloorDamage", 0)
-    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorDamageTotal", 0) < 3 then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorDamageTotal", 0) < 3 and card ~= Card.CARD_CRACKED_KEY then
         local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
         PST:addModifiers({ damage = tmpAdd, cardFloorDamageTotal = tmpAdd }, true)
     end
 
     -- Mod: +tears when using a card, up to +3. Resets every floor
     tmpBonus = PST:getTreeSnapshotMod("cardFloorTears", 0)
-    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorTearsTotal", 0) < 3 then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorTearsTotal", 0) < 3 and card ~= Card.CARD_CRACKED_KEY then
         local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
         PST:addModifiers({ tears = tmpAdd, cardFloorTearsTotal = tmpAdd }, true)
     end
@@ -42,7 +42,7 @@ function PST:onUseCard(card, player, useFlags)
 
     -- Mod: % luck for the current floor when using a card
     tmpBonus = PST:getTreeSnapshotMod("cardFloorLuck", 0)
-    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("floorLuckPerc", 0) < 15 then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("floorLuckPerc", 0) < 15 and card ~= Card.CARD_CRACKED_KEY then
         PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
     end
 
@@ -52,7 +52,7 @@ function PST:onUseCard(card, player, useFlags)
     end
 
     local room = PST:getRoom()
-    -- Mod: chance to turn adjacent curse room spiked door into a regular one
+    -- Mod: chance to turn adjacent curse room spiked door into a regular one (update doors)
     if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
         for i=0,7 do
             local tmpDoor = room:GetDoor(i)
@@ -125,6 +125,13 @@ function PST:onUseCard(card, player, useFlags)
                 SC_luminescentDebuff = { value = tmpMod / 2, set = true }
             }, true)
         end
+    end
+
+    -- Ancient starcursed jewel: Crimson Warpstone
+    if PST:SC_getSnapshotMod("crimsonWarpstone", false) and card == Card.CARD_CRACKED_KEY and
+    PST:getTreeSnapshotMod("SC_crimsonWarpKeyStacks", 0) > 0 then
+        player:AddCard(Card.CARD_CRACKED_KEY)
+        PST:addModifiers({ SC_crimsonWarpKeyStacks = -1 }, true)
     end
 end
 

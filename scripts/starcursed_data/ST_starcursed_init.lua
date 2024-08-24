@@ -567,15 +567,16 @@ PST.SCAncients = {
         spriteFrame = 13,
         name = "Crimson Warpstone",
         description = {
-            "Replace treasure room and shop items with Cracked Keys.",
-            "15% chance to drop a Cracked Key when clearing a room.",
-            "Base key drop chance increases every floor, and decreases by 0.5% per second while in an uncleared room.",
+            "Replace treasure room, shop and angel room items with Cracked Keys.",
+            "Allows Cracked Keys to stack by picking more up while having one.",
+            "35% base chance to drop a Cracked Key when clearing a room, which increases every floor.",
+            "-15% chance to drop a Cracked Key for the current room when you get hit.",
             "-30% all stats. Entering a red room reduces this debuff by 2.5%. Resets every floor.",
-            "Entering an ultra secret room removes the debuff for the current floor.",
-            --"Reduce debuff by 10% if the floor contains no ultra secret rooms."
+            "Entering an ultra secret room halves the current debuff."
         },
         rewards = {
             xpgain = 50,
+            halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
