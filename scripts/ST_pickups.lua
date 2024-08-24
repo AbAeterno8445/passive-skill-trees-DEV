@@ -206,11 +206,22 @@ function PST:prePickup(pickup, collider, low)
 end
 
 function PST:onPickup(pickup, collider, low)
-    if pickup:GetSprite():GetAnimation() ~= "Collect" then return end
-
     local player = collider:ToPlayer()
     local variant = pickup.Variant
     local subtype = pickup.SubType
+
+    -- Ancient starcursed jewel: Opalescent Purity
+    local removeOtherRoomItems = false
+    if player ~= nil and PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
+    not pickup:IsShopItem() then
+        if variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, subtype) then
+            removeOtherRoomItems = true
+            PST:addModifiers({ SC_opalescentProc = true }, true)
+        end
+    end
+    if removeOtherRoomItems then PST:removeRoomItems() end
+
+    if pickup:GetSprite():GetAnimation() ~= "Collect" then return end
 
     if player ~= nil and not pickup:IsShopItem() then
         if variant == PickupVariant.PICKUP_COIN then

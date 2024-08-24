@@ -1,4 +1,4 @@
-function PST:onShopPurchase(pickupBought, player, spent)
+function PST:onShopPurchase(pickup, player, spent)
     if spent > 0 then
         local room = PST:getRoom()
 
@@ -40,6 +40,16 @@ function PST:onShopPurchase(pickupBought, player, spent)
             player:AddBlackHearts(2)
         end
     end
+
+    -- Ancient starcursed jewel: Opalescent Purity
+    local removeOtherRoomItems = false
+    if PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) then
+        if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, pickup.SubType) then
+            removeOtherRoomItems = true
+            PST:addModifiers({ SC_opalescentProc = true }, true)
+        end
+    end
+    if removeOtherRoomItems then PST:removeRoomItems() end
 end
 
 local bannedSavingItems = {

@@ -33,12 +33,6 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     end
 
     local removeOtherRoomItems = false
-    -- Ancient starcursed jewel: Opalescent Purity
-    if PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
-    not PST:arrHasValue(PST.progressionItems, itemType) then
-        removeOtherRoomItems = true
-        PST:addModifiers({ SC_opalescentProc = true }, true)
-    end
 
     -- Ancient starcursed jewel: Iridescent Purity
     if PST:SC_getSnapshotMod("iridescentPurity", false) then
@@ -74,15 +68,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         removeOtherRoomItems = true
     end
 
-    if removeOtherRoomItems then
-        for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
-            if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
-            not PST:arrHasValue(PST.progressionItems, tmpEntity.Type) then
-                Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
-                tmpEntity:Remove()
-            end
-        end
-    end
+    if removeOtherRoomItems then PST:removeRoomItems() end
 
     -- Mod: +random stat when collecting a treasure/shop room item
     if firstTime then

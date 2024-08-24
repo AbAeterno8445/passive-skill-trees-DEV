@@ -421,6 +421,16 @@ function PST:getRoomFamiliars(specificType)
 	return totalFamiliars
 end
 
+function PST:removeRoomItems()
+	for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+		if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
+		not PST:arrHasValue(PST.progressionItems, tmpEntity.Type) then
+			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+			tmpEntity:Remove()
+		end
+	end
+end
+
 local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
 function PST:getRandomStat(exclude)
 	if exclude and type(exclude) == "table" then
