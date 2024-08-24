@@ -533,6 +533,7 @@ PST.SCAncients = {
         name = "Sanguinis",
         description = {
             "Guarantees Curse of the Cursed, if applicable, turning doorways into spiked doorways.",
+            "Black Candle can no longer show up.",
             "Start with holy mantle."
         },
         rewards = {
