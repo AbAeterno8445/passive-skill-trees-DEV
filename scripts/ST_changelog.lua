@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.33",
+        "- Monster on-kill effects no longer proc from friendly monster deaths, including xp gain.",
+        "- Fixed \"status effects are cleansed from monsters\" jewel modifier turning friendly monsters",
+        "into enemies.",
+        "",
+
         "v0.2.32",
         "- Baubleseeker (ancient jewel) now spawns a chest if it replaces an item pedestal in a challenge room.",
         "- Sanguinis (ancient jewel) now prevents black candle from showing up.",

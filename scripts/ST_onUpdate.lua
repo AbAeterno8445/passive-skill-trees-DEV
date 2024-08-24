@@ -256,7 +256,7 @@ function PST:onUpdate()
 	if tmpMod > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
-			if tmpNPC and tmpNPC:IsActiveEnemy(false) then
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not EntityRef(tmpNPC).IsFriendly then
 				tmpNPC:RemoveStatusEffects()
 				tmpNPC:SetColor(Color(0.5, 0.8, 1, 1), 30, 1, true, false)
 			end
