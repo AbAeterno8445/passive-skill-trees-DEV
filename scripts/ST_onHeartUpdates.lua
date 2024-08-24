@@ -288,7 +288,7 @@ function PST:onHeartUpdate(force)
     end
 
     -- Cosmic Realignment node - Tainted Lazarus bank
-    if heartUpdated and PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+    if player and heartUpdated and PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
         local taintedLazBank = cosmicRCache.TLazarusBank1
         if not cosmicRCache.TLazarusBank1.active then
             taintedLazBank = cosmicRCache.TLazarusBank2

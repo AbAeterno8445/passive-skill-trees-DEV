@@ -1015,6 +1015,38 @@ function PST:onUpdate()
 					player:AddActiveCharge(1, tmpSlot, true, false, false)
 				end
 			end
+
+			-- Cosmic Realignment node
+			if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
+				-- Tainted Samson, take up to 1 heart damage if final buff was negative, then reset
+				local totalHP = player:GetHearts() + player:GetSoulHearts() + player:GetRottenHearts() + player:GetBrokenHearts() + player:GetBoneHearts()
+				if cosmicRCache.TSamsonBuffer < 0 and totalHP - 1 > 0 then
+					player:TakeDamage(math.min(2, totalHP - 1), 0, EntityRef(player), 0)
+				end
+				cosmicRCache.TSamsonBuffer = 0
+				player:AddCacheFlags(PST.allstatsCache, true)
+			elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+				-- Tainted Lazarus, switch health banks
+				if not isKeeper and PST.modData.xpObtained > 0 then
+					local newBank = nil
+					if cosmicRCache.TLazarusBank1.active then
+						newBank = cosmicRCache.TLazarusBank2
+						cosmicRCache.TLazarusBank1.active = false
+					else
+						newBank = cosmicRCache.TLazarusBank1
+						cosmicRCache.TLazarusBank1.active = true
+					end
+					player:AddMaxHearts(-player:GetMaxHearts() + newBank.max)
+					player:AddSoulHearts(-player:GetSoulHearts() + newBank.soul)
+					---@diagnostic disable-next-line: undefined-field
+					player:SetBlackHeart(newBank.black)
+					player:AddRottenHearts(-player:GetRottenHearts() + newBank.rotten)
+					player:AddBoneHearts(-player:GetBoneHearts() + newBank.bone)
+					player:AddBrokenHearts(-player:GetBrokenHearts() + newBank.broken)
+					player:AddHearts(-player:GetHearts() + newBank.red)
+					player:AddEternalHearts(-player:GetEternalHearts() + newBank.eternal)
+				end
+			end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)
@@ -1035,35 +1067,6 @@ function PST:onUpdate()
 					cosmicRCache.forgottenKeeperDebuff = debuffVal
 					player:AddCacheFlags(PST.allstatsCache, true)
 				end
-			end
-		elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
-			-- Tainted Samson, take up to 1 heart damage if final buff was negative, then reset
-			local totalHP = player:GetHearts() + player:GetSoulHearts() + player:GetRottenHearts() + player:GetBrokenHearts() + player:GetBoneHearts()
-			if cosmicRCache.TSamsonBuffer < 0 and totalHP - 1 > 0 then
-				player:TakeDamage(math.min(2, totalHP - 1), 0, EntityRef(player), 0)
-			end
-			cosmicRCache.TSamsonBuffer = 0
-			player:AddCacheFlags(PST.allstatsCache, true)
-		elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
-			-- Tainted Lazarus, switch health banks
-			if not isKeeper and PST.modData.xpObtained > 0 then
-				local newBank = nil
-				if cosmicRCache.TLazarusBank1.active then
-					newBank = cosmicRCache.TLazarusBank2
-					cosmicRCache.TLazarusBank1.active = false
-				else
-					newBank = cosmicRCache.TLazarusBank1
-					cosmicRCache.TLazarusBank1.active = true
-				end
-				player:AddMaxHearts(-player:GetMaxHearts() + newBank.max)
-				player:AddSoulHearts(-player:GetSoulHearts() + newBank.soul)
-				---@diagnostic disable-next-line: undefined-field
-				player:SetBlackHeart(newBank.black)
-				player:AddRottenHearts(-player:GetRottenHearts() + newBank.rotten)
-				player:AddBoneHearts(-player:GetBoneHearts() + newBank.bone)
-				player:AddBrokenHearts(-player:GetBrokenHearts() + newBank.broken)
-				player:AddHearts(-player:GetHearts() + newBank.red)
-				player:AddEternalHearts(-player:GetEternalHearts() + newBank.eternal)
 			end
 		end
 
