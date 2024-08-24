@@ -147,8 +147,22 @@ function PST:onNewRoom()
 		if PST:getTreeSnapshotMod("SC_nullstoneProc", false) then
 			PST:addModifiers({ SC_nullstoneProc = false }, true)
 		end
+		-- Get highest enemy HP
+		if room:GetType() ~= RoomType.ROOM_BOSS and room:GetAliveEnemiesCount() > 0 then
+			local highestHP = 0
+			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+				local tmpNPC = tmpEntity:ToNPC()
+				if tmpNPC and not tmpNPC:IsBoss() and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and
+				not EntityRef(tmpNPC).IsFriendly then
+					if tmpNPC.MaxHitPoints > highestHP then
+						highestHP = tmpNPC.MaxHitPoints
+					end
+				end
+			end
+			PST:addModifiers({ SC_nullstoneHPThreshold = { value = highestHP, set = true } }, true)
 		-- Spawn first nullified enemy in boss room
-		if room:GetType() == RoomType.ROOM_BOSS and room:GetAliveBossesCount() > 0 and not PST:getTreeSnapshotMod("SC_nullstoneClear", false) then
+		elseif room:GetType() == RoomType.ROOM_BOSS and room:GetAliveBossesCount() > 0 and
+		not PST:getTreeSnapshotMod("SC_nullstoneClear", false) then
 			local nullstoneList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
             local currentSpawn = PST.specialNodes.SC_nullstoneCurrentSpawn
 			if nullstoneList and #nullstoneList > 0 and not currentSpawn then

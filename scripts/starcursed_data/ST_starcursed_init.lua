@@ -615,7 +615,7 @@ PST.SCAncients = {
         spriteFrame = 17,
         name = "Nullstone",
         description = {
-            "The first enemy you kill in a room gets temporally nullified.",
+            "The enemy with the highest HP you kill in each room gets temporally nullified.",
             "When entering the boss room, spawn the first enemy you nullified.",
             "When killing a nullified enemy in the boss room, spawn the next one in the sequence."
         },

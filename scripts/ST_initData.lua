@@ -695,7 +695,8 @@ function PST:resetMods()
 			x = 0, y = 0
 		},
 		SC_nullstoneSpawned = 0,
-		SC_nullstoneCurrentSpawn = nil
+		SC_nullstoneCurrentSpawn = nil,
+		SC_nullstoneHPThreshold = 0
 	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)

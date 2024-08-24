@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.2.33",
+        "- Nullstone (ancient jewel) now nullifies the highest hp enemy in each room instead of the first.",
         "- Monster on-kill effects no longer proc from friendly monster deaths, including xp gain.",
         "- Fixed \"status effects are cleansed from monsters\" jewel modifier turning friendly monsters",
         "into enemies.",

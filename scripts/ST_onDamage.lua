@@ -656,7 +656,8 @@ function PST:onDeath(entity)
         if PST:SC_getSnapshotMod("nullstone", false) then
             -- Add enemy from non-boss room to nullstone list
             if not PST:getTreeSnapshotMod("SC_nullstoneProc", false) and not PST:getTreeSnapshotMod("SC_nullstoneClear", false) and
-            not entity.Parent and not entity:IsBoss() and room:GetType() ~= RoomType.ROOM_BOSS then
+            not entity:IsBoss() and room:GetType() ~= RoomType.ROOM_BOSS and
+            ((not entity.Parent and entity.MaxHitPoints >= PST:getTreeSnapshotMod("SC_nullstoneHPThreshold", 0)) or room:GetAliveEnemiesCount() == 1) then
                 local nullstoneEnemyList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
                 if nullstoneEnemyList then
                     table.insert(nullstoneEnemyList, {
