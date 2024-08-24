@@ -14,6 +14,9 @@ function PST:getChangelogList()
         "- Fixed cracked/red key creating spiked doors in curse rooms even if the \"Chance to replace spiked",
         "doorways with regular ones.\" modifier was active.",
         "- Fixed Apollyon's Eraser nodes' name and proc condition.",
+        "- Fixed error when picking Tainted Lazarus on Cosmic Realignment.",
+        "- Fixed certain level/room/curse init effects carrying over to new runs even after deactivating",
+        "them from the tree, e.g. unsocketing Sanguinis (ancient jewel) could still apply the curse.",
         "",
 
         "v0.2.31",
