@@ -252,7 +252,7 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
     miniFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, KColor(1, 1, 1, 1))
     for i = 1, #description do
         local tmpStr = description[i]
-        local tmpColor = KColor(1, 1, 1, 1)
+        local tmpColor = KColor(1, 1, 1, 0.9)
         if type(tmpStr) == "table" then
             tmpStr = description[i][1]
             tmpColor = description[i][2]
@@ -1066,6 +1066,7 @@ function PST:treeMenuRenderer()
     elseif PST:isKeybindActive(PSTKeybind.TOGGLE_CHANGELOG) then
         if helpOpen ~= "changelog" then
             helpOpen = "changelog"
+            menuScrollY = 0
         else
             helpOpen = ""
         end
