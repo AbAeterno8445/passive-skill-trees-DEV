@@ -34,11 +34,10 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
 
     local removeOtherRoomItems = false
     -- Ancient starcursed jewel: Opalescent Purity
-    if PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) then
-        if not PST:arrHasValue(PST.progressionItems) then
-            removeOtherRoomItems = true
-            PST:addModifiers({ SC_opalescentProc = true }, true)
-        end
+    if PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
+    not PST:arrHasValue(PST.progressionItems, itemType) then
+        removeOtherRoomItems = true
+        PST:addModifiers({ SC_opalescentProc = true }, true)
     end
 
     -- Ancient starcursed jewel: Iridescent Purity
