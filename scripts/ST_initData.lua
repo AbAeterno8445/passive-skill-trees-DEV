@@ -167,7 +167,7 @@ PST.bookItems = {
 	CollectibleType.COLLECTIBLE_LEMEGETON
 }
 PST.progressionItems = {
-	CollectibleType.COLLECTIBLE_KEY_PIECE_1, CollectibleType.COLLECTIBLE_KEY_PIECE_2,
+	0, CollectibleType.COLLECTIBLE_KEY_PIECE_1, CollectibleType.COLLECTIBLE_KEY_PIECE_2,
 	CollectibleType.COLLECTIBLE_POLAROID, CollectibleType.COLLECTIBLE_NEGATIVE,
 	CollectibleType.COLLECTIBLE_RED_KEY, CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_1,
 	CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_2, CollectibleType.COLLECTIBLE_DADS_NOTE,
