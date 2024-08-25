@@ -210,7 +210,6 @@ include("scripts.starcursed_data.ST_starcursed")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.onExitGame)
-PST:AddCallback(ModCallbacks.MC_POST_GAME_END, PST.onExitGame)
 PST:AddCallback(ModCallbacks.MC_POST_RENDER, PST.Render)
 PST:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, PST.onDamage)
 PST:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, PST.onNewRoom)

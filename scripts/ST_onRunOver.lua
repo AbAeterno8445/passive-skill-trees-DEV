@@ -6,4 +6,5 @@ function PST:onRunOver(isGameOver)
             PST.modData.respecPoints = PST.modData.respecPoints + 10 + 2 * PST:getTreeSnapshotMod("relearningFloors", 1)
         end
     end
+    PST:onExitGame()
 end
