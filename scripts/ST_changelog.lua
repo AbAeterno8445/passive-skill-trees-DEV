@@ -5,6 +5,8 @@ function PST:getChangelogList()
 
         "v0.2.34",
         "- XP from blowing up tinted rocks is now affected by xp gain bonuses.",
+        "- Reworked how Chronicler Stone (ancient jewel) calculates needed rooms, and should no longer break",
+        "when using Death Certificate.",
         "- Crimson Warpstone should now turn newly generated collectibles into cracked keys, in the appropriate",
         "room types (treasure, shop, angel).",
         "",
