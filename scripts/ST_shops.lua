@@ -82,7 +82,7 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
                 local itemID = tostring(pickupVariant) .. "." .. tostring(subtype) .. "." .. tostring(shopID)
                 if not shopCache[itemID] then
                     if 100 * math.random() < tmpMod then
-                        shopCache[itemID] = 2 + (math.random(3) - 1)
+                        shopCache[itemID] = 2 + (math.random(2) - 1)
                     else
                         shopCache[itemID] = 0
                     end

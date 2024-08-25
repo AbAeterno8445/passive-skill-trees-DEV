@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.35",
+        "- Shop saving nodes now reduce shop item price by 2-3 coins (from 2-4), and have reduced chance to proc.",
+        "- Added some missing modifier descriptions to the Active Modifiers list.",
+        "",
+
         "v0.2.34",
         "- XP from blowing up tinted rocks is now affected by xp gain bonuses.",
         "- Reworked how Chronicler Stone (ancient jewel) calculates needed rooms, and should no longer break",
