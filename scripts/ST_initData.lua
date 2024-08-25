@@ -216,6 +216,11 @@ PST.noChampionBosses = {
 	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN, EntityType.ENTITY_MEGA_SATAN_2, EntityType.ENTITY_ULTRA_GREED,
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_DOGMA, EntityType.ENTITY_BEAST
 }
+PST.chroniclerRoomTypes = {
+	RoomType.ROOM_DEFAULT, RoomType.ROOM_SHOP, RoomType.ROOM_TREASURE, RoomType.ROOM_BOSS, RoomType.ROOM_MINIBOSS,
+	RoomType.ROOM_SECRET, RoomType.ROOM_ARCADE, RoomType.ROOM_CURSE, RoomType.ROOM_CHALLENGE, RoomType.ROOM_LIBRARY,
+	RoomType.ROOM_SACRIFICE, RoomType.ROOM_CHEST, RoomType.ROOM_DICE, RoomType.ROOM_PLANETARIUM
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false

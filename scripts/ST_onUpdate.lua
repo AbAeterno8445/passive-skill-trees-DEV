@@ -7,6 +7,7 @@ local familiarsTracker = 0
 local coinTracker = 0
 local holyMantleTracker = false
 local lvlCurseTracker = -1
+local inDeathCertificate = false
 
 -- On update
 local clearRoomProc = false
@@ -14,6 +15,12 @@ function PST:onUpdate()
 	local level = PST:getLevel()
 	local room = PST:getRoom()
 	local player = PST:getPlayer()
+
+	if inDeathCertificate and level:GetDimension() ~= Dimension.DEATH_CERTIFICATE then
+		-- Left death certificate dimension, re-update level
+		PST.floorFirstUpdate = true
+	end
+	inDeathCertificate = level:GetDimension() == Dimension.DEATH_CERTIFICATE
 
 	-- First update when entering floor
 	if PST.floorFirstUpdate then
@@ -45,13 +52,41 @@ function PST:onUpdate()
 
 		-- Ancient starcursed jewel: Chronicler Stone
 		if PST:SC_getSnapshotMod("chroniclerStone", false) then
-			tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
-			if tmpMod > 0 and PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0) < 50 then
-				local tmpAdd = math.min(tmpMod * 4, 50 - PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0))
-				PST:addModifiers({ allstatsPerc = -tmpAdd, SC_chroniclerDebuff = tmpAdd }, true)
+			if level:GetDimension() == Dimension.DEATH_CERTIFICATE then
+				PST:addModifiers({ SC_chroniclerRooms = { value = 0, set = true } }, true)
+			else
+				tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
+				if tmpMod > 0 and PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0) < 50 then
+					local tmpAdd = math.min(tmpMod * 4, 50 - PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0))
+					PST:addModifiers({ allstatsPerc = -tmpAdd, SC_chroniclerDebuff = tmpAdd }, true)
+				end
+				local countedRooms = 0
+				local countedSpecial = 0
+				local levelRooms = level:GetRooms()
+				for i=0,levelRooms.Size-1 do
+					local roomData = levelRooms:Get(i).Data
+					if roomData and PST:arrHasValue(PST.chroniclerRoomTypes, roomData.Type) then
+						local tmpSub = roomData.Subtype
+						if tmpSub ~= RoomSubType.DEATH_CERTIFICATE_ENTRANCE and tmpSub ~= RoomSubType.DEATH_CERTIFICATE_NORMAL then
+							local tmpType = roomData.Type
+							if tmpType == RoomType.ROOM_SHOP or tmpType == RoomType.ROOM_TREASURE or
+							tmpType == RoomType.ROOM_ARCADE or tmpType == RoomType.ROOM_LIBRARY or tmpType == RoomType.ROOM_DICE or
+							tmpType == RoomType.ROOM_PLANETARIUM or tmpType == RoomType.ROOM_SECRET then
+								-- Chance to count special/locked rooms towards counter
+								countedSpecial = countedSpecial + 1
+
+								local tmpChance = (level:GetStage() - 1) * 15 + countedSpecial * 15
+								if tmpChance >= 100 or 100 * math.random() < tmpChance then
+									countedRooms = countedRooms + 1
+								end
+							else
+								countedRooms = countedRooms + 1
+							end
+						end
+					end
+				end
+				PST:addModifiers({ SC_chroniclerRooms = { value = countedRooms, set = true } }, true)
 			end
-			local levelRooms = math.max(2, level:GetRoomCount() - 3)
-			PST:addModifiers({ SC_chroniclerRooms = { value = levelRooms, set = true } }, true)
 		end
 
 		-- Ancient starcursed jewel: Glace

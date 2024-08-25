@@ -559,7 +559,8 @@ function PST:onNewRoom()
 						local addedItem = false
 						while not addedItem do
 							local newItem = itemPool:GetCollectible(itemPool:GetPoolForRoom(room:GetType(), Random() + 1))
-							if not PST:arrHasValue(rolledItems, newItem) and Isaac.GetItemConfig():GetCollectible(newItem).Type ~= ItemType.ITEM_ACTIVE then
+							local itemConfig = Isaac.GetItemConfig():GetCollectible(newItem)
+							if not PST:arrHasValue(rolledItems, newItem) and itemConfig and itemConfig.Type ~= ItemType.ITEM_ACTIVE then
 								tmpPickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true, true)
 								PST:addModifiers({ activeItemRerolled = 1 }, true)
 
