@@ -534,14 +534,7 @@ function PST:onNewRoom()
 				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 35 + tmpBonus, set = true } }, true)
 			end
 
-			if room:GetType() == RoomType.ROOM_TREASURE or room:GetType() == RoomType.ROOM_SHOP or room:GetType() == RoomType.ROOM_ANGEL then
-				for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
-					local tmpItem = tmpEntity:ToPickup()
-					if tmpItem and tmpItem.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
-						tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true, true)
-					end
-				end
-			elseif room:GetType() == RoomType.ROOM_ULTRASECRET then
+			if room:GetType() == RoomType.ROOM_ULTRASECRET then
 				local tmpDebuff = PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)
 				if tmpDebuff > 0 then
 					PST:addModifiers({ allstatsPerc = tmpDebuff / 2, SC_crimsonWarpDebuff = -tmpDebuff / 2 }, true)

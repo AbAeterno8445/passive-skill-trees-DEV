@@ -388,6 +388,14 @@ function PST:onPickupInit(pickup)
         end
     end
 
+    -- Ancient starcursed jewel: Crimson Warpstone
+    if not pickupGone and PST:SC_getSnapshotMod("crimsonWarpstone", false) and variant == PickupVariant.PICKUP_COLLECTIBLE and
+    not PST:arrHasValue(PST.progressionItems, subtype) then
+        if room:GetType() == RoomType.ROOM_TREASURE or room:GetType() == RoomType.ROOM_SHOP or room:GetType() == RoomType.ROOM_ANGEL then
+            pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, true, true, true)
+        end
+    end
+
     -- Trinkets
     if variant == PickupVariant.PICKUP_TRINKET then
         -- Fickle Fortune node (Cain's tree), vanish proc
