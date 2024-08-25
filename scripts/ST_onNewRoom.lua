@@ -267,8 +267,8 @@ function PST:onNewRoom()
 	-- Chaotic Treasury node (Eden's tree)
 	local level = PST:getLevel()
 	if PST:getTreeSnapshotMod("chaoticTreasury", false) and room:GetType() == RoomType.ROOM_TREASURE and
-	not PST:getTreeSnapshotMod("chaoticTreasuryProc", false) then
-		if level:GetStage() == LevelStage.STAGE1_1 then
+	not PST:getTreeSnapshotMod("chaoticTreasuryProc", false) and room:IsFirstVisit() then
+		if PST:isFirstOrigStage() and not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
 			-- Spawn Chaos in the first floor's treasure room
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 80)
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_CHAOS, Random() + 1)
@@ -277,8 +277,8 @@ function PST:onNewRoom()
 			local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE)
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 80)
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, newItem, Random() + 1)
+			PST:addModifiers({ chaoticTreasuryProc = true }, true)
 		end
-		PST:addModifiers({ chaoticTreasuryProc = true }, true)
 	end
 
 	-- Sacred Aegis node (The Lost's tree)

@@ -680,6 +680,7 @@ function PST:resetMods()
 		mobPeriodicShield = false,
 		mobHitReduceDmg = 0,
 		mobHitRoomExtraDmg = { hits = 0, proc = false },
+		itemRemovalProtected = {},
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

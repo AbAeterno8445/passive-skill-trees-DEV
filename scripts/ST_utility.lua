@@ -421,12 +421,14 @@ function PST:getRoomFamiliars(specificType)
 	return totalFamiliars
 end
 
-function PST:removeRoomItems()
+function PST:removeRoomItems(protected)
 	for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 		if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
-		not PST:arrHasValue(PST.progressionItems, tmpEntity.Type) then
-			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
-			tmpEntity:Remove()
+		not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
+			if not protected or (protected and not PST:arrHasValue(PST.specialNodes.itemRemovalProtected, tmpEntity.InitSeed)) then
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+				tmpEntity:Remove()
+			end
 		end
 	end
 end

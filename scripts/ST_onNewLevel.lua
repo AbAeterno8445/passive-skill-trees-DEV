@@ -7,6 +7,7 @@ function PST:onNewLevel()
 
     PST.specialNodes.mobHitReduceDmg = 0
     PST.specialNodes.momDeathProc = false
+    PST.specialNodes.itemRemovalProtected = {}
 	PST:resetFloatingTexts()
     PST.floorFirstUpdate = true
     PST:addModifiers({

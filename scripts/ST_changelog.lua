@@ -11,6 +11,8 @@ function PST:getChangelogList()
         "room types (treasure, shop, angel).",
         "- \"Spawn hovering static tears on monster death\" jewel modifier: if the monster is frozen, it'll now only",
         "spawn the tears if destroyed far away from the player.",
+        "- Fixed Eden's Chaotic Treasury node being able to remove progression items, not proccing in XL floors, and",
+        "removing active item pedestals when swapped.",
         "",
 
         "v0.2.33",

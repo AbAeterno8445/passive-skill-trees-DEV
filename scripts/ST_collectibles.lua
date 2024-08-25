@@ -32,8 +32,6 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         end
     end
 
-    local removeOtherRoomItems = false
-
     -- Ancient starcursed jewel: Iridescent Purity
     if PST:SC_getSnapshotMod("iridescentPurity", false) then
         if not PST:arrHasValue(PST.progressionItems) then
@@ -61,14 +59,6 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     if PST:arrHasValue(PST.poopItems, itemType) then
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
     end
-
-    -- Chaotic Treasury node (Eden's tree)
-    if PST:getTreeSnapshotMod("chaoticTreasury", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
-        -- When grabbing an item in a treasure room, remove all other items
-        removeOtherRoomItems = true
-    end
-
-    if removeOtherRoomItems then PST:removeRoomItems() end
 
     -- Mod: +random stat when collecting a treasure/shop room item
     if firstTime then

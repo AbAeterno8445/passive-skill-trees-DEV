@@ -44,6 +44,14 @@ function PST:prePickup(pickup, collider, low)
                     end
                 end
             end
+
+            -- Chaotic Treasury node (Eden's tree)
+            if PST:getTreeSnapshotMod("chaoticTreasury", false) and not PST:arrHasValue(PST.progressionItems, subtype)
+            and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
+                -- When grabbing an item in a treasure room, remove all other items
+                table.insert(PST.specialNodes.itemRemovalProtected, pickup.InitSeed)
+                PST:removeRoomItems(true)
+            end
         else
             -- Keeper's Blessing node (Keeper's tree)
             if PST:getTreeSnapshotMod("keeperBlessing", false) then
