@@ -517,7 +517,7 @@ function PST:onDamage(target, damage, flag, source)
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_AZAZEL_B) then
             -- Tainted Azazel, -40% damage dealt to enemies far away from you, based on your range stat
-            local dist = math.sqrt((tmpPlayer.Position.X - target.Position.X) ^ 2 + (tmpPlayer.Position.Y - target.Position.Y) ^ 2)
+            local dist = PST:distBetweenPoints(tmpPlayer.Position, target.Position)
             if dist > tmpPlayer.TearRange * 0.4 then
                 dmgMult = dmgMult - 0.4
             end
@@ -600,19 +600,26 @@ function PST:onDeath(entity)
         -- Starcursed mod: spawn X static hovering tears for Y seconds on death
         local tmpMod = PST:SC_getSnapshotMod("hoveringTearsOnDeath", {0, 0})
         if tmpMod[1] > 0 and tmpMod[2] > 0 then
-            for _=1,tmpMod[1] do
-                local newTear = Game():Spawn(
-                    EntityType.ENTITY_PROJECTILE,
-                    ProjectileVariant.PROJECTILE_TEAR,
-                    entity.Position + Vector(-6 + 12 * math.random(), -6 + 12 * math.random()),
-                    Vector.Zero,
-                    entity,
-                    TearVariant.BLOOD,
-                    Random() + 1
-                )
-                newTear.Color = Color(1, 0.1, 0.1, 1)
-                newTear:SetPauseTime(math.max(10, 30 * tmpMod[2] - 30))
-                table.insert(PST.specialNodes.SC_hoveringTears, newTear)
+            local proc = true
+            local isFrozen = entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
+            if isFrozen then
+                proc = PST:distBetweenPoints(entity.Position, PST:getPlayer().Position) > 60
+            end
+            if proc then
+                for _=1,tmpMod[1] do
+                    local newTear = Game():Spawn(
+                        EntityType.ENTITY_PROJECTILE,
+                        ProjectileVariant.PROJECTILE_TEAR,
+                        entity.Position + Vector(-6 + 12 * math.random(), -6 + 12 * math.random()),
+                        Vector.Zero,
+                        entity,
+                        TearVariant.BLOOD,
+                        Random() + 1
+                    )
+                    newTear.Color = Color(1, 0.1, 0.1, 1)
+                    newTear:SetPauseTime(math.max(10, 30 * tmpMod[2] - 30))
+                    table.insert(PST.specialNodes.SC_hoveringTears, newTear)
+                end
             end
         end
         -- Starcursed mod: X chance to release Y tears on death
@@ -639,7 +646,7 @@ function PST:onDeath(entity)
                 if tmpSoulEater.mob.InitSeed == entity.InitSeed then
                     PST.specialNodes.SC_soulEaterMobs[i] = nil
                 elseif tmpSoulEater.souls < 20 then
-                    local dist = math.sqrt((tmpSoulEater.mob.Position.X - entity.Position.X)^2 + (tmpSoulEater.mob.Position.Y - entity.Position.Y)^2)
+                    local dist = PST:distBetweenPoints(tmpSoulEater.mob.Position, entity.Position)
                     if dist <= 140 then
                         tmpSoulEater.souls = tmpSoulEater.souls + 1
                         Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpSoulEater.mob.Position, Vector.Zero, nil, 1, Random() + 1)

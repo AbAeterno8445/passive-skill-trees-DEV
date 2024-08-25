@@ -577,6 +577,13 @@ function PST:roundFloat(number, digit)
 	return math.floor(number / precision) * precision
 end
 
+-- Returns the distance between two given Vector positions
+---@param p1 Vector
+---@param p2 Vector
+function PST:distBetweenPoints(p1, p2)
+	return math.sqrt((p1.X - p2.X)^2 + (p1.Y - p2.Y)^2)
+end
+
 function PST:copyTable(dataTable)
 	local tmpTable = {}
 	if type(dataTable) == "table" then

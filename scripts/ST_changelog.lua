@@ -9,6 +9,8 @@ function PST:getChangelogList()
         "when using Death Certificate.",
         "- Crimson Warpstone should now turn newly generated collectibles into cracked keys, in the appropriate",
         "room types (treasure, shop, angel).",
+        "- \"Spawn hovering static tears on monster death\" jewel modifier: if the monster is frozen, it'll now only",
+        "spawn the tears if destroyed far away from the player.",
         "",
 
         "v0.2.33",

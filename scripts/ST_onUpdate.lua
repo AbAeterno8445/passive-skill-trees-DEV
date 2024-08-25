@@ -335,7 +335,7 @@ function PST:onUpdate()
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsChampion() and not tmpNPC.Type == EntityType.ENTITY_GIDEON then
 				for _, tmpChamp in ipairs(tmpChamps) do
-					local dist = math.sqrt((tmpNPC.Position.X - tmpChamp.Position.X)^2 + (tmpNPC.Position.Y - tmpChamp.Position.Y)^2)
+					local dist = PST:distBetweenPoints(tmpNPC.Position, tmpChamp.Position)
 					if dist <= 80 then
 						tmpNPC.HitPoints = math.min(tmpNPC.MaxHitPoints, tmpNPC.HitPoints + tmpNPC.MaxHitPoints * 0.15)
 						tmpNPC:SetColor(Color(1, 0.5, 0.5, 1), 30, 1, true, false)
@@ -652,7 +652,7 @@ function PST:onUpdate()
 				PST.specialNodes.esauIsStatue = false
 			end
 
-			local tmpDist = math.sqrt((player.Position.X - tmpTwin.Position.X)^2 + (player.Position.Y - tmpTwin.Position.Y)^2)
+			local tmpDist = PST:distBetweenPoints(player.Position, tmpTwin.Position)
 			if PST.specialNodes.esauIsStatue and tmpDist < tmpTwin.TearRange / 3 and not PST.specialNodes.jacobNearEsauBuff then
 				PST:addModifiers({ allstatsPerc = 7 }, true)
 				PST.specialNodes.jacobNearEsauBuff = true
