@@ -13,6 +13,7 @@ function PST:getChangelogList()
         "spawn the tears if destroyed far away from the player.",
         "- Fixed Eden's Chaotic Treasury node being able to remove progression items, not proccing in XL floors, and",
         "removing active item pedestals when swapped.",
+        "- Fixed Relearning not triggering on run victory.",
         "",
 
         "v0.2.33",
