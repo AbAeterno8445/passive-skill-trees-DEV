@@ -315,6 +315,18 @@ PST.treeModDescriptions = {
         },
         category = "extra", sort = 1108
     },
+    shopSaving = {
+        str = "When first entering a shop, %d%% chance to reduce a random item's price by 2-3 coins",
+        category = "extra", sort = 1109
+    },
+    spiderMod = {
+        str = {
+            "Begin the game with Spider Mod",
+            "    Spider Mod's familiar no longer appears",
+            "    Spider Mod can no longer show up naturally"
+        },
+        category = "extra", sort = 1110
+    },
 
     -- Starcursed jewels enabled
     enableSCJewels = {
