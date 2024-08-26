@@ -575,7 +575,6 @@ function PST:treeMenuRenderer()
                 tmpSprite.Color = colorWhite
             end
             tmpSprite:Render(Vector(finalDrawX, finalDrawY))
-            renderedNodes = renderedNodes + 1
 
             if PST:isNodeAllocated(currentTree, node.id) then
                 nodesExtraSprite.Color = colorWhite
