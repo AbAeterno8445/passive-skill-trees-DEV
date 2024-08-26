@@ -1,5 +1,3 @@
-local json = require("json")
-
 PST = RegisterMod("PST", 1)
 local saveManager = include("scripts.libs.save_manager")
 saveManager.Init(PST)
