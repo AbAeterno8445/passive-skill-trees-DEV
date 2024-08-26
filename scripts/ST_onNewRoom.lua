@@ -388,7 +388,7 @@ function PST:onNewRoom()
 	end
 
 	-- Cosmic Realignment node
-	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
 		-- Samson, reset damage debuff
 		if cosmicRCache.samsonDmg > 0 then

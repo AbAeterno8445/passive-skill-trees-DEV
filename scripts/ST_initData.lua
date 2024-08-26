@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.35"
+PST.modVersion = "v0.2.36"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -230,7 +230,7 @@ PST.delayedCacheUpdate = 0
 
 function PST:resetMods()
 	-- List of available tree modifiers
-	PST.modData.treeMods = {
+	PST.treeMods = {
 		allstats = 0, -- Flat addition to damage, luck, speed, tears, shot speed and range
 		damage = 0,
 		luck = 0,
@@ -715,6 +715,7 @@ function PST:resetMods()
 	PST.floorFirstUpdate = false
 end
 function PST:resetData()
+	-- Mod data table that's stored in the savefile
 	PST.modData = {
 		xpObtained = 0,
 		level = 1,
@@ -732,9 +733,12 @@ function PST:resetData()
 		-- List of trees with nodes and whether they're allocated
 		treeNodes = {},
 		-- List of applied modifiers from each tree
-		treeMods = {},
+		--treeMods = {},
 		-- List of applied modifiers that stays fixed during a run
 		treeModSnapshot = {},
+
+		-- Cosmic Realignment node: false if not allocated, true if allocated without character, char ID if character selected
+		cosmicRealignment = false,
 		-- Completion tracker for Cosmic Realignment unlocks
 		cosmicRCompletions = { [0] = {} },
 		charData = {},

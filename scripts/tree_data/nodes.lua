@@ -171,7 +171,7 @@ end
 function PST:addModifiers(modList, addToSnapshot)
     local tmpFlags = 0
     for modName, val in pairs(modList) do
-        local treeRef = PST.modData.treeMods
+        local treeRef = PST.treeMods
         if addToSnapshot then
             treeRef = PST.modData.treeModSnapshot
         end

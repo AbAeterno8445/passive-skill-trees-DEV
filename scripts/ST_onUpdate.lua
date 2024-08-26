@@ -717,7 +717,7 @@ function PST:onUpdate()
 	end
 
 	-- Cosmic Realignment node
-	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH) then
 		-- Lilith, -8% all stats if you don't currently have a baby familiar

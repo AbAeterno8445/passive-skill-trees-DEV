@@ -365,6 +365,15 @@ function PST:drawNodeSubMenu(menuRows, centerX, centerY, menuX, menuY, title, it
     if itemDrawFunc then itemDrawFunc() end
 end
 
+-- Returns whether the given position + width/height is within the screen, considering sprite with centered pivot
+function PST:isSpriteVisibleAt(x, y, w, h)
+    if x + w / 2 >= 0 and x - w / 2 <= Isaac.GetScreenWidth() and
+    y + h / 2 >= 0 and y - h / 2 <= Isaac.GetScreenHeight() then
+        return true
+    end
+    return false
+end
+
 function PST:treeMenuRenderer()
     local screenW = Isaac.GetScreenWidth()
     local screenH = Isaac.GetScreenHeight()
@@ -522,12 +531,17 @@ function PST:treeMenuRenderer()
         else
             nodeLink.sprite:Play(nodeLink.type .. " Unavailable", true)
         end
-        nodeLink.sprite.Scale = nodeLink.origScale * zoomScale
-        nodeLink.sprite:Render(Vector(linkX - treeCamera.X - camZoomOffset.X, linkY - treeCamera.Y - camZoomOffset.Y))
+
+        local finalDrawX = linkX - treeCamera.X - camZoomOffset.X
+        local finalDrawY = linkY - treeCamera.Y - camZoomOffset.Y
+        if PST:isSpriteVisibleAt(finalDrawX, finalDrawY, 76, 76) then
+            nodeLink.sprite.Scale = nodeLink.origScale * zoomScale
+            nodeLink.sprite:Render(Vector(finalDrawX, finalDrawY))
+        end
     end
 
     -- Draw nodes
-    local cosmicRChar = PST:getTreeMod("cosmicRealignment", false)
+    local cosmicRChar = PST.modData.cosmicRealignment
     hoveredNode = nil
     for _, node in pairs(PST.trees[currentTree]) do
         local nodeX = node.pos.X * 38 * zoomScale
@@ -538,66 +552,72 @@ function PST:treeMenuRenderer()
             tmpSprite = PST.customNodeImages[node.customID]
         end
 
-        local nodeAllocated = PST:isNodeAllocated(currentTree, node.id)
-        if node.available and not nodeAllocated then
-            local hasSP = ((currentTree == "global" or currentTree == "starTree") and PST.modData.skillPoints > 0) or
-                (PST.modData.charData[currentTree] and PST.modData.charData[currentTree].skillPoints > 0)
-            if hasSP then
-                nodesExtraSprite:SetFrame("Available " .. node.size, 0)
-                nodesExtraSprite.Color = colorDarkGrey
-                nodesExtraSprite.Color.A = alphaFlash
-                nodesExtraSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+        local finalDrawX = nodeX - treeCamera.X - camZoomOffset.X
+        local finalDrawY = nodeY - treeCamera.Y - camZoomOffset.Y
+
+        if PST:isSpriteVisibleAt(finalDrawX, finalDrawY, 38, 38) then
+            local nodeAllocated = PST:isNodeAllocated(currentTree, node.id)
+            if node.available and not nodeAllocated then
+                local hasSP = ((currentTree == "global" or currentTree == "starTree") and PST.modData.skillPoints > 0) or
+                    (PST.modData.charData[currentTree] and PST.modData.charData[currentTree].skillPoints > 0)
+                if hasSP then
+                    nodesExtraSprite:SetFrame("Available " .. node.size, 0)
+                    nodesExtraSprite.Color = colorDarkGrey
+                    nodesExtraSprite.Color.A = alphaFlash
+                    nodesExtraSprite:Render(Vector(finalDrawX, finalDrawY))
+                end
             end
-        end
 
-        tmpSprite:SetFrame("Default", node.sprite)
-        if not nodeAllocated and not node.available then
-            tmpSprite.Color = colorDarkGrey
-        else
-            tmpSprite.Color = colorWhite
-        end
-        tmpSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            tmpSprite:SetFrame("Default", node.sprite)
+            if not nodeAllocated and not node.available then
+                tmpSprite.Color = colorDarkGrey
+            else
+                tmpSprite.Color = colorWhite
+            end
+            tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+            renderedNodes = renderedNodes + 1
 
-        if PST:isNodeAllocated(currentTree, node.id) then
-            nodesExtraSprite.Color = colorWhite
-            nodesExtraSprite.Color.A = 1
-            nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)
-            nodesExtraSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
-        end
+            if PST:isNodeAllocated(currentTree, node.id) then
+                nodesExtraSprite.Color = colorWhite
+                nodesExtraSprite.Color.A = 1
+                nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)
+                nodesExtraSprite:Render(Vector(finalDrawX, finalDrawY))
+            end
 
-        local nodeHalf = 15 * zoomScale
-        if camCenterX >= nodeX - nodeHalf and camCenterX <= nodeX + nodeHalf and
-        camCenterY >= nodeY - nodeHalf and camCenterY <= nodeY + nodeHalf then
-            hoveredNode = node
-        end
+            local nodeHalf = 15 * zoomScale
+            if camCenterX >= nodeX - nodeHalf and camCenterX <= nodeX + nodeHalf and
+            camCenterY >= nodeY - nodeHalf and camCenterY <= nodeY + nodeHalf then
+                hoveredNode = node
+            end
 
-        -- Cosmic Realignment node, draw picked character
-        if node.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
-            local charName = PST.charNames[1 + cosmicRChar]
-            PST.cosmicRData.charSprite.Color.A = 1
-            PST.cosmicRData.charSprite.Scale.X = zoomScale
-            PST.cosmicRData.charSprite.Scale.Y = zoomScale
-            PST.cosmicRData.charSprite:Play(charName, true)
-            PST.cosmicRData.charSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
-        else
-            -- Starcursed jewel sockets, draw socketed jewel
-            for _, tmpType in pairs(PSTStarcursedType) do
-                if PST:strStartsWith(node.name, tmpType .. " Socket") then
-                    local socketID = string.sub(node.name, -1)
-                    local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
-                    if socketedJewel and socketedJewel.equipped == socketID then
-                        SCJewelSprite.Scale.X = zoomScale
-                        SCJewelSprite.Scale.Y = zoomScale
-                        PST:SC_setSpriteToJewel(SCJewelSprite, socketedJewel)
-                        SCJewelSprite:Render(Vector(nodeX - treeCamera.X - camZoomOffset.X, nodeY - treeCamera.Y - camZoomOffset.Y))
+            -- Cosmic Realignment node, draw picked character
+            if node.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
+                local charName = PST.charNames[1 + cosmicRChar]
+                PST.cosmicRData.charSprite.Color.A = 1
+                PST.cosmicRData.charSprite.Scale.X = zoomScale
+                PST.cosmicRData.charSprite.Scale.Y = zoomScale
+                PST.cosmicRData.charSprite:Play(charName, true)
+                PST.cosmicRData.charSprite:Render(Vector(finalDrawX, finalDrawY))
+            else
+                -- Starcursed jewel sockets, draw socketed jewel
+                for _, tmpType in pairs(PSTStarcursedType) do
+                    if PST:strStartsWith(node.name, tmpType .. " Socket") then
+                        local socketID = string.sub(node.name, -1)
+                        local socketedJewel = PST:SC_getSocketedJewel(tmpType, socketID)
+                        if socketedJewel and socketedJewel.equipped == socketID then
+                            SCJewelSprite.Scale.X = zoomScale
+                            SCJewelSprite.Scale.Y = zoomScale
+                            PST:SC_setSpriteToJewel(SCJewelSprite, socketedJewel)
+                            SCJewelSprite:Render(Vector(finalDrawX, finalDrawY))
+                        end
                     end
                 end
             end
-        end
 
-        -- Debug: show node IDs
-        if PST.debugOptions.drawNodeIDs then
-            Isaac.RenderText(tostring(node.id), nodeX - treeCamera.X - camZoomOffset.X - 12, nodeY - treeCamera.Y - camZoomOffset.Y - 12, 1, 1, 1, 1)
+            -- Debug: show node IDs
+            if PST.debugOptions.drawNodeIDs then
+                Isaac.RenderText(tostring(node.id), finalDrawX - 12, finalDrawY - 12, 1, 1, 1, 1)
+            end
         end
     end
     -- Update custom images scale
@@ -907,16 +927,13 @@ function PST:treeMenuRenderer()
         elseif PST.cosmicRData.hoveredCharID ~= nil then
             if PST:cosmicRIsCharUnlocked(PST.cosmicRData.hoveredCharID) then
                 if not (cosmicRChar == PST.cosmicRData.hoveredCharID) then
-                    PST:addModifiers({
-                        cosmicRealignment = { value = PST.cosmicRData.hoveredCharID, set = true }
-                    })
+                    PST.modData.cosmicRealignment = PST.cosmicRData.hoveredCharID
                 else
-                    PST:addModifiers({
-                        cosmicRealignment = { value = true, set = true }
-                    })
+                    PST.modData.cosmicRealignment = true
                 end
                 sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                 PST.cosmicRData.menuOpen = false
+                PST:save()
             else
                 sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
             end
@@ -962,7 +979,7 @@ function PST:treeMenuRenderer()
                 if PST:isNodeAllocatable(currentTree, hoveredNode.id, false) then
                     -- Respec Cosmic Realignment node
                     if hoveredNode.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
-                        PST:addModifiers({ cosmicRealignment = false })
+                        PST.modData.cosmicRealignment = false
                         sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                     else
                         if not PST.debugOptions.infRespec then

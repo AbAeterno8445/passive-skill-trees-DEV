@@ -244,10 +244,10 @@ end
 -- Get tree modifier (pre-run tree)
 ---@return any
 function PST:getTreeMod(modName, default)
-	if PST.modData.treeMods[modName] == nil then
+	if PST.treeMods[modName] == nil then
 		return default
 	end
-	return PST.modData.treeMods[modName]
+	return PST.treeMods[modName]
 end
 
 -- Get current snapshot tree modifier
@@ -356,7 +356,7 @@ function PST:onCompletionEvent(event)
 		end
 
 		-- More specific Cosmic Realignment unlocks
-		local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+		local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 		if pType == PlayerType.PLAYER_LAZARUS then
 			-- Lazarus, kill Mom's Heart/It Lives! without dying in hard mode -> Bethany
 			if event == CompletionType.MOMS_HEART and not cosmicRCache.lazarusHasDied and Game():IsHardMode() then

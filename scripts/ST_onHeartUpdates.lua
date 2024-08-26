@@ -32,7 +32,7 @@ end
 function PST:onHeartUpdate(force)
     local player = PST:getPlayer()
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
-    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     local heartUpdated = false
 
     for i=1,2 do

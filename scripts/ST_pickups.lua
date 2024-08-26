@@ -133,7 +133,7 @@ function PST:prePickup(pickup, collider, low)
 
             -- Cosmic Realignment node
             local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
-            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
             if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
                 -- Blue baby, make first 2 non soul heart pickups vanish
                 if cosmicRCache.blueBabyHearts < 2 then
@@ -359,7 +359,7 @@ function PST:onPickup(pickup, collider, low)
             -- Tainted Judas, take 1 heart of damage when picking up a black heart
             if variant == PickupVariant.PICKUP_HEART and subtype == HeartSubType.HEART_BLACK then
                 player:TakeDamage(2, 0, EntityRef(player), 0)
-                local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+                local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
                 if cosmicRCache.TJudasDmgUps < 3 then
                     cosmicRCache.TJudasDmgUps = cosmicRCache.TJudasDmgUps + 1
                     PST:addModifiers({ damage = 0.4 }, true)

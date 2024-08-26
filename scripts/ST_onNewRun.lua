@@ -9,11 +9,6 @@ function PST:onNewRun(isContinued)
     local player = Isaac.GetPlayer()
     local itemPool = Game():GetItemPool()
 
-    -- Mods that are mutable before beginning a run should be set here
-    local keptMods = {
-        ["Cosmic Realignment"] = { cosmicRealignment = PST.modData.treeMods.cosmicRealignment }
-    }
-
     PST:resetMods()
     local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and Isaac.GetChallenge() == 0) or PST.config.treeOnChallenges)
     if treeActive then
@@ -22,17 +17,7 @@ function PST:onNewRun(isContinued)
         for _, tmpTree in ipairs(globalTrees) do
             for nodeID, node in pairs(PST.trees[tmpTree]) do
                 if PST:isNodeAllocated(tmpTree, nodeID) then
-                    local kept = false
-                    for keptName, keptVal in pairs(keptMods) do
-                        if node.name == keptName then
-                            PST:addModifiers(keptVal)
-                            kept = true
-                            break
-                        end
-                    end
-                    if not kept then
-                        PST:addModifiers(node.modifiers)
-                    end
+                    PST:addModifiers(node.modifiers)
                 end
             end
         end
@@ -50,11 +35,14 @@ function PST:onNewRun(isContinued)
             end
         end
 
+        -- Cosmic Realignment
+        PST:addModifiers({ cosmicRealignment = PST.modData.cosmicRealignment })
+
         -- Effects that re-enable when killing Mom's Heart
         if PST.modData.momHeartProc["isaacBlessing"] or PST.modData.momHeartProc["isaacBlessing"] == nil then
             -- Isaac's Blessing, % all stats
-            if PST.modData.treeMods.isaacBlessing > 0 then
-                PST:addModifiers({ allstatsPerc = PST.modData.treeMods.isaacBlessing })
+            if PST.treeMods.isaacBlessing > 0 then
+                PST:addModifiers({ allstatsPerc = PST.treeMods.isaacBlessing })
                 PST.modData.momHeartProc["isaacBlessing"] = false
             end
         end
@@ -62,7 +50,7 @@ function PST:onNewRun(isContinued)
 
     PST.floorFirstUpdate = true
 
-    PST.modData.treeModSnapshot = PST:copyTable(PST.modData.treeMods)
+    PST.modData.treeModSnapshot = PST:copyTable(PST.treeMods)
 
     -- Starcursed jewel mods
     if treeActive then
@@ -367,7 +355,7 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ tearsPerc = -33 }, true)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
         -- Tainted Lazarus, setup first health bank
-        local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+        local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
         cosmicRCache.TLazarusBank1.red = player:GetHearts()
         cosmicRCache.TLazarusBank1.max = player:GetMaxHearts()
         cosmicRCache.TLazarusBank1.soul = player:GetSoulHearts()

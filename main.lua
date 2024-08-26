@@ -1,4 +1,6 @@
 PST = RegisterMod("PST", 1)
+--local saveManager = include("scripts.libs.save_manager")
+--saveManager.Init(PST)
 
 local json = require("json")
 
@@ -43,8 +45,8 @@ end
 -- Save mod data
 local lastSave = 0
 function PST:save()
-	-- Limit saving to once every 200 ms
-	if lastSave ~= 0 and os.clock() - lastSave < 0.2 then
+	-- Limit saving to once every 250 ms
+	if lastSave ~= 0 and os.clock() - lastSave < 0.25 then
 		return
 	end
 
@@ -71,13 +73,17 @@ function PST:load()
 				tmpJson[k] = v
 			end
 		end
-		for k, v in pairs(PST.modData.treeMods) do
+		--[[for k, v in pairs(PST.treeMods) do
 			if tmpJson.treeMods[k] == nil then
 				tmpJson.treeMods[k] = v
 			end
 			if tmpJson.treeModSnapshot[k] == nil then
 				tmpJson.treeModSnapshot[k] = v
 			end
+		end]]
+		-- Remove old treeMods if present
+		if tmpJson.treeMods then
+			tmpJson.treeMods = nil
 		end
 		for k, v in pairs(PST.modData.treeNodes) do
 			if tmpJson.treeNodes[k] == nil then
@@ -115,13 +121,13 @@ function PST:load()
 		-- Load new character names
 		for _, tmpNewName in ipairs(PST.modData.newChars) do
 			local tmpID = Isaac.GetPlayerTypeByName(tmpNewName)
-			if PST.charNames[1 + tmpID] == nil then
+			if tmpID ~= -1 and PST.charNames[1 + tmpID] == nil then
 				PST.charNames[1 + tmpID] = tmpNewName
 			end
 		end
 		for _, tmpNewName in ipairs(PST.modData.newCharsTainted) do
 			local tmpID = Isaac.GetPlayerTypeByName(tmpNewName, true)
-			if PST.charNames[1 + tmpID] == nil then
+			if tmpID ~= -1 and PST.charNames[1 + tmpID] == nil then
 				PST.charNames[1 + tmpID] = "T. " .. tmpNewName
 			end
 		end

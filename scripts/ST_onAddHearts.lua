@@ -59,7 +59,7 @@ function PST:onAddHearts(player, amount, addHealthType, optional)
 	end
 
     -- Cosmic Realignment node
-	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_EVE) then
 		-- Eve, -8% all stats if you have 1 remaining red heart or less

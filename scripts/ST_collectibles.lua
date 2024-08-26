@@ -152,7 +152,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     end
 
     -- Cosmic Realignment node
-    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then
         -- Apollyon, -0.04 to a random stat (except speed) when picking up a passive item
         if charge == 0 then
@@ -472,7 +472,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
         -- Tainted Cain, detect craft from Bag of Crafting
         if itemType == CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING then
-            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
             if cosmicRCache.TCainBag then
                 cosmicRCache.TCainUses = cosmicRCache.TCainUses + 1
                 PST:save()

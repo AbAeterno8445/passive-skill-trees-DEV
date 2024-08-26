@@ -2,7 +2,7 @@
 function PST:onDamage(target, damage, flag, source)
     local player = target:ToPlayer()
     local room = PST:getRoom()
-    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 
     -- Player gets hit
     if player then
@@ -542,7 +542,7 @@ end
 
 function PST:onDeath(entity)
     local player = entity:ToPlayer()
-    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.modData.treeMods.cosmicRCache)
+    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     -- Player death
     if player ~= nil then
         if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
