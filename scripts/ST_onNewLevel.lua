@@ -74,7 +74,7 @@ function PST:onNewLevel()
     end
 
     -- Challenge room clear proc
-    if PST:SC_getSnapshotMod("SC_challClear", false) then
+    if PST:getTreeSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)
     end
 

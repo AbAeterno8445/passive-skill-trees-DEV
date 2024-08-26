@@ -17,6 +17,7 @@ function PST:getChangelogList()
         "- Lilith's \"Heavy Friends\" node now grants -35% speed (from -25%), and -45% damage.",
         "- Fixed rendering of certain Cosmic Realignment blue marks.",
         "- Fixed Opalescent Purity triggering inconsistently when grabbing item pedestals.",
+        "- Fixed Challenger's Starpiece not spawning a deadly sin boss after the first challenge room clear.",
         "",
 
         "v0.2.35",
