@@ -82,7 +82,7 @@ end
 local lastSave = 0
 function PST:save(forceSave)
 	-- Limit saving to once every 250 ms
-	if lastSave ~= 0 and os.clock() - lastSave < 0.25 then
+	if not forceSave and lastSave ~= 0 and os.clock() - lastSave < 0.25 then
 		return
 	end
 
@@ -196,6 +196,20 @@ function PST:load()
 	end
 end
 
+function PST:resetSaveData()
+	PST:resetData()
+	PST:resetNodes()
+	PST:save(true)
+end
+
+function PST:onSaveSlot(slot)
+	local existingData = PST:LoadData()
+	if #existingData == 0 then
+		print("Passive Skill Trees: initialized fresh savefile on slot", slot)
+		PST:resetSaveData()
+	end
+end
+
 -- On player init
 function PST:playerInit()
 	local charName = PST:getCurrentCharName()
@@ -272,6 +286,7 @@ PST:AddCallback(ModCallbacks.MC_USE_PILL, PST.onUsePill)
 PST:AddCallback(ModCallbacks.MC_INPUT_ACTION, PST.onInput)
 PST:AddCallback(ModCallbacks.MC_POST_TEAR_DEATH, PST.onTearDeath)
 -- Repentogon callbacks
+PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.onSaveSlot)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
 PST:AddCallback(ModCallbacks.MC_POST_LEVEL_LAYOUT_GENERATED, PST.onNewLevel)
 PST:AddCallback(ModCallbacks.MC_PRE_SLOT_COLLISION, PST.preSlotCollision)

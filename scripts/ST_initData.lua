@@ -730,8 +730,6 @@ function PST:resetData()
         momHeartProc = {},
 		-- List of trees with nodes and whether they're allocated
 		treeNodes = {},
-		-- List of applied modifiers from each tree
-		--treeMods = {},
 		-- List of applied modifiers that stays fixed during a run
 		treeModSnapshot = {},
 

@@ -450,11 +450,6 @@ function PST:isFirstOrigStage()
 	level:GetStageType() == StageType.STAGETYPE_AFTERBIRTH or level:GetStageType() == StageType.STAGETYPE_WOTL)
 end
 
-function PST:resetSaveData()
-	PST:RemoveData()
-	PST:load()
-end
-
 function PST:arrHasValue(arr, value)
 	for _, item in ipairs(arr) do
 		if item == value then
