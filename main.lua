@@ -91,9 +91,7 @@ function PST:save(forceSave)
 	local modSave = saveManager.GetPersistentSave()
 	modSave.modData = PST:copyTable(PST.modData)
 
-	if forceSave then
-		saveManager.Save()
-	end
+	saveManager.Save()
 	lastSave = os.clock()
 end
 
@@ -190,14 +188,14 @@ function PST:load()
 
 	if oldLoadFlag then
 		oldLoadFlag = false
-		PST:save(true)
+		PST:save()
 	end
 end
 
 function PST:resetSaveData()
 	PST:resetData()
 	PST:resetNodes()
-	PST:save(true)
+	PST:save()
 end
 
 function PST:onSaveSlot(slot)

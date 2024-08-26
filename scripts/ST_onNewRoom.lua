@@ -159,22 +159,6 @@ function PST:onNewRoom()
 				end
 			end
 			PST:addModifiers({ SC_nullstoneHPThreshold = { value = highestHP, set = true } }, true)
-		-- Spawn first nullified enemy in boss room
-		elseif room:GetType() == RoomType.ROOM_BOSS and room:GetAliveBossesCount() > 0 and
-		not PST:getTreeSnapshotMod("SC_nullstoneClear", false) then
-			local nullstoneList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
-            local currentSpawn = PST.specialNodes.SC_nullstoneCurrentSpawn
-			if nullstoneList and #nullstoneList > 0 and not currentSpawn then
-				local spawnEntry = nullstoneList[1]
-				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
-				local newSpawn = Game():Spawn(spawnEntry.type, spawnEntry.variant, tmpPos, Vector.Zero, nil, spawnEntry.subtype, Random() + 1)
-				if spawnEntry.champion >= 0 then
-					newSpawn:ToNPC():MakeChampion(Random() + 1, spawnEntry.champion, true)
-				end
-				newSpawn.Color = Color(0.1, 0.1, 0.1, 1, 0.1, 0.1, 0.1)
-				PST.specialNodes.SC_nullstoneCurrentSpawn = newSpawn
-				PST.specialNodes.SC_nullstoneSpawned = 2
-			end
 		end
 	end
 
