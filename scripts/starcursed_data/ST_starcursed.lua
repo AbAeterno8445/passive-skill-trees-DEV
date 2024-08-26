@@ -15,8 +15,8 @@ function PST:SC_addJewel(jewelType, isMighty, fading)
         type = jewelType,
         unidentified = true,
         mods = {},
-        fading = fading or 0,
-        mighty = isMighty or false,
+        fading = fading or nil,
+        mighty = isMighty or nil,
         starmight = 0
     }
     table.insert(PST.modData.starTreeInventory[jewelType], newJewel)
@@ -233,7 +233,7 @@ end
 function PST:SC_setSpriteToJewel(sprite, jewel)
     if jewel.type ~= PSTStarcursedType.ANCIENT then
         sprite:Play(jewel.type)
-    elseif not jewel.unidentified and jewel.spriteFrame then
+    elseif not jewel.unidentified then
         local found = false
         for _, tmpAncient in pairs(PST.SCAncients) do
             if tmpAncient.name == jewel.name then
@@ -266,9 +266,6 @@ function PST:SC_identifyJewel(jewel)
         local newAncient = PST:SC_getNewAncient()
         if newAncient then
             jewel.name = newAncient.name
-            jewel.description = newAncient.description
-            jewel.rewards = newAncient.rewards
-            jewel.spriteFrame = newAncient.spriteFrame
         else
             jewel.name = "Faded Starpiece"
             jewel.description = {"This jewel's energy has almost faded out..."}
@@ -278,7 +275,7 @@ function PST:SC_identifyJewel(jewel)
         end
     end
 
-    jewel.unidentified = false
+    jewel.unidentified = nil
     return true
 end
 
@@ -474,6 +471,34 @@ end
 function PST:oldJewelReplacements()
     PST:replaceAllJewelMods("pickupsVanish", "pickupScarcity")
     PST:replaceAllJewelMods("heartsVanish", "heartScarcity")
+
+    -- Remove old data from all jewels
+    for jewelType, jewelInv in pairs(PST.modData.starTreeInventory) do
+        for _, tmpJewel in ipairs(jewelInv) do
+            tmpJewel.fading = nil
+            if tmpJewel.mighty == false then
+                tmpJewel.mighty = nil
+            end
+            if tmpJewel.unidentified == false then
+                tmpJewel.unidentified = nil
+            end
+            if tmpJewel.mods then
+                for _, tmpMod in pairs(tmpJewel.mods) do
+                    tmpMod.description = nil
+                end
+            end
+
+            -- Remove old data from Ancient jewels
+            if jewelType == PSTStarcursedType.ANCIENT then
+                tmpJewel.description = nil
+                tmpJewel.rewards = nil
+                tmpJewel.spriteFrame = nil
+                if tmpJewel.mods and #tmpJewel.mods == 0 then
+                    tmpJewel.mods = nil
+                end
+            end
+        end
+    end
 end
 
 function PST:SC_wipeInventories()
