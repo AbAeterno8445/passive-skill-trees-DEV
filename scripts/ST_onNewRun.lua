@@ -143,6 +143,7 @@ function PST:onNewRun(isContinued)
         end
         -- Ancient starcursed jewel: Saturnian Luminite
         if PST:SC_getSnapshotMod("saturnianLuminite", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_GENESIS)
             player:AddCollectible(CollectibleType.COLLECTIBLE_SATURNUS)
             player:AddCollectible(CollectibleType.COLLECTIBLE_SPEAR_OF_DESTINY)
             player:SetCanShoot(false)
