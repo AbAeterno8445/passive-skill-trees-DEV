@@ -74,11 +74,7 @@ local treeControlDesc = {
     "Q: switch to selected character's tree",
     "Shift + Q: enable/disable tree effects next run",
     "Shift + H: display a list of all active modifiers",
-    "Shift + C: show mod changelog",
-    "",
-    "Notes:",
-    "The first character you level up to 30 grants global SP for every level.",
-    "Afterwards, other characters must level past 30 to start granting global SP."
+    "Shift + C: show mod changelog"
 }
 local treeControlDescController = {
     "Joystick / Dpad: pan camera",
@@ -88,11 +84,7 @@ local treeControlDescController = {
     "Item + Menu action: respec hovered node",
     "Menu tab: switch to selected character's tree",
     "Item + Menu tab: enable/disable tree effects next run",
-    "Item + Select: display a list of all active modifiers",
-    "",
-    "Notes:",
-    "The first character you level up to 30 grants global SP for every level.",
-    "Afterwards, other characters must level past 30 to start granting global SP."
+    "Item + Select: display a list of all active modifiers"
 }
 
 -- Starcursed menus
@@ -126,10 +118,14 @@ local function PST_updateCamZoomOffset()
     camZoomOffset.X = translateX - translateX * zoomScale
     camZoomOffset.Y = translateY - translateY * zoomScale
 
-    nodesSprite.Scale.X = zoomScale
-    nodesSprite.Scale.Y = zoomScale
-    nodesExtraSprite.Scale.X = zoomScale
-    nodesExtraSprite.Scale.Y = zoomScale
+    if nodesSprite.Scale.X ~= zoomScale then
+        nodesSprite.Scale.X = zoomScale
+        nodesSprite.Scale.Y = zoomScale
+    end
+    if nodesExtraSprite.Scale.X ~= zoomScale then
+        nodesExtraSprite.Scale.X = zoomScale
+        nodesExtraSprite.Scale.Y = zoomScale
+    end
 end
 
 local function PST_centerCamera()
@@ -374,9 +370,18 @@ function PST:isSpriteVisibleAt(x, y, w, h)
     return false
 end
 
+local screenW = 0
+local screenH = 0
 function PST:treeMenuRenderer()
-    local screenW = Isaac.GetScreenWidth()
-    local screenH = Isaac.GetScreenHeight()
+    local resized = false
+    if screenW ~= Isaac.GetScreenWidth() then
+        screenW = Isaac.GetScreenWidth()
+        resized = true
+    end
+    if screenH ~= Isaac.GetScreenHeight() then
+        screenH = Isaac.GetScreenHeight()
+        resized = true
+    end
 
     local skPoints = PST.modData.skillPoints
     local treeName = "Global Tree - LV " .. PST.modData.level
@@ -406,6 +411,7 @@ function PST:treeMenuRenderer()
         end
     end
 
+    --#region Extra rendering helpers
     -- For flashing colors
     if not alphaFlashFlip then
         if alphaFlash > 0.2 then alphaFlash = alphaFlash - flashStep else alphaFlashFlip = true end
@@ -446,11 +452,14 @@ function PST:treeMenuRenderer()
         spaceOffDir = spaceOffDir * -1
     end
     spaceOffStep = spaceOffStep + 1
+    --#endregion
 
-    treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
+    if resized then
+        treeBGSprite.Scale = Vector(screenW / 480, screenH / 270)
+    end
     treeBGSprite:Render(Vector.Zero)
 
-    -- Camera management & tree navigation
+    --#region Camera management & tree navigation
     local cameraSpeed = 3 * (1 + 1 - zoomScale)
     if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
         cameraSpeed = 8 * (1 + 1 - zoomScale)
@@ -489,12 +498,15 @@ function PST:treeMenuRenderer()
             end
         end
     end
+    --#endregion
 
     local camCenterX = screenW / 2 + treeCamera.X + camZoomOffset.X
     local camCenterY = screenH / 2 + treeCamera.Y + camZoomOffset.Y
 
     -- Draw space BG
-    treeSpaceSprite.Scale = Vector(screenW / 600, screenH / 400)
+    if resized then
+        treeSpaceSprite.Scale = Vector(screenW / 600, screenH / 400)
+    end
     local starfieldID = 1
     for i=-1,1 do
         for j=-1,1 do
@@ -517,7 +529,7 @@ function PST:treeMenuRenderer()
         end
     end
 
-    -- Draw node links
+    --#region Node & node link drawing
     for _, nodeLink in ipairs(PST.nodeLinks[currentTree]) do
         local linkX = nodeLink.pos.X * 38 * zoomScale + nodeLink.dirX * 19 * zoomScale
         local linkY = nodeLink.pos.Y * 38 * zoomScale + nodeLink.dirY * 19 * zoomScale
@@ -626,8 +638,9 @@ function PST:treeMenuRenderer()
             imgSprite.Scale.Y = zoomScale
         end
     end
+    --#endregion
 
-    -- Draw Cosmic Realignment menu
+    --#region Sub-menu drawing (cosmic realignment, jewel inventories)
     PST.cosmicRData.hoveredCharID = nil
     PST.starcursedInvData.hoveredJewel = nil
     if PST.cosmicRData.menuOpen then
@@ -739,8 +752,9 @@ function PST:treeMenuRenderer()
     else
         subMenuPageButtonHovered = ""
     end
+    --#endregion
 
-    -- Cursor and node description
+    --#region Cursor and node description; hovered data
     cursorSprite:Render(Vector(screenW / 2, screenH / 2))
     if hoveredNode ~= nil then
         cursorSprite:Play("Clicked")
@@ -857,6 +871,9 @@ function PST:treeMenuRenderer()
     else
         cursorSprite:Play("Idle")
     end
+    --#endregion
+
+    --#region Inputs
 
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
@@ -1241,6 +1258,8 @@ function PST:treeMenuRenderer()
         PST_centerCamera()
     end
 
+    --#endregion
+
     if not totalModsMenuOpen and helpOpen ~= "changelog" then
         -- HUD data
         Isaac.RenderText(
@@ -1274,7 +1293,11 @@ function PST:treeMenuRenderer()
 
     -- Update tree visibility if debug mode allAvailable changes
     if debugAvailableUpdate ~= PST.debugOptions.allAvailable then
-        PST:updateNodes(currentTree, true)
+        PST:updateNodes("global", true)
+        PST:updateNodes("starTree", true)
+        if currentTree ~= "global" and currentTree ~= "starTree" then
+            PST:updateNodes(currentTree, true)
+        end
         debugAvailableUpdate = PST.debugOptions.allAvailable
     end
 end
