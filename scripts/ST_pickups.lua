@@ -34,6 +34,16 @@ function PST:prePickup(pickup, collider, low)
     if player ~= nil then
         -- Collectibles
         if variant == PickupVariant.PICKUP_COLLECTIBLE then
+            local removeOtherRoomItems = false
+            -- Ancient starcursed jewel: Opalescent Purity
+            if player ~= nil and PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
+            not pickup:IsShopItem() then
+                if variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, subtype) then
+                    removeOtherRoomItems = true
+                    PST:addModifiers({ SC_opalescentProc = true }, true)
+                end
+            end
+
             -- Impromptu Gambler node (Cain's tree)
             if PST:getTreeSnapshotMod("impromptuGambler", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
                 -- Remove crane games
@@ -49,6 +59,10 @@ function PST:prePickup(pickup, collider, low)
             if PST:getTreeSnapshotMod("chaoticTreasury", false) and not PST:arrHasValue(PST.progressionItems, subtype)
             and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
                 -- When grabbing an item in a treasure room, remove all other items
+                removeOtherRoomItems = true
+            end
+
+            if removeOtherRoomItems then
                 table.insert(PST.specialNodes.itemRemovalProtected, pickup.InitSeed)
                 PST:removeRoomItems(true)
             end
@@ -231,17 +245,6 @@ function PST:onPickup(pickup, collider, low)
     local player = collider:ToPlayer()
     local variant = pickup.Variant
     local subtype = pickup.SubType
-
-    -- Ancient starcursed jewel: Opalescent Purity
-    local removeOtherRoomItems = false
-    if player ~= nil and PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
-    not pickup:IsShopItem() then
-        if variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, subtype) then
-            removeOtherRoomItems = true
-            PST:addModifiers({ SC_opalescentProc = true }, true)
-        end
-    end
-    if removeOtherRoomItems then PST:removeRoomItems() end
 
     if pickup:GetSprite():GetAnimation() ~= "Collect" then return end
 
