@@ -245,6 +245,7 @@
     "XMLData",
     "XMLNode",
     "REPENTOGON",
-        "ModConfigMenu"
+        "ModConfigMenu",
+        "SaveManager"
   ]
 }

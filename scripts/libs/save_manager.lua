@@ -286,6 +286,9 @@ end
 ---Checks if the table is an array with gaps in their indexes
 ---@param tab table
 local function isSparseArray(tab)
+	-- (PST edit) If table has number index at 0, don't consider it sparse
+	if tab[0] ~= nil then return false end
+
 	local max = 0
 	for i in pairs(tab) do
 		if type(i) ~= "number" then
