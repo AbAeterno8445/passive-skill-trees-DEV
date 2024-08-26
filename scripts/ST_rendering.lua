@@ -214,3 +214,47 @@ function PST:Render()
 		end
     end
 end
+
+-- Render Cosmic Realignment completion marks on relevant characters (original marks take priority)
+local markLayerOverrides = {
+    [CompletionType.ULTRA_GREEDIER] = 8,
+    [CompletionType.DELIRIUM] = 0,
+    [CompletionType.MOTHER] = 10,
+    [CompletionType.BEAST] = 11
+}
+function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
+    local pTypeStr = tostring(playerType)
+    local markPathNormal = "gfx/ui/completion_widget.png"
+    local markPathCosmic = "gfx/ui/skilltrees/completion_widget_cosmic.png"
+    if Game():IsPauseMenuOpen() then
+        markPathNormal = "gfx/ui/completion_widget_pause.png"
+        markPathCosmic = "gfx/ui/skilltrees/completion_widget_pause_cosmic.png"
+    end
+
+    for compMark=0,14 do
+        local layerID = compMark + 1
+		-- Marks that match the corresponding sprite layer
+		if compMark == 9 then layerID = compMark end
+
+		local override = false
+        if markLayerOverrides[compMark] ~= nil then
+            layerID = markLayerOverrides[compMark]
+			override = true
+        end
+
+        if PST.modData.cosmicRCompletions[pTypeStr] ~= nil then
+            local hasMark = Isaac.GetCompletionMark(playerType, compMark)
+            if PST.modData.cosmicRCompletions[pTypeStr][tostring(compMark) .. "hard"] and hasMark < 2 then
+                markSprite:ReplaceSpritesheet(layerID, markPathCosmic, true)
+                markSprite:SetLayerFrame(layerID, 2)
+            elseif PST.modData.cosmicRCompletions[pTypeStr][tostring(compMark)] and hasMark == 0 then
+                markSprite:ReplaceSpritesheet(layerID, markPathCosmic, true)
+                markSprite:SetLayerFrame(layerID, 1)
+			elseif not override then
+                markSprite:ReplaceSpritesheet(layerID, markPathNormal, true)
+            end
+        else
+            markSprite:ReplaceSpritesheet(layerID, markPathNormal, true)
+        end
+    end
+end
