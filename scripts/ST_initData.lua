@@ -169,9 +169,8 @@ PST.bookItems = {
 PST.progressionItems = {
 	0, CollectibleType.COLLECTIBLE_KEY_PIECE_1, CollectibleType.COLLECTIBLE_KEY_PIECE_2,
 	CollectibleType.COLLECTIBLE_POLAROID, CollectibleType.COLLECTIBLE_NEGATIVE,
-	CollectibleType.COLLECTIBLE_RED_KEY, CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_1,
-	CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_2, CollectibleType.COLLECTIBLE_DADS_NOTE,
-	CollectibleType.COLLECTIBLE_DOGMA
+	CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_1, CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_2,
+	CollectibleType.COLLECTIBLE_DADS_NOTE, CollectibleType.COLLECTIBLE_DOGMA
 }
 PST.regularChests = {
 	PickupVariant.PICKUP_CHEST, PickupVariant.PICKUP_REDCHEST, PickupVariant.PICKUP_SPIKEDCHEST,
