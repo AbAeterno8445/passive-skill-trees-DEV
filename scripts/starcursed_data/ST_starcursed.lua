@@ -492,7 +492,11 @@ function PST:oldJewelReplacements()
             if jewelType == PSTStarcursedType.ANCIENT then
                 tmpJewel.description = nil
                 tmpJewel.rewards = nil
-                tmpJewel.spriteFrame = nil
+                if tmpJewel.name ~= "Faded Starpiece" then
+                    tmpJewel.spriteFrame = nil
+                else
+                    tmpJewel.spriteFrame = 10
+                end
                 if tmpJewel.mods and #tmpJewel.mods == 0 then
                     tmpJewel.mods = nil
                 end
