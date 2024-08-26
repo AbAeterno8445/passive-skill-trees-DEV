@@ -1,16 +1,10 @@
 local sfx = SFXManager()
 
-local playerTypeTracker = 0
-local jacobHeartDiffTracker = 0
-local luckTracker = 0
-local familiarsTracker = 0
-local coinTracker = 0
-local holyMantleTracker = false
-local lvlCurseTracker = -1
 local inDeathCertificate = false
 
 -- On update
 local clearRoomProc = false
+local modResetUpdate = false
 function PST:onUpdate()
 	local level = PST:getLevel()
 	local room = PST:getRoom()
@@ -22,15 +16,22 @@ function PST:onUpdate()
 	end
 	inDeathCertificate = level:GetDimension() == Dimension.DEATH_CERTIFICATE
 
+	local updateTrackers = PST:getTreeSnapshotMod("updateTrackers", PST.treeMods.updateTrackers)
+
+	if PST.floorFirstUpdate or not modResetUpdate then
+		updateTrackers.charTracker = PST:getCurrentCharName()
+		PST:resetHeartUpdater()
+		modResetUpdate = true
+	end
+
 	-- First update when entering floor
 	if PST.floorFirstUpdate then
 		PST.floorFirstUpdate = false
-		PST:resetHeartUpdater()
-		jacobHeartDiffTracker = 0
-		luckTracker = 0
-		familiarsTracker = 0
+		updateTrackers.jacobHeartDiffTracker = 0
+		updateTrackers.luckTracker = 0
+		updateTrackers.familiarsTracker = 0
+		updateTrackers.lvlCurseTracker = -1
 		PST.specialNodes.jacobHeartLuckVal = 0
-		lvlCurseTracker = -1
 
 		-- Ancient starcursed jewel: Sanguinis
 		if PST:SC_getSnapshotMod("sanguinis", false) and PST:isFirstOrigStage() then
@@ -250,6 +251,37 @@ function PST:onUpdate()
 				PST:addModifiers({ harbingerLocustsFloorProc = true }, true)
 			end
 		end
+	end
+
+	-- Detect character change (e.g. using Clicker)
+	local tmpCharName = PST:getCurrentCharName()
+	if tmpCharName ~= updateTrackers.charTracker then
+		-- Unapply old character's tree
+		if updateTrackers.charTracker ~= nil and PST.trees[updateTrackers.charTracker] ~= nil then
+			for nodeID, node in pairs(PST.trees[updateTrackers.charTracker]) do
+				if PST:isNodeAllocated(updateTrackers.charTracker, nodeID) then
+					local modsTable = {}
+					for modName, modVal in pairs(node.modifiers) do
+						if type(modVal) == "number" then
+							modsTable[modName] = -modVal
+						elseif type(modVal) == "boolean" then
+							modsTable[modName] = not modVal
+						end
+					end
+					PST:addModifiers(modsTable, true)
+				end
+            end
+		end
+		-- Apply new character's tree if it exists
+		if tmpCharName ~= nil and PST.trees[tmpCharName] then
+			for nodeID, node in pairs(PST.trees[tmpCharName]) do
+				if PST:isNodeAllocated(tmpCharName, nodeID) then
+					PST:addModifiers(node.modifiers, true)
+				end
+            end
+		end
+		PST:updateCacheDelayed()
+		updateTrackers.charTracker = tmpCharName
 	end
 
 	-- First update per room
@@ -534,8 +566,8 @@ function PST:onUpdate()
 	end
 
 	-- Holy mantle broken
-	if player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) == nil and holyMantleTracker then
-		holyMantleTracker = false
+	if player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) == nil and updateTrackers.holyMantleTracker then
+		updateTrackers.holyMantleTracker = false
 
 		-- Sacred Aegis node (The Lost's tree)
 		if PST:getTreeSnapshotMod("sacredAegis", false) then
@@ -553,8 +585,8 @@ function PST:onUpdate()
 		if tmpStats ~= 0 and not PST:getTreeSnapshotMod("noHolyMantleAllStatsActive", false) then
 			PST:addModifiers({ allstats = tmpStats, noHolyMantleAllStatsActive = true }, true)
 		end
-	elseif player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) ~= nil and not holyMantleTracker then
-		holyMantleTracker = true
+	elseif player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) ~= nil and not updateTrackers.holyMantleTracker then
+		updateTrackers.holyMantleTracker = true
 
 		tmpStats = PST:getTreeSnapshotMod("noHolyMantleAllStats", 0)
 		if tmpStats ~= 0 and PST:getTreeSnapshotMod("noHolyMantleAllStatsActive", false) then
@@ -574,10 +606,10 @@ function PST:onUpdate()
 
 	-- Familiar quantity update
 	local tmpTotal = PST:getTreeSnapshotMod("totalFamiliars", 0)
-	if tmpTotal ~= familiarsTracker then
+	if tmpTotal ~= updateTrackers.familiarsTracker then
 		player:AddCacheFlags(PST.allstatsCache, true)
+		updateTrackers.familiarsTracker = tmpTotal
 	end
-	familiarsTracker = tmpTotal
 
 	-- Gulp! node (Keeper's tree)
 	if PST:getTreeSnapshotMod("gulp", false) then
@@ -608,7 +640,7 @@ function PST:onUpdate()
 	-- Inner Flare node (The Forgotten's tree)
 	if PST:getTreeSnapshotMod("innerFlare", false) then
 		-- Slow room enemies when switching to The Soul
-		if not PST:getTreeSnapshotMod("innerFlareProc", false) and playerTypeTracker == PlayerType.PLAYER_THEFORGOTTEN and
+		if not PST:getTreeSnapshotMod("innerFlareProc", false) and updateTrackers.playerTypeTracker == PlayerType.PLAYER_THEFORGOTTEN and
 		player:GetPlayerType() == PlayerType.PLAYER_THESOUL then
 			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 				if tmpEntity:IsActiveEnemy() and tmpEntity:IsVulnerableEnemy() then
@@ -617,8 +649,8 @@ function PST:onUpdate()
 			end
 			PST:addModifiers({ innerFlareProc = true }, true)
 		end
+		updateTrackers.playerTypeTracker = player:GetPlayerType()
 	end
-	playerTypeTracker = player:GetPlayerType()
 
 	-- Fate Pendulum node (Bethany's tree)
 	if PST:getTreeSnapshotMod("fatePendulum", false) then
@@ -635,10 +667,10 @@ function PST:onUpdate()
 	if tmpTwin then
 		-- Heart Link node (Jacob & Esau's tree)
 		if PST:getTreeSnapshotMod("heartLink", false) then
-			if (player:GetHearts() - tmpTwin:GetHearts()) ~= jacobHeartDiffTracker then
+			if (player:GetHearts() - tmpTwin:GetHearts()) ~= updateTrackers.jacobHeartDiffTracker then
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_RANGE, true)
 				tmpTwin:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_RANGE, true)
-				jacobHeartDiffTracker = player:GetHearts() - tmpTwin:GetHearts()
+				updateTrackers.jacobHeartDiffTracker = player:GetHearts() - tmpTwin:GetHearts()
 			end
 		end
 
@@ -679,31 +711,31 @@ function PST:onUpdate()
 	end
 
 	-- Luck changes
-	if player.Luck ~= luckTracker then
+	if player.Luck ~= updateTrackers.luckTracker then
 		-- Mod: +% all stats when luck changes
 		tmpStats = PST:getTreeSnapshotMod("mightOfFortune", 0)
 		if tmpStats ~= 0 then
 			player:AddCacheFlags(PST.allstatsCache, true)
 		end
-		luckTracker = player.Luck
+		updateTrackers.luckTracker = player.Luck
 	end
 
 	-- Coin changes
-	if player:GetNumCoins() ~= coinTracker then
+	if player:GetNumCoins() ~= updateTrackers.coinTracker then
 		-- Lost coins
-		if player:GetNumCoins() < coinTracker then
+		if player:GetNumCoins() < updateTrackers.coinTracker then
 			-- Starcursed mod: when losing or spending coins, X% chance to additionally lose Y coins
 			tmpMod = PST:SC_getSnapshotMod("loseCoinsOnSpend", {0, 0})
 			if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
 				player:AddCoins(-tmpMod[2])
 			end
 		end
-		coinTracker = player:GetNumCoins()
+		updateTrackers.coinTracker = player:GetNumCoins()
 	end
 
 	-- Level curse changes
 	local tmpCurses = level:GetCurses()
-	if tmpCurses ~= lvlCurseTracker then
+	if tmpCurses ~= updateTrackers.lvlCurseTracker then
 		-- Mod: all stats while a level curse is present
 		tmpMod = PST:getTreeSnapshotMod("curseAllstats", 0)
 		if tmpMod ~= 0 then
@@ -713,7 +745,7 @@ function PST:onUpdate()
 				PST:addModifiers({ allstatsPerc = -tmpMod, curseAllstatsActive = false }, true)
 			end
 		end
-		lvlCurseTracker = tmpCurses
+		updateTrackers.lvlCurseTracker = tmpCurses
 	end
 
 	-- Cosmic Realignment node

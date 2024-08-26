@@ -313,6 +313,17 @@ function PST:resetMods()
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
+		updateTrackers = {
+			playerTypeTracker = 0,
+			jacobHeartDiffTracker = 0,
+			luckTracker = 0,
+			familiarsTracker = 0,
+			coinTracker = 0,
+			holyMantleTracker = 0,
+			lvlCurseTracker = 0,
+			charTracker = ""
+		},
+
 		-- 'Keystone' nodes
 		relearning = false,
 		relearningFloors = 0, -- Completed floors counter for Relearning node
