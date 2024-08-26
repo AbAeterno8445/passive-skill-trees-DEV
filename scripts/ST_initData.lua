@@ -316,7 +316,6 @@ function PST:resetMods()
 		-- 'Keystone' nodes
 		relearning = false,
 		relearningFloors = 0, -- Completed floors counter for Relearning node
-		quickWit = {0, 0}, -- XP gain {ceil, floor} for Quick Wit node. Starts at ceil when entering a room, and after a delay, gradually lowers down to floor
 		expertSpelunker = 0,
 		hellFavour = false,
 		heavenFavour = false,
@@ -657,7 +656,6 @@ function PST:resetMods()
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
-		quickWit = { startTime = 0, pauseTime = 0 },
 		TJacobEsauSpawned = false,
 		impromptuGamblerItems = {}, -- Hold natural items in treasure room
 		fickleFortuneVanish = false,

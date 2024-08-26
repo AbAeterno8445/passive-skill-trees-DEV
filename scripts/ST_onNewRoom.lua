@@ -4,7 +4,6 @@ function PST:onNewRoom()
 
 	PST.modData.spawnKills = 0
 	PST.modData.xpObtained = 0
-	PST.specialNodes.quickWit.pauseTime = 0
 	PST.specialNodes.bossHits = 0
 	PST.specialNodes.bossRoomHitsFrom = 0
 	PST.specialNodes.forgottenMeleeTearBuff = 0
@@ -411,17 +410,6 @@ function PST:onNewRoom()
 		cosmicRCache.TForgottenTracker.keeperCoin = false
 		cosmicRCache.TForgottenTracker.keeperHeal = false
 		player:AddCacheFlags(PST.allstatsCache, true)
-	end
-
-	-- Quick Wit node, start timer
-	local quickWitMod = PST:getTreeSnapshotMod("quickWit", {0, 0})
-	if quickWitMod[1] ~= 0 or quickWitMod[2] ~= 0 then
-		if room:GetType() ~= RoomType.ROOM_BOSS and room:GetType() ~= RoomType.ROOM_BOSSRUSH then
-			PST.specialNodes.quickWit.startTime = os.clock()
-		else
-			-- Deactivate on boss rooms
-			PST.specialNodes.quickWit.startTime = 0
-		end
 	end
 
 	-- Mod: chance to unlock boss challenge rooms regardless of hearts

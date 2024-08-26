@@ -182,13 +182,6 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "xp", sort = 103
     },
-    quickWit = {
-        str = {
-            "Gain more xp for the first 8 seconds of a room. Afterwards, this bonus",
-            "gradually decreases for the following 10 seconds"
-        },
-        category = "xp", sort = 104
-    },
     expertSpelunker = {
         str = {
             "Gain no XP when first entering a secret room",

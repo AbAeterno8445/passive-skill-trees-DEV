@@ -157,19 +157,6 @@ function PST:addTempXP(xp, showText, noMult)
 		xpMult = xpMult - 0.4
 	end
 
-	-- Quick wit mod
-	local quickWitMod = PST:getTreeSnapshotMod("quickWit", {0, 0})
-	local quickWitTime = PST.specialNodes.quickWit.startTime
-	if quickWitTime ~= 0 then
-		local timeDiff = os.clock() - quickWitTime
-		local quickWitMult = quickWitMod[1] / 100
-		if timeDiff > 8 then
-			local tmpProgress = math.abs(quickWitMod[2] - quickWitMod[1]) * ((timeDiff - 8) / 10)
-			quickWitMult = (math.max(quickWitMod[2], quickWitMod[1] - tmpProgress)) / 100
-		end
-		xpMult = xpMult + quickWitMult
-	end
-
 	if noMult then
 		xpMult = 1
 	end

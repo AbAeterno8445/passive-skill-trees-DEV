@@ -113,24 +113,6 @@ function PST:Render()
 		end
 	end
 
-	--[[ Quick wit mod
-	local quickWitMod = PST:getTreeSnapshotMod("quickWit", {0, 0})
-	local hasQuickWit = quickWitMod[1] ~= 0 or quickWitMod[2] ~= 0
-
-	-- Pause quick wit
-	local roomType = room:GetType()
-	if hasQuickWit and roomType ~= RoomType.ROOM_BOSS and roomType ~= RoomType.ROOM_BOSSRUSH then
-		local quickWitData = PST.specialNodes.quickWit
-		if gamePaused then
-			if quickWitData.pauseTime == 0 then
-				quickWitData.pauseTime = os.clock()
-			end
-		elseif quickWitData.pauseTime > 0 then
-			quickWitData.startTime = quickWitData.startTime + os.clock() - quickWitData.pauseTime
-			quickWitData.pauseTime = 0
-		end
-	end]]
-
 	-- Ancient starcursed jewel: Chronicler Stone UI
 	if hudVisible then
 		if PST:SC_getSnapshotMod("chroniclerStone", false) then
