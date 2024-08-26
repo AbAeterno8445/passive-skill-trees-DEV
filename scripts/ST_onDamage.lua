@@ -655,7 +655,9 @@ function PST:onDeath(entity)
                         local HPBoost = 4 + tmpSoulEater.mob.MaxHitPoints * 0.04
                         tmpSoulEater.mob.MaxHitPoints = tmpSoulEater.mob.MaxHitPoints + HPBoost
                         tmpSoulEater.mob.HitPoints = math.min(tmpSoulEater.mob.MaxHitPoints, tmpSoulEater.mob.HitPoints + HPBoost)
-                        tmpSoulEater.mob.Scale = tmpSoulEater.mob.Scale + 0.02
+                        if not tmpSoulEater.mob:IsBoss() or (tmpSoulEater.mob:IsBoss() and tmpSoulEater.souls < 6) then
+                            tmpSoulEater.mob.Scale = tmpSoulEater.mob.Scale + 0.02
+                        end
                         tmpSoulEater.mob:SetSpeedMultiplier(tmpSoulEater.mob:GetSpeedMultiplier() + tmpSoulEater.souls * 0.02)
                     end
                 end
