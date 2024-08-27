@@ -4,7 +4,9 @@ function PST:getChangelogList()
         "",
 
         "v0.2.38",
+        "- Soul Watcher should no longer function on friendly monsters.",
         "- Fixed floating text position when playing as Tainted Lazarus.",
+        "- Fixed boss rush being able to drop multiple jewels if somehow going past wave 15.",
         "",
 
         "v0.2.37",
