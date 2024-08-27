@@ -34,8 +34,8 @@ function PST:onUpdate()
 		PST.specialNodes.jacobHeartLuckVal = 0
 
 		-- Ancient starcursed jewel: Sanguinis
-		if PST:SC_getSnapshotMod("sanguinis", false) and PST:isFirstOrigStage() then
-			level:AddCurse(LevelCurse.CURSE_OF_THE_CURSED, false)
+		if PST:SC_getSnapshotMod("sanguinis", false) and not PST:isFirstOrigStage() and player:GetBrokenHearts() < 4 then
+			player:AddBrokenHearts(1)
 		end
 
 		-- Ancient starcursed jewel: Luminescent Die
@@ -944,6 +944,12 @@ function PST:onUpdate()
 				if PST:SC_getSnapshotMod("luminescentDie", false) then
 					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_REVERSE_WHEEL_OF_FORTUNE, Random() + 1)
+				end
+
+				-- Ancient starcursed jewel: Sanguinis
+				if PST:SC_getSnapshotMod("sanguinis", false) and not PST:getTreeSnapshotMod("SC_sanguinisTookDmg", false) then
+					PST:createFloatTextFX("-- Sanguinis --", Vector.Zero, Color(0.1, 0.85, 0.1, 1), 0.12, 100, true)
+					player:AddBrokenHearts(-1)
 				end
 
 				-- Starcursed jewel drop

@@ -73,6 +73,14 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_nullstoneClear = false }, true)
     end
 
+    -- Ancient starcursed jewel: Sanguinis
+    if PST:getTreeSnapshotMod("SC_sanguinisProc", false) then
+        PST:addModifiers({ SC_sanguinisProc = false }, true)
+    end
+    if PST:getTreeSnapshotMod("SC_sanguinisTookDmg", false) then
+        PST:addModifiers({ SC_sanguinisTookDmg = false }, true)
+    end
+
     -- Challenge room clear proc
     if PST:getTreeSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)
@@ -353,11 +361,6 @@ function PST:onCurseEval(curses)
     if PST:getTreeSnapshotMod("apollyonBlessing", false) then
         -- Curse of blind immunity
         curses = curses &~ LevelCurse.CURSE_OF_BLIND
-    end
-
-    -- Ancient starcursed jewel: Sanguinis
-    if PST:SC_getSnapshotMod("sanguinis", false) then
-        curses = curses | LevelCurse.CURSE_OF_THE_CURSED
     end
 
     return curses

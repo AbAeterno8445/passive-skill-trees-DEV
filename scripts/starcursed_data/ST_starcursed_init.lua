@@ -536,14 +536,16 @@ PST.SCAncients = {
         spriteFrame = 12,
         name = "Sanguinis",
         description = {
-            "Guarantees Curse of the Cursed, if applicable, turning doorways into spiked doorways.",
-            "Black Candle can no longer show up.",
-            "Start with holy mantle."
+            "Start with an additional broken heart.",
+            "When entering a floor, gain a broken heart if you have less than 4 broken hearts.",
+            "Taking damage has a 40% chance of granting a broken heart, once per floor.",
+            "Defeating the floor's boss without taking damage removes a broken heart."
         },
         rewards = {
-            xpgain = 60,
-            deliriumRewards = {1, 5},
-            beastRewards = {1, 5}
+            xpgain = 75,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 6},
+            beastRewards = {1, 6}
         }
     },
     martianUltimatum = {

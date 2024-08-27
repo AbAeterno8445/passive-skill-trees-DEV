@@ -138,8 +138,7 @@ function PST:onNewRun(isContinued)
         end
         -- Ancient starcursed jewel: Sanguinis
         if PST:SC_getSnapshotMod("sanguinis", false) then
-            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE)
-            player:AddCollectible(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+            player:AddBrokenHearts(1)
         end
         -- Ancient starcursed jewel: Saturnian Luminite
         if PST:SC_getSnapshotMod("saturnianLuminite", false) then

@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.36"
+PST.modVersion = "v0.2.37"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -662,7 +662,9 @@ function PST:resetMods()
 		SC_saturnianSpeedDown = false,
 		SC_nullstoneEnemies = {},
 		SC_nullstoneProc = false,
-		SC_nullstoneClear = false
+		SC_nullstoneClear = false,
+		SC_sanguinisProc = false,
+		SC_sanguinisTookDmg = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
