@@ -112,6 +112,14 @@ function PST:onNewRoom()
 				end
 			end
 		end
+
+		-- Ancient starcursed jewel: Nightmare Projector
+		if PST:SC_getSnapshotMod("nightmareProjector", false) and not PST:getTreeSnapshotMod("SC_nightProjProc", false) then
+			PST.specialNodes.SC_nightProjTimer = 3600
+			player:UseCard(Card.CARD_REVERSE_HIGH_PRIESTESS, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
+			SFXManager():Play(SoundEffect.SOUND_REVERSE_HIGH_PRIESTESS)
+			PST:addModifiers({ SC_nightProjProc = true }, true)
+		end
 	end
 
 	-- Ancient starcursed jewel: Challenger's Starpiece

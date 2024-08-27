@@ -664,7 +664,8 @@ function PST:resetMods()
 		SC_nullstoneProc = false,
 		SC_nullstoneClear = false,
 		SC_sanguinisProc = false,
-		SC_sanguinisTookDmg = false
+		SC_sanguinisTookDmg = false,
+		SC_nightProjProc = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
@@ -713,7 +714,8 @@ function PST:resetMods()
 		},
 		SC_nullstoneSpawned = 0,
 		SC_nullstoneCurrentSpawn = nil,
-		SC_nullstoneHPThreshold = 0
+		SC_nullstoneHPThreshold = 0,
+		SC_nightProjTimer = 3600
 	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)

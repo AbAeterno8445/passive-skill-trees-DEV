@@ -493,6 +493,16 @@ function PST:onUpdate()
 			SFXManager():Play(SoundEffect.SOUND_LIGHTBOLT_CHARGE, 0.85, 2, false, 0.8)
 		end
 	end
+	-- Ancient starcursed jewel: Nightmare Projector
+	if PST:SC_getSnapshotMod("nightmareProjector", false) and PST:getTreeSnapshotMod("SC_nightProjProc", false) then
+		if PST.specialNodes.SC_nightProjTimer > 0 then
+			PST.specialNodes.SC_nightProjTimer = PST.specialNodes.SC_nightProjTimer - 1
+		else
+			player:UseCard(Card.CARD_REVERSE_HIGH_PRIESTESS, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
+			SFXManager():Play(SoundEffect.SOUND_REVERSE_HIGH_PRIESTESS)
+			PST.specialNodes.SC_nightProjTimer = 3600
+		end
+	end
 
 	if PST.specialNodes.SC_martianProc and PST.specialNodes.SC_martianTimer == 0 then
 		if room:GetAliveEnemiesCount() > 0 then

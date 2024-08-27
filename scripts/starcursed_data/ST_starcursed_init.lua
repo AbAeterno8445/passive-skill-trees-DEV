@@ -474,7 +474,7 @@ PST.SCAncients = {
             "Bosses are Soul Eaters, and spawn an attack fly every 10 seconds."
         },
         rewards = {
-            xpgain = 85,
+            xpgain = 70,
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
@@ -627,6 +627,20 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
+        }
+    },
+    nightmareProjector = {
+        weight = 100,
+        spriteFrame = 18,
+        name = "Nightmare Projector",
+        description = {
+            "When first entering a room with monsters, trigger the Reverse High Priestess card effect.",
+            "Once first triggered, card effect triggers again every 1.5 minutes."
+        },
+        rewards = {
+            xpgain = 70,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
         }
     }
 }

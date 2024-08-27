@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.37",
+        "- Added a new Ancient Jewel: \"Nightmare Projector\".",
+        "- Reworked Sanguinis (ancient jewel).",
+        "- Soul Watcher xp gain lowered to 70% (from 85%).",
+        "",
+
         "v0.2.36",
         "- Implemented Save Manager for handling savefiles - hopefully prevents cases of save corruption.",
         "- Optimized tree rendering of nodes and node links.",

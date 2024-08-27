@@ -9,6 +9,11 @@ function PST:onGetCard(RNG, card)
 end
 
 function PST:onUseCard(card, player, useFlags)
+    -- Skip if using Rev High Priestess with Nightmare Projector (ancient jewel)
+    if card == Card.CARD_REVERSE_HIGH_PRIESTESS and PST:SC_getSnapshotMod("nightmareProjector", false) then
+        return
+    end
+
     -- Blue Gambit node (Blue Baby's tree)
     if PST:getTreeSnapshotMod("blueGambit", false) then
         if card ~= Card.CARD_HIEROPHANT and card ~= Card.CARD_CRACKED_KEY and 100 * math.random() < 20 then
