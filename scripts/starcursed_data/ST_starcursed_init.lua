@@ -650,7 +650,8 @@ PST.SCAncients = {
         description = {
             "Starting from the second floor, spawn a Reverse Emperor card in the first room.",
             "Entering the next floor without defeating the Reverse Emperor boss grants -12% all stats, up to -48%.",
-            "Reverse Emperor boss item rewards are replaced with locked chests."
+            "Reverse Emperor boss item rewards are replaced with locked chests before the Womb.",
+            "After the Womb, Reverse Emperor bosses reward no items."
         },
         rewards = {
             xpgain = 70,

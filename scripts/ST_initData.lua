@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.38"
+PST.modVersion = "v0.2.39"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -671,7 +671,7 @@ function PST:resetMods()
 		SC_empHeirloomDebuff = 0,
 		SC_empHeirloomProc = false,
 		SC_empHeirloomUsedCard = false,
-		SC_empHeirloomInRoom = false
+		SC_empHeirloomRoomID = -1
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

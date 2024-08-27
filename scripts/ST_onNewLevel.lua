@@ -91,7 +91,7 @@ function PST:onNewLevel()
         end
         PST:addModifiers({
             SC_empHeirloomProc = false,
-            SC_empHeirloomInRoom = false,
+            SC_empHeirloomRoomID = { value = -1, set = true },
             SC_empHeirloomUsedCard = false
         }, true)
     end

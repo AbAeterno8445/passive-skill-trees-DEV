@@ -410,8 +410,13 @@ function PST:onPickupInit(pickup)
     -- Ancient starcursed jewel: Twisted Emperor's Heirloom
     if not pickupGone and PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) and variant == PickupVariant.PICKUP_COLLECTIBLE and
     not PST:arrHasValue(PST.progressionItems, subtype) then
-        if room:GetType() == RoomType.ROOM_BOSS and PST:getTreeSnapshotMod("SC_empHeirloomInRoom", false) then
-            pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, false, false, true)
+        local heirloomRoom = PST:getTreeSnapshotMod("SC_empHeirloomRoomID", -1)
+        if heirloomRoom == PST:getLevel():GetCurrentRoomDesc().SafeGridIndex then
+            if PST:getLevel():GetStage() < 7 and not PST:getLevel():IsAscent() then
+                pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, false, false, true)
+            else
+                pickup:Remove()
+            end
             pickupGone = true
         end
     end

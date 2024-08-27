@@ -975,7 +975,7 @@ function PST:onUpdate()
 
 				-- Ancient starcursed jewel: Twisted Emperor's Heirloom
 				if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
-					if PST:getTreeSnapshotMod("SC_empHeirloomInRoom", false) then
+					if PST:getTreeSnapshotMod("SC_empHeirloomRoomID", -1) == level:GetCurrentRoomDesc().SafeGridIndex then
 						PST:addModifiers({ SC_empHeirloomProc = true }, true)
 					end
 				end

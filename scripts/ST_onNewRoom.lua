@@ -172,10 +172,10 @@ function PST:onNewRoom()
 
 	-- Ancient starcursed jewel: Twisted Emperor's Heirloom
 	if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
-		if PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) and room:GetType() == RoomType.ROOM_BOSS then
-			PST:addModifiers({ SC_empHeirloomInRoom = true }, true)
-		elseif PST:getTreeSnapshotMod("SC_empHeirloomInRoom", false) then
-			PST:addModifiers({ SC_empHeirloomInRoom = false }, true)
+		local roomID = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
+		if PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) and PST:getTreeSnapshotMod("SC_empHeirloomRoomID", -1) == -1 and
+		room:GetType() == RoomType.ROOM_BOSS then
+			PST:addModifiers({ SC_empHeirloomRoomID = { value = roomID, set = true } }, true)
 		end
 	end
 

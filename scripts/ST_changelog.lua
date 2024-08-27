@@ -3,9 +3,15 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.39",
+        "- Fixed Twisted Emperor's Heirloom (ancient jewel) replacing items with chests in unintended rooms.",
+        "- While using Twisted Emperor's Heirloom, bosses from rev emperor now reward no items after entering",
+        "the Womb.",
+        "",
+
         "v0.2.38",
         "- Soul Watcher should no longer function on friendly monsters.",
-        "- Fixed floating text position when playing as Tainted Lazarus.",
+        "- Fixed floating texts' position when playing as Tainted Lazarus.",
         "- Fixed boss rush being able to drop multiple jewels if somehow going past wave 15.",
         "",
 
