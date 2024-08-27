@@ -642,6 +642,22 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
+    },
+    twistedEmperorHeirloom = {
+        weight = 100,
+        spriteFrame = 19,
+        name = "Twisted Emperor's Heirloom",
+        description = {
+            "Starting from the second floor, spawn a Reverse Emperor card in the first room.",
+            "Entering the next floor without defeating the Reverse Emperor boss grants -12% all stats, up to -48%.",
+            "Reverse Emperor boss item rewards are replaced with locked chests."
+        },
+        rewards = {
+            xpgain = 70,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
+        }
     }
 }
 

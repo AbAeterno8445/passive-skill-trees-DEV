@@ -138,6 +138,13 @@ function PST:onUseCard(card, player, useFlags)
         player:AddCard(Card.CARD_CRACKED_KEY)
         PST:addModifiers({ SC_crimsonWarpKeyStacks = -1 }, true)
     end
+
+    -- Ancient starcursed jewel: Twisted Emperor's Heirloom
+    if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) and card == Card.CARD_REVERSE_EMPEROR then
+        if not PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) then
+            PST:addModifiers({ SC_empHeirloomUsedCard = true }, true)
+        end
+    end
 end
 
 function PST:blueGambitPillSwap(oldColor, oldEffect, newColor)

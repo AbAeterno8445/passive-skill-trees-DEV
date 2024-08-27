@@ -407,6 +407,15 @@ function PST:onPickupInit(pickup)
         end
     end
 
+    -- Ancient starcursed jewel: Twisted Emperor's Heirloom
+    if not pickupGone and PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) and variant == PickupVariant.PICKUP_COLLECTIBLE and
+    not PST:arrHasValue(PST.progressionItems, subtype) then
+        if room:GetType() == RoomType.ROOM_BOSS and PST:getTreeSnapshotMod("SC_empHeirloomInRoom", false) then
+            pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, false, false, true)
+            pickupGone = true
+        end
+    end
+
     -- Trinkets
     if variant == PickupVariant.PICKUP_TRINKET then
         -- Fickle Fortune node (Cain's tree), vanish proc

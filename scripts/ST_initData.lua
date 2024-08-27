@@ -665,7 +665,12 @@ function PST:resetMods()
 		SC_nullstoneClear = false,
 		SC_sanguinisProc = false,
 		SC_sanguinisTookDmg = false,
-		SC_nightProjProc = false
+		SC_nightProjProc = false,
+		SC_empHeirloomActive = false,
+		SC_empHeirloomDebuff = 0,
+		SC_empHeirloomProc = false,
+		SC_empHeirloomUsedCard = false,
+		SC_empHeirloomInRoom = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

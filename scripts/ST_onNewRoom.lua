@@ -170,6 +170,15 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Ancient starcursed jewel: Twisted Emperor's Heirloom
+	if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
+		if PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) and room:GetType() == RoomType.ROOM_BOSS then
+			PST:addModifiers({ SC_empHeirloomInRoom = true }, true)
+		elseif PST:getTreeSnapshotMod("SC_empHeirloomInRoom", false) then
+			PST:addModifiers({ SC_empHeirloomInRoom = false }, true)
+		end
+	end
+
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
 	if tmpTreeMod ~= 0 then

@@ -4,9 +4,10 @@ function PST:getChangelogList()
         "",
 
         "v0.2.37",
-        "- Added a new Ancient Jewel: \"Nightmare Projector\".",
+        "- Added 2 new Ancient Jewels: \"Nightmare Projector\" and \"Twisted Emperor's Heirloom\".",
         "- Reworked Sanguinis (ancient jewel).",
         "- Soul Watcher xp gain lowered to 70% (from 85%).",
+        "- Dispersed boss challenge room and trinket smelting nodes in global tree.",
         "",
 
         "v0.2.36",

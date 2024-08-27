@@ -176,6 +176,15 @@ function PST:onUpdate()
 				end
 			end
 
+			-- Ancient starcursed jewel: Twisted Emperor's Heirloom
+			if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+       			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_REVERSE_EMPEROR, Random() + 1)
+				if not PST:getTreeSnapshotMod("SC_empHeirloomActive", false) then
+					PST:addModifiers({ SC_empHeirloomActive = true }, true)
+				end
+			end
+
 			-- Mod: chance to reveal map
 			if PST:getTreeSnapshotMod("mapRevealed", false) then
 				level:ShowMap()
@@ -960,6 +969,13 @@ function PST:onUpdate()
 				if PST:SC_getSnapshotMod("sanguinis", false) and not PST:getTreeSnapshotMod("SC_sanguinisTookDmg", false) then
 					PST:createFloatTextFX("-- Sanguinis --", Vector.Zero, Color(0.1, 0.85, 0.1, 1), 0.12, 100, true)
 					player:AddBrokenHearts(-1)
+				end
+
+				-- Ancient starcursed jewel: Twisted Emperor's Heirloom
+				if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
+					if PST:getTreeSnapshotMod("SC_empHeirloomInRoom", false) then
+						PST:addModifiers({ SC_empHeirloomProc = true }, true)
+					end
 				end
 
 				-- Starcursed jewel drop

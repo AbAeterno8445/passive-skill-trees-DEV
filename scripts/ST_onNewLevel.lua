@@ -81,6 +81,21 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_sanguinisTookDmg = false }, true)
     end
 
+    -- Ancient starcursed jewel: Twisted Emperor's Heirloom
+    if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
+        if PST:getTreeSnapshotMod("SC_empHeirloomActive", false) and not PST:getTreeSnapshotMod("SC_empHeirloomProc", false) then
+            local tmpMod = PST:getTreeSnapshotMod("SC_empHeirloomDebuff", 0)
+            if tmpMod < 48 then
+                PST:addModifiers({ allstatsPerc = -12, SC_empHeirloomDebuff = 12 }, true)
+            end
+        end
+        PST:addModifiers({
+            SC_empHeirloomProc = false,
+            SC_empHeirloomInRoom = false,
+            SC_empHeirloomUsedCard = false
+        }, true)
+    end
+
     -- Challenge room clear proc
     if PST:getTreeSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)
