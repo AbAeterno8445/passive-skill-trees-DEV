@@ -555,7 +555,7 @@ function SaveManager.Save()
 	end
 
 	local newFinalData = SaveManager.Utility.RunCallback(SaveManager.Utility.CustomCallback.PRE_DATA_SAVE, finalData)
-	 SaveManager.Utility.RunCallback(SaveManager.Utility.CustomCallback.PRE_DATA_LOAD, finalData)
+	SaveManager.Utility.RunCallback(SaveManager.Utility.CustomCallback.PRE_DATA_LOAD, finalData)
 	if newFinalData then
 		finalData = newFinalData
 	end

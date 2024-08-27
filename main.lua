@@ -37,7 +37,7 @@ saveManager.AddCallback(saveManager.Utility.CustomCallback.PRE_DATA_LOAD, functi
 	end
 end)
 saveManager.AddCallback(saveManager.Utility.CustomCallback.POST_DATA_LOAD, function(modRef, saveData, isLuamod)
-	if modRef == PST then
+	if modRef == PST and isLuamod ~= nil then
 		PST:load()
 	end
 end)
