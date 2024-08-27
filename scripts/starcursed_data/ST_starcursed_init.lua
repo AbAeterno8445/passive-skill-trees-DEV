@@ -635,7 +635,7 @@ PST.SCAncients = {
         name = "Nightmare Projector",
         description = {
             "When first entering a room with monsters, trigger the Reverse High Priestess card effect.",
-            "Once first triggered, card effect triggers again every 1.5 minutes."
+            "Once first triggered, card effect triggers again every 2 minutes."
         },
         rewards = {
             xpgain = 70,
