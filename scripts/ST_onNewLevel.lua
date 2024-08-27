@@ -101,6 +101,11 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_challClear = false }, true)
     end
 
+    -- Boss rush clear proc
+    if PST:getTreeSnapshotMod("SC_bossrushJewel", false) then
+        PST:addModifiers({ SC_bossrushJewel = false }, true)
+    end
+
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)
