@@ -13,7 +13,7 @@ function PST:getChangelogList()
         "- Nullstone now spawns nullified enemies opposite to your position in boss rooms.",
         "- Saturnian Luminite now prevents Genesis from showing up.",
         "- \"Status effect cleanse\" jewel modifier no longer affects frozen enemies.",
-        "- Cursed Starpiece now replaces trinkets from Baubleseeker with rev stars cards.",
+        "- Cursed Starpiece now replaces trinkets from Baubleseeker with rev stars cards in the treasure room.",
         "- Lilith's \"Heavy Friends\" node now grants -35% speed (from -25%), and -45% damage.",
         "- Fixed rendering of certain Cosmic Realignment blue marks.",
         "- Fixed Opalescent Purity triggering inconsistently when grabbing item pedestals.",
