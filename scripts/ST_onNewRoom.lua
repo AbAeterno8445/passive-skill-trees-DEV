@@ -45,7 +45,7 @@ function PST:onNewRoom()
 		local soulEaterList = {}
 		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
-			if tmpNPC and tmpEntity:IsActiveEnemy(false) then
+			if tmpNPC and tmpEntity:IsActiveEnemy(false) and not EntityRef(tmpNPC).IsFriendly then
 				if not tmpNPC:IsBoss() then table.insert(mobsList, tmpNPC)
 				else table.insert(soulEaterList, tmpNPC) end
 

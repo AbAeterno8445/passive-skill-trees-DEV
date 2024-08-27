@@ -18,6 +18,7 @@ function PST:getChangelogList()
         "- Fixed rendering of certain Cosmic Realignment blue marks.",
         "- Fixed Opalescent Purity triggering inconsistently when grabbing item pedestals.",
         "- Fixed Challenger's Starpiece not spawning a deadly sin boss after the first challenge room clear.",
+        "- Fixed certain jewel effects affecting charmed friendly monsters.",
         "",
 
         "v0.2.35",
