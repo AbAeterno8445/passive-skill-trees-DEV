@@ -656,22 +656,24 @@ function PST:onDeath(entity)
         -- Ancient starcursed jewel: Soul Watcher
         if PST:SC_getSnapshotMod("soulWatcher", false) then
             for i, tmpSoulEater in ipairs(PST.specialNodes.SC_soulEaterMobs) do
-                if tmpSoulEater.mob.InitSeed == entity.InitSeed then
-                    PST.specialNodes.SC_soulEaterMobs[i] = nil
-                elseif tmpSoulEater.souls < 20 then
-                    local dist = PST:distBetweenPoints(tmpSoulEater.mob.Position, entity.Position)
-                    if dist <= 140 then
-                        tmpSoulEater.souls = tmpSoulEater.souls + 1
-                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpSoulEater.mob.Position, Vector.Zero, nil, 1, Random() + 1)
-                        SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.3)
+                if not EntityRef(tmpSoulEater.mob).IsFriendly then
+                    if tmpSoulEater.mob.InitSeed == entity.InitSeed then
+                        PST.specialNodes.SC_soulEaterMobs[i] = nil
+                    elseif tmpSoulEater.souls < 20 then
+                        local dist = PST:distBetweenPoints(tmpSoulEater.mob.Position, entity.Position)
+                        if dist <= 140 then
+                            tmpSoulEater.souls = tmpSoulEater.souls + 1
+                            Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpSoulEater.mob.Position, Vector.Zero, nil, 1, Random() + 1)
+                            SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.3)
 
-                        local HPBoost = 4 + tmpSoulEater.mob.MaxHitPoints * 0.04
-                        tmpSoulEater.mob.MaxHitPoints = tmpSoulEater.mob.MaxHitPoints + HPBoost
-                        tmpSoulEater.mob.HitPoints = math.min(tmpSoulEater.mob.MaxHitPoints, tmpSoulEater.mob.HitPoints + HPBoost)
-                        if not tmpSoulEater.mob:IsBoss() or (tmpSoulEater.mob:IsBoss() and tmpSoulEater.souls < 6) then
-                            tmpSoulEater.mob.Scale = tmpSoulEater.mob.Scale + 0.02
+                            local HPBoost = 4 + tmpSoulEater.mob.MaxHitPoints * 0.04
+                            tmpSoulEater.mob.MaxHitPoints = tmpSoulEater.mob.MaxHitPoints + HPBoost
+                            tmpSoulEater.mob.HitPoints = math.min(tmpSoulEater.mob.MaxHitPoints, tmpSoulEater.mob.HitPoints + HPBoost)
+                            if not tmpSoulEater.mob:IsBoss() or (tmpSoulEater.mob:IsBoss() and tmpSoulEater.souls < 6) then
+                                tmpSoulEater.mob.Scale = tmpSoulEater.mob.Scale + 0.02
+                            end
+                            tmpSoulEater.mob:SetSpeedMultiplier(tmpSoulEater.mob:GetSpeedMultiplier() + tmpSoulEater.souls * 0.02)
                         end
-                        tmpSoulEater.mob:SetSpeedMultiplier(tmpSoulEater.mob:GetSpeedMultiplier() + tmpSoulEater.souls * 0.02)
                     end
                 end
             end
