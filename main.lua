@@ -131,6 +131,7 @@ function PST:processLoadedData(loadedData)
 		end
 	end
 	-- New version
+	PST.isNewVersion = false
 	if not loadedData.lastVersion or loadedData.lastVersion ~= PST.modVersion then
 		loadedData.lastVersion = PST.modVersion
 		PST.isNewVersion = true
