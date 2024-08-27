@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.38",
+        "- Fixed floating text position when playing as Tainted Lazarus.",
+        "",
+
         "v0.2.37",
         "- Added 2 new Ancient Jewels: \"Nightmare Projector\" and \"Twisted Emperor's Heirloom\".",
         "- Reworked Sanguinis (ancient jewel).",

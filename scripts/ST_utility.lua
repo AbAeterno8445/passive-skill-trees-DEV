@@ -5,6 +5,8 @@ function PST:getPlayer()
 	if not player then
 		PST.player = Isaac.GetPlayer()
 		player = PST.player
+	elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS_B then
+		player = Isaac.GetPlayer()
 	end
 	return player
 end
