@@ -26,6 +26,7 @@ function PST:vanishPickup(pickup)
     pickup:Remove()
 end
 
+local jewelCollisionTimer = 0
 function PST:prePickup(pickup, collider, low)
     local player = collider:ToPlayer()
     local variant = pickup.Variant
@@ -77,34 +78,50 @@ function PST:prePickup(pickup, collider, low)
 
             -- Starcursed jewel pickups
             if variant == PickupVariant.PICKUP_TRINKET then
+                local jewelInvFull = nil
                 local isMighty = 100 * math.random() < PST:getTreeSnapshotMod("SC_SMMightyChance", 0)
                 if subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
-                    -- Azure Starcursed Jewel pickup
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
-                    pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
-                    PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
-                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
-                    return { Collide = false, SkipCollisionEffects = true }
+                    if not PST:SC_isInvFull(PSTStarcursedType.AZURE) then
+                        -- Azure Starcursed Jewel pickup
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                        pickup:Remove()
+                        PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
+                        PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
+                        SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        jewelCollisionTimer = 0
+                        return { Collide = false, SkipCollisionEffects = true }
+                    else
+                        jewelInvFull = PSTStarcursedType.AZURE
+                    end
                 elseif subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
-                    -- Crimson Starcursed Jewel pickup
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
-                    pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
-                    PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
-                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
-                    return { Collide = false, SkipCollisionEffects = true }
+                    if not PST:SC_isInvFull(PSTStarcursedType.CRIMSON) then
+                        -- Crimson Starcursed Jewel pickup
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                        pickup:Remove()
+                        PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
+                        PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
+                        SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        jewelCollisionTimer = 0
+                        return { Collide = false, SkipCollisionEffects = true }
+                    else
+                        jewelInvFull = PSTStarcursedType.CRIMSON
+                    end
                 elseif subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
-                    -- Viridian Starcursed Jewel pickup
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
-                    pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
-                    PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
-                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
-                    return { Collide = false, SkipCollisionEffects = true }
+                    if not PST:SC_isInvFull(PSTStarcursedType.VIRIDIAN) then
+                        -- Viridian Starcursed Jewel pickup
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                        pickup:Remove()
+                        PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
+                        PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
+                        SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        jewelCollisionTimer = 0
+                        return { Collide = false, SkipCollisionEffects = true }
+                    else
+                        jewelInvFull = PSTStarcursedType.VIRIDIAN
+                    end
                 elseif subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
                     -- Ancient Starcursed Jewel pickup
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
@@ -113,6 +130,18 @@ function PST:prePickup(pickup, collider, low)
                     PST:SC_addJewel(PSTStarcursedType.ANCIENT, false, 0)
                     PST:createFloatTextFX("+ Ancient Starcursed Jewel", Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
+                    jewelCollisionTimer = 0
+                    return { Collide = false, SkipCollisionEffects = true }
+                end
+
+                -- Jewel inventory full
+                if jewelInvFull ~= nil then
+                    if jewelCollisionTimer == 0 then
+                        PST:createFloatTextFX(jewelInvFull .. " Inventory Full!", Vector.Zero, Color(0.9, 0.2, 0.2, 1), 0.12, 90, true)
+                        jewelCollisionTimer = 40
+                    else
+                        jewelCollisionTimer = jewelCollisionTimer - 1
+                    end
                     return { Collide = false, SkipCollisionEffects = true }
                 end
             end

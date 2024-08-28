@@ -23,6 +23,13 @@ function PST:SC_addJewel(jewelType, isMighty, fading)
     return newJewel
 end
 
+-- Return whether the given jewel type's inventory is full
+---@param jewelType PSTStarcursedType
+function PST:SC_isInvFull(jewelType)
+    if not PST.modData.starTreeInventory[jewelType] then return true end
+    return #PST.modData.starTreeInventory[jewelType] >= PST.SCMaxInv
+end
+
 function PST:SC_identifiedAllAncients()
     for ancientID, _ in pairs(PST.SCAncients) do
         if not PST.modData.identifiedAncients[ancientID] then

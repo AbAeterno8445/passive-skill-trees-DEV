@@ -356,6 +356,21 @@ function PST:drawNodeSubMenu(menuRows, centerX, centerY, menuX, menuY, title, it
             tmpBGY - treeCamera.Y - camZoomOffset.Y + 3,
             table.unpack(tmpColor)
         )
+
+        -- Page counter if provided
+        if pagination.itemNum and pagination.maxItems then
+            local tmpStr = tostring(pagination.itemNum) .. "/" .. tostring(pagination.maxItems)
+            tmpColor = {1, 1, 1, 1}
+            if pagination.itemNum >= pagination.maxItems then
+                tmpColor = {0.9, 0.2, 0.2, 1}
+            end
+            Isaac.RenderText(
+                tmpStr,
+                tmpBGX - treeCamera.X - camZoomOffset.X - 81,
+                tmpBGY - treeCamera.Y - camZoomOffset.Y + 3,
+                table.unpack(tmpColor)
+            )
+        end
     end
 
     if itemDrawFunc then itemDrawFunc() end
@@ -746,7 +761,9 @@ function PST:treeMenuRenderer()
                         subMenuPage = subMenuPage + 1
                     end
                 end,
-                nextDisabled = subMenuPage >= tmpJewelPages - 1
+                nextDisabled = subMenuPage >= tmpJewelPages - 1,
+                itemNum = tmpJewelType ~= PSTStarcursedType.ANCIENT and #PST.modData.starTreeInventory[tmpJewelType] or nil,
+                maxItems = PST.SCMaxInv
             }
         )
     else

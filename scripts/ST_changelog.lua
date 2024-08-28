@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.2.41",
+        "- Non-ancient jewel inventories now have a limit, currently set to 90 jewels.",
         "- Sanguinis (ancient jewel) should now only trigger on monster hits.",
         "- Sanguinis' chance to receive a broken heart on hit is now halved during the Ascent.",
         "- Twisted Emperor's Heirloom should now account for random teleports from rev emperor, and grant",

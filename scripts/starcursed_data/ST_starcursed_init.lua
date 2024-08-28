@@ -676,3 +676,4 @@ PST.SCDropRates = {
 }
 
 PST.SCStarTreeUnlockLevel = 30
+PST.SCMaxInv = 90
