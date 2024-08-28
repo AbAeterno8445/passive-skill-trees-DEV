@@ -273,7 +273,7 @@ function PST:onNewRun(isContinued)
     -- Spider Mod node
     if PST:getTreeSnapshotMod("spiderMod", false) then
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
-        player:AddCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
     end
 
     -- Update familiars

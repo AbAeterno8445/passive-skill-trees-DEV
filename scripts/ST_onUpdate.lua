@@ -800,6 +800,11 @@ function PST:onUpdate()
 		updateTrackers.lvlCurseTracker = tmpCurses
 	end
 
+	-- Spider Mod node
+	if PST:getTreeSnapshotMod("spiderMod", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD) then
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
