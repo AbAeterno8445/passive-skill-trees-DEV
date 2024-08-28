@@ -173,9 +173,15 @@ function PST:onNewRoom()
 	-- Ancient starcursed jewel: Twisted Emperor's Heirloom
 	if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
 		local roomID = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
-		if PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) and PST:getTreeSnapshotMod("SC_empHeirloomRoomID", -1) == -1 and
-		room:GetType() == RoomType.ROOM_BOSS then
-			PST:addModifiers({ SC_empHeirloomRoomID = { value = roomID, set = true } }, true)
+		if PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) then
+			if room:GetType() == RoomType.ROOM_BOSS then
+				if PST:getTreeSnapshotMod("SC_empHeirloomRoomID", -1) == -1 then
+					PST:addModifiers({ SC_empHeirloomRoomID = { value = roomID, set = true } }, true)
+				end
+			else
+				-- Got teleported elsewhere, meaning no rev boss to fight
+				PST:addModifiers({ SC_empHeirloomProc = true }, true)
+			end
 		end
 	end
 
