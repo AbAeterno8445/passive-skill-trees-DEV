@@ -538,7 +538,8 @@ PST.SCAncients = {
         description = {
             "Start with an additional broken heart.",
             "When entering a floor, gain a broken heart if you have less than 4 broken hearts.",
-            "Taking damage has a 40% chance of granting a broken heart, once per floor.",
+            "Taking damage has a 40% chance of granting a broken heart, once per floor. Halve this chance",
+            "during the Ascent.",
             "Defeating the floor's boss without taking damage removes a broken heart."
         },
         rewards = {

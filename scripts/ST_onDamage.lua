@@ -162,19 +162,6 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        -- Ancient starcursed jewel: Sanguinis
-        if PST:SC_getSnapshotMod("sanguinis", false) then
-            if not PST:getTreeSnapshotMod("SC_sanguinisProc", false) and 100 * math.random() < 40 then
-                player:AddBrokenHearts(1)
-                SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.9)
-                PST:createFloatTextFX("-- Sanguinis --", Vector.Zero, Color(0.85, 0.1, 0.1, 1), 0.12, 100, true)
-                PST:addModifiers({ SC_sanguinisProc = true }, true)
-            end
-            if room:GetType() == RoomType.ROOM_BOSS and not PST:getTreeSnapshotMod("SC_sanguinisTookDmg", false) then
-                PST:addModifiers({ SC_sanguinisTookDmg = true }, true)
-            end
-        end
-
         -- Starcursed modifiers
         if source and source.Entity then
             local tmpDmg = 0
@@ -183,6 +170,23 @@ function PST:onDamage(target, damage, flag, source)
                 tmpSource = source.Entity.Parent:ToNPC()
             end
             if tmpSource then
+                -- Ancient starcursed jewel: Sanguinis
+                if PST:SC_getSnapshotMod("sanguinis", false) then
+                    local tmpChance = 40
+                    if PST:getLevel():IsAscent() then
+                        tmpChance = 20
+                    end
+                    if not PST:getTreeSnapshotMod("SC_sanguinisProc", false) and 100 * math.random() < tmpChance then
+                        player:AddBrokenHearts(1)
+                        SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.9)
+                        PST:createFloatTextFX("-- Sanguinis --", Vector.Zero, Color(0.85, 0.1, 0.1, 1), 0.12, 100, true)
+                        PST:addModifiers({ SC_sanguinisProc = true }, true)
+                    end
+                    if room:GetType() == RoomType.ROOM_BOSS and not PST:getTreeSnapshotMod("SC_sanguinisTookDmg", false) then
+                        PST:addModifiers({ SC_sanguinisTookDmg = true }, true)
+                    end
+                end
+
                 -- Chance for monsters to also remove 1/2 soul/black heart when hitting
                 local tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if 100 * math.random() < tmpMod then
