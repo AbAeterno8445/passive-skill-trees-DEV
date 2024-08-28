@@ -126,7 +126,8 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     end
 
     -- Mod: +stat when first obtaining an item
-    if firstTime then
+    local itemConfig = Isaac.GetItemConfig():GetCollectible(itemType)
+    if firstTime and itemConfig and itemConfig.Type ~= ItemType.ITEM_ACTIVE then
         local tmpAdd = {}
         tmpMod = PST:getTreeSnapshotMod("firstItemDamage", 0)
         if tmpMod ~= 0 then tmpAdd["damage"] = tmpMod end

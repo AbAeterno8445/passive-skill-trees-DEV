@@ -3,6 +3,14 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.41",
+        "- Sanguinis (ancient jewel) should now only trigger on monster hits.",
+        "- Sanguinis' chance to receive a broken heart on hit is now halved during the Ascent.",
+        "- Twisted Emperor's Heirloom should now account for random teleports from rev emperor, and grant",
+        "no debuffs if this happens.",
+        "- Fixed active items triggering \"+stat when first picking up a passive item\" modifiers.",
+        "",
+
         "v0.2.40",
         "- Added further checks to prevent Twisted Emperor's Heirloom from turning unintended items into chests.",
         "- Adjusted spawn position of Eden's Chaotic Treasury items. Their hitbox is now also smaller to prevent",
