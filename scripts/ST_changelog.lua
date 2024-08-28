@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.42",
+        "- Optimized node links' sprite loading internally.",
+        "- Spider Mod node now applies Spider Mod innately, preventing it from being re-rolled or",
+        "counting as an inventory item e.g. for Tainted Isaac.",
+        "",
+
         "v0.2.41",
         "- Non-ancient jewel inventories now have a limit, currently set to 90 jewels.",
         "- Sanguinis (ancient jewel) should now only trigger on monster hits.",
