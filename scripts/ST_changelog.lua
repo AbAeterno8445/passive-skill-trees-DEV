@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.40",
+        "- Added further checks to prevent Twisted Emperor's Heirloom from turning unintended items into chests.",
+        "- Adjusted spawn position of Eden's Chaotic Treasury items. Their hitbox is now also smaller to prevent",
+        "forced pickups in certain room layouts.",
+        "",
+
         "v0.2.39",
         "- Fixed Twisted Emperor's Heirloom (ancient jewel) replacing items with chests in unintended rooms.",
         "- While using Twisted Emperor's Heirloom, bosses from rev emperor now reward no items after entering",
