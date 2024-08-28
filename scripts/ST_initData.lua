@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.41"
+PST.modVersion = "v0.2.42"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1

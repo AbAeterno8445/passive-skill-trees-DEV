@@ -39,6 +39,8 @@ local treeStarfieldList = {}
 local nodesSprite = Sprite("gfx/ui/skilltrees/nodes/tree_nodes.anm2", true)
 nodesSprite:Play("Default", true)
 
+local nodeLinkSprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true)
+
 local nodesExtraSprite = Sprite("gfx/ui/skilltrees/nodes/nodes_extra.anm2", true)
 
 local nodeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true)
@@ -552,18 +554,18 @@ function PST:treeMenuRenderer()
         local hasNode1 = PST:isNodeAllocated(currentTree, nodeLink.node1)
         local hasNode2 = PST:isNodeAllocated(currentTree, nodeLink.node2)
         if hasNode1 and hasNode2 then
-            nodeLink.sprite:Play(nodeLink.type .. " Allocated", true)
+            nodeLinkSprite:Play(nodeLink.type .. " Allocated", true)
         elseif hasNode1 or hasNode2 then
-            nodeLink.sprite:Play(nodeLink.type .. " Available", true)
+            nodeLinkSprite:Play(nodeLink.type .. " Available", true)
         else
-            nodeLink.sprite:Play(nodeLink.type .. " Unavailable", true)
+            nodeLinkSprite:Play(nodeLink.type .. " Unavailable", true)
         end
 
         local finalDrawX = linkX - treeCamera.X - camZoomOffset.X
         local finalDrawY = linkY - treeCamera.Y - camZoomOffset.Y
         if PST:isSpriteVisibleAt(finalDrawX, finalDrawY, 76, 76) then
-            nodeLink.sprite.Scale = nodeLink.origScale * zoomScale
-            nodeLink.sprite:Render(Vector(finalDrawX, finalDrawY))
+            nodeLinkSprite.Scale = nodeLink.origScale * zoomScale
+            nodeLinkSprite:Render(Vector(finalDrawX, finalDrawY))
         end
     end
 
