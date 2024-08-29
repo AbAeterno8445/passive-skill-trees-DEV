@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.43",
+        "- \"Natural curse cleanse\" nodes now have a text pop up on proc.",
+        "- Fixed game restart when opening the tree in-game while playing in certain non-english languages.",
+        "",
+
         "v0.2.42",
         "- Optimized node links' sprite loading internally.",
         "- Spider Mod node now applies Spider Mod innately, preventing it from being re-rolled or",
