@@ -303,6 +303,7 @@ function PST:resetMods()
 		sacrificeRoomHearts = 0,
 		sacrificeRoomHeartsSpawned = 0,
 		naturalCurseCleanse = 0,
+		naturalCurseCleanseProc = false,
 		goldenTrinkets = 0,
 		championChance = 0,
 		activeItemReroll = 0,

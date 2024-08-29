@@ -394,7 +394,6 @@ function PST:onNewRun(isContinued)
     PST.gameInit = true
 
     -- Initial level & room funcs
-    PST:onCurseEval(Game():GetLevel():GetCurses())
     PST:onNewLevel()
     PST:onNewRoom()
 end

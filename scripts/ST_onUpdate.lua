@@ -148,6 +148,11 @@ function PST:onUpdate()
        		Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, TrinketType.TRINKET_SWALLOWED_PENNY, Random() + 1)
 		end
 
+		-- Mod: chance to cleanse natural curses (proc)
+		if PST:getTreeSnapshotMod("naturalCurseCleanseProc", false) then
+			PST:createFloatTextFX("Natural curse cleansed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece

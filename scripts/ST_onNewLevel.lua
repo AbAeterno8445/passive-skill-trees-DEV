@@ -342,7 +342,9 @@ function PST:onCurseEval(curses)
     local tmpMod = PST:getTreeSnapshotMod("naturalCurseCleanse", 0)
     if curses ~= 0 and tmpMod > 0 and 100 * math.random() < tmpMod then
         curses = 0
-        PST:createFloatTextFX("Natural curse cleansed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+        PST:addModifiers({ naturalCurseCleanseProc = true }, true)
+    elseif PST:getTreeSnapshotMod("naturalCurseCleanseProc", false) then
+        PST:addModifiers({ naturalCurseCleanseProc = false }, true)
     end
 
     -- Starcursed mod: additional chance to receive a random curse when entering a floor
