@@ -159,7 +159,7 @@ function PST:processLoadedData(loadedData)
 				if PST.trees[tree][nodeID] == nil and nodeID ~= 0 then
 					if allocated then
 						print("Passive Skill Trees: Found allocated non-existant node ID", nodeID, "for tree [", tree, "]. Refunding skill point.")
-						if tree == "global" then
+						if tree == "global" or tree == "starTree" then
 							PST.modData.skillPoints = PST.modData.skillPoints + 1
 						elseif PST.modData.charData[tree] then
 							PST.modData.charData[tree].skillPoints = PST.modData.charData[tree].skillPoints + 1
