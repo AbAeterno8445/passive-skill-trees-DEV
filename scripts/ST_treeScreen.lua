@@ -1395,7 +1395,9 @@ end
 function PST:treePauseMenu()
     if treeMenuOpen then
         -- Force pause menu to loop between options and open in the background, while tree is open
-        PauseMenu.SetState(PauseMenuStates.OPTIONS)
+        if Options.Language == "en" then
+            PauseMenu.SetState(PauseMenuStates.OPTIONS)
+        end
         OptionsMenu.SetSelectedElement(999)
         return false
     end
