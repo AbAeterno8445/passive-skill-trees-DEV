@@ -85,14 +85,23 @@ function PST:save(forceSave)
 	end
 
 	-- Save config
+	local tmpSaved = false
 	local settingsSave = saveManager.GetSettingsSave()
-	settingsSave.config = PST:copyTable(PST.config)
+	if settingsSave then
+		settingsSave.config = PST:copyTable(PST.config)
+		tmpSaved = true
+	end
 
 	local modSave = saveManager.GetPersistentSave()
-	modSave.modData = PST:copyTable(PST.modData)
+	if modSave then
+		modSave.modData = PST:copyTable(PST.modData)
+		tmpSaved = true
+	end
 
-	saveManager.Save()
-	lastSave = os.clock()
+	if tmpSaved then
+		saveManager.Save()
+		lastSave = os.clock()
+	end
 end
 
 -- Load mod data
