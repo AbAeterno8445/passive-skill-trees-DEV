@@ -310,6 +310,7 @@ function PST:resetMods()
 		activeItemRerolled = 0,
 		d7Proc = false,
 		spiderMod = false,
+		eldritchMapping = false,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 

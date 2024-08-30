@@ -276,6 +276,11 @@ function PST:onNewRun(isContinued)
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
     end
 
+    -- Eldritch Mapping node
+    if PST:getTreeSnapshotMod("eldritchMapping", false) then
+        Game():GetLevel():RemoveCurses(LevelCurse.CURSE_OF_THE_LOST)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

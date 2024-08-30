@@ -347,6 +347,12 @@ function PST:onCurseEval(curses)
         PST:addModifiers({ naturalCurseCleanseProc = false }, true)
     end
 
+    -- Eldritch Mapping node
+    if PST:getTreeSnapshotMod("eldritchMapping", false) then
+        curses = curses &~ LevelCurse.CURSE_OF_THE_LOST
+        curseChance = curseChance + 20
+    end
+
     -- Starcursed mod: additional chance to receive a random curse when entering a floor
     curseChance = curseChance + PST:SC_getSnapshotMod("floorCurse", 0)
 
@@ -375,7 +381,8 @@ function PST:onCurseEval(curses)
             local newCurse = LevelCurse.CURSE_NONE
             while newCurse == LevelCurse.CURSE_NONE do
                 newCurse = curseIDs[math.random(#curseIDs)]
-                if (newCurse & LevelCurse.CURSE_OF_LABYRINTH) > 0 and not level:CanStageHaveCurseOfLabyrinth(level:GetStage()) then
+                if ((newCurse & LevelCurse.CURSE_OF_LABYRINTH) > 0 and not level:CanStageHaveCurseOfLabyrinth(level:GetStage())) or
+                ((newCurse & LevelCurse.CURSE_OF_THE_LOST) > 0 and PST:getTreeSnapshotMod("eldritchMapping", false)) then
                     newCurse = LevelCurse.CURSE_NONE
                 end
             end
