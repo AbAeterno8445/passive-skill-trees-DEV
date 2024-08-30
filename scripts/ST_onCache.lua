@@ -106,10 +106,10 @@ function PST:onCache(player, cacheFlag)
             end
         end
 
-        -- Mod: +luck per 1/2 heart of any type with the brother with lower total health
+        -- Mod: +luck per full heart of any type with the brother with lower total health
         tmpTreeMod = PST:getTreeSnapshotMod("jacobHeartLuck", 0)
         if tmpTreeMod ~= 0 and PST.specialNodes.jacobHeartLuckVal ~= 0 then
-		    dynamicMods.luck = dynamicMods.luck + PST.specialNodes.jacobHeartLuckVal * tmpTreeMod
+		    dynamicMods.luck = dynamicMods.luck + (PST.specialNodes.jacobHeartLuckVal / 2) * tmpTreeMod
 		end
     -- DAMAGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
@@ -288,7 +288,7 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.shotSpeedPerc = dynamicMods.shotSpeedPerc + tmpTreeMod * tmpLocustNum
             end
         elseif tmpLocust == TrinketType.TRINKET_LOCUST_OF_PESTILENCE then
-            tmpTreeMod = math.min(15, PST:getTreeSnapshotMod("pestilenceLocustLuck", 0))
+            tmpTreeMod = math.min(12, PST:getTreeSnapshotMod("pestilenceLocustLuck", 0))
             if tmpTreeMod > 0 then
                 dynamicMods.luckPerc = dynamicMods.luckPerc + tmpTreeMod * tmpLocustNum
             end

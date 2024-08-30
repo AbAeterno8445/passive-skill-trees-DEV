@@ -99,7 +99,7 @@ PST.SkillTreesAPI.AddCharacterTree("The Forgotten", false, [[
 "160": "{\"pos\":[0,-24],\"type\":251,\"size\":\"Small\",\"name\":\"Inner Flare Slow Duration\",\"description\":[\"+0.1 seconds to Inner Flare slow duration.\"],\"modifiers\":{\"innerFlareSlowDuration\":0.1},\"adjacent\":[158,161]}",
 "161": "{\"pos\":[0,-25],\"type\":257,\"size\":\"Med\",\"name\":\"Inner Flare Slow Duration\",\"description\":[\"+0.5 seconds to Inner Flare slow duration.\"],\"modifiers\":{\"innerFlareSlowDuration\":0.5},\"adjacent\":[160]}",
 "165": "{\"pos\":[0,-17],\"type\":245,\"size\":\"Large\",\"name\":\"Inner Flare\",\"description\":[\"The Soul deals 15% more damage against slowed enemies.\",\"Switching to The Soul slows enemies in the room for 2 seconds. Can only happen once per room.\"],\"modifiers\":{\"innerFlare\":true},\"adjacent\":[148,150]}",
-"184": "{\"pos\":[0,0],\"type\":246,\"size\":\"Small\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 0.2%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":0.2},\"adjacent\":[49,98,185],\"alwaysAvailable\":true}",
+"184": "{\"pos\":[0,0],\"type\":246,\"size\":\"Small\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 0.2%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":0.2},\"adjacent\":[49,98,185,218],\"alwaysAvailable\":true}",
 "185": "{\"pos\":[0,-1],\"type\":246,\"size\":\"Small\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 0.2%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":0.2},\"adjacent\":[184,186]}",
 "186": "{\"pos\":[0,-2],\"type\":246,\"size\":\"Small\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 0.2%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":0.2},\"adjacent\":[185,187]}",
 "187": "{\"pos\":[0,-3],\"type\":246,\"size\":\"Small\",\"name\":\"Forgotten Melee Tear Buff\",\"description\":[\"Hitting enemies with The Forgotten's melee attack increases damage dealt by your tears by 0.2%,\",\"up to 20%.\",\"Effect resets every room.\"],\"modifiers\":{\"forgottenMeleeTearBuff\":0.2},\"adjacent\":[186,188]}",
@@ -132,6 +132,13 @@ PST.SkillTreesAPI.AddCharacterTree("The Forgotten", false, [[
 "214": "{\"pos\":[-5,4],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[212,216]}",
 "215": "{\"pos\":[5,4],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[213,217]}",
 "216": "{\"pos\":[-6,4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[214]}",
-"217": "{\"pos\":[6,4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[215]}"
+"217": "{\"pos\":[6,4],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[215]}",
+"218": "{\"pos\":[0,2],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[184,219]}",
+"219": "{\"pos\":[0,3],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[218,220]}",
+"220": "{\"pos\":[0,4],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[219,221]}",
+"221": "{\"pos\":[1,5],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[220,222]}",
+"222": "{\"pos\":[0,6],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[221,223]}",
+"223": "{\"pos\":[-1,5],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[222,224]}",
+"224": "{\"pos\":[0,5],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.1 luck\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[223]}"
 }
 ]])

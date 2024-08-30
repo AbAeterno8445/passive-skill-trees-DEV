@@ -147,7 +147,7 @@ function PST:onHeartUpdate(force)
             -- Mod: +luck whenever you lose black hearts
             local lostBlackHeartsLuck = PST:getTreeSnapshotMod("lostBlackHeartsLuck", 0)
             if lostBlackHeartsLuck > 0 and player:GetBlackHearts() < heartTracker.black[i] then
-                PST:addModifiers({ luck = lostBlackHeartsLuck }, true)
+                PST:addModifiers({ luck = lostBlackHeartsLuck, lostBlackHeartsLuckBuff = lostBlackHeartsLuck }, true)
             end
 
             -- Song of Darkness node (Siren's tree) [Harmonic modifier]

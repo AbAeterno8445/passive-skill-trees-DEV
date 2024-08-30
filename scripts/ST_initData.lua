@@ -387,6 +387,7 @@ function PST:resetMods()
         yumHeartHealHalf = 0,
         bloodMachineSpawn = 0,
         bloodDonationLuck = 0,
+		bloodDonationLuckBuff = 0,
         bloodDonationNickel = 0,
         healOnClear = 0,
 		---- Cain's tree ----
@@ -415,6 +416,7 @@ function PST:resetMods()
 		belialBossHitCharge = 0,
 		belialChargesGained = 0,
 		lostBlackHeartsLuck = 0,
+		lostBlackHeartsLuckBuff = 0,
 		---- Blue Baby's Tree ----
 		blueGambit = false,
 		blueGambitPillSwap = { old = nil, new = nil },
@@ -447,6 +449,7 @@ function PST:resetMods()
 		activeDeadBirdShotspeed = 0,
 		deadBirdInheritDamage = 0,
 		luckOnClearBelowFull = 0,
+		luckOnClearBelowFullBuff = 0,
 		allStatsOneRed = 0,
 		allStatsOneRedActive = false,
 		---- Samson's Tree ----
@@ -543,6 +546,7 @@ function PST:resetMods()
 		avidShopper = false,
 		coinShield = 0,
 		itemPurchaseLuck = 0,
+		itemPurchaseLuckBuff = 0,
 		purchaseKeepCoins = 0,
 		firstBossGreed = 0,
 		firstBossGreedProc = false,

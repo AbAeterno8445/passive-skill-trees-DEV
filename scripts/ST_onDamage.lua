@@ -345,11 +345,11 @@ function PST:onDamage(target, damage, flag, source)
                         PST:addModifiers({ soulTrickleWispDrops = 1 }, true)
                     end
 
-                    -- Mod: +luck when a wisp is destroyed, up to +4
+                    -- Mod: +luck when a wisp is destroyed, up to +2
                     local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
                     local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
-                    if tmpBonus ~= 0 and tmpTotal < 4 and tmpFamiliar.HitPoints <= damage * dmgMult then
-                        local tmpAdd = math.min(tmpBonus, 4 - tmpTotal)
+                    if tmpBonus ~= 0 and tmpTotal < 2 and tmpFamiliar.HitPoints <= damage * dmgMult then
+                        local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
                         PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
                     end
                 end

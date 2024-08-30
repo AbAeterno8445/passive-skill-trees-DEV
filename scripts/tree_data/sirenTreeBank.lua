@@ -30,7 +30,7 @@ PST.SkillTreesAPI.AddCharacterTree("Siren", false, [[
 "47": "{\"pos\":[11,-1],\"type\":290,\"size\":\"Small\",\"name\":\"Might Of Fortune\",\"description\":[\"+0.05% all stats except luck for every 1 luck you have.\"],\"modifiers\":{\"mightOfFortune\":0.05},\"adjacent\":[46,50]}",
 "48": "{\"pos\":[6,-5],\"type\":295,\"size\":\"Med\",\"name\":\"Might Of Fortune\",\"description\":[\"+0.2% all stats except luck for every 1 luck you have.\"],\"modifiers\":{\"mightOfFortune\":0.2},\"adjacent\":[39,40,124]}",
 "49": "{\"pos\":[11,-5],\"type\":295,\"size\":\"Med\",\"name\":\"Might Of Fortune\",\"description\":[\"+0.2% all stats except luck for every 1 luck you have.\"],\"modifiers\":{\"mightOfFortune\":0.2},\"adjacent\":[43,44,96]}",
-"50": "{\"pos\":[10,0],\"type\":295,\"size\":\"Med\",\"name\":\"Might Of Fortune\",\"description\":[\"+0.2% all stats except luck for every 1 luck you have.\"],\"modifiers\":{\"mightOfFortune\":0.2},\"adjacent\":[47,61,204]}",
+"50": "{\"pos\":[10,0],\"type\":295,\"size\":\"Med\",\"name\":\"Might Of Fortune\",\"description\":[\"+0.2% all stats except luck for every 1 luck you have.\"],\"modifiers\":{\"mightOfFortune\":0.2},\"adjacent\":[47,61,204,319]}",
 "61": "{\"pos\":[11,1],\"type\":292,\"size\":\"Small\",\"name\":\"Charmed Hit Negation\",\"description\":[\"1% chance to negate a killing hit from a charmed enemy.\",\"This can only happen once per room.\"],\"modifiers\":{\"charmedHitNegation\":1},\"adjacent\":[50,62,65]}",
 "62": "{\"pos\":[11,2],\"type\":292,\"size\":\"Small\",\"name\":\"Charmed Hit Negation\",\"description\":[\"1% chance to negate a killing hit from a charmed enemy.\",\"This can only happen once per room.\"],\"modifiers\":{\"charmedHitNegation\":1},\"adjacent\":[61,63]}",
 "63": "{\"pos\":[11,3],\"type\":292,\"size\":\"Small\",\"name\":\"Charmed Hit Negation\",\"description\":[\"1% chance to negate a killing hit from a charmed enemy.\",\"This can only happen once per room.\"],\"modifiers\":{\"charmedHitNegation\":1},\"adjacent\":[62,64]}",
@@ -121,6 +121,14 @@ PST.SkillTreesAPI.AddCharacterTree("Siren", false, [[
 "315": "{\"pos\":[-4,1],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[304,316]}",
 "316": "{\"pos\":[-4,2],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[315,317]}",
 "317": "{\"pos\":[-5,3],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[316]}",
-"318": "{\"pos\":[-3,-3],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[313]}"
+"318": "{\"pos\":[-3,-3],\"type\":309,\"size\":\"Small\",\"name\":\"Tinted Rock XP\",\"description\":[\"Gain +8 xp when destroying tinted rocks.\"],\"modifiers\":{\"tintedRockXP\":8},\"adjacent\":[313]}",
+"319": "{\"pos\":[9,1],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[50,324]}",
+"324": "{\"pos\":[9,2],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[319,325]}",
+"325": "{\"pos\":[9,3],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[324,326]}",
+"326": "{\"pos\":[8,4],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.1 luck\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[325,327]}",
+"327": "{\"pos\":[9,5],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[326,328]}",
+"328": "{\"pos\":[9,6],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[327,329]}",
+"329": "{\"pos\":[9,7],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[328,330]}",
+"330": "{\"pos\":[10,8],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.1 luck\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[329]}"
 }
 ]])

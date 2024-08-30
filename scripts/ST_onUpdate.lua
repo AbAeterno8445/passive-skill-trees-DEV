@@ -153,6 +153,30 @@ function PST:onUpdate()
 			PST:createFloatTextFX("Natural curse cleansed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
 		end
 
+		-- Mod: +luck when clearing a room below full red hearts (reset)
+		local tmpLuckBuff = PST:getTreeSnapshotMod("luckOnClearBelowFullBuff", 0)
+		if tmpLuckBuff > 0 then
+			PST:addModifiers({ luck = -tmpLuckBuff, luckOnClearBelowFullBuff = { value = 0, set = true } }, true)
+		end
+
+		-- Mod: +luck whenever you lose black hearts (reset)
+		tmpLuckBuff = PST:getTreeSnapshotMod("lostBlackHeartsLuckBuff", 0)
+		if tmpLuckBuff > 0 then
+			PST:addModifiers({ luck = -tmpLuckBuff, lostBlackHeartsLuckBuff = -tmpLuckBuff }, true)
+		end
+
+		-- Mod: +luck when purchasing an item (halve on entering floor)
+		tmpLuckBuff = PST:getTreeSnapshotMod("itemPurchaseLuckBuff", 0)
+		if tmpLuckBuff > 0 then
+			PST:addModifiers({ luck = -tmpLuckBuff / 2, itemPurchaseLuckBuff = -tmpLuckBuff / 2 }, true)
+		end
+
+		-- Mod: +luck when donating to a blood machine (halve on entering floor)
+		tmpLuckBuff = PST:getTreeSnapshotMod("bloodDonationLuckBuff", 0)
+		if tmpLuckBuff > 0 then
+			PST:addModifiers({ luck = -tmpLuckBuff / 2, bloodDonationLuckBuff = -tmpLuckBuff / 2 }, true)
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -579,9 +603,9 @@ function PST:onUpdate()
 
 	-- Inner Demon node (Judas' tree)
 	if PST:getTreeSnapshotMod("innerDemon", false) then
-		-- -15% damage as Dark Judas and start with 1 black heart instead
+		-- -35% damage as Dark Judas and start with 1 black heart instead
 		if not PST:getTreeSnapshotMod("innerDemonActive") and player:GetPlayerType() == PlayerType.PLAYER_BLACKJUDAS then
-			PST:addModifiers({ damagePerc = -15, innerDemonActive = true }, true)
+			PST:addModifiers({ damagePerc = -35, innerDemonActive = true }, true)
 			player:AddSoulHearts(-2)
 		end
 	end
@@ -1072,18 +1096,18 @@ function PST:onUpdate()
 			-- Mod: +luck when clearing a room below full red hearts
 			local tmpLuck = PST:getTreeSnapshotMod("luckOnClearBelowFull", 0)
 			if tmpLuck > 0 and player:GetHearts() < player:GetEffectiveMaxHearts() then
-				PST:addModifiers({ luck = tmpLuck }, true)
+				PST:addModifiers({ luck = tmpLuck, luckOnClearBelowFullBuff = tmpLuck }, true)
 			end
 
-			-- Mod: +luck if you clear the boss room within 1 minute
+			-- Mod: +luck if you clear the boss room within 40 seconds
 			tmpLuck = PST:getTreeSnapshotMod("bossQuickKillLuck", 0)
-			if isBossRoom and tmpLuck > 0 and room:GetFrameCount() <= 1800 then
+			if isBossRoom and tmpLuck > 0 and room:GetFrameCount() <= 1200 then
 				PST:addModifiers({ luck = tmpLuck }, true)
 			end
 
-			-- Mod: +luck if you clear the boss room without getting hit more than 3 times
+			-- Mod: +luck if you clear the boss room without getting hit more than 2 times
 			tmpLuck = PST:getTreeSnapshotMod("bossFlawlessLuck", 0)
-			if isBossRoom and tmpLuck > 0 and PST.specialNodes.bossRoomHitsFrom <= 3 then
+			if isBossRoom and tmpLuck > 0 and PST.specialNodes.bossRoomHitsFrom <= 2 then
 				PST:addModifiers({ luck = tmpLuck }, true)
 			end
 

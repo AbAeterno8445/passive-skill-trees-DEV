@@ -25,7 +25,7 @@ function PST:onShopPurchase(pickup, player, spent)
         -- Mod: +luck when purchasing an item
         local tmpMod = PST:getTreeSnapshotMod("itemPurchaseLuck", 0)
         if tmpMod ~= 0 then
-            PST:addModifiers({ luck = tmpMod }, true)
+            PST:addModifiers({ luck = tmpMod, itemPurchaseLuckBuff = tmpMod }, true)
         end
 
         -- Mod: chance to keep 1-3 coins when purchasing an item

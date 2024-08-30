@@ -40,7 +40,7 @@ function PST:onSlotUpdate(slot)
             -- Mod: +luck when using a Blood Donation Machine
             local tmpTreeMod = PST:getTreeSnapshotMod("bloodDonationLuck", 0)
             if tmpTreeMod > 0 then
-                PST:addModifiers({ luck = tmpTreeMod }, true)
+                PST:addModifiers({ luck = tmpTreeMod, bloodDonationLuckBuff = tmpTreeMod }, true)
             end
 
             -- Mod: chance to spawn an additional nickel when using a Blood Donation Machine
