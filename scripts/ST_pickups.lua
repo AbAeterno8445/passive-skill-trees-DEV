@@ -71,7 +71,7 @@ function PST:prePickup(pickup, collider, low)
             -- Keeper's Blessing node (Keeper's tree)
             if PST:getTreeSnapshotMod("keeperBlessing", false) then
                 if variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() and PST:getTreeSnapshotMod("keeperBlessingHeals") < 4 then
-                    player:AddCoins(2)
+                    player:AddCoins(1)
                     PST:addModifiers({ keeperBlessingHeals = 1 }, true)
                 end
             end

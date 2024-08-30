@@ -630,9 +630,9 @@ function PST:onUpdate()
 	-- King's Curse node (Lazarus' tree)
 	if PST:getTreeSnapshotMod("kingCurse", false) then
 		if not PST:getTreeSnapshotMod("kingCurseActive", false) and player:GetPlayerType() ~= PlayerType.PLAYER_LAZARUS2 then
-			PST:addModifiers({ allstatsPerc = -5, kingCurseActive = true }, true)
+			PST:addModifiers({ allstatsPerc = -10, luck = -1, kingCurseActive = true }, true)
 		elseif PST:getTreeSnapshotMod("kingCurseActive", false) and player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
-			PST:addModifiers({ allstatsPerc = 5, kingCurseActive = false }, true)
+			PST:addModifiers({ allstatsPerc = 10, luck = 1, kingCurseActive = false }, true)
 		end
 	end
 

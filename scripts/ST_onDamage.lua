@@ -66,11 +66,6 @@ function PST:onDamage(target, damage, flag, source)
             return { Damage = 0 }
         end
 
-        -- Avid Shopper node (Keeper's tree)
-        if PST:getTreeSnapshotMod("avidShopper", false) then
-            player:AddCoins(-math.random(3))
-        end
-
         -- Sacrifice room
         if room:GetType() == RoomType.ROOM_SACRIFICE and (flag & DamageFlag.DAMAGE_SPIKES) ~= 0 then
             -- Mod: chance to spawn a red heart when using a sacrifice room, up to 4 times
@@ -162,7 +157,7 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        -- Starcursed modifiers
+        -- Monster hits specifically
         if source and source.Entity then
             local tmpDmg = 0
             local tmpSource = source.Entity:ToNPC()
@@ -170,6 +165,11 @@ function PST:onDamage(target, damage, flag, source)
                 tmpSource = source.Entity.Parent:ToNPC()
             end
             if tmpSource then
+                -- Avid Shopper node (Keeper's tree)
+                if PST:getTreeSnapshotMod("avidShopper", false) then
+                    player:AddCoins(-math.random(3))
+                end
+
                 -- Ancient starcursed jewel: Sanguinis
                 if PST:SC_getSnapshotMod("sanguinis", false) then
                     local tmpChance = 40
