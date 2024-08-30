@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.2.44",
+        "- Added data check when saving to prevent errors under certain conditions.",
+        "",
+
         "v0.2.43",
         "- \"Natural curse cleanse\" nodes now have a text pop up on proc.",
         "- Fixed game restart when opening the tree in-game while playing in certain non-english languages.",
