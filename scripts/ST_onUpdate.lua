@@ -767,10 +767,10 @@ function PST:onUpdate()
 
 			local tmpDist = PST:distBetweenPoints(player.Position, tmpTwin.Position)
 			if PST.specialNodes.esauIsStatue and tmpDist < tmpTwin.TearRange / 3 and not PST.specialNodes.jacobNearEsauBuff then
-				PST:addModifiers({ allstatsPerc = 7 }, true)
+				PST:addModifiers({ allstatsPerc = 12 }, true)
 				PST.specialNodes.jacobNearEsauBuff = true
 			elseif (not PST.specialNodes.esauIsStatue or tmpDist > tmpTwin.TearRange / 3) and PST.specialNodes.jacobNearEsauBuff then
-				PST:addModifiers({ allstatsPerc = -7 }, true)
+				PST:addModifiers({ allstatsPerc = -12 }, true)
 				PST.specialNodes.jacobNearEsauBuff = false
 			end
 		end
