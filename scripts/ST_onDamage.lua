@@ -170,6 +170,12 @@ function PST:onDamage(target, damage, flag, source)
                     player:AddCoins(-math.random(3))
                 end
 
+                -- Mod: -% coalescing soul trigger chance when hit by a monster
+                tmpTreeMod = PST:getTreeSnapshotMod("coalSoulHitChance", 0)
+                if tmpTreeMod > 0 and PST:getTreeSnapshotMod("coalescingSoulChance", 0) > 0 then
+                    PST:addModifiers({ coalescingSoulChance = tmpTreeMod, coalSoulGotHit = true }, true)
+                end
+
                 -- Ancient starcursed jewel: Sanguinis
                 if PST:SC_getSnapshotMod("sanguinis", false) then
                     local tmpChance = 40

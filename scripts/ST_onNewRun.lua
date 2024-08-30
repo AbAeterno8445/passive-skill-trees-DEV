@@ -286,6 +286,12 @@ function PST:onNewRun(isContinued)
         Game():GetLevel():RemoveCurses(LevelCurse.CURSE_OF_THE_LOST)
     end
 
+    -- Mod: -% all stats while you haven't used a soul stone matching your current character
+    local tmpMod = PST:getTreeSnapshotMod("soulStoneUnusedAllstats", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ allstatsPerc = tmpMod }, true)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

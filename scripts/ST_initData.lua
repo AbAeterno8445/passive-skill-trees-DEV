@@ -327,7 +327,7 @@ function PST:resetMods()
 
 		-- 'Keystone' nodes
 		relearning = false,
-		relearningFloors = 0, -- Completed floors counter for Relearning node
+		relearningFloors = 0,
 		expertSpelunker = 0,
 		hellFavour = false,
 		heavenFavour = false,
@@ -364,7 +364,7 @@ function PST:resetMods()
 			TBethanyDeadWisps = 0
 		},
 
-		---- CHARACTER TREE MODS ----
+		--#region CHARACTER TREE MODS --
         ---- Isaac's tree ----
         isaacBlessing = 0, -- Mom Heart Proc
         magicDie = false,
@@ -633,8 +633,34 @@ function PST:resetMods()
 		charmedHitNegation = 0,
 		charmedHitNegationProc = false,
 		charmExplosions = 0,
+		--#endregion
 
-		---- STAR TREE ----
+		--#region TAINTED CHARACTER TREE MODS --
+		---- General Tainted ----
+		coalescingSoulChance = 0,
+		coalescingSoulProcs = 1,
+		warpedCoalescence = false,
+		coalSoulRoomClearChance = 0,
+		coalSoulGotHit = false,
+		coalSoulHitChance = 0,
+		soulStoneAllstats = 0,
+		soulStoneAllstatsProc = false,
+		soulStoneUnusedAllstats = 0,
+
+		---- T. Isaac ----
+		vacuophobia = false, -- TODO
+		consumingVoid = false, -- TODO
+		fracturedDie = false, -- TODO
+		passiveItemDamage = 0, -- TODO
+		passiveItemTears = 0, -- TODO
+		passiveItemRange = 0, -- TODO
+		flawlessBossLuck = 0, -- TODO
+		voidConsumeLuck = 0, -- TODO
+		diceShardRuneShard = 0, -- TODO
+		runeShardSpeed = 0, -- TODO
+		--#endregion
+
+		--#region STAR TREE --
 		azureStarSockets = 0,
 		crimsonStarSockets = 0,
 		viridianStarSockets = 0,
@@ -681,6 +707,7 @@ function PST:resetMods()
 		SC_empHeirloomRoomID = -1,
 		SC_cursedAuricTimer = 0,
 		SC_cursedAuricSpeedProc = false
+		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

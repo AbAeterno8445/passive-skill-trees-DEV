@@ -288,6 +288,18 @@ function PST:onUpdate()
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
 				PST:addModifiers({ harbingerLocustsFloorProc = true }, true)
 			end
+
+			tmpMod = PST:getTreeSnapshotMod("coalescingSoulChance", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod and PST:getTreeSnapshotMod("coalescingSoulProcs", 0) > 0 then
+				local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos())
+				local tmpPlayerType = player:GetPlayerType()
+				if PST:getTreeSnapshotMod("warpedCoalescence", false) and 100 * math.random() < 40 then
+					tmpPlayerType = -1
+				end
+				local stoneType = PST:getMatchingSoulstone(tmpPlayerType)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, stoneType, Random() + 1)
+				PST:addModifiers({ coalescingSoulProcs = -1 }, true)
+			end
 		end
 	end
 
@@ -1197,6 +1209,12 @@ function PST:onUpdate()
 					SFXManager():Play(SoundEffect.SOUND_BEEP, 0.7)
 					player:AddActiveCharge(1, tmpSlot, true, false, false)
 				end
+			end
+
+			-- Mod: +% coalescing soul trigger chance when clearing a room without taking damage
+			tmpMod = PST:getTreeSnapshotMod("coalSoulRoomClearChance", 0)
+			if tmpMod > 0 and not PST:getTreeSnapshotMod("coalSoulGotHit", false) then
+				PST:addModifiers({ coalescingSoulChance = tmpMod }, true)
 			end
 
 			-- Cosmic Realignment node

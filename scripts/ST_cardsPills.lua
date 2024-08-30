@@ -71,6 +71,15 @@ function PST:onUseCard(card, player, useFlags)
         end
     end
 
+    -- Mod: +% all stats when using a soul stone matching your current character, once per run
+    tmpBonus = PST:getTreeSnapshotMod("soulStoneAllstats", 0)
+    if tmpBonus > 0 and not PST:getTreeSnapshotMod("soulStoneAllstatsProc", false) and card == PST:getMatchingSoulstone(player:GetPlayerType()) then
+        PST:addModifiers({
+            allstatsPerc = tmpBonus + math.abs(PST:getTreeSnapshotMod("soulStoneUnusedAllstats", 0)),
+            soulStoneAllstatsProc = true
+        })
+    end
+
     -- Ancient starcursed jewel: Circadian Destructor
     if PST:SC_getSnapshotMod("circadianDestructor", false) and card == Card.CARD_TOWER then
         local tmpMod = PST:getTreeSnapshotMod("SC_circadianStatsDown", 0)

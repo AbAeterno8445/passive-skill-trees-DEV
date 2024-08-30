@@ -7,7 +7,7 @@ PST.treeModDescriptionCategories = {
 }
 
 PST.treeModDescriptions = {
-    ---- STATS CATEGORY ----
+    --#region STATS CATEGORY --
     allstats = {
         str = "%s%.2f all stats",
         addPlus = true,
@@ -78,8 +78,9 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "stats", sort = 7
     },
+    --#endregion
 
-    ---- CONDITIONAL STATS CATEGORY ----
+    --#region CONDITIONAL STATS CATEGORY --
     beggarLuck = {
         str = "%.2f luck gained when helping any beggar",
         category = "condStats", sort = 10
@@ -148,8 +149,9 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "condStats", sort = 16
     },
+    --#endregion
 
-    ---- XP CATEGORY ----
+    --#region XP CATEGORY --
     xpgain = {
         str = "%s%.2f%% xp gain",
         addPlus = true,
@@ -220,8 +222,9 @@ PST.treeModDescriptions = {
         },
         category = "xp", sort = 151
     },
+    --#endregion
 
-    ---- EXTRA (MISCELLANEOUS) CATEGORY ----
+    --#region EXTRA (MISCELLANEOUS) CATEGORY --
     devilChance = {
         str = "%.2f%% extra chance to spawn a devil/angel room",
         category = "extra", sort = 1000
@@ -320,13 +323,62 @@ PST.treeModDescriptions = {
         },
         category = "extra", sort = 1110
     },
+    eldritchMapping = {
+        str = {
+            "You can no longer receive Curse of the Lost.",
+            "    +20% chance to receive a different random curse when entering a floor."
+        },
+        category = "extra", sort = 1111
+    },
+
+    coalescingSoulChance = {
+        str = {
+            "Coalescing Soul:",
+            "    When entering a floor, %.2f%% chance to drop a soul stone corresponding to your character.",
+            "    Doesn't trigger on first floor."
+        },
+        category = "extra", sort = 1150
+    },
+    coalescingSoulProcs = {
+        str = "Coalescing soul can trigger %d time(s) per run.",
+        category = "extra", sort = 1151
+    },
+    warpedCoalescence = {
+        str = {
+            "40%% chance for Coalescing Soul to drop a random soul stone instead of the one matching",
+            "your character.",
+        },
+        category = "extra", sort = 1152
+    },
+    coalSoulRoomClearChance = {
+        str = "%s%.2f%% Coalescing Soul trigger chance when clearing a room without taking damage.",
+        addPlus = true,
+        category = "extra", sort = 1153
+    },
+    coalSoulHitChance = {
+        str = "%s%.2f%% Coalescing Soul trigger chance when hit by a monster.",
+        addPlus = true,
+        category = "extra", sort = 1154
+    },
+    soulStoneAllstats = {
+        str = "%s%.2f%% all stats when using a soul stone matching your character, once per run.",
+        addPlus = true,
+        category = "extra", sort = 1155
+    },
+    soulStoneUnusedAllstats = {
+        str = "%s%.2f%% all stats while you haven't used a soul stone matching your character.",
+        addPlus = true,
+        category = "extra", sort = 1156
+    },
 
     -- Starcursed jewels enabled
     enableSCJewels = {
         str = "Starcursed jewels can drop.",
         category = "extra", sort = 1200
     },
+    --#endregion
 
+    --#region CHARACTER TREES --
     ---- ISAAC'S TREE ----
     isaacBlessing = {
         str = {
@@ -1436,7 +1488,8 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2859
     },
-    
+    --#endregion
+
     ---- STARMIGHT ----
     SC_SMMightyChance = {
         str = "%2.f%% chance for found Starcursed Jewels to be Mighty",
