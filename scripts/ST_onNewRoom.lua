@@ -261,6 +261,11 @@ function PST:onNewRoom()
 		PST:updateCacheDelayed()
 	end
 
+	-- Carrion Avian node (Eve's tree)
+    if PST:getTreeSnapshotMod("carrionAvian", false) then
+        PST:addModifiers({ carrionAvianBossProc = { value = 0, set = true } }, true)
+    end
+
 	-- Mod: +% speed when hit. Resets every room
 	local tmpTotal = PST:getTreeSnapshotMod("speedWhenHitTotal", 0)
 	if tmpTotal > 0 then

@@ -1,7 +1,7 @@
 PST.SkillTreesAPI.AddCharacterTree("Eve", false, [[
 {
 "2": "{\"pos\":[0,0],\"type\":113,\"size\":\"Small\",\"name\":\"Luck On Room Clear Below Full\",\"description\":[\"+0.01 luck when clearing a room below full red hearts.\",\"Resets every floor.\"],\"modifiers\":{\"luckOnClearBelowFull\":0.01},\"adjacent\":[100,164,188,186],\"alwaysAvailable\":true}",
-"20": "{\"pos\":[0,-17],\"type\":104,\"size\":\"Large\",\"name\":\"Carrion Avian\",\"description\":[\"+0.15 damage when dead bird kills an enemy, up to +3. Resets every floor.\",\"If dead bird kills a boss, gain a permanent +0.6 damage instead.\"],\"modifiers\":{\"carrionAvian\":true},\"adjacent\":[178]}",
+"20": "{\"pos\":[0,-17],\"type\":104,\"size\":\"Large\",\"name\":\"Carrion Avian\",\"description\":[\"+0.15 damage when dead bird kills an enemy, up to +3. Resets every floor.\",\"If dead bird kills a boss, gain a permanent +0.6 damage instead (up to +1.2\",\"per room).\"],\"modifiers\":{\"carrionAvian\":true},\"adjacent\":[178]}",
 "45": "{\"pos\":[-1,-16],\"type\":107,\"size\":\"Small\",\"name\":\"Active Dead Bird Damage\",\"description\":[\"+0.02 damage while dead bird is active\"],\"modifiers\":{\"activeDeadBirdDamage\":0.02},\"adjacent\":[46,49,178]}",
 "46": "{\"pos\":[-2,-15],\"type\":107,\"size\":\"Small\",\"name\":\"Active Dead Bird Damage\",\"description\":[\"+0.02 damage while dead bird is active\"],\"modifiers\":{\"activeDeadBirdDamage\":0.02},\"adjacent\":[45,47,50]}",
 "47": "{\"pos\":[-3,-14],\"type\":107,\"size\":\"Small\",\"name\":\"Active Dead Bird Damage\",\"description\":[\"+0.02 damage while dead bird is active\"],\"modifiers\":{\"activeDeadBirdDamage\":0.02},\"adjacent\":[46,48]}",

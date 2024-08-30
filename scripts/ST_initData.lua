@@ -440,6 +440,7 @@ function PST:resetMods()
 		darkProtection = false,
 		darkProtectionProc = false,
 		carrionAvian = false,
+		carrionAvianBossProc = 0,
 		carrionAvianTempBonus = 0,
 		deadBirdNullify = 0,
 		activeDeadBirdDamage = 0,

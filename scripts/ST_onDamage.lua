@@ -373,8 +373,8 @@ function PST:onDamage(target, damage, flag, source)
                                 if PST:getTreeSnapshotMod("carrionAvianTempBonus", 0) < 3 then
                                     PST:addModifiers({ damage = 0.15, carrionAvianTempBonus = 0.15 }, true)
                                 end
-                            else
-                                PST:addModifiers({ damage = 0.6 }, true)
+                            elseif PST:getTreeSnapshotMod("carrionAvianBossProc", 0) < 2 then
+                                PST:addModifiers({ damage = 0.6, carrionAvianBossProc = 1 }, true)
                             end
                         end
 
