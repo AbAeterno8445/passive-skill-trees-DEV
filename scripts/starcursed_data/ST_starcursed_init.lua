@@ -236,7 +236,7 @@ PST.SCMods = {
         },
         trollBombOnClear = {
             weight = 100,
-            rolls = {{8, 15}},
+            rolls = {{10, 16}},
             mightyRolls = {{20, 30}},
             starmightCalc = function(roll) return 7 + roll / 2 end,
             onConflict = {conflictFuncs.simpleSum},
@@ -315,7 +315,6 @@ PST.SCMods = {
             starmightCalc = function(roll) return 12 + roll * 2 end,
             onConflict = {conflictFuncs.simpleSum},
             description = "%d%% heart pickup scarcity.",
-            disabled = true
         },
         shopExpensive = {
             weight = 100,
@@ -323,7 +322,7 @@ PST.SCMods = {
             mightyRolls = {{8, 12}},
             starmightCalc = function(roll) return 7 + roll * 3 end,
             onConflict = {conflictFuncs.simpleSum},
-            description = "Shop items cost %d more coins."
+            description = "Shop items cost %d more coins. Doesn't affect pickups."
         },
         itemPoolRemoval = {
             weight = 90,
@@ -332,7 +331,15 @@ PST.SCMods = {
             starmightCalc = function(roll, roll2) return 10 + roll * 5 + roll2 * 6 end,
             onConflict = {conflictFuncs.simpleSum, conflictFuncs.highest},
             description = "When starting a run, remove %d random item(s) of quality %d from all item pools."
-        }
+        },
+        shopExpensivePickups = {
+            weight = 90,
+            rolls = {{2, 5}},
+            mightyOnly = true,
+            starmightCalc = function(roll) return 12 + roll * 4 end,
+            onConflict = {conflictFuncs.simpleSum},
+            description = "Shop items cost %d more coins. Affects pickups."
+        },
     },
     xpgain = "+%d%% xp gain while equipped.",
     halveXPFirstFloor = "XP bonus from this jewel is halved on the first floor.",

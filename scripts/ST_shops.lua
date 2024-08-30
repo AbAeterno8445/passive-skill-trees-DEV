@@ -59,8 +59,14 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
     if price > 0 then
         local priceMod = 0
 
-        -- Starcursed mod: shop items cost more coins
+        -- Starcursed mod: shop items cost more coins (except pickups)
         local tmpMod = PST:SC_getSnapshotMod("shopExpensive", 0)
+        if tmpMod ~= 0 and pickupVariant == PickupVariant.PICKUP_COLLECTIBLE then
+            priceMod = priceMod + tmpMod
+        end
+
+        -- Starcursed mod: shop items cost more coins (including pickups)
+        tmpMod = PST:SC_getSnapshotMod("shopExpensivePickups", 0)
         if tmpMod ~= 0 then
             priceMod = priceMod + tmpMod
         end
