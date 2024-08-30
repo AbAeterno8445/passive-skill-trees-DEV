@@ -185,6 +185,11 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Ancient starcursed jewel: Cursed Auric Shard
+	if PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) then
+		player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+	end
+
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
 	if tmpTreeMod ~= 0 then

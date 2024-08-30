@@ -147,6 +147,11 @@ function PST:onNewRun(isContinued)
             player:AddCollectible(CollectibleType.COLLECTIBLE_SPEAR_OF_DESTINY)
             player:SetCanShoot(false)
         end
+        -- Ancient starcursed jewel: Cursed Auric Shard
+        if PST:SC_getSnapshotMod("cursedAuricShard", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
+            player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

@@ -580,6 +580,16 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Ancient starcursed jewel: Cursed Auric Shard
+	if PST:SC_getSnapshotMod("cursedAuricShard", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_CARD_READING) then
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
+	end
+	local tmpTimer = PST:getTreeSnapshotMod("SC_cursedAuricTimer", 0)
+	if tmpTimer > 0 and Game():GetFrameCount() >= tmpTimer + 15 then
+		PST:addModifiers({ SC_cursedAuricTimer = { value = 0, set = true } }, true)
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_TELEPORT_2, UseFlag.USE_NOANIM)
+	end
+
 	-- Fickle Fortune node (Cain's tree)
 	if PST:getTreeSnapshotMod("fickleFortune", false) then
 		-- +7% luck while holding a trinket
@@ -1056,6 +1066,19 @@ function PST:onUpdate()
 				if tmpChance > 0 and 100 * math.random() < tmpChance then
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_CRACKED_KEY, Random() + 1)
+				end
+			end
+
+			-- Ancient starcursed jewel: Cursed Auric Shard
+			if PST:SC_getSnapshotMod("cursedAuricShard", false) then
+				local roomType = room:GetType()
+				if roomType == RoomType.ROOM_BOSS then
+					PST:addModifiers({ SC_cursedAuricSpeedProc = true }, true)
+				elseif 100 * math.random() < 90 then
+					if roomType ~= RoomType.ROOM_BOSS and roomType ~= RoomType.ROOM_BOSSRUSH and roomType ~= RoomType.ROOM_ANGEL and roomType ~= RoomType.ROOM_DEVIL and
+					roomType ~= RoomType.ROOM_CURSE then
+						PST:addModifiers({ SC_cursedAuricTimer = { value = Game():GetFrameCount(), set = true } }, true)
+					end
 				end
 			end
 

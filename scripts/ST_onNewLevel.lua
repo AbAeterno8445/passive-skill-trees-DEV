@@ -96,6 +96,12 @@ function PST:onNewLevel()
         }, true)
     end
 
+    -- Ancient starcursed jewel: Cursed Auric Shard
+    if PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) then
+        PST:addModifiers({ SC_cursedAuricSpeedProc = false }, true)
+        player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+    end
+
     -- Challenge room clear proc
     if PST:getTreeSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)

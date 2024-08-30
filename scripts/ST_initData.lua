@@ -678,7 +678,9 @@ function PST:resetMods()
 		SC_empHeirloomDebuff = 0,
 		SC_empHeirloomProc = false,
 		SC_empHeirloomUsedCard = false,
-		SC_empHeirloomRoomID = -1
+		SC_empHeirloomRoomID = -1,
+		SC_cursedAuricTimer = 0,
+		SC_cursedAuricSpeedProc = false
 	}
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {

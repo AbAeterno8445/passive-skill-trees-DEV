@@ -660,6 +660,22 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
+    },
+    cursedAuricShard = {
+        weight = 100,
+        spriteFrame = 20,
+        name = "Cursed Auric Shard",
+        description = {
+            "Start with Card Reading as an innate effect.",
+            "When clearing a room, 90% chance to trigger Teleport 2.0's effect.",
+            "Teleport effect doesn't trigger in certain rooms, such as boss, devil/angel, or curse rooms.",
+            "After defeating the floor's boss, your minimum speed becomes 1.6 in cleared rooms."
+        },
+        rewards = {
+            xpgain = 55,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

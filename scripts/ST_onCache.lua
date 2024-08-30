@@ -443,5 +443,11 @@ function PST:onCache(player, cacheFlag)
             baseSpeed = 0.85
         end
         player.MoveSpeed = (baseSpeed + tmpMod / 2) * math.max(0.05, tmpMult)
+
+        -- Ancient starcursed jewel: Cursed Auric Shard
+	    if PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) and player.MoveSpeed < 1.6 and PST:getRoom():GetAliveEnemiesCount() == 0 then
+            -- Minimum speed becomes 1.6 in cleared rooms after defeating floor boss
+            player.MoveSpeed = 1.6
+        end
     end
 end

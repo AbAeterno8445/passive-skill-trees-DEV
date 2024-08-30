@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.2.45",
         "- New global tree large node: \"Eldritch Mapping\".",
+        "- Added a new Ancient Jewel: \"Cursed Auric Shard\".",
         "- \"Tears on first obtaining a passive item\" now grants 0.015 tears per item (from 0.03).",
         "- Sources of all stats and % all stats no longer affect luck.",
         "- Rebalanced total luck granted by the global tree.",
