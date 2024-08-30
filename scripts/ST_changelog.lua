@@ -3,7 +3,7 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
-        "v0.2.44",
+        "v0.2.45",
         "- New global tree large node: \"Eldritch Mapping\".",
         "- \"Tears on first obtaining a passive item\" now grants 0.015 tears per item (from 0.03).",
         "- Sources of all stats and % all stats no longer affect luck.",
@@ -18,6 +18,10 @@ function PST:getChangelogList()
         "  > Keeper's \"Keeper's Blessing\": now grants 1 coin on coin heal (from 2).",
         "  > Keeper's \"Avid Shopper\": coin loss should now only trigger on monster hits instead of all damage.",
         "  > Jacob & Esau's \"Statue Pilgrimage\": now grants +12% all stats to Jacob (from +7%).",
+        "",
+
+        "v0.2.44",
+        "- Added data check when saving to prevent errors under certain conditions.",
         "",
 
         "v0.2.43",
