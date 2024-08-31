@@ -269,6 +269,12 @@ function PST:onNewLevel()
         PST:addModifiers({ activeItemRerolled = { value = 0, set = true } }, true)
     end
 
+    -- Mod: +% speed when using a rune shard (reset)
+    tmpMod = PST:getTreeSnapshotMod("runeShardSpeedBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ speedPerc = -tmpMod, runeShardSpeedBuff = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

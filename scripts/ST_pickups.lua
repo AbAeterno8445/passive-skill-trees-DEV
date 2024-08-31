@@ -662,3 +662,19 @@ function PST:onTrinketRemove(player, type)
 
     PST:updateCacheDelayed()
 end
+
+function PST:onPickupVoided(pickup, isBlackRune)
+    -- Void consumes collectible
+    if not isBlackRune and pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+        -- Consuming Void node (T. Isaac node)
+        if PST:getTreeSnapshotMod("consumingVoid", false) then
+            PST:addModifiers({ consumingVoidConsumed = 1 }, true)
+        end
+
+        -- Mod: +luck when consuming an item with Void
+        local tmpMod = PST:getTreeSnapshotMod("voidConsumeLuck", 0)
+        if tmpMod > 0 then
+            PST:addModifiers({ luck = tmpMod }, true)
+        end
+    end
+end

@@ -165,6 +165,11 @@ function PST:onDamage(target, damage, flag, source)
                 tmpSource = source.Entity.Parent:ToNPC()
             end
             if tmpSource then
+                -- Set hit by mob in room flag
+                if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+                    PST:addModifiers({ roomGotHitByMob = true }, true)
+                end
+
                 -- Avid Shopper node (Keeper's tree)
                 if PST:getTreeSnapshotMod("avidShopper", false) then
                     player:AddCoins(-math.random(3))
@@ -173,7 +178,7 @@ function PST:onDamage(target, damage, flag, source)
                 -- Mod: -% coalescing soul trigger chance when hit by a monster
                 tmpTreeMod = PST:getTreeSnapshotMod("coalSoulHitChance", 0)
                 if tmpTreeMod > 0 and PST:getTreeSnapshotMod("coalescingSoulChance", 0) > 0 then
-                    PST:addModifiers({ coalescingSoulChance = tmpTreeMod, coalSoulGotHit = true }, true)
+                    PST:addModifiers({ coalescingSoulChance = tmpTreeMod }, true)
                 end
 
                 -- Ancient starcursed jewel: Sanguinis

@@ -400,9 +400,9 @@ function PST:onNewRoom()
 		PST:addModifiers({ charmedHitNegationProc = false }, true)
 	end
 
-	-- Mod: +% coalescing soul trigger chance when clearing a room without taking damage (reset)
-	if PST:getTreeSnapshotMod("coalSoulGotHit", false) then
-		PST:addModifiers({ coalSoulGotHit = false }, true)
+	-- Reset mob room hit
+	if PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+		PST:addModifiers({ roomGotHitByMob = false }, true)
 	end
 
 	-- Reset d7 proc

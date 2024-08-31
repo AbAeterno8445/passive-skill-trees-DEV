@@ -292,6 +292,14 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ allstatsPerc = tmpMod }, true)
     end
 
+    -- Vacuophobia node (T. Isaac's tree)
+    if PST:getTreeSnapshotMod("vacuophobia", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        PST:addModifiers({ allstatsPerc = -12 }, true)
+        PST:updateCacheDelayed()
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

@@ -289,6 +289,7 @@ function PST:onUpdate()
 				PST:addModifiers({ harbingerLocustsFloorProc = true }, true)
 			end
 
+			-- Coalescing Soul node
 			tmpMod = PST:getTreeSnapshotMod("coalescingSoulChance", 0)
 			if tmpMod > 0 and 100 * math.random() < tmpMod and PST:getTreeSnapshotMod("coalescingSoulProcs", 0) > 0 then
 				local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos())
@@ -299,6 +300,23 @@ function PST:onUpdate()
 				local stoneType = PST:getMatchingSoulstone(tmpPlayerType)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, stoneType, Random() + 1)
 				PST:addModifiers({ coalescingSoulProcs = -1 }, true)
+			end
+
+			-- Consuming Void node (T. Isaac's tree)
+			if PST:getTreeSnapshotMod("consumingVoid", false) then
+				if PST:getTreeSnapshotMod("consumingVoidConsumed", 0) < 2 and not level:IsAscent() then
+					player:RemoveCollectible(CollectibleType.COLLECTIBLE_VOID)
+					local tmpCollectibles = {}
+					for tmpItem, tmpItemNum in pairs(player:GetCollectiblesList()) do
+						if tmpItemNum > 0 then
+							table.insert(tmpCollectibles, tmpItem)
+						end
+					end
+					player:RemoveCollectible(tmpCollectibles[math.random(#tmpCollectibles)])
+					PST:createFloatTextFX("The void consumes...", Vector.Zero, Color(0.5, 0.1, 0.8, 1), 0.12, 90, true)
+					SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 1, 2, false, 0.8)
+				end
+				PST:addModifiers({ consumingVoidConsumed = { value = 0, set = true } }, true)
 			end
 		end
 	end
@@ -1213,8 +1231,26 @@ function PST:onUpdate()
 
 			-- Mod: +% coalescing soul trigger chance when clearing a room without taking damage
 			tmpMod = PST:getTreeSnapshotMod("coalSoulRoomClearChance", 0)
-			if tmpMod > 0 and not PST:getTreeSnapshotMod("coalSoulGotHit", false) then
+			if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 				PST:addModifiers({ coalescingSoulChance = tmpMod }, true)
+			end
+
+			-- Fractured Die node (T. Isaac's tree)
+			if PST:getTreeSnapshotMod("fracturedDie", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+				tmpChance = 5
+				if room:GetType() == RoomType.ROOM_BOSS then
+					tmpChance = 75
+				end
+				if 100 * math.random() < tmpChance then
+					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
+					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_DICE_SHARD, Random() + 1)
+				end
+			end
+
+			-- Mod: +luck when clearing a boss room without taking damage
+			tmpMod = PST:getTreeSnapshotMod("bossFlawlessLuck", 0)
+			if tmpMod > 0 and room:GetType() == RoomType.ROOM_BOSS and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+				PST:addModifiers({ luck = tmpMod }, true)
 			end
 
 			-- Cosmic Realignment node

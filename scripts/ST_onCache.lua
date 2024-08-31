@@ -161,6 +161,12 @@ function PST:onCache(player, cacheFlag)
         if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:songNodesAllocated(true) <= 2 then
             dynamicMods.damage = dynamicMods.damage + PST:GetBlackHeartCount(player) * 0.1
         end
+
+        -- Mod: +% damage per held passive item
+        tmpTreeMod = PST:getTreeSnapshotMod("obtainedItemDamage", 0)
+        if tmpTreeMod > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + player:GetCollectibleCount() * tmpTreeMod
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -217,11 +223,23 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.coordinationHits.jacob >= 5 and player:GetPlayerType() == PlayerType.PLAYER_ESAU then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + 10
         end
+
+        -- Mod: +% tears per held passive item
+        tmpTreeMod = PST:getTreeSnapshotMod("obtainedItemTears", 0)
+        if tmpTreeMod > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + player:GetCollectibleCount() * tmpTreeMod
+        end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- Mod: range while dead bird is active
         if PST.specialNodes.deadBirdActive and PST:getTreeSnapshotMod("activeDeadBirdRange", 0) ~= 0 then
             dynamicMods.range = dynamicMods.range + PST:getTreeSnapshotMod("activeDeadBirdRange", 0)
+        end
+
+        -- Mod: +% range per held passive item
+        tmpTreeMod = PST:getTreeSnapshotMod("obtainedItemRange", 0)
+        if tmpTreeMod > 0 then
+            dynamicMods.rangePerc = dynamicMods.rangePerc + player:GetCollectibleCount() * tmpTreeMod
         end
     -- SHOTSPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
@@ -326,6 +344,22 @@ function PST:onCache(player, cacheFlag)
         tmpTreeMod = PST:getTreeSnapshotMod("mightOfFortune", 0)
         if tmpTreeMod > 0 then
             dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpLuck * tmpTreeMod
+        end
+    end
+
+    -- Vacuophobia node (T. Isaac's tree)
+    if PST:getTreeSnapshotMod("vacuophobia", false) then
+        local tmpMax = 8
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+            tmpMax = 12
+        end
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.min(tmpMax, player:GetCollectibleCount() - 1)
+
+        if player:GetTrinket(0) == -1 and player:GetTrinket(1) == -1 then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 3
+        end
+        if player:GetActiveItem(0) == -1 and player:GetActiveItem(1) == -1 then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 3
         end
     end
 

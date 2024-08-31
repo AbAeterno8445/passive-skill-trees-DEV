@@ -80,6 +80,19 @@ function PST:onUseCard(card, player, useFlags)
         })
     end
 
+    -- Mod: % chance to spawn a rune shard when using a dice shard
+    tmpBonus = PST:getTreeSnapshotMod("diceShardRuneShard", false)
+    if tmpBonus > 0 and card == Card.CARD_DICE_SHARD and 100 * math.random() < tmpBonus then
+        local tmpPos = room:FindFreePickupSpawnPosition(player.Position, 20)
+        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.RUNE_SHARD, Random() + 1)
+    end
+
+    -- Mod: +% speed when using a rune shard
+    tmpBonus = PST:getTreeSnapshotMod("runeShardSpeed", 0)
+    if tmpBonus > 0 and card == Card.RUNE_SHARD then
+        PST:addModifiers({ speedPerc = tmpBonus, runeShardSpeedBuff = tmpBonus }, true)
+    end
+
     -- Ancient starcursed jewel: Circadian Destructor
     if PST:SC_getSnapshotMod("circadianDestructor", false) and card == Card.CARD_TOWER then
         local tmpMod = PST:getTreeSnapshotMod("SC_circadianStatsDown", 0)

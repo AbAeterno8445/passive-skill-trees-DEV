@@ -267,6 +267,8 @@ function PST:resetMods()
 		staticEntitiesCache = {}, -- For storing the state of 'static entities' such as fireplaces, poop and tinted rocks
 		roomClearProc = false,
 
+		roomGotHitByMob = false,
+
 		luckyPennyChance = 0,
 		cardFloorLuck = 0,
 		pillFloorLuck = 0,
@@ -641,23 +643,24 @@ function PST:resetMods()
 		coalescingSoulProcs = 1,
 		warpedCoalescence = false,
 		coalSoulRoomClearChance = 0,
-		coalSoulGotHit = false,
 		coalSoulHitChance = 0,
 		soulStoneAllstats = 0,
 		soulStoneAllstatsProc = false,
 		soulStoneUnusedAllstats = 0,
 
-		---- T. Isaac ----
-		vacuophobia = false, -- TODO
-		consumingVoid = false, -- TODO
-		fracturedDie = false, -- TODO
-		passiveItemDamage = 0, -- TODO
-		passiveItemTears = 0, -- TODO
-		passiveItemRange = 0, -- TODO
-		flawlessBossLuck = 0, -- TODO
-		voidConsumeLuck = 0, -- TODO
-		diceShardRuneShard = 0, -- TODO
-		runeShardSpeed = 0, -- TODO
+		---- T. Isaac ---- TEST
+		vacuophobia = false,
+		consumingVoid = false,
+		consumingVoidConsumed = 0,
+		fracturedDie = false,
+		obtainedItemDamage = 0,
+		obtainedItemTears = 0,
+		obtainedItemRange = 0,
+		flawlessBossLuck = 0,
+		voidConsumeLuck = 0,
+		diceShardRuneShard = 0,
+		runeShardSpeed = 0,
+		runeShardSpeedBuff = 0,
 		--#endregion
 
 		--#region STAR TREE --
