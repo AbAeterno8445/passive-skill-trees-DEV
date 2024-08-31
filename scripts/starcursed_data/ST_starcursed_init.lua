@@ -683,6 +683,21 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    unusuallySmallStarstone = {
+        weight = 100,
+        spriteFrame = 21,
+        name = "Unusually Small Starstone",
+        description = {
+            "Start with Pluto as an innate effect.",
+            "-30% damage and -0.7 tears.",
+            "When entering a room, split all monsters in two if possible."
+        },
+        rewards = {
+            xpgain = 50,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

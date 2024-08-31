@@ -584,14 +584,19 @@ function PST:onDeath(entity)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
             PST:addModifiers({ luck = -0.5 }, true)
         end
-    elseif entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly then
+    elseif entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly and
+    PST:getRoom():GetFrameCount() > 1 then
         -- Enemy death
         local room = PST:getRoom()
 
         local addXP = false
         if not (entity:IsBoss() and entity.Parent) or entity.Type == EntityType.ENTITY_LARRYJR then
             if entity.SpawnerType ~= 0 then
-                if PST.modData.spawnKills < 12 then
+                local bonusKills = 0
+                if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
+                    bonusKills = 30
+                end
+                if PST.modData.spawnKills < 12 + bonusKills then
                     PST.modData.spawnKills = PST.modData.spawnKills + 1
                     addXP = true
                 end

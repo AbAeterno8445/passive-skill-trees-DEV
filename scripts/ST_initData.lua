@@ -220,6 +220,10 @@ PST.chroniclerRoomTypes = {
 	RoomType.ROOM_SECRET, RoomType.ROOM_ARCADE, RoomType.ROOM_CURSE, RoomType.ROOM_CHALLENGE, RoomType.ROOM_LIBRARY,
 	RoomType.ROOM_SACRIFICE, RoomType.ROOM_CHEST, RoomType.ROOM_DICE, RoomType.ROOM_PLANETARIUM
 }
+PST.noSplitMobs = {
+	EntityType.ENTITY_GIDEON, EntityType.ENTITY_BLOOD_PUPPY, EntityType.ENTITY_GRUB, EntityType.ENTITY_CHUB, EntityType.ENTITY_SCOURGE,
+	EntityType.ENTITY_SWINGER
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false

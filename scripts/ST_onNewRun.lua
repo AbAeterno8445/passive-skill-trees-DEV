@@ -152,6 +152,12 @@ function PST:onNewRun(isContinued)
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
             player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
         end
+        -- Ancient starcursed jewel: Unusually Small Starstone
+        if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_PLUTO)
+            player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
+            PST:addModifiers({ tears = -0.7, damagePerc = -30 }, true)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

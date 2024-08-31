@@ -403,6 +403,18 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Ancient starcursed jewel: Unusually Small Starstone
+		if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
+			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+				local tmpNPC = tmpEntity:ToNPC()
+				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not PST:arrHasValue(PST.noSplitMobs, tmpNPC.Type) and
+				not tmpNPC.Parent and not tmpNPC.Child then
+					---@diagnostic disable-next-line: undefined-field
+					tmpNPC:TrySplit(0, EntityRef(player))
+				end
+			end
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage
@@ -618,6 +630,11 @@ function PST:onUpdate()
 	if tmpTimer > 0 and Game():GetFrameCount() >= tmpTimer + 15 then
 		PST:addModifiers({ SC_cursedAuricTimer = { value = 0, set = true } }, true)
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_TELEPORT_2, UseFlag.USE_NOANIM)
+	end
+
+	-- Ancient starcursed jewel: Unusually Small Starstone
+	if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_PLUTO) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
 	end
 
 	-- Fickle Fortune node (Cain's tree)
