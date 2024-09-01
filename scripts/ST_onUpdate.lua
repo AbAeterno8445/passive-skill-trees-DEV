@@ -1123,7 +1123,7 @@ function PST:onUpdate()
 					PST:addModifiers({ SC_cursedAuricSpeedProc = true }, true)
 				elseif 100 * math.random() < 90 then
 					if roomType ~= RoomType.ROOM_BOSS and roomType ~= RoomType.ROOM_BOSSRUSH and roomType ~= RoomType.ROOM_ANGEL and roomType ~= RoomType.ROOM_DEVIL and
-					roomType ~= RoomType.ROOM_CURSE then
+					roomType ~= RoomType.ROOM_CURSE and roomType ~= RoomType.ROOM_CHALLENGE then
 						PST:addModifiers({ SC_cursedAuricTimer = { value = Game():GetFrameCount(), set = true } }, true)
 					end
 				end
