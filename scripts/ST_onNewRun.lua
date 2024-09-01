@@ -306,6 +306,11 @@ function PST:onNewRun(isContinued)
         PST:updateCacheDelayed()
     end
 
+    -- Fractured Die node (T. Isaac's tree)
+    if PST:getTreeSnapshotMod("fracturedDie", false) then
+        player:AddCard(Card.CARD_DICE_SHARD)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then
