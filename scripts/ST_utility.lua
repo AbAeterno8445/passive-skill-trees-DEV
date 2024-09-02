@@ -502,6 +502,10 @@ function PST:GetBlackHeartCount(player)
     return black_count
 end
 
+function PST:debugMod(modName)
+	print(PST:getTreeSnapshotMod(modName, "N/A"))
+end
+
 local playerSoulstones = {
 	[PlayerType.PLAYER_APOLLYON] = Card.CARD_SOUL_APOLLYON,
 	[PlayerType.PLAYER_APOLLYON_B] = Card.CARD_SOUL_APOLLYON,
@@ -549,6 +553,31 @@ function PST:getMatchingSoulstone(playerType)
 	return playerSoulstones[math.random(#playerSoulstones)]
 end
 
+local weightedRunes = {
+	[Card.RUNE_ANSUZ] = 100,
+	[Card.RUNE_BERKANO] = 100,
+	[Card.RUNE_HAGALAZ] = 100,
+	[Card.RUNE_BLANK] = 75,
+	[Card.RUNE_ALGIZ] = 75,
+	[Card.RUNE_EHWAZ] = 75,
+	[Card.RUNE_PERTHRO] = 75,
+	[Card.RUNE_DAGAZ] = 50,
+	[Card.RUNE_JERA] = 30,
+}
+local weightedRunesTotal = 0
+for _, tmpWeight in pairs(weightedRunes) do
+	weightedRunesTotal = weightedRunesTotal + tmpWeight
+end
+function PST:getRandRuneWeighted()
+	local weightRoll = math.random(weightedRunesTotal)
+	for tmpRune, tmpWeight in pairs(weightedRunes) do
+		weightRoll = weightRoll - tmpWeight
+		if weightRoll <= 0 then
+			return tmpRune
+		end
+	end
+end
+
 function PST:NPCChampionAvailable(npc)
 	local tmpBlacklist = PST.noChampionMobs
 	if npc:IsBoss() then
@@ -564,6 +593,12 @@ function PST:NPCChampionAvailable(npc)
 		end
 	end
 	return true
+end
+
+-- Brian Kernighan's algorithm
+function PST:countSetBits(n)
+	if (n == 0) then return 0
+	else return 1 + PST:countSetBits(n & (n - 1)) end
 end
 
 function PST:strStartsWith(txt, start)

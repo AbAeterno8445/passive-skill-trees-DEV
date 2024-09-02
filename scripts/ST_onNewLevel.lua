@@ -258,7 +258,7 @@ function PST:onNewLevel()
     end
 
     -- Mod: chance to reveal map
-    if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) then
+    if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) + PST:getTreeSnapshotMod("ansuzMapreveal", 0) then
         PST:addModifiers({ mapRevealed = true }, true)
     elseif PST:getTreeSnapshotMod("mapRevealed", false) then
         PST:addModifiers({ mapRevealed = false }, true)
@@ -270,9 +270,30 @@ function PST:onNewLevel()
     end
 
     -- Mod: +% speed when using a rune shard (reset)
-    tmpMod = PST:getTreeSnapshotMod("runeShardSpeedBuff", 0)
+    tmpMod = PST:getTreeSnapshotMod("runicSpeedBuff", 0)
     if tmpMod > 0 then
-        PST:addModifiers({ speedPerc = -tmpMod, runeShardSpeedBuff = { value = 0, set = true } }, true)
+        PST:addModifiers({ speedPerc = -tmpMod, runicSpeedBuff = { value = 0, set = true } }, true)
+    end
+
+    -- Sinistral Runemaster: Ehwaz proc
+    if PST:getTreeSnapshotMod("ehwazAllstatsProc", false) then
+        PST:addModifiers({ allstatsPerc = 3 }, true)
+    end
+    -- Sinistral Runemaster: Dagaz buff
+    tmpMod = PST:getTreeSnapshotMod("dagazBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ allstatsPerc = -tmpMod, dagazBuff = { value = 0, set = true } }, true)
+    end
+
+    -- Dextral Runemaster: Ansuz map reveal chance
+    tmpMod = PST:getTreeSnapshotMod("ansuzMapreveal", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ ansuzMapreveal = { value = 0, set = true } }, true)
+    end
+    -- Dextral Runemaster: Berkano innate Hive Mind
+    if PST:getTreeSnapshotMod("berkanoHivemind", false) then
+        player:RemoveCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
+        PST:addModifiers({ berkanoHivemind = false }, true)
     end
 
     -- Cosmic Realignment node

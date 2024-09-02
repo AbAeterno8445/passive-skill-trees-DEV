@@ -400,6 +400,11 @@ function PST:onNewRoom()
 		PST:addModifiers({ charmedHitNegationProc = false }, true)
 	end
 
+	-- Sinistral Runemaster Ehwaz proc
+	if PST:getTreeSnapshotMod("ehwazAllstatsProc", false) then
+		PST:addModifiers({ ehwazAllstatsProc = false }, true)
+	end
+
 	-- Reset mob room hit
 	if PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 		PST:addModifiers({ roomGotHitByMob = false }, true)

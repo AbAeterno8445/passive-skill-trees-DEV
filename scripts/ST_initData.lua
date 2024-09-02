@@ -224,6 +224,10 @@ PST.noSplitMobs = {
 	EntityType.ENTITY_GIDEON, EntityType.ENTITY_BLOOD_PUPPY, EntityType.ENTITY_GRUB, EntityType.ENTITY_CHUB, EntityType.ENTITY_SCOURGE,
 	EntityType.ENTITY_SWINGER
 }
+PST.allRunes = {
+	Card.RUNE_ALGIZ, Card.RUNE_ANSUZ, Card.RUNE_BERKANO, Card.RUNE_BLACK, Card.RUNE_BLANK, Card.RUNE_DAGAZ, Card.RUNE_EHWAZ, Card.RUNE_HAGALAZ,
+	Card.RUNE_JERA, Card.RUNE_PERTHRO, Card.RUNE_SHARD
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -664,8 +668,21 @@ function PST:resetMods()
 		flawlessBossLuck = 0,
 		voidConsumeLuck = 0,
 		diceShardRuneShard = 0,
-		runeShardSpeed = 0,
-		runeShardSpeedBuff = 0,
+		runicSpeed = 0,
+		runicSpeedBuff = 0,
+		runeshardStacking = false,
+		runeshardStacks = 0,
+		runeshardStacksReq = 0,
+		blackRuneAssembly = 0,
+		blackRuneAbsorb = 0,
+		blackRuneInnateItems = {},
+		sinistralRunemaster = false,
+		dextralRunemaster = false,
+		ehwazAllstatsProc = false,
+		dagazBuff = 0,
+		ansuzMapreveal = 0,
+		algizBuffTimer = 0,
+		algizBuffProc = false,
 		--#endregion
 
 		--#region STAR TREE --
@@ -742,6 +759,7 @@ function PST:resetMods()
 		mobHitReduceDmg = 0,
 		mobHitRoomExtraDmg = { hits = 0, proc = false },
 		itemRemovalProtected = {},
+		jeraUseFrame = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

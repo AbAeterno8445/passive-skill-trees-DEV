@@ -149,6 +149,14 @@ function PST:Render()
 		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
 	end
 
+	-- Mod: rune shards can stack
+	if PST:getTreeSnapshotMod("runeshardStacking", false) then
+		tmpMod = PST:getTreeSnapshotMod("runeshardStacks", 0)
+		if tmpMod > 0 and PST:getPlayer():GetCard(0) == Card.RUNE_SHARD then
+			tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
+		end
+	end
+
 	-- Manage floating texts
     if floatTextDelay > 0 then
         floatTextDelay = floatTextDelay - 1

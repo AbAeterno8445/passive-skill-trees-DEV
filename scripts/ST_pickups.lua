@@ -174,6 +174,46 @@ function PST:prePickup(pickup, collider, low)
                 return false
             end
 
+            -- Mod: rune shards can stack + rune assembly
+            if PST:getTreeSnapshotMod("runeshardStacking", false) then
+                if pickup.Variant == PickupVariant.PICKUP_TAROTCARD and pickup.SubType == Card.RUNE_SHARD and not pickup:IsShopItem() and
+                (PST:arrHasValue(PST.runes, player:GetCard(0)) or PST:arrHasValue(PST.runes, player:GetCard(1))) then
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(0.2, 0.5, 0.8, 1, 0.2, 0.5, 0.8)
+                    pickup:Remove()
+                    PST:addModifiers({ runeshardStacks = 1 }, true)
+
+                    -- Create new random rune once collecting enough stacks
+                    local runeStacks = PST:getTreeSnapshotMod("runeshardStacks", 0)
+                    local stacksReq = 15 - PST:getTreeSnapshotMod("runeshardStacksReq", 0)
+                    local tmpColor = Color(0.7, 0.8, 1, 1)
+                    if runeStacks >= stacksReq then
+                        tmpColor = Color(0.7, 1, 0.8, 1)
+                        PST:addModifiers({ runeshardStacks = { value = 0, set = true } }, true)
+                        if player:GetCard(0) == Card.RUNE_SHARD then
+                            player:RemovePocketItem(0)
+                        elseif player:GetCard(1) == Card.RUNE_SHARD then
+                            player:RemovePocketItem(1)
+                        end
+                        local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 20)
+
+                        -- Mod: chance for assembled rune to be a Black Rune
+                        local newRune = PST:getRandRuneWeighted()
+                        tmpMod = PST:getTreeSnapshotMod("blackRuneAssembly", 0)
+                        if tmpMod > 0 and 100 * math.random() < tmpMod then
+                            newRune = Card.RUNE_BLACK
+                        end
+
+                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, newRune, Random() + 1)
+                        SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+                    else
+                        SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.4)
+                    end
+                    PST:createFloatTextFX("+ Rune Shard (" .. tostring(runeStacks) .. "/" .. tostring(stacksReq) .. ")", Vector.Zero, tmpColor, 0.12, 100, true)
+                    return { Collide = false, SkipCollisionEffects = true }
+                end
+            end
+
             -- Cosmic Realignment node
             local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
@@ -573,6 +613,52 @@ function PST:onPickupInit(pickup)
             end
         end
 
+        -- Sinistral Runemaster node (T. Isaac's tree) - Jera effect
+        if not pickupGone and PST:getTreeSnapshotMod("sinistralRunemaster", false) and PST.specialNodes.jeraUseFrame == Game():GetFrameCount()
+        and 100 * math.random() < 8 then
+            if variant == PickupVariant.PICKUP_COIN then
+                if subtype == CoinSubType.COIN_PENNY then
+                    pickupGone = true
+                    if 100 * math.random() < 3 then
+                        pickup:Morph(pickup.Type, variant, CoinSubType.COIN_GOLDEN)
+                    elseif 100 * math.random() < 50 then
+                        pickup:Morph(pickup.Type, variant, CoinSubType.COIN_DOUBLEPACK)
+                    elseif 100 * math.random() < 25 then
+                        pickup:Morph(pickup.Type, variant, CoinSubType.COIN_LUCKYPENNY)
+                    else
+                        pickup:Morph(pickup.Type, variant, CoinSubType.COIN_NICKEL)
+                    end
+                elseif subtype == CoinSubType.COIN_NICKEL then
+                    pickupGone = true
+                    if 100 * math.random() < 5 then
+                        pickup:Morph(pickup.Type, variant, CoinSubType.COIN_GOLDEN)
+                    else
+                        pickup:Morph(pickup.Type, variant, CoinSubType.COIN_DIME)
+                    end
+                end
+            elseif variant == PickupVariant.PICKUP_BOMB then
+                if subtype == BombSubType.BOMB_NORMAL then
+                    pickupGone = true
+                    if 100 * math.random() < 3 then
+                        pickup:Morph(pickup.Type, variant, BombSubType.BOMB_GOLDEN)
+                    else
+                        pickup:Morph(pickup.Type, variant, BombSubType.BOMB_DOUBLEPACK)
+                    end
+                end
+            elseif variant == PickupVariant.PICKUP_KEY then
+                if subtype == KeySubType.KEY_NORMAL then
+                    pickupGone = true
+                    if 100 * math.random() < 25 then
+                        pickup:Morph(pickup.Type, variant, KeySubType.KEY_CHARGED)
+                    elseif 100 * math.random() < 3 then
+                        pickup:Morph(pickup.Type, variant, KeySubType.KEY_GOLDEN)
+                    else
+                        pickup:Morph(pickup.Type, variant, KeySubType.KEY_DOUBLEPACK)
+                    end
+                end
+            end
+        end
+
         if not pickupGone then
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
@@ -664,17 +750,28 @@ function PST:onTrinketRemove(player, type)
 end
 
 function PST:onPickupVoided(pickup, isBlackRune)
-    -- Void consumes collectible
-    if not isBlackRune and pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
-        -- Consuming Void node (T. Isaac node)
-        if PST:getTreeSnapshotMod("consumingVoid", false) then
-            PST:addModifiers({ consumingVoidConsumed = 1 }, true)
-        end
+    -- Collectible voided
+    if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+        -- Black rune consumes collectible
+        if isBlackRune then
+            -- Mod: chance for items consumed by Black Rune to be obtained as innate items
+            if PST.modData.treeModSnapshot.blackRuneInnateItems then
+                print("ABSORBED", pickup.SubType)
+                table.insert(PST.modData.treeModSnapshot.blackRuneInnateItems, pickup.SubType)
+            end
 
-        -- Mod: +luck when consuming an item with Void
-        local tmpMod = PST:getTreeSnapshotMod("voidConsumeLuck", 0)
-        if tmpMod > 0 then
-            PST:addModifiers({ luck = tmpMod }, true)
+        -- Void consumes collectible
+        else
+            -- Consuming Void node (T. Isaac node)
+            if PST:getTreeSnapshotMod("consumingVoid", false) then
+                PST:addModifiers({ consumingVoidConsumed = 1 }, true)
+            end
+
+            -- Mod: +luck when consuming an item with Void
+            local tmpMod = PST:getTreeSnapshotMod("voidConsumeLuck", 0)
+            if tmpMod > 0 then
+                PST:addModifiers({ luck = tmpMod }, true)
+            end
         end
     end
 end

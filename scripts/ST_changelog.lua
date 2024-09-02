@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.2.45",
+        "- Introduced new character skill trees for: Tainted Isaac.",
         "- New global tree large node: \"Eldritch Mapping\".",
         "- Added 2 new Ancient Jewels: \"Cursed Auric Shard\" and \"Unusually Small Starstone\".",
         "- \"Tears on first obtaining a passive item\" node now grants 0.015 tears per item (from 0.03).",
@@ -156,7 +157,7 @@ function PST:getChangelogList()
     }
 
     for idx, tmpLine in ipairs(changelog) do
-        if tmpLine == PST.modVersion then
+        if type(tmpLine) == "string" and tmpLine == PST.modVersion then
             ---@diagnostic disable-next-line: assign-type-mismatch
             changelog[idx] = {tmpLine .. " (Current)", KColor(0.7, 1, 0.9, 1)}
         end

@@ -891,6 +891,30 @@ function PST:onUpdate()
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
 	end
 
+	-- Mod: innate items absorbed by Black Rune
+	tmpMod = PST:getTreeSnapshotMod("blackRuneInnateItems", {})
+	if #tmpMod > 0 then
+		for _, tmpItem in ipairs(tmpMod) do
+			if not player:HasCollectible(tmpItem) then
+				player:AddInnateCollectible(tmpItem)
+			end
+		end
+	end
+
+	-- Dextral Runemaster: Berkano innate Hive Mind
+	if PST:getTreeSnapshotMod("berkanoHivemind", false) and room:GetFrameCount() > 1 and not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
+	end
+	-- Dextral Runemaster: Algiz buff
+	if PST:getTreeSnapshotMod("algizBuffProc", false) and room:GetFrameCount() % 30 == 0 then
+		tmpMod = PST:getTreeSnapshotMod("algizBuffTimer", 0)
+		if tmpMod > 0 then
+			PST:addModifiers({ algizBuffTimer = -1 }, true)
+		else
+			PST:addModifiers({ damagePerc = -7, tearsPerc = -7, algizBuffProc = false }, true)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
