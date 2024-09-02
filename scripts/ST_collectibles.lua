@@ -318,7 +318,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- The Poop
     elseif itemType == CollectibleType.COLLECTIBLE_POOP then
         -- Brown Blessing node (Blue Baby's tree)
-        if PST:getTreeSnapshotMod("brownBlessing", false) and 100 * math.random() < 7 then
+        if PST:getTreeSnapshotMod("brownBlessing", false) and not PST:isFirstOrigStage() and 100 * math.random() < 7 then
             local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
             local tmpPoopItem = Game():GetItemPool():GetCollectibleFromList(PST.poopItems, Random() + 1, CollectibleType.COLLECTIBLE_BREAKFAST, true, false)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, tmpPoopItem, Random() + 1)

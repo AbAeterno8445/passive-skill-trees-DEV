@@ -23,6 +23,8 @@ function PST:getChangelogList()
         "- Adjusted jewel modifiers:",
         "> Viridian jewels' \"Shop items cost more coins\" now doesn't affect pickups.",
         "> New mighty-only Viridian jewel modifier \"Shop items cost more coins. Affects pickups.\".",
+        "- Bishop monsters can no longer be turned into champions from jewel effects.",
+        "- Fixed Blue Baby's \"Brown Blessing\" being able to proc in the first floor.",
         "",
 
         "v0.2.44",

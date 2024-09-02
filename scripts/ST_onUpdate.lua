@@ -1295,7 +1295,6 @@ function PST:onUpdate()
 			if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 				PST:addModifiers({ coalescingSoulChance = tmpMod }, true)
 			end
-			print("coalescing soul at", PST:getTreeSnapshotMod("coalescingSoulChance", 0))
 
 			-- Fractured Die node (T. Isaac's tree)
 			if PST:getTreeSnapshotMod("fracturedRemains", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
