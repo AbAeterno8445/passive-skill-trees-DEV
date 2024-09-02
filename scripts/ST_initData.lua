@@ -192,11 +192,14 @@ PST.noChampionMobs = {
 	EntityType.ENTITY_POOFER, EntityType.ENTITY_RED_GHOST, EntityType.ENTITY_RING_OF_FLIES, EntityType.ENTITY_SHADY,
 	EntityType.ENTITY_SMALL_MAGGOT, EntityType.ENTITY_SMALL_LEECH, {EntityType.ENTITY_WALL_CREEP, 1}, EntityType.ENTITY_SPIDER,
 	EntityType.ENTITY_SPLURT, EntityType.ENTITY_STRIDER, EntityType.ENTITY_SWARM, EntityType.ENTITY_SWARM_SPIDER,
-	EntityType.ENTITY_SWINGER, EntityType.ENTITY_WIZOOB,
+	EntityType.ENTITY_SWINGER, EntityType.ENTITY_WIZOOB, EntityType.ENTITY_BLOOD_PUPPY,
 	-- Tainted variants
 	{EntityType.ENTITY_BOOMFLY, 6}, {EntityType.ENTITY_FACELESS, 1}, {EntityType.ENTITY_HOPPER, 3}, {EntityType.ENTITY_MOLE, 1},
 	{EntityType.ENTITY_MULLIGAN, 3}, {EntityType.ENTITY_POOTER, 2}, {EntityType.ENTITY_ROUND_WORM, 2}, {EntityType.ENTITY_WALL_CREEP, 3},
 	{EntityType.ENTITY_SPITTY, 1}, {EntityType.ENTITY_SUB_HORF, 1}, {EntityType.ENTITY_SUCKER, 7}, {EntityType.ENTITY_ROUND_WORM, 3}
+}
+PST.noChampionMobsJewel = {
+	EntityType.ENTITY_BISHOP, EntityType.ENTITY_BLOOD_PUPPY
 }
 PST.noChampionBosses = {
 	EntityType.ENTITY_FALLEN, EntityType.ENTITY_HEADLESS_HORSEMAN, EntityType.ENTITY_GEMINI, EntityType.ENTITY_DINGLE,

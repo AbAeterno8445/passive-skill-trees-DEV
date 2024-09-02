@@ -61,7 +61,7 @@ function PST:onNewRoom()
 					local jewelChampChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
 					tmpChance = PST:getTreeSnapshotMod("championChance", 0)
 					if jewelChampChance > 0 and (not tmpNPC:IsBoss() or (tmpNPC:IsBoss() and PST:NPCChampionAvailable(tmpNPC)))
-					and 100 * math.random() < jewelChampChance then
+					and not PST:arrHasValue(PST.noChampionMobsJewel, tmpNPC.Type) and 100 * math.random() < jewelChampChance then
 						tmpNPC:MakeChampion(Random() + 1)
 					elseif tmpChance > 0 and PST:NPCChampionAvailable(tmpNPC) and 100 * math.random() < tmpChance then
 						tmpNPC:MakeChampion(Random() + 1)
