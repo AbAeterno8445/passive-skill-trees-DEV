@@ -450,7 +450,7 @@ PST.cosmicRData = {
                 "Take 1 heart of damage when picking up a black heart.",
                 "Black hearts grant +0.4 damage on pickup for the current room, up to +1.2.",
                 {"As Keeper: Coins have a 50% chance to grant 0.2 damage for the current room", KColor(1, 1, 0.6, 1)},
-                "instead of healing, up to +1."
+                {"instead of healing, up to +1.", KColor(1, 1, 0.6, 1)}
             },
             unlockReq = Achievement.TAINTED_JUDAS,
             unlocks = {

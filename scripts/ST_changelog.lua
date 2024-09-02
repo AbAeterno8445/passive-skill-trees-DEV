@@ -6,7 +6,7 @@ function PST:getChangelogList()
         "v0.2.45",
         "- New global tree large node: \"Eldritch Mapping\".",
         "- Added 2 new Ancient Jewels: \"Cursed Auric Shard\" and \"Unusually Small Starstone\".",
-        "- \"Tears on first obtaining a passive item\" now grants 0.015 tears per item (from 0.03).",
+        "- \"Tears on first obtaining a passive item\" node now grants 0.015 tears per item (from 0.03).",
         "- Sources of all stats and % all stats no longer affect luck.",
         "- Rebalanced total luck granted by the global tree.",
         "- Rebalanced luck-related nodes in most if not all character trees.",
@@ -19,6 +19,9 @@ function PST:getChangelogList()
         "  > Keeper's \"Keeper's Blessing\": now grants 1 coin on coin heal (from 2).",
         "  > Keeper's \"Avid Shopper\": coin loss should now only trigger on monster hits instead of all damage.",
         "  > Jacob & Esau's \"Statue Pilgrimage\": now grants +12% all stats to Jacob (from +7%).",
+        "- Adjusted jewel modifiers:",
+        "> Viridian jewels' \"Shop items cost more coins\" now doesn't affect pickups.",
+        "> New mighty-only Viridian jewel modifier \"Shop items cost more coins. Affects pickups.\".",
         "",
 
         "v0.2.44",
