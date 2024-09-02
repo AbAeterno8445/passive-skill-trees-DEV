@@ -1340,6 +1340,7 @@ function PST:onUpdate()
 	-- Delayed cache update
 	if PST.delayedCacheUpdate > 0 and Game():GetFrameCount() > PST.delayedCacheUpdate + 1 then
 		PST.delayedCacheUpdate = 0
-		player:AddCacheFlags(PST.allstatsCache, true)
+		player:AddCacheFlags(PST.delayedCacheFlags, true)
+		PST.delayedCacheFlags = 0
 	end
 end

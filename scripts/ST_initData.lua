@@ -230,6 +230,7 @@ PST.floorFirstUpdate = false
 
 -- For cache updates that need to happen a couple frames later
 PST.delayedCacheUpdate = 0
+PST.delayedCacheFlags = 0
 
 function PST:resetMods()
 	-- List of available tree modifiers

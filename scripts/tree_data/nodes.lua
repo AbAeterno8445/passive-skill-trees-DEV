@@ -211,8 +211,7 @@ function PST:addModifiers(modList, addToSnapshot)
         end
     end
     if tmpFlags ~= 0 and addToSnapshot then
-        local player = PST:getPlayer()
-        player:AddCacheFlags(tmpFlags, true)
+        PST:updateCacheDelayed(tmpFlags)
     end
     PST:save()
 end
