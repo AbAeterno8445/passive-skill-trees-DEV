@@ -140,6 +140,7 @@ function PST:openTreeMenu()
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
         MenuManager.SetInputMask(ButtonActionBitwise.ACTION_FULLSCREEN | ButtonActionBitwise.ACTION_MUTE)
+        MenuManager.SetColorModifier(ColorModifier())
     elseif not Game():IsPauseMenuOpen() then
         return
     else
