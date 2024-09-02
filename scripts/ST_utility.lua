@@ -54,14 +54,14 @@ function PST:initUnknownChar(charName, tainted)
 	end
 end
 
--- Updates all stat caches a frame after this is called
+-- Updates stat caches a frame after this is called. If no cache flags are provided, update all stat caches
 function PST:updateCacheDelayed(flags)
+	if not flags then
+		PST.delayedCacheFlags = PST.allstatsCache
+	else
+		PST.delayedCacheFlags = PST.delayedCacheFlags | flags
+	end
 	if PST.delayedCacheUpdate == 0 then
-		if not flags then
-			PST.delayedCacheFlags = PST.allstatsCache
-		else
-			PST.delayedCacheFlags = PST.delayedCacheFlags | flags
-		end
 		PST.delayedCacheUpdate = Game():GetFrameCount()
 	end
 end

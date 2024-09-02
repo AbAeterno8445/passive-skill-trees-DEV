@@ -353,5 +353,8 @@ include("scripts.tree_data.apollyonTreeBank")
 include("scripts.tree_data.theForgottenTreeBank")
 include("scripts.tree_data.bethanyTreeBank")
 include("scripts.tree_data.jacobEsauTreeBank")
+-- Tainted trees
+include("scripts.tree_data.tainted.taintedIsaacTreeBank")
+-- Custom chars
 include("scripts.tree_data.sirenTreeBank")
 PST.loadingBaseTrees = false

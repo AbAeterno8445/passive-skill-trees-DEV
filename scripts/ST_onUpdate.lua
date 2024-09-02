@@ -31,6 +31,7 @@ function PST:onUpdate()
 		updateTrackers.luckTracker = 0
 		updateTrackers.familiarsTracker = 0
 		updateTrackers.lvlCurseTracker = -1
+		updateTrackers.pocketTracker = 0
 		PST.specialNodes.jacobHeartLuckVal = 0
 
 		-- Ancient starcursed jewel: Sanguinis
@@ -815,7 +816,7 @@ function PST:onUpdate()
 		-- Statue Pilgrimage node (Jacob & Esau's tree)
 		if PST:getTreeSnapshotMod("statuePilgrimage", false) then
 			---@diagnostic disable-next-line: undefined-field
-			local tmpTimer = tmpTwin:GetGnawedLeafTimer()
+			tmpTimer = tmpTwin:GetGnawedLeafTimer()
 			if tmpTimer >= 60 and not PST.specialNodes.esauIsStatue then
 				PST.specialNodes.esauIsStatue = true
 			elseif tmpTimer < 60 and PST.specialNodes.esauIsStatue then
@@ -884,6 +885,16 @@ function PST:onUpdate()
 			end
 		end
 		updateTrackers.lvlCurseTracker = tmpCurses
+	end
+
+	-- Pocket item changes
+	local pocketItemSum = player:GetCard(0) + player:GetCard(1)
+	if pocketItemSum ~= updateTrackers.pocketTracker then
+		-- Vacuophobia node (T. Isaac's tree)
+		if PST:getTreeSnapshotMod("vacuophobia", false) then
+			PST:updateCacheDelayed()
+		end
+		updateTrackers.pocketTracker = pocketItemSum
 	end
 
 	-- Spider Mod node
@@ -1100,6 +1111,15 @@ function PST:onUpdate()
 					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
 				end
+
+				-- Boss room + took no damage
+				if not PST:getTreeMod("roomGotHitByMob", false) then
+					-- Mod: +luck when clearing boss room without taking damage
+					tmpMod = PST:getTreeSnapshotMod("flawlessBossLuck", 0)
+					if tmpMod > 0 then
+						PST:addModifiers({ luck = tmpMod }, true)
+					end
+				end
 			end
 
 			-- Starcursed jewel drop
@@ -1277,14 +1297,28 @@ function PST:onUpdate()
 			end
 
 			-- Fractured Die node (T. Isaac's tree)
-			if PST:getTreeSnapshotMod("fracturedDie", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
-				tmpChance = 5
+			if PST:getTreeSnapshotMod("fracturedRemains", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+				-- Dice shard drop
+				tmpChance = 3
 				if room:GetType() == RoomType.ROOM_BOSS then
 					tmpChance = 75
 				end
 				if 100 * math.random() < tmpChance then
 					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_DICE_SHARD, Random() + 1)
+				end
+				-- Rune shard drop
+				if room:GetType() ~= RoomType.ROOM_BOSS then
+					tmpChance = 7
+					if 100 * math.random() < tmpChance then
+						local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
+						Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.RUNE_SHARD, Random() + 1)
+					end
+				else
+					for _=1,2 do
+						local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
+						Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.RUNE_SHARD, Random() + 1)
+					end
 				end
 			end
 

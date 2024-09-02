@@ -307,7 +307,7 @@ function PST:onNewRun(isContinued)
     end
 
     -- Fractured Die node (T. Isaac's tree)
-    if PST:getTreeSnapshotMod("fracturedDie", false) then
+    if PST:getTreeSnapshotMod("fracturedRemains", false) then
         player:AddCard(Card.CARD_DICE_SHARD)
     end
 

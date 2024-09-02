@@ -1490,6 +1490,118 @@ PST.treeModDescriptions = {
     },
     --#endregion
 
+    --#region TAINTED CHARACTER TREES --
+    ---- T. ISAAC'S TREE ----
+    vacuophobia = {
+        str = {
+            "Vacuophobia:",
+            "    Begin the game with Birthright",
+            "    -1%% all stats per missing item in your inventory",
+            "    -4%% all stats while you're not holding a trinket",
+            "    -4%% all stats while you're not holding an active item",
+            "    -4%% all stats while your pocket slots are empty"
+        },
+        category = "charTree", sort = 3000
+    },
+    consumingVoid = {
+        str = {
+            "Consuming Void:",
+            "    Once you fill your inventory, spawn a Void item pedestal",
+            "    When entering a floor, if you haven't consumed at least 2 items with Void in the previous floor, lose",
+            "    a random item and Void",
+            "    During the Ascent, lose no items from this effect"
+        },
+        category = "charTree", sort = 3001
+    },
+    fracturedRemains = {
+        str = {
+            "Fractured Remains:",
+            "    Start the game with a Dice Shard",
+            "    Clearing a regular room without taking damage has a 3%% chance of spawning a Dice Shard",
+            "    Clearing a regular room without taking damage has a 7%% chance of spawning a Rune Shard",
+            "    Clearing a boss room without taking damage has a 75%% chance of spawning a Dice Shard",
+            "    Clearing a boss room without taking damage spawns two Rune Shards"
+        },
+        category = "charTree", sort = 3002
+    },
+    sinistralRunemaster = {
+        str = {
+            "Sinistral Runemaster:",
+            "    Improve rune effects:",
+            "    - Hagalaz: additionally trigger Dad's Key's effect",
+            "    - Jera: duplicated pickups have an 8%% chance of becoming a special version",
+            "    - Ehwaz: +3%% all stats for the next floor if you step into a trapdoor in the current room",
+            "    - Dagaz: +3%% all stats for the current floor per cleansed curse",
+            "    These effects only have a 75%% chance to trigger if you have Dextral Runemaster allocated"
+        },
+        category = "charTree", sort = 3003
+    },
+    dextralRunemaster = {
+        str = {
+            "Dextral Runemaster:",
+            "    Improve rune effects:",
+            "    - Ansuz: on use, +15%% chance to trigger a map reveal on the next floor",
+            "    - Perthro: a random item pedestal gains an additional item choice from the treasure room pool",
+            "    - Berkano: gain Hive Mind innately for the current floor. If you already have it, spawn",
+            "    twice as many spiders and flies",
+            "    - Algiz: +7%% damage and tears for 20 seconds",
+            "    - Blank rune: additionally trigger a Rune Shard's effect",
+            "    These effects only have a 75%% chance to trigger if you have Sinistral Runemaster allocated"
+        },
+        category = "charTree", sort = 3004
+    },
+    blackRuneAbsorb = {
+        str = "%d%% chance for items consumed with Black Runes to be obtained as innate items",
+        category = "charTree", sort = 3005
+    },
+    trinketOnClear = {
+        str = "%.2f%% chance to drop a random trinket on room clear while you're not holding one",
+        category = "charTree", sort = 3006
+    },
+    obtainedItemDamage = {
+        str = "%s%.2f%% damage per obtained item",
+        addPlus = true,
+        category = "charTree", sort = 3010
+    },
+    obtainedItemTears = {
+        str = "%s%.2f%% tears per obtained item",
+        addPlus = true,
+        category = "charTree", sort = 3011
+    },
+    obtainedItemRange = {
+        str = "%s%.2f%% range per obtained item",
+        addPlus = true,
+        category = "charTree", sort = 3012
+    },
+    flawlessBossLuck = {
+        str = "%s%.2f luck when clearing a boss room without taking damage",
+        addPlus = true,
+        category = "charTree", sort = 3013
+    },
+    voidConsumeLuck = {
+        str = "%s%.2f luck when consuming an item with Void",
+        addPlus = true,
+        category = "charTree", sort = 3014
+    },
+    diceShardRuneShard = {
+        str = "%d%% chance to spawn a Rune Shard when using a Dice Shard",
+        category = "charTree", sort = 3015
+    },
+    runicSpeed = {
+        str = "%s%.2f%% speed when using a Rune or Rune Shard, up to 22%%. Resets every floor",
+        addPlus = true,
+        category = "charTree", sort = 3016
+    },
+    runeshardStacking = {
+        str = "You can now stack rune shards. Stacks can be accumulated while holding any rune or rune shard",
+        category = "charTree", sort = 3017
+    },
+    runeshardStacksReq = {
+        str = "Reaching %d rune shard stacks drops a random rune",
+        category = "charTree", sort = 3018
+    },
+    --#endregion
+
     ---- STARMIGHT ----
     SC_SMMightyChance = {
         str = "%2.f%% chance for found Starcursed Jewels to be Mighty",

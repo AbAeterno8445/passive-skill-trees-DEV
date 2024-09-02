@@ -314,6 +314,7 @@ PST:AddCallback(ModCallbacks.MC_PRE_COMPLETION_MARKS_RENDER, PST.cosmicRMarksRen
 PST:AddCallback(ModCallbacks.MC_GET_SHOP_ITEM_PRICE, PST.onShopItemPrice)
 PST:AddCallback(ModCallbacks.MC_POST_RESTOCK_SHOP, PST.onShopRestock)
 PST:AddCallback(ModCallbacks.MC_PRE_PICKUP_VOIDED, PST.onPickupVoided)
+PST:AddCallback(ModCallbacks.MC_PRE_USE_CARD, PST.preUseCard)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
 if Isaac.IsInGame() then

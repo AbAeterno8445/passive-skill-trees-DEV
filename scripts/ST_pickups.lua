@@ -63,6 +63,12 @@ function PST:prePickup(pickup, collider, low)
                 removeOtherRoomItems = true
             end
 
+            -- Dextral Runemaster: Berkano innate Hive Mind
+            if PST:getTreeSnapshotMod("berkanoHivemind", false) and subtype == CollectibleType.COLLECTIBLE_HIVE_MIND then
+                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, -1)
+                PST:addModifiers({ berkanoHivemind = false }, true)
+            end
+
             if removeOtherRoomItems then
                 table.insert(PST.specialNodes.itemRemovalProtected, pickup.InitSeed)
                 PST:removeRoomItems(true)
@@ -177,24 +183,20 @@ function PST:prePickup(pickup, collider, low)
             -- Mod: rune shards can stack + rune assembly
             if PST:getTreeSnapshotMod("runeshardStacking", false) then
                 if pickup.Variant == PickupVariant.PICKUP_TAROTCARD and pickup.SubType == Card.RUNE_SHARD and not pickup:IsShopItem() and
-                (PST:arrHasValue(PST.runes, player:GetCard(0)) or PST:arrHasValue(PST.runes, player:GetCard(1))) then
+                (PST:arrHasValue(PST.allRunes, player:GetCard(0)) or PST:arrHasValue(PST.allRunes, player:GetCard(1))) then
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(0.2, 0.5, 0.8, 1, 0.2, 0.5, 0.8)
                     pickup:Remove()
                     PST:addModifiers({ runeshardStacks = 1 }, true)
 
                     -- Create new random rune once collecting enough stacks
-                    local runeStacks = PST:getTreeSnapshotMod("runeshardStacks", 0)
-                    local stacksReq = 15 - PST:getTreeSnapshotMod("runeshardStacksReq", 0)
+                    local runeStacks = PST:getTreeSnapshotMod("runeshardStacks", 0) + 1
+                    local stacksReq = PST:getTreeSnapshotMod("runeshardStacksReq", 0)
+                    if stacksReq == 0 then stacksReq = 15 end
                     local tmpColor = Color(0.7, 0.8, 1, 1)
                     if runeStacks >= stacksReq then
                         tmpColor = Color(0.7, 1, 0.8, 1)
                         PST:addModifiers({ runeshardStacks = { value = 0, set = true } }, true)
-                        if player:GetCard(0) == Card.RUNE_SHARD then
-                            player:RemovePocketItem(0)
-                        elseif player:GetCard(1) == Card.RUNE_SHARD then
-                            player:RemovePocketItem(1)
-                        end
                         local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 20)
 
                         -- Mod: chance for assembled rune to be a Black Rune
@@ -751,13 +753,16 @@ end
 
 function PST:onPickupVoided(pickup, isBlackRune)
     -- Collectible voided
-    if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+    if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and pickup.SubType ~= 0 then
         -- Black rune consumes collectible
         if isBlackRune then
             -- Mod: chance for items consumed by Black Rune to be obtained as innate items
-            if PST.modData.treeModSnapshot.blackRuneInnateItems then
-                print("ABSORBED", pickup.SubType)
-                table.insert(PST.modData.treeModSnapshot.blackRuneInnateItems, pickup.SubType)
+            local tmpMod = PST:getTreeSnapshotMod("blackRuneAbsorb", 0)
+            tmpMod = 100
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                if PST.modData.treeModSnapshot.blackRuneInnateItems then
+                    table.insert(PST.modData.treeModSnapshot.blackRuneInnateItems, pickup.SubType)
+                end
             end
 
         -- Void consumes collectible

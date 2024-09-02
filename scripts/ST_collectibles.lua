@@ -157,15 +157,23 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         local itemsOwned = player:GetCollectibleCount()
         local maxInv = 8
         if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-            if player:GetActiveItem(0) ~= -1 then itemsOwned = itemsOwned - 1 end
-            if player:GetActiveItem(1) ~= -1 then itemsOwned = itemsOwned - 1 end
+            if player:GetActiveItem(0) ~= 0 then itemsOwned = itemsOwned - 1 end
+            if player:GetActiveItem(1) ~= 0 then itemsOwned = itemsOwned - 1 end
             itemsOwned = itemsOwned - 1
             maxInv = 12
         end
-        if itemsOwned >= maxInv and not player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) then
+        if itemsOwned >= maxInv and not player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) and not PST:getTreeSnapshotMod("consumingVoidSpawned", false) then
             local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
-            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_VOID, Random() + 1)
+            local voidItem = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_VOID, Random() + 1)
+            ---@diagnostic disable-next-line: undefined-field
+            voidItem:ToPickup():RemoveCollectibleCycle()
+            PST:addModifiers({ consumingVoidSpawned = true }, true)
         end
+    end
+
+    -- Vacuophobia node (T. Isaac's tree)
+    if PST:getTreeSnapshotMod("vacuophobia", false) then
+        PST:updateCacheDelayed()
     end
 
     -- Cosmic Realignment node

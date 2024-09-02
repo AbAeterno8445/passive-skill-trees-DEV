@@ -275,6 +275,11 @@ function PST:onNewLevel()
         PST:addModifiers({ speedPerc = -tmpMod, runicSpeedBuff = { value = 0, set = true } }, true)
     end
 
+    -- Consuming Void node (T. Isaac's tree)
+    if PST:getTreeSnapshotMod("consumingVoidSpawned", false) then
+        PST:addModifiers({ consumingVoidSpawned = false }, true)
+    end
+
     -- Sinistral Runemaster: Ehwaz proc
     if PST:getTreeSnapshotMod("ehwazAllstatsProc", false) then
         PST:addModifiers({ allstatsPerc = 3 }, true)
@@ -292,7 +297,7 @@ function PST:onNewLevel()
     end
     -- Dextral Runemaster: Berkano innate Hive Mind
     if PST:getTreeSnapshotMod("berkanoHivemind", false) then
-        player:RemoveCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, -1)
         PST:addModifiers({ berkanoHivemind = false }, true)
     end
 

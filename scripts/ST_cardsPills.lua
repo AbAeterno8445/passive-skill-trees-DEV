@@ -13,19 +13,27 @@ function PST:preUseCard(card, player, useFlag)
     if PST:getTreeSnapshotMod("sinistralRunemaster", false) then
         if not PST:getTreeSnapshotMod("dextralRunemaster", false) or
         (PST:getTreeSnapshotMod("dextralRunemaster", false) and 100 * math.random() < 75) then
+            local showTxt = false
             if card == Card.RUNE_HAGALAZ then
                 -- Hagalaz: additionally triggers Dad's Key's effect
                 player:UseActiveItem(CollectibleType.COLLECTIBLE_DADS_KEY, UseFlag.USE_NOANIM)
+                showTxt = true
             elseif card == Card.RUNE_JERA then
                 -- Jera: duplicated coins/keys/bombs have an 8% chance of becoming a special version
                 PST.specialNodes.jeraUseFrame = Game():GetFrameCount()
+                showTxt = true
             elseif card == Card.RUNE_EHWAZ then
                 -- Ehwaz: +3% all stats for the next floor if you step into a trapdoor/beam in the current room
                 PST:addModifiers({ ehwazAllstatsProc = true }, true)
+                showTxt = true
             elseif card == Card.RUNE_DAGAZ then
                 -- Dagaz: +3% all stats for the current floor per cleansed curse
                 local newBuff = PST:countSetBits(PST:getLevel():GetCurses()) * 3
                 PST:addModifiers({ allstatsPerc = newBuff, dagazBuff = newBuff }, true)
+                showTxt = true
+            end
+            if showTxt then
+                PST:createFloatTextFX("Sinistral Runemaster", Vector.Zero, Color(0.7, 0.4, 1, 1), 0.12, 90, true)
             end
         end
     end
@@ -34,24 +42,18 @@ function PST:preUseCard(card, player, useFlag)
     if PST:getTreeSnapshotMod("dextralRunemaster", false) then
         if not PST:getTreeSnapshotMod("sinistralRunemaster", false) or
         (PST:getTreeSnapshotMod("sinistralRunemaster", false) and 100 * math.random() < 75) then
+            local showTxt = false
             if card == Card.RUNE_ANSUZ then
                 -- Ansuz: on use, +15% chance to trigger a map reveal on the next floor
                 PST:addModifiers({ ansuzMapreveal = 15 }, true)
+                showTxt = true
             elseif card == Card.RUNE_PERTHRO then
                 -- Perthro: a random item pedestal gains an additional item choice from the treasure room pool
-                local tmpItems = {}
-                for _, tmpEntity in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)) do
-                    local tmpItem = tmpEntity:ToPickup()
-                    if tmpItem then table.insert(tmpItems, tmpItem) end
-                end
-                if #tmpItems > 0 then
-                    local selected = tmpItems[math.random(#tmpItems)]
-                    local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE)
-                    selected:AddCollectibleCycle(newItem)
-                end
+                PST.specialNodes.perthroProc = true
             elseif card == Card.RUNE_BERKANO then
                 -- Berkano: gain Hive Mind innately for the current floor. If you already have it, spawn twice as many spiders and flies
                 if not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
                     PST:addModifiers({ berkanoHivemind = true }, true)
                 else
                     for _=1,3 do
@@ -59,6 +61,7 @@ function PST:preUseCard(card, player, useFlag)
                         Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector.Zero, player, 0, Random() + 1)
                     end
                 end
+                showTxt = true
             elseif card == Card.RUNE_ALGIZ then
                 -- Algiz: +7% damage and tears for 20 seconds
                 local tmpMods = {}
@@ -69,9 +72,13 @@ function PST:preUseCard(card, player, useFlag)
                 tmpMods["algizBuffProc"] = true
                 tmpMods["algizBuffTimer"] = 20
                 PST:addModifiers(tmpMods, true)
+                showTxt = true
             elseif card == Card.RUNE_BLANK then
                 -- Blank: additionally trigger a rune shard's effect
                 player:UseCard(Card.RUNE_SHARD, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
+            end
+            if showTxt then
+                PST:createFloatTextFX("Dextral Runemaster", Vector.Zero, Color(0.7, 0.4, 1, 1), 0.12, 90, true)
             end
         end
     end
@@ -169,6 +176,21 @@ function PST:onUseCard(card, player, useFlags)
     PST:getTreeSnapshotMod("runeshardStacks", 0) > 0 then
         player:AddCard(Card.RUNE_SHARD)
         PST:addModifiers({ runeshardStacks = -1 }, true)
+    end
+
+    -- Dextral Runemaster: Perthro effect proc
+    if PST.specialNodes.perthroProc and card == Card.RUNE_PERTHRO then
+        local tmpItems = {}
+        for _, tmpEntity in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)) do
+            local tmpItem = tmpEntity:ToPickup()
+            if tmpItem then table.insert(tmpItems, tmpItem) end
+        end
+        if #tmpItems > 0 then
+            local selected = tmpItems[math.random(#tmpItems)]
+            local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE)
+            selected:AddCollectibleCycle(newItem)
+        end
+        PST.specialNodes.perthroProc = false
     end
 
     -- Ancient starcursed jewel: Circadian Destructor

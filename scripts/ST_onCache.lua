@@ -350,16 +350,23 @@ function PST:onCache(player, cacheFlag)
     -- Vacuophobia node (T. Isaac's tree)
     if PST:getTreeSnapshotMod("vacuophobia", false) then
         local tmpMax = 8
+        local collectibleCount = player:GetCollectibleCount()
         if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
             tmpMax = 12
+            collectibleCount = collectibleCount - 1
         end
-        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.min(tmpMax, player:GetCollectibleCount() - 1)
+        if player:GetActiveItem(0) ~= 0 then collectibleCount = collectibleCount - 1 end
+        if player:GetActiveItem(1) ~= 0 then collectibleCount = collectibleCount - 1 end
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.min(tmpMax, collectibleCount)
 
-        if player:GetTrinket(0) == -1 and player:GetTrinket(1) == -1 then
-            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 3
+        if player:GetTrinket(0) == 0 and player:GetTrinket(1) == 0 then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 4
         end
-        if player:GetActiveItem(0) == -1 and player:GetActiveItem(1) == -1 then
-            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 3
+        if player:GetActiveItem(0) == 0 and player:GetActiveItem(1) == 0 then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 4
+        end
+        if player:GetCard(0) == 0 and player:GetCard(1) == 0 then
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 4
         end
     end
 

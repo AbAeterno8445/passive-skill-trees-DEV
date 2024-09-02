@@ -333,7 +333,8 @@ function PST:resetMods()
 			coinTracker = 0,
 			holyMantleTracker = 0,
 			lvlCurseTracker = 0,
-			charTracker = ""
+			charTracker = "",
+			pocketTracker = 0
 		},
 
 		-- 'Keystone' nodes
@@ -660,8 +661,9 @@ function PST:resetMods()
 		---- T. Isaac ---- TEST
 		vacuophobia = false,
 		consumingVoid = false,
+		consumingVoidSpawned = false,
 		consumingVoidConsumed = 0,
-		fracturedDie = false,
+		fracturedRemains = false,
 		obtainedItemDamage = 0,
 		obtainedItemTears = 0,
 		obtainedItemRange = 0,
@@ -760,6 +762,7 @@ function PST:resetMods()
 		mobHitRoomExtraDmg = { hits = 0, proc = false },
 		itemRemovalProtected = {},
 		jeraUseFrame = 0,
+		perthroProc = false,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
