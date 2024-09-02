@@ -598,10 +598,15 @@ function PST:onPickupInit(pickup)
         -- Coins
         elseif variant == PickupVariant.PICKUP_COIN then
             -- Mod: chance to replace pennies with lucky pennies
-            if not pickupGone and firstSpawn and subtype == CoinSubType.COIN_PENNY and 100 * math.random() < PST:getTreeSnapshotMod("luckyPennyChance", 0) then
-                pickup:Remove()
-                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, pickup.Position, pickup.Velocity, nil, CoinSubType.COIN_LUCKYPENNY, Random() + 1)
-                pickupGone = true
+            local tmpChance = PST:getTreeSnapshotMod("luckyPennyChance", 0)
+            if tmpChance > 0 then
+                if PST:getPlayer():GetPlayerType() == PlayerType.PLAYER_KEEPER_B then
+                    tmpChance = tmpChance / 3
+                end
+                if not pickupGone and firstSpawn and subtype == CoinSubType.COIN_PENNY and 100 * math.random() < tmpChance then
+                    pickup:Morph(pickup.Type, variant, CoinSubType.COIN_LUCKYPENNY)
+                    pickupGone = true
+                end
             end
         -- Keys
         elseif variant == PickupVariant.PICKUP_KEY then
