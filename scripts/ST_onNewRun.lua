@@ -294,7 +294,7 @@ function PST:onNewRun(isContinued)
 
     -- Mod: -% all stats while you haven't used a soul stone matching your current character
     local tmpMod = PST:getTreeSnapshotMod("soulStoneUnusedAllstats", 0)
-    if tmpMod > 0 then
+    if tmpMod ~= 0 then
         PST:addModifiers({ allstatsPerc = tmpMod }, true)
     end
 

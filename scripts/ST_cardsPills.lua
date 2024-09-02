@@ -153,7 +153,7 @@ function PST:onUseCard(card, player, useFlags)
         PST:addModifiers({
             allstatsPerc = tmpBonus + math.abs(PST:getTreeSnapshotMod("soulStoneUnusedAllstats", 0)),
             soulStoneAllstatsProc = true
-        })
+        }, true)
     end
 
     -- Mod: % chance to spawn a rune shard when using a dice shard

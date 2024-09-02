@@ -154,15 +154,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
 
     -- Consuming Void node (T. Isaac's tree)
     if PST:getTreeSnapshotMod("consumingVoid", false) and charge == 0 then
-        local itemsOwned = player:GetCollectibleCount()
-        local maxInv = 8
-        if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-            if player:GetActiveItem(0) ~= 0 then itemsOwned = itemsOwned - 1 end
-            if player:GetActiveItem(1) ~= 0 then itemsOwned = itemsOwned - 1 end
-            itemsOwned = itemsOwned - 1
-            maxInv = 12
-        end
-        if itemsOwned >= maxInv and not player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) and not PST:getTreeSnapshotMod("consumingVoidSpawned", false) then
+        if PST:isTIsaacInvFull() and not player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) and not PST:getTreeSnapshotMod("consumingVoidSpawned", false) then
             local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
             local voidItem = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_VOID, Random() + 1)
             ---@diagnostic disable-next-line: undefined-field

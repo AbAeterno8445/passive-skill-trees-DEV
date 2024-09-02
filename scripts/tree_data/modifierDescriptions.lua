@@ -1507,8 +1507,8 @@ PST.treeModDescriptions = {
         str = {
             "Consuming Void:",
             "    Once you fill your inventory, spawn a Void item pedestal",
-            "    When entering a floor, if you haven't consumed at least 2 items with Void in the previous floor, lose",
-            "    a random item and Void",
+            "    When entering a floor, if your inventory is full and you haven't consumed at least 2 items with Void",
+            "    in the previous floor, lose a random item and Void",
             "    During the Ascent, lose no items from this effect"
         },
         category = "charTree", sort = 3001

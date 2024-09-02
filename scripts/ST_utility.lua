@@ -484,6 +484,26 @@ function PST:songNodesAllocated(checkSnapshot)
 	return tmpCount
 end
 
+function PST:getTIsaacInvItems()
+	local player = PST:getPlayer()
+	local collectibleCount = player:GetCollectibleCount()
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+		collectibleCount = collectibleCount - 1
+	end
+	if player:GetActiveItem(0) ~= 0 then collectibleCount = collectibleCount - 1 end
+	if player:GetActiveItem(1) ~= 0 then collectibleCount = collectibleCount - 1 end
+	return collectibleCount
+end
+
+function PST:isTIsaacInvFull()
+	local player = PST:getPlayer()
+	local tmpMax = 8
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+		tmpMax = 12
+	end
+	return PST:getTIsaacInvItems() >= tmpMax
+end
+
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
 ---@param player EntityPlayer
