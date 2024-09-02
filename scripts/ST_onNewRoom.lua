@@ -72,23 +72,26 @@ function PST:onNewRoom()
 				if tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
 					local tmpHPMod = 0
 					local tmpHPMult = 1
-					local firstFloorMult = 1
+					local extraHPMult = 1
 					if PST:isFirstOrigStage() then
-						firstFloorMult = 0.5
+						extraHPMult = 0.5
+					end
+					if tmpNPC.Type == EntityType.ENTITY_LARRYJR then
+						extraHPMult = extraHPMult / 2
 					end
 					if not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
 						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
-						tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * firstFloorMult) / 100
+						tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * extraHPMult) / 100
 					else
 						if tmpNPC:IsChampion() then
-							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * firstFloorMult) / 100
+							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * extraHPMult) / 100
 						end
 						if tmpNPC:IsBoss() then
 							tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
-							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * firstFloorMult) / 100
+							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * extraHPMult) / 100
 						end
 					end
-					tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod * firstFloorMult) * tmpHPMult
+					tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
 					tmpEntity.HitPoints = tmpEntity.MaxHitPoints
 				end
 			end
