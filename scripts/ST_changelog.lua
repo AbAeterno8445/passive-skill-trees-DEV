@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.3.1",
         "- Added a new ancient jewel...?",
+        "- Crimson Warpstone should no longer apply its debuff when entering the Death Certificate dimension.",
         "- Fixed error when using rune shards.",
         "",
 

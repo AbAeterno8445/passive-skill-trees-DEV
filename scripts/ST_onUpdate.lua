@@ -98,7 +98,7 @@ function PST:onUpdate()
 		end
 
 		-- Ancient starcursed jewel: Crimson Warpstone
-		if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+		if PST:SC_getSnapshotMod("crimsonWarpstone", false) and level:GetDimension() ~= Dimension.DEATH_CERTIFICATE then
 			local debuffAmt = 30
 			local ultraIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ULTRASECRET, false, RNG())
 			local ultraSecretRoom = level:GetRoomByIdx(ultraIdx)
