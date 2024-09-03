@@ -274,40 +274,40 @@ PST.treeModDescriptions = {
         category = "extra", sort = 1101
     },
     curseRoomSpikesOut = {
-        str = "When entering a floor containing curse rooms, %d%% chance to change all spiked doors to regular ones.",
+        str = "When entering a floor containing curse rooms, %d%% chance to change all spiked doors to regular ones",
         category = "extra", sort = 1102
     },
     goldenKeyConvert = {
-        str = "%.2f%% chance for dropped keys to be replaced with a golden key, once per floor.",
+        str = "%.2f%% chance for dropped keys to be replaced with a golden key, once per floor",
         category = "extra", sort = 1103
     },
     sacrificeRoomHearts = {
-        str = "%d%% chance for a red heart to drop when using a sacrifice room, up to 4 times.",
+        str = "%d%% chance for a red heart to drop when using a sacrifice room, up to 4 times",
         category = "extra", sort = 1104
     },
     naturalCurseCleanse = {
         str = {
-            "When entering a floor, %d%% chance to receive no natural curses.",
-            "    Does not prevent curses caused by other special effects."
+            "When entering a floor, %d%% chance to receive no natural curses",
+            "    Does not prevent curses caused by other special effects"
         },
         category = "extra", sort = 1105
     },
     goldenTrinkets = {
         str = {
-            "When a trinket drops, %.2f%% additional chance to replace it with its golden version.",
-            "    Requires having golden trinkets unlocked."
+            "When a trinket drops, %.2f%% additional chance to replace it with its golden version",
+            "    Requires having golden trinkets unlocked"
         },
         category = "extra", sort = 1106
     },
     championChance = {
-        str = "%.2f%% additional chance for monsters to become champions.",
+        str = "%.2f%% additional chance for monsters to become champions",
         category = "extra", sort = 1107
     },
     activeItemReroll = {
         str = {
             "When first entering a room, %.2f%% chance to reroll active item pedestals into random passive items",
-            "if you are holding an active item.",
-            "    This effect can reroll up to 2 items per floor."
+            "if you are holding an active item",
+            "    This effect can reroll up to 2 items per floor"
         },
         category = "extra", sort = 1108
     },
@@ -325,10 +325,14 @@ PST.treeModDescriptions = {
     },
     eldritchMapping = {
         str = {
-            "You can no longer receive Curse of the Lost.",
-            "    +20% chance to receive a different random curse when entering a floor."
+            "You can no longer receive Curse of the Lost",
+            "    +20% chance to receive a different random curse when entering a floor"
         },
         category = "extra", sort = 1111
+    },
+    trollBombDisarm = {
+        str = "%d%% chance to turn troll and super troll bombs into regular bomb pickups",
+        category = "extra", sort = 1112
     },
 
     coalescingSoulChance = {

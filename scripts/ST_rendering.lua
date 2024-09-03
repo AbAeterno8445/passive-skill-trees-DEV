@@ -170,10 +170,10 @@ function PST:Render()
 		local player = PST:getPlayer()
         for i = #floatingTexts, 1, -1 do
             local textFX = floatingTexts[i]
-            local textX = textFX.position.X
-            local textY = textFX.position.Y
+			local worldPos = room:WorldToScreenPosition(textFX.position)
+			local textX = worldPos.X
+			local textY = worldPos.Y
             if textFX.playerRelative then
-				local worldPos
 				if not room:IsMirrorWorld() then
 					worldPos = room:WorldToScreenPosition(Vector(player.Position.X, player.Position.Y))
 				else
@@ -181,8 +181,11 @@ function PST:Render()
 					local newX = room:GetCenterPos().X - (player.Position.X - room:GetCenterPos().X)
 					worldPos = room:WorldToScreenPosition(Vector(newX, player.Position.Y))
 				end
-                textX = worldPos.X + textFX.position.X - string.len(textFX.text) * 3
+				textX = worldPos.X + textFX.position.X - string.len(textFX.text) * 3
                 textY = worldPos.Y + textFX.position.Y - 40
+			else
+				textX = textX - string.len(textFX.text) * 3
+                textY = textY - 20
             end
 
             textY = textY - textFX.step * textFX.speed
