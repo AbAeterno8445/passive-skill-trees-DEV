@@ -6,7 +6,7 @@ function PST:getChangelogList()
         "v0.3.0",
         "- Introduced new character skill trees for: Tainted Isaac and Tainted Magdalene.",
         "- New global tree large node: \"Eldritch Mapping\".",
-        "- Added 2 new Ancient Jewels: \"Cursed Auric Shard\" and \"Unusually Small Starstone\".",
+        "- Added 3 new Ancient Jewels: \"Cursed Auric Shard\", \"Unusually Small Starstone\" and \"Primordial Kaleidoscope\".",
         "- \"Tears on first obtaining a passive item\" node now grants 0.015 tears per item (from 0.03).",
         "- Sources of all stats and % all stats no longer affect luck.",
         "- Rebalanced total luck granted by the global tree.",

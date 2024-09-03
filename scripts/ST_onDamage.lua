@@ -558,6 +558,16 @@ function PST:onDamage(target, damage, flag, source)
                                 dmgMult = dmgMult + tmpMod / 100
                             end
                         end
+
+                        -- Ancient starcursed jewel: Primordial Kaleidoscope
+                        if PST:SC_getSnapshotMod("primordialKaleidoscope", false) then
+                            if not target:HasEntityFlags(EntityFlag.FLAG_BAITED | EntityFlag.FLAG_BLEED_OUT | EntityFlag.FLAG_BURN | EntityFlag.FLAG_CHARM | EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_FEAR | EntityFlag.FLAG_POISON | EntityFlag.FLAG_SLOW | EntityFlag.FLAG_SHRINK | EntityFlag.FLAG_FREEZE) then
+                                dmgMult = dmgMult - 0.5
+                                if target:IsBoss() and target:GetBossStatusEffectCooldown() > 0 then
+                                    target:SetBossStatusEffectCooldown(math.max(0, target:GetBossStatusEffectCooldown() - 15))
+                                end
+                            end
+                        end
                     end
                 end
             end

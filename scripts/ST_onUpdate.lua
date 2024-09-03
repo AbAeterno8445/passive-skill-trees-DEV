@@ -638,6 +638,16 @@ function PST:onUpdate()
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
 	end
 
+	-- Ancient starcursed jewel: Primordial Kaleidoscope
+	if PST:SC_getSnapshotMod("primordialKaleidoscope", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
+		end
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+		end
+	end
+
 	-- Fickle Fortune node (Cain's tree)
 	if PST:getTreeSnapshotMod("fickleFortune", false) then
 		-- +7% luck while holding a trinket

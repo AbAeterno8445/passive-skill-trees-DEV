@@ -158,6 +158,15 @@ function PST:onNewRun(isContinued)
             player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
             PST:addModifiers({ tears = -0.7, damagePerc = -30 }, true)
         end
+        -- Ancient starcursed jewel: Primordial Kaleidoscope
+        if PST:SC_getSnapshotMod("primordialKaleidoscope", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+            player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
+            player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+            player:AddSmeltedTrinket(TrinketType.TRINKET_RAINBOW_WORM)
+            PST:addModifiers({ luck = -3 }, true)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

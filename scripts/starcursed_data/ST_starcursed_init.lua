@@ -698,6 +698,24 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    primordialKaleidoscope = {
+        weight = 100,
+        spriteFrame = 22,
+        name = "Primordial Kaleidoscope",
+        description = {
+            "Start with Playdough Cookie and Fruit Cake as innate effects.",
+            "Start with a smelted Rainbow Worm.",
+            "-3 luck.",
+            "Deal half as much damage to enemies that aren't affected by status effects.",
+            "Hitting bosses reduces their status effect cooldown by 0.5 seconds."
+        },
+        rewards = {
+            xpgain = 50,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 
