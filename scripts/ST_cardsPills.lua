@@ -157,7 +157,7 @@ function PST:onUseCard(card, player, useFlags)
     end
 
     -- Mod: % chance to spawn a rune shard when using a dice shard
-    tmpBonus = PST:getTreeSnapshotMod("diceShardRuneShard", false)
+    tmpBonus = PST:getTreeSnapshotMod("diceShardRuneShard", 0)
     if tmpBonus > 0 and card == Card.CARD_DICE_SHARD and 100 * math.random() < tmpBonus then
         local tmpPos = room:FindFreePickupSpawnPosition(player.Position, 20)
         Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.RUNE_SHARD, Random() + 1)

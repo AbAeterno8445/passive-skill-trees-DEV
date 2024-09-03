@@ -716,6 +716,19 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    teprucordTenicanEljwe = {
+        weight = 40,
+        spriteFrame = 23,
+        name = "Teprucord Tenican Eljwe",
+        description = {
+            "%@%#%5)$@!TMTRAINER%$#9^(_@MISSINGNO.$%#36_#()$",
+            "%((ROOM).ENTER)^$@^%[..40%]$&DATAMINER%$@^&EFFECT%$#^_&"
+        },
+        rewards = {
+            xpgain = 66,
+            halveXPFirstFloor = true
+        }
     }
 }
 

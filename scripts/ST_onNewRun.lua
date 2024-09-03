@@ -167,6 +167,11 @@ function PST:onNewRun(isContinued)
             player:AddSmeltedTrinket(TrinketType.TRINKET_RAINBOW_WORM)
             PST:addModifiers({ luck = -3 }, true)
         end
+        -- Ancient starcursed jewel: Teprucord Tenican Eljwe
+        if PST:SC_getSnapshotMod("teprucordTenicanEljwe", false) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_MISSING_NO)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_TMTRAINER)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

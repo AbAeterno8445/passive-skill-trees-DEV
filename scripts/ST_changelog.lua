@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.1",
+        "- Added a new ancient jewel...?",
+        "- Fixed error when using rune shards.",
+        "",
+
         "v0.3.0",
         "- Introduced new character skill trees for: Tainted Isaac and Tainted Magdalene.",
         "- New global tree large node: \"Eldritch Mapping\".",

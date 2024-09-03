@@ -648,6 +648,16 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Ancient starcursed jewel: Teprucord Tenican Eljwe
+	if PST:SC_getSnapshotMod("teprucordTenicanEljwe", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_TMTRAINER) then
+			player:AddCollectible(CollectibleType.COLLECTIBLE_TMTRAINER)
+		end
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_MISSING_NO) then
+			player:AddCollectible(CollectibleType.COLLECTIBLE_MISSING_NO)
+		end
+	end
+
 	-- Fickle Fortune node (Cain's tree)
 	if PST:getTreeSnapshotMod("fickleFortune", false) then
 		-- +7% luck while holding a trinket

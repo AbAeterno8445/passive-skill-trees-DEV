@@ -125,6 +125,11 @@ function PST:onNewRoom()
 			SFXManager():Play(SoundEffect.SOUND_REVERSE_HIGH_PRIESTESS)
 			PST:addModifiers({ SC_nightProjProc = true }, true)
 		end
+
+		-- Ancient starcursed jewel: Teprucord Tenican Eljwe
+		if PST:SC_getSnapshotMod("teprucordTenicanEljwe", false) and room:GetType() ~= RoomType.ROOM_BOSS and 100 * math.random() < 40 then
+			player:UseActiveItem(CollectibleType.COLLECTIBLE_DATAMINER, UseFlag.USE_NOANIM)
+		end
 	end
 
 	-- Ancient starcursed jewel: Challenger's Starpiece
