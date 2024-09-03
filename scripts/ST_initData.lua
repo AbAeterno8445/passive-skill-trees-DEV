@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.2.45"
+PST.modVersion = "v0.3.0"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -230,6 +230,10 @@ PST.noSplitMobs = {
 PST.allRunes = {
 	Card.RUNE_ALGIZ, Card.RUNE_ANSUZ, Card.RUNE_BERKANO, Card.RUNE_BLACK, Card.RUNE_BLANK, Card.RUNE_DAGAZ, Card.RUNE_EHWAZ, Card.RUNE_HAGALAZ,
 	Card.RUNE_JERA, Card.RUNE_PERTHRO, Card.RUNE_SHARD
+}
+PST.playerDamagingCreep = {
+	EffectVariant.PLAYER_CREEP_GREEN, EffectVariant.PLAYER_CREEP_HOLYWATER, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL,
+	EffectVariant.PLAYER_CREEP_LEMON_MISHAP, EffectVariant.PLAYER_CREEP_LEMON_PARTY, EffectVariant.PLAYER_CREEP_RED
 }
 
 -- First update when entering a new floor
@@ -661,7 +665,7 @@ function PST:resetMods()
 		soulStoneAllstatsProc = false,
 		soulStoneUnusedAllstats = 0,
 
-		---- T. Isaac ---- TEST
+		---- T. Isaac ----
 		vacuophobia = false,
 		consumingVoid = false,
 		consumingVoidSpawned = false,
@@ -688,6 +692,24 @@ function PST:resetMods()
 		ansuzMapreveal = 0,
 		algizBuffTimer = 0,
 		algizBuffProc = false,
+		---- T. Magdalene ----
+		taintedHealth = false,
+		testOfTemperance = false,
+		bloodful = false,
+		bloodfulBuff = 0,
+		bloodfulDebuffProc = false,
+		lingeringMalice = false,
+		remainingHeartsSpeed = 0,
+		remainingHeartsDmg = 0,
+		remainingHeartsTears = 0,
+		temporaryHeartTime = 0,
+		temporaryHeartDmg = 0,
+		temporaryHeartTears = 0,
+		temporaryHeartLuck = 0,
+		temporaryHeartLuckBuff = 0,
+		creepDamage = 0,
+		halfHeartPickupToFull = 0,
+		bloodDonoTempHeart = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -766,6 +788,12 @@ function PST:resetMods()
 		itemRemovalProtected = {},
 		jeraUseFrame = 0,
 		perthroProc = false,
+		testOfTemperanceCD = 0,
+		lingMaliceCreepList = {},
+		temporaryHearts = {},
+		temporaryHeartDmgStacks = 0,
+		temporaryHeartTearStacks = 0,
+		temporaryHeartBuffTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

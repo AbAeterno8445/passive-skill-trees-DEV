@@ -926,6 +926,35 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Lingering Malice, creep damage against flying enemies
+	if #PST.specialNodes.lingMaliceCreepList > 0 and room:GetFrameCount() % 15 == 0 then
+		for i = #PST.specialNodes.lingMaliceCreepList, 1, -1 do
+			local tmpCreep = PST.specialNodes.lingMaliceCreepList[i]
+			if tmpCreep.Timeout > 0 then
+				local tmpEnemies = Isaac.FindInRadius(tmpCreep.Position, tmpCreep.Size)
+				for _, tmpEntity in ipairs(tmpEnemies) do
+					local tmpNPC = tmpEntity:ToNPC()
+					if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and tmpNPC:IsFlying() then
+						local tmpDamage = (player.Damage / 2) * (1 + PST:getTreeSnapshotMod("creepDamage", false) / 100)
+						tmpNPC:TakeDamage(tmpDamage, 0, EntityRef(player), 0)
+					end
+				end
+			else
+				table.remove(PST.specialNodes.lingMaliceCreepList, i)
+			end
+		end
+	end
+
+	-- Mod: +% damage/tears when picking up temporary hearts
+	if PST.specialNodes.temporaryHeartBuffTimer > 0 then
+		PST.specialNodes.temporaryHeartBuffTimer = PST.specialNodes.temporaryHeartBuffTimer - 1
+		if PST.specialNodes.temporaryHeartBuffTimer == 0 then
+			PST.specialNodes.temporaryHeartDmgStacks = 0
+			PST.specialNodes.temporaryHeartTearStacks = 0
+			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -1326,6 +1355,11 @@ function PST:onUpdate()
 			tmpMod = PST:getTreeSnapshotMod("bossFlawlessLuck", 0)
 			if tmpMod > 0 and room:GetType() == RoomType.ROOM_BOSS and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 				PST:addModifiers({ luck = tmpMod }, true)
+			end
+
+			-- Test of Temperance node (T. Magdalene's tree)
+			if PST.specialNodes.testOfTemperanceCD > 0 then
+				PST.specialNodes.testOfTemperanceCD = PST.specialNodes.testOfTemperanceCD - 1
 			end
 
 			-- Cosmic Realignment node

@@ -24,6 +24,13 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
     end
 end
 
+function PST:onEffectInit(effect)
+    -- Lingering Malice node (T. Magdalene's tree)
+    if PST:getTreeSnapshotMod("lingeringMalice", false) and PST:arrHasValue(PST.playerDamagingCreep, effect.Variant) then
+        table.insert(PST.specialNodes.lingMaliceCreepList, effect)
+    end
+end
+
 function PST:postNPCInit(npc)
     -- Mod: Greed has lower health
     if npc.Type == EntityType.ENTITY_GREED then

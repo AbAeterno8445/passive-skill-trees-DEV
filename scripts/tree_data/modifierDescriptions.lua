@@ -1600,6 +1600,103 @@ PST.treeModDescriptions = {
         str = "Reaching %d rune shard stacks drops a random rune",
         category = "charTree", sort = 3018
     },
+    ---- T. MAGDALENE'S TREE ----
+    taintedHealth = {
+        str = {
+            "Tainted Health:",
+            "    +0.1 damage per 1/2 remaining red heart above 2 hearts",
+            "    +3%% tears per 1/2 remaining soul heart",
+            "    -15%% speed while you have 3 or less remaining red hearts"
+        },
+        category = "charTree", sort = 3050
+    },
+    testOfTemperance = {
+        str = {
+            "Test of Temperance:",
+            "    5%% chance to drop a 1/2 red heart pickup when hitting a boss, which vanishes after 2 seconds",
+            "    This effect has a 0.5 second cooldown once triggered",
+            "    If you have more than 2 remaining red hearts, receive an additional 1/2 heart damage when",
+            "    hit in boss rooms"
+        },
+        category = "charTree", sort = 3051
+    },
+    bloodful = {
+        str = {
+            "Bloodful:",
+            "    Start with Blood Oath.",
+            "    +1%% all stats per red heart collected in the current room, up to +10%%",
+            "    -5%% all stats while you haven't collected any red hearts in the current room"
+        },
+        category = "charTree", sort = 3052
+    },
+    lingeringMalice = {
+        str = {
+            "Lingering Malice:",
+            "    Start with a smelted Lost Cork",
+            "    Creep left by you can damage flying enemies"
+        },
+        category = "charTree", sort = 3053
+    },
+    creepDamage = {
+        str = "%s%d%% damage dealt by creep",
+        addPlus = true,
+        category = "charTree", sort = 3055
+    },
+    remainingHeartsSpeed = {
+        str = "%s%.2f speed per 1/2 remaining red heart past 2",
+        addPlus = true,
+        category = "charTree", sort = 3056
+    },
+    remainingHeartsDmg = {
+        str = "%s%.2f damage per 1/2 remaining red heart past 2",
+        addPlus = true,
+        category = "charTree", sort = 3056
+    },
+    remainingHeartsTears = {
+        str = "%s%.2f tears per 1/2 remaining red heart past 2",
+        addPlus = true,
+        category = "charTree", sort = 3056
+    },
+    temporaryHeartTime = {
+        str = "%s%.2f seconds to temporary red heart pickups before they vanish",
+        addPlus = true,
+        category = "charTree", sort = 3057
+    },
+    temporaryHeartDmg = {
+        str = {
+            "%s%.2f%% damage for 2 seconds after picking up a temporary red heart",
+            "    Modifiers that increase temporary heart duration also affect this buff's time"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3058
+    },
+    temporaryHeartTears = {
+        str = {
+            "%s%.2f%% tears for 2 seconds after picking up a temporary red heart",
+            "    Modifiers that increase temporary heart duration also affect this buff's time"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3058
+    },
+    temporaryHeartLuck = {
+        str = {
+            "40%% chance to gain %.2f luck when picking up a temporary red heart while its",
+            "lifetime has 1.8 seconds or more remaining",
+            "    Total luck bonus from this effect gets halved when entering a new floor"
+        },
+        category = "charTree", sort = 3059
+    },
+    halfHeartPickupToFull = {
+        str = "%.2f%% chance to convert dropped 1/2 red heart pickups into full red hearts",
+        category = "charTree", sort = 3060
+    },
+    bloodDonoTempHeart = {
+        str = {
+            "2%% chance to drop a 1/2 red heart when using a Blood Donation Machine, which",
+            "vanishes after 2 seconds"
+        },
+        category = "charTree", sort = 3061
+    },
     --#endregion
 
     ---- STARMIGHT ----

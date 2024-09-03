@@ -18,6 +18,8 @@ function PST:onNewRoom()
 	PST.specialNodes.SC_martianTears = {}
 	PST.specialNodes.SC_nullstoneCurrentSpawn = nil
 	PST.specialNodes.SC_nullstoneSpawned = 0
+	PST.specialNodes.lingMaliceCreepList = {}
+	PST.specialNodes.temporaryHearts = {}
 
 	local player = PST:getPlayer()
 	local room = Game():GetRoom()
@@ -406,6 +408,23 @@ function PST:onNewRoom()
 	-- Sinistral Runemaster Ehwaz proc
 	if PST:getTreeSnapshotMod("ehwazAllstatsProc", false) then
 		PST:addModifiers({ ehwazAllstatsProc = false }, true)
+	end
+
+	-- Bloodful node (T. Magdalene's tree)
+	if PST:getTreeSnapshotMod("bloodful", false) then
+		local tmpModList = { allstatsPerc = 0 }
+		if PST:getTreeSnapshotMod("bloodfulDebuffProc", false) then
+			tmpModList.allstatsPerc = tmpModList.allstatsPerc - 5
+			tmpModList.bloodfulDebuffProc = false
+		end
+		tmpMod = PST:getTreeSnapshotMod("bloodfulBuff", false)
+		if tmpMod > 0 then
+			tmpModList.allstatsPerc = tmpModList.allstatsPerc - tmpMod
+			tmpModList.bloodfulBuff = { value = 0, set = true }
+		end
+		if tmpModList.allstatsPerc ~= 0 then
+			PST:addModifiers(tmpModList, true)
+		end
 	end
 
 	-- Reset mob room hit

@@ -311,6 +311,18 @@ function PST:onNewRun(isContinued)
         player:AddCard(Card.CARD_DICE_SHARD)
     end
 
+    -- Bloodful node (T. Magdalene's tree)
+    if PST:getTreeSnapshotMod("bloodful", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BLOOD_OATH)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BLOOD_OATH)
+        PST:addModifiers({ allstatsPerc = -5 }, true)
+    end
+
+    -- Lingering Malice (T. Magdalene's tree)
+    if PST:getTreeSnapshotMod("lingeringMalice", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_LOST_CORK)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

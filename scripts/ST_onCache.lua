@@ -167,6 +167,17 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + player:GetCollectibleCount() * tmpTreeMod
         end
+
+        -- Mod: +damage per 1/2 remaining red heart past 2
+        tmpTreeMod = PST:getTreeSnapshotMod("remainingHeartsDmg", 0)
+        if tmpTreeMod ~= 0 then
+            dynamicMods.damage = dynamicMods.damage + tmpTreeMod
+        end
+
+        -- Mod: +% damage when picking up temporary hearts
+        if PST.specialNodes.temporaryHeartBuffTimer > 0 and PST.specialNodes.temporaryHeartDmgStacks > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + PST:getTreeSnapshotMod("temporaryHeartDmg", 0) * PST.specialNodes.temporaryHeartDmgStacks
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -183,6 +194,12 @@ function PST:onCache(player, cacheFlag)
         -- Spirit Ebb node (The Forgotten's tree)
         if (PST.specialNodes.spiritEbbHits.forgotten >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THESOUL) then
             dynamicMods.speedPerc = dynamicMods.speedPerc + 10
+        end
+
+        -- Mod: +speed per 1/2 remaining red heart past 2
+        tmpTreeMod = PST:getTreeSnapshotMod("remainingHeartsSpeed", 0)
+        if tmpTreeMod ~= 0 then
+            dynamicMods.speed = dynamicMods.speed + tmpTreeMod
         end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
@@ -228,6 +245,17 @@ function PST:onCache(player, cacheFlag)
         tmpTreeMod = PST:getTreeSnapshotMod("obtainedItemTears", 0)
         if tmpTreeMod > 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + player:GetCollectibleCount() * tmpTreeMod
+        end
+
+        -- Mod: +tears per 1/2 remaining red heart past 2
+        tmpTreeMod = PST:getTreeSnapshotMod("remainingHeartsDmg", 0)
+        if tmpTreeMod ~= 0 then
+            dynamicMods.tears = dynamicMods.tears + tmpTreeMod
+        end
+
+        -- Mod: +% tears when picking up temporary hearts
+        if PST.specialNodes.temporaryHeartBuffTimer > 0 and PST.specialNodes.temporaryHeartTearStacks > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + PST:getTreeSnapshotMod("temporaryHeartTears", 0) * PST.specialNodes.temporaryHeartTearStacks
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
@@ -361,6 +389,25 @@ function PST:onCache(player, cacheFlag)
         end
         if player:GetCard(0) == 0 and player:GetCard(1) == 0 then
             dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 4
+        end
+    end
+
+    -- Tainted Health node (T. Magdalene's tree)
+    if PST:getTreeSnapshotMod("taintedHealth", false) then
+        if cacheFlag == CacheFlag.CACHE_DAMAGE then
+            -- +0.1 damage per 1/2 red heart past 2
+            local tmpHearts = player:GetHearts() - 4
+            if tmpHearts > 0 then
+                dynamicMods.damage = dynamicMods.damage + 0.1 * tmpHearts
+            end
+        elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+            -- +3% tears per 1/2 soul heart
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + 3 * player:GetSoulHearts()
+        elseif cacheFlag == CacheFlag.CACHE_SPEED then
+            -- -15% speed at 3 or less remaining red hearts
+            if player:GetHearts() <= 6 then
+                dynamicMods.speedPerc = dynamicMods.speedPerc - 15
+            end
         end
     end
 

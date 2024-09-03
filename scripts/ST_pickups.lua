@@ -313,12 +313,11 @@ function PST:prePickup(pickup, collider, low)
 end
 
 function PST:onPickup(pickup, collider, low)
+    if pickup:GetSprite():GetAnimation() ~= "Collect" then return end
+
     local player = collider:ToPlayer()
     local variant = pickup.Variant
     local subtype = pickup.SubType
-
-    if pickup:GetSprite():GetAnimation() ~= "Collect" then return end
-
     if player ~= nil and not pickup:IsShopItem() then
         if variant == PickupVariant.PICKUP_COIN then
             local coinChance = PST:getTreeSnapshotMod("coinDupe", 0)
@@ -339,6 +338,7 @@ function PST:onPickup(pickup, collider, low)
             end
             PST:tryGrabBag()
         elseif variant == PickupVariant.PICKUP_HEART then
+            -- Black heart pickup
             if subtype == HeartSubType.HEART_BLACK then
                 -- Sacrifice Darkness node (Judas' tree)
                 if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
@@ -364,7 +364,9 @@ function PST:onPickup(pickup, collider, low)
                 if tmpBonus ~= 0 and PST:getTreeSnapshotMod("blackHeartDamageTotal", 0) < 3 then
                     PST:addModifiers({ damage = tmpBonus, blackHeartDamageTotal = tmpBonus }, true)
                 end
-            elseif subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL then
+            end
+            -- Soul heart pickup
+            if subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL or subtype == HeartSubType.HEART_BLENDED then
                 -- Mod: +% tears and range when picking up a soul heart. Resets every floor
                 local tmpBonus = PST:getTreeSnapshotMod("soulHeartTearsRange", 0)
                 if tmpBonus > 0 and PST:getTreeSnapshotMod("soulHeartTearsRangeTotal", 0) < 10 then
@@ -394,11 +396,52 @@ function PST:onPickup(pickup, collider, low)
                 if PST:getTreeSnapshotMod("soulTrickle", false) then
                     player:AddHearts(1)
                 end
-            elseif subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF then
+            end
+            -- Red heart pickups
+            if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_BLENDED then
                 -- Mod: chance to gain a soul charge when picking up a red heart
                 if 100 * math.random() < PST:getTreeSnapshotMod("redHeartsSoulCharge", 0) then
                     SFXManager():Play(SoundEffect.SOUND_BEEP)
                     player:AddSoulCharge(1)
+                end
+
+                -- Bloodful node (T. Magdalene's tree)
+                if PST:getTreeSnapshotMod("bloodful", false) then
+                    local tmpMods = { allstatsPerc = 0 }
+                    if PST:getTreeSnapshotMod("bloodfulBuff", 0) < 10 then
+                        tmpMods.allstatsPerc = tmpMods.allstatsPerc + 1
+                        tmpMods.bloodfulBuff = 1
+                    end
+                    if not PST:getTreeSnapshotMod("bloodfulDebuffProc", false) then
+                        tmpMods.allstatsPerc = tmpMods.allstatsPerc + 5
+                        tmpMods.bloodfulDebuffProc = true
+                    end
+                    if tmpMods.allstatsPerc ~= 0 then
+                        PST:addModifiers(tmpMods, true)
+                    end
+                end
+
+                -- Temporary red heart pickup
+                if pickup.Timeout > 0 then
+                    -- Mod: +% damage/tears when picking up a temporary red heart
+                    tmpMod = PST:getTreeSnapshotMod("temporaryHeartDmg", 0)
+                    if tmpMod > 0 then
+                        PST.specialNodes.temporaryHeartDmgStacks = PST.specialNodes.temporaryHeartDmgStacks + 1
+                        PST.specialNodes.temporaryHeartBuffTimer = 60 + math.floor(PST:getTreeSnapshotMod("temporaryHeartTime", 0) * 30)
+                        player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
+                    end
+                    tmpMod = PST:getTreeSnapshotMod("temporaryHeartTears", 0)
+                    if tmpMod > 0 then
+                        PST.specialNodes.temporaryHeartTearStacks = PST.specialNodes.temporaryHeartTearStacks + 1
+                        PST.specialNodes.temporaryHeartBuffTimer = 60 + math.floor(PST:getTreeSnapshotMod("temporaryHeartTime", 0) * 30)
+                        player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY, true)
+                    end
+
+                    -- Mod: +luck if temporary heart has 2 seconds or more remaining
+                    tmpMod = PST:getTreeSnapshotMod("temporaryHeartLuck", 0)
+                    if tmpMod > 0 and PST:getRoom():IsFirstVisit() and pickup.Timeout >= 54 and 100 * math.random() < 40 then
+                        PST:addModifiers({ luck = tmpMod, temporaryHeartLuckBuff = tmpMod }, true)
+                    end
                 end
             end
 
@@ -595,6 +638,12 @@ function PST:onPickupInit(pickup)
                     pickupGone = true
                 end
             end
+
+            -- Mod: chance to convert half red heart pickups to full hearts
+            if room:IsFirstVisit() and not isShop and not pickupGone and subtype == HeartSubType.HEART_HALF and
+            100 * math.random() < PST:getTreeSnapshotMod("halfHeartPickupToFull", 0) then
+                pickup:Morph(pickup.Type, variant, HeartSubType.HEART_FULL)
+            end
         -- Coins
         elseif variant == PickupVariant.PICKUP_COIN then
             -- Mod: chance to replace pennies with lucky pennies
@@ -698,6 +747,18 @@ function PST:onPickupInit(pickup)
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, pickup.Position, pickup.Velocity, nil, CoinSubType.COIN_PENNY, Random() + 1)
                 end
             end
+        end
+    end
+end
+
+function PST:onPickupUpdate(pickup)
+    -- Mod: +time for temporary heart pickups
+    local tempFirstSpawn = not PST.specialNodes.temporaryHearts[pickup.InitSeed]
+    local tmpMod = PST:getTreeSnapshotMod("temporaryHeartTime", 0)
+    if tmpMod > 0 then
+        if pickup.Variant == PickupVariant.PICKUP_HEART and pickup.Timeout > 0 and tempFirstSpawn then
+            pickup.Timeout = pickup.Timeout + math.floor(tmpMod * 30)
+            PST.specialNodes.temporaryHearts[pickup.InitSeed] = true
         end
     end
 end

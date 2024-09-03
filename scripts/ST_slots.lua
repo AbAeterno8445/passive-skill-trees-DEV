@@ -49,6 +49,13 @@ function PST:onSlotUpdate(slot)
                 local tmpPos = Isaac.GetFreeNearPosition(slot.Position, 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
             end
+
+            -- Mod: chance to spawn a temporary half red heart when using a Blood Donation Machine
+            tmpTreeMod = PST:getTreeSnapshotMod("bloodDonoTempHeart", 0)
+            if tmpTreeMod > 0 and 100 * math.random() < tmpTreeMod then
+                local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, slot.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1)
+                tmpHeart:ToPickup().Timeout = 60 + math.floor(PST:getTreeSnapshotMod("temporaryHeartTime", 0) * 30)
+            end
         -- Crane game
         elseif slot.Variant == SlotVariant.CRANE_GAME and spentCoins then
             -- Impromptu Gambler node (Cain's tree)

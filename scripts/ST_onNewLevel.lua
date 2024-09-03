@@ -8,6 +8,9 @@ function PST:onNewLevel()
     PST.specialNodes.mobHitReduceDmg = 0
     PST.specialNodes.momDeathProc = false
     PST.specialNodes.itemRemovalProtected = {}
+    PST.specialNodes.temporaryHeartBuffTimer = 0
+    PST.specialNodes.temporaryHeartDmgStacks = 0
+    PST.specialNodes.temporaryHeartTearStacks = 0
 	PST:resetFloatingTexts()
     PST.floorFirstUpdate = true
     PST:addModifiers({
@@ -299,6 +302,12 @@ function PST:onNewLevel()
     if PST:getTreeSnapshotMod("berkanoHivemind", false) then
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, -1)
         PST:addModifiers({ berkanoHivemind = false }, true)
+    end
+
+    -- Mod: +luck if temporary heart has 1.8 seconds or more remaining (halve on new floor)
+    tmpMod = PST:getTreeSnapshotMod("temporaryHeartLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod / 2, temporaryHeartLuckBuff = -tmpMod / 2 }, true)
     end
 
     -- Cosmic Realignment node

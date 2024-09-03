@@ -77,6 +77,11 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
+        -- Test of Temperance node (T. Magdalene's tree)
+        if PST:getTreeSnapshotMod("testOfTemperance", false) and room:GetType() == RoomType.ROOM_BOSS and player:GetHearts() > 4 then
+            return { Damage = damage + 1 }
+        end
+
         -- Cosmic Realignment node
 	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
             -- Samson, -0.15 damage when hit, up to -0.9
@@ -456,6 +461,13 @@ function PST:onDamage(target, damage, flag, source)
                                     dmgMult = dmgMult + 9
                                 end
                             end
+
+                            -- Test of Temperance node (T. Magdalene's tree)
+                            if PST:getTreeSnapshotMod("testOfTemperance", false) and PST.specialNodes.testOfTemperanceCD == 0 and 100 * math.random() < 5 then
+                                local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1)
+                                tmpHeart:ToPickup().Timeout = 60 + math.floor(PST:getTreeSnapshotMod("temporaryHeartTime", 0) * 30)
+                                PST.specialNodes.testOfTemperanceCD = 15
+                            end
                         end
 
                         -- Spirit Ebb and Flow node (The Forgotten's tree)
@@ -536,6 +548,15 @@ function PST:onDamage(target, damage, flag, source)
                         if PST:getTreeSnapshotMod("songOfCelerity", false) and PST:songNodesAllocated(true) <= 2 and EntityRef(target).IsCharmed and
                         PST:getTreeSnapshotMod("songOfCelerityBuff", 0) < 15 then
                             PST:addModifiers({ tearsPerc = 1, songOfCelerityBuff = 1 }, true)
+                        end
+
+                        -- Creep damage
+                        if source.Type == EntityType.ENTITY_EFFECT and PST:arrHasValue(PST.playerDamagingCreep, source.Variant) then
+                            -- Mod: creep damage %
+                            local tmpMod = PST:getTreeSnapshotMod("creepDamage", 0)
+                            if tmpMod > 0 then
+                                dmgMult = dmgMult + tmpMod / 100
+                            end
                         end
                     end
                 end

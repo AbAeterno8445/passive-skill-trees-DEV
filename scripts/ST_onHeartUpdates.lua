@@ -123,6 +123,24 @@ function PST:onHeartUpdate(force)
                 tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
             end
 
+            -- Tainted Health node (T. Magdalene's tree)
+            if PST:getTreeSnapshotMod("taintedHealth", false) then
+                tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED
+            end
+
+            -- Mod: +damage/speed/tears per 1/2 remaining heart past 2
+            if player:GetHearts() >= 4 then
+                if PST:getTreeSnapshotMod("remainingHeartsDmg", 0) ~= 0 then
+                    tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
+                end
+                if PST:getTreeSnapshotMod("remainingHeartsSpeed", 0) ~= 0 then
+                    tmpFlags = tmpFlags | CacheFlag.CACHE_SPEED
+                end
+                if PST:getTreeSnapshotMod("remainingHeartsTears", 0) ~= 0 then
+                    tmpFlags = tmpFlags | CacheFlag.CACHE_FIREDELAY
+                end
+            end
+
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_EVE) then
                 -- Eve, -8% all stats if you have 1 remaining red heart or less
@@ -172,6 +190,11 @@ function PST:onHeartUpdate(force)
             -- The Forgotten mod updates
             if PST:getTreeSnapshotMod("forgottenSoulDamage", 0) ~= 0 or PST:getTreeSnapshotMod("forgottenSoulTears", 0) ~= 0 then
                 player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
+            end
+
+            -- Tainted Health node (T. Magdalene's tree)
+            if PST:getTreeSnapshotMod("taintedHealth", false) then
+                player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY)
             end
 
             -- Cosmic Realignment node
