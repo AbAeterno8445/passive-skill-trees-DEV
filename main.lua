@@ -8,7 +8,7 @@ PST:resetData()
 
 local oldLoadFlag = false
 saveManager.AddCallback(saveManager.Utility.CustomCallback.PRE_DATA_LOAD, function(modRef, saveData, isLuamod)
-	if modRef == PST and saveData.lastVersion then
+	if modRef == PST and saveData.skillPoints then
 		-- Loading from old version of savefile, update to new system
 		Isaac.DebugString("Detected old savefile layout for Passive Skill Trees, converting to SaveManager layout...")
 		oldLoadFlag = true
@@ -24,10 +24,15 @@ saveManager.AddCallback(saveManager.Utility.CustomCallback.PRE_DATA_LOAD, functi
 			oldConfig = PST:copyTable(PST.config)
 		end
 
+		local targetSaveTable = saveData
+		if saveData.file and saveData.file.other and saveData.file.other.modData and saveData.file.other.modData.skillPoints then
+			targetSaveTable = saveData.file.other.modData
+		end
+
 		return {
 			file = {
 				other = {
-					modData = saveData
+					modData = targetSaveTable
 				},
 				settings = {
 					config = oldConfig
@@ -208,10 +213,16 @@ function PST:resetSaveData()
 	PST:save()
 end
 
-function PST:onSaveSlot(slot)
+function PST:onSaveSlot(slot, isSlotSelected)
+	if not isSlotSelected then return end
+
 	local existingData = PST:LoadData()
 	if #existingData == 0 then
 		print("Passive Skill Trees: initialized fresh savefile on slot", slot)
+		-- Generate savefile through save manager, if it doesn't exist
+		if not PST:HasData() then
+			saveManager.Save()
+		end
 		PST:resetSaveData()
 	end
 end
