@@ -343,8 +343,8 @@ PST.SCMods = {
     },
     xpgain = "+%d%% xp gain while equipped.",
     halveXPFirstFloor = "XP bonus from this jewel is halved on the first floor.",
-    deliriumRewards = "Gain %d skill point(s) and %d respecs when defeating Delirium with this jewel equipped.",
-    beastRewards = "Gain %d skill point(s) and %d respecs when defeating The Beast with this jewel equipped.",
+    deliriumRewards = "Gain %d global SP and %d respecs when defeating Delirium with this jewel equipped.",
+    beastRewards = "Gain %d global SP and %d respecs when defeating The Beast with this jewel equipped.",
 }
 
 -- Order to display ancient jewel rewards in

@@ -253,6 +253,7 @@ function PST:onExitGame()
 end
 
 include("scripts.ST_utility")
+include("scripts.ST_completionEvents")
 include("scripts.ST_cosmicRData")
 include("scripts.ST_treeScreen")
 include("scripts.ST_onNewRoom")

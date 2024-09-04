@@ -5,7 +5,8 @@ function PST:getChangelogList()
 
         "v0.3.2",
         "- \"Chance to turn troll and super troll bombs into regular bombs\" modifiers now receive a hidden debuff",
-        "after certain events, such as bomb bums, anarchist's cookbook, tower card, etc.",
+        "after certain events, such as bomb bums, anarchist's cookbook, tower card, etc, reducing its proc chance.",
+        "- Ancient jewel skill point rewards are no longer given to character trees, and instead are global-only.",
         "",
 
         "v0.3.1",
