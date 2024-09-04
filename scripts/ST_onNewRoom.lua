@@ -20,6 +20,7 @@ function PST:onNewRoom()
 	PST.specialNodes.SC_nullstoneSpawned = 0
 	PST.specialNodes.lingMaliceCreepList = {}
 	PST.specialNodes.temporaryHearts = {}
+	PST.specialNodes.trollBombDisarmDebuffTimer = 0
 
 	local player = PST:getPlayer()
 	local room = Game():GetRoom()

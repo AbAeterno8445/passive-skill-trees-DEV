@@ -77,6 +77,11 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
+        -- Reduce troll bomb disarm chance if you have curse of the tower
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_CURSE_OF_THE_TOWER) then
+            PST.specialNodes.trollBombDisarmDebuffTimer = 45
+        end
+
         -- Test of Temperance node (T. Magdalene's tree)
         if PST:getTreeSnapshotMod("testOfTemperance", false) and room:GetType() == RoomType.ROOM_BOSS and player:GetHearts() > 4 then
             return { Damage = damage + 1 }

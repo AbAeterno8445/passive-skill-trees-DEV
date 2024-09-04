@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.1"
+PST.modVersion = "v0.3.2"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -795,6 +795,7 @@ function PST:resetMods()
 		temporaryHeartDmgStacks = 0,
 		temporaryHeartTearStacks = 0,
 		temporaryHeartBuffTimer = 0,
+		trollBombDisarmDebuffTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

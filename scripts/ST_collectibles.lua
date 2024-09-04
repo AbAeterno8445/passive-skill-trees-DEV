@@ -478,6 +478,9 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
         end
+    -- Anarchist's Cookbook
+    elseif itemType == CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK then
+        PST.specialNodes.trollBombDisarmDebuffTimer = 45
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item

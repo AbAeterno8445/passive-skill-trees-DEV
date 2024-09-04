@@ -193,6 +193,11 @@ function PST:onUseCard(card, player, useFlags)
         PST.specialNodes.perthroProc = false
     end
 
+    -- Troll bomb disarm debuff on tower card
+    if card == Card.CARD_TOWER then
+        PST.specialNodes.trollBombDisarmDebuffTimer = 45
+    end
+
     -- Ancient starcursed jewel: Circadian Destructor
     if PST:SC_getSnapshotMod("circadianDestructor", false) and card == Card.CARD_TOWER then
         local tmpMod = PST:getTreeSnapshotMod("SC_circadianStatsDown", 0)

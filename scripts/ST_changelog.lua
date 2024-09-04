@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.2",
+        "- \"Chance to turn troll and super troll bombs into regular bombs\" modifiers now receive a hidden debuff",
+        "after certain events, such as bomb bums, anarchist's cookbook, tower card, etc.",
+        "",
+
         "v0.3.1",
         "- Added a new ancient jewel...?",
         "- Crimson Warpstone should no longer apply its debuff when entering the Death Certificate dimension.",

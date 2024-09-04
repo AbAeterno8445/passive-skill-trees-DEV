@@ -52,9 +52,16 @@ end
 function PST:onBombInit(bomb)
     -- Mod: chance to turn troll and super troll bombs into regular bombs
     tmpMod = PST:getTreeSnapshotMod("trollBombDisarm", 0)
-    if tmpMod > 0 and (bomb.Variant == BombVariant.BOMB_TROLL or bomb.Variant == BombVariant.BOMB_SUPERTROLL) and 100 * math.random() < tmpMod then
-        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, bomb.Position, Vector.Zero, nil, BombSubType.BOMB_NORMAL, Random() + 1)
-        PST:createFloatTextFX("Troll bomb disarmed", bomb.Position, Color(1, 1, 1, 1), 0.12, 70, false)
-        bomb:Remove()
+    if tmpMod > 0 then
+        -- Chance debuff after certain events (bomb bum, anarchist cookbook, tower card, etc.) or boss rooms
+        local roomType = PST:getRoom():GetType()
+        if PST.specialNodes.trollBombDisarmDebuffTimer > 0 or roomType == RoomType.ROOM_BOSS or roomType == RoomType.ROOM_BOSSRUSH then
+            tmpMod = tmpMod / 4
+        end
+        if (bomb.Variant == BombVariant.BOMB_TROLL or bomb.Variant == BombVariant.BOMB_SUPERTROLL) and 100 * math.random() < tmpMod then
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, bomb.Position, Vector.Zero, nil, BombSubType.BOMB_NORMAL, Random() + 1)
+            PST:createFloatTextFX("Troll bomb disarmed", bomb.Position, Color(1, 1, 1, 1), 0.12, 70, false)
+            bomb:Remove()
+        end
     end
 end

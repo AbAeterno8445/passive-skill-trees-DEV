@@ -98,6 +98,11 @@ function PST:onSlotUpdate(slot)
                     player:AddBlackHearts(1)
                 end
             end
+
+            -- Reduce troll bomb disarm proc chance on bomb bums
+            if slot.Variant == SlotVariant.BOMB_BUM then
+                PST.specialNodes.trollBombDisarmDebuffTimer = 45
+            end
         end
 
         -- Machine-specific
