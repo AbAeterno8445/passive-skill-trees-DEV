@@ -1445,7 +1445,7 @@ PST.treeModDescriptions = {
             "    [Harmonic] When below 4 luck, 50%% chance for charmed enemies to grant an additional 0.01 luck on kill",
             "    [Harmonic] When above 4 luck, 25%% chance for charmed enemies to grant no luck on kill",
         },
-        category = "charTree", sort = 2852
+        category = "charTree", sort = 2851
     },
     songOfCelerity = {
         str = {
@@ -1454,7 +1454,7 @@ PST.treeModDescriptions = {
             "    [Harmonic] +7%% speed",
             "    [Harmonic] +1%% tears when hitting a charmed enemy, up to 15%%. Effect resets every room"
         },
-        category = "charTree", sort = 2853
+        category = "charTree", sort = 2851
     },
     songOfAwe = {
         str = {
@@ -1463,7 +1463,16 @@ PST.treeModDescriptions = {
             "    [Harmonic] Siren's Song additionally slows enemies by 90%% for 2 seconds on use",
             "    [Harmonic] Siren's Song gains an additional charge when clearing a room"
         },
-        category = "charTree", sort = 2854
+        category = "charTree", sort = 2851
+    },
+    overwhelmingSong = {
+        str = {
+            "Overwhelming Song:",
+            "    Siren's Song turns friendly monsters back into hostile enemies on use",
+            "    +5%% damage for the current room per monster turned this way, up to 20%%",
+            "    Siren's Song deals 6 damage to charmed monsters, which increases each floor"
+        },
+        category = "charTree", sort = 2852
     },
     luckOnCharmedKill = {
         str = "%.2f%% chance for charmed enemies to grant an additional 0.01 luck on kill",
