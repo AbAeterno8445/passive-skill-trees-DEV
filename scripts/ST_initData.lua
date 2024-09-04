@@ -647,6 +647,8 @@ function PST:resetMods()
 		songOfCelerityBuff = 0,
 		songOfAwe = false,
 		songOfAweActive = false,
+		overwhelmingVoice = false,
+		overwhelmingVoiceBuff = 0,
 		luckOnCharmedKill = 0,
 		mightOfFortune = 0,
 		charmedRetaliation = 0,
@@ -796,6 +798,7 @@ function PST:resetMods()
 		temporaryHeartTearStacks = 0,
 		temporaryHeartBuffTimer = 0,
 		trollBombDisarmDebuffTimer = 0,
+		overwhelmingVoiceProc = false,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

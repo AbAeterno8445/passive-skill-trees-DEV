@@ -448,6 +448,11 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
         end
+
+        -- Overwhelming Voice node (Siren's tree)
+        if PST:getTreeSnapshotMod("overwhelmingVoice", false) then
+            PST.specialNodes.overwhelmingVoiceProc = true
+        end
     -- D12
     elseif itemType == CollectibleType.COLLECTIBLE_D12 then
         local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})

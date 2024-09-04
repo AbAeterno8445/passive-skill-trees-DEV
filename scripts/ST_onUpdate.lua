@@ -922,6 +922,26 @@ function PST:onUpdate()
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
 	end
 
+	-- Overwhelming Voice node (Siren's tree)
+	if PST.specialNodes.overwhelmingVoiceProc then
+		-- Convert friendly enemies back to enemies
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC then
+				if EntityRef(tmpNPC).IsFriendly then
+					tmpNPC:ClearEntityFlags(EntityFlag.FLAG_FRIENDLY)
+					if PST:getTreeSnapshotMod("overwhelmingVoiceBuff", 0) < 20 then
+						PST:addModifiers({ damagePerc = 5, overwhelmingVoiceBuff = 5 }, true)
+					end
+				end
+				if EntityRef(tmpNPC).IsCharmed then
+					tmpNPC:TakeDamage(6 + level:GetStage() - 1, 0, EntityRef(player), 0)
+				end
+			end
+		end
+		PST.specialNodes.overwhelmingVoiceProc = false
+	end
+
 	-- Mod: innate items absorbed by Black Rune
 	tmpMod = PST:getTreeSnapshotMod("blackRuneInnateItems", {})
 	if #tmpMod > 0 then

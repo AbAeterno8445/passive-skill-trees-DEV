@@ -102,7 +102,7 @@ PST.SkillTreesAPI.AddCharacterTree("Siren", false, [[
 "245": "{\"pos\":[-1,-15],\"type\":291,\"size\":\"Small\",\"name\":\"Charmed Retaliation\",\"description\":[\"When a charmed enemy hits you, return 0.4 damage.\"],\"modifiers\":{\"charmedRetaliation\":0.4},\"adjacent\":[244,237]}",
 "246": "{\"pos\":[-2,-14],\"type\":291,\"size\":\"Small\",\"name\":\"Charmed Retaliation\",\"description\":[\"When a charmed enemy hits you, return 0.4 damage.\"],\"modifiers\":{\"charmedRetaliation\":0.4},\"adjacent\":[237,247]}",
 "247": "{\"pos\":[-2,-13],\"type\":291,\"size\":\"Small\",\"name\":\"Charmed Retaliation\",\"description\":[\"When a charmed enemy hits you, return 0.4 damage.\"],\"modifiers\":{\"charmedRetaliation\":0.4},\"adjacent\":[246,248]}",
-"248": "{\"pos\":[-2,-12],\"type\":291,\"size\":\"Small\",\"name\":\"Charmed Retaliation\",\"description\":[\"When a charmed enemy hits you, return 0.4 damage.\"],\"modifiers\":{\"charmedRetaliation\":0.4},\"adjacent\":[247,236]}",
+"248": "{\"pos\":[-2,-12],\"type\":291,\"size\":\"Small\",\"name\":\"Charmed Retaliation\",\"description\":[\"When a charmed enemy hits you, return 0.4 damage.\"],\"modifiers\":{\"charmedRetaliation\":0.4},\"adjacent\":[247,236,331]}",
 "249": "{\"pos\":[13,4],\"type\":284,\"size\":\"Large\",\"name\":\"Dark Songstress\",\"description\":[\"Non-charmed enemies receive 8% less damage.\",\"Killing a charmed enemy has an 8% chance to grant 1 charge to Siren's Song.\",\"Using Siren's Song removes this effect and grants +8% damage and speed for the current room.\"],\"modifiers\":{\"darkSongstress\":true},\"adjacent\":[75]}",
 "285": "{\"pos\":[4,-8],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.04 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.04},\"adjacent\":[157]}",
 "286": "{\"pos\":[-4,-10],\"type\":89,\"size\":\"Med\",\"name\":\"Lost Black Hearts Luck\",\"description\":[\"+0.04 luck whenever you lose black hearts\"],\"modifiers\":{\"lostBlackHeartsLuck\":0.04},\"adjacent\":[236]}",
@@ -129,6 +129,7 @@ PST.SkillTreesAPI.AddCharacterTree("Siren", false, [[
 "327": "{\"pos\":[9,5],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[326,328]}",
 "328": "{\"pos\":[9,6],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[327,329]}",
 "329": "{\"pos\":[9,7],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.03 luck\"],\"modifiers\":{\"luck\":0.03},\"adjacent\":[328,330]}",
-"330": "{\"pos\":[10,8],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.1 luck\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[329]}"
+"330": "{\"pos\":[10,8],\"type\":25,\"size\":\"Med\",\"name\":\"Luck\",\"description\":[\"+0.1 luck\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[329]}",
+"331": "{\"pos\":[-1,-11],\"type\":421,\"size\":\"Large\",\"name\":\"Overwhelming Voice\",\"description\":[\"Siren's Song turns friendly monsters back into hostile enemies on use.\",\"+5% damage for the current room per monster turned this way, up to 20%.\",\"Siren's Song deals 6 damage to charmed monsters, which increases each floor.\"],\"modifiers\":{\"overwhelmingVoice\":true},\"adjacent\":[248]}"
 }
 ]])
