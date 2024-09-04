@@ -267,6 +267,7 @@ function PST:onDamage(target, damage, flag, source)
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
         local tmpPlayer = PST:getPlayer()
         local dmgMult = 1
+        local dmgExtra = 0
 
         -- Starcursed modifiers
         if target:IsActiveEnemy(false) then
@@ -422,7 +423,7 @@ function PST:onDamage(target, damage, flag, source)
                     end
                 end
             else
-                -- Direct player hit to enemy
+                -- Player hit to enemy (direct/through tears)
                 local srcPlayer = source.Entity:ToPlayer()
                 if srcPlayer == nil then
                     if source.Entity.Parent then
@@ -434,6 +435,25 @@ function PST:onDamage(target, damage, flag, source)
                 end
                 if srcPlayer then
                     if target:IsVulnerableEnemy() then
+                        -- Direct non-tear player hit to enemy (e.g. melee hits)
+                        if source.Entity.Type == EntityType.ENTITY_PLAYER then
+                            -- Mod: Bag of Crafting's melee attack gains % of your damage
+                            local tmpMod = PST:getTreeSnapshotMod("craftBagMeleeDmgInherit", false)
+                            if tmpMod > 0 and srcPlayer:HasCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING) then
+                                dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
+                            end
+
+                            -- Ransacking node (T. Cain's tree)
+                            if PST:getTreeSnapshotMod("ransacking", false) and target.HitPoints <= damage * dmgMult + dmgExtra then
+                                if PST:getTreeSnapshotMod("ransackingRoomPickups", 0) < 5 and 100 * math.random() < 10 then
+                                    local tmpNewPickup = PST:getTCainRandPickup()
+                                    Game():Spawn(EntityType.ENTITY_PICKUP, tmpNewPickup[1], target.Position, Vector.Zero, nil, tmpNewPickup[2], Random() + 1)
+                                    PST:addModifiers({ ransackingRoomPickups = 1 }, true)
+                                end
+                                PST:addModifiers({ luck = 0.02 }, true)
+                            end
+                        end
+
                         -- Rage Buildup node (Samson's tree)
                         if PST:getTreeSnapshotMod("rageBuildup", false) and PST:getTreeSnapshotMod("rageBuildupTotal", 0) < 3 then
                             PST:addModifiers({ damage = 0.02, rageBuildupTotal = 0.02 }, true)
@@ -461,7 +481,7 @@ function PST:onDamage(target, damage, flag, source)
                             end
 
                             -- Mod: chance to deal 10x damage to boss below 10% HP
-                            if (target.HitPoints - damage * dmgMult) / target.MaxHitPoints <= 0.1 then
+                            if (target.HitPoints - damage * dmgMult + dmgExtra) / target.MaxHitPoints <= 0.1 then
                                 if 100 * math.random() < PST:getTreeSnapshotMod("bossCulling", 0) then
                                     dmgMult = dmgMult + 9
                                 end
@@ -531,14 +551,14 @@ function PST:onDamage(target, damage, flag, source)
 
                         -- Mod: chance for enemies killed by Jacob to drop 1/2 red heart, once per room
                         if 100 * math.random() < PST:getTreeSnapshotMod("jacobHeartOnKill", 0) and not PST:getTreeSnapshotMod("jacobHeartOnKillProc", false) and
-                        target.HitPoints <= damage * dmgMult and srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
+                        target.HitPoints <= damage * dmgMult + dmgExtra and srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
                             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
                             PST:addModifiers({ jacobHeartOnKillProc = true }, true)
                         end
 
                         -- Mod: chance for enemies killed by Esau to drop 1/2 soul heart, once per room
                         if 100 * math.random() < PST:getTreeSnapshotMod("esauSoulOnKill", 0) and not PST:getTreeSnapshotMod("esauSoulOnKillProc", false) and
-                        target.HitPoints <= damage * dmgMult and srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
+                        target.HitPoints <= damage * dmgMult + dmgExtra and srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
                             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                             PST:addModifiers({ esauSoulOnKillProc = true }, true)
                         end
@@ -589,7 +609,7 @@ function PST:onDamage(target, damage, flag, source)
             -- Tainted Bethany, -4% all stats when an item wisp dies, up to -20%
             local tmpWisp = target:ToFamiliar()
             if tmpWisp and tmpWisp.Variant == FamiliarVariant.ITEM_WISP then
-                if target.HitPoints <= damage * dmgMult then
+                if target.HitPoints <= damage * dmgMult + dmgExtra then
                     if cosmicRCache.TBethanyDeadWisps < 5 then
                         cosmicRCache.TBethanyDeadWisps = cosmicRCache.TBethanyDeadWisps + 1
                         PST:addModifiers({ allstatsPerc = -4 }, true)
@@ -600,7 +620,7 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        return { Damage = damage * math.max(0.01, dmgMult) }
+        return { Damage = damage * math.max(0.01, dmgMult) + dmgExtra }
     end
 end
 

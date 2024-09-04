@@ -235,6 +235,36 @@ PST.playerDamagingCreep = {
 	EffectVariant.PLAYER_CREEP_GREEN, EffectVariant.PLAYER_CREEP_HOLYWATER, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL,
 	EffectVariant.PLAYER_CREEP_LEMON_MISHAP, EffectVariant.PLAYER_CREEP_LEMON_PARTY, EffectVariant.PLAYER_CREEP_RED
 }
+PST.craftBagPickups = {
+	[BagOfCraftingPickup.BOC_RED_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF},
+	[BagOfCraftingPickup.BOC_SOUL_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL},
+	[BagOfCraftingPickup.BOC_BLACK_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK},
+	[BagOfCraftingPickup.BOC_ETERNAL_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_ETERNAL},
+	[BagOfCraftingPickup.BOC_GOLD_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_GOLDEN},
+	[BagOfCraftingPickup.BOC_BONE_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_BONE},
+	[BagOfCraftingPickup.BOC_ROTTEN_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN},
+	[BagOfCraftingPickup.BOC_PENNY] = {PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY},
+	[BagOfCraftingPickup.BOC_NICKEL] = {PickupVariant.PICKUP_COIN, CoinSubType.COIN_NICKEL},
+	[BagOfCraftingPickup.BOC_DIME] = {PickupVariant.PICKUP_COIN, CoinSubType.COIN_DIME},
+	[BagOfCraftingPickup.BOC_LUCKY_PENNY] = {PickupVariant.PICKUP_COIN, CoinSubType.COIN_LUCKYPENNY},
+	[BagOfCraftingPickup.BOC_KEY] = {PickupVariant.PICKUP_KEY, KeySubType.KEY_NORMAL},
+	[BagOfCraftingPickup.BOC_GOLD_KEY] = {PickupVariant.PICKUP_KEY, KeySubType.KEY_GOLDEN},
+	[BagOfCraftingPickup.BOC_CHARGED_KEY] = {PickupVariant.PICKUP_KEY, KeySubType.KEY_CHARGED},
+	[BagOfCraftingPickup.BOC_BOMB] = {PickupVariant.PICKUP_BOMB, BombSubType.BOMB_NORMAL},
+	[BagOfCraftingPickup.BOC_GOLD_BOMB] = {PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GOLDEN},
+	[BagOfCraftingPickup.BOC_GIGA_BOMB] = {PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA},
+	[BagOfCraftingPickup.BOC_MINI_BATTERY] = {PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_MICRO},
+	[BagOfCraftingPickup.BOC_BATTERY] = {PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_NORMAL},
+	[BagOfCraftingPickup.BOC_MEGA_BATTERY] = {PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_MEGA},
+	[BagOfCraftingPickup.BOC_CARD] = {PickupVariant.PICKUP_TAROTCARD, -1},
+	[BagOfCraftingPickup.BOC_PILL] = {PickupVariant.PICKUP_PILL, 0},
+	[BagOfCraftingPickup.BOC_RUNE] = {PickupVariant.PICKUP_TAROTCARD, Card.RUNE_SHARD},
+	[BagOfCraftingPickup.BOC_DICE_SHARD] = {PickupVariant.PICKUP_TAROTCARD, Card.CARD_DICE_SHARD},
+	[BagOfCraftingPickup.BOC_CRACKED_KEY] = {PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY},
+	[BagOfCraftingPickup.BOC_GOLD_PENNY] = {PickupVariant.PICKUP_COIN, CoinSubType.COIN_GOLDEN},
+	[BagOfCraftingPickup.BOC_GOLD_PILL] = {PickupVariant.PICKUP_PILL, 0},
+	[BagOfCraftingPickup.BOC_GOLD_BATTERY] = {PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_GOLDEN}
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -331,6 +361,8 @@ function PST:resetMods()
 		eldritchMapping = false,
 		trollBombDisarm = 0,
 
+		craftingBagFull = false,
+
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
 
 		updateTrackers = {
@@ -342,7 +374,8 @@ function PST:resetMods()
 			holyMantleTracker = 0,
 			lvlCurseTracker = 0,
 			charTracker = "",
-			pocketTracker = 0
+			pocketTracker = 0,
+			craftBagPickups = 0
 		},
 
 		-- 'Keystone' nodes
@@ -368,7 +401,6 @@ function PST:resetMods()
 			TIsaacProc = false,
 			TIsaacItems = 0,
 			TCainActive = false,
-			TCainBag = false,
 			TCainUses = 0,
 			TJudasDmgUps = 0,
 			TSamsonBuffer = 0,
@@ -713,6 +745,25 @@ function PST:resetMods()
 		creepDamage = 0,
 		halfHeartPickupToFull = 0,
 		bloodDonoTempHeart = 0,
+		---- T. Cain ----
+		ransacking = false,
+		ransackingRoomPickups = 0,
+		magicBag = false,
+		opportunist = false,
+		grandIngredientCoins = false,
+		grandIngredientKeys = false,
+		grandIngredientBombs = false,
+		grandIngredientHearts = false,
+		craftBagMeleeDmgInherit = 0,
+		craftPickupRecovery = 0,
+		randPickupOnClear = 0,
+		droppedSpecialPickups = 0,
+		itemCraftingLuck = 0,
+		bagBombDamage = 0,
+		bagKeyTears = 0,
+		bagCoinRangeLuck = 0,
+		bagHeartSpeed = 0,
+		additionalPedestalPickup = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -799,6 +850,7 @@ function PST:resetMods()
 		temporaryHeartBuffTimer = 0,
 		trollBombDisarmDebuffTimer = 0,
 		overwhelmingVoiceProc = false,
+		craftBagSnapshot = {},
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

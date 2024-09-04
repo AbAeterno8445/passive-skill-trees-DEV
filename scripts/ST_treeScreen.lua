@@ -830,6 +830,10 @@ function PST:treeMenuRenderer()
             else
                 table.insert(tmpDescription, {"Golden trinkets are not unlocked.", KColor(1, 0.6, 0.6, 1)})
             end
+        -- Grand Ingredient nodes, add warning if more than 2 are allocated
+        elseif PST:strStartsWith(hoveredNode.name, "Grand Ingredient") and PST:grandIngredientNodes(false) > 2 then
+            tmpDescription = {table.unpack(hoveredNode.description)}
+            table.insert(tmpDescription, {"You have more than 2 Grand Ingredient nodes allocated!", KColor(1, 0.6, 0.6, 1)})
         elseif isAllocated then
             -- Starcursed inventory/socket nodes
             for _, tmpType in pairs(PSTStarcursedType) do
@@ -1174,7 +1178,6 @@ function PST:treeMenuRenderer()
             local lastCategory = nil
             for _, tmpModName in ipairs(sortedModNames) do
                 local tmpModVal = tmpModsList[tmpModName]
-                local modStr = PST.treeModDescriptions[tmpModName].str
 
                 -- Category change
                 local categorySwitch = lastCategory == nil

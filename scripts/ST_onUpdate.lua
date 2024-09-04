@@ -1045,9 +1045,6 @@ function PST:onUpdate()
 			PST:addModifiers({ luck = 2 }, true)
 			cosmicRCache.TCainActive = false
 		end
-
-		-- Set bag full status to detect crafting
-		cosmicRCache.TCainBag = player:GetBagOfCraftingSlot(7) ~= 0
 	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB_B) then
 		-- Tainted Jacob, spawn Dark Esau if he's not around
 		if room:GetAliveEnemiesCount() > 0 and not PST.specialNodes.TJacobEsauSpawned then
@@ -1062,6 +1059,190 @@ function PST:onUpdate()
 				Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1)
 				PST.specialNodes.TJacobEsauSpawned = true
 			end
+		end
+	end
+
+	-- Bag of Crafting effects
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING) then
+		-- Bag of Crafting pickup changes
+		local craftBagChecksum = 0
+		for _, tmpBagPickup in ipairs(player:GetBagOfCraftingContent()) do
+			craftBagChecksum = craftBagChecksum + tmpBagPickup
+		end
+		if updateTrackers.craftBagPickups ~= craftBagChecksum then
+			if craftBagChecksum > 0 then
+				local newPickup = 0
+				if not PST:getTreeSnapshotMod("craftingBagFull", false) then
+					for i=0,6 do
+						if player:GetBagOfCraftingSlot(i) ~= 0 and player:GetBagOfCraftingSlot(i + 1) == 0 then
+							newPickup = player:GetBagOfCraftingSlot(i)
+							break
+						end
+					end
+				end
+				if newPickup == 0 then
+					newPickup = player:GetBagOfCraftingSlot(7)
+				end
+				-- New bag pickup
+				if newPickup ~= 0 then
+					-- Opportunist node (T. Cain's tree)
+					if PST:getTreeSnapshotMod("opportunist", false) then
+						if newPickup == BagOfCraftingPickup.BOC_RED_HEART and 100 * math.random() < 30 then
+							player:AddHearts(1)
+						elseif newPickup == BagOfCraftingPickup.BOC_SOUL_HEART and 100 * math.random() < 15 then
+							player:AddSoulHearts(1)
+						elseif newPickup == BagOfCraftingPickup.BOC_BLACK_HEART and 100 * math.random() < 15 then
+							player:AddBlackHearts(1)
+						elseif (newPickup == BagOfCraftingPickup.BOC_PENNY or newPickup == BagOfCraftingPickup.BOC_GOLD_PENNY or newPickup == BagOfCraftingPickup.BOC_LUCKY_PENNY)
+						and 100 * math.random() < 15 then
+							player:AddCoins(1)
+						elseif newPickup == BagOfCraftingPickup.BOC_NICKEL and 100 * math.random() < 15 then
+							player:AddCoins(5)
+						elseif newPickup == BagOfCraftingPickup.BOC_DIME and 100 * math.random() < 15 then
+							player:AddCoins(10)
+						elseif newPickup == BagOfCraftingPickup.BOC_KEY and 100 * math.random() < 15 then
+							player:AddKeys(1)
+						elseif newPickup == BagOfCraftingPickup.BOC_GOLD_KEY and 100 * math.random() < 15 then
+							player:AddGoldenKey()
+						elseif newPickup == BagOfCraftingPickup.BOC_BOMB and 100 * math.random() < 15 then
+							player:AddBombs(1)
+						elseif newPickup == BagOfCraftingPickup.BOC_GOLD_BOMB and 100 * math.random() < 15 then
+							player:AddGoldenBomb()
+						elseif newPickup == BagOfCraftingPickup.BOC_GIGA_BOMB and 100 * math.random() < 15 then
+							player:AddGigaBombs(1)
+						elseif (newPickup == BagOfCraftingPickup.BOC_MINI_BATTERY or newPickup == BagOfCraftingPickup.BOC_BATTERY or newPickup == BagOfCraftingPickup.BOC_MEGA_BATTERY)
+						and 100 * math.random() < 15 then
+							for _, slot in pairs(ActiveSlot) do
+								player:AddActiveCharge(2, slot, true, false, false)
+							end
+						elseif newPickup == BagOfCraftingPickup.BOC_RUNE then
+							player:UseCard(Card.RUNE_SHARD, UseFlag.USE_NOANIM)
+						elseif newPickup == BagOfCraftingPickup.BOC_CARD then
+							PST:addModifiers({ luckPerc = 0.5 }, true)
+						end
+					end
+				end
+			end
+
+			-- Magic Bag node (T. Cain's tree)
+			if PST:getTreeSnapshotMod("magicBag", false) or PST:getTreeSnapshotMod("grandIngredientCoins", false) or
+			PST:getTreeSnapshotMod("grandIngredientKeys", false) or PST:getTreeSnapshotMod("grandIngredientBombs", false) then
+				PST:updateCacheDelayed()
+			else
+				-- Bag pickup stat boost mods
+				if PST:getTreeSnapshotMod("bagBombDamage", 0) > 0 then
+					PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+				end
+				if PST:getTreeSnapshotMod("bagKeyTears", 0) > 0 then
+					PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+				end
+				if PST:getTreeSnapshotMod("bagCoinRangeLuck", 0) > 0 then
+					PST:updateCacheDelayed(CacheFlag.CACHE_RANGE | CacheFlag.CACHE_LUCK)
+				end
+				if PST:getTreeSnapshotMod("bagHeartSpeed", 0) > 0 then
+					PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+				end
+			end
+			updateTrackers.craftBagPickups = craftBagChecksum
+			PST:save()
+		end
+
+		-- Set bag full status to detect crafting
+		local bagStatus = player:GetBagOfCraftingSlot(7) ~= 0
+		if bagStatus ~= PST:getTreeSnapshotMod("craftingBagFull", false) then
+			-- Crafted item
+			if PST:getTreeSnapshotMod("craftingBagFull", false) and #PST.specialNodes.craftBagSnapshot > 0 then
+				-- Magic Bag node (T. Cain's tree)
+				local spawnExtraPickups = 0
+				if PST:getTreeSnapshotMod("magicBag", false) then
+					spawnExtraPickups = 1
+				end
+				-- Mod: chance to spawn one of the consumed pickups when crafting an item
+				if 100 * math.random() < PST:getTreeSnapshotMod("craftPickupRecovery", 0) then
+					spawnExtraPickups = spawnExtraPickups + 1
+				end
+				if spawnExtraPickups > 0 then
+					for _=1,spawnExtraPickups do
+						local craftBagPickup = PST.specialNodes.craftBagSnapshot[math.random(8)]
+						if craftBagPickup and PST.craftBagPickups[craftBagPickup] then
+							local tmpNewPickup = PST.craftBagPickups[craftBagPickup]
+							Game():Spawn(EntityType.ENTITY_PICKUP, tmpNewPickup[1], player.Position, RandomVector() * 3, nil, tmpNewPickup[2], Random() + 1)
+						end
+					end
+				end
+
+				-- Grand Ingredient nodes (T. Cain's tree)
+				if PST:grandIngredientNodes(true) <= 2 then
+					-- Grand Ingredient: Coins node (T. Cain's tree)
+					if PST:getTreeSnapshotMod("grandIngredientCoins", false) then
+						if PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_NICKEL then
+							player:AddCoins(5)
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_DIME then
+							player:AddCoins(10)
+						end
+					end
+
+					-- Grand Ingredient: Bombs node (T. Cain's tree)
+					if PST:getTreeSnapshotMod("grandIngredientBombs", false) then
+						if PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_GOLD_BOMB then
+							PST:addModifiers({ damagePerc = 10 }, true)
+						end
+					end
+
+					-- Grand Ingredient: Keys node (T. Cain's tree)
+					if PST:getTreeSnapshotMod("grandIngredientKeys", false) then
+						if PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_GOLD_KEY then
+							player:AddKeys(4)
+							player:UseActiveItem(CollectibleType.COLLECTIBLE_DADS_KEY, UseFlag.USE_NOANIM)
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_CHARGED_KEY then
+							for _, slot in ipairs(ActiveSlot) do
+								player:AddActiveCharge(1, slot, true, false, false)
+							end
+						end
+					end
+
+					-- Grand Ingredient: Hearts node (T. Cain's tree)
+					if PST:getTreeSnapshotMod("grandIngredientHearts", false) then
+						if PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_RED_HEART then
+							player:AddHearts(2)
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_SOUL_HEART then
+							player:AddSoulHearts(2)
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_BLACK_HEART then
+							player:AddBlackHearts(2)
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_ETERNAL_HEART then
+							player:SetFullHearts()
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_GOLD_HEART then
+							player:AddCoins(7)
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_BONE_HEART then
+							player:AddBoneHearts(1)
+						elseif PST.specialNodes.craftBagSnapshot[1] == BagOfCraftingPickup.BOC_ROTTEN_HEART then
+							local tmpMax = 1 + math.random(3)
+							for _=1,tmpMax do
+								Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_SPIDER, player.Position, Vector.Zero, nil, 0, Random() + 1)
+							end
+							tmpMax = 1 + math.random(3)
+							for _=1,tmpMax do
+								Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector.Zero, nil, 0, Random() + 1)
+							end
+						end
+					end
+				end
+
+				-- Mod: +luck when crafting an item
+				tmpMod = PST:getTreeSnapshotMod("itemCraftingLuck", 0)
+				if tmpMod > 0 then
+					PST:addModifiers({ luck = tmpMod }, true)
+				end
+
+				-- Cosmic Realignment node - Tainted Cain
+				if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
+					if PST:getTreeSnapshotMod("craftingBagFull", false) then
+						cosmicRCache.TCainUses = cosmicRCache.TCainUses + 1
+						PST:save()
+					end
+				end
+			end
+			PST:addModifiers({ craftingBagFull = bagStatus }, true)
 		end
 	end
 
@@ -1405,6 +1586,14 @@ function PST:onUpdate()
 			-- Test of Temperance node (T. Magdalene's tree)
 			if PST.specialNodes.testOfTemperanceCD > 0 then
 				PST.specialNodes.testOfTemperanceCD = PST.specialNodes.testOfTemperanceCD - 1
+			end
+
+			-- Mod: chance to drop an additional coin/key/bomb/half heart when clearing a room
+			tmpChance = PST:getTreeSnapshotMod("randPickupOnClear", 0)
+			if tmpChance > 0 and 100 * math.random() < tmpChance then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				local newPickup = PST:getTCainRandPickup()
+				Game():Spawn(EntityType.ENTITY_PICKUP, newPickup[1], tmpPos, Vector.Zero, nil, newPickup[2], Random() + 1)
 			end
 
 			-- Cosmic Realignment node

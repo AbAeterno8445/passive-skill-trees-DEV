@@ -486,23 +486,14 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- Anarchist's Cookbook
     elseif itemType == CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK then
         PST.specialNodes.trollBombDisarmDebuffTimer = 45
+    -- Bag of Crafting
+    elseif itemType == CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING then
+        PST.specialNodes.craftBagSnapshot = player:GetBagOfCraftingContent()
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item
     if 100 * math.random() < PST:getTreeSnapshotMod("activeItemWisp", 0) then
         Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.WISP, player.Position, Vector.Zero, nil, 0, Random() + 1)
-    end
-
-    -- Cosmic Realignment node
-    if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
-        -- Tainted Cain, detect craft from Bag of Crafting
-        if itemType == CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING then
-            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
-            if cosmicRCache.TCainBag then
-                cosmicRCache.TCainUses = cosmicRCache.TCainUses + 1
-                PST:save()
-            end
-        end
     end
 
     -- Cosmic Realignment tainted unlock on red key home

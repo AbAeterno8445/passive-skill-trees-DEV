@@ -11,6 +11,7 @@ function PST:onNewLevel()
     PST.specialNodes.temporaryHeartBuffTimer = 0
     PST.specialNodes.temporaryHeartDmgStacks = 0
     PST.specialNodes.temporaryHeartTearStacks = 0
+    PST.specialNodes.craftBagSnapshot = {}
 	PST:resetFloatingTexts()
     PST.floorFirstUpdate = true
     PST:addModifiers({

@@ -412,6 +412,11 @@ function PST:onNewRoom()
 		PST:addModifiers({ damagePerc = -tmpTreeMod, overwhelmingVoiceBuff = { value = 0, set = true } }, true)
 	end
 
+	-- Ransacking node (T. Cain's tree)
+	if PST:getTreeSnapshotMod("ransackingRoomPickups", 0) > 0 then
+		PST:addModifiers({ ransackingRoomPickups = { value = 0, set = true } }, true)
+	end
+
 	-- Mod: charmed hit negation (reset)
 	if PST:getTreeSnapshotMod("charmedHitNegationProc", false) then
 		PST:addModifiers({ charmedHitNegationProc = false }, true)

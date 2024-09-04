@@ -411,6 +411,88 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- Bag of Crafting effects
+    if player:HasCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING) then
+        -- Magic Bag node (T. Cain's tree)
+        if PST:getTreeSnapshotMod("magicBag", false) then
+            local bagPickups = 0
+            for _, tmpBagPickup in ipairs(player:GetBagOfCraftingContent()) do
+                if tmpBagPickup ~= 0 then
+                    bagPickups = bagPickups + 1
+                end
+            end
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + bagPickups / 2
+        end
+
+        -- Grand Ingredient nodes (T. Cain's tree)
+        if PST:grandIngredientNodes(true) <= 2 then
+            -- Grand Ingredient: Coins node (T. Cain's tree)
+            if PST:getTreeSnapshotMod("grandIngredientCoins", false) then
+                if player:GetBagOfCraftingSlot(0) == BagOfCraftingPickup.BOC_PENNY then
+                    dynamicMods.luckPerc = dynamicMods.luckPerc + 3
+                    dynamicMods.rangePerc = dynamicMods.rangePerc + 3
+                elseif player:GetBagOfCraftingSlot(0) == BagOfCraftingPickup.BOC_LUCKY_PENNY then
+                    dynamicMods.luckPerc = dynamicMods.luckPerc + 7
+                elseif player:GetBagOfCraftingSlot(0) == BagOfCraftingPickup.BOC_GOLD_PENNY then
+                    dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + 7
+                end
+            end
+
+            -- Grand Ingredient: Keys node (T. Cain's tree)
+            if PST:getTreeSnapshotMod("grandIngredientKeys", false) then
+                if player:GetBagOfCraftingSlot(0) == BagOfCraftingPickup.BOC_KEY then
+                    dynamicMods.tearsPerc = dynamicMods.tearsPerc + 3
+                end
+            end
+
+            -- Grand Ingredient: Bombs node (T. Cain's tree)
+            if PST:getTreeSnapshotMod("grandIngredientBombs", false) then
+                if player:GetBagOfCraftingSlot(0) == BagOfCraftingPickup.BOC_BOMB then
+                    dynamicMods.damagePerc = dynamicMods.damagePerc + 5
+                elseif player:GetBagOfCraftingSlot(0) == BagOfCraftingPickup.BOC_GIGA_BOMB then
+                    dynamicMods.damagePerc = dynamicMods.damagePerc + 30
+                end
+            end
+        end
+
+        -- Mod: +% stats per pickup of certain types
+        for i=0,7 do
+            local tmpPickup = player:GetBagOfCraftingSlot(i)
+            if tmpPickup ~= 0 then
+                -- Bombs, +% damage
+                if tmpPickup == BagOfCraftingPickup.BOC_BOMB or tmpPickup == BagOfCraftingPickup.BOC_GIGA_BOMB or tmpPickup == BagOfCraftingPickup.BOC_GOLD_BOMB then
+                    local tmpMod = PST:getTreeSnapshotMod("bagBombDamage", 0)
+                    if tmpMod > 0 then
+                        dynamicMods.damagePerc = dynamicMods.damagePerc + tmpMod
+                    end
+                -- Keys, +% tears
+                elseif tmpPickup == BagOfCraftingPickup.BOC_KEY or tmpPickup == BagOfCraftingPickup.BOC_GOLD_KEY or tmpPickup == BagOfCraftingPickup.BOC_CHARGED_KEY or
+                tmpPickup == BagOfCraftingPickup.BOC_CRACKED_KEY then
+                    local tmpMod = PST:getTreeSnapshotMod("bagKeyTears", 0)
+                    if tmpMod > 0 then
+                        dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpMod
+                    end
+                -- Coins, +% range and luck
+                elseif tmpPickup == BagOfCraftingPickup.BOC_PENNY or tmpPickup == BagOfCraftingPickup.BOC_NICKEL or tmpPickup == BagOfCraftingPickup.BOC_DIME or
+                tmpPickup == BagOfCraftingPickup.BOC_GOLD_PENNY or tmpPickup == BagOfCraftingPickup.BOC_LUCKY_PENNY then
+                    local tmpMod = PST:getTreeSnapshotMod("bagCoinRangeLuck", 0)
+                    if tmpMod > 0 then
+                        dynamicMods.rangePerc = dynamicMods.rangePerc + tmpMod
+                        dynamicMods.luckPerc = dynamicMods.luckPerc + tmpMod
+                    end
+                -- Hearts, +% speed
+                elseif tmpPickup == BagOfCraftingPickup.BOC_RED_HEART or tmpPickup == BagOfCraftingPickup.BOC_SOUL_HEART or tmpPickup == BagOfCraftingPickup.BOC_BLACK_HEART or
+                tmpPickup == BagOfCraftingPickup.BOC_BONE_HEART or tmpPickup == BagOfCraftingPickup.BOC_ETERNAL_HEART or tmpPickup == BagOfCraftingPickup.BOC_GOLD_HEART or
+                tmpPickup == BagOfCraftingPickup.BOC_ROTTEN_HEART then
+                    local tmpMod = PST:getTreeSnapshotMod("bagHeartSpeed", 0)
+                    if tmpMod > 0 then
+                        dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
+                    end
+                end
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB

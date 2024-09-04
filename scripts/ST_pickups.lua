@@ -69,6 +69,19 @@ function PST:prePickup(pickup, collider, low)
                 PST:addModifiers({ berkanoHivemind = false }, true)
             end
 
+            -- Mod: chance for additional pickups when collecting an item pedestal (T. Cain)
+            local tmpMod = PST:getTreeSnapshotMod("additionalPedestalPickup", 0)
+            if subtype ~= 0 and not PST:arrHasValue(PST.progressionItems, subtype) and tmpMod > 0 and
+            player:GetPlayerType() == PlayerType.PLAYER_CAIN_B then
+                while tmpMod > 0 do
+                    if 100 * math.random() < tmpMod then
+                        local newPickup = PST:getTCainRandPickup()
+                        Game():Spawn(EntityType.ENTITY_PICKUP, newPickup[1], pickup.Position, RandomVector() * 3, nil, newPickup[2], Random() + 1)
+                    end
+                    tmpMod = tmpMod - 100
+                end
+            end
+
             if removeOtherRoomItems then
                 table.insert(PST.specialNodes.itemRemovalProtected, pickup.InitSeed)
                 PST:removeRoomItems(true)
@@ -716,6 +729,50 @@ function PST:onPickupInit(pickup)
         end
 
         if not pickupGone then
+            -- Mod: chance for dropped pickups to be a special variant
+            tmpMod = PST:getTreeSnapshotMod("droppedSpecialPickups", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                if variant == PickupVariant.PICKUP_COIN then
+                    if subtype == CoinSubType.COIN_PENNY then
+                        if 100 * math.random() < 7 then
+                            pickup:Morph(pickup.Type, variant, CoinSubType.COIN_GOLDEN)
+                        else
+                            pickup:Morph(pickup.Type, variant, CoinSubType.COIN_LUCKYPENNY)
+                        end
+                    end
+                elseif variant == PickupVariant.PICKUP_KEY then
+                    if subtype == KeySubType.KEY_NORMAL then
+                        if 100 * math.random() < 7 then
+                            pickup:Morph(pickup.Type, variant, KeySubType.KEY_GOLDEN)
+                        else
+                            pickup:Morph(pickup.Type, variant, KeySubType.KEY_CHARGED)
+                        end
+                    end
+                elseif variant == PickupVariant.PICKUP_BOMB then
+                    if subtype == BombSubType.BOMB_NORMAL then
+                        if 100 * math.random() < 2 then
+                            pickup:Morph(pickup.Type, variant, BombSubType.BOMB_GIGA)
+                        elseif 100 * math.random() < 40 then
+                            pickup:Morph(pickup.Type, variant, BombSubType.BOMB_GOLDEN)
+                        else
+                            pickup:Morph(pickup.Type, variant, BombSubType.BOMB_DOUBLEPACK)
+                        end
+                    end
+                elseif variant == PickupVariant.PICKUP_HEART then
+                    if subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_FULL then
+                        if 100 * math.random() < 50 then
+                            pickup:Morph(pickup.Type, variant, HeartSubType.HEART_GOLDEN)
+                        else
+                            pickup:Morph(pickup.Type, variant, HeartSubType.HEART_BLENDED)
+                        end
+                    elseif subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL then
+                        if 100 * math.random() < 50 then
+                            pickup:Morph(pickup.Type, variant, HeartSubType.HEART_BLENDED)
+                        end
+                    end
+                end
+            end
+
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
                 -- Tainted Magdalene, 15% chance to turn coins, bombs, keys or chests into a half red heart
@@ -753,10 +810,10 @@ end
 
 function PST:onPickupUpdate(pickup)
     -- Mod: +time for temporary heart pickups
-    local tempFirstSpawn = not PST.specialNodes.temporaryHearts[pickup.InitSeed]
-    local tmpMod = PST:getTreeSnapshotMod("temporaryHeartTime", 0)
-    if tmpMod > 0 then
-        if pickup.Variant == PickupVariant.PICKUP_HEART and pickup.Timeout > 0 and tempFirstSpawn then
+    if pickup.Variant == PickupVariant.PICKUP_HEART and pickup.Timeout > 0 then
+        local tempFirstSpawn = not PST.specialNodes.temporaryHearts[pickup.InitSeed]
+        local tmpMod = PST:getTreeSnapshotMod("temporaryHeartTime", 0)
+        if tmpMod > 0 and tempFirstSpawn then
             pickup.Timeout = pickup.Timeout + math.floor(tmpMod * 30)
             PST.specialNodes.temporaryHearts[pickup.InitSeed] = true
         end

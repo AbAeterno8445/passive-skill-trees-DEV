@@ -1710,6 +1710,140 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 3061
     },
+    ---- T. CAIN'S TREE ----
+    ransacking = {
+        str = {
+            "Ransacking:",
+            "    Bag of Crafting's melee attack gains an additional 25%% of your damage",
+            "    Killing an enemy with Bag of Crafting's melee attack has a 10%% chance to spawn a",
+            "    coin/key/bomb/half heart, up to 5 per room",
+            "    +0.02 luck when killing an enemy with Bag of Crafting's melee attack"
+        },
+        category = "charTree", sort = 3100
+    },
+    magicBag = {
+        str = {
+            "Magic Bag:",
+            "    When crafting an item, additionally drop one of the pickups used to craft it",
+            "    +0.5%% all stats per pickup in the crafting bag"
+        },
+        category = "charTree", sort = 3101
+    },
+    opportunist = {
+        str = {
+            "Opportunist:",
+            "    When grabbing a pickup with the Bag of Crafting, trigger an effect based on the pickup:",
+            "    - Red hearts: 30%% chance to heal 1/2 red heart",
+            "    - Soul/black hearts: 15%% chance to add 1/2 of the grabbed heart",
+            "    - Coins/keys/bombs: 15%% chance to grant the grabbed pickup as if collected normally",
+            "    - Batteries: 15%% chance to add 2 charges to your active items",
+            "    - Runes: triggers Rune Shard's effect",
+            "    - Cards: permanent +0.5%% luck"
+        },
+        category = "charTree", sort = 3102
+    },
+    grandIngredientCoins = {
+        str = {
+            "Grand Ingredient: Coins",
+            "    If the first pickup in the bag is a coin, gain an effect based on its type:",
+            "    - Penny: +3%% luck and range",
+            "    - Lucky Penny: +7%% luck",
+            "    - Nickel: gain 5 coins when crafting an item",
+            "    - Dime: gain 10 coins when crafting an item",
+            "    - Golden: +7%% all stats",
+            "    Having more than 2 Grand Ingredient nodes allocated nullifies these effects"
+        },
+        category = "charTree", sort = 3103
+    },
+    grandIngredientKeys = {
+        str = {
+            "Grand Ingredient: Keys",
+            "    If the first pickup in the bag is a key, gain an effect based on its type:",
+            "    - Normal: +3%% tears",
+            "    - Golden: grants you 4 keys and triggers Dad's Key's effect when crafting an item",
+            "    - Charged: grants an additional charge to your active items when clearing a room",
+            "    Having more than 2 Grand Ingredient nodes allocated nullifies these effects"
+        },
+        category = "charTree", sort = 3104
+    },
+    grandIngredientBombs = {
+        str = {
+            "Grand Ingredient: Bombs",
+            "    If the first pickup in the bag is a bomb, gain an effect based on its type:",
+            "    - Normal: +5%% damage",
+            "    - Golden: permanent +10%% damage when crafting an item",
+            "    - Giga: +30%% damage",
+            "    Having more than 2 Grand Ingredient nodes allocated nullifies these effects"
+        },
+        category = "charTree", sort = 3105
+    },
+    grandIngredientHearts = {
+        str = {
+            "Grand Ingredient: Hearts",
+            "    If the first pickup in the bag is a heart, gain an effect based on its type:",
+            "    - Red: heal 1 red heart when crafting an item",
+            "    - Soul: gain a soul heart when crafting an item",
+            "    - Black: gain a black heart when crafting an item",
+            "    - Eternal: fully heals you when crafting an item",
+            "    - Golden: gain 7 coins when crafting an item",
+            "    - Bone: gain an empty bone heart when crafting an item",
+            "    - Rotten: spawn 2-4 blue spiders and 2-4 blue flies when crafting an item",
+            "    Having more than 2 Grand Ingredient nodes allocated nullifies these effects"
+        },
+        category = "charTree", sort = 3106
+    },
+    craftBagMeleeDmgInherit = {
+        str = "Bag of Crafting's melee attack gains an additional %d%% of your damage",
+        category = "charTree", sort = 3107
+    },
+    craftPickupRecovery = {
+        str = "%d%% chance to spawn one of the consumed pickups when crafting an item",
+        category = "charTree", sort = 3110
+    },
+    randPickupOnClear = {
+        str = "%d%% chance to spawn an additional coin/key/bomb/half heart when completing a room",
+        category = "charTree", sort = 3111
+    },
+    droppedSpecialPickups = {
+        str = {
+            "%.2f%% chance for dropped pickups to be a special variant, such as golden/charged keys,",
+            "golden bombs, etc"
+        },
+        category = "charTree", sort = 3112
+    },
+    itemCraftingLuck = {
+        str = "%s%.2f luck when crafting an item",
+        addPlus = true,
+        category = "charTree", sort = 3113
+    },
+    bagBombDamage = {
+        str = "%s%.2f%% damage per bomb pickup in the crafting bag",
+        addPlus = true,
+        category = "charTree", sort = 3114
+    },
+    bagKeyTears = {
+        str = "%s%.2f%% tears per key pickup in the crafting bag",
+        addPlus = true,
+        category = "charTree", sort = 3114
+    },
+    bagCoinRangeLuck = {
+        str = "%s%.2f%% range and luck per coin pickup in the crafting bag",
+        addPlus = true,
+        category = "charTree", sort = 3114
+    },
+    bagHeartSpeed = {
+        str = "%s%.2f%% speed per heart pickup in the crafting bag",
+        addPlus = true,
+        category = "charTree", sort = 3114
+    },
+    additionalPedestalPickup = {
+        str = {
+            "%d%% chance to spawn an additional coin/key/bomb/half heart pickup when collecting an",
+            "item pedestal.",
+            "    Rolls multiple times if above 100% chance"
+        },
+        category = "charTree", sort = 3115
+    },
     --#endregion
 
     ---- STARMIGHT ----

@@ -370,6 +370,24 @@ function PST:songNodesAllocated(checkSnapshot)
 	return tmpCount
 end
 
+-- For T. Cain tree, checks how many "Grand Ingredient" nodes you currently have allocated
+function PST:grandIngredientNodes(checkSnapshot)
+	local tmpCount = 0
+	if not checkSnapshot then
+		for nodeID, node in pairs(PST.trees["T. Cain"]) do
+			if PST:strStartsWith(node.name, "Grand Ingredient") and PST.modData.treeNodes["T. Cain"][nodeID] then
+				tmpCount = tmpCount + 1
+			end
+		end
+	else
+		if PST:getTreeSnapshotMod("grandIngredientCoins", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("grandIngredientKeys", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("grandIngredientBombs", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("grandIngredientHearts", false) then tmpCount = tmpCount + 1 end
+	end
+	return tmpCount
+end
+
 function PST:getTIsaacInvItems()
 	local player = PST:getPlayer()
 	local collectibleCount = player:GetCollectibleCount()
@@ -388,6 +406,24 @@ function PST:isTIsaacInvFull()
 		tmpMax = 12
 	end
 	return PST:getTIsaacInvItems() >= tmpMax
+end
+
+-- Return a random pickup as {PickupVariant, SubType}
+function PST:getTCainRandPickup()
+	local randPickup = math.random(4)
+	if randPickup == 1 then
+		return {PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY}
+	elseif randPickup == 2 then
+		return {PickupVariant.PICKUP_KEY, KeySubType.KEY_NORMAL}
+	elseif randPickup == 3 then
+		return {PickupVariant.PICKUP_BOMB, BombSubType.BOMB_NORMAL}
+	else
+		if math.random() < 0.3 then
+			return {PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL}
+		else
+			return {PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF}
+		end
+	end
 end
 
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
