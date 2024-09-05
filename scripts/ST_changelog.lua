@@ -9,6 +9,7 @@ function PST:getChangelogList()
         "- Added a new large node to the Siren's tree: \"Overwhelming Voice\".",
         "- \"Chance to turn troll and super troll bombs into regular bombs\" modifiers now receive a hidden debuff",
         "after certain events, such as bomb bums, anarchist's cookbook, tower card, etc, reducing its proc chance.",
+        "- Reduced total chance for global \"Chance to turn troll and super troll bombs into regular bombs\" modifiers.",
         "- Ancient jewel skill point rewards are no longer given to character trees, and instead are global-only.",
         "- Invulnerable enemies can no longer become champions through tree/jewel effects.",
         "",
