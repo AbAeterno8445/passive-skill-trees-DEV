@@ -92,30 +92,45 @@ function PST:SC_getJewelDescription(jewel)
                 tmpAncient = jewel
             end
             if tmpAncient.description then
-                for _, tmpLine in ipairs(tmpAncient.description) do
+                local targetDesc = tmpAncient.description
+                if jewel.name == "Cause Converter" and jewel.status == "converted" then
+                    targetDesc = tmpAncient.descriptionConverted
+                end
+                for _, tmpLine in ipairs(targetDesc) do
                     table.insert(tmpDescription, {tmpLine, KColor(1, 0.7, 0.3, 1)})
                 end
             end
+            if jewel.converted ~= nil then
+                local bossEnt = EntityConfig.GetEntity(jewel.converted, jewel.convertedVariant or 0, 0)
+                if bossEnt then
+                    local bossName = Isaac.GetLocalizedString("Entities", bossEnt:GetName(), "en")
+                    if bossName ~= "StringTable::InvalidKey" then
+                        table.insert(tmpDescription, {"Converted boss: " .. bossName, KColor(1, 1, 0.7, 1)})
+                    end
+                end
+            end
             if tmpAncient.rewards then
-                for _, tmpRewardMod in ipairs(PST.SCAncientRewardsSorted) do
-                    local tmpRewardModVal = tmpAncient.rewards[tmpRewardMod]
-                    if PST.SCMods[tmpRewardMod] ~= nil and tmpRewardModVal then
-                        local tmpColor = KColor(0.5, 0.9, 1, 1)
-                        local descStr
-                        if type(tmpRewardModVal) == "table" then
-                            ---@diagnostic disable-next-line: param-type-mismatch
-                            descStr = string.format(PST.SCMods[tmpRewardMod], table.unpack(tmpRewardModVal))
-                        else
-                            ---@diagnostic disable-next-line: param-type-mismatch
-                            descStr = string.format(PST.SCMods[tmpRewardMod], tmpRewardModVal)
-                        end
-                        if tmpAncient.name then
-                            if PST.modData.ancientRewards[tmpAncient.name] and PST.modData.ancientRewards[tmpAncient.name][tmpRewardMod] then
-                                descStr = descStr .. " (Done)"
-                                tmpColor = KColor(1, 0.9, 0.5, 1)
+                if not (jewel.name == "Cause Converter" and jewel.status == "seeking") then
+                    for _, tmpRewardMod in ipairs(PST.SCAncientRewardsSorted) do
+                        local tmpRewardModVal = tmpAncient.rewards[tmpRewardMod]
+                        if PST.SCMods[tmpRewardMod] ~= nil and tmpRewardModVal then
+                            local tmpColor = KColor(0.5, 0.9, 1, 1)
+                            local descStr
+                            if type(tmpRewardModVal) == "table" then
+                                ---@diagnostic disable-next-line: param-type-mismatch
+                                descStr = string.format(PST.SCMods[tmpRewardMod], table.unpack(tmpRewardModVal))
+                            else
+                                ---@diagnostic disable-next-line: param-type-mismatch
+                                descStr = string.format(PST.SCMods[tmpRewardMod], tmpRewardModVal)
                             end
+                            if tmpAncient.name then
+                                if PST.modData.ancientRewards[tmpAncient.name] and PST.modData.ancientRewards[tmpAncient.name][tmpRewardMod] then
+                                    descStr = descStr .. " (Done)"
+                                    tmpColor = KColor(1, 0.9, 0.5, 1)
+                                end
+                            end
+                            table.insert(tmpDescription, {descStr, tmpColor})
                         end
-                        table.insert(tmpDescription, {descStr, tmpColor})
                     end
                 end
             end
@@ -129,12 +144,25 @@ function PST:SC_getJewelDescription(jewel)
     return tmpDescription
 end
 
+-- Get the socketed jewel of the given type at the given socket
+---@param jewelType PSTStarcursedType
+---@param socketID string
 function PST:SC_getSocketedJewel(jewelType, socketID)
     if not PST.modData.starTreeInventory[jewelType] then return nil end
 
     for _, jewel in ipairs(PST.modData.starTreeInventory[jewelType]) do
         if jewel.equipped == socketID then
             return jewel
+        end
+    end
+    return nil
+end
+
+function PST:SC_getSocketedAncient(ancientName)
+    for i=1,2 do
+        local tmpJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
+        if tmpJewel and tmpJewel.name == ancientName then
+            return tmpJewel
         end
     end
     return nil
@@ -273,6 +301,9 @@ function PST:SC_identifyJewel(jewel)
         local newAncient = PST:SC_getNewAncient()
         if newAncient then
             jewel.name = newAncient.name
+            if newAncient.name == "Cause Converter" then
+                jewel.status = "seeking"
+            end
         else
             jewel.name = "Faded Starpiece"
             jewel.description = {"This jewel's energy has almost faded out..."}

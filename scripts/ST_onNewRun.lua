@@ -172,6 +172,15 @@ function PST:onNewRun(isContinued)
             player:AddCollectible(CollectibleType.COLLECTIBLE_MISSING_NO)
             player:AddCollectible(CollectibleType.COLLECTIBLE_TMTRAINER)
         end
+        -- Ancient starcursed jewel: Cause Converter
+        local tmpAncient = PST:SC_getSocketedAncient("Cause Converter")
+        if tmpAncient and tmpAncient.converted then
+            if tmpAncient.status == "seeking" then tmpAncient.status = "converted" end
+            PST:addModifiers({
+                tearsPerc = -80,
+                SC_causeConvBoss = tmpAncient.converted
+            }, true)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

@@ -537,6 +537,15 @@ function PST:NPCChampionAvailable(npc)
 	return true
 end
 
+function PST:preSFXPlay(sfxID)
+	-- Ancient starcursed jewel: Cause Converter - mute Siren screech!!
+	if PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt.Type == EntityType.ENTITY_SIREN then
+		if sfxID == SoundEffect.SOUND_SIREN_SCREAM or sfxID == SoundEffect.SOUND_SIREN_LUNGE then
+			return false
+		end
+	end
+end
+
 -- Brian Kernighan's algorithm
 function PST:countSetBits(n)
 	if (n == 0) then return 0

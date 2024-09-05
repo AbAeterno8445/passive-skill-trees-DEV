@@ -2,6 +2,22 @@ local sfx = SFXManager()
 
 local inDeathCertificate = false
 
+local function PST_causeConvBossSpawn()
+	local player = PST:getPlayer()
+	local tmpBoss = PST:getTreeSnapshotMod("SC_causeConvBoss", nil)
+	if tmpBoss then
+		local bossVariant = PST:getTreeSnapshotMod("SC_causeConvBossVariant", 0)
+		PST.specialNodes.SC_causeConvBossEnt = Isaac.Spawn(
+			tmpBoss,
+			bossVariant, 0,
+			player.Position,
+			Vector.Zero,
+			player
+		)
+		PST.specialNodes.SC_causeConvBossEnt:AddCharmed(EntityRef(player), -1)
+	end
+end
+
 -- On update
 local clearRoomProc = false
 local modResetUpdate = false
@@ -33,6 +49,7 @@ function PST:onUpdate()
 		updateTrackers.lvlCurseTracker = -1
 		updateTrackers.pocketTracker = 0
 		PST.specialNodes.jacobHeartLuckVal = 0
+		PST.specialNodes.SC_causeConvBossEnt = nil
 
 		-- Ancient starcursed jewel: Sanguinis
 		if PST:SC_getSnapshotMod("sanguinis", false) and not PST:isFirstOrigStage() and player:GetBrokenHearts() < 4 then
@@ -416,6 +433,9 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Ancient starcursed jewel: Cause Converter
+		PST_causeConvBossSpawn()
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage
@@ -655,6 +675,18 @@ function PST:onUpdate()
 		end
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_MISSING_NO) then
 			player:AddCollectible(CollectibleType.COLLECTIBLE_MISSING_NO)
+		end
+	end
+
+	-- Ancient starcursed jewel: Cause Converter
+	if PST.specialNodes.SC_causeConvRespawnTimer > 0 then
+		PST.specialNodes.SC_causeConvRespawnTimer = PST.specialNodes.SC_causeConvRespawnTimer - 1
+		if PST.specialNodes.SC_causeConvRespawnTimer == 0 then
+			PST_causeConvBossSpawn()
+		end
+	else
+		if PST.specialNodes.SC_causeConvBossEnt and not PST.specialNodes.SC_causeConvBossEnt:Exists() and PST.specialNodes.SC_causeConvRespawnTimer == 0 then
+			PST.specialNodes.SC_causeConvRespawnTimer = 300
 		end
 	end
 
@@ -928,7 +960,8 @@ function PST:onUpdate()
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC then
-				if EntityRef(tmpNPC).IsFriendly then
+				if EntityRef(tmpNPC).IsFriendly and (not PST.specialNodes.SC_causeConvBossEnt or
+				(PST.specialNodes.SC_causeConvBossEnt and tmpNPC.InitSeed ~= PST.specialNodes.SC_causeConvBossEnt.InitSeed)) then
 					tmpNPC:ClearEntityFlags(EntityFlag.FLAG_FRIENDLY)
 					if PST:getTreeSnapshotMod("overwhelmingVoiceBuff", 0) < 20 then
 						PST:addModifiers({ damagePerc = 5, overwhelmingVoiceBuff = 5 }, true)

@@ -265,6 +265,17 @@ PST.craftBagPickups = {
 	[BagOfCraftingPickup.BOC_GOLD_PILL] = {PickupVariant.PICKUP_PILL, 0},
 	[BagOfCraftingPickup.BOC_GOLD_BATTERY] = {PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_GOLDEN}
 }
+PST.causeConverterBossBlacklist = {
+	EntityType.ENTITY_FISTULA_BIG, EntityType.ENTITY_FISTULA_MEDIUM, EntityType.ENTITY_FISTULA_SMALL,
+	EntityType.ENTITY_LARRYJR, EntityType.ENTITY_HORNFEL, EntityType.ENTITY_GIDEON,
+	EntityType.ENTITY_MASK_OF_INFAMY, EntityType.ENTITY_MOM, EntityType.ENTITY_MOMS_HEART,
+	EntityType.ENTITY_BLASTOCYST_BIG, EntityType.ENTITY_BLASTOCYST_MEDIUM, EntityType.ENTITY_BLASTOCYST_SMALL,
+	EntityType.ENTITY_MAMA_GURDY, EntityType.ENTITY_ROTGUT, EntityType.ENTITY_MOTHER,
+	EntityType.ENTITY_MOTHERS_SHADOW, EntityType.ENTITY_HUSH, EntityType.ENTITY_SATAN,
+	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_ISAAC, EntityType.ENTITY_MEGA_SATAN,
+	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_DOGMA, EntityType.ENTITY_BEAST,
+	EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_GEMINI
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -812,7 +823,9 @@ function PST:resetMods()
 		SC_empHeirloomUsedCard = false,
 		SC_empHeirloomRoomID = -1,
 		SC_cursedAuricTimer = 0,
-		SC_cursedAuricSpeedProc = false
+		SC_cursedAuricSpeedProc = false,
+		SC_causeConvBoss = nil,
+		SC_causeConvBossVariant = 0,
 		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes
@@ -874,7 +887,9 @@ function PST:resetMods()
 		SC_nullstoneSpawned = 0,
 		SC_nullstoneCurrentSpawn = nil,
 		SC_nullstoneHPThreshold = 0,
-		SC_nightProjTimer = 3600
+		SC_nightProjTimer = 3600,
+		SC_causeConvBossEnt = nil,
+		SC_causeConvRespawnTimer = 0
 	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)

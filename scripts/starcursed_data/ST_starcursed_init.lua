@@ -729,6 +729,34 @@ PST.SCAncients = {
             xpgain = 66,
             halveXPFirstFloor = true
         }
+    },
+    causeConverter = {
+        weight = 90,
+        spriteFrame = 24,
+        name = "Cause Converter",
+        description = {
+            "Jewel status: Seeking",
+            "While the jewel is equipped and in Seeking status, defeating a boss will convert it to your cause.",
+            "Unequip the jewel while in Seeking status and a converted boss to avoid replacing this boss.",
+            "Starting a run with a converted boss switches the jewel status to Converted.",
+            "Certain bosses are excluded from conversion, and successful conversions are shown with a text",
+            "indicator in-game.",
+            "Can be equipped mid-run to start converting bosses."
+        },
+        descriptionConverted = {
+            "Jewel status: Converted",
+            "Spawn a friendly version of the converted boss when entering a room.",
+            "-80% tears.",
+            "If the converted boss dies, it respawns after 10 seconds.",
+            "Converted boss inherits 10% of your damage, which increases every floor.",
+            "Press the Respec input while in the inventory to reset the jewel status back to Seeking."
+        },
+        rewards = {
+            xpgain = 45,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

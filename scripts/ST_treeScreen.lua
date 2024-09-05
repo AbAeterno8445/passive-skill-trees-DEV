@@ -883,6 +883,8 @@ function PST:treeMenuRenderer()
             local tmpDescription = PST:SC_getJewelDescription(jewelData)
             if PST:SC_canDestroyJewel(jewelData) then
                 table.insert(tmpDescription, "Press the Respec Node button to destroy this jewel.")
+            elseif jewelData.status and jewelData.status == "converted" then
+                table.insert(tmpDescription, "Press the Respec Node button to remove the converted boss.")
             end
             local jewelTitle = jewelData.name or jewelData.type .. " Starcursed Jewel"
             if jewelData.mighty then
@@ -1044,7 +1046,12 @@ function PST:treeMenuRenderer()
         -- Starcursed inventory, attempt to destroy hovered jewel
         elseif PST.starcursedInvData.hoveredJewel ~= nil then
             if not PST.starcursedInvData.hoveredJewel.equipped then
-                if PST.starcursedInvData.hoveredJewelID and PST:SC_canDestroyJewel(PST.starcursedInvData.hoveredJewel) then
+                if PST.starcursedInvData.hoveredJewel.converted ~= nil then
+                    -- Cause Converter, remove boss and switch jewel back to seeking mode
+                    PST.starcursedInvData.hoveredJewel.converted = nil
+                    PST.starcursedInvData.hoveredJewel.status = "seeking"
+                    sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+                elseif PST.starcursedInvData.hoveredJewelID and PST:SC_canDestroyJewel(PST.starcursedInvData.hoveredJewel) then
                     if not PST.starcursedInvData.hoveredJewel.equipped then
                         table.remove(PST.modData.starTreeInventory[PST.starcursedInvData.hoveredJewel.type], PST.starcursedInvData.hoveredJewelID)
                         PST.starcursedInvData.hoveredJewel = nil

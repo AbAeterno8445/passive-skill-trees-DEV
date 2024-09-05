@@ -422,6 +422,18 @@ function PST:onDamage(target, damage, flag, source)
                         PST:addModifiers({ damage = tmpAdd, blueFlyDeathDamageTotal = tmpAdd }, true)
                     end
                 end
+            elseif PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt:Exists() then
+                -- Cause converter boss check
+                local tmpNPC = source.Entity:ToNPC()
+                if tmpNPC == nil and source.Entity.SpawnerEntity ~= nil then
+                    tmpNPC = source.Entity.SpawnerEntity:ToNPC()
+                end
+                if tmpNPC == nil and source.Entity.Parent ~= nil then
+                    tmpNPC = source.Entity.Parent:ToNPC()
+                end
+                if tmpNPC and tmpNPC.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed then
+                    dmgExtra = dmgExtra + PST:getPlayer().Damage * ((10 * PST:getLevel():GetStage()) / 100)
+                end
             else
                 -- Player hit to enemy (direct/through tears)
                 local srcPlayer = source.Entity:ToPlayer()
@@ -804,6 +816,15 @@ function PST:onDeath(entity)
                     PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 1)
                 end
             end
+        end
+        -- Ancient starcursed jewel: Cause Converter
+        local tmpAncient = PST:SC_getSocketedAncient("Cause Converter")
+        if tmpAncient and tmpAncient.status == "seeking" and entity:IsBoss() and not PST:arrHasValue(PST.causeConverterBossBlacklist, entity.Type) and
+        (tmpAncient.converted ~= entity.Type or tmpAncient.converted == entity.Type and tmpAncient.convertedVariant ~= entity.Variant) then
+            tmpAncient.converted = entity.Type
+            tmpAncient.convertedVariant = entity.Variant
+            SFXManager():Play(SoundEffect.SOUND_LIGHTBOLT, 0.9)
+            PST:createFloatTextFX("Boss converted!", entity.Position, Color(0.7, 0.85, 1, 1), 0.12, 120, false)
         end
 
         -- Samson temp mods
