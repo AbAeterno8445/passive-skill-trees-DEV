@@ -311,6 +311,22 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpMod / 2, temporaryHeartLuckBuff = -tmpMod / 2 }, true)
     end
 
+    -- Bounty For The Lightless node (T. Judas' tree)
+    if PST:getTreeSnapshotMod("lightlessBountyLuck", 0) > 0 then
+        PST:addModifiers({ lightlessBountyLuck = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: +% random stat every X kills with Dark Arts (reset)
+    local tmpBuffTable = PST:getTreeSnapshotMod("darkArtsKillStatBuffs", nil)
+    if tmpBuffTable then
+        local tmpMods = {}
+        for tmpStat, tmpStatVal in pairs(tmpBuffTable) do
+            tmpMods[tmpStat] = -tmpStatVal
+        end
+        PST:addModifiers(tmpMods, true)
+        PST.modData.treeModSnapshot.darkArtsKillStatBuffs = {}
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

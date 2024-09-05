@@ -326,12 +326,12 @@ PST.treeModDescriptions = {
     eldritchMapping = {
         str = {
             "You can no longer receive Curse of the Lost",
-            "    +20% chance to receive a different random curse when entering a floor"
+            "    +20%% chance to receive a different random curse when entering a floor"
         },
         category = "extra", sort = 1111
     },
     trollBombDisarm = {
-        str = "%d%% chance to turn troll and super troll bombs into regular bomb pickups",
+        str = "%.2f%% chance to turn troll and super troll bombs into regular bomb pickups",
         category = "extra", sort = 1112
     },
 

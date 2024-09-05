@@ -489,6 +489,33 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- Bag of Crafting
     elseif itemType == CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING then
         PST.specialNodes.craftBagSnapshot = player:GetBagOfCraftingContent()
+    -- Dark Arts
+    elseif itemType == CollectibleType.COLLECTIBLE_DARK_ARTS then
+        -- Dark Expertise node (T. Judas' tree)
+        if PST:getTreeSnapshotMod("darkExpertise", false) then
+            Isaac.GetPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_HOW_TO_JUMP)
+        end
+
+        -- Anarchy node (T. Judas' tree)
+        if PST:getTreeSnapshotMod("anarchy", false) then
+            PST.specialNodes.trollBombDisarmDebuffTimer = 45
+        end
+
+        -- Mod: +% tears for 2 seconds after using Dark Arts
+        local tmpMod = PST:getTreeSnapshotMod("darkArtsTears", 0)
+        if tmpMod > 0 and PST.specialNodes.darkArtsTearsTimer == 0 then
+            PST.specialNodes.darkArtsTearsTimer = 75
+            player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY)
+        end
+
+        PST.specialNodes.darkArtsBossHitProc = false
+    -- How to Jump
+    elseif itemType == CollectibleType.COLLECTIBLE_HOW_TO_JUMP then
+        -- Mod: dark pulse when landing with How to Jump
+        local tmpMod = PST:getTreeSnapshotMod("howToJumpPulse", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            PST.specialNodes.howToJumpPulseTimer = 15
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item
@@ -504,6 +531,18 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             if taintedUnlock ~= nil then
                 PST:cosmicRTryUnlock("tainted")
             end
+        end
+    end
+end
+
+-- Active item charge overrides
+function PST:getActiveMaxCharge(itemType, player, varData, currentMaxCharge)
+    -- Dark Arts
+    if itemType == CollectibleType.COLLECTIBLE_DARK_ARTS then
+        -- Mod: +- Dark Arts' cooldown
+        local tmpMod = PST:getTreeSnapshotMod("darkArtsCD", 0)
+        if tmpMod ~= 0 then
+            return currentMaxCharge + math.floor(tmpMod * 30)
         end
     end
 end

@@ -234,7 +234,7 @@ function PST:onNewRun(isContinued)
     if PST:getTreeSnapshotMod("soulfulAwakening", false) then
         PST:addModifiers({ luck = 2 }, true)
     end
-    
+
     -- King's Curse node (Lazarus' tree)
     if PST:getTreeSnapshotMod("kingCurse", false) then
         player:AddCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
@@ -341,9 +341,15 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ allstatsPerc = -5 }, true)
     end
 
-    -- Lingering Malice (T. Magdalene's tree)
+    -- Lingering Malice node (T. Magdalene's tree)
     if PST:getTreeSnapshotMod("lingeringMalice", false) then
         player:AddSmeltedTrinket(TrinketType.TRINKET_LOST_CORK)
+    end
+
+    -- Stealth Tactics node (T. Judas' tree)
+    if PST:getTreeSnapshotMod("stealthTactics", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_9_VOLT)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_9_VOLT)
     end
 
     -- Update familiars

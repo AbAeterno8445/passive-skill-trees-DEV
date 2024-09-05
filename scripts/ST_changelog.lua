@@ -4,7 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.3.2",
-        "- Introduced new character skill trees for: Tainted Cain.",
+        "- Introduced new character skill trees for: Tainted Cain and Tainted Judas.",
         "- Added a new experimental ancient jewel: \"Cause Converter\".",
         "- Added a new large node to the Siren's tree: \"Overwhelming Voice\".",
         "- \"Chance to turn troll and super troll bombs into regular bombs\" modifiers now receive a hidden debuff",

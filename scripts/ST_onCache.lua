@@ -257,6 +257,12 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.temporaryHeartBuffTimer > 0 and PST.specialNodes.temporaryHeartTearStacks > 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + PST:getTreeSnapshotMod("temporaryHeartTears", 0) * PST.specialNodes.temporaryHeartTearStacks
         end
+
+        -- Mod: +% tears for 2 seconds after using Dark Arts
+        tmpTreeMod = PST:getTreeSnapshotMod("darkArtsTears", 0)
+        if tmpTreeMod ~= 0 and PST.specialNodes.darkArtsTearsTimer > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
+        end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- Mod: range while dead bird is active
@@ -607,6 +613,13 @@ function PST:onCache(player, cacheFlag)
             baseSpeed = 0.85
         end
         player.MoveSpeed = (baseSpeed + tmpMod / 2) * math.max(0.05, tmpMult)
+
+        -- Stealth Tactics node (T. Judas' tree)
+        if PST:getTreeSnapshotMod("stealthTactics", false) then
+            if player.MoveSpeed > 1.2 and player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_DARK_ARTS) then
+                player.MoveSpeed = 1.2
+            end
+        end
 
         -- Ancient starcursed jewel: Cursed Auric Shard
 	    if PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) and player.MoveSpeed < 1.6 and PST:getRoom():GetAliveEnemiesCount() == 0 then

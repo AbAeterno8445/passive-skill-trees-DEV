@@ -258,6 +258,7 @@ include("scripts.ST_cosmicRData")
 include("scripts.ST_treeScreen")
 include("scripts.ST_onNewRoom")
 include("scripts.ST_onDamage")
+include("scripts.ST_onDeath")
 include("scripts.ST_onHeartUpdates")
 include("scripts.ST_onUpdate")
 include("scripts.ST_rendering")
@@ -332,6 +333,7 @@ PST:AddCallback(ModCallbacks.MC_GET_SHOP_ITEM_PRICE, PST.onShopItemPrice)
 PST:AddCallback(ModCallbacks.MC_POST_RESTOCK_SHOP, PST.onShopRestock)
 PST:AddCallback(ModCallbacks.MC_PRE_PICKUP_VOIDED, PST.onPickupVoided)
 PST:AddCallback(ModCallbacks.MC_PRE_USE_CARD, PST.preUseCard)
+PST:AddCallback(ModCallbacks.MC_PLAYER_GET_ACTIVE_MAX_CHARGE, PST.getActiveMaxCharge)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
 if Isaac.IsInGame() then

@@ -775,6 +775,24 @@ function PST:resetMods()
 		bagCoinRangeLuck = 0,
 		bagHeartSpeed = 0,
 		additionalPedestalPickup = 0,
+		---- T. Judas ----
+		darkExpertise = false,
+		stealthTactics = false,
+		lightlessBounty = false,
+		lightlessBountyLuck = 0,
+		annihilation = false,
+		anarchy = false,
+		howToJumpPulse = 0,
+		darkArtsCDReset = 0,
+		darkArtsDmg = 0,
+		darkArtsCD = 0,
+		darkArtsTears = 0,
+		nonDarkArtsDmg = 0,
+		darkArtsKillStat = 0,
+		darkArtsKills = 0,
+		darkArtsKillStatBuffs = {},
+		trollBombProtection = 0,
+		trollBombKillLuck = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -864,6 +882,12 @@ function PST:resetMods()
 		trollBombDisarmDebuffTimer = 0,
 		overwhelmingVoiceProc = false,
 		craftBagSnapshot = {},
+		darkArtsBossHitProc = false,
+		annihilationHitList = {},
+		annihilationProcs = 0,
+		anarchyBombProcs = 0,
+		howToJumpPulseTimer = 0,
+		darkArtsTearsTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

@@ -18,6 +18,8 @@ local function PST_causeConvBossSpawn()
 	end
 end
 
+local hasDarkArtsEffect = false
+
 -- On update
 local clearRoomProc = false
 local modResetUpdate = false
@@ -1276,6 +1278,41 @@ function PST:onUpdate()
 				end
 			end
 			PST:addModifiers({ craftingBagFull = bagStatus }, true)
+		end
+	end
+
+	-- Stealth Tactics node (T. Judas' tree)
+	if PST:getTreeSnapshotMod("stealthTactics", false) then
+		local tmpDarkArts = player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_DARK_ARTS)
+		if tmpDarkArts ~= hasDarkArtsEffect then
+			player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+			hasDarkArtsEffect = tmpDarkArts
+		end
+	end
+
+	-- Mod: dark pulse when landing with How to Jump
+	if PST.specialNodes.howToJumpPulseTimer > 0 then
+		PST.specialNodes.howToJumpPulseTimer = PST.specialNodes.howToJumpPulseTimer - 1
+		if PST.specialNodes.howToJumpPulseTimer == 0 then
+			local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
+			pulseEffect:GetSprite().Scale = Vector(2, 2)
+			pulseEffect.Color = Color(0.38, 0.1, 0.5, 1)
+			SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 1, 2, false, 1.3)
+
+			for _, tmpEntity in ipairs(Isaac.FindInRadius(player.Position, 80)) do
+				local tmpNPC = tmpEntity:ToNPC()
+				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+					tmpNPC:TakeDamage(player.Damage * 1.5, 0, EntityRef(tmpNPC), 0)
+				end
+			end
+		end
+	end
+
+	-- Mod: +% tears when using Dark Arts for 3 seconds
+	if PST.specialNodes.darkArtsTearsTimer > 0 then
+		PST.specialNodes.darkArtsTearsTimer = PST.specialNodes.darkArtsTearsTimer - 1
+		if PST.specialNodes.darkArtsTearsTimer == 0 then
+			player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY)
 		end
 	end
 
