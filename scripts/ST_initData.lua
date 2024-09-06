@@ -276,6 +276,12 @@ PST.causeConverterBossBlacklist = {
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_DOGMA, EntityType.ENTITY_BEAST,
 	EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_GEMINI
 }
+PST.planetariumItems = {
+	CollectibleType.COLLECTIBLE_JUPITER, CollectibleType.COLLECTIBLE_LUNA, CollectibleType.COLLECTIBLE_MARS,
+	CollectibleType.COLLECTIBLE_MERCURIUS, CollectibleType.COLLECTIBLE_NEPTUNUS, CollectibleType.COLLECTIBLE_PLUTO,
+	CollectibleType.COLLECTIBLE_SATURNUS, CollectibleType.COLLECTIBLE_SOL, CollectibleType.COLLECTIBLE_TERRA,
+	CollectibleType.COLLECTIBLE_URANUS, CollectibleType.COLLECTIBLE_VENUS
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -847,6 +853,9 @@ function PST:resetMods()
 		SC_glowingGlassDebuff = 0,
 		SC_glowingGlassProcs = 0,
 		SC_tellurianBuff = 0,
+		SC_astralInsigniaLevel = 0,
+		SC_astralInsigniaDebuff = 0,
+		SC_astralInsigniaItem = 0,
 		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes
@@ -891,6 +900,7 @@ function PST:resetMods()
 		anarchyBombProcs = 0,
 		howToJumpPulseTimer = 0,
 		darkArtsTearsTimer = 0,
+		levelMazeCurseProc = false,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

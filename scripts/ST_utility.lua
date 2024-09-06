@@ -333,8 +333,20 @@ function PST:getRandomStat(exclude)
 end
 
 function PST:onPlanetariumChance(chance)
+	if not PST.gameInit then return chance end
+
 	-- Mod: % increased chance for the planetarium to appear
 	return chance + PST:getTreeSnapshotMod("planetariumChance", 0) / 100
+end
+
+function PST:finalPlanetariumChance(chance)
+	-- Ancient starcursed jewel: Astral Insignia
+	if PST:SC_getSnapshotMod("astralInsignia", false) and not PST:isFirstOrigStage() then
+		local currentLevel = PST:getTreeSnapshotMod("SC_astralInsigniaLevel", 0)
+		if ((currentLevel) % 2) == 0 then
+			return 1
+		end
+	end
 end
 
 function PST:isFirstOrigStage()

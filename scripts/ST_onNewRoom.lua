@@ -51,6 +51,12 @@ function PST:onNewRoom()
 		PST:addModifiers({ d7Proc = false }, true)
 	end
 
+	-- Curse of Maze teleport - reapply curse
+	if PST.specialNodes.levelMazeCurseProc then
+		PST:getLevel():AddCurse(LevelCurse.CURSE_OF_MAZE, false)
+		PST.specialNodes.levelMazeCurseProc = false
+	end
+
 	-- Starcursed modifiers
 	if room:GetAliveEnemiesCount() > 0 then
 		local mobsList = {}
@@ -215,6 +221,16 @@ function PST:onNewRoom()
 		if room:GetAliveEnemiesCount() == 0 and PST:getLevel():GetCurrentRoomDesc().ClearCount == 1 then
 			player:UseActiveItem(CollectibleType.COLLECTIBLE_D7, UseFlag.USE_NOANIM)
 			PST.specialNodes.SC_glowingGlassProc = true
+		end
+	end
+
+	-- Ancient starcursed jewel: Astral Insignia
+	if PST:SC_getSnapshotMod("astralInsignia", false) and room:IsFirstVisit() then
+		tmpMod = PST:getTreeSnapshotMod("SC_astralInsigniaDebuff", 0)
+		if room:GetType() == RoomType.ROOM_DEFAULT and tmpMod < 60 and not PST:getLevel():IsAscent() then
+			PST:addModifiers({ allstatsPerc = -2, SC_astralInsigniaDebuff = 2 }, true)
+		elseif room:GetType() == RoomType.ROOM_PLANETARIUM and tmpMod > 0 then
+			PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_astralInsigniaDebuff = -tmpMod / 2 }, true)
 		end
 	end
 
@@ -532,7 +548,7 @@ function PST:onNewRoom()
 		end
 
 		-- Ancient starcursed jewel: Umbra
-		if PST:SC_getSnapshotMod("umbra", false) and level:GetCurses() & LevelCurse.CURSE_OF_DARKNESS and
+		if PST:SC_getSnapshotMod("umbra", false) and (level:GetCurses() & LevelCurse.CURSE_OF_DARKNESS) > 0 and
 		not player:HasCollectible(CollectibleType.COLLECTIBLE_NIGHT_LIGHT) then
 			if PST:getTreeSnapshotMod("SC_umbraStatsDown", 0) < 20 then
 				PST:addModifiers({ allstatsPerc = -2, SC_umbraStatsDown = 2 }, true)

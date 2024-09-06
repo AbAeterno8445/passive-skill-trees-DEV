@@ -45,6 +45,16 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
 
+            -- Ancient starcursed jewel: Astral Insignia
+            if PST:SC_getSnapshotMod("astralInsignia", false) and PST:getRoom():GetType() == RoomType.ROOM_PLANETARIUM and
+            PST:arrHasValue(PST.planetariumItems, subtype) then
+                local oldItem = PST:getTreeSnapshotMod("SC_astralInsigniaItem", 0)
+                if oldItem ~= 0 then
+                    player:RemoveCollectible(oldItem)
+                end
+                PST:addModifiers({ SC_astralInsigniaItem = subtype }, true)
+            end
+
             -- Impromptu Gambler node (Cain's tree)
             if PST:getTreeSnapshotMod("impromptuGambler", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
                 -- Remove crane games

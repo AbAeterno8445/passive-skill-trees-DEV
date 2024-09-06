@@ -5,7 +5,8 @@ function PST:getChangelogList()
 
         "v0.3.2",
         "- Introduced new character skill trees for: Tainted Cain and Tainted Judas.",
-        "- Added 3 new Ancient Jewels: \"Cause Converter\" (experimental), \"Glowing Glass Piece\" and \"Tellurian Splinter\".",
+        "- Added 4 new Ancient Jewels: \"Cause Converter\" (experimental), \"Glowing Glass Piece\", \"Tellurian Splinter\" and",
+        "\"Astral Insignia\".",
         "- Added a new large node to the Siren's tree: \"Overwhelming Voice\".",
         "- \"Chance to turn troll and super troll bombs into regular bombs\" modifiers now receive a hidden debuff",
         "after certain events, such as bomb bums, anarchist's cookbook, tower card, etc, reducing its proc chance.",

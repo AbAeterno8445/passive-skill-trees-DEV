@@ -794,14 +794,24 @@ PST.SCAncients = {
             beastRewards = {1, 4}
         }
     },
-    --[[astralInsignia = {
+    astralInsignia = {
         weight = 100,
-        spriteFrame = 26,
+        spriteFrame = 27,
         name = "Astral Insignia",
         description = {
-            ""
+            "Guarantee a Planetarium every 2 floors, starting from the second one you enter.",
+            "When grabbing a Planetarium item, remove your old Planetarium item if you have one.",
+            "-2% all stats when first entering a normal room, up to -60%.",
+            "Debuff stops applying during the Ascent.",
+            "Entering a Planetarium halves your current debuff."
+        },
+        rewards = {
+            xpgain = 55,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
         }
-    }]]
+    }
 }
 
 PST.SCDropRates = {

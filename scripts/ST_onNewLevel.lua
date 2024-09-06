@@ -113,6 +113,11 @@ function PST:onNewLevel()
         PST:addModifiers({ speedPerc = tmpMod / 2, SC_tellurianBuff = -tmpMod / 2 }, true)
     end
 
+    -- Ancient starcursed jewel: Astral Insignia
+    if PST:SC_getSnapshotMod("astralInsignia", false) then
+        PST:addModifiers({ SC_astralInsigniaLevel = 1 }, true)
+    end
+
     -- Challenge room clear proc
     if PST:getTreeSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)

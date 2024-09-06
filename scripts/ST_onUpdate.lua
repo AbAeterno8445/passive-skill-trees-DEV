@@ -205,6 +205,12 @@ function PST:onUpdate()
 				local challRoom = level:GetRoomByIdx(tmpRoomIdx)
 				if challRoom and challRoom.Data.Type == RoomType.ROOM_CHALLENGE then
 					PST:addModifiers({ SC_levelHasChall = true }, true)
+
+					-- Check for curse of maze before teleport
+					if (level:GetCurses() & LevelCurse.CURSE_OF_MAZE) > 0 then
+						level:RemoveCurses(LevelCurse.CURSE_OF_MAZE)
+						PST.specialNodes.levelMazeCurseProc = true
+					end
 					Game():StartRoomTransition(tmpRoomIdx, Direction.NO_DIRECTION, RoomTransitionAnim.TELEPORT)
 				else
 					PST:addModifiers({ SC_levelHasChall = false }, true)
