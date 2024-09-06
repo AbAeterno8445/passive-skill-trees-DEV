@@ -12,6 +12,7 @@ function PST:getChangelogList()
         "- Reduced total chance for global \"Chance to turn troll and super troll bombs into regular bombs\" modifiers.",
         "- Ancient jewel skill point rewards are no longer given to character trees, and instead are global-only.",
         "- Invulnerable enemies can no longer become champions through tree/jewel effects.",
+        "- Fixed some old jewel effects still affecting Gideon.",
         "",
 
         "v0.3.1",
