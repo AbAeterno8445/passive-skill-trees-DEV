@@ -775,7 +775,33 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
-    }
+    },
+    tellurianSplinter = {
+        weight = 100,
+        spriteFrame = 26,
+        name = "Tellurian Splinter",
+        description = {
+            "Start with Terra.",
+            "-1.5 damage and -50% speed.",
+            "Gain +1% speed when destroying bomb rocks, up to 35%.",
+            "Halve your current speed buff when entering a new floor.",
+            "Rocks in rooms have a 20% chance of being replaced with bomb rocks."
+        },
+        rewards = {
+            xpgain = 55,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
+    },
+    --[[astralInsignia = {
+        weight = 100,
+        spriteFrame = 26,
+        name = "Astral Insignia",
+        description = {
+            ""
+        }
+    }]]
 }
 
 PST.SCDropRates = {

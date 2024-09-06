@@ -19,7 +19,7 @@ function PST:getStaticEntityID(entity)
 end
 
 function PST:initStaticEntity(entity)
-    local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", nil)
+    local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
     if staticEntCache then
         local entityID = PST:getStaticEntityID(entity)
         if entityID and not staticEntCache[entityID] then
@@ -33,7 +33,7 @@ end
 function PST:gridEntityPoopUpdate(entityParam)
     local entityID = PST:initStaticEntity(entityParam)
     if entityID then
-        local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", nil)
+        local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
         if staticEntCache[entityID] < entityParam.State then
             local noXP = staticEntCache[entityID] == -1
             staticEntCache[entityID] = entityParam.State
@@ -58,7 +58,7 @@ function PST:gridEntityRockUpdate(entityParam)
     if entityParam.Desc.Type == GridEntityType.GRID_ROCKT then
         local entityID = PST:initStaticEntity(entityParam)
         if entityID then
-            local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", nil)
+            local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
             if staticEntCache[entityID] ~= entityParam.State then
                 local noXP = staticEntCache[entityID] == -1
                 staticEntCache[entityID] = entityParam.State
@@ -75,6 +75,31 @@ function PST:gridEntityRockUpdate(entityParam)
                     if tmpMod ~= 0 then
                         PST:addModifiers({ allstats = tmpMod }, true)
                     end
+                end
+            end
+        end
+    elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK then
+        if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 then
+            -- Ancient starcursed jewel: Tellurian Splinter
+            if PST:SC_getSnapshotMod("tellurianSplinter", false) and 100 * math.random() < 20 then
+                local room = PST:getRoom()
+                local gridIdx = entityParam:GetGridIndex()
+                room:GetGridEntity(gridIdx):ToRock():Destroy(true)
+                room:SpawnGridEntity(gridIdx, GridEntityType.GRID_ROCK_BOMB)
+            end
+        end
+    elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK_BOMB and entityParam.State == 2 then
+        -- Ancient starcursed jewel: Tellurian Splinter
+        if PST:SC_getSnapshotMod("tellurianSplinter", false) then
+            local entityID = PST:initStaticEntity(entityParam)
+            if entityID then
+                local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
+                if staticEntCache[entityID] ~= entityParam.State then
+                    -- Bomb rock destroyed
+                    if PST:getTreeSnapshotMod("SC_tellurianBuff", 0) < 35 then
+                        PST:addModifiers({ speedPerc = 1, SC_tellurianBuff = 1 }, true)
+                    end
+                    staticEntCache[entityID] = entityParam.State
                 end
             end
         end

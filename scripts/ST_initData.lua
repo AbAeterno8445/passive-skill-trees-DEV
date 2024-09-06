@@ -846,6 +846,7 @@ function PST:resetMods()
 		SC_causeConvBossVariant = 0,
 		SC_glowingGlassDebuff = 0,
 		SC_glowingGlassProcs = 0,
+		SC_tellurianBuff = 0,
 		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes

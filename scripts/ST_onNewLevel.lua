@@ -1,6 +1,7 @@
 function PST:onNewLevel()
     if not PST.gameInit then return end
 
+    local tmpMod
     local player = PST:getPlayer()
     local level = Game():GetLevel()
     PST.level = level
@@ -37,7 +38,7 @@ function PST:onNewLevel()
 
     -- Ancient starcursed jewel: Umbra (reset)
     if PST:SC_getSnapshotMod("umbra", false) then
-        local tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)
+        tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)
         if tmpMod > 0 then
             PST:addModifiers({
                 allstatsPerc = tmpMod,
@@ -88,7 +89,7 @@ function PST:onNewLevel()
     -- Ancient starcursed jewel: Twisted Emperor's Heirloom
     if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
         if PST:getTreeSnapshotMod("SC_empHeirloomActive", false) and not PST:getTreeSnapshotMod("SC_empHeirloomProc", false) then
-            local tmpMod = PST:getTreeSnapshotMod("SC_empHeirloomDebuff", 0)
+            tmpMod = PST:getTreeSnapshotMod("SC_empHeirloomDebuff", 0)
             if tmpMod < 48 then
                 PST:addModifiers({ allstatsPerc = -12, SC_empHeirloomDebuff = 12 }, true)
             end
@@ -104,6 +105,12 @@ function PST:onNewLevel()
     if PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) then
         PST:addModifiers({ SC_cursedAuricSpeedProc = false }, true)
         player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+    end
+
+    -- Ancient starcursed jewel: Tellurian Splinter
+    tmpMod = PST:getTreeSnapshotMod("SC_tellurianBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ speedPerc = tmpMod / 2, SC_tellurianBuff = -tmpMod / 2 }, true)
     end
 
     -- Challenge room clear proc

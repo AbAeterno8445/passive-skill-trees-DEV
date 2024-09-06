@@ -181,6 +181,12 @@ function PST:onNewRun(isContinued)
                 SC_causeConvBoss = tmpAncient.converted
             }, true)
         end
+        -- Ancient starcursed jewel: Tellurian Splinter
+        if PST:SC_getSnapshotMod("tellurianSplinter", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_TERRA)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_TERRA)
+            PST:addModifiers({ damage = -1.5, speedPerc = -50 }, true)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)
