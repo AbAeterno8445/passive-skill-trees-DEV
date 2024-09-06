@@ -46,6 +46,11 @@ function PST:onNewRoom()
 		return roomEntities
 	end
 
+	-- Reset d7 proc
+	if PST:getTreeSnapshotMod("d7Proc", false) then
+		PST:addModifiers({ d7Proc = false }, true)
+	end
+
 	-- Starcursed modifiers
 	if room:GetAliveEnemiesCount() > 0 then
 		local mobsList = {}
@@ -203,6 +208,14 @@ function PST:onNewRoom()
 	-- Ancient starcursed jewel: Cursed Auric Shard
 	if PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) then
 		player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+	end
+
+	-- Ancient starcursed jewel: Glowing Glass Piece
+	if PST:SC_getSnapshotMod("glowingGlassPiece", false) then
+		if room:GetAliveEnemiesCount() == 0 and PST:getLevel():GetCurrentRoomDesc().ClearCount == 1 then
+			player:UseActiveItem(CollectibleType.COLLECTIBLE_D7, UseFlag.USE_NOANIM)
+			PST.specialNodes.SC_glowingGlassProc = true
+		end
 	end
 
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
@@ -451,11 +464,6 @@ function PST:onNewRoom()
 	-- Reset mob room hit
 	if PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 		PST:addModifiers({ roomGotHitByMob = false }, true)
-	end
-
-	-- Reset d7 proc
-	if PST:getTreeSnapshotMod("d7Proc", false) then
-		PST:addModifiers({ d7Proc = false }, true)
 	end
 
 	-- Cosmic Realignment node

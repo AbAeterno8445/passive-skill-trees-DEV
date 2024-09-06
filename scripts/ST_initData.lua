@@ -844,6 +844,8 @@ function PST:resetMods()
 		SC_cursedAuricSpeedProc = false,
 		SC_causeConvBoss = nil,
 		SC_causeConvBossVariant = 0,
+		SC_glowingGlassDebuff = 0,
+		SC_glowingGlassProcs = 0,
 		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes
@@ -913,7 +915,8 @@ function PST:resetMods()
 		SC_nullstoneHPThreshold = 0,
 		SC_nightProjTimer = 3600,
 		SC_causeConvBossEnt = nil,
-		SC_causeConvRespawnTimer = 0
+		SC_causeConvRespawnTimer = 0,
+		SC_glowingGlassProc = false
 	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)

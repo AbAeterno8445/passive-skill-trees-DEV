@@ -757,6 +757,24 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    glowingGlassPiece = {
+        weight = 100,
+        spriteFrame = 25,
+        name = "Glowing Glass Piece",
+        description = {
+            "When entering a previously cleared room, trigger D7's effect. Can only happen once per room.",
+            "Respawned monsters gain 5 HP, then +5% HP. These values increase by 2 each floor.",
+            "Respawned monsters grant no xp.",
+            "When entering a floor, -6% all stats if the above effect hasn't triggered 3 or more times in",
+            "the previous floor, up to -30%."
+        },
+        rewards = {
+            xpgain = 50,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

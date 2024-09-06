@@ -234,6 +234,14 @@ function PST:onUpdate()
 				end
 			end
 
+			-- Ancient starcursed jewel: Glowing Glass Piece
+			if PST:SC_getSnapshotMod("glowingGlassPiece", false) then
+				if PST:getTreeSnapshotMod("SC_glowingGlassProcs", 0) < 3 and PST:getTreeSnapshotMod("SC_glowingGlassDebuff", 0) < 30 then
+					PST:addModifiers({ allstatsPerc = -6, SC_glowingGlassDebuff = 6 }, true)
+				end
+				PST:addModifiers({ SC_glowingGlassProcs = { value = 0, set = true } }, true)
+			end
+
 			-- Mod: chance to reveal map
 			if PST:getTreeSnapshotMod("mapRevealed", false) then
 				level:ShowMap()
@@ -690,6 +698,38 @@ function PST:onUpdate()
 		if PST.specialNodes.SC_causeConvBossEnt and not PST.specialNodes.SC_causeConvBossEnt:Exists() and PST.specialNodes.SC_causeConvRespawnTimer == 0 then
 			PST.specialNodes.SC_causeConvRespawnTimer = 300
 		end
+	end
+
+	-- Ancient starcursed jewel: Glowing Glass Piece
+	if PST.specialNodes.SC_glowingGlassProc then
+		local foundNPC = false
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly
+			and tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
+				foundNPC = true
+				local levelStageBonus = (level:GetStage() - 1) * 2
+				if not PST:isFirstOrigStage() and level:GetStage() == LevelStage.STAGE1_1 then
+					levelStageBonus = levelStageBonus + 1
+				end
+				tmpNPC.MaxHitPoints = (tmpNPC.MaxHitPoints + 5 + levelStageBonus) * (1.05 + levelStageBonus / 100)
+				tmpNPC.HitPoints = tmpNPC.MaxHitPoints
+			end
+		end
+		if foundNPC then
+			SFXManager():Play(SoundEffect.SOUND_GLASS_BREAK, 0.9, 2, false, 0.7 + math.random(5) * 0.1)
+			PST:addModifiers({ SC_glowingGlassProcs = 1 }, true)
+
+			local tmpColor = Color(0.8, 0.8, 1, 1)
+			local tmpProcs = PST:getTreeSnapshotMod("SC_glowingGlassProcs", 0)
+			if tmpProcs <= 3 then
+				if tmpProcs == 3 then
+					tmpColor = Color(0.7, 1, 1, 1)
+				end
+				PST:createFloatTextFX("Glass Piece: " .. tostring(tmpProcs) .. "/3", Vector.Zero, tmpColor, 0.12, 100, true)
+			end
+		end
+		PST.specialNodes.SC_glowingGlassProc = false
 	end
 
 	-- Fickle Fortune node (Cain's tree)
