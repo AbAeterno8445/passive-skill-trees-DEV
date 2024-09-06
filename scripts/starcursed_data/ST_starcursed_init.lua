@@ -737,11 +737,11 @@ PST.SCAncients = {
         description = {
             "Jewel status: Seeking",
             "While the jewel is equipped and in Seeking status, defeating a boss will convert it to your cause.",
-            "Unequip the jewel while in Seeking status and a converted boss to avoid replacing this boss.",
-            "Starting a run with a converted boss switches the jewel status to Converted.",
+            "Unequip the jewel to stop converting further bosses.",
+            "Starting a run with a converted boss switches the jewel status to Converted, revealing its modifiers.",
             "Certain bosses are excluded from conversion, and successful conversions are shown with a text",
             "indicator in-game.",
-            "Can be equipped mid-run to start converting bosses."
+            "Can be equipped mid-run to start/continue converting bosses."
         },
         descriptionConverted = {
             "Jewel status: Converted",
