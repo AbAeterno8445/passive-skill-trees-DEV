@@ -132,6 +132,9 @@ function PST:onNewLevel()
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)
     end
+    if PST:getTreeSnapshotMod("impromptuGamblerItemRemoved", false) then
+        PST:addModifiers({ impromptuGamblerItemRemoved = false }, true)
+    end
 
     -- Sacrifice Darkness node (Judas' tree)
     if PST:getTreeSnapshotMod("sacrificeDarkness", false) then

@@ -272,7 +272,7 @@ function PST:onNewRoom()
 	end
 
 	-- Impromptu Gambler node (Cain's tree)
-	if PST:getTreeSnapshotMod("impromptuGambler", false) and room:GetType() == RoomType.ROOM_TREASURE then
+	if PST:getTreeSnapshotMod("impromptuGambler", false) and room:GetType() == RoomType.ROOM_TREASURE and not PST:getLevel():IsAscent() then
 		if not PST:getTreeSnapshotMod("impromptuGamblerProc", false) then
 			PST.specialNodes.impromptuGamblerItems = {}
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do

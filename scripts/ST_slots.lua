@@ -64,7 +64,7 @@ function PST:onSlotUpdate(slot)
                     player:AddCoins(-3)
 
                     -- Remove natural treasure room items
-                    if #PST.specialNodes.impromptuGamblerItems > 0 then
+                    if #PST.specialNodes.impromptuGamblerItems > 0 and not PST:getTreeSnapshotMod("impromptuGamblerItemRemoved", false) then
                         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
                             if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
                             not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
@@ -79,6 +79,7 @@ function PST:onSlotUpdate(slot)
                             end
                         end
                         PST.specialNodes.impromptuGamblerItems = {}
+                        PST:addModifiers({ impromptuGamblerItemRemoved = true }, true)
                     end
                 end
             end

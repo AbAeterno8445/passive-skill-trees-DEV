@@ -463,6 +463,7 @@ function PST:resetMods()
 		---- Cain's tree ----
 		impromptuGambler = false,
 		impromptuGamblerProc = false,
+		impromptuGamblerItemRemoved = false,
 		thievery = false,
 		thieveryGreedProc = false,
 		fickleFortune = false,
