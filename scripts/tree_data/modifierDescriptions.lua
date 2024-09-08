@@ -621,7 +621,7 @@ PST.treeModDescriptions = {
         str = {
             "Slipping Essence:",
             "    Losing a soul heart has a 40%% chance to spawn a full soul heart",
-            "    When this happens, halve this chance and receive -0.1 luck"
+            "    When this happens, halve this chance and receive -0.6 luck"
         },
         category = "charTree", sort = 2202
     },
@@ -852,7 +852,9 @@ PST.treeModDescriptions = {
         str = {
             "King's Curse:",
             "    Start with Damocles activated",
-            "    -5%% all stats while not Lazarus Risen"
+            "    When entering a new floor, remove Damocles if you have it, or re-add it if you don't",
+            "    -10% all stats while not Lazarus Risen",
+            "    -1 luck while not Lazarus Risen"
         },
         category = "charTree", sort = 2401
     },
@@ -1043,7 +1045,9 @@ PST.treeModDescriptions = {
     heavyFriends = {
         str = {
             "Heavy Friends:",
-            "    Start with BFFS!"
+            "    Start with BFFS!",
+            "    -35% speed",
+            "    -45% damage"
         },
         category = "charTree", sort = 2551
     },
@@ -1051,7 +1055,8 @@ PST.treeModDescriptions = {
         str = {
             "Daemon Army:",
             "    Start with an additional Incubus",
-            "    Mom drops an additional Incubus on defeat",
+            "    Mom drops an additional Incubus on defeat if you took no damage throughout the run",
+            "    until this point",
             "    Baby familiar items other than Incubus no longer show up"
         },
         category = "charTree", sort = 2552
@@ -1089,7 +1094,7 @@ PST.treeModDescriptions = {
     keeperBlessing = {
         str = {
             "Keeper's Blessing:",
-            "    Healing from a coin grants you an additional 2 coins, up to 4 times per room",
+            "    Healing from a coin grants you an additional coin, up to 4 times per room",
             "    20%% chance for Wooden Nickel to spawn an additional penny when used"
         },
         category = "charTree", sort = 2600
@@ -1369,7 +1374,7 @@ PST.treeModDescriptions = {
             "    Esau starts with Gnawed Leaf",
             "    Esau doesn't shoot while transformed",
             "    Enemies target Jacob instead while Esau is transformed",
-            "    Jacob gains +7%% all stats while close to transformed Esau"
+            "    Jacob gains +12%% all stats while close to transformed Esau"
         },
         category = "charTree", sort = 2801
     },
