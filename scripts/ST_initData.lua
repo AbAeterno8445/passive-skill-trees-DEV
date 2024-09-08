@@ -331,6 +331,7 @@ function PST:resetMods()
 		roomClearProc = false,
 
 		roomGotHitByMob = false,
+		runGotHit = false,
 
 		luckyPennyChance = 0,
 		cardFloorLuck = 0,

@@ -9,6 +9,7 @@ function PST:getChangelogList()
         "- Pin and variants (such as Wormwood) can no longer be converted with Cause Converter (ancient jewel).",
         "- Cause Converter (ancient jewel) should now store the killed boss' variant properly.",
         "- Cain's \"Impromptu Gambler\" node no longer triggers during the Ascent.",
+        "- Lilith's \"Daemon Army\" now has Mom award a third Incubus only if you took no damage throughout the run until then.",
         "- Fixed Tellurian Splinter (ancient jewel) speed buff increasing instead of decreasing when entering a new floor.",
         "- Fixed certain jewel effects happening during the mineshaft puzzle, hindering the player unintentionally.",
         "- Fixed Cain's \"Impromptu Gambler\" node removing items spawned by cranes when using the latter multiple times.",

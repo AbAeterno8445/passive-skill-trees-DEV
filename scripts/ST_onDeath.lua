@@ -242,7 +242,7 @@ function PST:onDeath(entity)
             end
 
             -- Daemon Army node (Lilith's tree)
-            if PST:getTreeSnapshotMod("daemonArmy", false) then
+            if PST:getTreeSnapshotMod("daemonArmy", false) and not PST:getTreeSnapshotMod("runGotHit", false) then
                 -- Mom drops an additional Incubus
                 local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_INCUBUS, Random() + 1)

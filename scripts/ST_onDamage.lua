@@ -212,6 +212,11 @@ function PST:onDamage(target, damage, flag, source)
                     PST:addModifiers({ roomGotHitByMob = true }, true)
                 end
 
+                -- Set run-wide hit flag
+                if not PST:getTreeSnapshotMod("runGotHit", false) then
+                    PST:addModifiers({ runGotHit = true }, true)
+                end
+
                 -- Avid Shopper node (Keeper's tree)
                 if PST:getTreeSnapshotMod("avidShopper", false) then
                     player:AddCoins(-math.random(3))
