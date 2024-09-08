@@ -882,6 +882,7 @@ function PST:resetMods()
 		SC_astralInsigniaLevel = 0,
 		SC_astralInsigniaDebuff = 0,
 		SC_astralInsigniaItem = 0,
+		SC_mightstoneProcs = 0,
 		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes

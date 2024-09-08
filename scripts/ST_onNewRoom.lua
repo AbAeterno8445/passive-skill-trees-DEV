@@ -77,6 +77,9 @@ function PST:onNewRoom()
 
 					-- Chance to turn into champion
 					local jewelChampChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
+					if PST:SC_getSnapshotMod("mightstone", false) then
+						jewelChampChance = jewelChampChance + 50
+					end
 					tmpChance = PST:getTreeSnapshotMod("championChance", 0)
 					if jewelChampChance > 0 and (not tmpNPC:IsBoss() or (tmpNPC:IsBoss() and PST:NPCChampionAvailable(tmpNPC)))
 					and not PST:arrHasValue(PST.noChampionMobsJewel, tmpNPC.Type) and 100 * math.random() < jewelChampChance then
@@ -103,6 +106,9 @@ function PST:onNewRoom()
 					else
 						if tmpNPC:IsChampion() then
 							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * extraHPMult) / 100
+							if PST:SC_getSnapshotMod("mightstone", false) then
+								tmpHPMult = tmpHPMult + 0.15 * extraHPMult
+							end
 						end
 						if tmpNPC:IsBoss() then
 							tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
@@ -232,6 +238,11 @@ function PST:onNewRoom()
 		elseif room:GetType() == RoomType.ROOM_PLANETARIUM and tmpMod > 0 then
 			PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_astralInsigniaDebuff = -tmpMod / 2 }, true)
 		end
+	end
+
+	-- Ancient starcursed jewel: Mightstone
+	if PST:getTreeSnapshotMod("SC_mightstoneProcs", 0) > 0 then
+		PST:addModifiers({ SC_mightstoneProcs = { value = 0, set = true } }, true)
 	end
 
 	-- Mod: chance to gain +4% all stats when entering a room with monsters

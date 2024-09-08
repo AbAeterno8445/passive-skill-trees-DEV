@@ -190,6 +190,32 @@ function PST:onDeath(entity)
             SFXManager():Play(SoundEffect.SOUND_LIGHTBOLT, 0.9)
             PST:createFloatTextFX("Boss converted!", entity.Position, Color(0.7, 0.85, 1, 1), 0.12, 120, false)
         end
+        -- Ancient starcursed jewel: Mightstone
+        if PST:SC_getSnapshotMod("mightstone", false) and tmpNPC and tmpNPC:IsChampion() then
+            local foundMobs = false
+            for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+                otherNPC = tmpEntity:ToNPC()
+                if otherNPC and not EntityRef(otherNPC).IsFriendly and otherNPC.InitSeed ~= entity.InitSeed and otherNPC:IsChampion() and
+                PST:getTreeSnapshotMod("SC_mightstoneProcs", 0) < 5 then
+                    local tmpPoof = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, otherNPC.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpPoof:GetSprite().Scale = Vector(1.4, 1.4)
+
+                    local HPBoost = otherNPC.MaxHitPoints * 0.1
+                    otherNPC.MaxHitPoints = otherNPC.MaxHitPoints + HPBoost
+                    otherNPC.HitPoints = otherNPC.HitPoints + HPBoost * 3
+
+                    if not otherNPC:IsBoss() then
+                        otherNPC.Scale = otherNPC.Scale + 0.05
+                    end
+                    otherNPC:SetSpeedMultiplier(otherNPC:GetSpeedMultiplier() + (PST:getTreeSnapshotMod("SC_mightstoneProcs", 0) + 1) * 0.05)
+                    foundMobs = true
+                end
+            end
+            if foundMobs then
+                SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.6, 2, false, 0.7)
+            end
+            PST:addModifiers({ SC_mightstoneProcs = 1 }, true)
+        end
 
         -- Samson temp mods
         if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then

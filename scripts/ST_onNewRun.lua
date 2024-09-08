@@ -187,6 +187,11 @@ function PST:onNewRun(isContinued)
             player:AddCollectible(CollectibleType.COLLECTIBLE_TERRA)
             PST:addModifiers({ damage = -1.5, speedPerc = -50 }, true)
         end
+        -- Ancient starcursed jewel: Mightstone
+        if PST:SC_getSnapshotMod("mightstone", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_CHAMPION_BELT)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_CHAMPION_BELT)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

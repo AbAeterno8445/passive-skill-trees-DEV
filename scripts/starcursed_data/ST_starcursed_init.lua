@@ -812,7 +812,7 @@ PST.SCAncients = {
             beastRewards = {1, 4}
         }
     },
-    --[[mightstone = {
+    mightstone = {
         weight = 100,
         spriteFrame = 28,
         name = "Mightstone",
@@ -821,14 +821,14 @@ PST.SCAncients = {
             "+50% chance for monsters to become champions.",
             "Champion monsters have 15% increased HP.",
             "When killing a champion monster, buff all other champion monsters in the room, increasing",
-            "their HP by 8% and speed by 4%, and increasing their size, up to 5 times per room."
+            "their HP by 10% and speed by 5%, and increasing their size, up to 5 times per room."
         },
         rewards = {
             xpgain = 60,
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
-    }]]
+    }
 }
 
 PST.SCDropRates = {
