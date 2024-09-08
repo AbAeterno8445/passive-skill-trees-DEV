@@ -110,7 +110,7 @@ function PST:onNewLevel()
     -- Ancient starcursed jewel: Tellurian Splinter
     tmpMod = PST:getTreeSnapshotMod("SC_tellurianBuff", 0)
     if tmpMod > 0 then
-        PST:addModifiers({ speedPerc = tmpMod / 2, SC_tellurianBuff = -tmpMod / 2 }, true)
+        PST:addModifiers({ speedPerc = -tmpMod / 2, SC_tellurianBuff = -tmpMod / 2 }, true)
     end
 
     -- Ancient starcursed jewel: Astral Insignia
