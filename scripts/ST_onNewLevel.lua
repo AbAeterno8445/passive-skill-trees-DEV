@@ -486,8 +486,8 @@ function PST:onCurseEval(curses)
             local newCurse = LevelCurse.CURSE_NONE
             while newCurse == LevelCurse.CURSE_NONE do
                 newCurse = curseIDs[math.random(#curseIDs)]
-                if ((newCurse & LevelCurse.CURSE_OF_LABYRINTH) > 0 and not level:CanStageHaveCurseOfLabyrinth(level:GetStage())) or
-                ((newCurse & LevelCurse.CURSE_OF_THE_LOST) > 0 and PST:getTreeSnapshotMod("eldritchMapping", false)) then
+                if (newCurse == LevelCurse.CURSE_OF_LABYRINTH and not level:CanStageHaveCurseOfLabyrinth(level:GetStage())) or
+                (newCurse == LevelCurse.CURSE_OF_THE_LOST and PST:getTreeSnapshotMod("eldritchMapping", false)) then
                     newCurse = LevelCurse.CURSE_NONE
                 end
             end
