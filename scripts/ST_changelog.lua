@@ -10,6 +10,7 @@ function PST:getChangelogList()
         "- Cause Converter (ancient jewel) should now store the killed boss' variant properly.",
         "- Cain's \"Impromptu Gambler\" node no longer triggers during the Ascent.",
         "- Fixed Tellurian Splinter (ancient jewel) speed buff increasing instead of decreasing when entering a new floor.",
+        "- Fixed certain jewel effects happening during the mineshaft puzzle, hindering the player unintentionally.",
         "- Fixed Cain's \"Impromptu Gambler\" node removing items spawned by cranes when using the latter multiple times.",
         "",
 

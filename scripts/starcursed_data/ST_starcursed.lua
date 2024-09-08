@@ -468,6 +468,13 @@ end
 -- Mods with a single roll return it directly. Mods that feature multiple rolls return a table {roll1, roll2, ...}
 function PST:SC_getSnapshotMod(modName, default)
     local starcursedMods = PST:getTreeSnapshotMod("starcursedMods", nil)
+    -- Disable starcursed modifiers in mineshaft puzzle
+    if PST:getLevel():GetDimension() == Dimension.MINESHAFT then
+        -- Exceptions
+        if modName ~= "chroniclerStone" then
+            return default
+        end
+    end
     if starcursedMods then
         if starcursedMods[modName] == nil then return default end
         if type(starcursedMods[modName]) == "table" then
