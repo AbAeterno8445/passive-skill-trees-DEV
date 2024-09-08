@@ -573,42 +573,50 @@ function PST:onUpdate()
 		end
 	end
 	-- Ancient starcursed jewel: Martian Ultimatum
-	if PST:SC_getSnapshotMod("martianUltimatum", false) and room:GetFrameCount() > 1 then
-		if PST.specialNodes.SC_martianTimer > 0 then
-			PST.specialNodes.SC_martianTimer = PST.specialNodes.SC_martianTimer - 1
-			for _, tmpTear in ipairs(PST.specialNodes.SC_martianTears) do
-				if tmpTear then
-					tmpTear.Color = Color(1, 0.25, 0.25, tmpTear.Color.A + 0.01)
+	if PST:SC_getSnapshotMod("martianUltimatum", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_MARS) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
+			if player:GetOtherTwin() and not player:GetOtherTwin():HasCollectible(CollectibleType.COLLECTIBLE_MARS) then
+				player:GetOtherTwin():AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
+			end
+		end
+		if room:GetFrameCount() > 1 then
+			if PST.specialNodes.SC_martianTimer > 0 then
+				PST.specialNodes.SC_martianTimer = PST.specialNodes.SC_martianTimer - 1
+				for _, tmpTear in ipairs(PST.specialNodes.SC_martianTears) do
+					if tmpTear then
+						tmpTear.Color = Color(1, 0.25, 0.25, tmpTear.Color.A + 0.01)
+					end
 				end
-			end
-			for _, tmpSprite in ipairs(PST.specialNodes.SC_martianFX) do
-				if not tmpSprite.sprite:IsFinished() then
-					tmpSprite.sprite:Render(room:WorldToScreenPosition(tmpSprite.pos))
-					tmpSprite.sprite:Update()
+				for _, tmpSprite in ipairs(PST.specialNodes.SC_martianFX) do
+					if not tmpSprite.sprite:IsFinished() then
+						tmpSprite.sprite:Render(room:WorldToScreenPosition(tmpSprite.pos))
+						tmpSprite.sprite:Update()
+					end
 				end
+			elseif not PST.specialNodes.SC_martianProc and room:GetAliveEnemiesCount() > 0 then
+				PST.specialNodes.SC_martianTimer = 60
+				PST.specialNodes.SC_martianProc = true
+				local tearAmt = 2 + math.random(7)
+				local tearDist = 140
+				for i=1,tearAmt do
+					local tmpFXSprite = Sprite("gfx/items/martian_ultimatum_fx.anm2", true)
+					tmpFXSprite:Play("Default", true)
+					local tearAng = (2 * math.pi) / tearAmt * (i - 1)
+					local tearX = player.Position.X + tearDist * math.cos(tearAng)
+					local tearY = player.Position.Y + tearDist * math.sin(tearAng)
+					local newTear = Game():Spawn(EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_TEAR, Vector(tearX, tearY), Vector.Zero, nil, 0, Random() + 1)
+					newTear:ToProjectile().FallingAccel = -0.1
+					newTear:ToProjectile():AddProjectileFlags(ProjectileFlags.CANT_HIT_PLAYER)
+					newTear.Color = Color(1, 0.25, 0.25, 0.1)
+					table.insert(PST.specialNodes.SC_martianTears, newTear)
+					table.insert(PST.specialNodes.SC_martianFX, {
+						sprite = tmpFXSprite,
+						pos = Vector(tearX, tearY)
+					})
+				end
+				SFXManager():Play(SoundEffect.SOUND_LIGHTBOLT_CHARGE, 0.85, 2, false, 0.8)
 			end
-		elseif not PST.specialNodes.SC_martianProc and room:GetAliveEnemiesCount() > 0 then
-			PST.specialNodes.SC_martianTimer = 60
-            PST.specialNodes.SC_martianProc = true
-			local tearAmt = 2 + math.random(7)
-			local tearDist = 140
-			for i=1,tearAmt do
-				local tmpFXSprite = Sprite("gfx/items/martian_ultimatum_fx.anm2", true)
-				tmpFXSprite:Play("Default", true)
-				local tearAng = (2 * math.pi) / tearAmt * (i - 1)
-				local tearX = player.Position.X + tearDist * math.cos(tearAng)
-				local tearY = player.Position.Y + tearDist * math.sin(tearAng)
-				local newTear = Game():Spawn(EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_TEAR, Vector(tearX, tearY), Vector.Zero, nil, 0, Random() + 1)
-				newTear:ToProjectile().FallingAccel = -0.1
-				newTear:ToProjectile():AddProjectileFlags(ProjectileFlags.CANT_HIT_PLAYER)
-				newTear.Color = Color(1, 0.25, 0.25, 0.1)
-				table.insert(PST.specialNodes.SC_martianTears, newTear)
-				table.insert(PST.specialNodes.SC_martianFX, {
-					sprite = tmpFXSprite,
-					pos = Vector(tearX, tearY)
-				})
-			end
-			SFXManager():Play(SoundEffect.SOUND_LIGHTBOLT_CHARGE, 0.85, 2, false, 0.8)
 		end
 	end
 	-- Ancient starcursed jewel: Nightmare Projector
@@ -672,6 +680,9 @@ function PST:onUpdate()
 	-- Ancient starcursed jewel: Unusually Small Starstone
 	if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_PLUTO) then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
+		if player:GetOtherTwin() and not player:GetOtherTwin():HasCollectible(CollectibleType.COLLECTIBLE_PLUTO) then
+			player:GetOtherTwin():AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
+		end
 	end
 
 	-- Ancient starcursed jewel: Primordial Kaleidoscope
@@ -681,6 +692,14 @@ function PST:onUpdate()
 		end
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+		end
+		if player:GetOtherTwin() then
+			if not player:GetOtherTwin():HasCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE) then
+				player:GetOtherTwin():AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
+			end
+			if not player:GetOtherTwin():HasCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE) then
+				player:GetOtherTwin():AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+			end
 		end
 	end
 

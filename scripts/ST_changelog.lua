@@ -7,6 +7,8 @@ function PST:getChangelogList()
         "- Introduced new character skill trees for: Tainted Blue Baby.",
         "- Added a new Ancient Jewel: \"Mightstone\".",
         "- Pin and variants (such as Wormwood) can no longer be converted with Cause Converter (ancient jewel).",
+        "- Adjusted certain jewels to have Esau start with their items.",
+        "- Martian Ultimatum (ancient jewel) now applies Mars as an innate effect.",
         "- Cause Converter (ancient jewel) should now store the killed boss' variant properly.",
         "- Cain's \"Impromptu Gambler\" node no longer trigger during the Ascent.",
         "- Lilith's \"Daemon Army\" now has Mom award a third Incubus only if you took no damage throughout the run until then.",

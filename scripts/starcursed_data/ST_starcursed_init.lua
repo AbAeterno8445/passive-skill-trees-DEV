@@ -561,7 +561,7 @@ PST.SCAncients = {
         spriteFrame = 14,
         name = "Martian Ultimatum",
         description = {
-            "Start with Mars.",
+            "Start with Mars as an innate effect.",
             "Every 4 to 8 seconds while in a room with monsters, spawn a pattern of static harmless tears around you.",
             "After 2 seconds, the tears fire towards your direction, dealing contact damage.",
             "-0.05 speed when hit, up to -0.25. Resets every room."

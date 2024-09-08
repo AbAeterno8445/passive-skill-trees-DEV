@@ -7,6 +7,7 @@ function PST:onNewRun(isContinued)
     end
 
     local player = Isaac.GetPlayer()
+    local playerTwin = player:GetOtherTwin()
     local itemPool = Game():GetItemPool()
 
     PST:resetMods()
@@ -134,7 +135,10 @@ function PST:onNewRun(isContinued)
         end
         -- Ancient starcursed jewel: Martian Ultimatum
         if PST:SC_getSnapshotMod("martianUltimatum", false) then
-            player:AddCollectible(CollectibleType.COLLECTIBLE_MARS)
+            player:AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
+            if playerTwin then
+                playerTwin:AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
+            end
         end
         -- Ancient starcursed jewel: Sanguinis
         if PST:SC_getSnapshotMod("sanguinis", false) then
@@ -156,6 +160,9 @@ function PST:onNewRun(isContinued)
         if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_PLUTO)
             player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
+            if playerTwin then
+                playerTwin:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
+            end
             PST:addModifiers({ tears = -0.7, damagePerc = -30 }, true)
         end
         -- Ancient starcursed jewel: Primordial Kaleidoscope
@@ -164,6 +171,10 @@ function PST:onNewRun(isContinued)
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
             player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
             player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+            if playerTwin then
+                playerTwin:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
+                playerTwin:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+            end
             player:AddSmeltedTrinket(TrinketType.TRINKET_RAINBOW_WORM)
             PST:addModifiers({ luck = -3 }, true)
         end
