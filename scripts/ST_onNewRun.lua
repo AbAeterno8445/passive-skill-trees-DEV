@@ -247,11 +247,6 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ luck = 2 }, true)
     end
 
-    -- King's Curse node (Lazarus' tree)
-    if PST:getTreeSnapshotMod("kingCurse", false) then
-        player:AddCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
-    end
-
     -- Sporadic Growth node (Eden's tree)
     if PST:getTreeSnapshotMod("sporadicGrowth", false) then
         for _=1,6 do
