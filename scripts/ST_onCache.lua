@@ -178,6 +178,12 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.temporaryHeartBuffTimer > 0 and PST.specialNodes.temporaryHeartDmgStacks > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + PST:getTreeSnapshotMod("temporaryHeartDmg", 0) * PST.specialNodes.temporaryHeartDmgStacks
         end
+
+        -- Mod +% damage after destroying poop
+        tmpTreeMod = PST:getTreeSnapshotMod("poopDamageBuff", 0)
+        if tmpTreeMod ~= 0 and PST.specialNodes.poopDestroyBuffTimer > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -495,6 +501,35 @@ function PST:onCache(player, cacheFlag)
                         dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
                     end
                 end
+            end
+        end
+    end
+
+    local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_HOLD)
+    if tmpSlot ~= -1 then
+        -- Treasured Waste node (T. Blue Baby's tree)
+        if PST:getTreeSnapshotMod("treasuredWaste", false) and PST.specialNodes.poopHeld ~= 0 then
+            if PST.specialNodes.poopHeld == PoopSpellType.SPELL_POOP then
+                dynamicMods.allstats = dynamicMods.allstats + 2
+            elseif PST.specialNodes.poopHeld == PoopSpellType.SPELL_CORNY then
+                dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + 2
+            elseif PST.specialNodes.poopHeld == PoopSpellType.SPELL_HOLY then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + 8
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc + 8
+            elseif PST.specialNodes.poopHeld == PoopSpellType.SPELL_LIQUID then
+                dynamicMods.speedPerc = dynamicMods.speedPerc + 6
+            end
+
+            -- Mod: +% luck while Hold is not empty
+            tmpTreeMod = PST:getTreeSnapshotMod("holdFullLuck", 0)
+            if tmpTreeMod ~= 0 then
+                dynamicMods.luckPerc = dynamicMods.luckPerc + tmpTreeMod
+            end
+        elseif PST.specialNodes.poopHeld == 0 then
+            -- Mod: +% speed while Hold is empty
+            tmpTreeMod = PST:getTreeSnapshotMod("holdEmptySpeed", 0)
+            if tmpTreeMod ~= 0 then
+                dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
             end
         end
     end

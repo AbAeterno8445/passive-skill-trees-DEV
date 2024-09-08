@@ -1,3 +1,5 @@
+-- On entity death
+---@param entity Entity
 function PST:onDeath(entity)
     local player = entity:ToPlayer()
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
@@ -137,7 +139,7 @@ function PST:onDeath(entity)
         -- Ancient starcursed jewel: Nullstone
         if PST:SC_getSnapshotMod("nullstone", false) then
             -- Add enemy from non-boss room to nullstone list
-            if not PST:getTreeSnapshotMod("SC_nullstoneProc", false) and not PST:getTreeSnapshotMod("SC_nullstoneClear", false) and
+            if tmpNPC and not PST:getTreeSnapshotMod("SC_nullstoneProc", false) and not PST:getTreeSnapshotMod("SC_nullstoneClear", false) and
             not entity:IsBoss() and room:GetType() ~= RoomType.ROOM_BOSS and
             ((not entity.Parent and entity.MaxHitPoints >= PST:getTreeSnapshotMod("SC_nullstoneHPThreshold", 0)) or room:GetAliveEnemiesCount() == 1) then
                 local nullstoneEnemyList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
@@ -311,6 +313,13 @@ function PST:onDeath(entity)
             if luckBonus > 0 then
                 PST:addModifiers({ luck = luckBonus }, true)
             end
+        end
+
+        -- Ascetic Soul node (T. Blue Baby's tree)
+        if PST:getTreeSnapshotMod("asceticSoul", false) and PST:getTreeSnapshotMod("asceticSoulDrops", 0) < 5 and PST:getPlayer():GetPoopMana() >= 8 and
+        100 * math.random() < 7 then
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, entity.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+            PST:addModifiers({ asceticSoulDrops = 1 }, true)
         end
 
         -- Cosmic Realignment node

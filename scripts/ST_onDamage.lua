@@ -97,6 +97,20 @@ function PST:onDamage(target, damage, flag, source)
             return { Damage = damage + 1 }
         end
 
+        -- Treasured Waste node (T. Blue Baby's tree)
+        if PST:getTreeSnapshotMod("treasuredWaste", false) then
+            local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_HOLD)
+            if tmpSlot ~= -1 then
+                local heldPoop = player:GetActiveItemDesc(tmpSlot).VarData
+                if heldPoop == PoopSpellType.SPELL_STONE and 100 * math.random() < 8 then
+                    SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.7, 2, false, 1.2)
+                    return { Damage = 0 }
+                elseif heldPoop == PoopSpellType.SPELL_FART and 100 * math.random() < 40 then
+                    player:UseActiveItem(CollectibleType.COLLECTIBLE_BUTTER_BEAN, UseFlag.USE_NOANIM)
+                end
+            end
+        end
+
         -- Cosmic Realignment node
 	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
             -- Samson, -0.15 damage when hit, up to -0.9
@@ -462,9 +476,9 @@ function PST:onDamage(target, damage, flag, source)
                     dmgExtra = dmgExtra + PST:getPlayer().Damage * ((10 * PST:getLevel():GetStage()) / 100)
                 end
             -- Bomb hits enemy
-            elseif source.Entity.Type == EntityType.ENTITY_BOMB then
+            elseif source.Type == EntityType.ENTITY_BOMB then
                 -- Troll bomb hit
-                if source.Entity.Variant == BombVariant.BOMB_TROLL or source.Entity.Variant == BombVariant.BOMB_SUPERTROLL then
+                if source.Variant == BombVariant.BOMB_TROLL or source.Variant == BombVariant.BOMB_SUPERTROLL then
                     -- Anarchy node (T. Judas' tree)
                     if PST:getTreeSnapshotMod("anarchy", false) then
                         dmgMult = dmgMult - 0.75
@@ -484,6 +498,26 @@ function PST:onDamage(target, damage, flag, source)
                     if tmpSlot ~= -1 then
                         srcPlayer:SetActiveCharge(srcPlayer:GetActiveCharge(tmpSlot) + 15, tmpSlot)
                     end
+                end
+            -- Bob's Head hit
+            elseif source.Type == EntityType.ENTITY_TEAR and source.Variant == TearVariant.BOBS_HEAD then
+                -- Sloth's Legacy node (T. Blue Baby's tree)
+                if PST:getTreeSnapshotMod("slothLegacy", false) then
+                    if target:IsBoss() and not PST:getTreeSnapshotMod("slothLegacyProc") then
+                        for _=1,3 do
+                            local tmpMaggot = Game():Spawn(EntityType.ENTITY_CHARGER, 0, Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20), Vector.Zero, PST:getPlayer(), 0, Random() + 1)
+                            tmpMaggot:ToNPC():AddCharmed(EntityRef(PST:getPlayer()), -1)
+                        end
+                        PST:addModifiers({ slothLegacyProc = true }, true)
+                    end
+                    dmgMult = dmgMult - 0.6
+                end
+
+                -- Mod: chance for Bob's Head to spawn a blue fly when hitting an enemy
+                local tmpMod = PST:getTreeSnapshotMod("bobHeadFlySpawn", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("bobHeadFliesSpawned", 0) < 8 and 100 * math.random() < tmpMod then
+                    Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, source.Entity.Position, Vector.Zero, player, 0, Random() + 1)
+                    PST:addModifiers({ bobHeadFliesSpawned = 1 }, true)
                 end
             else
                 -- Player hit to enemy (direct/through tears)
@@ -577,7 +611,7 @@ function PST:onDamage(target, damage, flag, source)
                         -- Direct non-tear player hit to enemy (e.g. melee hits)
                         elseif source.Entity.Type == EntityType.ENTITY_PLAYER then
                             -- Mod: Bag of Crafting's melee attack gains % of your damage
-                            local tmpMod = PST:getTreeSnapshotMod("craftBagMeleeDmgInherit", false)
+                            local tmpMod = PST:getTreeSnapshotMod("craftBagMeleeDmgInherit", 0)
                             if tmpMod > 0 and srcPlayer:HasCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING) then
                                 dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
                             end
@@ -728,6 +762,21 @@ function PST:onDamage(target, damage, flag, source)
                             local tmpMod = PST:getTreeSnapshotMod("creepDamage", 0)
                             if tmpMod > 0 then
                                 dmgMult = dmgMult + tmpMod / 100
+                            end
+                        end
+
+                        -- Treasured Waste node (T. Blue Baby's tree)
+                        if PST:getTreeSnapshotMod("treasuredWaste", false) then
+                            local tmpSlot = srcPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_HOLD)
+                            if tmpSlot ~= -1 then
+                                local heldPoop = srcPlayer:GetActiveItemDesc(tmpSlot).VarData
+                                if heldPoop == PoopSpellType.SPELL_BURNING and 100 * math.random() < 5 then
+                                    target:AddBurn(EntityRef(srcPlayer), 90, srcPlayer.Damage / 2)
+                                elseif heldPoop == PoopSpellType.SPELL_STINKY and 100 * math.random() < 5 then
+                                    target:AddPoison(EntityRef(srcPlayer), 90, srcPlayer.Damage / 2)
+                                elseif heldPoop == PoopSpellType.SPELL_BLACK and 100 * math.random() < 5 then
+                                    target:AddConfusion(EntityRef(srcPlayer), 90, false)
+                                end
                             end
                         end
 

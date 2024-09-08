@@ -31,22 +31,97 @@ function PST:initStaticEntity(entity)
 end
 
 function PST:gridEntityPoopUpdate(entityParam)
-    local entityID = PST:initStaticEntity(entityParam)
-    if entityID then
-        local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
-        if staticEntCache[entityID] < entityParam.State then
-            local noXP = staticEntCache[entityID] == -1
-            staticEntCache[entityID] = entityParam.State
-            -- Poop destroyed
-            if staticEntCache[entityID] >= 1000 and not noXP then
-                -- Mod: +xp when destroying poop
-                local tmpMod = PST:getTreeSnapshotMod("poopXP", 0)
-                if tmpMod > 0 then
-                    -- Reduce poop xp gain if card against humanity was used
-                    if PST:getTreeSnapshotMod("cardAgainstHumanityProc", false) then
-                        tmpMod = tmpMod / 10
+    local convertedPoop = false
+    if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 then
+        -- Mod: chance to replace poop with special variants
+        local tmpMod = PST:getTreeSnapshotMod("specialPoopFind", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("specialPoopFindReplaced", 0) < 4 and 100 * math.random() < tmpMod then
+            local room = PST:getRoom()
+            local gridIdx = entityParam:GetGridIndex()
+            room:RemoveGridEntityImmediate(gridIdx, 0, false)
+            if math.random() < 0.4 then
+                room:SpawnGridEntity(gridIdx, GridEntityType.GRID_POOP, GridPoopVariant.BLACK)
+            elseif math.random() < 0.3 then
+                room:SpawnGridEntity(gridIdx, GridEntityType.GRID_POOP, GridPoopVariant.CHARMING)
+            elseif math.random() < 0.3 then
+                room:SpawnGridEntity(gridIdx, GridEntityType.GRID_POOP, GridPoopVariant.GOLDEN)
+            elseif math.random() < 0.15 then
+                room:SpawnGridEntity(gridIdx, GridEntityType.GRID_POOP, GridPoopVariant.HOLY)
+            else
+                room:SpawnGridEntity(gridIdx, GridEntityType.GRID_POOP, GridPoopVariant.RAINBOW)
+            end
+            PST:addModifiers({ specialPoopFindReplaced = 1 }, true)
+            convertedPoop = true
+        end
+    end
+
+    if not convertedPoop then
+        local entityID = PST:initStaticEntity(entityParam)
+        if entityID then
+            local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
+            if staticEntCache[entityID] < entityParam.State then
+                local noXP = staticEntCache[entityID] == -1
+                staticEntCache[entityID] = entityParam.State
+                -- Poop destroyed
+                if staticEntCache[entityID] >= 1000 and not noXP then
+                    -- Mod: +xp when destroying poop
+                    local tmpMod = PST:getTreeSnapshotMod("poopXP", 0)
+                    if tmpMod > 0 then
+                        -- Reduce poop xp gain if card against humanity was used
+                        if PST:getTreeSnapshotMod("cardAgainstHumanityProc", false) then
+                            tmpMod = tmpMod / 10
+                        end
+                        PST:addTempXP(tmpMod, true, true)
                     end
-                    PST:addTempXP(tmpMod, true, true)
+
+                    -- Alacritous Purpose node (T. Blue Baby's tree)
+                    if PST:getTreeSnapshotMod("alacritousPurpose", false) then
+                        tmpMod = PST:getTreeSnapshotMod("alacritousTearBuff", 0)
+                        if tmpMod < 0.5 then
+                            local tmpAdd = math.min(0.04, 0.5 - tmpMod)
+                            PST:addModifiers({ tears = tmpAdd, alacritousTearBuff = tmpAdd }, true)
+                        end
+                        tmpMod = PST:getTreeSnapshotMod("alacritousLuckBuff", 0)
+                        if tmpMod < 2 then
+                            local tmpAdd = math.min(0.04, 2 - tmpMod)
+                            PST:addModifiers({ luck = tmpAdd, alacritousLuckBuff = tmpAdd }, true)
+                        end
+
+                        if not PST:getTreeSnapshotMod("alacritousFlyProc", false) then
+                            local flyEntities = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, 0)
+                            if #flyEntities < 15 then
+                                local tmpSpawn = math.min(3, 15 - #flyEntities)
+                                for _=1,tmpSpawn do
+                                    Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, entityParam.Position, Vector.Zero, nil, 0, Random() + 1)
+                                end
+                            end
+                            PST:addModifiers({ alacritousFlyProc = true }, true)
+                        end
+                    end
+
+                    -- Mod: +% damage for 2 seconds after destroying poop
+                    tmpMod = PST:getTreeSnapshotMod("poopDamageBuff", 0)
+                    if tmpMod ~= 0 then
+                        PST.specialNodes.poopDestroyBuffTimer = 60
+                        PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                    end
+
+                    -- Rainbow poop destroyed
+                    if entityParam.Variant == GridPoopVariant.RAINBOW then
+                        -- Mod: +% luck when destroying rainbow poop
+                        tmpMod = PST:getTreeSnapshotMod("rainbowPoopLuck", 0)
+                        local tmpTotal = PST:getTreeSnapshotMod("rainbowPoopLuckBuff", 0)
+                        if tmpMod > 0 and tmpTotal < 35 then
+                            local tmpAdd = math.min(tmpMod, 35 - tmpTotal)
+                            PST:addModifiers({ luckPerc = tmpAdd, rainbowPoopLuckBuff = tmpAdd }, true)
+                        end
+
+                        -- Mod: % chance to gain a soul heart when destroying rainbow poop
+                        tmpMod = PST:getTreeSnapshotMod("rainbowPoopSoul", 0)
+                        if tmpMod > 0 and 100 * math.random() < tmpMod then
+                            PST:getPlayer():AddSoulHearts(2)
+                        end
+                    end
                 end
             end
         end

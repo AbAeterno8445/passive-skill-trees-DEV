@@ -339,6 +339,32 @@ function PST:onNewLevel()
         PST.modData.treeModSnapshot.darkArtsKillStatBuffs = {}
     end
 
+    -- Alacritous Purpose node (T. Blue Baby's tree)
+    tmpMod = PST:getTreeSnapshotMod("alacritousTearBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ tears = -tmpMod, alacritousTearBuff = { value = 0, set = true } }, true)
+    end
+    tmpMod = PST:getTreeSnapshotMod("alacritousLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod, alacritousLuckBuff = { value = 0, set = true } }, true)
+    end
+
+    -- Ascetic Soul node (T. Blue Baby's tree)
+    if PST:getTreeSnapshotMod("asceticSoulDrops", 0) > 0 then
+        PST:addModifiers({ asceticSoulDrops = { value = 0, set = true } }, true)
+    end
+
+    -- Sloth's Legacy node (T. Blue Baby's tree)
+    if PST:getTreeSnapshotMod("slothLegacyProc", false) then
+        PST:addModifiers({ slothLegacyProc = false }, true)
+    end
+
+    -- Mod: +% luck when destroying rainbow poop (halve)
+    tmpMod = PST:getTreeSnapshotMod("rainbowPoopLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luckPerc = -tmpMod / 2, rainbowPoopLuckBuff = -tmpMod / 2 }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

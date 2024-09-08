@@ -1081,6 +1081,14 @@ function PST:onUpdate()
 		PST.specialNodes.trollBombDisarmDebuffTimer = PST.specialNodes.trollBombDisarmDebuffTimer - 1
 	end
 
+	-- Mod: +% damage for 2 seconds after destroying poop
+	if PST.specialNodes.poopDestroyBuffTimer > 0 then
+		PST.specialNodes.poopDestroyBuffTimer = PST.specialNodes.poopDestroyBuffTimer - 1
+		if PST.specialNodes.poopDestroyBuffTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B

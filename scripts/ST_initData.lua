@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.2"
+PST.modVersion = "v0.3.4"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -274,7 +274,7 @@ PST.causeConverterBossBlacklist = {
 	EntityType.ENTITY_MOTHERS_SHADOW, EntityType.ENTITY_HUSH, EntityType.ENTITY_SATAN,
 	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_ISAAC, EntityType.ENTITY_MEGA_SATAN,
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_DOGMA, EntityType.ENTITY_BEAST,
-	EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_GEMINI
+	EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_GEMINI, EntityType.ENTITY_PIN
 }
 PST.planetariumItems = {
 	CollectibleType.COLLECTIBLE_JUPITER, CollectibleType.COLLECTIBLE_LUNA, CollectibleType.COLLECTIBLE_MARS,
@@ -799,6 +799,32 @@ function PST:resetMods()
 		darkArtsKillStatBuffs = {},
 		trollBombProtection = 0,
 		trollBombKillLuck = 0,
+		---- T. Blue Baby ----
+		alacritousPurpose = false,
+		alacritousTearBuff = 0,
+		alacritousLuckBuff = 0,
+		alacritousFlyProc = false,
+		treasuredWaste = false,
+		treasuredWasteOldPoop = 0,
+		asceticSoul = false,
+		asceticSoulDrops = 0,
+		slothLegacy = false,
+		slothLegacyProc = false,
+		holdPoopRegain = 0,
+		holdEmptySpeed = 0,
+		holdFullLuck = 0,
+		poopDamageBuff = 0,
+		poopPickupEnlarge = 0,
+		poopTransmutation = 0,
+		bobHeadFlySpawn = 0,
+		bobHeadFliesSpawned = 0,
+		holdBrownNugget = 0,
+		holdBrownNuggetProcs = 0,
+		specialPoopFind = 0,
+		specialPoopFindReplaced = 0,
+		rainbowPoopLuck = 0,
+		rainbowPoopLuckBuff = 0,
+		rainbowPoopSoul = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -901,6 +927,8 @@ function PST:resetMods()
 		howToJumpPulseTimer = 0,
 		darkArtsTearsTimer = 0,
 		levelMazeCurseProc = false,
+		poopHeld = 0,
+		poopDestroyBuffTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

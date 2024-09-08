@@ -481,6 +481,33 @@ function PST:onPickup(pickup, collider, low)
             PST:getTreeSnapshotMod("theSoulBoneDamage", 0) ~= 0 or PST:getTreeSnapshotMod("theSoulBoneTears", 0) ~= 0 then
                 player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
             end
+        elseif variant == PickupVariant.PICKUP_POOP then
+            -- Mod: chance to transmute a random poop in your bar to a different one when obtaining a poop pickup
+            local tmpMod = PST:getTreeSnapshotMod("poopTransmutation", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local poopOrder = {
+                    PoopSpellType.SPELL_POOP,
+                    PoopSpellType.SPELL_FART,
+                    PoopSpellType.SPELL_BOMB,
+                    PoopSpellType.SPELL_CORNY,
+                    PoopSpellType.SPELL_STONE,
+                    PoopSpellType.SPELL_BURNING,
+                    PoopSpellType.SPELL_STINKY,
+                    PoopSpellType.SPELL_DIARRHEA,
+                    PoopSpellType.SPELL_LIQUID,
+                    PoopSpellType.SPELL_BLACK,
+                    PoopSpellType.SPELL_HOLY
+                }
+                local randSpell = math.random(Isaac.GetPlayer():GetMaxPoopMana()) - 1
+                local plSpell = player:GetPoopSpell(randSpell)
+                for i, tmpPoop in ipairs(poopOrder) do
+                    if plSpell == tmpPoop and poopOrder[i + 1] ~= nil then
+                        player:SetPoopSpell(randSpell, poopOrder[i + 1])
+                        PST:createFloatTextFX("Transmuted!", Vector.Zero, Color(0.8, 0.9, 1, 1), 0.12, 40, true)
+                        break
+                    end
+                end
+            end
         end
 
         -- Cosmic Realignment node
@@ -510,6 +537,7 @@ function PST:onPickup(pickup, collider, low)
     end
 end
 
+---@param pickup EntityPickup
 function PST:onPickupInit(pickup)
     local room = PST:getRoom()
     local firstSpawn = room:GetFrameCount() >= 0 or room:IsFirstVisit()
@@ -604,6 +632,13 @@ function PST:onPickupInit(pickup)
             pickup:Remove()
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, pickup.Position, pickup.Velocity, nil, Card.CARD_HIEROPHANT, Random() + 1)
             pickupGone = true
+        end
+    -- Poops
+    elseif variant == PickupVariant.PICKUP_POOP then
+        -- Mod: chance to turn dropped small poop pickups into large poops
+        local tmpMod = PST:getTreeSnapshotMod("poopPickupEnlarge", 0)
+        if tmpMod > 0 and subtype == PoopPickupSubType.POOP_SMALL and 100 * math.random() < tmpMod then
+            pickup:Morph(pickup.Type, variant, PoopPickupSubType.POOP_BIG, true, true)
         end
     else
         -- Starcursed mod: coin, key and bomb scarcity

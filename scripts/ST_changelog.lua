@@ -3,6 +3,16 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.4",
+        "Introduced new character skill trees for: Tainted Blue Baby.",
+        "- Pin and variants (such as Wormwood) can no longer be converted with Cause Converter (ancient jewel).",
+        "- Fixed Tellurian Splinter (ancient jewel) speed buff increasing instead of decreasing when entering a new floor.",
+        "",
+		
+		"v0.3.3",
+		"- Fixed error when players dealt direct damage to monsters (e.g. melee hits).",
+		"",
+
         "v0.3.2",
         "- Introduced new character skill trees for: Tainted Cain and Tainted Judas.",
         "- Added 4 new Ancient Jewels: \"Cause Converter\" (experimental), \"Glowing Glass Piece\", \"Tellurian Splinter\" and",

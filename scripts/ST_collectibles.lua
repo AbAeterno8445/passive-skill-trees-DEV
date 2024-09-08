@@ -516,6 +516,38 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             PST.specialNodes.howToJumpPulseTimer = 15
         end
+    -- Hold
+    elseif itemType == CollectibleType.COLLECTIBLE_HOLD then
+        local poopHeld = player:GetActiveItemDesc(slot).VarData
+        local poopRegainProc = false
+
+        -- Mod: chance to regain the held poop on use
+        local tmpMod = PST:getTreeSnapshotMod("holdPoopRegain", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod and PST.specialNodes.poopHeld > 0 then
+            player:RemoveCollectible(CollectibleType.COLLECTIBLE_HOLD)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_HOLD, 0, false, slot, PST.specialNodes.poopHeld)
+            SFXManager():Play(SoundEffect.SOUND_BATTERYCHARGE)
+            poopRegainProc = true
+        end
+
+        -- Emptying Hold i.e. triggering poop usage
+        if poopHeld == 0 then
+            -- Mod: chance to trigger Brown Nugget's effect when using Hold
+            tmpMod = PST:getTreeMod("holdBrownNugget", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("holdBrownNuggetProcs", 0) < 5 and 100 * math.random() < tmpMod then
+                player:UseActiveItem(CollectibleType.COLLECTIBLE_BROWN_NUGGET, UseFlag.USE_NOANIM)
+                PST:addModifiers({ holdBrownNuggetProcs = 1 }, true)
+            end
+        end
+
+        if not poopRegainProc then
+            PST.specialNodes.poopHeld = poopHeld
+
+            -- Cache-updating hold nodes
+            if PST:getTreeSnapshotMod("treasuredWaste", false) or PST:getTreeSnapshotMod("holdEmptySpeed", 0) > 0 or PST:getTreeSnapshotMod("holdFullLuck", 0) > 0 then
+                PST:updateCacheDelayed()
+            end
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item

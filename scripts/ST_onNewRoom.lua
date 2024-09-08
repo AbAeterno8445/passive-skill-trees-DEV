@@ -477,6 +477,21 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Mod: chance for Bob's Head to spawn blue flies on hit (reset)
+	if PST:getTreeSnapshotMod("bobHeadFliesSpawned", 0) > 0 then
+		PST:addModifiers({ bobHeadFliesSpawned = { value = 0, set = true } }, true)
+	end
+
+	-- Mod: chance to trigger Brown Nugget item's effect when using Hold (reset)
+	if PST:getTreeSnapshotMod("holdBrownNuggetProcs", 0) > 0 then
+		PST:addModifiers({ holdBrownNuggetProcs = { value = 0, set = true } }, true)
+	end
+
+	-- Mod: chance for poops found in rooms to be replaced with special variants (reset)
+	if PST:getTreeSnapshotMod("specialPoopFindReplaced", 0) > 0 then
+		PST:addModifiers({ specialPoopFindReplaced = { value = 0, set = true } }, true)
+	end
+
 	-- Reset mob room hit
 	if PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 		PST:addModifiers({ roomGotHitByMob = false }, true)
@@ -531,6 +546,11 @@ function PST:onNewRoom()
 				end
 			end
 		end
+	end
+
+	-- Alacritous Purpose node (T. Blue Baby's tree)
+	if PST:getTreeSnapshotMod("alacritousFlyProc", false) then
+		PST:addModifiers({ alacritousFlyProc = false }, true)
 	end
 
 	-- First room entry

@@ -358,6 +358,12 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_9_VOLT)
     end
 
+    -- Sloth's Legacy node (T. Blue Baby's tree)
+    if PST:getTreeSnapshotMod("slothLegacy", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BOBS_ROTTEN_HEAD)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BOBS_ROTTEN_HEAD, 2)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then
