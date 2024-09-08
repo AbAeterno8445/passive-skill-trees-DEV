@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Introduced new character skill trees for: Tainted Blue Baby.",
         "- Added a new Ancient Jewel: \"Mightstone\".",
         "- Pin and variants (such as Wormwood) can no longer be converted with Cause Converter (ancient jewel).",
+        "- Cause Converter (ancient jewel) should now store the killed boss' variant properly.",
         "- Fixed Tellurian Splinter (ancient jewel) speed buff increasing instead of decreasing when entering a new floor.",
         "",
 

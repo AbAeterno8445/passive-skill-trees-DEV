@@ -178,7 +178,8 @@ function PST:onNewRun(isContinued)
             if tmpAncient.status == "seeking" then tmpAncient.status = "converted" end
             PST:addModifiers({
                 tearsPerc = -80,
-                SC_causeConvBoss = tmpAncient.converted
+                SC_causeConvBoss = tmpAncient.converted,
+                SC_causeConvBossVariant = tmpAncient.convertedVariant or 0
             }, true)
         end
         -- Ancient starcursed jewel: Tellurian Splinter
