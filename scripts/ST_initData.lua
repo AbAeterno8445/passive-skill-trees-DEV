@@ -377,6 +377,7 @@ function PST:resetMods()
 		d7Proc = false,
 		spiderMod = false,
 		eldritchMapping = false,
+		eldritchMappingDebuffs = 0,
 		trollBombDisarm = 0,
 
 		craftingBagFull = false,

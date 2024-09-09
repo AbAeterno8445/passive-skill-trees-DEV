@@ -325,8 +325,9 @@ PST.treeModDescriptions = {
     },
     eldritchMapping = {
         str = {
-            "You can no longer receive Curse of the Lost",
-            "    +20%% chance to receive a different random curse when entering a floor"
+            "Whenever Curse of the Lost is or becomes present, remove it",
+            "    When this happens, receive -6%% all stats for the current floor, up to -12%%",
+            "    When removing Curse of the Lost, +15%% chance to receive a curse on the next floor"
         },
         category = "extra", sort = 1111
     },

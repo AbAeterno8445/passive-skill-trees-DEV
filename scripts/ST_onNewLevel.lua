@@ -128,6 +128,15 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_bossrushJewel = false }, true)
     end
 
+    -- Eldritch mapping reset
+    tmpMod = PST:getTreeSnapshotMod("eldritchMappingDebuffs", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({
+            allstatsPerc = 6 * math.min(2, tmpMod),
+            eldritchMappingDebuffs = { value = 0, set = true }
+        }, true)
+    end
+
     -- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) then
 		PST:addModifiers({ impromptuGamblerProc = false }, true)
@@ -461,14 +470,14 @@ function PST:onCurseEval(curses)
         PST:addModifiers({ naturalCurseCleanseProc = false }, true)
     end
 
-    -- Eldritch Mapping node
-    if PST:getTreeSnapshotMod("eldritchMapping", false) then
-        curses = curses &~ LevelCurse.CURSE_OF_THE_LOST
-        curseChance = curseChance + 20
-    end
-
     -- Starcursed mod: additional chance to receive a random curse when entering a floor
     curseChance = curseChance + PST:SC_getSnapshotMod("floorCurse", 0)
+
+    -- Eldritch mapping curse chance
+    tmpMod = PST:getTreeSnapshotMod("eldritchMappingDebuffs", 0)
+    if tmpMod > 0 then
+        curseChance = curseChance + 15 * tmpMod
+    end
 
     if 100 * math.random() < curseChance then
         causeCurse = true
@@ -495,8 +504,7 @@ function PST:onCurseEval(curses)
             local newCurse = LevelCurse.CURSE_NONE
             while newCurse == LevelCurse.CURSE_NONE do
                 newCurse = curseIDs[math.random(#curseIDs)]
-                if (newCurse == LevelCurse.CURSE_OF_LABYRINTH and not level:CanStageHaveCurseOfLabyrinth(level:GetStage())) or
-                (newCurse == LevelCurse.CURSE_OF_THE_LOST and PST:getTreeSnapshotMod("eldritchMapping", false)) then
+                if newCurse == LevelCurse.CURSE_OF_LABYRINTH and not level:CanStageHaveCurseOfLabyrinth(level:GetStage()) then
                     newCurse = LevelCurse.CURSE_NONE
                 end
             end

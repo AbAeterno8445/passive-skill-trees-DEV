@@ -757,6 +757,19 @@ function PST:onUpdate()
 		PST.specialNodes.SC_glowingGlassProc = false
 	end
 
+	-- Eldritch Mapping node
+    if PST:getTreeSnapshotMod("eldritchMapping", false) and room:GetFrameCount() % 20 == 0 then
+		if (level:GetCurses() & LevelCurse.CURSE_OF_THE_LOST) > 0 then
+			level:RemoveCurses(LevelCurse.CURSE_OF_THE_LOST)
+			PST:createFloatTextFX("Eldritch Mapping", Vector.Zero, Color(0.2, 0.1, 0.21, 1), 0.12, 90, true)
+			SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
+			PST:addModifiers({ eldritchMappingDebuffs = 1 }, true)
+			if PST:getTreeSnapshotMod("eldritchMappingDebuffs") <= 2 then
+				PST:addModifiers({ allstatsPerc = -6 }, true)
+			end
+		end
+    end
+
 	-- Fickle Fortune node (Cain's tree)
 	if PST:getTreeSnapshotMod("fickleFortune", false) then
 		-- +7% luck while holding a trinket
@@ -1023,7 +1036,11 @@ function PST:onUpdate()
 
 	-- Overwhelming Voice node (Siren's tree)
 	if PST.specialNodes.overwhelmingVoiceProc then
-		-- Convert friendly enemies back to enemies
+		local dmgMult = 1
+		if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
+			dmgMult = 0.5
+		end
+		-- Convert friendly enemies back to enemies & deal damage
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC then
@@ -1035,7 +1052,7 @@ function PST:onUpdate()
 					end
 				end
 				if EntityRef(tmpNPC).IsCharmed then
-					tmpNPC:TakeDamage(6 + level:GetStage() - 1, 0, EntityRef(player), 0)
+					tmpNPC:TakeDamage((6 + level:GetStage() - 1) * dmgMult, 0, EntityRef(player), 0)
 				end
 			end
 		end

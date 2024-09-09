@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.3.4",
         "- Introduced new character skill trees for: Tainted Blue Baby.",
         "- Added a new Ancient Jewel: \"Mightstone\".",
+        "- Reworked the \"Eldritch Mapping\" large global node.",
         "- Pin and variants (such as Wormwood) can no longer be converted with Cause Converter (ancient jewel).",
         "- Adjusted certain jewels to have Esau start with their items.",
         "- Martian Ultimatum (ancient jewel) now applies Mars as an innate effect.",
