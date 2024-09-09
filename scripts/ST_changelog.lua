@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.3.5",
         "- Adjusted Eden's Chaotic Treasury to be able to trigger if multiple treasure rooms are present, as",
         "well as in greed mode.",
+        "- Added missing and fixed tainted tree modifier descriptions for the 'Active Modifiers' list.",
         "",
 
         "v0.3.4",

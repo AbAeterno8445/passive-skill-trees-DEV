@@ -2050,6 +2050,111 @@ PST.treeModDescriptions = {
         str = "%d%% chance to gain a soul heart when destroying a rainbow poop",
         category = "charTree", sort = 3220
     },
+    ---- T. EVE's TREE ----
+    bloodwrath = {
+        str = {
+            "Bloodwrath:",
+            "    Start with an additional red heart container",
+            "    -1.5%% damage per 1/2 remaining red heart",
+            "    Whenever you lose red hearts, turn this reduction positive for 5 seconds"
+        },
+        category = "charTree", sort = 3250
+    },
+    resilientBlood = {
+        str = {
+            "Resilient Blood:",
+            "    Blood clots have a 25%% chance to receive no damage when hit",
+            "    Blood clots receive 50%% less damage from hits"
+        },
+        category = "charTree", sort = 3251
+    },
+    blessedBlood = {
+        str = {
+            "Blessed Blood:",
+            "    When entering a floor, if you don't have an eternal blood clot, spawn one"
+        },
+        category = "charTree", sort = 3252
+    },
+    congealedBuddy = {
+        str = {
+            "Congealed Buddy:",
+            "    Start with a smelted Lil Clot",
+            "    Lil Clot deals 20%% more damage",
+            "    You deal 30%% less damage"
+        },
+        category = "charTree", sort = 3253
+    },
+    mysticVampirism = {
+        str = {
+            "Mystic Vampirism:",
+            "    Start with Charm of the Vampire",
+            "    Every 13 kills, 20% chance to transform an existing red heart clot into a random",
+            "    different type of clot, up to 8 times per floor"
+        },
+        category = "charTree", sort = 3254
+    },
+    clotHeartDrop = {
+        str = {
+            "Blood clots have a %d%% chance to drop their respective heart type when destroyed",
+            "    Dropped heart vanishes after 3 seconds"
+        },
+        category = "charTree", sort = 3260
+    },
+    clotHitPulse = {
+        str = "Blood clots release a damaging pulse when hit, dealing 3 damage to nearby enemies",
+        category = "charTree", sort = 3261
+    },
+    clotPulseDmgInherit = {
+        str = "Blood clot pulse gains an additional %d%% of your damage",
+        category = "charTree", sort = 3262
+    },
+    lilClotDmg = {
+        str = "%s%d%% Lil Clot damage",
+        addPlus = true,
+        category = "charTree", sort = 3263
+    },
+    redClotAbsorbDmg = {
+        str = {
+            "%s%.2f%% damage for the current room per absorbed red clot",
+            "    Spawning a red clot reduces the current buff by this amount"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3264
+    },
+    soulClotAbsorbTears = {
+        str = {
+            "%s%.2f%% tears for the current room per absorbed soul clot",
+            "    Spawning a soul clot reduces the current buff by this amount."
+        },
+        addPlus = true,
+        category = "charTree", sort = 3265
+    },
+    clotDmg = {
+        str = "%s%d%% damage dealt by all blood clots",
+        addPlus = true,
+        category = "charTree", sort = 3266
+    },
+    redClotHeartDmg = {
+        str = "%s%.2f%% damage dealt by red clots per 1/2 remaining red heart",
+        addPlus = true,
+        category = "charTree", sort = 3267
+    },
+    soulClotHeartDmg = {
+        str = "%s%.2f%% damage dealt by soul clots per 1/2 remaining soul heart",
+        addPlus = true,
+        category = "charTree", sort = 3268
+    },
+    blackClotBabylon = {
+        str = {
+            "%d%% chance to spawn a black clot when killing enemies while Whore of Babylon",
+            "is active, if you have less than 3 active black clots"
+        },
+        category = "charTree", sort = 3269
+    },
+    clotDestroyedLuck = {
+        str = "%d%% chance to gain +0.03 luck when any clot is destroyed",
+        category = "charTree", sort = 3270
+    },
     --#endregion
 
     ---- STARMIGHT ----
