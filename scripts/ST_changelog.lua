@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.5",
+        "- Adjusted Eden's Chaotic Treasury to be able to trigger if multiple treasure rooms are present, as",
+        "well as in greed mode.",
+        "",
+
         "v0.3.4",
         "- Introduced new character skill trees for: Tainted Blue Baby and Tainted Eve.",
         "- Added a new Ancient Jewel: \"Mightstone\".",

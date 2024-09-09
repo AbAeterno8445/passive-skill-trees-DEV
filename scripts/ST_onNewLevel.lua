@@ -209,11 +209,6 @@ function PST:onNewLevel()
         end
     end
 
-    -- Chaotic Treasury node (Eden's tree)
-    if PST:getTreeSnapshotMod("chaoticTreasury", false) then
-        PST:addModifiers({ chaoticTreasuryProc = false }, true)
-    end
-
     -- Sporadic Growth node (Eden's tree)
     if PST:getTreeSnapshotMod("sporadicGrowth", false) and not PST:isFirstOrigStage() then
         for _=1,2 do
