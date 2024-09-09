@@ -359,6 +359,7 @@ include("scripts.tree_data.tainted.taintedMagdaleneTreeBank")
 include("scripts.tree_data.tainted.taintedCainTreeBank")
 include("scripts.tree_data.tainted.taintedJudasTreeBank")
 include("scripts.tree_data.tainted.taintedBlueBabyTreeBank")
+include("scripts.tree_data.tainted.taintedEveTreeBank")
 -- Custom chars
 include("scripts.tree_data.sirenTreeBank")
 PST.loadingBaseTrees = false

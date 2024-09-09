@@ -331,7 +331,7 @@ function PST:onDamage(target, damage, flag, source)
             local blockedDamage = false
             local partialBlock = false
             tmpMod = PST:SC_getSnapshotMod("mobBlock", 0)
-            if 100 * math.random() < tmpMod then
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
                 partialBlock = true
             end
 
@@ -397,6 +397,7 @@ function PST:onDamage(target, damage, flag, source)
             -- Check if a familiar got hit
             local tmpFamiliar = target:ToFamiliar()
             if tmpFamiliar then
+                -- Wisps
                 if tmpFamiliar.Variant == FamiliarVariant.WISP then
                     -- Will-o-the-Wisp node (Bethany's tree)
                     if PST:getTreeSnapshotMod("willOTheWisp", false) then
@@ -419,6 +420,31 @@ function PST:onDamage(target, damage, flag, source)
                     if tmpBonus ~= 0 and tmpTotal < 2 and tmpFamiliar.HitPoints <= damage * dmgMult then
                         local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
                         PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
+                    end
+                -- Blood clots (Sumptorium)
+                elseif tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
+                    -- Mod: release a pulse that deals damage to nearby enemies when a clot gets hit
+                    if PST:getTreeSnapshotMod("clotHitPulse", false) then
+                        local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpFamiliar.Position, Vector.Zero, nil, 0, Random() + 1)
+                        pulseEffect:GetSprite().Scale = Vector(1.5, 1.5)
+                        pulseEffect.Color = Color(1, 0.25, 0.25, 1)
+                        SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.8, 2, false, 1.4)
+
+                        for _, tmpEntity in ipairs(Isaac.FindInRadius(tmpFamiliar.Position, 70)) do
+                            local tmpNPC = tmpEntity:ToNPC()
+                            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+                                local dmgBonus = PST:getPlayer().Damage * PST:getTreeSnapshotMod("clotPulseDmgInherit", 0) / 100
+                                tmpNPC:TakeDamage(3 + dmgBonus, 0, EntityRef(tmpNPC), 0)
+                            end
+                        end
+                    end
+
+                    -- Resilient Blood node (T. Eve's tree)
+                    if PST:getTreeSnapshotMod("resilientBlood", false) then
+                        if 100 * math.random() < 25 then
+                            return { Damage = 0 }
+                        end
+                        dmgMult = dmgMult - 0.5
                     end
                 end
             end
@@ -466,6 +492,45 @@ function PST:onDamage(target, damage, flag, source)
                     if tmpBonus > 0 and tmpTotal < 1.2 then
                         local tmpAdd = math.min(tmpBonus, 1.2 - tmpTotal)
                         PST:addModifiers({ damage = tmpAdd, blueFlyDeathDamageTotal = tmpAdd }, true)
+                    end
+                end
+
+                -- Blood Clot hit
+                if tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
+                    -- Lil Clot
+                    if tmpFamiliar.SubType == 7 then
+                        -- Congealed Buddy node (T. Eve's tree)
+                        if PST:getTreeSnapshotMod("congealedBuddy", false) then
+                            dmgMult = dmgMult + 0.2
+                        end
+
+                        -- Mod: +% lil clot damage
+                        tmpMod = PST:getTreeSnapshotMod("lilClotDmg", 0)
+                        if tmpMod ~= 0 then
+                            dmgMult = dmgMult + tmpMod / 100
+                        end
+                    else
+                        -- Mod: +% damage dealt by clots
+                        tmpMod = PST:getTreeSnapshotMod("clotDmg", 0)
+                        if tmpMod ~= 0 then
+                            dmgMult = dmgMult + tmpMod / 100
+                        end
+
+                        -- Red heart clots
+                        if tmpFamiliar.SubType == 0 then
+                            -- Mod: +% damage dealt by red clots per 1/2 remaining red heart
+                            tmpMod = PST:getTreeSnapshotMod("redClotHeartDmg", 0)
+                            if tmpMod > 0 and PST:getPlayer():GetHearts() > 0 then
+                                dmgMult = dmgMult + (tmpMod * PST:getPlayer():GetHearts()) / 100
+                            end
+                        -- Soul heart clots
+                        elseif tmpFamiliar.SubType == 1 then
+                            -- Mod: +% damage dealt by soul clots per 1/2 remaining soul heart
+                            tmpMod = PST:getTreeSnapshotMod("soulClotHeartDmg", 0)
+                            if tmpMod > 0 and PST:getPlayer():GetSoulHearts() > 0 then
+                                dmgMult = dmgMult + (tmpMod * PST:getPlayer():GetSoulHearts()) / 100
+                            end
+                        end
                     end
                 end
             elseif PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt:Exists() then
@@ -783,6 +848,11 @@ function PST:onDamage(target, damage, flag, source)
                                     target:AddConfusion(EntityRef(srcPlayer), 90, false)
                                 end
                             end
+                        end
+
+                        -- Congealed Buddy node (T. Eve's tree)
+                        if PST:getTreeSnapshotMod("congealedBuddy", false) then
+                            dmgMult = dmgMult - 0.3
                         end
 
                         -- Ancient starcursed jewel: Primordial Kaleidoscope

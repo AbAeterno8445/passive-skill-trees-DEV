@@ -141,6 +141,14 @@ function PST:onHeartUpdate(force)
                 end
             end
 
+            -- Bloodwrath node (T. Eve's tree)
+            if PST:getTreeSnapshotMod("bloodwrath", false) then
+                if player:GetHearts() < heartTracker.red[i] then
+                    PST.specialNodes.bloodwrathFlipTimer = 150
+                end
+                PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+            end
+
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_EVE) then
                 -- Eve, -8% all stats if you have 1 remaining red heart or less

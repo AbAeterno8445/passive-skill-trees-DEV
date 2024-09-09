@@ -1,3 +1,13 @@
+local clotHeartTypes = {
+    HeartSubType.HEART_HALF,
+    HeartSubType.HEART_HALF_SOUL,
+    HeartSubType.HEART_BLACK,
+    HeartSubType.HEART_ETERNAL,
+    HeartSubType.HEART_GOLDEN,
+    HeartSubType.HEART_BONE,
+    HeartSubType.HEART_ROTTEN
+}
+
 -- On entity death
 ---@param entity Entity
 function PST:onDeath(entity)
@@ -348,6 +358,51 @@ function PST:onDeath(entity)
             PST:addModifiers({ asceticSoulDrops = 1 }, true)
         end
 
+        -- Mystic Vampirism node (T. Eve's tree)
+        if PST:getTreeSnapshotMod("mysticVampirism", false) then
+            PST:addModifiers({ mysticVampirismKills = 1 }, true)
+            if PST:getTreeSnapshotMod("mysticVampirismKills", 0) >= 13 then
+                if PST:getTreeSnapshotMod("mysticVampirismProcs", 0) < 8 and 100 * math.random() < 20 then
+                    local clotList = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 0)
+                    if #clotList > 0 then
+                        local tmpClot = clotList[math.random(#clotList)]
+                        local newClot = 1
+                        if math.random() < 0.4 then
+                            newClot = 1 + math.random(5)
+                        end
+                        local newClotEnt = Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, tmpClot.Position, Vector.Zero, player, newClot, Random() + 1)
+                        newClotEnt:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
+                        tmpClot:Remove()
+                        PST:addModifiers({ mysticVampirismProcs = 1 }, true)
+                    end
+                end
+                PST:addModifiers({ mysticVampirismKills = { value = 0, set = true } }, true)
+            end
+        end
+
+        -- Mod: chance to spawn a black clot while T. Eve's whore of babylon effect is active
+        tmpMod = PST:getTreeSnapshotMod("blackClotBabylon", 0)
+        if tmpMod > 0 then
+            local hasBabylon = false
+            local plEffects = PST:getPlayer():GetEffects():GetEffectsList()
+            if plEffects.Size > 0 then
+                for i=0,plEffects.Size-1 do
+                    local tmpEffect = plEffects:Get(i).Item
+                    if tmpEffect.ID == 110 then
+                        hasBabylon = true
+                        break
+                    end
+                end
+            end
+            if hasBabylon and 100 * math.random() < tmpMod then
+                local existingClots = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 2)
+                if #existingClots < 3 then
+                    local newClot = Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, PST:getPlayer().Position, Vector.Zero, PST:getPlayer(), 2, Random() + 1)
+                    newClot:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
+                end
+            end
+        end
+
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
             local tmpPlayer = PST:getPlayer()
@@ -370,6 +425,35 @@ function PST:onDeath(entity)
                     isBone and HeartSubType.HEART_BONE or HeartSubType.HEART_SOUL,
                     Random() + 1
                 )
+            end
+        end
+    else
+        -- Familiar death
+        local tmpFamiliar = entity:ToFamiliar()
+        if tmpFamiliar then
+            -- Blood clot death
+            if tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
+                -- Mod: chance for blood clots to drop their respective heart type on death, which vanishes after 2.5 seconds
+                local tmpMod = PST:getTreeSnapshotMod("clotHeartDrop", 0)
+                local clotType = tmpFamiliar.SubType + 1
+                if tmpMod > 0 and clotHeartTypes[clotType] ~= nil and 100 * math.random() < tmpMod then
+                    local tmpHeart = Game():Spawn(
+                        EntityType.ENTITY_PICKUP,
+                        PickupVariant.PICKUP_HEART,
+                        tmpFamiliar.Position,
+                        RandomVector() * 3,
+                        nil,
+                        clotHeartTypes[clotType],
+                        Random() + 1
+                    ):ToPickup()
+                    tmpHeart.Timeout = 90
+                end
+
+                -- Mod: chance to gain luck when a blood clot is destroyed
+                tmpMod = PST:getTreeSnapshotMod("clotDestroyedLuck", 0)
+                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                    PST:addModifiers({ luck = 0.03 }, true)
+                end
             end
         end
     end

@@ -371,6 +371,22 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_BOBS_ROTTEN_HEAD, 2)
     end
 
+    -- Bloodwrath node (T. Eve's tree)
+    if PST:getTreeSnapshotMod("bloodwrath", false) then
+        player:AddMaxHearts(2)
+        player:SetFullHearts()
+    end
+
+    -- Congealed Buddy node (T. Eve's tree)
+    if PST:getTreeSnapshotMod("congealedBuddy", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_LIL_CLOT)
+    end
+
+    -- Mystic Vampirism node (T. Eve's tree)
+    if PST:getTreeSnapshotMod("mysticVampirism", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_CHARM_VAMPIRE)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

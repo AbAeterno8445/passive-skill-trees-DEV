@@ -46,6 +46,7 @@ function PST:onNPCUpdate(npc)
     end
 end
 
+---@param familiar EntityFamiliar
 function PST:familiarInit(familiar)
     -- Spider Mod node, prevent spider familiar from spawning
     if PST:getTreeSnapshotMod("spiderMod", false) and familiar.Variant == FamiliarVariant.SPIDER_MOD then
@@ -54,6 +55,23 @@ function PST:familiarInit(familiar)
         -- Familiar quantity update
         PST:addModifiers({ totalFamiliars = 1 }, true)
         PST:updateCacheDelayed()
+
+        -- Blood clots (Sumptorium)
+        if familiar.Variant == FamiliarVariant.BLOOD_BABY then
+            -- Mod: +% damage for the current room when absorbing a red clot (subtract when spawning)
+            if familiar.SubType == 0 then
+                local tmpMod = PST:getTreeSnapshotMod("redClotAbsorbDmg", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("redClotAbsorbBuff", 0) > 0 then
+                    PST:addModifiers({ damagePerc = -tmpMod, redClotAbsorbBuff = -tmpMod }, true)
+                end
+            -- Mod: +% tears for the current room when absorbing a red clot (subtract when spawning)
+            elseif familiar.SubType == 1 then
+                local tmpMod = PST:getTreeSnapshotMod("soulClotAbsorbTears", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("soulClotAbsorbBuff", 0) > 0 then
+                    PST:addModifiers({ tearsPerc = -tmpMod, soulClotAbsorbBuff = -tmpMod }, true)
+                end
+            end
+        end
     end
 end
 

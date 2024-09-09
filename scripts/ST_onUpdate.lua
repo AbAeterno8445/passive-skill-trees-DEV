@@ -197,6 +197,15 @@ function PST:onUpdate()
 			PST:addModifiers({ luck = -tmpLuckBuff / 2, bloodDonationLuckBuff = -tmpLuckBuff / 2 }, true)
 		end
 
+		-- Blessed Blood node (T. Eve's tree)
+		if PST:getTreeSnapshotMod("blessedBlood", false) then
+			local tmpClots = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 3)
+			if #tmpClots == 0 then
+				local newClot = Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, player.Position, Vector.Zero, nil, 3, Random() + 1)
+				newClot:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
+			end
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -442,7 +451,7 @@ function PST:onUpdate()
 			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 				local tmpNPC = tmpEntity:ToNPC()
 				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not PST:arrHasValue(PST.noSplitMobs, tmpNPC.Type) and
-				not tmpNPC.Parent and not tmpNPC.Child then
+				not PST:arrHasValue(PST.causeConverterBossBlacklist, tmpNPC.Type) and not tmpNPC.Parent and not tmpNPC.Child then
 					---@diagnostic disable-next-line: undefined-field
 					tmpNPC:TrySplit(0, EntityRef(player))
 				end
@@ -1121,6 +1130,14 @@ function PST:onUpdate()
 	if PST.specialNodes.poopDestroyBuffTimer > 0 then
 		PST.specialNodes.poopDestroyBuffTimer = PST.specialNodes.poopDestroyBuffTimer - 1
 		if PST.specialNodes.poopDestroyBuffTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
+	-- Bloodwrath node (T. Eve's tree)
+	if PST.specialNodes.bloodwrathFlipTimer > 0 then
+		PST.specialNodes.bloodwrathFlipTimer = PST.specialNodes.bloodwrathFlipTimer - 1
+		if PST.specialNodes.bloodwrathFlipTimer == 0 then
 			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 		end
 	end

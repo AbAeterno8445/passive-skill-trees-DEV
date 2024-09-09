@@ -828,6 +828,27 @@ function PST:resetMods()
 		rainbowPoopLuck = 0,
 		rainbowPoopLuckBuff = 0,
 		rainbowPoopSoul = 0,
+		---- T. Eve ----
+		bloodwrath = false,
+		resilientBlood = false,
+		blessedBlood = false,
+		congealedBuddy = false,
+		mysticVampirism = false,
+		mysticVampirismKills = 0,
+		mysticVampirismProcs = 0,
+		clotHeartDrop = 0,
+		clotHitPulse = false,
+		clotPulseDmgInherit = 0,
+		lilClotDmg = 0,
+		redClotAbsorbDmg = 0,
+		redClotAbsorbBuff = 0,
+		soulClotAbsorbTears = 0,
+		soulClotAbsorbBuff = 0,
+		clotDmg = 0,
+		redClotHeartDmg = 0,
+		soulClotHeartDmg = 0,
+		blackClotBabylon = 0,
+		clotDestroyedLuck = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -933,6 +954,7 @@ function PST:resetMods()
 		levelMazeCurseProc = false,
 		poopHeld = 0,
 		poopDestroyBuffTimer = 0,
+		bloodwrathFlipTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

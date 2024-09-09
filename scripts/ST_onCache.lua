@@ -179,10 +179,20 @@ function PST:onCache(player, cacheFlag)
             dynamicMods.damagePerc = dynamicMods.damagePerc + PST:getTreeSnapshotMod("temporaryHeartDmg", 0) * PST.specialNodes.temporaryHeartDmgStacks
         end
 
-        -- Mod +% damage after destroying poop
+        -- Mod: +% damage after destroying poop
         tmpTreeMod = PST:getTreeSnapshotMod("poopDamageBuff", 0)
         if tmpTreeMod ~= 0 and PST.specialNodes.poopDestroyBuffTimer > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
+        end
+
+        -- Bloodwrath node (T. Eve's tree)
+        if PST:getTreeSnapshotMod("bloodwrath", false) then
+            local heartBonus = 1.5 * player:GetHearts()
+            if heartBonus ~= 0 and PST.specialNodes.bloodwrathFlipTimer > 0 then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + heartBonus
+            else
+                dynamicMods.damagePerc = dynamicMods.damagePerc - heartBonus
+            end
         end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then

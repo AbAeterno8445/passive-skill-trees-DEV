@@ -564,6 +564,18 @@ function PST:onNewRoom()
 		PST:addModifiers({ alacritousFlyProc = false }, true)
 	end
 
+	-- Mod: +% damage per absorbed red clot (reset)
+	tmpMod = PST:getTreeSnapshotMod("redClotAbsorbBuff", 0)
+	if tmpMod > 0 then
+		PST:addModifiers({ damagePerc = -tmpMod, redClotAbsorbBuff = { value = 0, set = true } }, true)
+	end
+
+	-- Mod: +% tears per absorbed soul clot (reset)
+	tmpMod = PST:getTreeSnapshotMod("soulClotAbsorbBuff", 0)
+	if tmpMod > 0 then
+		PST:addModifiers({ tearsPerc = -tmpMod, soulClotAbsorbBuff = { value = 0, set = true } }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums

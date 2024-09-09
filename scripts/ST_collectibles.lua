@@ -548,6 +548,27 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 PST:updateCacheDelayed()
             end
         end
+    -- Sumptorium
+    elseif itemType == CollectibleType.COLLECTIBLE_SUMPTORIUM then
+        -- Mod: +% damage per absorbed red clot for the current room
+        local tmpMod = PST:getTreeSnapshotMod("redClotAbsorbDmg", 0)
+        if tmpMod > 0 then
+            local redClots = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 0)
+            if #redClots > 0 then
+                local totalBuff = tmpMod * #redClots
+                PST:addModifiers({ damagePerc = totalBuff, redClotAbsorbBuff = totalBuff }, true)
+            end
+        end
+
+        -- Mod: +% tears per absorbed soul clot for the current room
+        tmpMod = PST:getTreeSnapshotMod("soulClotAbsorbTears", 0)
+        if tmpMod > 0 then
+            local soulClots = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 1)
+            if #soulClots > 0 then
+                local totalBuff = tmpMod * #soulClots
+                PST:addModifiers({ tearsPerc = totalBuff, soulClotAbsorbBuff = totalBuff }, true)
+            end
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item
