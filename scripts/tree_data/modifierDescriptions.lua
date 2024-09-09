@@ -1846,7 +1846,7 @@ PST.treeModDescriptions = {
         str = {
             "%d%% chance to spawn an additional coin/key/bomb/half heart pickup when collecting an",
             "item pedestal.",
-            "    Rolls multiple times if above 100% chance"
+            "    Rolls multiple times if above 100%% chance"
         },
         category = "charTree", sort = 3115
     },
@@ -1866,14 +1866,14 @@ PST.treeModDescriptions = {
             "Stealth Tactics:",
             "    Start with 9 Volt",
             "    Speed cannot exceed 1.2 while Dark Arts is active",
-            "    -60% damage with sources that aren't Dark Arts"
+            "    -60%% damage with sources that aren't Dark Arts"
         },
         category = "charTree", sort = 3151
     },
     lightlessBounty = {
         str = {
             "Bounty For The Lightless:",
-            "    Killing an enemy with Dark Arts has a 15% chance of granting half a black heart if",
+            "    Killing an enemy with Dark Arts has a 15%% chance of granting half a black heart if",
             "    you have less than 4 black hearts",
             "    Killing an enemy with Dark Arts grants +0.03 luck, up to +1 per floor"
         },
@@ -1883,9 +1883,9 @@ PST.treeModDescriptions = {
         str = {
             "Annihilation:",
             "    The first time you hit a boss enemy with Dark Arts, deal an additional 40 damage or",
-            "    10% of its HP as damage, whichever is highest",
+            "    10%% of its HP as damage, whichever is highest",
             "    Effect can only happen twice per room if multiple bosses are present",
-            "    25% chance to take an additional 1/2 heart damage from bosses if you have 3 or",
+            "    25%% chance to take an additional 1/2 heart damage from bosses if you have 3 or",
             "    more black hearts"
         },
         category = "charTree", sort = 3153
@@ -1893,15 +1893,15 @@ PST.treeModDescriptions = {
     anarchy = {
         str = {
             "Anarchy:",
-            "    Enemies hit by Dark Arts have a 25% chance to spawn a troll bomb, up to thrice per room",
-            "    Enemies take 75% reduced damage from troll bombs",
+            "    Enemies hit by Dark Arts have a 25%% chance to spawn a troll bomb, up to thrice per room",
+            "    Enemies take 75%% reduced damage from troll bombs",
             "    Enemies killed by bombs reduce Dark Arts' cooldown by 0.5 seconds"
         },
         category = "charTree", sort = 3154
     },
     howToJumpPulse = {
         str = {
-            "%d%% chance to trigger a dark pulse when landing with How to Jump, dealing 150% of your",
+            "%d%% chance to trigger a dark pulse when landing with How to Jump, dealing 150%% of your",
             "damage to nearby enemies"
         },
         category = "charTree", sort = 3160
@@ -1911,7 +1911,7 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 3161
     },
     darkArtsDmg = {
-        str = "%s%d% Dark Arts damage",
+        str = "%s%d%% Dark Arts damage",
         addPlus = true,
         category = "charTree", sort = 3162
     },
@@ -1963,21 +1963,21 @@ PST.treeModDescriptions = {
             "Treasured Waste:",
             "    Your currently held poop grants a buff based on its type:",
             "    - Normal: +0.02 all stats",
-            "    - Corn: +2% all stats",
-            "    - Flaming: hitting enemies has a 5% chance of applying burning",
-            "    - Stinky: hitting enemies has a 5% chance of poisoning",
-            "    - Black: hitting enemies has a 5% chance of confusing",
-            "    - White: +8% damage and tears",
-            "    - Stone: 8% chance to receive no damage when hit",
-            "    - Fart: 40% chance to trigger Butter Bean's effect when hit",
-            "    - Liquid: +6% speed"
+            "    - Corn: +2%% all stats",
+            "    - Flaming: hitting enemies has a 5%% chance of applying burning",
+            "    - Stinky: hitting enemies has a 5%% chance of poisoning",
+            "    - Black: hitting enemies has a 5%% chance of confusing",
+            "    - White: +8%% damage and tears",
+            "    - Stone: 8%% chance to receive no damage when hit",
+            "    - Fart: 40%% chance to trigger Butter Bean's effect when hit",
+            "    - Liquid: +6%% speed"
         },
         category = "charTree", sort = 3201
     },
     asceticSoul = {
         str = {
             "Ascetic Soul:",
-            "    While you have 8 or more poop bombs, killing an enemy has a 7% chance of dropping",
+            "    While you have 8 or more poop bombs, killing an enemy has a 7%% chance of dropping",
             "    a 1/2 soul heart, up to 5 per floor"
         },
         category = "charTree", sort = 3202
@@ -1987,7 +1987,7 @@ PST.treeModDescriptions = {
             "Sloth's Legacy:",
             "    Start with Bob's Rotten Head",
             "    Hitting a boss with Bob's Rotten Head spawns 3 friendly chargers, once per floor",
-            "    Bob's Rotten Head deals 60% less damage"
+            "    Bob's Rotten Head deals 60%% less damage"
         },
         category = "charTree", sort = 3203
     },
@@ -2040,7 +2040,7 @@ PST.treeModDescriptions = {
     },
     rainbowPoopLuck = {
         str = {
-            "%s%.2f%% luck when destroying a rainbow poop, up to +35%",
+            "%s%.2f%% luck when destroying a rainbow poop, up to +35%%",
             "    Luck buff gets halved when entering a new floor",
         },
         addPlus = true,
