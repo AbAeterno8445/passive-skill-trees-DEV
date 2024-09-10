@@ -2155,6 +2155,104 @@ PST.treeModDescriptions = {
         str = "%d%% chance to gain +0.03 luck when any clot is destroyed",
         category = "charTree", sort = 3270
     },
+    ---- T. SAMSON'S TREE ----
+    balancedApproach = {
+        str = {
+            "Balanced Approach:",
+            "    Start with Libra."
+        },
+        category = "charTree", sort = 3300
+    },
+    tempered = {
+        str = {
+            "Tempered:",
+            "    When you enter a room with monsters, lose 30%% of the current berserk charge",
+            "    Gain tears for the current room based on the lost charge",
+            "    If Intermittent Rage is allocated, +30%% tears while berserk"
+        },
+        category = "charTree", sort = 3301
+    },
+    violentMarauder = {
+        str = {
+            "Violent Marauder:",
+            "    Start with Suplex!",
+            "    Suplex! can only be used while berserk",
+            "    Using Suplex! while berserk is about to end removes it for the rest of the current floor"
+        },
+        category = "charTree", sort = 3302
+    },
+    absoluteRage = {
+        str = {
+            "Absolute Rage:",
+            "    You are now berserk by default, and dealing damage reduces berserk's duration",
+            "    Once berserk runs out, passively gain berserk charge",
+            "    -30%% tears while berserk"
+        },
+        category = "charTree", sort = 3303
+    },
+    meleeDmg = {
+        str = "%s%.2f%% melee damage",
+        addPlus = true,
+        category = "charTree", sort = 3310
+    },
+    nonMeleeDmg = {
+        str = "%s%.2f%% non-melee damage",
+        addPlus = true,
+        category = "charTree", sort = 3310
+    },
+    berserkHitChargeGain = {
+        str = "When hitting enemies, gain an additional %.2f%% berserk charge",
+        category = "charTree", sort = 3311
+    },
+    berserkDuration = {
+        str = "%s%.2f seconds to total berserk duration",
+        addPlus = true,
+        category = "charTree", sort = 3312
+    },
+    berserkDmg = {
+        str = "%s%.2f%% damage during berserk",
+        addPlus = true,
+        category = "charTree", sort = 3313
+    },
+    berserkSpeed = {
+        str = "%s%.2f%% speed during berserk",
+        addPlus = true,
+        category = "charTree", sort = 3313
+    },
+    berserkTears = {
+        str = "%s%.2f%% tears during berserk",
+        addPlus = true,
+        category = "charTree", sort = 3313
+    },
+    suplexCooldown = {
+        str = "%s%.2f seconds to Suplex's cooldown",
+        addPlus = true,
+        category = "charTree", sort = 3314
+    },
+    berserkSize = {
+        str = "%s%d%% character size while berserk",
+        addPlus = true,
+        category = "charTree", sort = 3315
+    },
+    berserkKillTempHeart = {
+        str = {
+            "%d%% chance for enemies to drop a 1/2 red heart on kill while berserk, which vanishes",
+            "after 2 seconds"
+        },
+        category = "charTree", sort = 3316
+    },
+    redHeartLuckSamson = {
+        str = {
+            "%d%% chance to gain +0.03 luck when picking up red hearts, up to +1 per floor",
+            "    Triple the chance for vanishing red hearts"
+        },
+        category = "charTree", sort = 3317
+    },
+    berserkSpdTradeoff = {
+        str = "%s%d%% speed while not berserk",
+        addPlus = true,
+        category = "charTree", sort = 3318
+    },
     --#endregion
 
     ---- STARMIGHT ----
