@@ -469,7 +469,7 @@ end
 function PST:SC_getSnapshotMod(modName, default)
     local starcursedMods = PST:getTreeSnapshotMod("starcursedMods", nil)
     -- Disable starcursed modifiers in mineshaft puzzle
-    if PST:getLevel():GetDimension() == Dimension.MINESHAFT then
+    if PST:inMineshaftPuzzle() then
         -- Exceptions
         if modName ~= "chroniclerStone" then
             return default

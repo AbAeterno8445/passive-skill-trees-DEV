@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.6",
+        "- Fixed jewel effects potentially not taking place while in the mirror dimension.",
+        "",
+
         "v0.3.5",
         "- Adjusted Eden's Chaotic Treasury to be able to trigger if multiple treasure rooms are present, as",
         "well as in greed mode.",

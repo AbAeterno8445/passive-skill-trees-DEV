@@ -558,6 +558,11 @@ function PST:preSFXPlay(sfxID)
 	end
 end
 
+function PST:inMineshaftPuzzle()
+	local level = PST:getLevel()
+	return level:GetDimension() == Dimension.MINESHAFT and (level:GetStage() == LevelStage.STAGE2_1 or level:GetStage() == LevelStage.STAGE2_2)
+end
+
 -- Brian Kernighan's algorithm
 function PST:countSetBits(n)
 	if (n == 0) then return 0

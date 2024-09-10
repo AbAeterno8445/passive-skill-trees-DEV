@@ -154,7 +154,7 @@ function PST:gridEntityRockUpdate(entityParam)
             end
         end
     elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK then
-        if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 and not PST:getLevel():GetDimension() == Dimension.MINESHAFT then
+        if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 and not PST:inMineshaftPuzzle() then
             -- Ancient starcursed jewel: Tellurian Splinter
             if PST:SC_getSnapshotMod("tellurianSplinter", false) and 100 * math.random() < 20 then
                 local room = PST:getRoom()
