@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Adjusted Eden's Chaotic Treasury to be able to trigger if multiple treasure rooms are present, as",
         "well as in greed mode.",
         "- Added missing and fixed tainted tree modifier descriptions for the 'Active Modifiers' list.",
+        "- Fix crash when the \"Active Item Reroll\" modifier on certain room types, such as Libraries.",
         "",
 
         "v0.3.4",

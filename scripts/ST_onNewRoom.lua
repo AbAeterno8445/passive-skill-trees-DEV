@@ -683,7 +683,8 @@ function PST:onNewRoom()
 				if tmpPickup and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
 					if Isaac.GetItemConfig():GetCollectible(tmpEntity.SubType).Type == ItemType.ITEM_ACTIVE then
 						local addedItem = false
-						while not addedItem do
+						local failSafe = 0
+						while not addedItem and failSafe < 100 do
 							local newItem = itemPool:GetCollectible(itemPool:GetPoolForRoom(room:GetType(), Random() + 1))
 							local itemConfig = Isaac.GetItemConfig():GetCollectible(newItem)
 							if not PST:arrHasValue(rolledItems, newItem) and itemConfig and itemConfig.Type ~= ItemType.ITEM_ACTIVE then
@@ -693,6 +694,7 @@ function PST:onNewRoom()
 								table.insert(rolledItems, newItem)
 								addedItem = true
 							end
+							failSafe = failSafe + 1
 						end
 					end
 				end
