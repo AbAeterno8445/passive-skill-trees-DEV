@@ -38,6 +38,7 @@ function PST:onUpdate()
 
 	if PST.floorFirstUpdate or not modResetUpdate then
 		updateTrackers.charTracker = PST:getCurrentCharName()
+		if updateTrackers.isBerserk == nil then updateTrackers.isBerserk = PST:isBerserk() end
 		PST:resetHeartUpdater()
 		modResetUpdate = true
 	end
@@ -204,6 +205,14 @@ function PST:onUpdate()
 				local newClot = Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, player.Position, Vector.Zero, nil, 3, Random() + 1)
 				newClot:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
 			end
+		end
+
+		-- Violent Marauder node (T. Samson's tree)
+		if PST:getTreeSnapshotMod("violentMarauderRemoved", false) then
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_SUPLEX, Random() + 1)
+			PST:addModifiers({ violentMarauderRemoved = false }, true)
 		end
 
 		-- First update - After first floor
@@ -1392,7 +1401,7 @@ function PST:onUpdate()
 	if PST:getTreeSnapshotMod("stealthTactics", false) then
 		local tmpDarkArts = player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_DARK_ARTS)
 		if tmpDarkArts ~= hasDarkArtsEffect then
-			player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+			player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
 			hasDarkArtsEffect = tmpDarkArts
 		end
 	end
@@ -1419,8 +1428,67 @@ function PST:onUpdate()
 	if PST.specialNodes.darkArtsTearsTimer > 0 then
 		PST.specialNodes.darkArtsTearsTimer = PST.specialNodes.darkArtsTearsTimer - 1
 		if PST.specialNodes.darkArtsTearsTimer == 0 then
-			player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY)
+			player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY, true)
 		end
+	end
+
+	-- Berserk update
+	local isBerserk = PST:isBerserk()
+	if updateTrackers.isBerserk ~= nil and updateTrackers.isBerserk ~= isBerserk then
+		local berserkEffect = player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+		if berserkEffect then
+			local berserkMaxCharge = PST:getBerserkMaxCharge()
+			if berserkMaxCharge > 150 then
+				berserkEffect.Item.MaxCooldown = berserkMaxCharge
+			end
+
+			if PST:getTreeSnapshotMod("absoluteRage", false) then
+				PST:addModifiers({ absoluteRageCharge = { value = PST:getBerserkMaxCharge(), set = true } }, true)
+			elseif berserkEffect then
+				berserkEffect.Cooldown = PST:getBerserkMaxCharge()
+			end
+
+			-- Mod: % character size while berserk
+			tmpMod = PST:getTreeSnapshotMod("berserkSize", 0)
+			if tmpMod ~= 0 then
+				player:AddCacheFlags(CacheFlag.CACHE_SIZE, true)
+			end
+		end
+
+		PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+		updateTrackers.isBerserk = isBerserk
+	end
+
+	-- Violent Marauder node (T. Samson's tree)
+	if PST:getTreeSnapshotMod("violentMarauder", false) then
+		local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_SUPLEX)
+		if tmpSlot ~= -1 and not PST:isBerserk() then
+			player:SetActiveCharge(0, tmpSlot)
+		end
+	end
+
+	-- Absolute Rage node (T. Samson's tree)
+    if PST:getTreeSnapshotMod("absoluteRage", false) then
+		local berserkEffect = player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+		if berserkEffect then
+			player.SamsonBerserkCharge = 0
+			local rageCharge = PST:getTreeSnapshotMod("absoluteRageCharge", 0)
+			if rageCharge > 0 then
+				berserkEffect.Cooldown = rageCharge
+			else
+				player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+			end
+		elseif room:GetFrameCount() % 30 == 0 then
+			player.SamsonBerserkCharge = math.min(100000, player.SamsonBerserkCharge + 5000)
+			if player.SamsonBerserkCharge >= 100000 then
+				player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+				SFXManager():Play(SoundEffect.SOUND_BERSERK_START)
+			end
+			PST:updateCacheDelayed(CacheFlag.CACHE_COLOR)
+		end
+	end
+	if PST.specialNodes.berserkHitCooldown > 0 then
+		PST.specialNodes.berserkHitCooldown = PST.specialNodes.berserkHitCooldown - 1
 	end
 
 	-- On room clear

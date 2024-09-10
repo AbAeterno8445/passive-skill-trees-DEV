@@ -7,6 +7,20 @@ end
 ---@param player EntityPlayer
 ---@param cacheFlag CacheFlag
 function PST:onCache(player, cacheFlag)
+    -- SIZE CACHE
+    if cacheFlag == CacheFlag.CACHE_SIZE then
+        -- Mod: % character size while berserk
+        local tmpTreeMod = PST:getTreeSnapshotMod("berserkSize", 0)
+        if tmpTreeMod ~= 0 and PST:isBerserk() then
+            player.SpriteScale = player.SpriteScale + Vector(tmpTreeMod / 100, tmpTreeMod / 100)
+        end
+
+        return
+    end
+
+    -- Skip non-stat related cache update
+    if (cacheFlag & PST.allstatsCache) == 0 then return end
+
     local dynamicMods = {
         damage = 0, luck = 0, speed = 0, tears = 0, shotSpeed = 0, range = 0,
         damagePerc = 0, luckPerc = 0, speedPerc = 0, tearsPerc = 0, shotSpeedPerc = 0, rangePerc = 0,
@@ -194,6 +208,14 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.damagePerc = dynamicMods.damagePerc - heartBonus
             end
         end
+
+        -- Mod: % damage while berserk
+        if PST:isBerserk() then
+            tmpTreeMod = PST:getTreeSnapshotMod("berserkDmg", 0)
+            if tmpTreeMod ~= 0 then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
+            end
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -216,6 +238,20 @@ function PST:onCache(player, cacheFlag)
         tmpTreeMod = PST:getTreeSnapshotMod("remainingHeartsSpeed", 0)
         if tmpTreeMod ~= 0 then
             dynamicMods.speed = dynamicMods.speed + tmpTreeMod
+        end
+
+        if PST:isBerserk() then
+            -- Mod: % speed while berserk
+            tmpTreeMod = PST:getTreeSnapshotMod("berserkSpeed", 0)
+            if tmpTreeMod ~= 0 then
+                dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+            end
+        else
+            -- Mod: +% speed while not berserk, -maxspeed while berserk
+            tmpTreeMod = PST:getTreeSnapshotMod("berserkSpdTradeoff", 0)
+            if tmpTreeMod ~= 0 then
+                dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+            end
         end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
@@ -278,6 +314,14 @@ function PST:onCache(player, cacheFlag)
         tmpTreeMod = PST:getTreeSnapshotMod("darkArtsTears", 0)
         if tmpTreeMod ~= 0 and PST.specialNodes.darkArtsTearsTimer > 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
+        end
+
+        -- Mod: % tears while berserk
+        if PST:isBerserk() then
+            tmpTreeMod = PST:getTreeSnapshotMod("berserkTears", 0)
+            if tmpTreeMod ~= 0 then
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
+            end
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
@@ -663,6 +707,15 @@ function PST:onCache(player, cacheFlag)
         if PST:getTreeSnapshotMod("stealthTactics", false) then
             if player.MoveSpeed > 1.2 and player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_DARK_ARTS) then
                 player.MoveSpeed = 1.2
+            end
+        end
+
+        -- Mod: -maxspeed while berserk
+        tmpMod = PST:getTreeSnapshotMod("berserkSpdTradeoff", 0)
+        if tmpMod ~= 0 then
+            local maxSpeed = 2 - tmpMod / 100
+            if player.MoveSpeed > maxSpeed then
+                player.MoveSpeed = maxSpeed
             end
         end
 

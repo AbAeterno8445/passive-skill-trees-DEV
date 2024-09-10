@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.3.6",
+        "- Introduced new character skill trees for: Tainted Samson.",
         "- Fixed jewel effects potentially not taking place while in the mirror dimension.",
         "",
 

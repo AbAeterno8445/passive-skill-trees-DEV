@@ -394,7 +394,8 @@ function PST:resetMods()
 			lvlCurseTracker = 0,
 			charTracker = "",
 			pocketTracker = 0,
-			craftBagPickups = 0
+			craftBagPickups = 0,
+			isBerserk = false
 		},
 
 		-- 'Keystone' nodes
@@ -848,6 +849,27 @@ function PST:resetMods()
 		soulClotHeartDmg = 0,
 		blackClotBabylon = 0,
 		clotDestroyedLuck = 0,
+		---- T. Samson ----
+		balancedApproach = false,
+		tempered = false,
+		temperedBuff = 0,
+		violentMarauder = false,
+		violentMarauderRemoved = false,
+		absoluteRage = false,
+		absoluteRageCharge = 150,
+		meleeDmg = 0,
+		nonMeleeDmg = 0,
+		berserkHitChargeGain = 0,
+		berserkDuration = 0,
+		berserkDmg = 0,
+		berserkSpeed = 0,
+		berserkTears = 0,
+		suplexCooldown = 0,
+		berserkSize = 0,
+		berserkKillTempHeart = 0,
+		redHeartLuckSamson = 0,
+		redHeartLuckBuff = 0,
+		berserkSpdTradeoff = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -954,6 +976,7 @@ function PST:resetMods()
 		poopHeld = 0,
 		poopDestroyBuffTimer = 0,
 		bloodwrathFlipTimer = 0,
+		berserkHitCooldown = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

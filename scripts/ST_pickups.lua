@@ -444,6 +444,16 @@ function PST:onPickup(pickup, collider, low)
                     end
                 end
 
+                -- Mod: chance to gain +luck when picking up red hearts, triple chance for vanishing red hearts
+                local tmpMod = PST:getTreeSnapshotMod("redHeartLuckSamson", 0)
+                if pickup.Timeout > 0 then
+                    tmpMod = tmpMod * 3
+                end
+                if tmpMod > 0 and PST:getTreeSnapshotMod("redHeartLuckBuff", 0) < 1 and 100 * math.random() < tmpMod then
+                    local tmpAdd = math.min(0.03, 1 - PST:getTreeSnapshotMod("redHeartLuckBuff", 0))
+                    PST:addModifiers({ luck = tmpAdd, redHeartLuckBuff = tmpAdd }, true)
+                end
+
                 -- Temporary red heart pickup
                 if pickup.Timeout > 0 then
                     -- Mod: +% damage/tears when picking up a temporary red heart

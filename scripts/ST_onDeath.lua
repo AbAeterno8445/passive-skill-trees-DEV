@@ -403,6 +403,13 @@ function PST:onDeath(entity)
             end
         end
 
+        -- Mod: chance for enemies to drop a 1/2 red heart when killed while berserk, which vanishes after 2 seconds
+        tmpMod = PST:getTreeSnapshotMod("berserkKillTempHeart", 0)
+        if tmpMod > 0 and PST:isBerserk() and 100 * math.random() < tmpMod then
+            local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, entity.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
+            tmpHeart.Timeout = 60
+        end
+
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
             local tmpPlayer = PST:getPlayer()

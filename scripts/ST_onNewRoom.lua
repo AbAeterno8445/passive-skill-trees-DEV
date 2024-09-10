@@ -574,6 +574,21 @@ function PST:onNewRoom()
 		PST:addModifiers({ tearsPerc = -tmpMod, soulClotAbsorbBuff = { value = 0, set = true } }, true)
 	end
 
+	-- Tempered node (T. Samson's tree)
+	tmpMod = PST:getTreeSnapshotMod("temperedBuff", 0)
+	if tmpMod > 0 then
+		PST:addModifiers({ tearsPerc = -tmpMod, temperedBuff = { value = 0, set = true } }, true)
+	end
+	if PST:getTreeSnapshotMod("tempered", false) and room:GetAliveEnemiesCount() > 0 then
+		if player.SamsonBerserkCharge > 0 then
+			local lostCharge = player.SamsonBerserkCharge * 0.3
+			player.SamsonBerserkCharge = math.ceil(player.SamsonBerserkCharge - lostCharge)
+			local tearGain = lostCharge / 3000
+			PST:addModifiers({ tearsPerc = tearGain, temperedBuff = { value = tearGain, set = true } }, true)
+			PST:updateCacheDelayed(CacheFlag.CACHE_COLOR)
+		end
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums

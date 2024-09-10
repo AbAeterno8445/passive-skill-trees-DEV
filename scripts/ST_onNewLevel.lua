@@ -381,6 +381,11 @@ function PST:onNewLevel()
         PST:addModifiers({ luckPerc = -tmpMod / 2, rainbowPoopLuckBuff = -tmpMod / 2 }, true)
     end
 
+    -- Mod: chance to gain +luck when picking up red hearts, up to +1 per floor (reset)
+    if PST:getTreeSnapshotMod("redHeartLuckBuff", 0) > 0 then
+        PST:addModifiers({ redHeartLuckBuff = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

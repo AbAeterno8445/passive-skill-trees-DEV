@@ -438,6 +438,20 @@ function PST:getTCainRandPickup()
 	end
 end
 
+function PST:isBerserk()
+	return PST:getPlayer():GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+end
+
+function PST:getBerserkMaxCharge()
+	local berserkCharge = 150
+	-- Mod: +- seconds to berserk duration
+	local tmpMod = PST:getTreeSnapshotMod("berserkDuration", 0)
+	if tmpMod ~= 0 then
+		berserkCharge = berserkCharge + math.floor(tmpMod * 30)
+	end
+	return berserkCharge
+end
+
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
 ---@param player EntityPlayer

@@ -569,6 +569,15 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 PST:addModifiers({ tearsPerc = totalBuff, soulClotAbsorbBuff = totalBuff }, true)
             end
         end
+    -- Suplex!
+    elseif itemType == CollectibleType.COLLECTIBLE_SUPLEX then
+        if not PST:getTreeSnapshotMod("absoluteRage", false) and PST:isBerserk() then
+            local berserkEffect = player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+		    if berserkEffect and berserkEffect.Cooldown <= 60 then
+                player:RemoveCollectible(CollectibleType.COLLECTIBLE_SUPLEX)
+                PST:addModifiers({ violentMarauderRemoved = true }, true)
+            end
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item
@@ -594,6 +603,13 @@ function PST:getActiveMaxCharge(itemType, player, varData, currentMaxCharge)
     if itemType == CollectibleType.COLLECTIBLE_DARK_ARTS then
         -- Mod: +- Dark Arts' cooldown
         local tmpMod = PST:getTreeSnapshotMod("darkArtsCD", 0)
+        if tmpMod ~= 0 then
+            return currentMaxCharge + math.floor(tmpMod * 30)
+        end
+    -- Suplex!
+    elseif itemType == CollectibleType.COLLECTIBLE_SUPLEX then
+        -- Mod: +- Suplex's cooldown
+        local tmpMod = PST:getTreeSnapshotMod("suplexCooldown", 0)
         if tmpMod ~= 0 then
             return currentMaxCharge + math.floor(tmpMod * 30)
         end

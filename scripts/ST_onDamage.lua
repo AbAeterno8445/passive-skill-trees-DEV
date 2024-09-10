@@ -695,6 +695,20 @@ function PST:onDamage(target, damage, flag, source)
                                 end
                                 PST:addModifiers({ luck = 0.02 }, true)
                             end
+
+                            -- Mod: +% melee damage
+                            tmpMod = PST:getTreeSnapshotMod("meleeDmg", 0)
+                            if tmpMod > 0 then
+                                dmgMult = dmgMult + tmpMod / 100
+                            end
+                        end
+
+                        -- Mod: +% non-melee damage
+                        if source.Entity.Type ~= EntityType.ENTITY_PLAYER then
+                            tmpMod = PST:getTreeSnapshotMod("nonMeleeDmg", 0)
+                            if tmpMod > 0 then
+                                dmgMult = dmgMult + tmpMod / 100
+                            end
                         end
 
                         -- Mod: % damage from sources that aren't Dark Arts
@@ -853,6 +867,28 @@ function PST:onDamage(target, damage, flag, source)
                         -- Congealed Buddy node (T. Eve's tree)
                         if PST:getTreeSnapshotMod("congealedBuddy", false) then
                             dmgMult = dmgMult - 0.3
+                        end
+
+                        -- T. Samson on-hit nodes
+                        if PST.specialNodes.berserkHitCooldown == 0 then
+                            -- Absolute Rage node (T. Samson's tree)
+                            if PST:getTreeSnapshotMod("absoluteRage", false) then
+                                local berserkEffect = PST:getPlayer():GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+                                local tmpMod = PST:getTreeSnapshotMod("absoluteRageCharge", 0)
+                                if berserkEffect and tmpMod > 0 then
+                                    local tmpRed = math.max(0, tmpMod - 15)
+                                    PST:addModifiers({ absoluteRageCharge = { value = tmpRed, set = true } }, true)
+                                end
+                            end
+
+                            -- Mod: when hitting enemies, gain an additional % berserk charge
+                            local tmpMod = PST:getTreeSnapshotMod("berserkHitChargeGain", 0)
+                            if tmpMod > 0 and not PST:isBerserk() then
+                                PST:getPlayer().SamsonBerserkCharge = PST:getPlayer().SamsonBerserkCharge + 1000 * tmpMod
+                                PST:updateCacheDelayed(CacheFlag.CACHE_COLOR)
+                            end
+
+                            PST.specialNodes.berserkHitCooldown = 5
                         end
 
                         -- Ancient starcursed jewel: Primordial Kaleidoscope

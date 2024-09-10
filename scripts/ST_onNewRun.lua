@@ -387,6 +387,24 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_CHARM_VAMPIRE)
     end
 
+    -- Balanced Approach node (T. Samson's tree)
+    if PST:getTreeSnapshotMod("balancedApproach", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_LIBRA)
+    end
+
+    -- Violent Marauder node (T. Samson's tree)
+    if PST:getTreeSnapshotMod("violentMarauder", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_SUPLEX)
+    end
+
+    -- Absolute Rage node (T. Samson's tree)
+    if PST:getTreeSnapshotMod("absoluteRage", false) then
+        player:AddCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK, true)
+        if not PST:getTreeSnapshotMod("tempered", false) then
+            PST:addModifiers({ berserkTears = -30 }, true)
+        end
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then
