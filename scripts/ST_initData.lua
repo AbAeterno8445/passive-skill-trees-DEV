@@ -977,6 +977,7 @@ function PST:resetMods()
 		poopDestroyBuffTimer = 0,
 		bloodwrathFlipTimer = 0,
 		berserkHitCooldown = 0,
+		bossJewelDropProc = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

@@ -489,6 +489,13 @@ function PST:onUpdate()
 		PST.modData.firstHeartUpdate = true
 	end
 
+	-- Boss jewel drop proc
+	if PST.specialNodes.bossJewelDropProc > 0 and Game():GetFrameCount() >= PST.specialNodes.bossJewelDropProc + 20 then
+		local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 40)
+		PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
+		PST.specialNodes.bossJewelDropProc = 0
+	end
+
 	-- Starcursed mod: monster status cleanse every X seconds
 	local tmpMod = PST:SC_getSnapshotMod("statusCleanse", 0)
 	if tmpMod > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
@@ -1612,8 +1619,7 @@ function PST:onUpdate()
 
 				-- Starcursed jewel drop
 				if 100 * math.random() < PST.SCDropRates.boss(level:GetStage()).regular then
-					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
-					PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
+					PST.specialNodes.bossJewelDropProc = Game():GetFrameCount()
 				end
 
 				-- Boss room + took no damage
