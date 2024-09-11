@@ -572,9 +572,30 @@ function PST:preSFXPlay(sfxID)
 	end
 end
 
+---@param weapon Weapon
+---@param fireDir Vector
+---@param isShooting boolean
+---@param isInterpolated boolean
+function PST:postWeaponFire(weapon, fireDir, isShooting, isInterpolated)
+	if isShooting then
+		-- Hemoptysis fired
+		if weapon:GetWeaponType() == WeaponType.WEAPON_BRIMSTONE and (weapon:GetModifiers() & WeaponModifier.AZAZELS_SNEEZE) > 0 then
+			PST.specialNodes.hemoptysisFired = 5
+		end
+	end
+end
+
 function PST:inMineshaftPuzzle()
 	local level = PST:getLevel()
 	return level:GetDimension() == Dimension.MINESHAFT and (level:GetStage() == LevelStage.STAGE2_1 or level:GetStage() == LevelStage.STAGE2_2)
+end
+
+---@param r number
+---@param g number
+---@param b number
+---@param a? number
+function PST:RGBColor(r, g, b, a)
+	return Color(r / 255, g / 255, b / 255, a or 1)
 end
 
 -- Brian Kernighan's algorithm

@@ -679,7 +679,7 @@ function PST:onDamage(target, damage, flag, source)
                                 end
                             end
                         -- Direct non-tear player hit to enemy (e.g. melee hits)
-                        elseif source.Entity.Type == EntityType.ENTITY_PLAYER then
+                        elseif source.Entity.Type == EntityType.ENTITY_PLAYER and flag == 0 then
                             -- Mod: Bag of Crafting's melee attack gains % of your damage
                             local tmpMod = PST:getTreeSnapshotMod("craftBagMeleeDmgInherit", 0)
                             if tmpMod > 0 and srcPlayer:HasCollectible(CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING) then
@@ -700,6 +700,31 @@ function PST:onDamage(target, damage, flag, source)
                             tmpMod = PST:getTreeSnapshotMod("meleeDmg", 0)
                             if tmpMod > 0 then
                                 dmgMult = dmgMult + tmpMod / 100
+                            end
+
+                            -- Hemoptysis hit
+                            if PST.specialNodes.hemoptysisFired > 0 then
+                                -- Mod: % chance to slow enemies hit by hemoptysis for 2 seconds
+                                tmpMod = PST:getTreeSnapshotMod("hemoptysisSlowChance", 0)
+                                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                    target:AddSlowing(EntityRef(srcPlayer), 60, 0.8, Color(0.8, 0.8, 0.8, 1))
+                                end
+
+                                -- Mod: +% speed for 1 second when hitting enemies with hemoptysis
+                                tmpMod = PST:getTreeSnapshotMod("hemoptysisSpeed", 0)
+                                if tmpMod > 0 then
+                                    PST.specialNodes.hemoptysisSpeedTimer = 30
+                                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                                end
+
+                                -- Hemoptysis kill
+                                if target.HitPoints <= damage * dmgMult + dmgExtra then
+                                    -- Mod: % chance to gain 0.03 luck when killing enemies with Hemoptysis
+                                    tmpMod = PST:getTreeSnapshotMod("hemoptysisKillLuck", 0)
+                                    if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                        PST:addModifiers({ luck = 0.03 }, true)
+                                    end
+                                end
                             end
                         end
 
@@ -889,6 +914,14 @@ function PST:onDamage(target, damage, flag, source)
                             end
 
                             PST.specialNodes.berserkHitCooldown = 5
+                        end
+
+                        -- Mod: +% damage dealt to enemies, which falls off the further away they are
+                        local tmpMod = PST:getTreeSnapshotMod("proximityDamage", 0) / 100
+                        if tmpMod > 0 then
+                            local dist = PST:distBetweenPoints(srcPlayer.Position, target.Position)
+                            local distMult = math.max(0, math.min(1, 1 - math.max(0, dist - 30) / 180))
+                            dmgMult = dmgMult + tmpMod * distMult
                         end
 
                         -- Ancient starcursed jewel: Primordial Kaleidoscope

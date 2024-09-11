@@ -501,6 +501,42 @@ function PST:onNewRoom()
 		PST:addModifiers({ specialPoopFindReplaced = { value = 0, set = true } }, true)
 	end
 
+	-- Curseborne node (T. Azazel's tree)
+	if PST:getTreeSnapshotMod("curseborne", false) and room:GetAliveEnemiesCount() > 0 then
+		local enemyList = {}
+		local playerTears = 30 / (player.MaxFireDelay + 1)
+		local procs = math.max(1, math.floor(playerTears / 0.8))
+		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+				table.insert(enemyList, tmpNPC)
+			end
+		end
+		if #enemyList > 0 then
+			for _=1,math.min(#enemyList, procs) do
+				local randEnemy = enemyList[math.random(#enemyList)]
+				if randEnemy then
+					randEnemy:AddBrimstoneMark(EntityRef(player), 600)
+					for i, tmpNPC in ipairs(enemyList) do
+						if tmpNPC.InitSeed == randEnemy.InitSeed then
+							table.remove(enemyList, i)
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- Gilded Regrowth node (T. Azazel's tree)
+	tmpMod = PST:getTreeSnapshotMod("gildedRegrowthKills", false)
+	if tmpMod > 0 then
+		if tmpMod >= 5 and not player:HasCollectible(CollectibleType.COLLECTIBLE_LORD_OF_THE_PIT) then
+			player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_LORD_OF_THE_PIT))
+		end
+		PST:addModifiers({ gildedRegrowthKills = { value = 0, set = true } }, true)
+	end
+
 	-- Reset mob room hit
 	if PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 		PST:addModifiers({ roomGotHitByMob = false }, true)

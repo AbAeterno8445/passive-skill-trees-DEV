@@ -307,7 +307,6 @@ PST:AddCallback(ModCallbacks.MC_GET_PILL_EFFECT, PST.onPillEffect)
 PST:AddCallback(ModCallbacks.MC_USE_PILL, PST.onUsePill)
 PST:AddCallback(ModCallbacks.MC_INPUT_ACTION, PST.onInput)
 PST:AddCallback(ModCallbacks.MC_POST_TEAR_DEATH, PST.onTearDeath)
-PST:AddCallback(ModCallbacks.MC_PRE_SFX_PLAY, PST.preSFXPlay)
 -- Repentogon callbacks
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.onSaveSlot)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
@@ -335,6 +334,8 @@ PST:AddCallback(ModCallbacks.MC_POST_RESTOCK_SHOP, PST.onShopRestock)
 PST:AddCallback(ModCallbacks.MC_PRE_PICKUP_VOIDED, PST.onPickupVoided)
 PST:AddCallback(ModCallbacks.MC_PRE_USE_CARD, PST.preUseCard)
 PST:AddCallback(ModCallbacks.MC_PLAYER_GET_ACTIVE_MAX_CHARGE, PST.getActiveMaxCharge)
+PST:AddCallback(ModCallbacks.MC_POST_WEAPON_FIRE, PST.postWeaponFire)
+PST:AddCallback(ModCallbacks.MC_PRE_SFX_PLAY, PST.preSFXPlay)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
 if Isaac.IsInGame() then

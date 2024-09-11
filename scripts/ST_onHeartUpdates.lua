@@ -169,10 +169,10 @@ function PST:onHeartUpdate(force)
         end
 
         -- Black heart quantity updates
-        if force or player:GetBlackHearts() ~= heartTracker.black[i] then
+        if force or PST:GetBlackHeartCount(player) ~= heartTracker.black[i] then
             -- Mod: +luck whenever you lose black hearts
             local lostBlackHeartsLuck = PST:getTreeSnapshotMod("lostBlackHeartsLuck", 0)
-            if lostBlackHeartsLuck > 0 and player:GetBlackHearts() < heartTracker.black[i] then
+            if lostBlackHeartsLuck > 0 and PST:GetBlackHeartCount(player) < heartTracker.black[i] then
                 PST:addModifiers({ luck = lostBlackHeartsLuck, lostBlackHeartsLuckBuff = lostBlackHeartsLuck }, true)
             end
 
@@ -180,7 +180,19 @@ function PST:onHeartUpdate(force)
             if PST:getTreeSnapshotMod("songOfDarkness", false) and PST:songNodesAllocated(true) <= 2 then
                 player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
             end
-            heartTracker.black[i] = player:GetBlackHearts()
+
+            -- Brimsoul node (T. Azazel's tree)
+            if PST:getTreeSnapshotMod("brimsoul", false) then
+                if PST:GetBlackHeartCount(player) == 4 and not PST:getTreeSnapshotMod("brimsoulProc", false) then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE)
+                    PST:addModifiers({ brimsoulProc = true }, true)
+                elseif PST:GetBlackHeartCount(player) ~= 4 and PST:getTreeSnapshotMod("brimsoulProc", false) then
+                    player:RemoveCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE)
+                    PST:addModifiers({ brimsoulProc = false }, true)
+                end
+            end
+
+            heartTracker.black[i] = PST:GetBlackHeartCount(player)
             heartUpdated = true
         end
 

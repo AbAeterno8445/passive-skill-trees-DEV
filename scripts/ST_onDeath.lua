@@ -410,6 +410,53 @@ function PST:onDeath(entity)
             tmpHeart.Timeout = 60
         end
 
+        -- Brimstone mark kill
+        ---@diagnostic disable-next-line: undefined-field
+        if tmpNPC and tmpNPC:GetBrimstoneMarkCountdown() > 0 then
+            -- Gilded Regrowth node (T. Azazel's tree)
+            if PST:getTreeSnapshotMod("gildedRegrowth", false) then
+                if PST:getTreeSnapshotMod("gildedRegrowthKills", 0) < 5 then
+                    PST:addModifiers({ gildedRegrowthKills = 1 }, true)
+                    if PST:getTreeSnapshotMod("gildedRegrowthKills", 0) == 5 and not PST:getPlayer():IsFlying() then
+                        PST:getPlayer():GetEffects():AddTrinketEffect(TrinketType.TRINKET_BAT_WING)
+                        PST:getPlayer():AddCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_LORD_OF_THE_PIT))
+                    end
+                end
+            end
+
+            -- Dark Bestowal node
+            if PST:getTreeSnapshotMod("darkBestowal", false) then
+                local bestowalItem = PST:getTreeSnapshotMod("darkBestowalItem", 0)
+                local bestowalKillReq = 20
+                if bestowalItem == 0 and PST:getTreeSnapshotMod("darkBestowalKills", 0) < bestowalKillReq then
+                    PST:addModifiers({ darkBestowalKills = 1 }, true)
+                    if PST:getTreeSnapshotMod("darkBestowalKills", 0) == bestowalKillReq then
+                        local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_DEVIL)
+                        local failSafe = 0
+                        if newItem > 0 then
+                            while Isaac.GetItemConfig():GetCollectible(newItem).Type ~= ItemType.ITEM_PASSIVE and not PST:getPlayer():HasCollectible(newItem) and failSafe < 200 do
+                                newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_DEVIL)
+                                if newItem <= 0 then break end
+                                failSafe = failSafe + 1
+                            end
+                            if newItem > 0 and Isaac.GetItemConfig():GetCollectible(newItem).Type == ItemType.ITEM_PASSIVE and not PST:getPlayer():HasCollectible(newItem) then
+                                PST:getPlayer():AddCollectible(newItem)
+                                PST:addModifiers({ darkBestowalItem = newItem, darkBestowalKills = { value = 0, set = true } }, true)
+                                SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.9, 2, false, 1.15)
+                                PST:createFloatTextFX("Dark Bestowal", Vector.Zero, PST:RGBColor(112, 41, 99), 0.12, 90, true)
+                            end
+                        end
+                    end
+                end
+            end
+
+            -- Mod: % chance to gain +0.01 tears for the current floor when killing cursed enemies, up to +1
+            tmpMod = PST:getTreeSnapshotMod("cursedKillTears", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("cursedKillTearsBuff", 0) < 1 and 100 * math.random() < tmpMod then
+                PST:addModifiers({ tears = 0.01, cursedKillTearsBuff = 0.01 }, true)
+            end
+        end
+
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
             local tmpPlayer = PST:getPlayer()

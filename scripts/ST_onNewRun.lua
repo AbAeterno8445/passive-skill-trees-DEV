@@ -405,6 +405,17 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    -- Gilded Regrowth node (T. Azazel's tree)
+    if PST:getTreeSnapshotMod("gildedRegrowth", false) then
+        ---@diagnostic disable-next-line: param-type-mismatch
+        player:AddSmeltedTrinket(TrinketType.TRINKET_BAT_WING | TrinketType.TRINKET_GOLDEN_FLAG)
+    end
+
+    -- Brimsoul node (T. Azazel's tree)
+    if PST:getTreeSnapshotMod("brimsoul", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

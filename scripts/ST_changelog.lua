@@ -4,7 +4,9 @@ function PST:getChangelogList()
         "",
 
         "v0.3.6",
-        "- Introduced new character skill trees for: Tainted Samson.",
+        "- Introduced new character skill trees for: Tainted Samson and Tainted Azazel.",
+        "- Saturnian Luminite no longer prevents shooting during the mineshaft chase sequence.",
+        "- Boss jewel drops no longer spawn on top of reward items.",
         "- Fixed jewel effects potentially not taking place while in the mirror dimension.",
         "",
 

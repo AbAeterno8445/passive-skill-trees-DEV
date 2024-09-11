@@ -386,6 +386,18 @@ function PST:onNewLevel()
         PST:addModifiers({ redHeartLuckBuff = { value = 0, set = true } }, true)
     end
 
+    -- Mod: % chance to gain +0.01 tears for the current floor when killing cursed enemies, up to +1 (reset)
+    tmpMod = PST:getTreeSnapshotMod("cursedKillTearsBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ tears = -tmpMod, cursedKillTearsBuff = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance for devil deals to be free while you don't have flight (reset cache)
+    tmpMod = PST:getTreeSnapshotMod("flightlessDevilDeal", 0)
+    if tmpMod > 0 then
+        PST.modData.treeModSnapshot.flightlessDevilCache = {}
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

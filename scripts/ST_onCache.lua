@@ -253,6 +253,12 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
             end
         end
+
+        -- Mod: +% speed for 1 second when hitting enemies with hemoptysis
+        tmpTreeMod = PST:getTreeSnapshotMod("hemoptysisSpeed", 0)
+        if tmpTreeMod ~= 0 and PST.specialNodes.hemoptysisSpeedTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active

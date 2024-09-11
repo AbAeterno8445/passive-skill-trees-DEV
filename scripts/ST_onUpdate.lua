@@ -1502,6 +1502,38 @@ function PST:onUpdate()
 		PST.specialNodes.berserkHitCooldown = PST.specialNodes.berserkHitCooldown - 1
 	end
 
+	-- Gilded Regrowth node (T. Azazel's tree)
+	if PST:getTreeSnapshotMod("gildedRegrowth", false) then
+		if not player:IsFlying() and not PST:getTreeSnapshotMod("gildedRegrowthDebuff", false) then
+			PST:addModifiers({ speed = -0.2, gildedRegrowthDebuff = true }, true)
+		elseif player:IsFlying() and PST:getTreeSnapshotMod("gildedRegrowthDebuff", false) then
+			PST:addModifiers({ speed = 0.2, gildedRegrowthDebuff = false }, true)
+		end
+	end
+
+	-- Hemoptysis fired countdown
+	if PST.specialNodes.hemoptysisFired > 0 then
+		PST.specialNodes.hemoptysisFired = PST.specialNodes.hemoptysisFired - 1
+	end
+
+	-- Hemoptysis speed buff timer
+	if PST.specialNodes.hemoptysisSpeedTimer > 0 then
+		PST.specialNodes.hemoptysisSpeedTimer = PST.specialNodes.hemoptysisSpeedTimer - 1
+		if PST.specialNodes.hemoptysisSpeedTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+	end
+
+	-- Mod: +% damage while you have brimstone
+	tmpMod = PST:getTreeSnapshotMod("brimstoneDmg", 0)
+	if tmpMod > 0 then
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE) and not PST:getTreeSnapshotMod("brimstoneDmgApplied", false) then
+			PST:addModifiers({ damagePerc = tmpMod, brimstoneDmgApplied = true }, true)
+		elseif not player:HasCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE) and PST:getTreeSnapshotMod("brimstoneDmgApplied", false) then
+			PST:addModifiers({ damagePerc = -tmpMod, brimstoneDmgApplied = false }, true)
+		end
+	end
+
 	-- On room clear
 	if room:GetAliveEnemiesCount() == 0 and (not clearRoomProc or PST.modData.xpObtained > 0) then
 		PST.modData.spawnKills = 0
@@ -1849,6 +1881,19 @@ function PST:onUpdate()
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				local newPickup = PST:getTCainRandPickup()
 				Game():Spawn(EntityType.ENTITY_PICKUP, newPickup[1], tmpPos, Vector.Zero, nil, newPickup[2], Random() + 1)
+			end
+
+			-- Dark Bestowal node (T. Azazel's tree)
+			tmpMod = PST:getTreeSnapshotMod("darkBestowalItem", 0)
+			if tmpMod > 0 then
+				PST:addModifiers({ darkBestowalClears = 1 }, true)
+				if PST:getTreeSnapshotMod("darkBestowalClears", 0) >= 4 then
+					player:RemoveCollectible(tmpMod)
+					PST:addModifiers({
+						darkBestowalItem = { value = 0, set = true },
+						darkBestowalClears = { value = 0, set = true }
+					}, true)
+				end
 			end
 
 			-- Cosmic Realignment node

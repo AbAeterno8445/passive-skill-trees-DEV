@@ -98,6 +98,20 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
         end
 
         return math.max(1, price + priceMod)
+    else
+        -- Mod: % chance for devil deals to be free while you don't have flight
+        if PST:getRoom():GetType() == RoomType.ROOM_DEVIL then
+            local tmpMod = PST:getTreeSnapshotMod("flightlessDevilDeal", 0)
+            local flightlessDevilCache = PST:getTreeSnapshotMod("flightlessDevilCache", nil)
+            if tmpMod > 0 and flightlessDevilCache then
+                local itemID = tostring(pickupVariant) .. "." .. tostring(subtype) .. "." .. tostring(shopID)
+                if flightlessDevilCache[itemID] ~= nil and flightlessDevilCache[itemID] then
+                    return 0
+                elseif flightlessDevilCache[itemID] == nil then
+                    flightlessDevilCache[itemID] = not PST:getPlayer():IsFlying() and 100 * math.random() < tmpMod
+                end
+            end
+        end
     end
 end
 

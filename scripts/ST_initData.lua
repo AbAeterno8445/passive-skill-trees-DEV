@@ -870,6 +870,27 @@ function PST:resetMods()
 		redHeartLuckSamson = 0,
 		redHeartLuckBuff = 0,
 		berserkSpdTradeoff = 0,
+		---- T. Azazel ----
+		curseborne = false,
+		gildedRegrowth = false,
+		gildedRegrowthDebuff = false,
+		gildedRegrowthKills = 0,
+		brimsoul = false,
+		brimsoulProc = false,
+		darkBestowal = false,
+		darkBestowalKills = 0,
+		darkBestowalItem = 0,
+		darkBestowalClears = 0,
+		hemoptysisSlowChance = 0,
+		cursedKillTears = 0,
+		cursedKillTearsBuff = 0,
+		proximityDamage = 0,
+		hemoptysisSpeed = 0,
+		brimstoneDmg = 0,
+		brimstoneDmgApplied = false,
+		flightlessDevilDeal = 0,
+		flightlessDevilCache = {},
+		hemoptysisKillLuck = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -978,6 +999,8 @@ function PST:resetMods()
 		bloodwrathFlipTimer = 0,
 		berserkHitCooldown = 0,
 		bossJewelDropProc = 0,
+		hemoptysisFired = 0,
+		hemoptysisSpeedTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

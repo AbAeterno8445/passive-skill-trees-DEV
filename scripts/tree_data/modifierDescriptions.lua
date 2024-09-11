@@ -2253,6 +2253,77 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 3318
     },
+    ---- T. AZAZEL'S TREE ----
+    curseborne = {
+        str = {
+            "Curseborne:",
+            "    When entering a room with monsters, apply Hemoptysis' curse to 1 random enemy for every",
+            "    0.8 tears stat you have",
+            "    Affects at least 1 monster"
+        },
+        category = "charTree", sort = 3350
+    },
+    gildedRegrowth = {
+        str = {
+            "Gilded Regrowth:",
+            "    Start with a smelted golden Bat Wing",
+            "    Gain demon wings if you kill 5 marked enemies in the current room",
+            "    -0.1 speed while you don't have flight"
+        },
+        category = "charTree", sort = 3351
+    },
+    brimsoul = {
+        str = {
+            "Brimsoul:",
+            "    Gain Brimstone while you have exactly 2 total black hearts",
+            "    Lose Brimstone while this condition is not met",
+            "    Brimstone can no longer show up naturally"
+        },
+        category = "charTree", sort = 3352
+    },
+    darkBestowal = {
+        str = {
+            "Dark Bestowal:",
+            "    Every 20 cursed enemies killed, gain a random passive devil pool item",
+            "    Can only trigger once per room, and stops counting kills until you lose the granted item",
+            "    Lose the granted item after clearing 3 rooms while holding it"
+        },
+        category = "charTree", sort = 3353
+    },
+    hemoptysisSlowChance = {
+        str = "%d%% chance to slow enemies for 2 seconds when hitting them with Hemoptysis",
+        category = "charTree", sort = 3360
+    },
+    cursedKillTears = {
+        str = "%d%% chance to gain +0.01 tears for the current floor when killing cursed enemies, up to +1",
+        category = "charTree", sort = 3361
+    },
+    proximityDamage = {
+        str = "%s%d%% damage dealt to enemies, which falls off the further they are",
+        addPlus = true,
+        category = "charTree", sort = 3362
+    },
+    hemoptysisSpeed = {
+        str = "%s%d%% speed for 1 second after hitting enemies with Hemoptysis",
+        addPlus = true,
+        category = "charTree", sort = 3363
+    },
+    brimstoneDmg = {
+        str = "%s%d%% damage while you have Brimstone",
+        addPlus = true,
+        category = "charTree", sort = 3364
+    },
+    flightlessDevilDeal = {
+        str = "%.2f%% chance for devil deals to be free while you don't have flight",
+        category = "charTree", sort = 3365
+    },
+    hemoptysisKillLuck = {
+        str = {
+            "%d%% chance to gain +0.03 luck when killing enemies with Hemoptysis",
+            "    Double the chance while you have flight"
+        },
+        category = "charTree", sort = 3366
+    },
     --#endregion
 
     ---- STARMIGHT ----
