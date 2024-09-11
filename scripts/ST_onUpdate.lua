@@ -418,8 +418,12 @@ function PST:onUpdate()
 		end
 
 		-- Ancient starcursed jewel: Saturnian Luminite
-		if PST:SC_getSnapshotMod("saturnianLuminite") then
-			player:SetCanShoot(false)
+		if PST:SC_getSnapshotMod("saturnianLuminite", false) then
+			if not PST:inMineshaftPuzzle() then
+				player:SetCanShoot(false)
+			else
+				player:SetCanShoot(true)
+			end
 			if not player:IsFlying() then
 				player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_TRANSCENDENCE, false)
 				player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_FATE)
