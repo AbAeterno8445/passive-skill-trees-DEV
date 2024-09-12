@@ -901,7 +901,11 @@ function PST:onDamage(target, damage, flag, source)
                                 local berserkEffect = PST:getPlayer():GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
                                 local tmpMod = PST:getTreeSnapshotMod("absoluteRageCharge", 0)
                                 if berserkEffect and tmpMod > 0 then
-                                    local tmpRed = math.max(0, tmpMod - 15)
+                                    local tmpFalloff = 15
+                                    if PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+                                        tmpFalloff = 8
+                                    end
+                                    local tmpRed = math.max(0, tmpMod - tmpFalloff)
                                     PST:addModifiers({ absoluteRageCharge = { value = tmpRed, set = true } }, true)
                                 end
                             end

@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.7",
+        "- Tainted Samson's \"Absolute Rage\" now has an additional bonus when obtaining Birthright.",
+        "",
+
         "v0.3.6",
         "- Introduced new character skill trees for: Tainted Samson and Tainted Azazel.",
         "- Saturnian Luminite no longer prevents shooting during the mineshaft chase sequence.",

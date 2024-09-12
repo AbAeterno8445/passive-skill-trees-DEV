@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.6"
+PST.modVersion = "v0.3.7"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -857,6 +857,7 @@ function PST:resetMods()
 		violentMarauderRemoved = false,
 		absoluteRage = false,
 		absoluteRageCharge = 150,
+		absoluteRageBirthright = false,
 		meleeDmg = 0,
 		nonMeleeDmg = 0,
 		berserkHitChargeGain = 0,

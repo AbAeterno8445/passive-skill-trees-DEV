@@ -168,6 +168,11 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         PST:updateCacheDelayed()
     end
 
+    -- Absolute Rage node (T. Samson's tree)
+    if PST:getTreeSnapshotMod("absoluteRage", false) and itemType == CollectibleType.COLLECTIBLE_BIRTHRIGHT and not PST:getTreeSnapshotMod("absoluteRageBirthright", false) then
+        PST:addModifiers({ berserkDmg = 35, berserkSpeed = 25, absoluteRageBirthright = true }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then
