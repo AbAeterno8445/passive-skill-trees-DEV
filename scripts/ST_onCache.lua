@@ -125,6 +125,18 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 and PST.specialNodes.jacobHeartLuckVal ~= 0 then
 		    dynamicMods.luck = dynamicMods.luck + (PST.specialNodes.jacobHeartLuckVal / 2) * tmpTreeMod
 		end
+
+        -- Mod: +luck per 1/2 heart difference between the two forms, up to +2 (T. Lazarus)
+        tmpTreeMod = PST:getTreeSnapshotMod("formHeartDiffLuck", 0)
+        if tmpTreeMod ~= 0 then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                local totalHeartsMain = player:GetHearts() + player:GetSoulHearts() + player:GetBoneHearts() + player:GetRottenHearts() + player:GetEternalHearts() + player:GetBrokenHearts()
+                local totalHeartsOther = otherForm:GetHearts() + otherForm:GetSoulHearts() + otherForm:GetBoneHearts() + otherForm:GetRottenHearts() + otherForm:GetEternalHearts() + otherForm:GetBrokenHearts()
+                local tmpHeartDiff = math.abs(totalHeartsMain - totalHeartsOther)
+                dynamicMods.luck = dynamicMods.luck + math.min(2, tmpTreeMod * tmpHeartDiff)
+            end
+        end
     -- DAMAGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
         -- Mod: damage while dead bird is active
@@ -594,6 +606,22 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- Mod: +% stats every X kills with the current form (T. Lazarus)
+    tmpTreeMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
+    if tmpTreeMod ~= 0 then
+        local tmpStatCache = {}
+        if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS_B then
+            tmpStatCache = PST:getTreeSnapshotMod("lazFormStatCache", {})
+        elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
+            tmpStatCache = PST:getTreeSnapshotMod("lazFormDeadStatCache", {})
+        end
+        for tmpStat, statVal in pairs(tmpStatCache) do
+            if dynamicMods[tmpStat] ~= nil then
+                dynamicMods[tmpStat] = dynamicMods[tmpStat] + statVal
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB
@@ -655,6 +683,14 @@ function PST:onCache(player, cacheFlag)
         end
         player.Damage = (baseDmg + tmpMod) * math.max(0.05, tmpMult)
 
+        -- Entanglement node (T. Lazarus' tree)
+        if PST:getTreeSnapshotMod("entanglement", false) then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                player.Damage = (player.Damage + otherForm.Damage) / 2
+            end
+        end
+
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- TEARS (MaxFireDelay)
         local tmpMod = PST:getTreeSnapshotMod("tears", 0) + dynamicMods.tears + allstats
@@ -662,6 +698,14 @@ function PST:onCache(player, cacheFlag)
         tmpMult = tmpMult - PST:getTreeSnapshotMod("tearsPerc", 0) / 100
         tmpMult = tmpMult - dynamicMods.tearsPerc / 100
         player.MaxFireDelay = tearsUp(player.MaxFireDelay, tmpMod) * math.max(0.05, tmpMult)
+
+        -- Entanglement node (T. Lazarus' tree)
+        if PST:getTreeSnapshotMod("entanglement", false) then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                player.MaxFireDelay = (player.MaxFireDelay + otherForm.MaxFireDelay) / 2
+            end
+        end
 
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         -- LUCK
@@ -678,6 +722,14 @@ function PST:onCache(player, cacheFlag)
             end
         end
 
+        -- Entanglement node (T. Lazarus' tree)
+        if PST:getTreeSnapshotMod("entanglement", false) then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                player.Luck = (player.Luck + otherForm.Luck) / 2
+            end
+        end
+
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- RANGE
         local tmpMod = PST:getTreeSnapshotMod("range", 0) + dynamicMods.range + allstats
@@ -686,6 +738,14 @@ function PST:onCache(player, cacheFlag)
         tmpMult = tmpMult + dynamicMods.rangePerc / 100
         player.TearRange = (player.TearRange + tmpMod * 40) * math.max(0.05, tmpMult)
 
+        -- Entanglement node (T. Lazarus' tree)
+        if PST:getTreeSnapshotMod("entanglement", false) then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                player.TearRange = (player.TearRange + otherForm.TearRange) / 2
+            end
+        end
+
     elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
         -- SHOT SPEED
         local tmpMod = PST:getTreeSnapshotMod("shotSpeed", 0) + dynamicMods.shotSpeed + allstats
@@ -693,6 +753,14 @@ function PST:onCache(player, cacheFlag)
         tmpMult = tmpMult + PST:getTreeSnapshotMod("shotSpeedPerc", 0) / 200
         tmpMult = tmpMult + dynamicMods.shotSpeedPerc / 200
         player.ShotSpeed = (player.ShotSpeed + tmpMod / 2) * math.max(0.05, tmpMult)
+
+        -- Entanglement node (T. Lazarus' tree)
+        if PST:getTreeSnapshotMod("entanglement", false) then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                player.ShotSpeed = (player.ShotSpeed + otherForm.ShotSpeed) / 2
+            end
+        end
 
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- MOVEMENT SPEED
@@ -708,6 +776,14 @@ function PST:onCache(player, cacheFlag)
             baseSpeed = 0.85
         end
         player.MoveSpeed = (baseSpeed + tmpMod / 2) * math.max(0.05, tmpMult)
+
+        -- Entanglement node (T. Lazarus' tree)
+        if PST:getTreeSnapshotMod("entanglement", false) then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                player.MoveSpeed = (player.MoveSpeed + otherForm.MoveSpeed) / 2
+            end
+        end
 
         -- Stealth Tactics node (T. Judas' tree)
         if PST:getTreeSnapshotMod("stealthTactics", false) then

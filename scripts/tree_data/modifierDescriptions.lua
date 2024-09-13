@@ -2324,6 +2324,90 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 3366
     },
+    ---- T. LAZARUS' TREE ----
+    ephemeralBond = {
+        str = {
+            "Ephemeral Bond:",
+            "    +%d Ephemeral Bond",
+            "    When entering a floor, for each Ephemeral Bond, copy a random passive item you currently",
+            "    have to your opposite form",
+            "    Copied items are removed when entering the next floor"
+        },
+        category = "charTree", sort = 3400
+    },
+    greatOverlap = {
+        str = {
+            "Great Overlap:",
+            "    Clearing a room without taking damage restores an additional charge of Flip",
+            "    30%% chance to keep 2 charges of Flip on use. If charges aren't kept by this, roll a 50%%",
+            "    chance to keep 1 charge instead",
+            "    Taking damage has a 50%% chance to remove 1 charge from Flip"
+        },
+        category = "charTree", sort = 3401
+    },
+    entanglement = {
+        str = {
+            "Entanglement:",
+            "    Tainted Lazarus and Dead Tainted Lazarus' stats become the average between the two",
+            "    When you receive fatal damage, trigger flip instead of dying, and set the resulting form's",
+            "    health to a 1/2 soul heart. This can only trigger once per run"
+        },
+        category = "charTree", sort = 3402
+    },
+    spiritus = {
+        str = {
+            "Spiritus:",
+            "    Completing a floor without taking damage grants you Birthright for the next floor",
+            "    Birthright can no longer show up naturally"
+        },
+        category = "charTree", sort = 3403
+    },
+    ephBondBossHitless = {
+        str = {
+            "When entering a floor, %d%% chance to gain 1 Ephemeral Bond if you defeated the last floor's",
+            "boss without taking damage. Gained Ephemeral Bond lasts until next floor",
+        },
+        category = "charTree", sort = 3410
+    },
+    ephBondFloor = {
+        str = "When entering a floor, %d%% chance to gain 1 Ephemeral Bond for the current floor",
+        category = "charTree", sort = 3411
+    },
+    flipBossHitCharge = {
+        str = "%.2f%% chance to recover 1 charge of Flip when hitting a Boss",
+        category = "charTree", sort = 3412
+    },
+    flipSpecialRoomCharge = {
+        str = "%d%% chance to fully charge Flip when first entering a treasure, shop, devil or angel room",
+        category = "charTree", sort = 3413
+    },
+    flipMobHPDown = {
+        str = "-%.2f%% to all room monsters' hp when using Flip, up to 4 times per room",
+        category = "charTree", sort = 3414
+    },
+    floorWoodenChest = {
+        str = {
+            "%d%% chance to spawn a wooden chest when entering a floor",
+            "    Doesn't trigger on the first floor"
+        },
+        category = "charTree", sort = 3415
+    },
+    lazFormKillStat = {
+        str = {
+            "%s%.2f%% to a random stat for the current form, every 8 kills with the current form",
+            "    Resets every floor. Triggers up to 8 times per floor"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3416
+    },
+    formHeartDiffLuck = {
+        str = {
+            "%s%.2f luck for every 1/2 heart difference between the two forms",
+            "    Counts total hearts of any type"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3417
+    },
     --#endregion
 
     ---- STARMIGHT ----

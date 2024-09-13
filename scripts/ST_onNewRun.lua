@@ -416,6 +416,11 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE)
     end
 
+    -- Spiritus node (T. Lazarus' tree)
+    if PST:getTreeSnapshotMod("spiritus", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

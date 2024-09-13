@@ -330,19 +330,29 @@ function PST:onHeartUpdate(force)
         end
     end
 
-    -- Cosmic Realignment node - Tainted Lazarus bank
-    if player and heartUpdated and PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
-        local taintedLazBank = cosmicRCache.TLazarusBank1
-        if not cosmicRCache.TLazarusBank1.active then
-            taintedLazBank = cosmicRCache.TLazarusBank2
+    -- Misc updates involving any hearts
+    player = PST:getPlayer()
+    if player and heartUpdated then
+        -- Cosmic Realignment node - Tainted Lazarus bank
+        if PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+            local taintedLazBank = cosmicRCache.TLazarusBank1
+            if not cosmicRCache.TLazarusBank1.active then
+                taintedLazBank = cosmicRCache.TLazarusBank2
+            end
+            taintedLazBank.red = player:GetHearts()
+            taintedLazBank.max = player:GetMaxHearts()
+            taintedLazBank.soul = player:GetSoulHearts()
+            taintedLazBank.black = player:GetBlackHearts()
+            taintedLazBank.bone = player:GetBoneHearts()
+            taintedLazBank.rotten = player:GetRottenHearts()
+            taintedLazBank.broken = player:GetBrokenHearts()
+            taintedLazBank.eternal = player:GetEternalHearts()
         end
-        taintedLazBank.red = player:GetHearts()
-        taintedLazBank.max = player:GetMaxHearts()
-        taintedLazBank.soul = player:GetSoulHearts()
-        taintedLazBank.black = player:GetBlackHearts()
-        taintedLazBank.bone = player:GetBoneHearts()
-        taintedLazBank.rotten = player:GetRottenHearts()
-        taintedLazBank.broken = player:GetBrokenHearts()
-        taintedLazBank.eternal = player:GetEternalHearts()
+
+        -- Mod: +luck per 1/2 heart difference between the two forms (T. Lazarus)
+        local tmpMod = PST:getTreeSnapshotMod("formHeartDiffLuck", 0)
+        if tmpMod ~= 0 then
+            PST:updateCacheDelayed(CacheFlag.CACHE_LUCK)
+        end
     end
 end

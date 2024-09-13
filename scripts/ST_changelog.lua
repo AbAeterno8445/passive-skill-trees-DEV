@@ -4,9 +4,12 @@ function PST:getChangelogList()
         "",
 
         "v0.3.7",
+        "- Introduced new character skill trees for: Tainted Lazarus.",
         "- Tainted Samson's \"Absolute Rage\" now has an additional bonus when obtaining Birthright.",
-        "- Deadly Sin bosses can no longer become champions through jewel effects.",
+        "- Deadly Sin minibosses can no longer become champions through jewel effects.",
+        "- Potential fix for Cause Converter (ancient jewel) not displaying converted mod boss names.",
         "- Fixed T. Cain's additional pedestal pickup nodes triggering when standing on shop items, even if you couldn't afford them.",
+        "- Fixed Cosmic Realignment + Tainted Lazarus potentially not updating heart banks correctly.",
         "",
 
         "v0.3.6",

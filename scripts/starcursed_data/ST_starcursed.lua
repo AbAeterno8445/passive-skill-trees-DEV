@@ -104,9 +104,10 @@ function PST:SC_getJewelDescription(jewel)
                 local bossEnt = EntityConfig.GetEntity(jewel.converted, jewel.convertedVariant or 0, 0)
                 if bossEnt then
                     local bossName = Isaac.GetLocalizedString("Entities", bossEnt:GetName(), "en")
-                    if bossName ~= "StringTable::InvalidKey" then
-                        table.insert(tmpDescription, {"Converted boss: " .. bossName, KColor(1, 1, 0.7, 1)})
+                    if bossName == "StringTable::InvalidKey" then
+                        bossName = bossEnt:GetName()
                     end
+                    table.insert(tmpDescription, {"Converted boss: " .. bossName, KColor(1, 1, 0.7, 1)})
                 end
             end
             if tmpAncient.rewards then

@@ -5,7 +5,7 @@ function PST:getPlayer()
 	if not player then
 		PST.player = Isaac.GetPlayer()
 		player = PST.player
-	elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS_B then
+	elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS_B or player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
 		player = Isaac.GetPlayer()
 	end
 	return player
@@ -440,6 +440,10 @@ end
 
 function PST:isBerserk()
 	return PST:getPlayer():GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+end
+
+function PST:getTLazOtherForm()
+	return PST:getPlayer():GetFlippedForm() or PST:getPlayer():GetOtherTwin()
 end
 
 function PST:getBerserkMaxCharge()

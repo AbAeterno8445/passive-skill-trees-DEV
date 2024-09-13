@@ -331,6 +331,7 @@ function PST:resetMods()
 		roomClearProc = false,
 
 		roomGotHitByMob = false,
+		floorGotHit = false,
 		runGotHit = false,
 
 		luckyPennyChance = 0,
@@ -892,6 +893,29 @@ function PST:resetMods()
 		flightlessDevilDeal = 0,
 		flightlessDevilCache = {},
 		hemoptysisKillLuck = 0,
+		---- T. Lazarus ----
+		ephemeralBond = 0,
+		ephemeralBondForm = 0,
+		ephemeralBondItems = {},
+		greatOverlap = false,
+		entanglement = false,
+		entanglementProc = false,
+		spiritus = false,
+		ephBondBossHitless = 0,
+		ephBondFloor = 0,
+		gainedTempEphBond = 0,
+		flipBossHitCharge = 0,
+		flipSpecialRoomCharge = 0,
+		flipMobHPDown = 0,
+		flipMobHPDownProcs = 0,
+		floorWoodenChest = 0,
+		lazFormKillStat = 0,
+		lazFormKillStatProcs = 0,
+		lazFormKills = 0,
+		lazFormDeadKills = 0,
+		lazFormStatCache = {},
+		lazFormDeadStatCache = {},
+		formHeartDiffLuck = 0,
 		--#endregion
 
 		--#region STAR TREE --

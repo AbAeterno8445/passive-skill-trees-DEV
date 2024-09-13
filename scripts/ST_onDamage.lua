@@ -186,6 +186,28 @@ function PST:onDamage(target, damage, flag, source)
             return { Damage = 0 }
         end
 
+        -- Entanglement node (T. Lazarus' tree)
+        if PST:getTreeSnapshotMod("entanglement", false) and not PST:getTreeSnapshotMod("entanglementProc", false) and damage >= tmpHP then
+            local otherForm = PST:getTLazOtherForm()
+            if otherForm then
+                PST:addModifiers({ entanglementProc = true }, true)
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
+                SFXManager():Play(SoundEffect.SOUND_ANGEL_BEAM, 0.9, 2, false, 0.85)
+
+                otherForm:AddMaxHearts(-otherForm:GetMaxHearts())
+                otherForm:AddRottenHearts(-otherForm:GetRottenHearts())
+                otherForm:AddBoneHearts(-otherForm:GetBoneHearts())
+                otherForm:AddSoulHearts(-otherForm:GetSoulHearts() + damage + 1)
+                local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_FLIP)
+                if tmpSlot ~= -1 then
+                    player:AddActiveCharge(-12, tmpSlot, false, false, false)
+                end
+                player:UseActiveItem(CollectibleType.COLLECTIBLE_FLIP, UseFlag.USE_NOANIM)
+                PST:createFloatTextFX("Entanglement!", Vector.Zero, Color(0.75, 0.9, 1, 1), 0.12, 100, true)
+                return { Damage = 0 }
+            end
+        end
+
         -- Ancient starcursed jewel: Martian Ultimatum
         if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
             PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
@@ -210,6 +232,11 @@ function PST:onDamage(target, damage, flag, source)
                 -- Set hit by mob in room flag
                 if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
                     PST:addModifiers({ roomGotHitByMob = true }, true)
+                end
+
+                -- Set floor-wide hit flag
+                if not PST:getTreeSnapshotMod("floorGotHit", false) then
+                    PST:addModifiers({ floorGotHit = true }, true)
                 end
 
                 -- Set run-wide hit flag
@@ -284,6 +311,14 @@ function PST:onDamage(target, damage, flag, source)
                     local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_DARK_ARTS)
                     if tmpSlot ~= -1 then
                         player:AddActiveCharge(1, tmpSlot, true, false, false)
+                    end
+                end
+
+                -- Great Overlap node (T. Lazarus' tree)
+                if PST:getTreeSnapshotMod("greatOverlap", false) and 100 * math.random() < 50 then
+                    local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_FLIP)
+                    if tmpSlot ~= -1 then
+                        player:AddActiveCharge(-1, tmpSlot, false, false, false)
                     end
                 end
 
@@ -384,68 +419,57 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        if target:IsBoss() then
-            -- Mod: chance for Book of Belial to gain a charge when hitting a boss
-            local tmpBookSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
-            if tmpBookSlot ~= -1 then
-                if PST:getTreeSnapshotMod("belialChargesGained", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("belialBossHitCharge", 0) then
-                    PST:addModifiers({ belialChargesGained = 1 }, true)
-                    tmpPlayer:AddActiveCharge(1, 0, true, false, false)
+        -- Check if a familiar got hit
+        local tmpFamiliar = target:ToFamiliar()
+        if tmpFamiliar then
+            -- Wisps
+            if tmpFamiliar.Variant == FamiliarVariant.WISP then
+                -- Will-o-the-Wisp node (Bethany's tree)
+                if PST:getTreeSnapshotMod("willOTheWisp", false) then
+                    dmgMult = dmgMult - 0.6
+                    if tmpFamiliar.HitPoints <= damage * dmgMult and PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0) < 2.5 then
+                        PST:addModifiers({ damage = 0.5, willOTheWispDmgBuff = 0.5 }, true)
+                    end
                 end
-            end
-        else
-            -- Check if a familiar got hit
-            local tmpFamiliar = target:ToFamiliar()
-            if tmpFamiliar then
-                -- Wisps
-                if tmpFamiliar.Variant == FamiliarVariant.WISP then
-                    -- Will-o-the-Wisp node (Bethany's tree)
-                    if PST:getTreeSnapshotMod("willOTheWisp", false) then
-                        dmgMult = dmgMult - 0.6
-                        if tmpFamiliar.HitPoints <= damage * dmgMult and PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0) < 2.5 then
-                            PST:addModifiers({ damage = 0.5, willOTheWispDmgBuff = 0.5 }, true)
+
+                -- Soul Trickle node (Bethany's tree)
+                if PST:getTreeSnapshotMod("soulTrickle", false) and PST:getTreeSnapshotMod("soulTrickleWispDrops", 0) < 2 and
+                100 * math.random() < 5 then
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpFamiliar.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                    PST:addModifiers({ soulTrickleWispDrops = 1 }, true)
+                end
+
+                -- Mod: +luck when a wisp is destroyed, up to +2
+                local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
+                local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
+                if tmpBonus ~= 0 and tmpTotal < 2 and tmpFamiliar.HitPoints <= damage * dmgMult then
+                    local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
+                    PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
+                end
+            -- Blood clots (Sumptorium)
+            elseif tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
+                -- Mod: release a pulse that deals damage to nearby enemies when a clot gets hit
+                if PST:getTreeSnapshotMod("clotHitPulse", false) then
+                    local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpFamiliar.Position, Vector.Zero, nil, 0, Random() + 1)
+                    pulseEffect:GetSprite().Scale = Vector(1.5, 1.5)
+                    pulseEffect.Color = Color(1, 0.25, 0.25, 1)
+                    SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.8, 2, false, 1.4)
+
+                    for _, tmpEntity in ipairs(Isaac.FindInRadius(tmpFamiliar.Position, 70)) do
+                        local tmpNPC = tmpEntity:ToNPC()
+                        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+                            local dmgBonus = PST:getPlayer().Damage * PST:getTreeSnapshotMod("clotPulseDmgInherit", 0) / 100
+                            tmpNPC:TakeDamage(3 + dmgBonus, 0, EntityRef(tmpNPC), 0)
                         end
                     end
+                end
 
-                    -- Soul Trickle node (Bethany's tree)
-                    if PST:getTreeSnapshotMod("soulTrickle", false) and PST:getTreeSnapshotMod("soulTrickleWispDrops", 0) < 2 and
-                    100 * math.random() < 5 then
-                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpFamiliar.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
-                        PST:addModifiers({ soulTrickleWispDrops = 1 }, true)
+                -- Resilient Blood node (T. Eve's tree)
+                if PST:getTreeSnapshotMod("resilientBlood", false) then
+                    if 100 * math.random() < 25 then
+                        return { Damage = 0 }
                     end
-
-                    -- Mod: +luck when a wisp is destroyed, up to +2
-                    local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
-                    local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
-                    if tmpBonus ~= 0 and tmpTotal < 2 and tmpFamiliar.HitPoints <= damage * dmgMult then
-                        local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
-                        PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
-                    end
-                -- Blood clots (Sumptorium)
-                elseif tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
-                    -- Mod: release a pulse that deals damage to nearby enemies when a clot gets hit
-                    if PST:getTreeSnapshotMod("clotHitPulse", false) then
-                        local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpFamiliar.Position, Vector.Zero, nil, 0, Random() + 1)
-                        pulseEffect:GetSprite().Scale = Vector(1.5, 1.5)
-                        pulseEffect.Color = Color(1, 0.25, 0.25, 1)
-                        SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.8, 2, false, 1.4)
-
-                        for _, tmpEntity in ipairs(Isaac.FindInRadius(tmpFamiliar.Position, 70)) do
-                            local tmpNPC = tmpEntity:ToNPC()
-                            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
-                                local dmgBonus = PST:getPlayer().Damage * PST:getTreeSnapshotMod("clotPulseDmgInherit", 0) / 100
-                                tmpNPC:TakeDamage(3 + dmgBonus, 0, EntityRef(tmpNPC), 0)
-                            end
-                        end
-                    end
-
-                    -- Resilient Blood node (T. Eve's tree)
-                    if PST:getTreeSnapshotMod("resilientBlood", false) then
-                        if 100 * math.random() < 25 then
-                            return { Damage = 0 }
-                        end
-                        dmgMult = dmgMult - 0.5
-                    end
+                    dmgMult = dmgMult - 0.5
                 end
             end
         end
@@ -783,6 +807,23 @@ function PST:onDamage(target, damage, flag, source)
                                 tmpHeart:ToPickup().Timeout = 60 + math.floor(PST:getTreeSnapshotMod("temporaryHeartTime", 0) * 30)
                                 PST.specialNodes.testOfTemperanceCD = 15
                             end
+
+                            -- Mod: chance for Book of Belial to gain a charge when hitting a boss
+                            local tmpSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
+                            if tmpSlot ~= -1 then
+                                if PST:getTreeSnapshotMod("belialChargesGained", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("belialBossHitCharge", 0) then
+                                    PST:addModifiers({ belialChargesGained = 1 }, true)
+                                    tmpPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
+                                end
+                            end
+
+                            -- Mod: chance for Flip to gain a charge when hitting a boss
+                            tmpSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_FLIP)
+                            if tmpSlot ~= -1 then
+                                if 100 * math.random() < PST:getTreeSnapshotMod("flipBossHitCharge", 0) then
+                                    tmpPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
+                                end
+                            end
                         end
 
                         -- Spirit Ebb and Flow node (The Forgotten's tree)
@@ -934,6 +975,32 @@ function PST:onDamage(target, damage, flag, source)
                                 dmgMult = dmgMult - 0.5
                                 if target:IsBoss() and target:GetBossStatusEffectCooldown() > 0 then
                                     target:SetBossStatusEffectCooldown(math.max(0, target:GetBossStatusEffectCooldown() - 15))
+                                end
+                            end
+                        end
+
+                        -- Mod: +% to a random stat every X kills with the current form (T. Lazarus)
+                        tmpMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
+                        if tmpMod > 0 and PST:getTreeSnapshotMod("lazFormKillStatProcs", 0) < 8 and target.HitPoints <= damage * dmgMult + dmgExtra then
+                            if srcPlayer:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
+                                PST:addModifiers({ lazFormDeadKills = 1 }, true)
+                                if PST:getTreeSnapshotMod("lazFormDeadKills", 0) >= 8 then
+                                    local randStat = PST:getRandomStat({"shotSpeed"})
+                                    local tmpStatCache = PST:getTreeSnapshotMod("lazFormDeadStatCache", {})
+                                    if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
+                                    tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
+                                    PST:addModifiers({ lazFormKillStatProcs = 1, lazFormDeadKills = { value = 0, set = true } }, true)
+                                    PST:updateCacheDelayed()
+                                end
+                            else
+                                PST:addModifiers({ lazFormKills = 1 }, true)
+                                if PST:getTreeSnapshotMod("lazFormKills", 0) >= 8 then
+                                    local randStat = PST:getRandomStat({"shotSpeed"})
+                                    local tmpStatCache = PST:getTreeSnapshotMod("lazFormStatCache", {})
+                                    if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
+                                    tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
+                                    PST:addModifiers({ lazFormKillStatProcs = 1, lazFormKills = { value = 0, set = true } }, true)
+                                    PST:updateCacheDelayed()
                                 end
                             end
                         end

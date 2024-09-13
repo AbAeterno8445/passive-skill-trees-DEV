@@ -412,7 +412,11 @@ function PST:treeMenuRenderer()
             treeName = "Star Tree (" .. tmpStarmight .. " total starmight)"
         else
             skPoints = PST.modData.charData[currentTree].skillPoints
-            treeName = currentTree .. "'s Tree"
+            local tmpPossessive = "s"
+            if string.sub(currentTree, -1) == "s" then
+                tmpPossessive = ""
+            end
+            treeName = currentTree .. "'" .. tmpPossessive .. " Tree"
         end
     end
 
@@ -1207,7 +1211,11 @@ function PST:treeMenuRenderer()
                 if categorySwitch and tmpCharName and PST.trees[tmpCharName] ~= nil then
                     local tmpName = PST.treeModDescriptionCategories[lastCategory].name
                     if lastCategory == "charTree" then
-                        tmpName = tmpCharName .. "'s tree:"
+                        local tmpPossessive = "s"
+                        if string.sub(currentTree, -1) == "s" then
+                            tmpPossessive = ""
+                        end
+                        tmpName = tmpCharName .. "'" .. tmpPossessive .. " tree:"
                     end
                     table.insert(totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
                 end

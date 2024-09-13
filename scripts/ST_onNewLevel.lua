@@ -398,6 +398,28 @@ function PST:onNewLevel()
         PST.modData.treeModSnapshot.flightlessDevilCache = {}
     end
 
+    -- Spiritus node (T. Lazarus' tree)
+    if PST:getTreeSnapshotMod("spiritus", false) and not PST:isFirstOrigStage() then
+        if not PST:getTreeSnapshotMod("floorGotHit", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        elseif PST:getTreeSnapshotMod("floorGotHit") and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+            player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        end
+    end
+
+    -- Mod: chance to gain 1 Ephemeral Bond when entering a floor
+    tmpMod = PST:getTreeSnapshotMod("ephBondFloor", 0)
+    if tmpMod > 0 and 100 * math.random() < tmpMod then
+        PST:addModifiers({ ephemeralBond = 1, gainedTempEphBond = 1 }, true)
+    end
+
+    -- Mod: +% to a random stat every X kills with the current form (T. Lazarus - reset)
+    tmpMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ lazFormStatCache = { value = {}, set = true }, lazFormDeadStatCache = { value = {}, set = true } }, true)
+        PST:updateCacheDelayed()
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
@@ -456,6 +478,12 @@ function PST:onNewLevel()
             end
         end
     end
+
+    -- Floor player got-hit proc
+    if PST:getTreeSnapshotMod("floorGotHit", false) then
+        PST:addModifiers({ floorGotHit = false }, true)
+    end
+
     PST:save()
 end
 

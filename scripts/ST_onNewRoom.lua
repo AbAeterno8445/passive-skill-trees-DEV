@@ -29,6 +29,7 @@ function PST:onNewRoom()
 	local player = PST:getPlayer()
 	local room = Game():GetRoom()
 	PST.room = room
+	local roomType = room:GetType()
 
 	local roomEntities = {}
 
@@ -67,7 +68,7 @@ function PST:onNewRoom()
 				if not tmpNPC:IsBoss() then table.insert(mobsList, tmpNPC)
 				else table.insert(soulEaterList, tmpNPC) end
 
-				if room:GetType() ~= RoomType.ROOM_BOSS then
+				if roomType ~= RoomType.ROOM_BOSS then
 					-- Chance to duplicate
 					local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
 					if not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
@@ -151,7 +152,7 @@ function PST:onNewRoom()
 		end
 
 		-- Ancient starcursed jewel: Teprucord Tenican Eljwe
-		if PST:SC_getSnapshotMod("teprucordTenicanEljwe", false) and room:GetType() ~= RoomType.ROOM_BOSS and 100 * math.random() < 40 then
+		if PST:SC_getSnapshotMod("teprucordTenicanEljwe", false) and roomType ~= RoomType.ROOM_BOSS and 100 * math.random() < 40 then
 			player:UseActiveItem(CollectibleType.COLLECTIBLE_DATAMINER, UseFlag.USE_NOANIM)
 		end
 	end
@@ -159,9 +160,9 @@ function PST:onNewRoom()
 	-- Ancient starcursed jewel: Challenger's Starpiece
 	if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) and
 	PST:getTreeSnapshotMod("SC_levelHasChall", false) then
-		if room:GetType() ~= RoomType.ROOM_CHALLENGE and not PST:getTreeSnapshotMod("SC_challDebuff", false) then
+		if roomType ~= RoomType.ROOM_CHALLENGE and not PST:getTreeSnapshotMod("SC_challDebuff", false) then
 			PST:addModifiers({ damagePerc = -50, SC_challDebuff = true }, true)
-		elseif room:GetType() == RoomType.ROOM_CHALLENGE and PST:getTreeSnapshotMod("SC_challDebuff", false) then
+		elseif roomType == RoomType.ROOM_CHALLENGE and PST:getTreeSnapshotMod("SC_challDebuff", false) then
 			PST:addModifiers({ damagePerc = 50, SC_challDebuff = false }, true)
 		end
 	elseif PST:getTreeSnapshotMod("SC_challDebuff", false) then
@@ -189,7 +190,7 @@ function PST:onNewRoom()
 			PST:addModifiers({ SC_nullstoneProc = false }, true)
 		end
 		-- Get highest enemy HP
-		if room:GetType() ~= RoomType.ROOM_BOSS and room:GetAliveEnemiesCount() > 0 then
+		if roomType ~= RoomType.ROOM_BOSS and room:GetAliveEnemiesCount() > 0 then
 			local highestHP = 0
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				local tmpNPC = tmpEntity:ToNPC()
@@ -208,7 +209,7 @@ function PST:onNewRoom()
 	if PST:SC_getSnapshotMod("twistedEmperorHeirloom", false) then
 		local roomID = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
 		if PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) then
-			if room:GetType() == RoomType.ROOM_BOSS then
+			if roomType == RoomType.ROOM_BOSS then
 				if PST:getTreeSnapshotMod("SC_empHeirloomRoomID", -1) == -1 then
 					PST:addModifiers({ SC_empHeirloomRoomID = { value = roomID, set = true } }, true)
 				end
@@ -235,9 +236,9 @@ function PST:onNewRoom()
 	-- Ancient starcursed jewel: Astral Insignia
 	if PST:SC_getSnapshotMod("astralInsignia", false) and room:IsFirstVisit() then
 		tmpMod = PST:getTreeSnapshotMod("SC_astralInsigniaDebuff", 0)
-		if room:GetType() == RoomType.ROOM_DEFAULT and tmpMod < 60 and not PST:getLevel():IsAscent() then
+		if roomType == RoomType.ROOM_DEFAULT and tmpMod < 60 and not PST:getLevel():IsAscent() then
 			PST:addModifiers({ allstatsPerc = -2, SC_astralInsigniaDebuff = 2 }, true)
-		elseif room:GetType() == RoomType.ROOM_PLANETARIUM and tmpMod > 0 then
+		elseif roomType == RoomType.ROOM_PLANETARIUM and tmpMod > 0 then
 			PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_astralInsigniaDebuff = -tmpMod / 2 }, true)
 		end
 	end
@@ -274,7 +275,7 @@ function PST:onNewRoom()
 	end
 
 	-- Impromptu Gambler node (Cain's tree)
-	if PST:getTreeSnapshotMod("impromptuGambler", false) and room:GetType() == RoomType.ROOM_TREASURE and not PST:getLevel():IsAscent() then
+	if PST:getTreeSnapshotMod("impromptuGambler", false) and roomType == RoomType.ROOM_TREASURE and not PST:getLevel():IsAscent() then
 		if not PST:getTreeSnapshotMod("impromptuGamblerProc", false) then
 			PST.specialNodes.impromptuGamblerItems = {}
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
@@ -339,7 +340,7 @@ function PST:onNewRoom()
 
 	-- Chaotic Treasury node (Eden's tree)
 	local level = PST:getLevel()
-	if PST:getTreeSnapshotMod("chaoticTreasury", false) and room:GetType() == RoomType.ROOM_TREASURE and room:IsFirstVisit() then
+	if PST:getTreeSnapshotMod("chaoticTreasury", false) and roomType == RoomType.ROOM_TREASURE and room:IsFirstVisit() then
 		if PST:isFirstOrigStage() and not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
 			-- Spawn Chaos in the first floor's treasure room
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
@@ -382,7 +383,7 @@ function PST:onNewRoom()
 
 	-- Mod: chance for the second floor's treasure room to contain an additional Eraser item pedestal
 	if (level:GetStage() == LevelStage.STAGE1_2 or (level:GetStage() == LevelStage.STAGE1_1 and not PST:isFirstOrigStage())) and
-	room:GetType() == RoomType.ROOM_TREASURE and not PST:getTreeSnapshotMod("eraserSecondFloorProc", false) then
+	roomType == RoomType.ROOM_TREASURE and not PST:getTreeSnapshotMod("eraserSecondFloorProc", false) then
 		if 100 * math.random() < PST:getTreeSnapshotMod("eraserSecondFloor", 0) then
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_ERASER, Random() + 1)
@@ -586,10 +587,10 @@ function PST:onNewRoom()
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
 			if tmpDoor then
-				if room:GetType() == RoomType.ROOM_CURSE then
+				if roomType == RoomType.ROOM_CURSE then
 					tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, tmpDoor.TargetRoomType)
 				elseif tmpDoor.TargetRoomType == RoomType.ROOM_CURSE then
-					tmpDoor:SetRoomTypes(room:GetType(), RoomType.ROOM_DEFAULT)
+					tmpDoor:SetRoomTypes(roomType, RoomType.ROOM_DEFAULT)
 				end
 			end
 		end
@@ -627,16 +628,31 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Mod: chance to fully charge Flip when first entering a treasure, shop, angel or devil room
+    tmpMod = PST:getTreeSnapshotMod("flipSpecialRoomCharge", 0)
+    if tmpMod > 0 and room:IsFirstVisit() and (roomType == RoomType.ROOM_TREASURE or roomType == RoomType.ROOM_SHOP or roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL) and
+    100 * math.random() < tmpMod then
+        local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_FLIP)
+        if tmpSlot ~= -1 then
+            player:AddActiveCharge(6, tmpSlot, true, false, false)
+        end
+    end
+
+	-- Mod: -% to room monsters' HP when using Flip (reset)
+	if PST:getTreeSnapshotMod("flipMobHPDownProcs", 0) > 0 then
+		PST:addModifiers({ flipMobHPDownProcs = { value = 0, set = true } }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
-		if room:GetType() == RoomType.ROOM_PLANETARIUM and 100 * math.random() < PST.SCDropRates.planetarium().regular then
+		if roomType == RoomType.ROOM_PLANETARIUM and 100 * math.random() < PST.SCDropRates.planetarium().regular then
 			local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 			PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.planetarium().ancient)
 		end
 
 		-- Starcursed jewel in curse rooms
-		if room:GetType() == RoomType.ROOM_CURSE and 100 * math.random() < PST.SCDropRates.curseRoom(level:GetStage()).regular then
+		if roomType == RoomType.ROOM_CURSE and 100 * math.random() < PST.SCDropRates.curseRoom(level:GetStage()).regular then
 			local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
 			PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.curseRoom(level:GetStage()).ancient)
 		end
@@ -650,7 +666,7 @@ function PST:onNewRoom()
 		end
 
 		-- Ancient starcursed jewel: Challenger Starpiece
-		if PST:SC_getSnapshotMod("challengerStarpiece", false) and room:GetType() == RoomType.ROOM_CHALLENGE then
+		if PST:SC_getSnapshotMod("challengerStarpiece", false) and roomType == RoomType.ROOM_CHALLENGE then
 			-- Spawn a key if challenge room has no regular chests, and has locked chests, or a bomb if it has stone chests
 			local chestSetup = {
 				locked = false,
@@ -680,7 +696,7 @@ function PST:onNewRoom()
 		end
 
 		-- Ancient starcursed jewel: Cursed Starpiece
-		if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() and room:GetType() == RoomType.ROOM_TREASURE then
+		if PST:SC_getSnapshotMod("cursedStarpiece", false) and not PST:isFirstOrigStage() and roomType == RoomType.ROOM_TREASURE then
 			local firstItem = true
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				local tmpItem = tmpEntity:ToPickup()
@@ -696,7 +712,7 @@ function PST:onNewRoom()
 		end
 
 		-- Ancient starcursed jewel: Baubleseeker
-		if PST:SC_getSnapshotMod("baubleseeker", false) and room:GetType() == RoomType.ROOM_TREASURE then
+		if PST:SC_getSnapshotMod("baubleseeker", false) and roomType == RoomType.ROOM_TREASURE then
 			if not player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) and 100 * math.random() < 10 then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_MOMS_BOX, Random() + 1)
@@ -713,7 +729,7 @@ function PST:onNewRoom()
 				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 35 + tmpBonus, set = true } }, true)
 			end
 
-			if room:GetType() == RoomType.ROOM_ULTRASECRET then
+			if roomType == RoomType.ROOM_ULTRASECRET then
 				local tmpDebuff = PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)
 				if tmpDebuff > 0 then
 					PST:addModifiers({ allstatsPerc = tmpDebuff / 2, SC_crimsonWarpDebuff = -tmpDebuff / 2 }, true)
@@ -738,7 +754,7 @@ function PST:onNewRoom()
 						local addedItem = false
 						local failSafe = 0
 						while not addedItem and failSafe < 100 do
-							local newItem = itemPool:GetCollectible(itemPool:GetPoolForRoom(room:GetType(), Random() + 1))
+							local newItem = itemPool:GetCollectible(itemPool:GetPoolForRoom(roomType, Random() + 1))
 							local itemConfig = Isaac.GetItemConfig():GetCollectible(newItem)
 							if not PST:arrHasValue(rolledItems, newItem) and itemConfig and itemConfig.Type ~= ItemType.ITEM_ACTIVE then
 								tmpPickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true, true)
@@ -755,15 +771,15 @@ function PST:onNewRoom()
 		end
 
 		-- Secret rooms
-		if room:GetType() == RoomType.ROOM_SECRET or
-		room:GetType() == RoomType.ROOM_SUPERSECRET or
-		room:GetType() == RoomType.ROOM_ULTRASECRET then
+		if roomType == RoomType.ROOM_SECRET or
+		roomType == RoomType.ROOM_SUPERSECRET or
+		roomType == RoomType.ROOM_ULTRASECRET then
 			local secretXP = PST:getTreeSnapshotMod("secretXP", 0)
 			local expertSpelunkerXP = PST:getTreeSnapshotMod("expertSpelunker", 0)
 			if expertSpelunkerXP == 0 and secretXP > 0 then
 				PST:addXP(secretXP, true)
 			elseif expertSpelunkerXP > 0 then
-				if room:GetType() == RoomType.ROOM_SUPERSECRET or room:GetType() == RoomType.ROOM_ULTRASECRET then
+				if roomType == RoomType.ROOM_SUPERSECRET or roomType == RoomType.ROOM_ULTRASECRET then
 					PST:addXP(expertSpelunkerXP, true)
 				end
 			end
@@ -776,7 +792,7 @@ function PST:onNewRoom()
 
 			-- Mod: +0.01 to a random stat when entering a secret room. Rolls more times if multiple are allocated
 			local tmpMod = PST:getTreeSnapshotMod("secretRoomRandomStat", 0)
-			if tmpMod > 0 and room:GetType() == RoomType.ROOM_SECRET then
+			if tmpMod > 0 and roomType == RoomType.ROOM_SECRET then
 				local tmpAdd = {}
 				for _=1,tmpMod do
 					local randStat = PST:getRandomStat()
@@ -788,7 +804,7 @@ function PST:onNewRoom()
 				PST:addModifiers(tmpAdd, true)
 			end
 		-- Devil/Angel rooms
-		elseif room:GetType() == RoomType.ROOM_DEVIL or room:GetType() == RoomType.ROOM_ANGEL then
+		elseif roomType == RoomType.ROOM_DEVIL or roomType == RoomType.ROOM_ANGEL then
 			local randomStat = PST:getRandomStat()
 			local tmpAdd = 1
 			if randomStat == "speed" then
@@ -800,7 +816,7 @@ function PST:onNewRoom()
 			-- Hell's favour mod
 			local hellFavourMod = PST:getTreeSnapshotMod("hellFavour", false)
 			if hellFavourMod then
-				if room:GetType() == RoomType.ROOM_DEVIL then
+				if roomType == RoomType.ROOM_DEVIL then
 					PST:addModifiers({ [randomStat] = tmpAdd }, true)
 				else
 					PST:addModifiers({
@@ -813,7 +829,7 @@ function PST:onNewRoom()
 			-- Angel's favour mod
 			local heavenFavourMod = PST:getTreeSnapshotMod("heavenFavour", false)
 			if heavenFavourMod then
-				if room:GetType() == RoomType.ROOM_ANGEL then
+				if roomType == RoomType.ROOM_ANGEL then
 					PST:addModifiers({ [randomStat] = tmpAdd }, true)
 				else
 					PST:addModifiers({
@@ -823,7 +839,7 @@ function PST:onNewRoom()
 				end
 			end
 		-- Treasure room
-		elseif room:GetType() == RoomType.ROOM_TREASURE then
+		elseif roomType == RoomType.ROOM_TREASURE then
 			-- Cosmic Realignment node
 			if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
 				-- Tainted Isaac, remove items from first treasure room entered
@@ -840,7 +856,7 @@ function PST:onNewRoom()
 				end
 			end
 		-- Planetarium
-		elseif room:GetType() == RoomType.ROOM_PLANETARIUM then
+		elseif roomType == RoomType.ROOM_PLANETARIUM then
 			-- Mod: +% all stats when entering the planetarium for the first time in this run
 			tmpStats = PST:getTreeSnapshotMod("planetariumAllstats", 0)
 			if tmpStats ~= 0 and not PST:getTreeSnapshotMod("planetariumAllstatsProc") then
