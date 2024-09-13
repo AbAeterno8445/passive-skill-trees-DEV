@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.3.7",
         "- Tainted Samson's \"Absolute Rage\" now has an additional bonus when obtaining Birthright.",
+        "- Deadly Sin bosses can no longer become champions through jewel effects.",
         "",
 
         "v0.3.6",
