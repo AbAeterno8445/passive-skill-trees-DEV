@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.3.7",
         "- Tainted Samson's \"Absolute Rage\" now has an additional bonus when obtaining Birthright.",
         "- Deadly Sin bosses can no longer become champions through jewel effects.",
+        "- Fixed T. Cain's additional pedestal pickup nodes triggering when standing on shop items, even if you couldn't afford them.",
         "",
 
         "v0.3.6",

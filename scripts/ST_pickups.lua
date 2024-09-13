@@ -81,7 +81,7 @@ function PST:prePickup(pickup, collider, low)
 
             -- Mod: chance for additional pickups when collecting an item pedestal (T. Cain)
             local tmpMod = PST:getTreeSnapshotMod("additionalPedestalPickup", 0)
-            if subtype ~= 0 and not PST:arrHasValue(PST.progressionItems, subtype) and tmpMod > 0 and
+            if subtype ~= 0 and not pickup:IsShopItem() and not PST:arrHasValue(PST.progressionItems, subtype) and tmpMod > 0 and
             player:GetPlayerType() == PlayerType.PLAYER_CAIN_B then
                 while tmpMod > 0 do
                     if 100 * math.random() < tmpMod then
