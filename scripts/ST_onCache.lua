@@ -730,6 +730,11 @@ function PST:onCache(player, cacheFlag)
             end
         end
 
+        -- Mod: minimum luck
+        if PST:getTreeSnapshotMod("minLuckSet", false) and player.Luck < PST:getTreeSnapshotMod("minLuck", -1) then
+            player.Luck = PST:getTreeSnapshotMod("minLuck", -1)
+        end
+
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- RANGE
         local tmpMod = PST:getTreeSnapshotMod("range", 0) + dynamicMods.range + allstats

@@ -421,6 +421,22 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
     end
 
+    -- Serendipitous Soul node (T. Eden's tree)
+    if PST:getTreeSnapshotMod("serendipitousSoul", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_EDENS_SOUL)
+    end
+
+    -- Crucific node (T. Eden's tree)
+    if PST:getTreeSnapshotMod("blessedCrucifix", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_WOODEN_CROSS)
+    end
+
+    -- Chaos Take The World node (T. Eden's tree)
+    if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) then
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

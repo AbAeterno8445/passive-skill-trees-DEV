@@ -6,6 +6,28 @@
 ---@param slot ActiveSlot
 ---@param customVarData any
 function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
+    -- Mod: % chance to remove Birthright when using any active item (Serendipitous Soul - T. Eden's tree)
+    if PST:getTreeSnapshotMod("serendipitousSoul", false) and itemType ~= CollectibleType.COLLECTIBLE_EDENS_SOUL then
+        local tmpMod = PST:getTreeSnapshotMod("birthrightActiveRemoveChance", 0)
+        if tmpMod > 0 and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and 100 * math.random() < tmpMod then
+            player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        end
+    end
+
+    -- Mod: +% to a random stat when using an active item while having a holy mantle/wooden cross shield
+    local tmpMod = PST:getTreeSnapshotMod("shieldActiveStat", 0)
+    if tmpMod > 0 and not PST:getTreeSnapshotMod("shieldActiveStatProc", false) and PST:getRoom():GetAliveEnemiesCount() > 0 then
+        if player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) or player:GetEffects():HasTrinketEffect(TrinketType.TRINKET_WOODEN_CROSS) then
+            local randomStat = PST:getRandomStat()
+            local randomStatCache = PST:getTreeSnapshotMod("shieldActiveStatList", {})
+            if not randomStatCache[randomStat .. "Perc"] then
+                randomStatCache[randomStat .. "Perc"] = 0
+            end
+            randomStatCache[randomStat .. "Perc"] = randomStatCache[randomStat .. "Perc"] + tmpMod
+            PST:addModifiers({ [randomStat .. "Perc"] = tmpMod, shieldActiveStatProc = true }, true)
+        end
+    end
+
     -- D6
     if itemType == CollectibleType.COLLECTIBLE_D6 then
         -- Magic Die node (Isaac's tree)
@@ -394,11 +416,28 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
         end
+    -- Eden's Soul
+    elseif itemType == CollectibleType.COLLECTIBLE_EDENS_SOUL then
+        -- Serendipitous Soul node (T. Eden's tree)
+        if PST:getTreeSnapshotMod("serendipitousSoul", false) and not PST:getTreeSnapshotMod("serendSoulUsed", false) then
+            if not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+                player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+            end
+            PST:addModifiers({ serendSoulUsed = true }, true)
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item
     if 100 * math.random() < PST:getTreeSnapshotMod("activeItemWisp", 0) then
         Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.WISP, player.Position, Vector.Zero, nil, 0, Random() + 1)
+    end
+
+    -- Chaos Take The World node (T. Eden's tree)
+    if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) and (useFlags & UseFlag.USE_OWNED) > 0 then
+        local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
+        if itemCfg and itemCfg.MaxCharges >= 2 then
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS, UseFlag.USE_NOANIM)
+        end
     end
 
     -- Cosmic Realignment tainted unlock on red key home

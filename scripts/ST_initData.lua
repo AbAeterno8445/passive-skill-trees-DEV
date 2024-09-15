@@ -916,6 +916,28 @@ function PST:resetMods()
 		lazFormStatCache = {},
 		lazFormDeadStatCache = {},
 		formHeartDiffLuck = 0,
+		---- T. Eden ----
+		serendipitousSoul = false,
+		serendSoulUsed = false,
+		blessedCrucifix = false,
+		normalizedVitality = false,
+		chaosTakeTheWorld = false,
+		chaosTakeTheWorldProc = false,
+		rerollAvoidance = 0,
+		devilActiveOnHit = 0,
+		devilActiveOnHitProc = false,
+		angelActiveOnHit = 0,
+		angelActiveOnHitProc = false,
+		birthrightActiveRemoveChance = 0,
+		shieldActiveStat = 0,
+		shieldActiveStatProc = false,
+		shieldActiveStatList = {},
+		treasureItemOnHit = 0,
+		treasureItemOnHitItem = 0,
+		higherQualityReroll = 0,
+		higherQualityRerollProcs = 0,
+		minLuckSet = 0,
+		minLuck = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1026,6 +1048,13 @@ function PST:resetMods()
 		bossJewelDropProc = 0,
 		hemoptysisFired = 0,
 		hemoptysisSpeedTimer = 0,
+		activeOnHitProc = {
+			proc = false,
+			pool = ItemPoolType.POOL_DEVIL,
+			procMod = ""
+		},
+		treasureItemOnHitProc = false,
+		higherQualityRerollProc = false,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

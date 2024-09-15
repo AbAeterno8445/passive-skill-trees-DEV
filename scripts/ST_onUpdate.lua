@@ -27,6 +27,9 @@ function PST:onUpdate()
 	local room = PST:getRoom()
 	local player = PST:getPlayer()
 
+	local roomFrame = room:GetFrameCount()
+	local gameFrame = Game():GetFrameCount()
+
 	if inDeathCertificate and level:GetDimension() ~= Dimension.DEATH_CERTIFICATE then
 		-- Left death certificate dimension, re-update level
 		PST.floorFirstUpdate = true
@@ -432,6 +435,38 @@ function PST:onUpdate()
 				local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 40, true)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_WOODENCHEST, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 			end
+
+			-- Normalized Vitality node (T. Eden's tree)
+			if PST:getTreeSnapshotMod("normalizedVitality", false) then
+				local moddedHearts = false
+				local tmpColor = Color(0.6, 0.6, 0.6, 1)
+				if player:GetMaxHearts() < 6 then
+					player:AddMaxHearts(2)
+					moddedHearts = true
+					tmpColor.R = 1
+				elseif player:GetMaxHearts() > 10 then
+					player:AddMaxHearts(-2)
+					moddedHearts = true
+					tmpColor.R = 1
+				end
+				if player:GetSoulHearts() < 4 then
+					player:AddSoulHearts(2)
+					moddedHearts = true
+					tmpColor.B = 1
+				elseif player:GetSoulHearts() > 8 then
+					player:AddSoulHearts(-2)
+					moddedHearts = true
+					tmpColor.B = 1
+				end
+				if player:GetBrokenHearts() > 0 then
+					player:AddBrokenHearts(-1)
+					moddedHearts = true
+					tmpColor.G = 1
+				end
+				if moddedHearts then
+					PST:createFloatTextFX("Normalized Vitality", Vector.Zero, tmpColor, 0.12, 100, true)
+				end
+			end
 		end
 	end
 
@@ -467,7 +502,7 @@ function PST:onUpdate()
 	end
 
 	-- First update per room
-	if room:GetFrameCount() == 1 then
+	if roomFrame == 1 then
 		-- Update familiars
 		local tmpFamiliars = PST:getRoomFamiliars()
 		if tmpFamiliars ~= PST:getTreeSnapshotMod("totalFamiliars", 0) then
@@ -552,7 +587,7 @@ function PST:onUpdate()
 	end
 
 	-- Boss jewel drop proc
-	if PST.specialNodes.bossJewelDropProc > 0 and Game():GetFrameCount() >= PST.specialNodes.bossJewelDropProc + 20 then
+	if PST.specialNodes.bossJewelDropProc > 0 and gameFrame >= PST.specialNodes.bossJewelDropProc + 20 then
 		local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 40)
 		PST:SC_dropRandomJewelAt(tmpPos, PST.SCDropRates.boss(level:GetStage()).ancient)
 		PST.specialNodes.bossJewelDropProc = 0
@@ -560,7 +595,7 @@ function PST:onUpdate()
 
 	-- Starcursed mod: monster status cleanse every X seconds
 	local tmpMod = PST:SC_getSnapshotMod("statusCleanse", 0)
-	if tmpMod > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
+	if tmpMod > 0 and roomFrame % (tmpMod * 30) == 0 then
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly and not tmpNPC:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN) then
@@ -571,7 +606,7 @@ function PST:onUpdate()
 	end
 	-- Starcursed mod: normal monsters regen X HP every Y seconds
 	tmpMod = PST:SC_getSnapshotMod("mobRegen", {0, 0})
-	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
+	if tmpMod[1] > 0 and tmpMod[2] > 0 and roomFrame % (tmpMod[2] * 30) == 0 then
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() and tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
@@ -582,7 +617,7 @@ function PST:onUpdate()
 	end
 	-- Starcursed mod: boss monsters regen X HP every Y seconds
 	tmpMod = PST:SC_getSnapshotMod("bossRegen", {0, 0})
-	if tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod[2] * 30) == 0 then
+	if tmpMod[1] > 0 and tmpMod[2] > 0 and roomFrame % (tmpMod[2] * 30) == 0 then
 		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and tmpNPC:IsBoss() and not tmpNPC:HasFullHealth() and tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
@@ -593,7 +628,7 @@ function PST:onUpdate()
 	end
 	-- Starcursed mod: champions heal 15% HP to nearby non-champion monsters every X seconds
 	tmpMod = PST:SC_getSnapshotMod("championHealers", {0, 0})
-	if type(tmpMod) == "table" and tmpMod[1] > 0 and tmpMod[2] > 0 and room:GetFrameCount() % (tmpMod * 30) == 0 then
+	if type(tmpMod) == "table" and tmpMod[1] > 0 and tmpMod[2] > 0 and roomFrame % (tmpMod * 30) == 0 then
 		local tmpEntities = Isaac.GetRoomEntities()
 		local tmpChamps = {}
 		for _, tmpEntity in ipairs(tmpEntities) do
@@ -620,7 +655,7 @@ function PST:onUpdate()
 	-- Starcursed mod: monsters receive no damage for 2 seconds every 10 seconds
 	tmpMod = PST:SC_getSnapshotMod("mobPeriodicShield", nil)
 	if tmpMod ~= nil then
-		if room:GetFrameCount() % 300 >= 240 and room:GetFrameCount() % 300 <= 300 then
+		if roomFrame % 300 >= 240 and roomFrame % 300 <= 300 then
 			PST.specialNodes.mobPeriodicShield = true
 		else
 			PST.specialNodes.mobPeriodicShield = false
@@ -644,7 +679,7 @@ function PST:onUpdate()
 				end
 				PST.specialNodes.SC_circadianSpawnTime = 0
 			end
-		elseif room:GetFrameCount() % 30 == 0 and PST:getTreeSnapshotMod("SC_circadianStatsDown", 0) < 20 then
+		elseif roomFrame % 30 == 0 and PST:getTreeSnapshotMod("SC_circadianStatsDown", 0) < 20 then
 			PST:addModifiers({ allstatsPerc = -1, SC_circadianStatsDown = 1 }, true)
 		end
 		if PST.specialNodes.SC_circadianExplImmune > 0 then
@@ -653,7 +688,7 @@ function PST:onUpdate()
 	end
 	-- Ancient starcursed jewel: Soul Watcher
 	if PST:SC_getSnapshotMod("soulWatcher", false) then
-		if room:GetFrameCount() % 300 == 0 and #PST.specialNodes.SC_soulEaterMobs > 0 then
+		if roomFrame % 300 == 0 and #PST.specialNodes.SC_soulEaterMobs > 0 then
 			for _, tmpSoulEater in ipairs(PST.specialNodes.SC_soulEaterMobs) do
 				if not EntityRef(tmpSoulEater.mob).IsFriendly and tmpSoulEater.mob:IsBoss()
 				and tmpSoulEater.mob.Type ~= EntityType.ENTITY_GIDEON then
@@ -671,7 +706,7 @@ function PST:onUpdate()
 				player:GetOtherTwin():AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
 			end
 		end
-		if room:GetFrameCount() > 1 then
+		if roomFrame > 1 then
 			if PST.specialNodes.SC_martianTimer > 0 then
 				PST.specialNodes.SC_martianTimer = PST.specialNodes.SC_martianTimer - 1
 				for _, tmpTear in ipairs(PST.specialNodes.SC_martianTears) do
@@ -752,7 +787,7 @@ function PST:onUpdate()
 	-- Ancient starcursed jewel: Saturnian Luminite
 	if PST:SC_getSnapshotMod("saturnianLuminite", false) and room:GetAliveEnemiesCount() > 0 then
 		local tmpDelay = 120
-		if room:GetFrameCount() % tmpDelay == 0 then
+		if roomFrame % tmpDelay == 0 then
 			player:RemoveCollectible(CollectibleType.COLLECTIBLE_SATURNUS)
 			player:AddCollectible(CollectibleType.COLLECTIBLE_SATURNUS)
 		end
@@ -763,7 +798,7 @@ function PST:onUpdate()
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
 	end
 	local tmpTimer = PST:getTreeSnapshotMod("SC_cursedAuricTimer", 0)
-	if tmpTimer > 0 and Game():GetFrameCount() >= tmpTimer + 15 then
+	if tmpTimer > 0 and gameFrame >= tmpTimer + 15 then
 		PST:addModifiers({ SC_cursedAuricTimer = { value = 0, set = true } }, true)
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_TELEPORT_2, UseFlag.USE_NOANIM)
 	end
@@ -849,7 +884,7 @@ function PST:onUpdate()
 	end
 
 	-- Eldritch Mapping node
-    if PST:getTreeSnapshotMod("eldritchMapping", false) and room:GetFrameCount() % 20 == 0 then
+    if PST:getTreeSnapshotMod("eldritchMapping", false) and roomFrame % 20 == 0 then
 		if (level:GetCurses() & LevelCurse.CURSE_OF_THE_LOST) > 0 then
 			level:RemoveCurses(LevelCurse.CURSE_OF_THE_LOST)
 			PST:createFloatTextFX("Eldritch Mapping", Vector.Zero, Color(0.2, 0.1, 0.21, 1), 0.12, 90, true)
@@ -928,13 +963,14 @@ function PST:onUpdate()
 	end
 
 	-- Holy mantle broken
-	if player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) == nil and updateTrackers.holyMantleTracker then
+	local plHasHolyMantle = player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+	if plHasHolyMantle == nil and updateTrackers.holyMantleTracker then
 		updateTrackers.holyMantleTracker = false
 
 		-- Sacred Aegis node (The Lost's tree)
 		if PST:getTreeSnapshotMod("sacredAegis", false) then
 			-- Regenerate holy mantle after 7 seconds in this room
-			PST.specialNodes.sacredAegis.hitTime = room:GetFrameCount()
+			PST.specialNodes.sacredAegis.hitTime = roomFrame
 
 			if PST.specialNodes.sacredAegis.hitsTaken < 2 then
 				PST:addModifiers({ allstatsPerc = -7 }, true)
@@ -947,7 +983,7 @@ function PST:onUpdate()
 		if tmpStats ~= 0 and not PST:getTreeSnapshotMod("noHolyMantleAllStatsActive", false) then
 			PST:addModifiers({ allstats = tmpStats, noHolyMantleAllStatsActive = true }, true)
 		end
-	elseif player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) ~= nil and not updateTrackers.holyMantleTracker then
+	elseif plHasHolyMantle ~= nil and not updateTrackers.holyMantleTracker then
 		updateTrackers.holyMantleTracker = true
 
 		tmpStats = PST:getTreeSnapshotMod("noHolyMantleAllStats", 0)
@@ -957,7 +993,7 @@ function PST:onUpdate()
 	end
 
 	-- Sacred Aegis node (The Lost's tree)
-	if PST:getTreeSnapshotMod("sacredAegis", false) and room:GetFrameCount() - PST.specialNodes.sacredAegis.hitTime >= 210 and
+	if PST:getTreeSnapshotMod("sacredAegis", false) and roomFrame - PST.specialNodes.sacredAegis.hitTime >= 210 and
 	PST.specialNodes.sacredAegis.hitTime ~= 0 and not PST.specialNodes.sacredAegis.proc then
 		-- Regenerate holy mantle
 		player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
@@ -1161,11 +1197,11 @@ function PST:onUpdate()
 	end
 
 	-- Dextral Runemaster: Berkano innate Hive Mind
-	if PST:getTreeSnapshotMod("berkanoHivemind", false) and room:GetFrameCount() > 1 and not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) then
+	if PST:getTreeSnapshotMod("berkanoHivemind", false) and roomFrame > 1 and not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
 	end
 	-- Dextral Runemaster: Algiz buff
-	if PST:getTreeSnapshotMod("algizBuffProc", false) and room:GetFrameCount() % 30 == 0 then
+	if PST:getTreeSnapshotMod("algizBuffProc", false) and roomFrame % 30 == 0 then
 		tmpMod = PST:getTreeSnapshotMod("algizBuffTimer", 0)
 		if tmpMod > 0 then
 			PST:addModifiers({ algizBuffTimer = -1 }, true)
@@ -1175,7 +1211,7 @@ function PST:onUpdate()
 	end
 
 	-- Lingering Malice, creep damage against flying enemies
-	if #PST.specialNodes.lingMaliceCreepList > 0 and room:GetFrameCount() % 15 == 0 then
+	if #PST.specialNodes.lingMaliceCreepList > 0 and roomFrame % 15 == 0 then
 		for i = #PST.specialNodes.lingMaliceCreepList, 1, -1 do
 			local tmpCreep = PST.specialNodes.lingMaliceCreepList[i]
 			if tmpCreep.Timeout > 0 then
@@ -1222,6 +1258,98 @@ function PST:onUpdate()
 		if PST.specialNodes.bloodwrathFlipTimer == 0 then
 			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 		end
+	end
+
+	-- Chaos Take The World node (T. Eden's tree)
+	if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
+	end
+
+	-- Mod: random devil/angel active effect when hit
+	if PST.specialNodes.activeOnHitProc.proc then
+		local tmpItem = Game():GetItemPool():GetCollectible(PST.specialNodes.activeOnHitProc.pool, true)
+		local tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
+		local failsafe = 0
+		while ((tmpItemCfg and tmpItemCfg.Type ~= ItemType.ITEM_ACTIVE) or not tmpItemCfg) and failsafe < 200 do
+			tmpItem = Game():GetItemPool():GetCollectible(PST.specialNodes.activeOnHitProc.pool, true)
+			tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
+			failsafe = failsafe + 1
+		end
+		if tmpItem > 0 and failsafe < 200 then
+			player:UseActiveItem(tmpItem, UseFlag.USE_NOANIM)
+			PST:addModifiers({ [PST.specialNodes.activeOnHitProc.procMod] = true }, true)
+
+			local tmpColor = Color(0.7, 0.9, 1, 1)
+			if PST.specialNodes.activeOnHitProc.pool == ItemPoolType.POOL_DEVIL then
+				tmpColor = Color(1, 0.6, 0.6, 1)
+			end
+			local itemName = Isaac.GetLocalizedString("Items", tmpItemCfg.Name, "en")
+			if itemName ~= "StringTable::InvalidKey" then
+				PST:createFloatTextFX(itemName, Vector.Zero, tmpColor, 0.13, 70, true)
+			end
+		end
+		PST.specialNodes.activeOnHitProc.proc = false
+	end
+
+	-- Mod: random passive treasure item on hit
+	if PST.specialNodes.treasureItemOnHitProc then
+		local tmpItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE, true)
+		local tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
+		local failsafe = 0
+		while ((tmpItemCfg and tmpItemCfg.Type ~= ItemType.ITEM_PASSIVE) or not tmpItemCfg or PST:arrHasValue(PST.heartUpItems, tmpItem)
+		or player:HasCollectible(tmpItem)) and failsafe < 200 do
+			tmpItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE, true)
+			tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
+			failsafe = failsafe + 1
+		end
+		if tmpItem > 0 and failsafe < 200 then
+			player:AddInnateCollectible(tmpItem)
+			PST:addModifiers({ treasureItemOnHitItem = tmpItem }, true)
+
+			local itemName = Isaac.GetLocalizedString("Items", tmpItemCfg.Name, "en")
+			if itemName ~= "StringTable::InvalidKey" then
+				PST:createFloatTextFX("+" .. itemName, Vector.Zero, Color(1, 1, 0.7, 1), 0.13, 70, true)
+			end
+		end
+		PST.specialNodes.treasureItemOnHitProc = false
+	end
+
+	-- Mod: % chance for one of the resulting rerolled items to be 1 quality higher
+	if PST.specialNodes.higherQualityRerollProc then
+		local tmpItemList = {}
+		for _, histItem in ipairs(player:GetHistory():GetCollectiblesHistory()) do
+			local itemID = histItem:GetItemID()
+			local itemCfg = Isaac.GetItemConfig():GetCollectible(itemID)
+			if itemCfg and itemCfg.Type == ItemType.ITEM_PASSIVE and itemCfg.Quality < 4 and not histItem:IsTrinket() then
+				table.insert(tmpItemList, { item = itemID, pool = histItem:GetItemPoolType() })
+			end
+		end
+		if #tmpItemList > 0 then
+			local randItem = tmpItemList[math.random(#tmpItemList)]
+			local randItemCfg = Isaac.GetItemConfig():GetCollectible(randItem.item)
+
+			local newItem = Game():GetItemPool():GetCollectible(randItem.pool, true)
+			local newItemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+			local failsafe = 0
+			while ((newItemCfg and (newItemCfg.Type ~= ItemType.ITEM_PASSIVE or newItemCfg.Quality ~= randItemCfg.Quality + 1)) or not newItemCfg or
+			player:HasCollectible(newItem)) and failsafe < 500 do
+				newItem = Game():GetItemPool():GetCollectible(randItem.pool, true)
+				newItemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+				failsafe = failsafe + 1
+			end
+			if newItem > 0 and failsafe < 500 then
+				player:RemoveCollectible(randItem.item)
+				player:AddCollectible(newItem)
+
+				local itemName = Isaac.GetLocalizedString("Items", newItemCfg.Name, "en")
+				if itemName ~= "StringTable::InvalidKey" then
+					PST:createFloatTextFX("+1 Quality: " .. itemName, Vector.Zero, Color(0.5, 0.9, 1, 1), 0.12, 100, true)
+				else
+					PST:createFloatTextFX("+1 Quality", Vector.Zero, Color(0.5, 0.9, 1, 1), 0.12, 100, true)
+				end
+			end
+		end
+		PST.specialNodes.higherQualityRerollProc = false
 	end
 
 	-- Cosmic Realignment node
@@ -1550,7 +1678,7 @@ function PST:onUpdate()
 			else
 				player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
 			end
-		elseif room:GetFrameCount() % 30 == 0 then
+		elseif roomFrame % 30 == 0 then
 			player.SamsonBerserkCharge = math.min(100000, player.SamsonBerserkCharge + 5000)
 			if player.SamsonBerserkCharge >= 100000 then
 				player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
@@ -1595,11 +1723,21 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Serendipitous Soul node (T. Eden's tree)
+	if PST:getTreeSnapshotMod("serendipitousSoul", false) then
+		if not PST:getTreeSnapshotMod("serendSoulUsed", false) then
+			local edenSoulSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_EDENS_SOUL)
+			if edenSoulSlot == -1 then
+				player:AddCollectible(CollectibleType.COLLECTIBLE_EDENS_SOUL, 0, false, ActiveSlot.SLOT_PRIMARY)
+			end
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 
 	-- Delayed cache update
-	if PST.delayedCacheUpdate > 0 and Game():GetFrameCount() > PST.delayedCacheUpdate + 1 then
+	if PST.delayedCacheUpdate > 0 and gameFrame > PST.delayedCacheUpdate + 1 then
 		PST.delayedCacheUpdate = 0
 		player:AddCacheFlags(PST.delayedCacheFlags, true)
 		PST.delayedCacheFlags = 0

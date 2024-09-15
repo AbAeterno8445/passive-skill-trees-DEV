@@ -96,6 +96,14 @@ function PST:prePickup(pickup, collider, low)
                 table.insert(PST.specialNodes.itemRemovalProtected, pickup.InitSeed)
                 PST:removeRoomItems(true)
             end
+
+            -- Serendipitous Soul node (T. Eden's tree)
+            if PST:getTreeSnapshotMod("serendipitousSoul", false) then
+                local itemCfg = Isaac.GetItemConfig():GetCollectible(subtype)
+                if itemCfg and itemCfg.Type == ItemType.ITEM_ACTIVE and not PST:getTreeSnapshotMod("serendSoulUsed", false) then
+                    return { Collide = true, SkipCollisionEffects = true }
+                end
+            end
         else
             -- Keeper's Blessing node (Keeper's tree)
             if PST:getTreeSnapshotMod("keeperBlessing", false) then
@@ -936,7 +944,6 @@ function PST:onPickupVoided(pickup, isBlackRune)
         if isBlackRune then
             -- Mod: chance for items consumed by Black Rune to be obtained as innate items
             local tmpMod = PST:getTreeSnapshotMod("blackRuneAbsorb", 0)
-            tmpMod = 100
             if tmpMod > 0 and 100 * math.random() < tmpMod then
                 if PST.modData.treeModSnapshot.blackRuneInnateItems then
                     table.insert(PST.modData.treeModSnapshot.blackRuneInnateItems, pickup.SubType)

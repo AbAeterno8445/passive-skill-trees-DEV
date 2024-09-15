@@ -4,12 +4,16 @@ function PST:getChangelogList()
         "",
 
         "v0.3.7",
-        "- Introduced new character skill trees for: Tainted Lazarus.",
+        "- Introduced new character skill trees for: Tainted Lazarus and Tainted Eden.",
         "- Tainted Samson's \"Absolute Rage\" now has an additional bonus when obtaining Birthright.",
         "- Deadly Sin minibosses can no longer become champions through jewel effects.",
         "- Potential fix for Cause Converter (ancient jewel) not displaying converted mod boss names.",
+        "- Fixed T. Isaac's \"Chance for items consumed by Black Runes to be gained as innate items\" being guaranteed, regardless of",
+        "having the relevant nodes allocated.",
         "- Fixed T. Cain's additional pedestal pickup nodes triggering when standing on shop items, even if you couldn't afford them.",
         "- Fixed Cosmic Realignment + Tainted Lazarus potentially not updating heart banks correctly.",
+        "- Fixed monster tear hits not triggering player on-hit effects.",
+        "- Fixed fireplaces triggering monster on-hit effects when damaging you.",
         "",
 
         "v0.3.6",
@@ -164,24 +168,6 @@ function PST:getChangelogList()
         "- Fixed Challenger's Starpiece not spawning a deadly sin boss after the first challenge room clear.",
         "- Fixed certain jewel effects affecting charmed friendly monsters.",
         "",
-
-        "v0.2.35",
-        "- Shop saving nodes now reduce shop item price by 2-3 coins (from 2-4), and have reduced chance to proc.",
-        "- Added some missing modifier descriptions to the Active Modifiers list.",
-        "",
-
-        "v0.2.34",
-        "- XP from blowing up tinted rocks is now affected by xp gain bonuses.",
-        "- Reworked how Chronicler Stone (ancient jewel) calculates needed rooms, and should no longer break",
-        "when using Death Certificate.",
-        "- Crimson Warpstone should now turn newly generated collectibles into cracked keys, in the appropriate",
-        "room types (treasure, shop, angel).",
-        "- \"Spawn hovering static tears on monster death\" jewel modifier: if the monster is frozen, it'll now only",
-        "spawn the tears if destroyed far away from the player.",
-        "- Fixed Eden's Chaotic Treasury node being able to remove progression items, not proccing in XL floors, and",
-        "removing active item pedestals when swapped.",
-        "- Fixed Relearning not triggering on run victory.",
-        ""
     }
 
     for idx, tmpLine in ipairs(changelog) do

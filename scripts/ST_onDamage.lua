@@ -208,6 +208,18 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
+        -- Blessed Crucifix node (T. Eden's tree)
+        if PST:getTreeSnapshotMod("blessedCrucifix", false) and damage >= tmpHP then
+            if player:HasTrinket(TrinketType.TRINKET_WOODEN_CROSS) then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
+                PST:createFloatTextFX("Blessed Crucifix", Vector.Zero, Color(1, 1, 1, 1), 0.12, 100, true)
+                if not player:TryRemoveTrinket(TrinketType.TRINKET_WOODEN_CROSS) then
+                    player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_WOODEN_CROSS)
+                end
+                return { Damage = 0 }
+            end
+        end
+
         -- Ancient starcursed jewel: Martian Ultimatum
         if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
             PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
@@ -228,7 +240,10 @@ function PST:onDamage(target, damage, flag, source)
             if not tmpSource and source.Entity.Parent then
                 tmpSource = source.Entity.Parent:ToNPC()
             end
-            if tmpSource then
+            if not tmpSource and source.Entity.SpawnerEntity then
+                tmpSource = source.Entity.SpawnerEntity:ToNPC()
+            end
+            if tmpSource and tmpSource.Type ~= EntityType.ENTITY_FIREPLACE then
                 -- Set hit by mob in room flag
                 if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
                     PST:addModifiers({ roomGotHitByMob = true }, true)
@@ -320,6 +335,50 @@ function PST:onDamage(target, damage, flag, source)
                     if tmpSlot ~= -1 then
                         player:AddActiveCharge(-1, tmpSlot, false, false, false)
                     end
+                end
+
+                -- Chaos Take The World node (T. Eden's tree)
+                if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) and not PST:getTreeSnapshotMod("chaosTakeTheWorldProc", false) then
+                    PST:addModifiers({ chaosTakeTheWorldProc = true }, true)
+                    player:UseActiveItem(CollectibleType.COLLECTIBLE_D10, UseFlag.USE_NOANIM)
+                end
+
+                -- Mod: % chance not to reroll items when hit by monsters (T. Eden)
+                tmpMod = PST:getTreeSnapshotMod("rerollAvoidance", 0)
+                if tmpMod > 0 and damage < tmpHP and 100 * math.random() < tmpMod then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+                    player:TakeDamage(damage, flag, EntityRef(nil), 0)
+                    player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+                    PST:createFloatTextFX("Items Protected", Vector.Zero, Color(1, 1, 1, 1), 0.13, 70, true)
+                    return { Damage = 0 }
+                end
+
+                -- Mod: % chance to trigger a random active item effect from the Devil item pool when hit, once per room
+                tmpMod = PST:getTreeSnapshotMod("devilActiveOnHit", 0)
+                if tmpMod > 0 and not PST:getTreeSnapshotMod("devilActiveOnHitProc", false) and 100 * math.random() < tmpMod then
+                    PST.specialNodes.activeOnHitProc.pool = ItemPoolType.POOL_DEVIL
+                    PST.specialNodes.activeOnHitProc.procMod = "devilActiveOnHitProc"
+                    PST.specialNodes.activeOnHitProc.proc = true
+                end
+                -- Mod: % chance to trigger a random active item effect from the Angel item pool when hit, once per room
+                tmpMod = PST:getTreeSnapshotMod("angelActiveOnHit", 0)
+                if tmpMod > 0 and not PST:getTreeSnapshotMod("angelActiveOnHitProc", false) and 100 * math.random() < tmpMod then
+                    PST.specialNodes.activeOnHitProc.pool = ItemPoolType.POOL_ANGEL
+                    PST.specialNodes.activeOnHitProc.procMod = "angelActiveOnHitProc"
+                    PST.specialNodes.activeOnHitProc.proc = true
+                end
+
+                -- Mod: % chance to gain a passive treasure room item when hit, for the current room, excluding hp up items
+                tmpMod = PST:getTreeSnapshotMod("treasureItemOnHit", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("treasureItemOnHitItem", 0) == 0 and 100 * math.random() < tmpMod then
+                    PST.specialNodes.treasureItemOnHitProc = true
+                end
+
+                -- Mod: % chance to gain a passive treasure room item when hit, for the current room, excluding hp up items
+                tmpMod = PST:getTreeSnapshotMod("higherQualityReroll", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("higherQualityRerollProcs", 0) < 5 and 100 * math.random() < tmpMod then
+                    PST:addModifiers({ higherQualityRerollProcs = 1 }, true)
+                    PST.specialNodes.higherQualityRerollProc = true
                 end
 
                 -- Chance for normal monsters to deal an extra 1/2 heart damage

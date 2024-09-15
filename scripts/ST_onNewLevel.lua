@@ -420,6 +420,23 @@ function PST:onNewLevel()
         PST:updateCacheDelayed()
     end
 
+    -- Mod: +% to a random stat when using an active item while you have a holy mantle/wooden cross shield (reset)
+    tmpMod = PST:getTreeSnapshotMod("shieldActiveStat", 0)
+    if tmpMod > 0 then
+        local tmpMods = {}
+        local tmpStatCache = PST:getTreeSnapshotMod("shieldActiveStatList", {})
+        for tmpStat, tmpStatVal in pairs(tmpStatCache) do
+            tmpMods[tmpStat] = -tmpStatVal
+        end
+        tmpMods["shieldActiveStatList"] = { value = {}, set = true }
+        PST:addModifiers(tmpMods, true)
+    end
+
+    -- Mod: % chance when rerolling items to turn a resulting item into a new +1 quality item (reset)
+    if PST:getTreeSnapshotMod("higherQualityRerollProcs", 0) > 0 then
+        PST:addModifiers({ higherQualityRerollProcs = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

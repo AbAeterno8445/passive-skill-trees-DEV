@@ -2408,6 +2408,96 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 3417
     },
+    ---- T. EDEN'S TREE ----
+    serendipitousSoul = {
+        str = {
+            "Serendipitous Soul:",
+            "    Start with Eden's Soul",
+            "    Eden's Soul cannot be re-rolled, and you cannot grab other active items while holding it",
+            "    Empty Eden's Soul's charges when hit",
+            "    When using Eden's Soul, gain Birthright if you don't currently have it",
+            "    Birthright can no longer show up naturally"
+        },
+        category = "charTree", sort = 3450
+    },
+    birthrightActiveRemoveChance = {
+        str = "While holding Birthright, using any active item has a %d%% chance of removing it",
+        category = "charTree", sort = 3451
+    },
+    blessedCrucifix = {
+        str = {
+            "Blessed Crucifix:",
+            "    Start with a smelted Wooden Cross",
+            "    When you receive fatal damage while having a Wooden Cross (smelted or otherwise), block the",
+            "    incoming hit and remove one Wooden Cross"
+        },
+        category = "charTree", sort = 3452
+    },
+    normalizedVitality = {
+        str = {
+            "Normalized Vitality:",
+            "    When entering a floor:",
+            "      - If you have less than 3 red hearts, gain a red heart container",
+            "      - If you have more than 5 red hearts, lose a red heart container",
+            "      - If you have less than 2 soul/black hearts, gain a soul heart",
+            "      - If you have more than 4 soul/black hearts, lose a soul/black heart",
+            "      - If you have broken hearts, remove one"
+        },
+        category = "charTree", sort = 3453
+    },
+    chaosTakeTheWorld = {
+        str = {
+            "Chaos Take The World:",
+            "    Start with Chaos as an innate effect",
+            "    Getting hit triggers the effect of D10, once per room",
+            "    Using an active item with at least 2 charges additionally triggers the effect of Dead Sea Scrolls"
+        },
+        category = "charTree", sort = 3454
+    },
+    rerollAvoidance = {
+        str = "%d%% chance to not reroll items when hit by monsters",
+        category = "charTree", sort = 3460
+    },
+    devilActiveOnHit = {
+        str = "%d%% chance to trigger a random active item effect from the Devil item pool when hit, once per room",
+        category = "charTree", sort = 3461
+    },
+    angelActiveOnHit = {
+        str = "%d%% chance to trigger a random active item effect from the Angel item pool when hit, once per room",
+        category = "charTree", sort = 3462
+    },
+    shieldActiveStat = {
+        str = {
+            "%s%.2f%% to a random stat when using an active item while having a holy mantle or wooden cross shield and",
+            "there are monsters in the room, once per room. Resets every floor"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3463
+    },
+    treasureItemOnHit = {
+        str = {
+            "When hit, %d%% chance to gain a random passive item from the treasure room pool for the current room as an",
+            "innate effect, excluding HP up items and items you already have",
+            "    This effect can only trigger once per room"
+        },
+        category = "charTree", sort = 3464
+    },
+    higherQualityReroll = {
+        str = {
+            "When items are re-rolled, %.2f%% chance to additionally reroll one of the resulting items into an item",
+            "that's 1 quality higher",
+            "    This effect can only trigger up to 5 times per floor"
+        },
+        category = "charTree", sort = 3465
+    },
+    minLuck = {
+        str = "Your minimum luck is %.2f. Requires allocating the \"Base Minimum Luck\" node to have any effect",
+        category = "charTree", sort = 3466
+    },
+    minLuckSet = {
+        str = "Base Minimum Luck node is allocated",
+        category = "charTree", sort = 3467
+    },
     --#endregion
 
     ---- STARMIGHT ----

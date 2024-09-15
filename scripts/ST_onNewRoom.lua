@@ -643,6 +643,37 @@ function PST:onNewRoom()
 		PST:addModifiers({ flipMobHPDownProcs = { value = 0, set = true } }, true)
 	end
 
+	-- Chaos Take The World node (T. Eden's tree)
+	if PST:getTreeSnapshotMod("chaosTakeTheWorldProc", false) then
+		PST:addModifiers({ chaosTakeTheWorldProc = false }, true)
+	end
+
+	-- Mod: Devil/Angel active effect on hit proc reset
+	if PST:getTreeSnapshotMod("devilActiveOnHitProc", false) then
+		PST:addModifiers({ devilActiveOnHitProc = false }, true)
+	end
+	if PST:getTreeSnapshotMod("angelActiveOnHitProc", false) then
+		PST:addModifiers({ angelActiveOnHitProc = false }, true)
+	end
+
+	-- Mod: +% to a random stat when using an active item while having a holy mantle/wooden cross shield (reset)
+	if PST:getTreeSnapshotMod("shieldActiveStatProc", false) then
+		PST:addModifiers({ shieldActiveStatProc = false }, true)
+	end
+
+	-- Mod: % chance to gain a passive treasure room item for the current room on hit (reset)
+	tmpMod = PST:getTreeSnapshotMod("treasureItemOnHitItem", 0)
+	if tmpMod > 0 then
+		player:AddInnateCollectible(tmpMod, -1)
+		PST:addModifiers({ treasureItemOnHitItem = { value = 0, set = true } }, true)
+		if not player:HasCollectible(tmpMod) then
+			local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpMod)
+			if itemCfg then
+				player:RemoveCostume(itemCfg)
+			end
+		end
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
