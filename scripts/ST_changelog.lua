@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "- Tainted Samson's \"Absolute Rage\" now has an additional bonus when obtaining Birthright.",
         "- Deadly Sin minibosses can no longer become champions through jewel effects.",
         "- Potential fix for Cause Converter (ancient jewel) not displaying converted mod boss names.",
+        "- Challenger's Starpiece (ancient jewel) now respawns the Stairway item's ladder when first returning to the first room.",
         "- Fixed T. Isaac's \"Chance for items consumed by Black Runes to be gained as innate items\" being guaranteed, regardless of",
         "having the relevant nodes allocated.",
         "- Fixed T. Cain's additional pedestal pickup nodes triggering when standing on shop items, even if you couldn't afford them.",

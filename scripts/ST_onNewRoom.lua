@@ -168,6 +168,11 @@ function PST:onNewRoom()
 	elseif PST:getTreeSnapshotMod("SC_challDebuff", false) then
 		PST:addModifiers({ damagePerc = 50, SC_challDebuff = false }, true)
 	end
+	if PST:getTreeSnapshotMod("SC_challStairwayProc", false) and PST:getLevel():GetCurrentRoomDesc().SafeGridIndex == PST:getTreeSnapshotMod("firstRoomID", -1) then
+		local stairPos = room:GetCenterPos() - Vector(-120, 120)
+		Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.TALL_LADDER, stairPos, Vector.Zero, nil, 1, Random() + 1)
+		PST:addModifiers({ SC_challStairwayProc = false }, true)
+	end
 
 	-- Ancient starcursed jewel: Chronicler Stone
 	if room:IsFirstVisit() and PST:SC_getSnapshotMod("chroniclerStone", false) then

@@ -56,6 +56,8 @@ function PST:onUpdate()
 		PST.specialNodes.jacobHeartLuckVal = 0
 		PST.specialNodes.SC_causeConvBossEnt = nil
 
+		PST:addModifiers({ firstRoomID = { value = level:GetCurrentRoomDesc().SafeGridIndex, set = true } }, true)
+
 		-- Ancient starcursed jewel: Sanguinis
 		if PST:SC_getSnapshotMod("sanguinis", false) and not PST:isFirstOrigStage() and player:GetBrokenHearts() < 4 then
 			player:AddBrokenHearts(1)
@@ -230,6 +232,9 @@ function PST:onUpdate()
 					if (level:GetCurses() & LevelCurse.CURSE_OF_MAZE) > 0 then
 						level:RemoveCurses(LevelCurse.CURSE_OF_MAZE)
 						PST.specialNodes.levelMazeCurseProc = true
+					end
+					if player:HasCollectible(CollectibleType.COLLECTIBLE_STAIRWAY) then
+						PST:addModifiers({ SC_challStairwayProc = true }, true)
 					end
 					Game():StartRoomTransition(tmpRoomIdx, Direction.NO_DIRECTION, RoomTransitionAnim.TELEPORT)
 				else

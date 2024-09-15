@@ -36,6 +36,11 @@ function PST:onNewLevel()
         end
     end
 
+    -- Ancient starcursed jewel: Challenger's Starpiece (reset stairway proc)
+    if PST:getTreeSnapshotMod("SC_challStairwayProc", false) then
+        PST:addModifiers({ SC_challStairwayProc = false }, true)
+    end
+
     -- Ancient starcursed jewel: Umbra (reset)
     if PST:SC_getSnapshotMod("umbra", false) then
         tmpMod = PST:getTreeSnapshotMod("SC_umbraStatsDown", 0)

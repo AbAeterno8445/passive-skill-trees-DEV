@@ -334,6 +334,8 @@ function PST:resetMods()
 		floorGotHit = false,
 		runGotHit = false,
 
+		firstRoomID = 0,
+
 		luckyPennyChance = 0,
 		cardFloorLuck = 0,
 		pillFloorLuck = 0,
@@ -967,6 +969,7 @@ function PST:resetMods()
 		SC_levelHasChall = false,
 		SC_challDebuff = false,
 		SC_challClear = false,
+		SC_challStairwayProc = false,
 		SC_luminescentUsedCard = false,
 		SC_luminescentDebuff = 0,
 		SC_baubleSeekerBuff = 0,
