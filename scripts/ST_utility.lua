@@ -313,6 +313,27 @@ function PST:removeRoomItems(protected)
 	end
 end
 
+---@param sourceItem Entity
+---@param targetQual number
+function PST:rerollQualItem(sourceItem, targetQual)
+	local itmPool = Game():GetItemPool():GetPoolForRoom(PST:getRoom():GetType(), Random() + 1)
+
+	local newItem = Game():GetItemPool():GetCollectible(itmPool, true)
+	local newItemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+	local failsafe = 0
+	while ((newItemCfg and newItemCfg.Quality ~= targetQual) or not newItemCfg) and failsafe < 200 do
+		newItem = Game():GetItemPool():GetCollectible(itmPool, true)
+		newItemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+		failsafe = failsafe + 1
+	end
+	if newItem > 0 and failsafe < 200 then
+		Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, sourceItem.Position, Vector.Zero, nil, 0, Random() + 1)
+		sourceItem:ToPickup():Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true)
+		return true
+	end
+	return false
+end
+
 local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
 function PST:getRandomStat(exclude)
 	if exclude and type(exclude) == "table" then
@@ -454,6 +475,20 @@ function PST:getBerserkMaxCharge()
 		berserkCharge = berserkCharge + math.floor(tmpMod * 30)
 	end
 	return berserkCharge
+end
+
+function PST:TLostHasAnyShield()
+	local playerEff = PST:getPlayer():GetEffects()
+	return playerEff:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) or playerEff:HasTrinketEffect(TrinketType.TRINKET_WOODEN_CROSS) or
+	playerEff:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BOOK_OF_SHADOWS)
+end
+
+function PST:removePlayerShields()
+	local playerEff = PST:getPlayer():GetEffects()
+	playerEff:RemoveNullEffect(NullItemID.ID_HOLY_CARD, -1)
+	playerEff:RemoveTrinketEffect(TrinketType.TRINKET_WOODEN_CROSS, -1)
+	playerEff:RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE, -1)
+	playerEff:RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BOOK_OF_SHADOWS, -1)
 end
 
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----

@@ -245,7 +245,7 @@ local function drawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
 
     nodeBGSprite.Scale.X = descW * tmpScale
     nodeBGSprite.Scale.Y = descH * tmpScale
-    nodeBGSprite.Color.A = bgAlpha or 0.7
+    nodeBGSprite.Color.A = bgAlpha or 0.85
     nodeBGSprite:Render(Vector(drawX - 2, drawY - 2))
 
     miniFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, KColor(1, 1, 1, 1))

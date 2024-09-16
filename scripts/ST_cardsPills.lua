@@ -172,8 +172,7 @@ function PST:onUseCard(card, player, useFlags)
     end
 
     -- Mod: rune shards can stack
-    if PST:getTreeSnapshotMod("runeshardStacking", false) and card == Card.RUNE_SHARD and
-    PST:getTreeSnapshotMod("runeshardStacks", 0) > 0 then
+    if PST:getTreeSnapshotMod("runeshardStacking", false) and card == Card.RUNE_SHARD and PST:getTreeSnapshotMod("runeshardStacks", 0) > 0 then
         player:AddCard(Card.RUNE_SHARD)
         PST:addModifiers({ runeshardStacks = -1 }, true)
     end
@@ -196,6 +195,23 @@ function PST:onUseCard(card, player, useFlags)
     -- Troll bomb disarm debuff on tower card
     if card == Card.CARD_TOWER then
         PST.specialNodes.trollBombDisarmDebuffTimer = 45
+    end
+
+    -- Helping Hands node (T. Lost's tree) (Holy Card stacks)
+    if PST:getTreeSnapshotMod("helpingHands", false) and card == Card.CARD_HOLY and PST:getTreeSnapshotMod("holyCardStacks", 0) > 0 then
+        player:AddCard(Card.CARD_HOLY)
+        PST:addModifiers({ holyCardStacks = -1 }, true)
+    end
+
+    -- Deferred Aegis node (T. Lost's tree)
+    if PST:getTreeSnapshotMod("deferredAegis", false) then
+        PST:addModifiers({ deferredAegisCardUses = 1 }, true)
+    end
+
+    -- Mod: +luck for the current floor when using a Holy Card
+    local tmpMod = PST:getTreeSnapshotMod("holyCardLuck", 0)
+    if tmpMod > 0 and card == Card.CARD_HOLY then
+        PST:addModifiers({ luck = tmpMod, holyCardLuckBuff = tmpMod }, true)
     end
 
     -- Ancient starcursed jewel: Circadian Destructor

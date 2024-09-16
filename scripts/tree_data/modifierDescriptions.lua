@@ -2498,6 +2498,114 @@ PST.treeModDescriptions = {
         str = "Base Minimum Luck node is allocated",
         category = "charTree", sort = 3467
     },
+    ---- T. LOST'S TREE ----
+    glassSpecter = {
+        str = {
+            "Glass Specter:",
+            "    Your speed becomes a damage multiplier when above 1",
+            "    Halve the damage bonus while having a shield",
+            "    Every 4 rooms cleared while having any type of shield, remove all shields",
+            "    You no longer start with a Holy Card"
+        },
+        category = "charTree", sort = 3500
+    },
+    helpingHands = {
+        str = {
+            "Helping Hands:",
+            "    Devil/Angel rooms have a 50%% chance of containing an additional Holy Card if you're not currently",
+            "    holding one",
+            "    Picking up a Holy Card removes all other items in Devil/Angel rooms",
+            "    Picking up an item or deal in Devil/Angel rooms removes all dropped Holy Cards",
+            "    When defeating Mom, spawn a Holy Card if you're not currently holding one",
+            "    You can now stack Holy Cards by picking more up while holding one"
+        },
+        category = "charTree", sort = 3501
+    },
+    deferredAegis = {
+        str = {
+            "Deferred Aegis:",
+            "    Completing an entire floor without using more than 1 Holy Card grants you a holy mantle shield",
+            "    If Glass Specter is allocated, increase its shield removal delay by another 4 rooms"
+        },
+        category = "charTree", sort = 3502
+    },
+    spindown = {
+        str = {
+            "Spin-down:",
+            "    Start with Spindown Dice",
+            "    Remove Spindown Dice after using it twice",
+            "    -0.05 speed for each affected item in the room when using Spindown Dice, up to a total -0.35"
+        },
+        category = "charTree", sort = 3503
+    },
+    quality0Upgrade = {
+        str = {
+            "When first entering a room, %.2f%% chance to reroll quality 0 items into a random quality 1 item of",
+            "the same pool. Quality upgrade nodes only proc once depending on the item's initial quality"
+        },
+        category = "charTree", sort = 3510
+    },
+    quality1Upgrade = {
+        str = {
+            "When first entering a room, %.2f%% chance to reroll quality 1 items into a random quality 2 item of",
+            "the same pool. Quality upgrade nodes only proc once depending on the item's initial quality"
+        },
+        category = "charTree", sort = 3511
+    },
+    quality2Upgrade = {
+        str = {
+            "When first entering a room, %.2f%% chance to reroll quality 2 items into a random quality 3 item of",
+            "the same pool. Quality upgrade nodes only proc once depending on the item's initial quality"
+        },
+        category = "charTree", sort = 3512
+    },
+    roomEnterSpd = {
+        str = "%s%.2f%% speed when entering a room with monsters, which decays to 0 over 4 seconds",
+        addPlus = true,
+        category = "charTree", sort = 3513
+    },
+    roomEnterSpdDecayDur = {
+        str = "%s%.2f seconds to the speed decay timer (room enter speed buff)",
+        addPlus = true,
+        category = "charTree", sort = 3514
+    },
+    shieldlessBossSpeed = {
+        str = {
+            "%s%.2f speed for the next floor if you clear the boss room without having or receiving shields",
+            "at any point in the fight"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3515
+    },
+    champHolyCardDrop = {
+        str = "%.2f%% chance for champion monsters to drop a Holy Card on death, once every 2 floors",
+        category = "charTree", sort = 3516
+    },
+    stairwayBoon = {
+        str = {
+            "%d%% chance to receive The Stairway when clearing a boss room",
+            "    Getting hit halves the total chance for this effect to trigger, even if shields are present",
+            "    Entering a devil/angel room halves the total chance for this effect to trigger",
+            "    Remove The Stairway once it triggers when entering a floor"
+        },
+        category = "charTree", sort = 3517
+    },
+    deathTrial = {
+        str = {
+            "When receiving a fatal blow, %d%% chance to trigger Forget Me Now's effect instead of dying",
+            "    After this happens:",
+            "      - Spawn Death",
+            "      - Lose all holy cards and present shields",
+            "      - Deactivate your items during this fight",
+            "    This effect can only trigger once per run"
+        },
+        category = "charTree", sort = 3518
+    },
+    holyCardLuck = {
+        str = "%s%.2f luck for the current floor when using a Holy Card",
+        addPlus = true,
+        category = "charTree", sort = 3519
+    },
     --#endregion
 
     ---- STARMIGHT ----

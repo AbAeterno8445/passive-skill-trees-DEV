@@ -442,6 +442,33 @@ function PST:onNewLevel()
         PST:addModifiers({ higherQualityRerollProcs = { value = 0, set = true } }, true)
     end
 
+    -- Deferred Aegis node (T. Lost's tree)
+    if PST:getTreeSnapshotMod("deferredAegisCardUses", 0) > 0 then
+        PST:addModifiers({ deferredAegisCardUses = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: +speed for the next floor when clearing the boss room without having/receiving shields at any point in the fight
+    if PST:getTreeSnapshotMod("shieldlessBossDone", false) then
+        if not PST:getTreeSnapshotMod("shieldlessBossSpeedApplied", false) then
+            PST:addModifiers({ speed = PST:getTreeSnapshotMod("shieldlessBossSpeed", 0), shieldlessBossSpeedApplied = true }, true)
+        end
+        PST:addModifiers({ shieldlessBossDone = false }, true)
+    elseif PST:getTreeSnapshotMod("shieldlessBossSpeedApplied", false) then
+        PST:addModifiers({ speed = -PST:getTreeSnapshotMod("shieldlessBossSpeed", 0), shieldlessBossSpeedApplied = false }, true)
+    end
+
+    -- Mod: % chance for champions to drop a Holy card on kill, once every 2 floors
+    if PST:getTreeSnapshotMod("champHolyCardDropFloors", 0) > 0 then
+        PST:addModifiers({ champHolyCardDropFloors = -1 }, true)
+    end
+
+    -- Mod: +luck for the current floor when using a Holy Card (reset)
+    tmpMod = PST:getTreeSnapshotMod("holyCardLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod, holyCardLuckBuff = { value = 0, set = true } }, true)
+    end
+
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

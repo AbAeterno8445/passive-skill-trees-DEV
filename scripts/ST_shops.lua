@@ -1,9 +1,8 @@
 function PST:onShopPurchase(pickup, player, spent)
+    local roomType = PST:getRoom():GetType()
     if spent > 0 then
-        local room = PST:getRoom()
-
         -- Mod: chance to steal shop item instead of purchasing
-        if room:GetType() == RoomType.ROOM_SHOP then
+        if roomType == RoomType.ROOM_SHOP then
             local stealChance = PST:getTreeSnapshotMod("stealChance", 0)
             if stealChance > 0 and 100 * math.random() < stealChance then
                 player:AddCoins(spent)
@@ -38,6 +37,17 @@ function PST:onShopPurchase(pickup, player, spent)
         local tmpMod = PST:getTreeSnapshotMod("blackHeartOnDeals", 0)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             player:AddBlackHearts(2)
+        end
+    end
+
+    -- Helping Hands node (T. Lost's tree)
+    if PST:getTreeSnapshotMod("helpingHands", false) and (roomType == RoomType.ROOM_DEVIL or roomType == RoomType.ROOM_ANGEL) then
+        local tmpCards = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_HOLY)
+        for _, tmpCard in ipairs(tmpCards) do
+            if not tmpCard:ToPickup():IsShopItem() then
+                Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpCard.Position, Vector.Zero, nil, 0, Random() + 1)
+                tmpCard:Remove()
+            end
         end
     end
 

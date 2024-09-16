@@ -679,6 +679,32 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Mod: +% speed that decays to 0 over 4+ seconds when entering a room with monsters
+	tmpMod = PST:getTreeSnapshotMod("roomEnterSpd", 0)
+	if tmpMod > 0 and room:GetAliveEnemiesCount() > 0 then
+		PST.specialNodes.roomEnterSpdTimer = 120 + PST:getTreeSnapshotMod("roomEnterSpdDecayDur", 0) * 30
+		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+	end
+
+	-- Mod: +speed for the next floor when clearing the boss room without having/receiving shields at any point in the fight
+	if PST:getTreeSnapshotMod("shieldlessBossProc", false) then
+		PST:addModifiers({ shieldlessBossProc = false }, true)
+	end
+
+	-- Death's Trial nodes (T. Lost's tree)
+	if PST:getTreeSnapshotMod("deathTrialActive", false) then
+		local tmpDeath = Game():Spawn(EntityType.ENTITY_DEATH, 0, room:GetCenterPos() - Vector(0, 90), Vector.Zero, nil, 0, Random() + 1)
+		tmpDeath:SetSpeedMultiplier(0.7)
+		level:GetCurrentRoomDesc().Flags = level:GetCurrentRoomDesc().Flags | RoomDescriptor.FLAG_CURSED_MIST
+		room:KeepDoorsClosed()
+	end
+
+	-- Mod: halve chance to receive The Stairway when entering an angel/devil room
+	tmpMod = PST:getTreeSnapshotMod("stairwayBoon", 0)
+	if tmpMod > 0 and (roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL) then
+		PST:addModifiers({ stairwayBoon = -tmpMod / 2 }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
@@ -800,6 +826,49 @@ function PST:onNewRoom()
 								addedItem = true
 							end
 							failSafe = failSafe + 1
+						end
+					end
+				end
+			end
+		end
+
+		-- Helping Hands node (T. Lost's tree)
+		if PST:getTreeSnapshotMod("helpingHands", false) and (roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL) then
+			local hasHolyCard = false
+			for i=0,1 do
+				local tmpCard = player:GetCard(i)
+				if tmpCard == Card.CARD_HOLY then
+					hasHolyCard = true
+				end
+			end
+			if not hasHolyCard and 100 * math.random() < 50 then
+				local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_HOLY, Random() + 1)
+			end
+		end
+
+		-- Mod: % chance to reroll quality X items in the room to a random quality X+1 item of the same pool
+		for i=2,0,-1 do
+			tmpMod = PST:getTreeSnapshotMod("quality" .. tostring(i) .. "Upgrade", 0)
+			if tmpMod > 0 then
+				for _, tmpItem in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, true)) do
+					if tmpItem.SubType > 0 then
+						local tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.SubType)
+						if tmpItemCfg and tmpItemCfg.Quality == i and 100 * math.random() < tmpMod then
+							if PST:rerollQualItem(tmpItem, i + 1) then
+								local tmpColor = PST:RGBColor(144, 255, 81)
+								if i == 1 then
+									tmpColor = PST:RGBColor(101, 213, 255)
+								elseif i == 2 then
+									tmpColor = PST:RGBColor(255, 84, 236)
+								end
+								PST:createFloatTextFX(
+									"Quality " .. tostring(i) .. " -> " .. tostring(i + 1),
+									tmpItem.Position,
+									tmpColor,
+									0.12, 90, false
+								)
+							end
 						end
 					end
 				end

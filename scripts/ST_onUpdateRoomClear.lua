@@ -74,6 +74,13 @@ function PST:onRoomClear(level, room)
 			end
 		end
 
+		-- Death's Trial nodes (T. Lost's tree)
+		if PST:getTreeSnapshotMod("deathTrialActive", false) then
+			PST:getLevel():GetCurrentRoomDesc().Flags = PST:getLevel():GetCurrentRoomDesc().Flags &~ RoomDescriptor.FLAG_CURSED_MIST
+			PST:createFloatTextFX("Death's Trial Complete!", Vector.Zero, Color(1, 1, 1, 1), 0.13, 90, true)
+			PST:addModifiers({ deathTrialActive = false }, true)
+		end
+
 		-- Once-per-clear effects
 		if not PST:getTreeSnapshotMod("roomClearProc", false) and PST.modData.xpObtained > 0 then
 			PST:addModifiers({ roomClearProc = true }, true)
@@ -139,6 +146,28 @@ function PST:onRoomClear(level, room)
                         PST:addModifiers({ ephemeralBond = 1, gainedTempEphBond = 1 }, true)
                         PST:createFloatTextFX("+1 Ephemeral Bond", Vector.Zero, Color(0.8, 0.8, 1, 1), 0.12, 12, true)
                     end
+				end
+
+				-- Deferred Aegis node (T. Lost's tree)
+				if PST:getTreeSnapshotMod("deferredAegis", false) and PST:getTreeSnapshotMod("deferredAegisCardUses", 0) < 2 then
+					if not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) then
+						player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+						player:GetEffects():AddNullEffect(NullItemID.ID_HOLY_CARD)
+						PST:createFloatTextFX("Deferred Aegis", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+					end
+				end
+
+				-- Mod: +speed for the next floor when clearing the boss room without having/receiving shields at any point in the fight
+				local tmpMod = PST:getTreeSnapshotMod("shieldlessBossSpeed", 0)
+				if tmpMod > 0 and not PST:getTreeSnapshotMod("shieldlessBossProc", false) then
+					PST:addModifiers({ shieldlessBossDone = true }, true)
+				end
+
+				-- Mod: % chance to receive The Stairway when clearing a boss room
+				tmpMod = PST:getTreeSnapshotMod("stairwayBoon", 0)
+				if tmpMod > 0 and not player:HasCollectible(CollectibleType.COLLECTIBLE_STAIRWAY) and 100 * math.random() < tmpMod then
+					player:AddCollectible(CollectibleType.COLLECTIBLE_STAIRWAY)
+					PST:createFloatTextFX("Stairway Boon", Vector.Zero, Color(1, 1, 0.6, 1), 0.12, 90, true)
 				end
 			end
 
@@ -382,6 +411,21 @@ function PST:onRoomClear(level, room)
                     player:AddActiveCharge(1, tmpSlot, true, false, false)
                 end
             end
+
+			-- Glass Specter node (T. Lost's tree)
+			if PST:getTreeSnapshotMod("glassSpecter", false) then
+				if PST:TLostHasAnyShield() then
+					PST:addModifiers({ glassSpecterShieldClears = 1 }, true)
+					local clearThreshold = 4
+					if PST:getTreeSnapshotMod("deferredAegis", false) then
+						clearThreshold = 8
+					end
+					if PST:getTreeSnapshotMod("glassSpecterShieldClears", 0) >= clearThreshold then
+						PST:removePlayerShields()
+						PST:addModifiers({ glassSpecterShieldClears = { value = 0, set = true } }, true)
+					end
+				end
+			end
 
 			-- Cosmic Realignment node
 			if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then

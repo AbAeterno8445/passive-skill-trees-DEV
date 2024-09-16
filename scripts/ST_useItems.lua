@@ -425,6 +425,27 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             end
             PST:addModifiers({ serendSoulUsed = true }, true)
         end
+    -- Spindown dice
+    elseif itemType == CollectibleType.COLLECTIBLE_SPINDOWN_DICE then
+        -- Spindown node (T. Lost's tree)
+        if PST:getTreeSnapshotMod("spindown", false) then
+            PST:addModifiers({ spindownUses = 1 }, true)
+            if PST:getTreeSnapshotMod("spindownUses", 0) >= 2 then
+                player:RemoveCollectible(CollectibleType.COLLECTIBLE_SPINDOWN_DICE)
+            end
+
+            if PST:getTreeSnapshotMod("spindownDebuff", 0) < 0.35 then
+                for _, tmpEntity in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)) do
+                    if tmpEntity.SubType ~= 0 then
+                        local tmpDebuff = PST:getTreeSnapshotMod("spindownDebuff", 0)
+                        if tmpDebuff < 0.35 then
+                            local tmpAdd = math.min(0.05, 0.35 - tmpDebuff)
+                            PST:addModifiers({ speed = -tmpAdd * 2, spindownDebuff = tmpAdd }, true)
+                        else break end
+                    end
+                end
+            end
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item

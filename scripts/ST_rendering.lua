@@ -157,6 +157,12 @@ function PST:Render()
 		end
 	end
 
+	-- Helping Hands node (T. Lost's tree) (Holy Card stacks text)
+	tmpMod = PST:getTreeSnapshotMod("holyCardStacks", 0)
+	if tmpMod > 0 and PST:getPlayer():GetCard(0) == Card.CARD_HOLY then
+		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
+	end
+
 	-- Manage floating texts
     if floatTextDelay > 0 then
         floatTextDelay = floatTextDelay - 1

@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.3.8",
+        "- Introduced new character skill trees for: Tainted Lost.",
         "- Minimum XP multiplier option is now 0.1 (from 0.3).",
         "- Fixed Eden's \"Starblessed\" dropping a second stars card when defeating the boss of the first alt stage.",
         "- Fixed Eden's \"Chaotic Treasury\" triggering in unintended treasure rooms, such as in the mirror world.",

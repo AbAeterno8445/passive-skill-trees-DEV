@@ -107,6 +107,21 @@ function PST:prePickup(pickup, collider, low)
                     return { Collide = true, SkipCollisionEffects = true }
                 end
             end
+
+            -- Helping Hands node (T. Lost's tree)
+            if PST:getTreeSnapshotMod("helpingHands", false) then
+                local roomType = PST:getRoom():GetType()
+                if variant == PickupVariant.PICKUP_COLLECTIBLE and (roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL) and not pickup:IsShopItem() then
+                    -- Remove holy cards when grabbing items in devil/angel rooms
+                    local tmpCards = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_HOLY)
+                    for _, tmpCard in ipairs(tmpCards) do
+                        if not tmpCard:ToPickup():IsShopItem() then
+                            Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCard.Position, Vector.Zero, nil, 0, Random() + 1)
+                            tmpCard:Remove()
+                        end
+                    end
+                end
+            end
         else
             -- Keeper's Blessing node (Keeper's tree)
             if PST:getTreeSnapshotMod("keeperBlessing", false) then
@@ -216,7 +231,7 @@ function PST:prePickup(pickup, collider, low)
 
             -- Mod: rune shards can stack + rune assembly
             if PST:getTreeSnapshotMod("runeshardStacking", false) then
-                if pickup.Variant == PickupVariant.PICKUP_TAROTCARD and pickup.SubType == Card.RUNE_SHARD and not pickup:IsShopItem() and
+                if variant == PickupVariant.PICKUP_TAROTCARD and subtype == Card.RUNE_SHARD and not pickup:IsShopItem() and
                 (PST:arrHasValue(PST.allRunes, player:GetCard(0)) or PST:arrHasValue(PST.allRunes, player:GetCard(1))) then
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(0.2, 0.5, 0.8, 1, 0.2, 0.5, 0.8)
@@ -247,6 +262,27 @@ function PST:prePickup(pickup, collider, low)
                     end
                     PST:createFloatTextFX("+ Rune Shard (" .. tostring(runeStacks) .. "/" .. tostring(stacksReq) .. ")", Vector.Zero, tmpColor, 0.12, 100, true)
                     return { Collide = false, SkipCollisionEffects = true }
+                end
+            end
+
+            -- Helping Hands node (T. Lost's tree)
+            if PST:getTreeSnapshotMod("helpingHands", false) then
+                local roomType = PST:getRoom():GetType()
+                if variant == PickupVariant.PICKUP_TAROTCARD and subtype == Card.CARD_HOLY and not pickup:IsShopItem() then
+                    -- Remove other items in angel/devil rooms
+                    if roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL then
+                        PST:removeRoomItems()
+                    end
+
+                    -- Holy Card stacking
+                    if player:GetCard(0) == Card.CARD_HOLY or player:GetCard(1) == Card.CARD_HOLY then
+                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        pickup:Remove()
+                        PST:addModifiers({ holyCardStacks = 1 }, true)
+                        PST:createFloatTextFX("+ Holy Card", Vector.Zero, Color(0.6, 0.9, 1, 1), 0.12, 100, true)
+                        SFXManager():Play(SoundEffect.SOUND_BOOK_PAGE_TURN_12, 0.8, 2, false, 1.3)
+                        return { Collide = false, SkipCollisionEffects = true }
+                    end
                 end
             end
 

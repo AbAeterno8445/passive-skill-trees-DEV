@@ -271,6 +271,13 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 and PST.specialNodes.hemoptysisSpeedTimer > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
         end
+
+        -- Mod: +% speed that decays to 0 over 4+ seconds when entering a room with monsters
+        tmpTreeMod = PST:getTreeSnapshotMod("roomEnterSpd", 0)
+        if tmpTreeMod ~= 0 and PST.specialNodes.roomEnterSpdTimer > 0 then
+            local tmpSpdMult = PST.specialNodes.roomEnterSpdTimer / (120 + PST:getTreeSnapshotMod("roomEnterSpdDecayDur", 0) * 30)
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod * tmpSpdMult
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active
@@ -691,6 +698,15 @@ function PST:onCache(player, cacheFlag)
             end
         end
 
+        -- Glass Specter node (T. Lost's tree)
+        if PST:getTreeSnapshotMod("glassSpecter", false) and player.MoveSpeed > 1 then
+            local shieldMult = 1
+            if PST:TLostHasAnyShield() then
+                shieldMult = 0.5
+            end
+            player.Damage = player.Damage + (player.Damage * (player.MoveSpeed - 1)) * shieldMult
+        end
+
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- TEARS (MaxFireDelay)
         local tmpMod = PST:getTreeSnapshotMod("tears", 0) + dynamicMods.tears + allstats
@@ -810,6 +826,11 @@ function PST:onCache(player, cacheFlag)
 	    if PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) and player.MoveSpeed < 1.6 and PST:getRoom():GetAliveEnemiesCount() == 0 then
             -- Minimum speed becomes 1.6 in cleared rooms after defeating floor boss
             player.MoveSpeed = 1.6
+        end
+
+        -- Glass Specter node (T. Lost's tree)
+        if PST:getTreeSnapshotMod("glassSpecter", false) and player.MoveSpeed > 1 and (PST.delayedCacheFlags & CacheFlag.CACHE_SPEED) == 0 then
+            PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
         end
     end
 end

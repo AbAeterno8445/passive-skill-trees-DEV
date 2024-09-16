@@ -437,6 +437,21 @@ function PST:onNewRun(isContinued)
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
     end
 
+    -- Glass Specter node (T. Lost's tree)
+    if PST:getTreeSnapshotMod("glassSpecter", false) then
+        for i=0,1 do
+            tmpCard = player:GetCard(i)
+            if tmpCard == Card.CARD_HOLY then
+                player:RemovePocketItem(0)
+            end
+        end
+    end
+
+    -- Spin-down node (T. Lost's tree)
+    if PST:getTreeSnapshotMod("spindown", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_SPINDOWN_DICE)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

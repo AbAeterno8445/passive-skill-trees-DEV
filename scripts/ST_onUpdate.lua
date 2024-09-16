@@ -219,6 +219,16 @@ function PST:onUpdate()
 			PST:addModifiers({ violentMarauderRemoved = false }, true)
 		end
 
+		-- Death's Trial nodes (T. Lost's tree)
+		if PST:getTreeSnapshotMod("deathTrialActive", false) then
+			PST:createFloatTextFX("Death's Trial!", Vector.Zero, Color(1, 1, 1, 1), 0.13, 90, true)
+		end
+
+		-- Mod: remove The Stairway once it triggers when entering a floor
+		if PST:getTreeSnapshotMod("stairwayBoon", 0) > 0 and player:HasCollectible(CollectibleType.COLLECTIBLE_STAIRWAY) then
+			player:RemoveCollectible(CollectibleType.COLLECTIBLE_STAIRWAY)
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -1355,6 +1365,21 @@ function PST:onUpdate()
 			end
 		end
 		PST.specialNodes.higherQualityRerollProc = false
+	end
+
+	-- Mod: +% speed that decays to 0 over 4+ seconds when entering a room with monsters
+	if PST.specialNodes.roomEnterSpdTimer > 0 then
+		PST.specialNodes.roomEnterSpdTimer = PST.specialNodes.roomEnterSpdTimer - 1
+		if PST.specialNodes.roomEnterSpdTimer % 15 == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+	end
+
+	-- Mod: +speed for the next floor when clearing the boss room without having/receiving shields at any point in the fight
+	if PST:getTreeSnapshotMod("shieldlessBossSpeed", 0) > 0 and not PST:getTreeSnapshotMod("shieldlessBossProc", false) and room:GetType() == RoomType.ROOM_BOSS then
+		if PST:TLostHasAnyShield() then
+			PST:addModifiers({ shieldlessBossProc = true }, true)
+		end
 	end
 
 	-- Cosmic Realignment node

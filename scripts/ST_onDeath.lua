@@ -47,7 +47,7 @@ function PST:onDeath(entity)
             end
         end
 
-        if addXP and not PST:getTreeSnapshotMod("d7Proc", false) then
+        if addXP and not PST:getTreeSnapshotMod("d7Proc", false) and not PST:getTreeSnapshotMod("deathTrialActive", false) then
             local mult = 1
             -- Reduce xp for certain bosses
             if entity.Type == EntityType.ENTITY_PEEP then
@@ -271,6 +271,14 @@ function PST:onDeath(entity)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
                 PST:addModifiers({ jacobBirthrightProc = true }, true)
             end
+
+            -- Helping Hands node (T. Lost's tree)
+            if PST:getTreeSnapshotMod("helpingHands", false) and not PST:getTreeSnapshotMod("helpingHandsMomProc", false) and
+            PST:getPlayer():GetCard(0) ~= Card.CARD_HOLY and PST:getPlayer():GetCard(1) ~= Card.CARD_HOLY then
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_HOLY, Random() + 1)
+                PST:addModifiers({ helpingHandsMomProc = true }, true)
+            end
         -- Mom's Heart death procs
         elseif entity.Type == EntityType.ENTITY_MOMS_HEART and not PST.specialNodes.momHeartDeathProc then
             PST.specialNodes.momDeathProc = true
@@ -455,6 +463,13 @@ function PST:onDeath(entity)
             if tmpMod > 0 and PST:getTreeSnapshotMod("cursedKillTearsBuff", 0) < 1 and 100 * math.random() < tmpMod then
                 PST:addModifiers({ tears = 0.01, cursedKillTearsBuff = 0.01 }, true)
             end
+        end
+
+        -- Mod: % chance for champions to drop a Holy Card on kill, once every 2 floors
+        tmpMod = PST:getTreeSnapshotMod("champHolyCardDrop", 0)
+        if tmpMod > 0 and tmpNPC and tmpNPC:IsChampion() and PST:getTreeSnapshotMod("champHolyCardDropFloors", 0) == 0 and 100 * math.random() < tmpMod then
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, entity.Position, Vector.Zero, nil, Card.CARD_HOLY, Random() + 1)
+            PST:addModifiers({ champHolyCardDropFloors = { value = 2, set = true } }, true)
         end
 
         -- Cosmic Realignment node

@@ -220,6 +220,18 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
+        -- Death's Trial nodes (T. Lost's tree)
+        local tmpMod = PST:getTreeSnapshotMod("deathTrial", 0)
+        if tmpMod > 0 and damage >= tmpHP and not PST:getTreeSnapshotMod("deathTrialProc", false) and 100 * math.random() < tmpMod then
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_FORGET_ME_NOW, UseFlag.USE_NOANIM)
+            for i=1,0,-1 do
+                if player:GetCard(i) == Card.CARD_HOLY then player:RemovePocketItem(i) end
+            end
+            PST:removePlayerShields()
+            PST:addModifiers({ deathTrialProc = true, deathTrialActive = true, holyCardStacks = { value = 0, set = true } }, true)
+            return { Damage = 0 }
+        end
+
         -- Ancient starcursed jewel: Martian Ultimatum
         if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
             PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
@@ -1091,6 +1103,18 @@ function PST:onDamage(target, damage, flag, source)
         end
 
         return { Damage = damage * math.max(0.01, dmgMult) + dmgExtra }
+    end
+end
+
+---@param player EntityPlayer
+---@param damage number
+---@param flag DamageFlag
+---@param source EntityRef
+function PST:prePlayerDamage(player, damage, flag, source)
+    -- Mod: halve chance to receive The Stairway
+    tmpMod = PST:getTreeSnapshotMod("stairwayBoon", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ stairwayBoon = -tmpMod / 2 }, true)
     end
 end
 
