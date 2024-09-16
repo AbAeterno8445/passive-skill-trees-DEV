@@ -345,7 +345,7 @@ function PST:onNewRoom()
 
 	-- Chaotic Treasury node (Eden's tree)
 	local level = PST:getLevel()
-	if PST:getTreeSnapshotMod("chaoticTreasury", false) and roomType == RoomType.ROOM_TREASURE and room:IsFirstVisit() then
+	if PST:getTreeSnapshotMod("chaoticTreasury", false) and roomType == RoomType.ROOM_TREASURE and room:IsFirstVisit() and level:GetDimension() == Dimension.NORMAL then
 		if PST:isFirstOrigStage() and not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
 			-- Spawn Chaos in the first floor's treasure room
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)

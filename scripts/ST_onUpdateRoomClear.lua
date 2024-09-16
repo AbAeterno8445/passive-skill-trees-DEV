@@ -265,10 +265,11 @@ function PST:onRoomClear(level, room)
 			end
 
 			-- Starblessed node (Eden's tree)
-			if PST:getTreeSnapshotMod("starblessed", false) then
+			if PST:getTreeSnapshotMod("starblessed", false) and not PST:getTreeSnapshotMod("starblessedProc", false) then
 				if isBossRoom and level:GetStage() == LevelStage.STAGE1_1 then
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_STARS, Random() + 1)
+					PST:addModifiers({ starblessedProc = true }, true)
 				end
 			end
 

@@ -27,6 +27,9 @@ function PST:vanishPickup(pickup)
 end
 
 local jewelCollisionTimer = 0
+---@param pickup EntityPickup
+---@param collider Entity
+---@param low boolean
 function PST:prePickup(pickup, collider, low)
     local player = collider:ToPlayer()
     local variant = pickup.Variant
@@ -68,7 +71,7 @@ function PST:prePickup(pickup, collider, low)
 
             -- Chaotic Treasury node (Eden's tree)
             if PST:getTreeSnapshotMod("chaoticTreasury", false) and not PST:arrHasValue(PST.progressionItems, subtype)
-            and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
+            and PST:getRoom():GetType() == RoomType.ROOM_TREASURE and (not pickup:IsShopItem() or (pickup:IsShopItem() and player:GetNumCoins() >= pickup.Price)) then
                 -- When grabbing an item in a treasure room, remove all other items
                 removeOtherRoomItems = true
             end

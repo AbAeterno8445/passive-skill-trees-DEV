@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.7"
+PST.modVersion = "v0.3.8"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -578,6 +578,7 @@ function PST:resetMods()
 		chaoticTreasury = false,
 		sporadicGrowth = false,
 		starblessed = false,
+		starblessedProc = false,
 		treasureShopItemStat = 0,
 		treasureShopItemStatPerc = 0,
 		devilAngelBossItemStat = 0,

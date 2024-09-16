@@ -275,8 +275,9 @@ function PST:initModConfigMenu()
         }
     )
 
+    -- XP multiplier setting
     local xpMultOptions = {}
-    for i=-7,20 do
+    for i=-9,20 do
         table.insert(xpMultOptions, 1 + i * 0.1)
     end
     local function getTableIndex(tbl, val)
@@ -285,9 +286,8 @@ function PST:initModConfigMenu()
                 return i
             end
         end
-        return 7
+        return 9
     end
-    -- XP multiplier setting
     ModConfigMenu.RemoveSetting(PST.modName, nil, "xpMult")
     ModConfigMenu.AddSetting(
         PST.modName,

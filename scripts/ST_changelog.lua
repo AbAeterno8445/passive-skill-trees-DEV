@@ -3,6 +3,13 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.8",
+        "- Minimum XP multiplier option is now 0.1 (from 0.3).",
+        "- Fixed Eden's \"Starblessed\" dropping a second stars card when defeating the boss of the first alt stage.",
+        "- Fixed Eden's \"Chaotic Treasury\" triggering in unintended treasure rooms, such as in the mirror world.",
+        "- Fixed Eden's \"Chaotic Treasury\" removing other items when colliding with a priced item that you couldn't afford.",
+        "",
+
         "v0.3.7",
         "- Introduced new character skill trees for: Tainted Lazarus and Tainted Eden.",
         "- Tainted Samson's \"Absolute Rage\" now has an additional bonus when obtaining Birthright.",
