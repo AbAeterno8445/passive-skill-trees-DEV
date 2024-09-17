@@ -11,6 +11,8 @@ function PST:getChangelogList()
         "- Fixed Eden's \"Chaotic Treasury\" removing other items when colliding with a priced item that you couldn't afford.",
         "- Fixed player on-hit effects potentially not triggering while Cause Converter (ancient jewel)'s boss was active.",
         "- Fixed Unusually Small Starstone (ancient jewel) splitting friendly monsters.",
+        "- Fixed Eve's \"Dead bird deals an additional % of your damage per tick\" modifiers not working if you didn't have",
+        "Carrion Avian allocated.",
         "",
 
         "v0.3.7",
