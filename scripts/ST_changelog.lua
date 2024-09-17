@@ -13,6 +13,7 @@ function PST:getChangelogList()
         "- Fixed Unusually Small Starstone (ancient jewel) splitting friendly monsters.",
         "- Fixed Eve's \"Dead bird deals an additional % of your damage per tick\" modifiers not working if you didn't have",
         "Carrion Avian allocated.",
+        "- Fixed tree inputs no longer working for re-connected controllers.",
         "",
 
         "v0.3.7",

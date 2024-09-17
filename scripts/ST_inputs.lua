@@ -20,6 +20,52 @@ function PST:onInput(entity, inputHook, buttonAction)
 	end
 end
 
+function PST:IsButtonTriggered(button, controllerId)
+    if controllerId == 0 then return Input.IsButtonTriggered(button, controllerId)
+    else
+        local triggered = false
+        for i=1,8 do
+            if Input.IsButtonTriggered(button, i) then triggered = true end
+            if triggered then break end
+        end
+        return triggered
+    end
+end
+function PST:IsButtonPressed(button, controllerId)
+    if controllerId == 0 then return Input.IsButtonPressed(button, controllerId)
+    else
+        local triggered = false
+        for i=1,8 do
+            if Input.IsButtonPressed(button, i) then triggered = true end
+            if triggered then break end
+        end
+        return triggered
+    end
+end
+
+function PST:IsActionTriggered(button, controllerId)
+    if controllerId == 0 then return Input.IsActionTriggered(button, controllerId)
+    else
+        local triggered = false
+        for i=1,8 do
+            if Input.IsActionTriggered(button, i) then triggered = true end
+            if triggered then break end
+        end
+        return triggered
+    end
+end
+function PST:IsActionPressed(button, controllerId)
+    if controllerId == 0 then return Input.IsActionPressed(button, controllerId)
+    else
+        local triggered = false
+        for i=1,8 do
+            if Input.IsActionPressed(button, i) then triggered = true end
+            if triggered then break end
+        end
+        return triggered
+    end
+end
+
 function PST:isAnyInputActive(inputParam, controllerId, isAction, checkPressed)
     if not inputParam then return false end
 
@@ -32,13 +78,13 @@ function PST:isAnyInputActive(inputParam, controllerId, isAction, checkPressed)
 
     for _, tmpInput in ipairs(tmpInputList) do
         if not isAction then
-            if (not checkPressed and Input.IsButtonTriggered(tmpInput, controllerId)) or
-            (checkPressed and Input.IsButtonPressed(tmpInput, controllerId)) then
+            if (not checkPressed and PST:IsButtonTriggered(tmpInput, controllerId)) or
+            (checkPressed and PST:IsButtonPressed(tmpInput, controllerId)) then
                 return true
             end
         else
-            if (not checkPressed and Input.IsActionTriggered(tmpInput, controllerId)) or
-            (checkPressed and Input.IsActionPressed(tmpInput, controllerId)) then
+            if (not checkPressed and PST:IsActionTriggered(tmpInput, controllerId)) or
+            (checkPressed and PST:IsActionPressed(tmpInput, controllerId)) then
                 return true
             end
         end
@@ -55,9 +101,9 @@ function PST:isKeybindActive(keybindID, checkPressed)
         return false
     end
 
-    local shiftHeld = Input.IsButtonPressed(Keyboard.KEY_LEFT_SHIFT, 0) or Input.IsButtonPressed(Keyboard.KEY_RIGHT_SHIFT, 0)
-    local ctrlHeld = Input.IsButtonPressed(Keyboard.KEY_LEFT_CONTROL, 0) or Input.IsButtonPressed(Keyboard.KEY_RIGHT_CONTROL, 0)
-    local actionItemHeld = Input.IsActionPressed(ButtonAction.ACTION_ITEM, 1)
+    local shiftHeld = PST:IsButtonPressed(Keyboard.KEY_LEFT_SHIFT, 0) or PST:IsButtonPressed(Keyboard.KEY_RIGHT_SHIFT, 0)
+    local ctrlHeld = PST:IsButtonPressed(Keyboard.KEY_LEFT_CONTROL, 0) or PST:IsButtonPressed(Keyboard.KEY_RIGHT_CONTROL, 0)
+    local actionItemHeld = PST:IsActionPressed(ButtonAction.ACTION_ITEM, 1)
 
     local bindData = PST.config.keybinds[keybindID]
     local keyCheck = (((not bindData.shift and not shiftHeld) or (bindData.shift and shiftHeld) or bindData.allowShift) and

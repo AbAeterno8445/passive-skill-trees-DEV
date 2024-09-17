@@ -1368,7 +1368,7 @@ function PST:treeMenuRendering()
     if treeMenuOpen and ((not Isaac.IsInGame() and not isCharMenu) or (Isaac.IsInGame() and not Game():IsPauseMenuOpen())) then
         PST:closeTreeMenu(true, true)
     -- Input: Open tree menu
-    elseif PST:isKeybindActive(PSTKeybind.OPEN_TREE) or (not treeMenuOpen and Input.IsActionTriggered(ButtonAction.ACTION_ITEM, 1)) then
+    elseif PST:isKeybindActive(PSTKeybind.OPEN_TREE) or (not treeMenuOpen and PST:IsActionTriggered(ButtonAction.ACTION_ITEM, 1)) then
         if isCharMenu or Game():IsPauseMenuOpen() then
             if treeMenuOpen then
                 PST:closeTreeMenu()
