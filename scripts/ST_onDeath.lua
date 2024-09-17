@@ -472,6 +472,12 @@ function PST:onDeath(entity)
             PST:addModifiers({ champHolyCardDropFloors = { value = 2, set = true } }, true)
         end
 
+        -- Mod: % chance to gain +luck when killing enemies within 1.5 tiles of you
+        tmpMod = PST:getTreeSnapshotMod("nearbyKillLuck", 0)
+        if tmpMod > 0 and tmpNPC and PST:distBetweenPoints(PST:getPlayer().Position, tmpNPC.Position) <= 60 and 100 * math.random() < tmpMod then
+            PST:addModifiers({ luck = 0.03, nearbyKillLuckBuff = 0.03 }, true)
+        end
+
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
             local tmpPlayer = PST:getPlayer()

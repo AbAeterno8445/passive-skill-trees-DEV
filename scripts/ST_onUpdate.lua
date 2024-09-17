@@ -19,6 +19,7 @@ local function PST_causeConvBossSpawn()
 end
 
 local hasDarkArtsEffect = false
+local isFiring = false
 
 -- On update
 local modResetUpdate = false
@@ -42,6 +43,7 @@ function PST:onUpdate()
 		updateTrackers.charTracker = PST:getCurrentCharName()
 		if updateTrackers.isBerserk == nil then updateTrackers.isBerserk = PST:isBerserk() end
 		PST:resetHeartUpdater()
+		isFiring = false
 		modResetUpdate = true
 	end
 
@@ -227,6 +229,18 @@ function PST:onUpdate()
 		-- Mod: remove The Stairway once it triggers when entering a floor
 		if PST:getTreeSnapshotMod("stairwayBoon", 0) > 0 and player:HasCollectible(CollectibleType.COLLECTIBLE_STAIRWAY) then
 			player:RemoveCollectible(CollectibleType.COLLECTIBLE_STAIRWAY)
+		end
+
+		-- Chimeric Amalgam node (T. Lilith's tree)
+		if PST:getTreeSnapshotMod("chimericAmalgam", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+			PST:addModifiers({ chimericAmalgamFloors = 1 }, true)
+			if PST:getTreeSnapshotMod("chimericAmalgamFloors", 0) >= 2 then
+				local tmpPos = Isaac.GetFreeNearPosition(PST:getRoom():GetCenterPos() + Vector(-60, 60), 40)
+				local tmpItem = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
+				tmpItem:ToPickup().Wait = 30
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+				PST:addModifiers({ chimericAmalgamFloors = { value = 0, set = true } }, true)
+			end
 		end
 
 		-- First update - After first floor
@@ -1759,6 +1773,104 @@ function PST:onUpdate()
 			local edenSoulSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_EDENS_SOUL)
 			if edenSoulSlot == -1 then
 				player:AddCollectible(CollectibleType.COLLECTIBLE_EDENS_SOUL, 0, false, ActiveSlot.SLOT_PRIMARY)
+			end
+		end
+	end
+
+	-- Gello fired countdown
+	if PST.specialNodes.gelloFired > 0 then
+		PST.specialNodes.gelloFired = PST.specialNodes.gelloFired - 1
+	end
+
+	-- Coordinated Demons node (T. Lilith's tree)
+	if PST:getTreeSnapshotMod("coordinatedDemons", false) then
+		local plInput = player:GetShootingInput()
+		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+		if isShooting then
+			if not PST.specialNodes.gelloEntity or (PST.specialNodes.gelloEntity and not PST.specialNodes.gelloEntity:Exists()) then
+				local tmpGelloQuery = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.UMBILICAL_BABY, 0)
+				if #tmpGelloQuery > 0 then
+					PST.specialNodes.gelloEntity = tmpGelloQuery[1]
+				end
+			end
+			if PST.specialNodes.gelloEntity then
+				if PST.specialNodes.coordinatedDemonsDelay > 0 then
+					PST.specialNodes.coordinatedDemonsDelay = PST.specialNodes.coordinatedDemonsDelay - 1
+					if PST.specialNodes.coordinatedDemonsDelay == 0 then
+						local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, PST.specialNodes.gelloEntity.Position, Vector.Zero, nil, 0, Random() + 1)
+						pulseEffect:GetSprite().Scale = Vector(2, 2)
+						pulseEffect.Color = Color(1, 0.2, 0.2, 1)
+						SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.75, 2, false, 1.5)
+
+						local pulseDmgMult = 0.7 + PST:getTreeSnapshotMod("gelloPulseDmg", 0) / 100
+						for _, tmpEntity in ipairs(Isaac.FindInRadius(PST.specialNodes.gelloEntity.Position, 80)) do
+							local tmpNPC = tmpEntity:ToNPC()
+							if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+								PST.specialNodes.gelloPulseDmgFlag = true
+								tmpNPC:TakeDamage(player.Damage * pulseDmgMult, 0, EntityRef(tmpNPC), 0)
+							end
+						end
+						PST.specialNodes.coordinatedDemonsDelay = math.ceil(player.MaxFireDelay * 3)
+					end
+				end
+			end
+			if PST.specialNodes.coordinatedDemonsWait < 60 then
+				PST.specialNodes.coordinatedDemonsWait = 0
+			end
+		elseif PST.specialNodes.coordinatedDemonsWait < 60 then
+			PST.specialNodes.coordinatedDemonsWait = PST.specialNodes.coordinatedDemonsWait + 1
+			if PST.specialNodes.coordinatedDemonsWait == 60 then
+				player:SetColor(Color(1, 1, 1, 1, 0.5, 0.1, 0.1), 15, 1, true, false)
+				SFXManager():Play(SoundEffect.SOUND_BEEP, 0.9, 2, false, 1)
+			end
+		end
+		if isFiring ~= isShooting then
+			if isShooting then PST:addModifiers({ speed = -0.3 }, true)
+			else PST:addModifiers({ speed = 0.3 }, true) end
+			isFiring = isShooting
+		end
+	end
+
+	-- Mod: +% speed for 1 second after using the whip attack (T. Lilith)
+	if PST.specialNodes.whipSpeedTimer > 0 then
+		PST.specialNodes.whipSpeedTimer = PST.specialNodes.whipSpeedTimer - 1
+		if PST.specialNodes.whipSpeedTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+	end
+
+	-- Mod: slowly gain up to + tears while Gello is retracted
+	tmpMod = PST:getTreeSnapshotMod("gelloTearsBonus", 0)
+	if tmpMod > 0 and room:GetFrameCount() % 15 == 0 then
+		local plInput = player:GetShootingInput()
+		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+		if not isShooting then
+			if PST.specialNodes.gelloTearBonusStep < 150 then
+				PST.specialNodes.gelloTearBonusStep = math.min(150, PST.specialNodes.gelloTearBonusStep + 15)
+				PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+			end
+		elseif PST.specialNodes.gelloTearBonusStep > 0 then
+			PST.specialNodes.gelloTearBonusStep = math.max(0, PST.specialNodes.gelloTearBonusStep - 25)
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+
+	-- Mod: deal damage to enemies caught in Gello's cord every second
+	tmpMod = PST:getTreeSnapshotMod("cordDamage", 0)
+	if tmpMod > 0 and room:GetFrameCount() % 15 == 0 then
+		local plInput = player:GetShootingInput()
+		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+		if isShooting and PST.specialNodes.gelloEntity then
+			local tmpCapsule = Capsule(player.Position, PST.specialNodes.gelloEntity.Position, 8)
+			for _, tmpEnemy in ipairs(Isaac.FindInCapsule(tmpCapsule, EntityPartition.ENEMY)) do
+				if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() then
+					tmpEnemy:TakeDamage(player.Damage * (tmpMod / 200), 0, EntityRef(player), 0)
+
+					local tmpBleed = PST:getTreeSnapshotMod("cordBleed", 0)
+					if tmpBleed > 0 and 100 * math.random() < tmpBleed then
+						tmpEnemy:AddBleeding(EntityRef(player), 120)
+					end
+				end
 			end
 		end
 	end

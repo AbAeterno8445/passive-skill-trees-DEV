@@ -452,6 +452,16 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_SPINDOWN_DICE)
     end
 
+    -- Mighty Gestation (T. Lilith's tree)
+    if PST:getTreeSnapshotMod("mightyGestation", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_BABY_BENDER)
+    end
+
+    -- Chimeric Amalgam (T. Lilith's tree)
+    if PST:getTreeSnapshotMod("chimericAmalgam", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

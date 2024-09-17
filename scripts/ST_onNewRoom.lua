@@ -705,6 +705,11 @@ function PST:onNewRoom()
 		PST:addModifiers({ stairwayBoon = -tmpMod / 2 }, true)
 	end
 
+	-- Mod: % chance for enemies killed with Gello's damaging pulse to drop a black heart
+	if PST:getTreeSnapshotMod("pulseKillBlackHeartProc", false) then
+		PST:addModifiers({ pulseKillBlackHeartProc = false }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
@@ -870,6 +875,22 @@ function PST:onNewRoom()
 								)
 							end
 						end
+					end
+				end
+			end
+		end
+
+		-- Mod: % chance to replace treasure room items with a random baby familiar
+		tmpMod = PST:getTreeSnapshotMod("tLilithTreasureBaby", 0)
+		if tmpMod > 0 and roomType == RoomType.ROOM_TREASURE then
+			for _, tmpEntity in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)) do
+				local tmpItem = tmpEntity:ToPickup()
+				if tmpItem and tmpItem.SubType > 0 and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) and
+				not PST:arrHasValue(PST.deliriumFamiliarItems, tmpItem.SubType) and 100 * math.random() < tmpMod then
+					local newItem = Game():GetItemPool():GetCollectibleFromList(PST.babyFamiliarItems)
+					if newItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
+						tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true)
+						PST:createFloatTextFX("Rerolled into familiar!", tmpItem.Position, Color(1, 1, 0.7, 1), 0.12, 100, false)
 					end
 				end
 			end

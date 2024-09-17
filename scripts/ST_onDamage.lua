@@ -547,7 +547,7 @@ function PST:onDamage(target, damage, flag, source)
 
         if source and source.Entity then
             -- Check if a familiar hit/killed enemy
-            local tmpFamiliar = source.Entity:ToFamiliar()
+            tmpFamiliar = source.Entity:ToFamiliar()
             if tmpFamiliar == nil and source.Entity.SpawnerEntity ~= nil then
                 -- For tears shot by familiars
                 tmpFamiliar = source.Entity.SpawnerEntity:ToFamiliar()
@@ -628,17 +628,11 @@ function PST:onDamage(target, damage, flag, source)
                         end
                     end
                 end
-            elseif PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt:Exists() then
-                -- Cause converter boss check
-                local tmpNPC = source.Entity:ToNPC()
-                if tmpNPC == nil and source.Entity.SpawnerEntity ~= nil then
-                    tmpNPC = source.Entity.SpawnerEntity:ToNPC()
-                end
-                if tmpNPC == nil and source.Entity.Parent ~= nil then
-                    tmpNPC = source.Entity.Parent:ToNPC()
-                end
-                if tmpNPC and tmpNPC.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed then
-                    dmgExtra = dmgExtra + PST:getPlayer().Damage * ((10 * PST:getLevel():GetStage()) / 100)
+
+                -- Mod: % non-whip damage
+                tmpMod = PST:getTreeSnapshotMod("nonWhipDmg", 0)
+                if tmpMod ~= 0 then
+                    dmgMult = dmgMult + tmpMod / 100
                 end
             -- Bomb hits enemy
             elseif source.Type == EntityType.ENTITY_BOMB then
@@ -685,6 +679,20 @@ function PST:onDamage(target, damage, flag, source)
                     PST:addModifiers({ bobHeadFliesSpawned = 1 }, true)
                 end
             else
+                if PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt:Exists() then
+                    -- Cause converter boss check
+                    local tmpNPC = source.Entity:ToNPC()
+                    if tmpNPC == nil and source.Entity.SpawnerEntity ~= nil then
+                        tmpNPC = source.Entity.SpawnerEntity:ToNPC()
+                    end
+                    if tmpNPC == nil and source.Entity.Parent ~= nil then
+                        tmpNPC = source.Entity.Parent:ToNPC()
+                    end
+                    if tmpNPC and tmpNPC.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed then
+                        dmgExtra = dmgExtra + PST:getPlayer().Damage * ((10 * PST:getLevel():GetStage()) / 100)
+                    end
+                end
+
                 -- Player hit to enemy (direct/through tears)
                 local srcPlayer = source.Entity:ToPlayer()
                 if srcPlayer == nil then
@@ -1075,9 +1083,50 @@ function PST:onDamage(target, damage, flag, source)
                                 end
                             end
                         end
+
+                        -- Mod: % non-whip damage
+                        tmpMod = PST:getTreeSnapshotMod("nonWhipDmg", 0)
+                        if tmpMod ~= 0 then
+                            dmgMult = dmgMult + tmpMod / 100
+                        end
                     end
                 end
             end
+        -- Misc hits
+        elseif source.Type == EntityType.ENTITY_NULL and flag == 0 then
+            -- Gello whip
+            if PST.specialNodes.gelloFired > 0 then
+                -- Mod: % whip attack damage
+                local tmpMod = PST:getTreeSnapshotMod("whipDmg", 0)
+                if tmpMod ~= 0 then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
+
+                -- Charging Behemoth node (T. Lilith's tree)
+                if PST:getTreeSnapshotMod("chargingBehemoth", false) then
+                    target:AddSlowing(EntityRef(PST:getPlayer()), 30, 0.85, Color(0.85, 0.85, 0.85, 1))
+                end
+
+                -- Coordinated Demons node (T. Lilith's tree)
+                if PST.specialNodes.coordinatedDemonsWait >= 60 then
+                    dmgMult = dmgMult + 0.3
+                    PST.specialNodes.coordinatedDemonsWait = 0
+                end
+            end
+        end
+
+        -- Hit by Gello's damaging pulse (Coordinated Demons node - T. Lilith's tree)
+        if PST.specialNodes.gelloPulseDmgFlag then
+            if target:IsActiveEnemy(false) then
+                -- Mod: % chance for enemies killed with Gello's damaging pulse to drop a black heart
+                local tmpMod = PST:getTreeSnapshotMod("pulseKillBlackHeart", 0)
+                if tmpMod > 0 and target.HitPoints <= damage * dmgMult + dmgExtra and PST:GetBlackHeartCount(PST:getPlayer()) < 4 and
+                not PST:getTreeSnapshotMod("pulseKillBlackHeartProc", false) and 100 * math.random() < tmpMod then
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, RandomVector() * 3, nil, HeartSubType.HEART_BLACK, Random() + 1)
+                    PST:addModifiers({ pulseKillBlackHeartProc = true }, true)
+                end
+            end
+            PST.specialNodes.gelloPulseDmgFlag = false
         end
 
         -- Cosmic Realignment node

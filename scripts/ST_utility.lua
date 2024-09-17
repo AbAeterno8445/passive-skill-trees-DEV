@@ -620,6 +620,25 @@ function PST:postWeaponFire(weapon, fireDir, isShooting, isInterpolated)
 		-- Hemoptysis fired
 		if weapon:GetWeaponType() == WeaponType.WEAPON_BRIMSTONE and (weapon:GetModifiers() & WeaponModifier.AZAZELS_SNEEZE) > 0 then
 			PST.specialNodes.hemoptysisFired = 5
+		-- Gello fired
+		elseif weapon:GetWeaponType() == WeaponType.WEAPON_UMBILICAL_WHIP then
+			PST.specialNodes.gelloFired = 20
+
+			-- Coordinated Demons node (T. Lilith's tree)
+			if PST:getTreeSnapshotMod("coordinatedDemons", false) then
+				if PST.specialNodes.coordinatedDemonsDelay == 0 then
+					PST.specialNodes.coordinatedDemonsDelay = math.ceil(PST:getPlayer().MaxFireDelay * 3)
+				end
+			end
+
+			-- Mod: +% speed for 1 second after using the whip attack (T. Lilith)
+			local tmpMod = PST:getTreeSnapshotMod("whipSpeed", 0)
+			if tmpMod > 0 then
+				if PST.specialNodes.whipSpeedTimer == 0 then
+					PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+				end
+				PST.specialNodes.whipSpeedTimer = 30
+			end
 		end
 	end
 end

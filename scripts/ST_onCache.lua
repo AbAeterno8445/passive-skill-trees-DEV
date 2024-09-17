@@ -228,6 +228,12 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
             end
         end
+
+        -- Chimeric Amalgam node (T. Lilith's tree)
+        tmpTreeMod = PST:getTreeSnapshotMod("chimericAmalgamDmgBonus", 0)
+        if tmpTreeMod ~= 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -277,6 +283,12 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 and PST.specialNodes.roomEnterSpdTimer > 0 then
             local tmpSpdMult = PST.specialNodes.roomEnterSpdTimer / (120 + PST:getTreeSnapshotMod("roomEnterSpdDecayDur", 0) * 30)
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod * tmpSpdMult
+        end
+
+        -- Mod: +% speed for 1 second after using the whip attack (T. Lilith)
+        tmpTreeMod = PST:getTreeSnapshotMod("whipSpeed", 0)
+        if tmpTreeMod ~= 0 and PST.specialNodes.whipSpeedTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
         end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
@@ -347,6 +359,13 @@ function PST:onCache(player, cacheFlag)
             if tmpTreeMod ~= 0 then
                 dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
             end
+        end
+
+        -- Mod: slowly gain up to + tears while Gello is retracted
+        tmpTreeMod = PST:getTreeSnapshotMod("gelloTearsBonus", 0)
+        if tmpTreeMod > 0 and PST.specialNodes.gelloTearBonusStep > 0 then
+            local tmpMult = PST.specialNodes.gelloTearBonusStep / 150
+            dynamicMods.tears = dynamicMods.tears + tmpTreeMod * tmpMult
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
@@ -625,6 +644,16 @@ function PST:onCache(player, cacheFlag)
         for tmpStat, statVal in pairs(tmpStatCache) do
             if dynamicMods[tmpStat] ~= nil then
                 dynamicMods[tmpStat] = dynamicMods[tmpStat] + statVal
+            end
+        end
+    end
+
+    -- Mod: +% all stats per held familiar item
+    tmpTreeMod = PST:getTreeSnapshotMod("familiarItemAllstats", 0)
+    if tmpTreeMod ~= 0 then
+        for itemID, itemAmt in ipairs(player:GetCollectiblesList()) do
+            if itemAmt > 0 and PST:arrHasValue(PST.deliriumFamiliarItems, itemID) then
+                dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpTreeMod
             end
         end
     end

@@ -21,6 +21,7 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
     end
 end
 
+---@param player EntityPlayer
 function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, player)
     if not PST.gameInit then return end
 
@@ -56,7 +57,8 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     end
 
     -- Mod: +luck per held poop item - update player
-    if PST:arrHasValue(PST.poopItems, itemType) then
+    local tmpMod = PST:getTreeSnapshotMod("poopItemLuck", 0)
+    if tmpMod > 0 and PST:arrHasValue(PST.poopItems, itemType) then
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
     end
 
@@ -173,6 +175,26 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         PST:addModifiers({ berserkDmg = 35, berserkSpeed = 25, absoluteRageBirthright = true }, true)
     end
 
+    -- Chimeric Amalgam node (T. Lilith's tree)
+    if PST:getTreeSnapshotMod("chimericAmalgam", false) and itemType == CollectibleType.COLLECTIBLE_BIRTHRIGHT and firstTime then
+        PST:addModifiers({ damagePerc = -40, chimericAmalgamDmgBonus = { value = -40, set = true } }, true)
+
+        for itemID, itemAmt in pairs(player:GetCollectiblesList()) do
+            if itemAmt > 0 and PST:arrHasValue(PST.deliriumFamiliarItems, itemID) then
+                for _=1,itemAmt do
+                    player:RemoveCollectible(itemID)
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_LIL_DELIRIUM)
+                end
+            end
+        end
+    end
+
+    -- Mod: +% all stats per familiar item
+    tmpMod = PST:getTreeSnapshotMod("familiarItemAllstats", 0)
+    if tmpMod > 0 and PST:arrHasValue(PST.deliriumFamiliarItems, itemType) then
+        PST:updateCacheDelayed()
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then
@@ -221,7 +243,8 @@ end
 
 function PST:onRemoveCollectible(player, type)
     -- Mod: +luck per held poop item - update player
-    if PST:arrHasValue(PST.poopItems, type) then
+    local tmpMod = PST:getTreeSnapshotMod("poopItemLuck", 0)
+    if tmpMod > 0 and PST:arrHasValue(PST.poopItems, type) then
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
     end
 end

@@ -4,11 +4,12 @@ function PST:getChangelogList()
         "",
 
         "v0.3.8",
-        "- Introduced new character skill trees for: Tainted Lost.",
+        "- Introduced new character skill trees for: Tainted Lost and Tainted Lilith.",
         "- Minimum XP multiplier option is now 0.1 (from 0.3).",
         "- Fixed Eden's \"Starblessed\" dropping a second stars card when defeating the boss of the first alt stage.",
         "- Fixed Eden's \"Chaotic Treasury\" triggering in unintended treasure rooms, such as in the mirror world.",
         "- Fixed Eden's \"Chaotic Treasury\" removing other items when colliding with a priced item that you couldn't afford.",
+        "- Fixed player on-hit effects potentially not triggering while Cause Converter (ancient jewel)'s boss was active.",
         "",
 
         "v0.3.7",

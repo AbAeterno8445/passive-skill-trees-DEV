@@ -2606,6 +2606,108 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 3519
     },
+    ---- T. LILITH'S TREE ----
+    chargingBehemoth = {
+        str = {
+            "Charging Behemoth:",
+            "    Enemies hit by the whip attack are slowed for 1 second",
+            "    Modifies whip attack damage, tears, and non-whip damage (see specific modifiers for total value)"
+        },
+        category = "charTree", sort = 3550
+    },
+    mightyGestation = {
+        str = {
+            "Mighty Gestation:",
+            "    Start with a smelted Baby-Bender",
+            "    Modifies whip attack damage, tears, and non-whip damage (see specific modifiers for total value)"
+        },
+        category = "charTree", sort = 3551
+    },
+    coordinatedDemons = {
+        str = {
+            "Coordinated Demons:",
+            "    While firing, periodically trigger a pulse around Gello dealing 70%% of your damage to",
+            "    nearby enemies",
+            "    Delay between pulses is based on your tears stat",
+            "    After retracting Gello, waiting 2 seconds increases the damage of your next whip attack",
+            "    by 30%%",
+            "    -0.15 speed while firing"
+        },
+        category = "charTree", sort = 3552
+    },
+    chimericAmalgam = {
+        str = {
+            "Chimeric Amalgam:",
+            "    Every 2 floors, spawn Birthright in the first room if you don't currently have it",
+            "    When obtaining Birthright, turn all your current familiar items into Lil Delirium",
+            "    When obtaining Birthright, receive -40%% damage",
+            "    While holding Birthright, +8%% damage when entering a new floor, up to a total +50%%",
+            "    Birthright can no longer show up naturally"
+        },
+        category = "charTree", sort = 3553
+    },
+    whipDmg = {
+        str = "%s%.2f%% whip attack damage",
+        addPlus = true,
+        category = "charTree", sort = 3560
+    },
+    nonWhipDmg = {
+        str = "%s%.2f%% non-whip damage",
+        addPlus = true,
+        category = "charTree", sort = 3561
+    },
+    gelloPulseDmg = {
+        str = "Damaging pulse inherits an additional %d%% of your damage",
+        category = "charTree", sort = 3562
+    },
+    pulseKillBlackHeart = {
+        str = {
+            "Enemies killed by the damaging pulse have a %d%% chance to drop a black heart, if you have",
+            "less than 2 black hearts, up to once per room",
+            "Black heart dropped from this effect vanish after 3 seconds"
+        },
+        category = "charTree", sort = 3563
+    },
+    whipSpeed = {
+        str = "%s%.2f%% speed for 1 second after using the whip attack",
+        addPlus = true,
+        category = "charTree", sort = 3564
+    },
+    gelloTearsBonus = {
+        str = {
+            "Slowly gain up to %s%.2f tears while Gello is retracted",
+            "    While firing, bonus decays to 0 over 3 seconds"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3565
+    },
+    cordDamage = {
+        str = "While Gello is held out, deal %d%% of your damage to enemies caught in the cord every second",
+        category = "charTree", sort = 3566
+    },
+    cordBleed = {
+        str = "%.2f%% chance to inflict bleed for 4 seconds on enemies caught in the cord every second",
+        category = "charTree", sort = 3567
+    },
+    tLilithTreasureBaby = {
+        str = {
+            "While not holding Birthright, %d%% chance to replace treasure room items with a random",
+            "baby familiar"
+        },
+        category = "charTree", sort = 3568
+    },
+    nearbyKillLuck = {
+        str = {
+            "%d%% chance to gain +0.03 luck when killing enemies within 1.5 tiles of you",
+            "    Halve the total bonus when entering a new floor"
+        },
+        category = "charTree", sort = 3569
+    },
+    familiarItemAllstats = {
+        str = "%s%.2f%% all stats per familiar item obtained",
+        addPlus = true,
+        category = "charTree", sort = 3570
+    },
     --#endregion
 
     ---- STARMIGHT ----

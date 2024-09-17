@@ -52,6 +52,13 @@ PST.babyFamiliarItems = {
     CollectibleType.COLLECTIBLE_SERAPHIM, CollectibleType.COLLECTIBLE_SWORN_PROTECTOR,
     CollectibleType.COLLECTIBLE_TWISTED_PAIR
 }
+PST.deliriumFamiliarItems = {
+	CollectibleType.COLLECTIBLE_BBF, CollectibleType.COLLECTIBLE_BOBS_BRAIN, CollectibleType.COLLECTIBLE_HUSHY,
+	CollectibleType.COLLECTIBLE_LIL_GURDY, CollectibleType.COLLECTIBLE_LIL_HAUNT, CollectibleType.COLLECTIBLE_LIL_MONSTRO,
+	CollectibleType.COLLECTIBLE_LITTLE_CHUBBY, CollectibleType.COLLECTIBLE_LITTLE_GISH, CollectibleType.COLLECTIBLE_CUBE_OF_MEAT,
+	CollectibleType.COLLECTIBLE_BIG_CHUBBY, CollectibleType.COLLECTIBLE_FRUITY_PLUM,
+	table.unpack(PST.babyFamiliarItems)
+}
 PST.poopItems = {
 	CollectibleType.COLLECTIBLE_FLUSH, CollectibleType.COLLECTIBLE_POOP,
 	CollectibleType.COLLECTIBLE_BROWN_NUGGET, CollectibleType.COLLECTIBLE_E_COLI,
@@ -969,6 +976,26 @@ function PST:resetMods()
 		deathTrialActive = false,
 		holyCardLuck = 0,
 		holyCardLuckBuff = 0,
+		---- T. Lilith ----
+		chargingBehemoth = false,
+		mightyGestation = false,
+		coordinatedDemons = false,
+		chimericAmalgam = false,
+		chimericAmalgamFloors = 0,
+		chimericAmalgamDmgBonus = 0,
+		whipDmg = 0,
+		nonWhipDmg = 0,
+		gelloPulseDmg = 0,
+		pulseKillBlackHeart = 0,
+		pulseKillBlackHeartProc = false,
+		whipSpeed = 0,
+		gelloTearsBonus = 0,
+		cordDamage = 0,
+		cordBleed = 0,
+		tLilithTreasureBaby = 0,
+		nearbyKillLuck = 0,
+		nearbyKillLuckBuff = 0,
+		familiarItemAllstats = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1088,6 +1115,13 @@ function PST:resetMods()
 		treasureItemOnHitProc = false,
 		higherQualityRerollProc = false,
 		roomEnterSpdTimer = 0,
+		gelloFired = 0,
+		gelloEntity = nil,
+		coordinatedDemonsDelay = 0,
+		coordinatedDemonsWait = 0,
+		gelloPulseDmgFlag = false,
+		whipSpeedTimer = 0,
+		gelloTearBonusStep = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

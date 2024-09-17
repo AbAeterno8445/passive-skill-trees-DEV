@@ -468,6 +468,22 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpMod, holyCardLuckBuff = { value = 0, set = true } }, true)
     end
 
+    -- Chimeric Amalgam node (T. Lilith's tree)
+    if PST:getTreeSnapshotMod("chimericAmalgam", false) then
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+            local tmpDmgBuff = PST:getTreeSnapshotMod("chimericAmalgamDmgBonus", 0)
+            if tmpDmgBuff < 50 then
+                local tmpAdd = math.min(8, 50 - tmpDmgBuff)
+                PST:addModifiers({ damagePerc = tmpAdd, chimericAmalgamDmgBonus = tmpAdd }, true)
+            end
+        end
+    end
+
+    -- Mod: % chance to gain +luck when killing enemies within 1.5 tiles of you (halve)
+    tmpMod = PST:getTreeSnapshotMod("nearbyKillLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod / 2, nearbyKillLuckBuff = -tmpMod / 2 }, true)
+    end
 
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
