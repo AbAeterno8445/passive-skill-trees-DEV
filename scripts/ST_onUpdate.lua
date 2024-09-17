@@ -589,8 +589,9 @@ function PST:onUpdate()
 		if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
 			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 				local tmpNPC = tmpEntity:ToNPC()
-				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not PST:arrHasValue(PST.noSplitMobs, tmpNPC.Type) and
-				not PST:arrHasValue(PST.causeConverterBossBlacklist, tmpNPC.Type) and not tmpNPC.Parent and not tmpNPC.Child then
+				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly and
+				PST:arrHasValue(PST.noSplitMobs, tmpNPC.Type) and not PST:arrHasValue(PST.causeConverterBossBlacklist, tmpNPC.Type) and
+				not tmpNPC.Parent and not tmpNPC.Child then
 					---@diagnostic disable-next-line: undefined-field
 					tmpNPC:TrySplit(0, EntityRef(player))
 				end

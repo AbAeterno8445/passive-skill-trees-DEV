@@ -10,6 +10,7 @@ function PST:getChangelogList()
         "- Fixed Eden's \"Chaotic Treasury\" triggering in unintended treasure rooms, such as in the mirror world.",
         "- Fixed Eden's \"Chaotic Treasury\" removing other items when colliding with a priced item that you couldn't afford.",
         "- Fixed player on-hit effects potentially not triggering while Cause Converter (ancient jewel)'s boss was active.",
+        "- Fixed Unusually Small Starstone (ancient jewel) splitting friendly monsters.",
         "",
 
         "v0.3.7",
