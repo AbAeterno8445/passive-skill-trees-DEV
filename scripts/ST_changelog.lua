@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.9",
+        "- Fixed Knife Pieces 1 & 2 not being considered progression items by item re-rolling modifiers.",
+        "- Fixed Unusually Small Starstone (ancient jewel) not triggering at all.",
+        "",
+
         "v0.3.8",
         "- Introduced new character skill trees for: Tainted Lost and Tainted Lilith.",
         "- Minimum XP multiplier option is now 0.1 (from 0.3).",
