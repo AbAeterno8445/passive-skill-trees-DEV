@@ -25,6 +25,7 @@ function PST:onNewRoom()
 	PST.specialNodes.annihilationHitList = {}
 	PST.specialNodes.anarchyBombProcs = 0
 	PST.specialNodes.howToJumpPulseTimer = 0
+	PST.specialNodes.temporaryCoins = {}
 
 	local player = PST:getPlayer()
 	local room = Game():GetRoom()
@@ -710,6 +711,18 @@ function PST:onNewRoom()
 		PST:addModifiers({ pulseKillBlackHeartProc = false }, true)
 	end
 
+	-- Marquess of Flies node (T. Keeper's tree)
+	if PST:getTreeSnapshotMod("marquessOfFlies", false) and PST:getTreeSnapshotMod("marquessOfFliesHive", false) then
+		player:RemoveCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
+		PST:addModifiers({ marquessOfFliesHive = false }, true)
+	end
+
+	-- Mod: +% speed for the current room when killing a gilded monster (reset)
+	tmpMod = PST:getTreeSnapshotMod("gildMonsterSpeedBuff", 0)
+	if tmpMod > 0 then
+		PST:addModifiers({ speedPerc = -tmpMod, gildMonsterSpeedBuff = { value = 0, set = true } }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
@@ -896,6 +909,42 @@ function PST:onNewRoom()
 			end
 		end
 
+		-- Blessed Pennies node (T. Keeper's tree)
+		if PST:getTreeSnapshotMod("blessedPennies", false) and roomType == RoomType.ROOM_SHOP and 100 * math.random() < 100 then
+			local tmpPennyType = PST.pennyTrinkets[math.random(#PST.pennyTrinkets)]
+			local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 60)
+			local newTrinket = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpPennyType, Random() + 1)
+
+			local tmpShopID = 1
+			for _, tmpEntity in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)) do
+				local tmpPickup = tmpEntity:ToPickup()
+				if tmpPickup and tmpPickup:IsShopItem() then
+					tmpShopID = tmpShopID + 1
+				end
+			end
+			newTrinket:ToPickup():MakeShopItem(tmpShopID)
+			PST:addModifiers({ blessedPenniesSoldTrinket = { value = tmpPennyType, set = true } }, true)
+		end
+
+		-- Mod: % chance for room monsters to be gilded
+		tmpMod = PST:getTreeSnapshotMod("gildMonsters", false)
+		if tmpMod > 0 then
+			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+				local tmpNPC = tmpEntity:ToNPC()
+				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not tmpNPC:IsBoss() and tmpNPC.Type ~= EntityType.ENTITY_BLOOD_PUPPY and
+				not EntityRef(tmpNPC).IsFriendly and 100 * math.random() < tmpMod then
+					tmpNPC:GetSprite():SetRenderFlags(tmpNPC:GetSprite():GetRenderFlags() | AnimRenderFlags.GOLDEN)
+				end
+			end
+		end
+
+		-- Mod: % chance for curse rooms to contain an additional nickel
+		tmpMod = PST:getTreeSnapshotMod("voodooCurseNickel", 0)
+		if tmpMod > 0 and 100 * math.random() < tmpMod then
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
+		end
+
 		-- Secret rooms
 		if roomType == RoomType.ROOM_SECRET or
 		roomType == RoomType.ROOM_SUPERSECRET or
@@ -917,7 +966,7 @@ function PST:onNewRoom()
 			end
 
 			-- Mod: +0.01 to a random stat when entering a secret room. Rolls more times if multiple are allocated
-			local tmpMod = PST:getTreeSnapshotMod("secretRoomRandomStat", 0)
+			tmpMod = PST:getTreeSnapshotMod("secretRoomRandomStat", 0)
 			if tmpMod > 0 and roomType == RoomType.ROOM_SECRET then
 				local tmpAdd = {}
 				for _=1,tmpMod do

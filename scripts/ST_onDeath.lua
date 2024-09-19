@@ -478,6 +478,43 @@ function PST:onDeath(entity)
             PST:addModifiers({ luck = 0.03, nearbyKillLuckBuff = 0.03 }, true)
         end
 
+        -- Gilded monster kill (T. Keeper's tree)
+        if tmpNPC and (tmpNPC:GetSprite():GetRenderFlags() & AnimRenderFlags.GOLDEN) > 0 then
+            -- Mod: % chance for gilded monsters to drop an additional non-vanishing penny
+            tmpMod = PST:getTreeSnapshotMod("gildMonsterPenny", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpNPC.Position, Vector.Zero, nil, CoinSubType.COIN_PENNY, Random() + 1)
+            end
+
+            -- Mod: % chance to gain +0.05 luck for the current floor when killing a gilded monster
+            tmpMod = PST:getTreeSnapshotMod("gildMonsterLuck", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                PST:addModifiers({ luck = 0.05, gildMonsterLuckBuff = 0.05 }, true)
+            end
+
+            -- Mod: +% speed for the current room when killing a gilded monster
+            tmpMod = PST:getTreeSnapshotMod("gildMonsterSpeed", 0)
+            if tmpMod > 0 then
+                PST:addModifiers({ speedPerc = tmpMod, gildMonsterSpeedBuff = tmpMod }, true)
+            end
+
+            -- Mod: % chance to upgrade a held trinket penny to its golden version when killing a gilded monster
+            tmpMod = PST:getTreeSnapshotMod("gildMonsterPennyUpgrade", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local tmpPlayer = PST:getPlayer()
+                for i=1,0,-1 do
+                    local tmpTrinket = tmpPlayer:GetTrinket(i)
+                    if PST:arrHasValue(PST.pennyTrinkets, tmpTrinket) then
+                        tmpPlayer:TryRemoveTrinket(tmpTrinket)
+                        tmpPlayer:AddTrinket(tmpTrinket | TrinketType.TRINKET_GOLDEN_FLAG)
+                        SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 1, 2, false, 1.15)
+                        PST:createFloatTextFX("Gilded penny trinket", Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 90, true)
+                        break
+                    end
+                end
+            end
+        end
+
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
             local tmpPlayer = PST:getPlayer()

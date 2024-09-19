@@ -393,6 +393,21 @@ function PST:onDamage(target, damage, flag, source)
                     PST.specialNodes.higherQualityRerollProc = true
                 end
 
+                -- Blessed Pennies node (T. Keeper's tree)
+                if PST:getTreeSnapshotMod("blessedPennies", false) then
+                    for i=1,0,-1 do
+                        local tmpTrinket = player:GetTrinket(i)
+                        if PST:arrHasValue(PST.pennyTrinkets, tmpTrinket) then
+                            player:TryRemoveTrinket(tmpTrinket)
+                        end
+                    end
+                end
+
+                -- Voodoo Trick node (T. Keeper's tree)
+                if PST:getTreeSnapshotMod("voodooTrick", false) then
+                    PST:addModifiers({ voodooTrickHits = 1 }, true)
+                end
+
                 -- Chance for normal monsters to deal an extra 1/2 heart damage
                 tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then
@@ -547,6 +562,22 @@ function PST:onDamage(target, damage, flag, source)
                         local tmpAdd = math.min(tmpBonus, 1.2 - tmpTotal)
                         PST:addModifiers({ damage = tmpAdd, blueFlyDeathDamageTotal = tmpAdd }, true)
                     end
+
+                    -- Marquess of Flies node (T. Keeper's tree)
+                    if PST:getTreeSnapshotMod("marquessOfFlies", false) then
+                        dmgMult = dmgMult + math.min(50, PST:getPlayer():GetNumCoins()) / 100
+
+                        if PST:getTreeSnapshotMod("marquessFliesCache", 0) > 0 then
+                            PST:addModifiers({ marquessFliesCache = -1 }, true)
+                            PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+                        end
+                    end
+
+                    -- Mod: +% damage dealt by blue flies
+                    local tmpMod = PST:getTreeSnapshotMod("blueFlyDamage", 0)
+                    if tmpMod > 0 then
+                        dmgMult = dmgMult + tmpMod / 100
+                    end
                 end
 
                 -- Blood Clot hit
@@ -649,8 +680,15 @@ function PST:onDamage(target, damage, flag, source)
                 end
                 if srcPlayer and target:IsVulnerableEnemy() then
                     local isDarkArts = false
+                    -- Player tear hit
+                    if source.Entity.Type == EntityType.ENTITY_TEAR then
+                        -- Mod: % extra damage from coin tears against gilded monsters
+                        local tmpMod = PST:getTreeSnapshotMod("coinTearsChance", 0)
+                        if tmpMod > 0 and source.Entity.Variant == TearVariant.COIN and (target:GetSprite():GetRenderFlags() & AnimRenderFlags.GOLDEN) > 0 then
+                            dmgMult = dmgMult + 0.1
+                        end
                     -- Player effect hit
-                    if source.Entity.Type == EntityType.ENTITY_EFFECT then
+                    elseif source.Entity.Type == EntityType.ENTITY_EFFECT then
                         -- Dark Arts
                         if source.Entity.Variant == EffectVariant.DARK_SNARE then
                             isDarkArts = true

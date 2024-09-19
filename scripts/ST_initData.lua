@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.9"
+PST.modVersion = "v0.3.10"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -289,6 +289,12 @@ PST.planetariumItems = {
 	CollectibleType.COLLECTIBLE_MERCURIUS, CollectibleType.COLLECTIBLE_NEPTUNUS, CollectibleType.COLLECTIBLE_PLUTO,
 	CollectibleType.COLLECTIBLE_SATURNUS, CollectibleType.COLLECTIBLE_SOL, CollectibleType.COLLECTIBLE_TERRA,
 	CollectibleType.COLLECTIBLE_URANUS, CollectibleType.COLLECTIBLE_VENUS
+}
+PST.pennyTrinkets = {
+	TrinketType.TRINKET_BUTT_PENNY, TrinketType.TRINKET_FLAT_PENNY, TrinketType.TRINKET_BURNT_PENNY,
+	TrinketType.TRINKET_BLOODY_PENNY, TrinketType.TRINKET_CURSED_PENNY, TrinketType.TRINKET_ROTTEN_PENNY,
+	TrinketType.TRINKET_BLESSED_PENNY, TrinketType.TRINKET_CHARGED_PENNY, TrinketType.TRINKET_SWALLOWED_PENNY,
+	TrinketType.TRINKET_COUNTERFEIT_PENNY
 }
 
 -- First update when entering a new floor
@@ -947,7 +953,7 @@ function PST:resetMods()
 		treasureItemOnHitItem = 0,
 		higherQualityReroll = 0,
 		higherQualityRerollProcs = 0,
-		minLuckSet = 0,
+		minLuckSet = false,
 		minLuck = 0,
 		---- T. Lost ----
 		glassSpecter = false,
@@ -997,6 +1003,35 @@ function PST:resetMods()
 		nearbyKillLuck = 0,
 		nearbyKillLuckBuff = 0,
 		familiarItemAllstats = 0,
+		---- T. Keeper ----
+		fortunateSpender = false,
+		fortunateSpenderLuckActive = false,
+		fortunatePurchases = 0,
+		fortunateSpenderBuff = 0,
+		marquessOfFlies = false,
+		marquessOfFliesHive = false,
+		marquessFliesCache = 0,
+		strangeCoupon = false,
+		strangeCouponCharges = 0,
+		strangeCouponUses = 0,
+		strangeCouponSteam = 0,
+		blessedPennies = false,
+		blessedPenniesSoldTrinket = 0,
+		voodooTrick = false,
+		voodooTrickHits = 0,
+		couponNullifyChance = 0,
+		vanishCoinTimer = 0,
+		coinTearsChance = 0,
+		gildMonsters = 0,
+		gildMonsterPenny = 0,
+		gildMonsterLuck = 0,
+		gildMonsterLuckBuff = 0,
+		gildMonsterSpeed = 0,
+		gildMonsterSpeedBuff = 0,
+		gildMonsterPennyUpgrade = 0,
+		voodooCurseNickel = 0,
+		blueFlyDamage = 0,
+		steamSaleKeep = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1123,6 +1158,7 @@ function PST:resetMods()
 		gelloPulseDmgFlag = false,
 		whipSpeedTimer = 0,
 		gelloTearBonusStep = 0,
+		temporaryCoins = {},
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

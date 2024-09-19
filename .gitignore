@@ -5,3 +5,4 @@ ideas/
 *.exe
 *.exe.lnk
 disable.it
+countLines.bat

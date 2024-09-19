@@ -290,6 +290,14 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 and PST.specialNodes.whipSpeedTimer > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
         end
+
+        -- Marquess of Flies node (T. Keeper's tree)
+        if PST:getTreeSnapshotMod("marquessOfFlies", false) then
+            tmpTreeMod = PST:getTreeSnapshotMod("marquessFliesCache", 0)
+            if tmpTreeMod > 0 then
+                dynamicMods.speedPerc = dynamicMods.speedPerc - tmpTreeMod
+            end
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active
@@ -366,6 +374,14 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod > 0 and PST.specialNodes.gelloTearBonusStep > 0 then
             local tmpMult = PST.specialNodes.gelloTearBonusStep / 150
             dynamicMods.tears = dynamicMods.tears + tmpTreeMod * tmpMult
+        end
+
+        -- Marquess of Flies node (T. Keeper's tree)
+        if PST:getTreeSnapshotMod("marquessOfFlies", false) then
+            tmpTreeMod = PST:getTreeSnapshotMod("marquessFliesCache", 0)
+            if tmpTreeMod > 0 then
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpTreeMod
+            end
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then

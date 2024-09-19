@@ -1157,6 +1157,15 @@ function PST:onUpdate()
 			if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
 				player:AddCoins(-tmpMod[2])
 			end
+		-- Gained coins
+		elseif player:GetNumCoins() > updateTrackers.coinTracker then
+			-- Marquess of Flies node (T. Keeper's tree)
+			if PST:getTreeSnapshotMod("marquessOfFlies", false) then
+				local tmpFlies = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY)
+				if tmpFlies < 20 and 100 * math.random() < 50 then
+					Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector.Zero, player, 0, Random() + 1)
+				end
+			end
 		end
 		updateTrackers.coinTracker = player:GetNumCoins()
 	end
@@ -1184,6 +1193,22 @@ function PST:onUpdate()
 			PST:updateCacheDelayed()
 		end
 		updateTrackers.pocketTracker = pocketItemSum
+	end
+
+	-- Strange Coupon node (T. Keeper's tree)
+	if PST:getTreeSnapshotMod("strangeCoupon", false) then
+		local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_COUPON)
+		if tmpSlot ~= -1 then
+			local couponCharges = player:GetActiveCharge(tmpSlot)
+			local chargesCache = PST:getTreeSnapshotMod("strangeCouponCharges", 0)
+			if couponCharges ~= chargesCache then
+				if 100 * math.random() < PST:getTreeSnapshotMod("couponNullifyChance", 0) and couponCharges > chargesCache then
+					player:AddActiveCharge(chargesCache - couponCharges, tmpSlot, true, false, false)
+				else
+					PST:addModifiers({ strangeCouponCharges = { value = couponCharges, set = true } }, true)
+				end
+			end
+		end
 	end
 
 	-- Spider Mod node

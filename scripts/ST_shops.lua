@@ -1,3 +1,6 @@
+---@param pickup EntityPickup
+---@param player EntityPlayer
+---@param spent number
 function PST:onShopPurchase(pickup, player, spent)
     local roomType = PST:getRoom():GetType()
     if spent > 0 then
@@ -31,6 +34,27 @@ function PST:onShopPurchase(pickup, player, spent)
         tmpMod = PST:getTreeSnapshotMod("purchaseKeepCoins", 0)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             player:AddCoins(math.random(3))
+        end
+
+        -- Fortunate Spender node (T. Keeper's tree)
+        if PST:getTreeSnapshotMod("fortunateSpender", false) then
+            local tmpLuckBuff = PST:getTreeSnapshotMod("fortunateSpenderBuff", 0)
+            if tmpLuckBuff < 3 then
+                local tmpAdd = math.min(spent * 0.02, 3 - tmpLuckBuff)
+                PST:addModifiers({ luck = tmpAdd, fortunateSpenderBuff = tmpAdd }, true)
+            end
+            PST:addModifiers({ fortunatePurchases = 1 }, true)
+            if PST:getTreeSnapshotMod("fortunateSpenderLuckActive", false) then
+                PST:addModifiers({ luck = -1.5, fortunateSpenderLuckActive = false }, true)
+            end
+        end
+
+        -- Strange Coupon node (T. Keeper's tree)
+        if PST:getTreeSnapshotMod("strangeCoupon", false) and player:HasCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE) then
+            PST:addModifiers({ strangeCouponSteam = 1 }, true)
+            if PST:getTreeSnapshotMod("strangeCouponSteam", 0) >= 4 and 100 * math.random() < 100 - PST:getTreeSnapshotMod("steamSaleKeep", 0) then
+                player:RemoveCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE)
+            end
         end
     elseif spent < 0 then
         -- Mod: chance to gain a black heart when spending hearts on deals
@@ -105,6 +129,12 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
                 end
                 priceMod = priceMod - shopCache[itemID]
             end
+        end
+
+        -- Blessed Pennies node (T. Keeper's tree)
+        if PST:getTreeSnapshotMod("blessedPennies", false) and pickupVariant == PickupVariant.PICKUP_TRINKET and
+        PST:getTreeSnapshotMod("blessedPenniesSoldTrinket", 0) == subtype then
+            return price * 2
         end
 
         return math.max(1, price + priceMod)

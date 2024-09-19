@@ -2708,6 +2708,108 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 3570
     },
+    ---- T. KEEPER'S TREE ----
+    fortunateSpender = {
+        str = {
+            "Fortunate Spender:",
+            "    +1.5 luck for the current floor while you haven't purchased items",
+            "    +0.02 luck per coin spent on purchases, up to a total +3",
+            "    When entering a floor, -0.5 luck if you made less than 4 purchases in the previous floor",
+            "    Luck reduction doesn't apply during the Ascent"
+        },
+        category = "charTree", sort = 3600
+    },
+    marquessOfFlies = {
+        str = {
+            "Marquess of Flies:",
+            "    Whenever you gain coins, 50%% chance to spawn a blue fly if you have less than 20 blue flies",
+            "    Whenever a coin heals you, 20%% chance to gain Hive Mind for the current room if you don't",
+            "    have it",
+            "    Increase damage dealt by blue flies by 1%% per coin you own, up to 50%%",
+            "    -1%% speed and tears per active blue fly"
+        },
+        category = "charTree", sort = 3601
+    },
+    strangeCoupon = {
+        str = {
+            "Strange Coupon:",
+            "    Start with Coupon",
+            "    After using Coupon a total of 4 times, replace it with Steam Sale",
+            "    Purchasing 4 items while holding Steam Sale removes it"
+        },
+        category = "charTree", sort = 3602
+    },
+    blessedPennies = {
+        str = {
+            "Blessed Pennies:",
+            "    Shops have a 25%% chance to sell an additional penny trinket, at twice its regular price",
+            "    When defeating a floor's boss, if you took no damage in the rest of the floor, smelt your",
+            "    currently held penny trinkets, if present",
+            "    Spawn a penny when a penny trinket gets smelted this way",
+            "    When hit, 20%% chance to lose held penny trinkets (not smelted)"
+        },
+        category = "charTree", sort = 3603
+    },
+    voodooTrick = {
+        str = {
+            "Voodoo Trick:",
+            "    Completing a floor without getting hit more than 3 times grants you Voodoo Head for the",
+            "    next floor",
+            "    Voodoo Head can no longer show up naturally"
+        },
+        category = "charTree", sort = 3604
+    },
+    couponNullifyChance = {
+        str = "Whenever you gain charges with Coupon, %d%% chance to nullify the gained charges",
+        category = "charTree", sort = 3610
+    },
+    vanishCoinTimer = {
+        str = "%s%.2f seconds to vanishing coins' timer",
+        addPlus = true,
+        category = "charTree", sort = 3611
+    },
+    coinTearsChance = {
+        str = {
+            "%d%% chance for fired tears to be coin tears from Head of the Keeper",
+            "    If total chance is above 40%%, Head of the Keeper can no longer show up",
+            "    Coin tears deal 10%% increased damage against gilded monsters"
+        },
+        category = "charTree", sort = 3612
+    },
+    gildMonsters = {
+        str = "%d%% chance for room monsters to be Gilded. Cannot affect bosses",
+        category = "charTree", sort = 3613
+    },
+    gildMonsterPenny = {
+        str = "%d%% chance for Gilded monsters to drop an additional non-vanishing penny on death",
+        category = "charTree", sort = 3614
+    },
+    gildMonsterLuck = {
+        str = "%d%% chance to gain +0.05 luck for the current floor when killing a Gilded monster",
+        category = "charTree", sort = 3615
+    },
+    gildMonsterSpeed = {
+        str = "%s%d%% speed for the current room when killing a Gilded monster",
+        addPlus = true,
+        category = "charTree", sort = 3616
+    },
+    gildMonsterPennyUpgrade = {
+        str = "%d%% chance to upgrade 1 held penny trinket into its golden version when killing a Gilded monster",
+        category = "charTree", sort = 3617
+    },
+    voodooCurseNickel = {
+        str = "While holding Voodoo Head, %d%% chance for curse rooms to contain an additional nickel",
+        category = "charTree", sort = 3618
+    },
+    blueFlyDamage = {
+        str = "%s%d%% damage dealt by blue flies",
+        addPlus = true,
+        category = "charTree", sort = 3619
+    },
+    steamSaleKeep = {
+        str = "%d%% chance to keep Steam Sale when purchasing more than 4 items while holding it",
+        category = "charTree", sort = 3620
+    },
     --#endregion
 
     ---- STARMIGHT ----

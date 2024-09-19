@@ -146,7 +146,7 @@ function PST:onHeartUpdate(force)
                 if player:GetHearts() < heartTracker.red[i] then
                     PST.specialNodes.bloodwrathFlipTimer = 150
                 end
-                PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
             end
 
             -- Cosmic Realignment node
@@ -214,7 +214,7 @@ function PST:onHeartUpdate(force)
 
             -- Tainted Health node (T. Magdalene's tree)
             if PST:getTreeSnapshotMod("taintedHealth", false) then
-                player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY)
+                player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY, true)
             end
 
             -- Cosmic Realignment node

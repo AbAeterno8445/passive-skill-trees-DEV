@@ -71,6 +71,16 @@ function PST:familiarInit(familiar)
                     PST:addModifiers({ tearsPerc = -tmpMod, soulClotAbsorbBuff = -tmpMod }, true)
                 end
             end
+        -- Blue flies
+        elseif familiar.Variant == FamiliarVariant.BLUE_FLY then
+            -- Marquess of Flies node (T. Keeper's tree)
+            if PST:getTreeSnapshotMod("marquessOfFlies", false) then
+                local tmpFlies = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY) + 1
+                if PST:getTreeSnapshotMod("marquessFliesCache", 0) ~= tmpFlies then
+                    PST:addModifiers({ marquessFliesCache = { value = tmpFlies, set = true } }, true)
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+                end
+            end
         end
     end
 end

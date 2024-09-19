@@ -462,6 +462,22 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
     end
 
+    -- Strange Coupon node (T. Keeper's tree)
+    if PST:getTreeSnapshotMod("strangeCoupon", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_COUPON)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_COUPON)
+    end
+
+    -- Voodoo Trick node (T. Keeper's tree)
+    if PST:getTreeSnapshotMod("voodooTrick", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_VOODOO_HEAD)
+    end
+
+    -- Mod: % chance for fired tears to be coin tears from Head of the Keeper. Above 40% total chance, Head of the Keeper no longer shows up
+    if PST:getTreeSnapshotMod("coinTearsChance", 0) > 40 then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

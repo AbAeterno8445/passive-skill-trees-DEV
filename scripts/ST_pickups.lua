@@ -286,6 +286,15 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
 
+            -- Marquess of Flies node (T. Keeper's tree)
+            if PST:getTreeSnapshotMod("marquessOfFlies", false) then
+                if variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() and not PST:getTreeSnapshotMod("marquessOfFliesHive", false) and
+                not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) and 100 * math.random() < 20 then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
+                    PST:addModifiers({ marquessOfFliesHive = true }, true)
+                end
+            end
+
             -- Cosmic Realignment node
             local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
@@ -911,13 +920,23 @@ function PST:onPickupInit(pickup)
 end
 
 function PST:onPickupUpdate(pickup)
-    -- Mod: +time for temporary heart pickups
-    if pickup.Variant == PickupVariant.PICKUP_HEART and pickup.Timeout > 0 then
-        local tempFirstSpawn = not PST.specialNodes.temporaryHearts[pickup.InitSeed]
-        local tmpMod = PST:getTreeSnapshotMod("temporaryHeartTime", 0)
-        if tmpMod > 0 and tempFirstSpawn then
-            pickup.Timeout = pickup.Timeout + math.floor(tmpMod * 30)
-            PST.specialNodes.temporaryHearts[pickup.InitSeed] = true
+    if pickup.Timeout > 0 then
+        -- Mod: +time for temporary heart pickups
+        if pickup.Variant == PickupVariant.PICKUP_HEART then
+            local tempFirstSpawn = not PST.specialNodes.temporaryHearts[pickup.InitSeed]
+            local tmpMod = PST:getTreeSnapshotMod("temporaryHeartTime", 0)
+            if tmpMod > 0 and tempFirstSpawn then
+                pickup.Timeout = pickup.Timeout + math.floor(tmpMod * 30)
+                PST.specialNodes.temporaryHearts[pickup.InitSeed] = true
+            end
+        -- Mod: +time for temporary coin pickups
+        elseif pickup.Variant == PickupVariant.PICKUP_COIN then
+            local tempFirstSpawn = not PST.specialNodes.temporaryCoins[pickup.InitSeed]
+            local tmpMod = PST:getTreeSnapshotMod("vanishCoinTimer", 0)
+            if tmpMod > 0 and tempFirstSpawn then
+                pickup.Timeout = pickup.Timeout + math.floor(tmpMod * 30)
+                PST.specialNodes.temporaryCoins[pickup.InitSeed] = true
+            end
         end
     end
 end

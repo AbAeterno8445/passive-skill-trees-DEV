@@ -485,6 +485,44 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpMod / 2, nearbyKillLuckBuff = -tmpMod / 2 }, true)
     end
 
+    -- Fortunate Spender node (T. Keeper's tree)
+    if PST:getTreeSnapshotMod("fortunateSpender", false) then
+        local tmpPurchases = PST:getTreeSnapshotMod("fortunatePurchases", 0)
+        if not PST:isFirstOrigStage() and tmpPurchases < 4 and not level:IsAscent() then
+            PST:addModifiers({ luck = -0.5 }, true)
+        end
+        if tmpPurchases > 0 then
+            PST:addModifiers({ fortunatePurchases = { value = 0, set = true } }, true)
+        end
+        if not PST:getTreeSnapshotMod("fortunateSpenderLuckActive", false) then
+            PST:addModifiers({ luck = 1.5, fortunateSpenderLuckActive = true }, true)
+        end
+    end
+
+    -- Blessed Pennies node (T. Keeper's tree)
+    if PST:getTreeSnapshotMod("blessedPenniesSoldTrinket", 0) > 0 then
+        PST:addModifiers({ blessedPenniesSoldTrinket = { value = 0, set = true } }, true)
+    end
+
+    -- Voodoo Trick node (T. Keeper's tree)
+    if PST:getTreeSnapshotMod("voodooTrick", false) and not PST:isFirstOrigStage() then
+        tmpMod = PST:getTreeSnapshotMod("voodooTrickHits", 0)
+        if tmpMod <= 3 and not player:HasCollectible(CollectibleType.COLLECTIBLE_VOODOO_HEAD) then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_VOODOO_HEAD)
+        elseif tmpMod > 3 then
+            player:RemoveCollectible(CollectibleType.COLLECTIBLE_VOODOO_HEAD)
+        end
+        if tmpMod > 0 then
+            PST:addModifiers({ voodooTrickHits = { value = 0, set = true } }, true)
+        end
+    end
+
+    -- Mod: % chance to gain +0.05 luck for the current floor when killing a gilded monster (reset)
+    tmpMod = PST:getTreeSnapshotMod("gildMonsterLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod, gildMonsterLuckBuff = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

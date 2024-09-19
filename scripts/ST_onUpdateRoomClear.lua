@@ -133,7 +133,7 @@ function PST:onRoomClear(level, room)
 				end
 
 				-- Boss room + took no damage
-				if not PST:getTreeMod("roomGotHitByMob", false) then
+				if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 					-- Mod: +luck when clearing boss room without taking damage
 					tmpMod = PST:getTreeSnapshotMod("flawlessBossLuck", 0)
 					if tmpMod > 0 then
@@ -146,6 +146,24 @@ function PST:onRoomClear(level, room)
                         PST:addModifiers({ ephemeralBond = 1, gainedTempEphBond = 1 }, true)
                         PST:createFloatTextFX("+1 Ephemeral Bond", Vector.Zero, Color(0.8, 0.8, 1, 1), 0.12, 12, true)
                     end
+				end
+
+				-- Boss room + took no damage in floor
+				if not PST:getTreeSnapshotMod("floorGotHit", false) then
+					-- Blessed Pennies node (T. Keeper's tree)
+					if PST:getTreeSnapshotMod("blessedPennies", false) then
+						for i=1,0,-1 do
+							local tmpTrinket = player:GetTrinket(i)
+							if PST:arrHasValue(PST.pennyTrinkets, tmpTrinket) then
+								player:TryRemoveTrinket(tmpTrinket)
+								player:AddSmeltedTrinket(tmpTrinket)
+								PST:createFloatTextFX("Smelted penny trinket", Vector.Zero, Color(1, 1, 0.7, 1), 0.12, 90, true)
+
+								local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 40)
+								Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_PENNY, Random() + 1)
+							end
+						end
+					end
 				end
 
 				-- Deferred Aegis node (T. Lost's tree)

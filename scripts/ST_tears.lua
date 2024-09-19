@@ -1,3 +1,13 @@
+---@param tear EntityTear
+function PST:postFireTear(tear)
+    -- Mod: % chance for fired tears to be coin tears from Head of the Keeper
+    local tmpMod = PST:getTreeSnapshotMod("coinTearsChance", 0)
+    if tmpMod > 0 and tear.Variant ~= TearVariant.COIN and 100 * math.random() < tmpMod then
+        tear:ChangeVariant(TearVariant.COIN)
+        tear:AddTearFlags(TearFlags.TEAR_GREED_COIN)
+    end
+end
+
 function PST:onTearDeath(tear)
     -- Starcursed modifier: tear explosion on mob death
     if PST:arrHasValue(PST.specialNodes.SC_exploderTears, tear.InitSeed) then

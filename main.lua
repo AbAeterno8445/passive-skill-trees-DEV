@@ -245,7 +245,7 @@ function PST:getCurrentCharData()
 end
 
 function PST:onExitGame()
-	PST:save()
+	PST:save(true)
 	PST.gameInit = false
 	PST.player = nil
 	PST.level = nil
@@ -309,6 +309,7 @@ PST:AddCallback(ModCallbacks.MC_USE_CARD, PST.onUseCard)
 PST:AddCallback(ModCallbacks.MC_GET_PILL_EFFECT, PST.onPillEffect)
 PST:AddCallback(ModCallbacks.MC_USE_PILL, PST.onUsePill)
 PST:AddCallback(ModCallbacks.MC_INPUT_ACTION, PST.onInput)
+PST:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, PST.postFireTear)
 PST:AddCallback(ModCallbacks.MC_POST_TEAR_DEATH, PST.onTearDeath)
 -- Repentogon callbacks
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.onSaveSlot)

@@ -308,7 +308,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         end
 
         -- Mod: +% tears for 2 seconds after using Dark Arts
-        local tmpMod = PST:getTreeSnapshotMod("darkArtsTears", 0)
+        tmpMod = PST:getTreeSnapshotMod("darkArtsTears", 0)
         if tmpMod > 0 and PST.specialNodes.darkArtsTearsTimer == 0 then
             PST.specialNodes.darkArtsTearsTimer = 75
             player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY)
@@ -318,7 +318,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- How to Jump
     elseif itemType == CollectibleType.COLLECTIBLE_HOW_TO_JUMP then
         -- Mod: dark pulse when landing with How to Jump
-        local tmpMod = PST:getTreeSnapshotMod("howToJumpPulse", 0)
+        tmpMod = PST:getTreeSnapshotMod("howToJumpPulse", 0)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             PST.specialNodes.howToJumpPulseTimer = 15
         end
@@ -443,6 +443,19 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                             PST:addModifiers({ speed = -tmpAdd * 2, spindownDebuff = tmpAdd }, true)
                         else break end
                     end
+                end
+            end
+        end
+    -- Coupon
+    elseif itemType == CollectibleType.COLLECTIBLE_COUPON then
+        -- Strange Coupon node (T. Keeper's tree)
+        if PST:getTreeSnapshotMod("strangeCoupon", false) then
+            PST:addModifiers({ strangeCouponUses = 1 }, true)
+            if PST:getTreeSnapshotMod("strangeCouponUses", 0) == 4 then
+                player:RemoveCollectible(CollectibleType.COLLECTIBLE_COUPON)
+                if not player:HasCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE) then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE)
+                    PST:createFloatTextFX("Coupon -> Steam Sale", Vector.Zero, Color(1, 1, 1, 1), 0.12, 90, true)
                 end
             end
         end

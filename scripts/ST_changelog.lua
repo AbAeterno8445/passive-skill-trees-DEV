@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.10",
+        "- Introduced new character skill trees for: Tainted Keeper.",
+        "- Fixed modifiers requiring a boss room to be cleared without taking damage potentially not triggering.",
+        "- Fixed T. Lost's \"Minimum luck is -1\" modifier applying globally regardless of allocation.",
+        "",
+
         "v0.3.9",
         "- Fixed Knife Pieces 1 & 2 not being considered progression items by item re-rolling modifiers.",
         "- Fixed Unusually Small Starstone (ancient jewel) not triggering at all.",
