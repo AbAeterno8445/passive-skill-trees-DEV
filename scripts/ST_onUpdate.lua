@@ -396,11 +396,13 @@ function PST:onUpdate()
 					player:RemoveCollectible(CollectibleType.COLLECTIBLE_VOID)
 					local tmpCollectibles = {}
 					for tmpItem, tmpItemNum in pairs(player:GetCollectiblesList()) do
-						if tmpItemNum > 0 then
+						if tmpItemNum > 0 and not PST:arrHasValue(PST.progressionItems, tmpItem) then
 							table.insert(tmpCollectibles, tmpItem)
 						end
 					end
-					player:RemoveCollectible(tmpCollectibles[math.random(#tmpCollectibles)])
+					if #tmpCollectibles > 0 then
+						player:RemoveCollectible(tmpCollectibles[math.random(#tmpCollectibles)])
+					end
 					PST:createFloatTextFX("The void consumes...", Vector.Zero, Color(0.5, 0.1, 0.8, 1), 0.12, 90, true)
 					SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 1, 2, false, 0.8)
 				end
