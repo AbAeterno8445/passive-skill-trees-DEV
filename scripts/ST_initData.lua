@@ -158,6 +158,10 @@ PST.locustTrinkets = {
 	TrinketType.TRINKET_LOCUST_OF_WRATH | TrinketType.TRINKET_GOLDEN_FLAG,
 	TrinketType.TRINKET_LOCUST_OF_CONQUEST | TrinketType.TRINKET_GOLDEN_FLAG
 }
+PST.locustTrinketsNonGold = {
+	TrinketType.TRINKET_LOCUST_OF_DEATH, TrinketType.TRINKET_LOCUST_OF_FAMINE, TrinketType.TRINKET_LOCUST_OF_PESTILENCE,
+	TrinketType.TRINKET_LOCUST_OF_WRATH, TrinketType.TRINKET_LOCUST_OF_CONQUEST
+}
 PST.deadlySinBosses = {
 	EntityType.ENTITY_ENVY, EntityType.ENTITY_GLUTTONY, EntityType.ENTITY_WRATH,
 	EntityType.ENTITY_PRIDE, EntityType.ENTITY_LUST, EntityType.ENTITY_GREED,
@@ -1032,6 +1036,28 @@ function PST:resetMods()
 		voodooCurseNickel = 0,
 		blueFlyDamage = 0,
 		steamSaleKeep = 0,
+		---- T. Apollyon ----
+		electrifiedSwarm = false,
+		closeKeeper = false,
+		carrionLocusts = false,
+		carrionLocustStats = {},
+		carrionLocustKills = 0,
+		greatDevourer = false,
+		greatDevourerBoost = 0,
+		locustDmg = 0,
+		extCordDmgInherit = 0,
+		extCordSlow = 0,
+		locustTears = 0,
+		locustTearDmgInherit = 0,
+		locustTearSpectral = 0,
+		locustKillPickup = 0,
+		locustKillPickupProcs = 0,
+		locustKillTears = 0,
+		killCricketLeg = 0,
+		killCricketLegProc = false,
+		cricketLegSpeed = 0,
+		locustKillLuck = 0,
+		locustKillLuckBuff = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1159,6 +1185,8 @@ function PST:resetMods()
 		whipSpeedTimer = 0,
 		gelloTearBonusStep = 0,
 		temporaryCoins = {},
+		activeLocusts = {},
+		locustKillTearsTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

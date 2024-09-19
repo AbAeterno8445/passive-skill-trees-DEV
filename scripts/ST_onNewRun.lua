@@ -478,6 +478,11 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
     end
 
+    -- Electrified Swarm node (T. Apollyon's tree)
+    if PST:getTreeSnapshotMod("electrifiedSwarm", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_EXTENSION_CORD)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

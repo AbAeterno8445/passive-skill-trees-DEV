@@ -45,6 +45,11 @@ function PST:onUpdate()
 		PST:resetHeartUpdater()
 		isFiring = false
 		modResetUpdate = true
+
+		-- Locusts tracking (T. Apollyon)
+		if player:GetPlayerType() == PlayerType.PLAYER_APOLLYON_B and #PST.specialNodes.activeLocusts == 0 then
+			PST.specialNodes.activeLocusts = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ABYSS_LOCUST)
+		end
 	end
 
 	-- First update when entering floor
@@ -1898,6 +1903,14 @@ function PST:onUpdate()
 					end
 				end
 			end
+		end
+	end
+
+	-- Mod: +% tears for 2 seconds when a locust kills an enemy
+	if PST.specialNodes.locustKillTearsTimer > 0 then
+		PST.specialNodes.locustKillTearsTimer = PST.specialNodes.locustKillTearsTimer - 1
+		if PST.specialNodes.locustKillTearsTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
 		end
 	end
 

@@ -4,9 +4,11 @@ function PST:getChangelogList()
         "",
 
         "v0.3.10",
-        "- Introduced new character skill trees for: Tainted Keeper.",
+        "- Introduced new character skill trees for: Tainted Keeper and Tainted Apollyon.",
         "- Fixed modifiers requiring a boss room to be cleared without taking damage potentially not triggering.",
         "- Fixed T. Lost's \"Minimum luck is -1\" modifier applying globally regardless of allocation.",
+        "- Fixed locust trinket familiars being considered blue flies for relevant effects.",
+        "- Fixed certain on-kill effects not triggering.",
         "",
 
         "v0.3.9",

@@ -523,6 +523,30 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpMod, gildMonsterLuckBuff = { value = 0, set = true } }, true)
     end
 
+    -- Carrion Locusts node (T. Apollyon's tree)
+    if PST:getTreeSnapshotMod("carrionLocusts", false) then
+        local statsCache = PST:getTreeSnapshotMod("carrionLocustStats", nil)
+        if statsCache then
+            local statsChange = {}
+            for tmpStat, statVal in pairs(statsCache) do
+                statsChange[tmpStat] = -statVal / 2
+                statsCache[tmpStat] = statVal / 2
+            end
+            PST:addModifiers(statsChange, true)
+        end
+        for _, tmpTrinket in ipairs(PST.locustTrinkets) do
+            if player:HasTrinket(tmpTrinket) then
+                player:TryRemoveSmeltedTrinket(tmpTrinket)
+            end
+        end
+    end
+
+    -- Mod: % chance to gain +0.04 luck when a locust kills an enemy (halve)
+    tmpMod = PST:getTreeSnapshotMod("locustKillLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod / 2, locustKillLuckBuff = -tmpMod / 2 }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

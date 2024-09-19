@@ -6,6 +6,56 @@ function PST:postFireTear(tear)
         tear:ChangeVariant(TearVariant.COIN)
         tear:AddTearFlags(TearFlags.TEAR_GREED_COIN)
     end
+
+    -- Mod: % chance for locusts to shoot a small tear towards you whenever you shoot
+    tmpMod = PST:getTreeSnapshotMod("locustTears", 0)
+    if PST:getTreeSnapshotMod("greatDevourer", false) then
+        tmpMod = tmpMod * 3
+    end
+    if tmpMod > 0 then
+        for _, tmpLocust in ipairs(PST.specialNodes.activeLocusts) do
+            if tmpLocust:Exists() and 100 * math.random() < tmpMod then
+                local nearbyEnemies = Isaac.FindInRadius(tmpLocust.Position, 120, EntityPartition.ENEMY)
+                if #nearbyEnemies > 0 then
+                    local tearVel = (nearbyEnemies[1].Position - tmpLocust.Position):Normalized() * (7 * PST:getPlayer().ShotSpeed)
+                    local tmpVariant = TearVariant.BLOOD
+
+                    local newTear = Game():Spawn(
+                        EntityType.ENTITY_TEAR,
+                        tmpVariant,
+                        tmpLocust.Position,
+                        tearVel,
+                        tmpLocust,
+                        0,
+                        Random() + 1
+                    )
+
+                    -- Electrified Swarm node (T. Apollyon's tree)
+                    if PST:getTreeSnapshotMod("electrifiedSwarm", false) then
+                        local tmpChance = 33
+                        if PST:getTreeSnapshotMod("greatDevourer", false) then
+                            tmpChance = 100
+                        end
+                        if 100 * math.random() < tmpChance then
+                            newTear:ToTear():AddTearFlags(TearFlags.TEAR_JACOBS)
+                        end
+                    end
+
+                    -- Mod: % chance for locusts tears to be spectral and piercing
+                    local tmpSpectral = PST:getTreeSnapshotMod("locustTearSpectral", 0)
+                    if tmpSpectral > 0 and 100 * math.random() < tmpSpectral then
+                        newTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL)
+                    end
+
+                    if not PST:getTreeSnapshotMod("greatDevourer", false) then
+                        newTear.SpriteScale = Vector(0.85, 0.85)
+                    else
+                        newTear.SpriteScale = tmpLocust.SpriteScale - Vector(0.15, 0.15)
+                    end
+                end
+            end
+        end
+    end
 end
 
 function PST:onTearDeath(tear)

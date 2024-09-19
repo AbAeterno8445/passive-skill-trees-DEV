@@ -723,6 +723,22 @@ function PST:onNewRoom()
 		PST:addModifiers({ speedPerc = -tmpMod, gildMonsterSpeedBuff = { value = 0, set = true } }, true)
 	end
 
+	-- Locusts tracking (T. Apollyon)
+	if player:GetPlayerType() == PlayerType.PLAYER_APOLLYON_B then
+		PST.specialNodes.activeLocusts = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ABYSS_LOCUST)
+	end
+
+	-- Mod: % chance for enemies killed by locusts to drop an additional coin/key/bomb, up to twice per room (reset)
+	if PST:getTreeSnapshotMod("locustKillPickupProcs", 0) > 0 then
+		PST:addModifiers({ locustKillPickupProcs = { value = 0, set = true } }, true)
+	end
+
+	-- Mod: % chance to gain a smelted cricket leg when you kill an enemy (reset)
+	if PST:getTreeSnapshotMod("killCricketLegProc", false) then
+		player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_CRICKET_LEG)
+		PST:addModifiers({ killCricketLegProc = false }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums

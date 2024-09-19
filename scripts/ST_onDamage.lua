@@ -436,19 +436,19 @@ function PST:onDamage(target, damage, flag, source)
         local dmgMult = 1
         local dmgExtra = 0
 
-        -- Starcursed modifiers
-        if target:IsActiveEnemy(false) then
-            -- Damage reduction
+        -- Valid enemy
+        if target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
+            -- Starcursed mod: Damage reduction
             local tmpMod = PST:SC_getSnapshotMod("mobDmgReduction", 0)
             dmgMult = dmgMult - tmpMod / 100
 
-            -- Damage reduction from explosions
+            -- Starcursed mod: Damage reduction from explosions
             tmpMod = PST:SC_getSnapshotMod("mobExplosionDR", 0)
             if (flag & DamageFlag.DAMAGE_EXPLOSION) ~= 0 and tmpMod ~= 0 then
                 dmgMult = dmgMult - tmpMod / 100
             end
 
-            -- Damage blocking
+            -- Starcursed mod: Damage blocking
             local blockedDamage = false
             local partialBlock = false
             tmpMod = PST:SC_getSnapshotMod("mobBlock", 0)
@@ -456,7 +456,7 @@ function PST:onDamage(target, damage, flag, source)
                 partialBlock = true
             end
 
-            -- First hits blocked
+            -- Starcursed mod: First hits blocked
             tmpMod = PST:SC_getSnapshotMod("mobFirstBlock", 0)
             if tmpMod > 0 and target.InitSeed then
                 if not PST.specialNodes.mobFirstHitsBlocked[target.InitSeed] then
@@ -481,6 +481,19 @@ function PST:onDamage(target, damage, flag, source)
                 dir == Direction.UP and target.Position.Y < tmpPlayer.Position.Y or
                 dir == Direction.DOWN and target.Position.Y > tmpPlayer.Position.Y then
                     dmgMult = dmgMult - 0.75
+                end
+            end
+
+            -- Close Keeper node (T. Apollyon's tree)
+            if PST:getTreeSnapshotMod("closeKeeper", false) then
+                local dmgAdd = 0
+                for _, tmpLocust in ipairs(PST.specialNodes.activeLocusts) do
+                    if target.Position:Distance(tmpLocust.Position) < 50 then
+                        if dmgAdd < 10 then
+                            dmgMult = dmgMult + 0.02
+                            dmgAdd = dmgAdd + 1
+                        else break end
+                    end
                 end
             end
 
@@ -554,7 +567,7 @@ function PST:onDamage(target, damage, flag, source)
                     end
                 end
 
-                if tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY then
+                if tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY and tmpFamiliar.SubType == 0 then
                     -- Mod: +damage when a blue fly dies, up to +1.2. Resets every floor
                     local tmpBonus = PST:getTreeSnapshotMod("blueFlyDeathDamage", 0)
                     local tmpTotal = PST:getTreeSnapshotMod("blueFlyDeathDamageTotal", 0)
@@ -619,6 +632,51 @@ function PST:onDamage(target, damage, flag, source)
                     end
                 end
 
+                -- Locust hit
+                if tmpFamiliar.Variant == FamiliarVariant.ABYSS_LOCUST or (tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY and tmpFamiliar.SubType >= 1 and tmpFamiliar.SubType <= 5) then
+                    -- Locust tear
+                    if source.Type == EntityType.ENTITY_TEAR then
+                        damage = PST:getPlayer().Damage * (0.2 + PST:getTreeSnapshotMod("locustTearDmgInherit", 0) / 100)
+                    end
+
+                    -- Mod: +% damage dealt by locusts
+                    local tmpMod = PST:getTreeSnapshotMod("locustDmg", 0)
+                    if tmpMod ~= 0 then
+                        dmgMult = dmgMult + tmpMod / 100
+                    end
+
+                    -- Great Devourer node (T. Apollyon's tree)
+                    tmpMod = PST:getTreeSnapshotMod("greatDevourerBoost", 0)
+                    if tmpFamiliar.Variant == FamiliarVariant.ABYSS_LOCUST and tmpMod > 0 then
+                        dmgMult = dmgMult + tmpMod * 0.08
+                    end
+
+                    -- Extension cord laser
+                    if PST:getPlayer():HasTrinket(TrinketType.TRINKET_EXTENSION_CORD) and (flag & DamageFlag.DAMAGE_LASER) > 0 then
+                        -- Electrified Swarm node (T. Apollyon's tree)
+                        if PST:getTreeSnapshotMod("electrifiedSwarm", false) then
+                            dmgMult = dmgMult - 0.33
+                        end
+
+                        -- Great Devourer node (T. Apollyon's tree)
+                        if PST:getTreeSnapshotMod("greatDevourer", false) then
+                            damage = damage * 2
+                        end
+
+                        -- Mod: extension cord beam deals an additional % of your damage
+                        tmpMod = PST:getTreeSnapshotMod("extCordDmgInherit", 0)
+                        if tmpMod > 0 then
+                            dmgExtra = dmgExtra + PST:getPlayer().Damage * (tmpMod / 100)
+                        end
+
+                        -- Mod: % chance for extension cord beams to slow for 2 seconds on hit
+                        tmpMod = PST:getTreeSnapshotMod("extCordSlow", 0)
+                        if tmpMod > 0 and 100 * math.random() < tmpMod then
+                            target:AddSlowing(EntityRef(PST:getPlayer()), 60, 0.85, Color(0.9, 0.9, 0.9, 1))
+                        end
+                    end
+                end
+
                 -- Mod: % non-whip damage
                 tmpMod = PST:getTreeSnapshotMod("nonWhipDmg", 0)
                 if tmpMod ~= 0 then
@@ -650,7 +708,7 @@ function PST:onDamage(target, damage, flag, source)
                 -- Mod: chance for Bob's Head to spawn a blue fly when hitting an enemy
                 local tmpMod = PST:getTreeSnapshotMod("bobHeadFlySpawn", 0)
                 if tmpMod > 0 and PST:getTreeSnapshotMod("bobHeadFliesSpawned", 0) < 8 and 100 * math.random() < tmpMod then
-                    Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, source.Entity.Position, Vector.Zero, player, 0, Random() + 1)
+                    Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, source.Entity.Position, Vector.Zero, PST:getPlayer(), 0, Random() + 1)
                     PST:addModifiers({ bobHeadFliesSpawned = 1 }, true)
                 end
             else

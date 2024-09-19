@@ -62,6 +62,65 @@ function PST:postDamage(target, damage, flag, source)
                             PST:addModifiers({ damage = 0.6, carrionAvianBossProc = 1 }, true)
                         end
                     end
+                -- Locusts / locust trinkets
+                elseif tmpFamiliar.Variant == FamiliarVariant.ABYSS_LOCUST or (tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY and tmpFamiliar.SubType >= 1 and tmpFamiliar.SubType <= 5) then
+                    if isKillingHit then
+                        -- Carrion Locusts node (T. Apollyon's tree)
+                        if PST:getTreeSnapshotMod("carrionLocusts", false) then
+                            local statsCache = PST:getTreeSnapshotMod("carrionLocustStats", nil)
+                            if statsCache then
+                                local randStat = PST:getRandomStat() .. "Perc"
+                                if not statsCache[randStat] then
+                                    statsCache[randStat] = 0
+                                end
+                                if statsCache[randStat] < 12 then
+                                    statsCache[randStat] = statsCache[randStat] + 1
+                                    PST:addModifiers({ [randStat] = 1 }, true)
+                                end
+
+                                PST:addModifiers({ carrionLocustKills = 1 }, true)
+                                if PST:getTreeSnapshotMod("carrionLocustKills", 0) == 20 then
+                                    local newLocust = PST.locustTrinketsNonGold[math.random(#PST.locustTrinketsNonGold)]
+                                    local failsafe = 0
+                                    while PST:getPlayer():HasTrinket(newLocust) and failsafe < 100 do
+                                        newLocust = PST.locustTrinketsNonGold[math.random(#PST.locustTrinketsNonGold)]
+                                        failsafe = failsafe + 1
+                                    end
+                                    if failsafe < 100 then
+                                        PST:getPlayer():AddSmeltedTrinket(newLocust)
+                                    end
+                                    PST:addModifiers({ carrionLocustKills = { value = 0, set = true } }, true)
+                                end
+                            end
+                        end
+
+                        -- Mod: % chance for enemies killed by locusts to drop an additional coin/key/bomb, up to twice per room
+                        local tmpMod = PST:getTreeSnapshotMod("locustKillPickup", 0)
+                        if tmpMod > 0 and PST:getTreeSnapshotMod("locustKillPickupProcs", 0) < 2 and 100 * math.random() < tmpMod then
+                            local tmpPickups = {
+                                {PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY},
+                                {PickupVariant.PICKUP_KEY, KeySubType.KEY_NORMAL},
+                                {PickupVariant.PICKUP_BOMB, BombSubType.BOMB_NORMAL}
+                            }
+                            local newPickup = tmpPickups[math.random(#tmpPickups)]
+                            Game():Spawn(EntityType.ENTITY_PICKUP, newPickup[1], target.Position, Vector.Zero, nil, newPickup[2], Random() + 1)
+                            PST:addModifiers({ locustKillPickupProcs = 1 }, true)
+                        end
+
+                        -- Mod: +% tears for 2 seconds when a locust kills an enemy
+                        if PST:getTreeSnapshotMod("locustKillTears", 0) > 0 then
+                            if PST.specialNodes.locustKillTearsTimer == 0 then
+                                PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+                            end
+                            PST.specialNodes.locustKillTearsTimer = 60
+                        end
+
+                        -- Mod: % chance to gain +0.04 luck when a locust kills an enemy
+                        tmpMod = PST:getTreeSnapshotMod("locustKillLuck", 0)
+                        if tmpMod > 0 and 100 * math.random() < tmpMod then
+                            PST:addModifiers({ luck = 0.04, locustKillLuckBuff = 0.04 }, true)
+                        end
+                    end
                 end
 
                 -- Mod: chance for enemies killed by familiars to drop an additional 1/2 soul heart
@@ -101,7 +160,7 @@ function PST:postDamage(target, damage, flag, source)
                 end
                 if srcPlayer and target:IsVulnerableEnemy() then
                     -- Player effect hit
-                    if source.Entity.Variant == EntityType.ENTITY_EFFECT then
+                    if source.Entity.Type == EntityType.ENTITY_EFFECT then
                         -- Dark Arts
                         if source.Entity.Variant == EffectVariant.DARK_SNARE then
                             -- Bounty For The Lightless node (T. Judas' tree)
@@ -135,67 +194,74 @@ function PST:postDamage(target, damage, flag, source)
                                     end
                                 end
                             end
-                        -- Direct non-tear player hit to enemy (e.g. melee hits)
-                        elseif source.Entity.Type == EntityType.ENTITY_PLAYER and flag == 0 then
-                            -- Ransacking node (T. Cain's tree)
-                            if PST:getTreeSnapshotMod("ransacking", false) and isKillingHit then
-                                if PST:getTreeSnapshotMod("ransackingRoomPickups", 0) < 5 and 100 * math.random() < 10 then
-                                    local tmpNewPickup = PST:getTCainRandPickup()
-                                    Game():Spawn(EntityType.ENTITY_PICKUP, tmpNewPickup[1], target.Position, Vector.Zero, nil, tmpNewPickup[2], Random() + 1)
-                                    PST:addModifiers({ ransackingRoomPickups = 1 }, true)
-                                end
-                                PST:addModifiers({ luck = 0.02 }, true)
+                        end
+                    -- Direct non-tear player hit to enemy (e.g. melee hits)
+                    elseif source.Entity.Type == EntityType.ENTITY_PLAYER and flag == 0 then
+                        -- Ransacking node (T. Cain's tree)
+                        if PST:getTreeSnapshotMod("ransacking", false) and isKillingHit then
+                            if PST:getTreeSnapshotMod("ransackingRoomPickups", 0) < 5 and 100 * math.random() < 10 then
+                                local tmpNewPickup = PST:getTCainRandPickup()
+                                Game():Spawn(EntityType.ENTITY_PICKUP, tmpNewPickup[1], target.Position, Vector.Zero, nil, tmpNewPickup[2], Random() + 1)
+                                PST:addModifiers({ ransackingRoomPickups = 1 }, true)
                             end
-
-                            -- Hemoptysis kill
-                            if PST.specialNodes.hemoptysisFired > 0 and isKillingHit then
-                                -- Mod: % chance to gain 0.03 luck when killing enemies with Hemoptysis
-                                tmpMod = PST:getTreeSnapshotMod("hemoptysisKillLuck", 0)
-                                if tmpMod > 0 and 100 * math.random() < tmpMod then
-                                    PST:addModifiers({ luck = 0.03 }, true)
-                                end
-                            end
+                            PST:addModifiers({ luck = 0.02 }, true)
                         end
 
-                        -- Mod: chance for enemies killed by Jacob to drop 1/2 red heart, once per room
-                        if 100 * math.random() < PST:getTreeSnapshotMod("jacobHeartOnKill", 0) and not PST:getTreeSnapshotMod("jacobHeartOnKillProc", false) and
-                        isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
-                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
-                            PST:addModifiers({ jacobHeartOnKillProc = true }, true)
-                        end
-    
-                        -- Mod: chance for enemies killed by Esau to drop 1/2 soul heart, once per room
-                        if 100 * math.random() < PST:getTreeSnapshotMod("esauSoulOnKill", 0) and not PST:getTreeSnapshotMod("esauSoulOnKillProc", false) and
-                        isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
-                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
-                            PST:addModifiers({ esauSoulOnKillProc = true }, true)
-                        end
-
-                        -- Mod: +% to a random stat every X kills with the current form (T. Lazarus)
-                        tmpMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
-                        if tmpMod > 0 and PST:getTreeSnapshotMod("lazFormKillStatProcs", 0) < 8 and isKillingHit then
-                            if srcPlayer:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
-                                PST:addModifiers({ lazFormDeadKills = 1 }, true)
-                                if PST:getTreeSnapshotMod("lazFormDeadKills", 0) >= 8 then
-                                    local randStat = PST:getRandomStat({"shotSpeed"})
-                                    local tmpStatCache = PST:getTreeSnapshotMod("lazFormDeadStatCache", {})
-                                    if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
-                                    tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
-                                    PST:addModifiers({ lazFormKillStatProcs = 1, lazFormDeadKills = { value = 0, set = true } }, true)
-                                    PST:updateCacheDelayed()
-                                end
-                            else
-                                PST:addModifiers({ lazFormKills = 1 }, true)
-                                if PST:getTreeSnapshotMod("lazFormKills", 0) >= 8 then
-                                    local randStat = PST:getRandomStat({"shotSpeed"})
-                                    local tmpStatCache = PST:getTreeSnapshotMod("lazFormStatCache", {})
-                                    if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
-                                    tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
-                                    PST:addModifiers({ lazFormKillStatProcs = 1, lazFormKills = { value = 0, set = true } }, true)
-                                    PST:updateCacheDelayed()
-                                end
+                        -- Hemoptysis kill
+                        if PST.specialNodes.hemoptysisFired > 0 and isKillingHit then
+                            -- Mod: % chance to gain 0.03 luck when killing enemies with Hemoptysis
+                            tmpMod = PST:getTreeSnapshotMod("hemoptysisKillLuck", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                PST:addModifiers({ luck = 0.03 }, true)
                             end
                         end
+                    end
+
+                    -- Mod: chance for enemies killed by Jacob to drop 1/2 red heart, once per room
+                    if 100 * math.random() < PST:getTreeSnapshotMod("jacobHeartOnKill", 0) and not PST:getTreeSnapshotMod("jacobHeartOnKillProc", false) and
+                    isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
+                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
+                        PST:addModifiers({ jacobHeartOnKillProc = true }, true)
+                    end
+
+                    -- Mod: chance for enemies killed by Esau to drop 1/2 soul heart, once per room
+                    if 100 * math.random() < PST:getTreeSnapshotMod("esauSoulOnKill", 0) and not PST:getTreeSnapshotMod("esauSoulOnKillProc", false) and
+                    isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
+                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                        PST:addModifiers({ esauSoulOnKillProc = true }, true)
+                    end
+
+                    -- Mod: +% to a random stat every X kills with the current form (T. Lazarus)
+                    tmpMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
+                    if tmpMod > 0 and PST:getTreeSnapshotMod("lazFormKillStatProcs", 0) < 8 and isKillingHit then
+                        if srcPlayer:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
+                            PST:addModifiers({ lazFormDeadKills = 1 }, true)
+                            if PST:getTreeSnapshotMod("lazFormDeadKills", 0) >= 8 then
+                                local randStat = PST:getRandomStat({"shotSpeed"})
+                                local tmpStatCache = PST:getTreeSnapshotMod("lazFormDeadStatCache", {})
+                                if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
+                                tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
+                                PST:addModifiers({ lazFormKillStatProcs = 1, lazFormDeadKills = { value = 0, set = true } }, true)
+                                PST:updateCacheDelayed()
+                            end
+                        else
+                            PST:addModifiers({ lazFormKills = 1 }, true)
+                            if PST:getTreeSnapshotMod("lazFormKills", 0) >= 8 then
+                                local randStat = PST:getRandomStat({"shotSpeed"})
+                                local tmpStatCache = PST:getTreeSnapshotMod("lazFormStatCache", {})
+                                if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
+                                tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
+                                PST:addModifiers({ lazFormKillStatProcs = 1, lazFormKills = { value = 0, set = true } }, true)
+                                PST:updateCacheDelayed()
+                            end
+                        end
+                    end
+
+                    -- Mod: % chance to gain a smelted Cricket Leg when you kill an enemy
+                    tmpMod = PST:getTreeSnapshotMod("killCricketLeg", 0)
+                    if tmpMod > 0 and not PST:getPlayer():HasTrinket(TrinketType.TRINKET_CRICKET_LEG) and 100 * math.random() < tmpMod then
+                        PST:getPlayer():AddSmeltedTrinket(TrinketType.TRINKET_CRICKET_LEG)
+                        PST:addModifiers({ killCricketLegProc = true }, true)
                     end
                 end
             end

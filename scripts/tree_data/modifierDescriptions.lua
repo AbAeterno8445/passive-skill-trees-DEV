@@ -2810,6 +2810,103 @@ PST.treeModDescriptions = {
         str = "%d%% chance to keep Steam Sale when purchasing more than 4 items while holding it",
         category = "charTree", sort = 3620
     },
+    ---- T. APOLLYON'S TREE ----
+    electrifiedSwarm = {
+        str = {
+            "Electrified Swarm:",
+            "    Start with a smelted Extension Cord",
+            "    Tears fired by locusts have a 33%% chance to be electrified",
+            "    Extension Cord beams deal 33%% less damage"
+        },
+        category = "charTree", sort = 3650
+    },
+    closeKeeper = {
+        str = {
+            "Close Keeper:",
+            "    Locusts follow you much more closely",
+            "    +2%% damage received by enemies per locust near it, up to 20%%"
+        },
+        category = "charTree", sort = 3651
+    },
+    carrionLocusts = {
+        str = {
+            "Carrion Locusts:",
+            "    +1%% to a random stat whenever a locust kills an enemy, up to +12%% of each stat",
+            "    For every 20 enemies killed by locusts, gain a random smelted Locust trinket you don't",
+            "    currently have",
+            "    Entering a floor halves your current bonuses and removes smelted Locust trinkets"
+        },
+        category = "charTree", sort = 3652
+    },
+    greatDevourer = {
+        str = {
+            "Great Devourer:",
+            "    You can now only have up to 1 locust",
+            "    Whenever you would have gained a locust, instead add +8%% damage and speed to the existing",
+            "    locust, up to a total 200%%",
+            "    Double extension cord beam damage if it targets a locust",
+            "    Triple your total chance for locusts to fire tears, and these inherit an additional 40%%",
+            "    of your damage",
+            "    If Electrified Swarm is allocated, locust tears are always electrified"
+        },
+        category = "charTree", sort = 3653
+    },
+    locustDmg = {
+        str = "%s%d%% damage dealt by locusts.",
+        addPlus = true,
+        category = "charTree", sort = 3660
+    },
+    extCordDmgInherit = {
+        str = "Extension Cord beams deal an additional %d%% of your damage if they target a locust",
+        category = "charTree", sort = 3661
+    },
+    extCordSlow = {
+        str = "%d%% chance for Extension Cord beams to slow enemies for 2 seconds on hit if they target a locust",
+        category = "charTree", sort = 3662
+    },
+    locustTears = {
+        str = {
+            "%.2f%% chance for locusts to shoot a small tear towards enemies close to them whenever you shoot",
+            "    Locust tears deal a base 20%% of your damage"
+        },
+        category = "charTree", sort = 3663
+    },
+    locustTearDmgInherit = {
+        str = "Locust tears gain an additional %d%% of your damage",
+        category = "charTree", sort = 3664
+    },
+    locustTearSpectral = {
+        str = "%d%% chance for tears fired by locusts to be spectral and piercing",
+        category = "charTree", sort = 3665
+    },
+    locustKillPickup = {
+        str = {
+            "%.2f%% chance for enemies killed by locusts to drop an additional coin/key/bomb, up to twice",
+            "per room"
+        },
+        category = "charTree", sort = 3666
+    },
+    locustKillTears = {
+        str = "%s%d%% tears for 2 seconds when a locust kills an enemy",
+        addPlus = true,
+        category = "charTree", sort = 3667
+    },
+    killCricketLeg = {
+        str = "%d%% chance to gain a smelted Cricket Leg for the current room when you kill an enemy",
+        category = "charTree", sort = 3668
+    },
+    cricketLegSpeed = {
+        str = "%s%d%% speed while you have Cricket Leg",
+        addPlus = true,
+        category = "charTree", sort = 3669
+    },
+    locustKillLuck = {
+        str = {
+            "%d%% chance to gain +0.04 luck when a locust kills an enemy",
+            "    Halve your total bonus when entering a new floor"
+        },
+        category = "charTree", sort = 3670
+    },
     --#endregion
 
     ---- STARMIGHT ----

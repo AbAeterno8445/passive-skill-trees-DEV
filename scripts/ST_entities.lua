@@ -11,7 +11,7 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY) then
         local player = PST:getPlayer()
         -- Bethany, as Keeper: -0.01 luck whenever a blue fly spawns, up to -2
-        if type == EntityType.ENTITY_FAMILIAR and variant == FamiliarVariant.BLUE_FLY and
+        if type == EntityType.ENTITY_FAMILIAR and variant == FamiliarVariant.BLUE_FLY and subtype == 0 and
         (player:GetPlayerType() == PlayerType.PLAYER_KEEPER or
         player:GetPlayerType() == PlayerType.PLAYER_KEEPERB) then
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
@@ -72,7 +72,7 @@ function PST:familiarInit(familiar)
                 end
             end
         -- Blue flies
-        elseif familiar.Variant == FamiliarVariant.BLUE_FLY then
+        elseif familiar.Variant == FamiliarVariant.BLUE_FLY and familiar.SubType == 0 then
             -- Marquess of Flies node (T. Keeper's tree)
             if PST:getTreeSnapshotMod("marquessOfFlies", false) then
                 local tmpFlies = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY) + 1
@@ -80,6 +80,52 @@ function PST:familiarInit(familiar)
                     PST:addModifiers({ marquessFliesCache = { value = tmpFlies, set = true } }, true)
                     PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
                 end
+            end
+        -- Locusts
+        elseif familiar.Variant == FamiliarVariant.ABYSS_LOCUST then
+            -- Great Devourer node (T. Apollyon's tree)
+            local otherLocusts = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ABYSS_LOCUST)
+            if PST:getTreeSnapshotMod("greatDevourer", false) and #otherLocusts > 0 then
+                local tmpPoof = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, otherLocusts[1].Position, Vector.Zero, nil, 0, Random() + 1)
+                tmpPoof:GetSprite().Scale = Vector(1.15, 1.15)
+                SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.6, 2, false, 1.1)
+
+                familiar:Remove()
+                if PST:getTreeSnapshotMod("greatDevourerBoost", 0) < 25 then
+                    PST:addModifiers({ greatDevourerBoost = 1 }, true)
+                end
+            end
+        end
+    end
+end
+
+local tmpLastFrame = 0
+---@param familiar EntityFamiliar
+function PST:familiarUpdate(familiar)
+    -- Locust
+    if familiar.Variant == FamiliarVariant.ABYSS_LOCUST then
+        -- Close Keeper node (T. Apollyon's tree)
+        if PST:getTreeSnapshotMod("closeKeeper", false) then
+            local player = PST:getPlayer()
+            -- State is -1 while flying out, 0 while following
+            if familiar.State == 0 and familiar.Position:Distance(player.Position) > 6 then
+                familiar.Position = familiar.Position - (familiar.Position - player.Position) / 4
+            end
+        end
+
+        -- Great Devourer node (T. Apollyon's tree)
+        if PST:getTreeSnapshotMod("greatDevourer", false) then
+            local tmpMod = PST:getTreeSnapshotMod("greatDevourerBoost", 0)
+            if tmpMod > 0 then
+                local tmpMult = 1 + tmpMod / 20
+                if familiar.SpriteScale.X ~= tmpMult then
+                    familiar.SpriteScale = Vector(tmpMult, tmpMult)
+                end
+                if familiar:GetSpeedMultiplier() ~= tmpMult then
+                    familiar:SetSpeedMultiplier(tmpMult)
+                end
+                familiar:GetSprite():SetFrame(tmpLastFrame)
+                tmpLastFrame = (tmpLastFrame + 1) % 8
             end
         end
     end

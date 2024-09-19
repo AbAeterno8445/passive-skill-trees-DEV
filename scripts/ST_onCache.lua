@@ -298,6 +298,12 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.speedPerc = dynamicMods.speedPerc - tmpTreeMod
             end
         end
+
+        -- Mod: +% speed while you have Cricket Leg
+        tmpTreeMod = PST:getTreeSnapshotMod("cricketLegSpeed", 0)
+        if tmpTreeMod > 0 and player:HasTrinket(TrinketType.TRINKET_CRICKET_LEG) then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active
@@ -382,6 +388,12 @@ function PST:onCache(player, cacheFlag)
             if tmpTreeMod > 0 then
                 dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpTreeMod
             end
+        end
+
+        -- Mod: +% tears for 2 seconds after a locust kills an enemy
+        tmpTreeMod = PST:getTreeSnapshotMod("locustKillTears", 0)
+        if tmpTreeMod > 0 and PST.specialNodes.locustKillTearsTimer > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
