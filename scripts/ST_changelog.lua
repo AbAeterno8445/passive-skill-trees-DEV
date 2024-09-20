@@ -5,9 +5,11 @@ function PST:getChangelogList()
 
         "v0.3.10",
         "- Introduced new character skill trees for: Tainted Keeper and Tainted Apollyon.",
+        "- Added a new Ancient Jewel: \"Crystallized Anamnesis\".",
         "- Fixed modifiers requiring a boss room to be cleared without taking damage potentially not triggering.",
         "- Fixed T. Lost's \"Minimum luck is -1\" modifier applying globally regardless of allocation.",
         "- Fixed T. Isaac's \"Consuming Void\" being able to remove progression items, such as knife pieces.",
+        "- Fixed Apollyon's \"Harbinger Locusts\" occasionally spawning golden locusts.",
         "- Fixed locust trinket familiars being considered blue flies for relevant effects.",
         "- Fixed certain on-kill effects not triggering.",
         "",

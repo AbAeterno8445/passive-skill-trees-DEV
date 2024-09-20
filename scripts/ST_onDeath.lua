@@ -261,7 +261,7 @@ function PST:onDeath(entity)
             -- Harbinger Locusts node (Apollyon's tree)
 			if PST:getTreeSnapshotMod("harbingerLocusts", false) then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
+				local tmpLocust = PST.locustTrinketsNonGold[math.random(#PST.locustTrinketsNonGold)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
 			end
 

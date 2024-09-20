@@ -43,6 +43,58 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         end
     end
 
+    -- Ancient starcursed jewel: Crystallized Anamnesis
+    if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) and PST.specialNodes.SC_anamnesisItemPicked > 0 and charge == 0 then
+        local tmpListType = "Other"
+        if PST:poolHasCollectible(ItemPoolType.POOL_TREASURE, itemType) then
+            tmpListType = "Treasure"
+        elseif PST:poolHasCollectible(ItemPoolType.POOL_DEVIL, itemType) then
+            tmpListType = "Devil"
+        elseif PST:poolHasCollectible(ItemPoolType.POOL_ANGEL, itemType) then
+            tmpListType = "Angel"
+        end
+        local tmpList = PST:getTreeSnapshotMod("SC_anamnesis" .. tmpListType, nil)
+        if tmpList then
+            table.insert(tmpList, itemType)
+
+            -- Switch to grabbed item's state
+            if PST.specialNodes.SC_anamnesisResetTimer == 0 then
+                for pState, stateType in pairs(PST.anamnesisListTypes) do
+                    if stateType == tmpListType then
+                        PST:switchPurityState(pState)
+                        break
+                    end
+                end
+            end
+
+            -- Grant a random passive angel item when collecting a devil item, and vice versa
+            local tmpTypes = {
+                {"Devil", ItemPoolType.POOL_ANGEL, "SC_anamnesisAngel"},
+                {"Angel", ItemPoolType.POOL_DEVIL, "SC_anamnesisDevil"}
+            }
+            for _, typeCheck in ipairs(tmpTypes) do
+                if tmpListType == typeCheck[1] then
+                    local otherList = PST:getTreeSnapshotMod(typeCheck[3], nil)
+                    if otherList then
+                        local newItem = Game():GetItemPool():GetCollectible(typeCheck[2])
+                        local newItemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+                        local failsafe = 0
+                        while ((newItemCfg and newItemCfg.Type ~= ItemType.ITEM_PASSIVE) or not newItemCfg or PST:arrHasValue(otherList, newItem) or newItem == CollectibleType.COLLECTIBLE_PURITY) and
+                        failsafe < 200 do
+                            newItem = Game():GetItemPool():GetCollectible(typeCheck[2])
+                            newItemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+                            failsafe = failsafe + 1
+                        end
+                        if newItem > 0 and failsafe < 200 then
+                            table.insert(otherList, newItem)
+                        end
+                    end
+                end
+            end
+        end
+        PST.specialNodes.SC_anamnesisItemPicked = 0
+    end
+
     -- Intermittent Conceptions node (Isaac's tree)
     if PST:getTreeSnapshotMod("intermittentConceptions", false) then
         if itemType ~= CollectibleType.COLLECTIBLE_BIRTHRIGHT and charge == 0 then

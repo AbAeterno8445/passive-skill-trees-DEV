@@ -828,6 +828,27 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
+    },
+    crystallizedAnamnesis = {
+        weight = 60,
+        spriteFrame = 29,
+        name = "Crystallized Anamnesis",
+        description = {
+            "Start with Purity. -50% effectiveness of Purity aura stat ups.",
+            "Start with Chaos as an innate effect.",
+            "Collected passive pedestal items are stored into each Purity aura based on their source item pool.",
+            "Items that aren't included in the current Purity aura color's pool are removed.",
+            "Collecting an item switches Purity to its corresponding item pool aura.",
+            "Collecting a Devil item grants you a random Angel item, and vice versa.",
+            "While Purity's aura is inactive, disable all items.",
+            "Once lost, Purity's aura is restored after 7 seconds as a random color."
+        },
+        rewards = {
+            xpgain = 75,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 6},
+            beastRewards = {1, 6}
+        }
     }
 }
 

@@ -300,6 +300,12 @@ PST.pennyTrinkets = {
 	TrinketType.TRINKET_BLESSED_PENNY, TrinketType.TRINKET_CHARGED_PENNY, TrinketType.TRINKET_SWALLOWED_PENNY,
 	TrinketType.TRINKET_COUNTERFEIT_PENNY
 }
+PST.anamnesisListTypes = {
+	[PurityState.RED] = "Devil",
+	[PurityState.BLUE] = "Angel",
+	[PurityState.YELLOW] = "Treasure",
+	[PurityState.ORANGE] = "Other"
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -1117,6 +1123,13 @@ function PST:resetMods()
 		SC_astralInsigniaDebuff = 0,
 		SC_astralInsigniaItem = 0,
 		SC_mightstoneProcs = 0,
+		SC_anamnesisDisabled = false,
+		SC_anamnesisAuraCache = -1,
+		SC_anamnesisCursedRoom = -1,
+		SC_anamnesisDevil = {},
+		SC_anamnesisAngel = {},
+		SC_anamnesisTreasure = {},
+		SC_anamnesisOther = {},
 		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes
@@ -1213,7 +1226,10 @@ function PST:resetMods()
 		SC_nightProjTimer = 3600,
 		SC_causeConvBossEnt = nil,
 		SC_causeConvRespawnTimer = 0,
-		SC_glowingGlassProc = false
+		SC_glowingGlassProc = false,
+		SC_anamnesisResetTimer = 0,
+		SC_anamnesisItemPicked = 0,
+		SC_anamnesisJustReset = false,
 	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)

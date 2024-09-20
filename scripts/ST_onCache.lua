@@ -415,6 +415,14 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- Ancient starcursed jewel: Crystallized Anamnesis
+    if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) and player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_PURITY) then
+        if player:GetPurityState() == PurityState.RED then dynamicMods.damage = dynamicMods.damage - 2
+        elseif player:GetPurityState() == PurityState.BLUE then dynamicMods.tears = dynamicMods.tears - 1
+        elseif player:GetPurityState() == PurityState.YELLOW then dynamicMods.speed = dynamicMods.speed - 0.5
+        elseif player:GetPurityState() == PurityState.ORANGE then dynamicMods.range = dynamicMods.range - 1.5 end
+    end
+
     -- A True Ending? node (Lazarus' tree)
     if PST:getTreeSnapshotMod("aTrueEnding", false) and player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + PST:getTreeSnapshotMod("aTrueEndingCardUses", 0) * 2

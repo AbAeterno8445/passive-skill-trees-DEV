@@ -204,6 +204,15 @@ function PST:onNewRun(isContinued)
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_CHAMPION_BELT)
             player:AddCollectible(CollectibleType.COLLECTIBLE_CHAMPION_BELT)
         end
+        -- Ancient starcursed jewel: Crystallized Anamnesis
+        if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_PURITY)
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_CHAOS)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_PURITY)
+            if not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
+                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
+            end
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

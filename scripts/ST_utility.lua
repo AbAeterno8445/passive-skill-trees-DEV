@@ -491,6 +491,41 @@ function PST:removePlayerShields()
 	playerEff:RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BOOK_OF_SHADOWS, -1)
 end
 
+---@param itemPool ItemPoolType
+---@param item CollectibleType
+function PST:poolHasCollectible(itemPool, item)
+	for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(itemPool)) do
+		if tmpItem.itemID == item then
+			return true
+		end
+	end
+	return false
+end
+
+local purityPathColors = {
+	[PurityState.RED] = "red",
+	[PurityState.BLUE] = "blue",
+	[PurityState.YELLOW] = "yellow",
+	[PurityState.ORANGE] = "orange"
+}
+---@param newState PurityState
+function PST:switchPurityState(newState)
+	local player = PST:getPlayer()
+
+	---@diagnostic disable-next-line: undefined-field
+	player:SetPurityState(newState)
+	player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_PURITY)
+	player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_PURITY)
+	for _, tmpCostume in ipairs(player:GetCostumeSpriteDescs()) do
+		local itemCfg = tmpCostume:GetItemConfig()
+		if itemCfg and itemCfg:IsNull() and itemCfg.ID == NullItemID.ID_PURITY_GLOW then
+			tmpCostume:GetSprite():ReplaceSpritesheet(0, "gfx/characters/costumes/PurityGlow_" .. purityPathColors[newState] .. ".png", true)
+			foundCostume = true
+		end
+	end
+	PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SPEED | CacheFlag.CACHE_RANGE)
+end
+
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
 ---@param player EntityPlayer

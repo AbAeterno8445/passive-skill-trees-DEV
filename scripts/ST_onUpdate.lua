@@ -372,7 +372,7 @@ function PST:onUpdate()
 			-- Harbinger Locusts node (Apollyon's tree)
 			if PST:getTreeSnapshotMod("harbingerLocusts", false) and not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("harbingerLocustsFloorProc", false) then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-				local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
+				local tmpLocust = PST.locustTrinketsNonGold[math.random(#PST.locustTrinketsNonGold)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpLocust, Random() + 1)
 				PST:addModifiers({ harbingerLocustsFloorProc = true }, true)
 			end
@@ -918,6 +918,89 @@ function PST:onUpdate()
 			end
 		end
 		PST.specialNodes.SC_glowingGlassProc = false
+	end
+
+	-- Ancient starcursed jewel: Crystallized Anamnesis
+	if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
+		end
+		if not PST:inMineshaftPuzzle() then
+			if not player:HasCollectible(CollectibleType.COLLECTIBLE_PURITY, true) and (level:GetCurrentRoomDesc().Flags & RoomDescriptor.FLAG_CURSED_MIST) == 0 then
+				player:AddCollectible(CollectibleType.COLLECTIBLE_PURITY)
+			end
+
+			local triggerItemCheck = false
+			local hasPurity = player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_PURITY)
+
+			if not PST.specialNodes.SC_anamnesisJustReset then
+				if not PST:getTreeSnapshotMod("SC_anamnesisDisabled", false) and not hasPurity then
+					level:GetCurrentRoomDesc().Flags = level:GetCurrentRoomDesc().Flags | RoomDescriptor.FLAG_CURSED_MIST
+					PST.specialNodes.SC_anamnesisResetTimer = 211
+					SFXManager():Play(SoundEffect.SOUND_EDEN_GLITCH)
+					PST:addModifiers({
+						SC_anamnesisCursedRoom = { value = level:GetCurrentRoomIndex(), set = true },
+						SC_anamnesisDisabled = true
+					}, true)
+				elseif PST:getTreeSnapshotMod("SC_anamnesisDisabled", false) and hasPurity then
+					PST:addModifiers({ SC_anamnesisDisabled = false }, true)
+					triggerItemCheck = true
+				end
+			elseif PST.specialNodes.SC_anamnesisJustReset then
+				PST.specialNodes.SC_anamnesisJustReset = false
+				PST:switchPurityState(player:GetPurityState())
+			end
+
+			local auraCache = PST:getTreeSnapshotMod("SC_anamnesisAuraCache", -1)
+			if hasPurity and auraCache ~= -1 and auraCache ~= player:GetPurityState() then
+				triggerItemCheck = true
+			end
+
+			if triggerItemCheck then
+				local currentType = PST.anamnesisListTypes[player:GetPurityState()]
+				local currentList = PST:getTreeSnapshotMod("SC_anamnesis" .. currentType, nil)
+				if currentList then
+					local otherItems = {}
+					for tmpType, targetType in pairs(PST.anamnesisListTypes) do
+						if tmpType ~= currentType then
+							local otherList = PST:getTreeSnapshotMod("SC_anamnesis" .. targetType, nil)
+							if otherList then
+								for _, tmpItem in ipairs(otherList) do
+									if tmpItem ~= CollectibleType.COLLECTIBLE_PURITY then
+										table.insert(otherItems, tmpItem)
+									end
+								end
+							end
+						end
+					end
+					for _, tmpItem in ipairs(otherItems) do
+						player:RemoveCollectible(tmpItem)
+					end
+					for _, tmpItem in ipairs(currentList) do
+						if not player:HasCollectible(tmpItem) then
+							player:AddCollectible(tmpItem, 0, false)
+						end
+					end
+					player:AddCacheFlags(CacheFlag.CACHE_ALL, true)
+				end
+			end
+
+			if hasPurity and auraCache ~= player:GetPurityState() then
+				PST:addModifiers({ SC_anamnesisAuraCache = { value = player:GetPurityState(), set = true } }, true)
+			end
+
+			if PST.specialNodes.SC_anamnesisResetTimer > 0 then
+				PST.specialNodes.SC_anamnesisResetTimer = PST.specialNodes.SC_anamnesisResetTimer - 1
+				if PST.specialNodes.SC_anamnesisResetTimer == 0 then
+					level:GetCurrentRoomDesc().Flags = level:GetCurrentRoomDesc().Flags &~ RoomDescriptor.FLAG_CURSED_MIST
+					player:RemoveCollectible(CollectibleType.COLLECTIBLE_PURITY)
+					player:AddCollectible(CollectibleType.COLLECTIBLE_PURITY)
+					SFXManager():Play(SoundEffect.SOUND_EDEN_GLITCH)
+					PST.specialNodes.SC_anamnesisJustReset = true
+					PST:addModifiers({ SC_anamnesisCursedRoom = { value = -1, set = true } }, true)
+				end
+			end
+		end
 	end
 
 	-- Eldritch Mapping node

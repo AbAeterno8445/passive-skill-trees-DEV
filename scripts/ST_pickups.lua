@@ -58,6 +58,12 @@ function PST:prePickup(pickup, collider, low)
                 PST:addModifiers({ SC_astralInsigniaItem = subtype }, true)
             end
 
+            -- Ancient starcursed jewel: Crystallized Anamnesis
+            if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) and not PST:arrHasValue(PST.progressionItems, subtype) and (not pickup:IsShopItem() or
+            pickup:IsShopItem() and player:GetNumCoins() >= pickup.Price) and PST.specialNodes.SC_anamnesisItemPicked == 0 then
+                PST.specialNodes.SC_anamnesisItemPicked = subtype
+            end
+
             -- Impromptu Gambler node (Cain's tree)
             if PST:getTreeSnapshotMod("impromptuGambler", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
                 -- Remove crane games
@@ -666,7 +672,7 @@ function PST:onPickupInit(pickup)
             -- Chance to replace dropped trinkets with a random locust
             if firstSpawn and 100 * math.random() < PST:getTreeSnapshotMod("harbingerLocustsReplace", 0) and not isShop then
                 pickup:Remove()
-                local tmpLocust = PST.locustTrinkets[math.random(#PST.locustTrinkets)]
+                local tmpLocust = PST.locustTrinketsNonGold[math.random(#PST.locustTrinketsNonGold)]
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, pickup.Velocity, nil, tmpLocust, Random() + 1)
                 pickupGone = true
             end

@@ -254,6 +254,21 @@ function PST:onNewRoom()
 		PST:addModifiers({ SC_mightstoneProcs = { value = 0, set = true } }, true)
 	end
 
+	-- Ancient starcursed jewel: Crystallized Anamnesis
+	if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) then
+		local cursedRoom = PST:getTreeSnapshotMod("SC_anamnesisCursedRoom", -1)
+		if cursedRoom ~= -1 then
+			local cursedRoomDesc = PST:getLevel():GetRoomByIdx(cursedRoom)
+			if cursedRoomDesc then
+				cursedRoomDesc.Flags = cursedRoomDesc.Flags &~ RoomDescriptor.FLAG_CURSED_MIST
+			end
+			PST:addModifiers({ SC_anamnesisCursedRoom = { value = -1, set = true } }, true)
+		end
+		if PST.specialNodes.SC_anamnesisResetTimer > 0 then
+			PST.specialNodes.SC_anamnesisResetTimer = 1
+		end
+	end
+
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
 	if tmpTreeMod ~= 0 then

@@ -123,6 +123,11 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_astralInsigniaLevel = 1 }, true)
     end
 
+    -- Ancient starcursed jewel: Crystallized Anamnesis
+    if PST:getTreeSnapshotMod("SC_anamnesisCursedRoom", -1) ~= -1 then
+        PST:addModifiers({ SC_anamnesisCursedRoom = { value = -1, set = true } }, true)
+    end
+
     -- Challenge room clear proc
     if PST:getTreeSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)
@@ -534,7 +539,7 @@ function PST:onNewLevel()
             end
             PST:addModifiers(statsChange, true)
         end
-        for _, tmpTrinket in ipairs(PST.locustTrinkets) do
+        for _, tmpTrinket in ipairs(PST.locustTrinketsNonGold) do
             if player:HasTrinket(tmpTrinket) then
                 player:TryRemoveSmeltedTrinket(tmpTrinket)
             end
