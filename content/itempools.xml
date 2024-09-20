@@ -1,0 +1,172 @@
+<ItemPools>
+    <Pool Name="blueItems">
+		<!--Brother Bobby-->
+		<Item Id="8" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Mini Mush-->
+		<Item Id="71" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Book of Revelations-->
+		<Item Id="78" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--The Relic-->
+		<Item Id="98" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Forget Me Now-->
+		<Item Id="127" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--The Mulligan-->
+		<Item Id="151" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Crystal Ball-->
+		<Item Id="158" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--The Candle-->
+		<Item Id="164" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Fate-->
+		<Item Id="179" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Mom's Eyeshadow-->
+		<Item Id="200" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Spiderbaby-->
+		<Item Id="211" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Anti-Gravity-->
+		<Item Id="222" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Stop Watch-->
+		<Item Id="232" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Hive Mind-->
+		<Item Id="248" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Blue Map-->
+		<Item Id="246" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Sissy Longlegs-->
+		<Item Id="280" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Converter-->
+		<Item Id="296" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Pandora's Box-->
+		<Item Id="297" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Taurus-->
+		<Item Id="299" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Aries-->
+		<Item Id="300" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Cancer-->
+		<Item Id="301" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Leo-->
+		<Item Id="302" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Virgo-->
+		<Item Id="303" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Libra-->
+		<Item Id="304" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Scorpio-->
+		<Item Id="305" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Sagittarius-->
+		<Item Id="306" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Capricorn-->
+		<Item Id="307" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Aquarius-->
+		<Item Id="308" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Pisces-->
+		<Item Id="309" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Holy Mantle-->
+		<Item Id="313" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Gemini-->
+		<Item Id="318" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--???'s Only Friend-->
+		<Item Id="320" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Mongo Baby-->
+		<Item Id="322" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Isaac's Tears-->
+		<Item Id="323" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--The Soul-->
+		<Item Id="335" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Broken Watch-->
+		<Item Id="337" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--The Boomerang-->
+		<Item Id="338" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Blue Cap-->
+		<Item Id="342" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Fate's Reward-->
+		<Item Id="361" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Epiphora-->
+		<Item Id="368" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Holy Light-->
+		<Item Id="374" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Restock-->
+		<Item Id="376" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Tear Detonator-->
+		<Item Id="383" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--D12-->
+		<Item Id="386" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Tractor Beam-->
+		<Item Id="397" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Evil Eye-->
+		<Item Id="410" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Crown Of Light-->
+		<Item Id="415" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Glowing Hour Glass-->
+		<Item Id="422" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--PJs-->
+		<Item Id="428" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Papa Fly-->
+		<Item Id="430" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Binky-->
+		<Item Id="438" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Shard of Glass-->
+		<Item Id="448" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Parasitoid-->
+		<Item Id="461" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Glyph of Balance-->
+		<Item Id="464" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Hushy-->
+		<Item Id="470" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Eden's Soul-->
+		<Item Id="490" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--YO LISTEN!-->
+		<Item Id="492" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Jacob's Ladder-->
+		<Item Id="494" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Sharp Straw-->
+		<Item Id="507" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Telekinesis-->
+		<Item Id="522" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Lachryphagy-->
+		<Item Id="532" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Blanket-->
+		<Item Id="535" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Hallowed Ground-->
+		<Item Id="543" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Almond Milk-->
+		<Item Id="561" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Rock Bottom-->
+		<Item Id="562" Weight="0.2" DecreaseBy="0.1" RemoveOn="0.1"/>
+		<!--Book of Virtues-->
+		<Item Id="584" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Sol-->
+		<Item Id="588" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Luna-->
+		<Item Id="589" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Mercurius-->
+		<Item Id="590" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Venus-->
+		<Item Id="591" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Terra-->
+		<Item Id="592" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Mars-->
+		<Item Id="593" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Jupiter-->
+		<Item Id="594" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Saturnus-->
+		<Item Id="595" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Uranus-->
+		<Item Id="596" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Neptunus-->
+		<Item Id="597" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Pluto-->
+		<Item Id="598" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Freezer Baby-->
+		<Item Id="608" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Genesis-->
+		<Item Id="622" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Evil Charm-->
+		<Item Id="632" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Cube Baby-->
+		<Item Id="652" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Redemption-->
+		<Item Id="673" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Spirit Shackles-->
+		<Item Id="674" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<!--Salvation-->
+		<Item Id="696" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+    </Pool>
+</ItemPools>

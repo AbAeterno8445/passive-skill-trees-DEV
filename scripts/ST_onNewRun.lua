@@ -219,6 +219,11 @@ function PST:onNewRun(isContinued)
             for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(ItemPoolType.POOL_ULTRA_SECRET)) do
                 table.insert(PST.ultraSecretPool, tmpItem.itemID)
             end
+            PST.blueItemPool = {}
+            ---@diagnostic disable-next-line: undefined-field
+            for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(PST.ItemPoolType.POOL_BLUE)) do
+                table.insert(PST.blueItemPool, tmpItem.itemID)
+            end
         end
 
         if next(tmpSCMods) ~= nil then
