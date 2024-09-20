@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.11",
+        "- Crystallized Anamnesis (ancient jewel) now restores the purity aura immediately after clearing a room",
+        "if it was gone.",
+        "",
+
         "v0.3.10",
         "- Introduced new character skill trees for: Tainted Keeper and Tainted Apollyon.",
         "- Added 2 new Ancient Jewels: \"Crystallized Anamnesis\" (experimental) and \"Embered Azurite\".",

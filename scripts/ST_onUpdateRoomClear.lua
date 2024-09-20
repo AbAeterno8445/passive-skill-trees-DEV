@@ -487,6 +487,11 @@ function PST:onRoomClear(level, room)
 			end
 		end
 
+		-- Ancient starcursed jewel: Crystallized Anamnesis
+		if PST.specialNodes.SC_anamnesisResetTimer > 0 then
+			PST.specialNodes.SC_anamnesisResetTimer = 1
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
 			-- The Forgotten, reset Keeper debuff
