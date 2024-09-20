@@ -306,6 +306,37 @@ PST.anamnesisListTypes = {
 	[PurityState.YELLOW] = "Treasure",
 	[PurityState.ORANGE] = "Other"
 }
+PST.ultraSecretPool = {} -- Generated when relevant
+PST.blueItemPool = {
+	CollectibleType.COLLECTIBLE_BROTHER_BOBBY, CollectibleType.COLLECTIBLE_MINI_MUSH, CollectibleType.COLLECTIBLE_BOOK_OF_REVELATIONS,
+	CollectibleType.COLLECTIBLE_RELIC, CollectibleType.COLLECTIBLE_FORGET_ME_NOW, CollectibleType.COLLECTIBLE_MULLIGAN,
+	CollectibleType.COLLECTIBLE_CRYSTAL_BALL, CollectibleType.COLLECTIBLE_CANDLE, CollectibleType.COLLECTIBLE_FATE,
+	CollectibleType.COLLECTIBLE_MOMS_EYESHADOW, CollectibleType.COLLECTIBLE_SPIDERBABY, CollectibleType.COLLECTIBLE_ANTI_GRAVITY,
+	CollectibleType.COLLECTIBLE_STOP_WATCH, CollectibleType.COLLECTIBLE_BLUE_MAP, CollectibleType.COLLECTIBLE_HIVE_MIND,
+	CollectibleType.COLLECTIBLE_SISSY_LONGLEGS, CollectibleType.COLLECTIBLE_CONVERTER, CollectibleType.COLLECTIBLE_BLUE_BOX,
+	CollectibleType.COLLECTIBLE_TAURUS, CollectibleType.COLLECTIBLE_ARIES, CollectibleType.COLLECTIBLE_PISCES,
+	CollectibleType.COLLECTIBLE_LEO, CollectibleType.COLLECTIBLE_VIRGO, CollectibleType.COLLECTIBLE_LIBRA,
+	CollectibleType.COLLECTIBLE_SCORPIO, CollectibleType.COLLECTIBLE_SAGITTARIUS, CollectibleType.COLLECTIBLE_CAPRICORN,
+	CollectibleType.COLLECTIBLE_AQUARIUS, CollectibleType.COLLECTIBLE_PISCES, CollectibleType.COLLECTIBLE_GEMINI,
+	CollectibleType.COLLECTIBLE_HOLY_MANTLE, CollectibleType.COLLECTIBLE_BLUE_BABYS_ONLY_FRIEND, CollectibleType.COLLECTIBLE_MONGO_BABY,
+	CollectibleType.COLLECTIBLE_ISAACS_TEARS, CollectibleType.COLLECTIBLE_SOUL, CollectibleType.COLLECTIBLE_BROKEN_WATCH,
+	CollectibleType.COLLECTIBLE_BOOMERANG, CollectibleType.COLLECTIBLE_BLUE_CAP, CollectibleType.COLLECTIBLE_FATES_REWARD,
+	CollectibleType.COLLECTIBLE_EPIPHORA, CollectibleType.COLLECTIBLE_HOLY_LIGHT, CollectibleType.COLLECTIBLE_RESTOCK,
+	CollectibleType.COLLECTIBLE_TEAR_DETONATOR, CollectibleType.COLLECTIBLE_D12, CollectibleType.COLLECTIBLE_TRACTOR_BEAM,
+	CollectibleType.COLLECTIBLE_EVIL_EYE, CollectibleType.COLLECTIBLE_CROWN_OF_LIGHT, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS,
+	CollectibleType.COLLECTIBLE_PJS, CollectibleType.COLLECTIBLE_PAPA_FLY, CollectibleType.COLLECTIBLE_BINKY,
+	CollectibleType.COLLECTIBLE_SHARD_OF_GLASS, CollectibleType.COLLECTIBLE_PARASITOID, CollectibleType.COLLECTIBLE_HUSHY,
+	CollectibleType.COLLECTIBLE_EDENS_SOUL, CollectibleType.COLLECTIBLE_YO_LISTEN, CollectibleType.COLLECTIBLE_JACOBS_LADDER,
+	CollectibleType.COLLECTIBLE_SHARP_STRAW, CollectibleType.COLLECTIBLE_TELEKINESIS, CollectibleType.COLLECTIBLE_LACHRYPHAGY,
+	CollectibleType.COLLECTIBLE_BLANKET, CollectibleType.COLLECTIBLE_HALLOWED_GROUND, CollectibleType.COLLECTIBLE_ALMOND_MILK,
+	CollectibleType.COLLECTIBLE_ROCK_BOTTOM, CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES, CollectibleType.COLLECTIBLE_SOL,
+	CollectibleType.COLLECTIBLE_LUNA, CollectibleType.COLLECTIBLE_MERCURIUS, CollectibleType.COLLECTIBLE_VENUS,
+	CollectibleType.COLLECTIBLE_TERRA, CollectibleType.COLLECTIBLE_MARS, CollectibleType.COLLECTIBLE_JUPITER,
+	CollectibleType.COLLECTIBLE_SATURNUS, CollectibleType.COLLECTIBLE_URANUS, CollectibleType.COLLECTIBLE_NEPTUNUS,
+	CollectibleType.COLLECTIBLE_PLUTO, CollectibleType.COLLECTIBLE_FREEZER_BABY, CollectibleType.COLLECTIBLE_GENESIS,
+	CollectibleType.COLLECTIBLE_EVIL_CHARM, CollectibleType.COLLECTIBLE_CUBE_BABY, CollectibleType.COLLECTIBLE_REDEMPTION,
+	CollectibleType.COLLECTIBLE_SPIRIT_SHACKLES, CollectibleType.COLLECTIBLE_SALVATION
+}
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -1130,6 +1161,7 @@ function PST:resetMods()
 		SC_anamnesisAngel = {},
 		SC_anamnesisTreasure = {},
 		SC_anamnesisOther = {},
+		SC_emberAzuriteItems = {},
 		--#endregion
 	}
 	-- Holds temporary data for allocated special nodes

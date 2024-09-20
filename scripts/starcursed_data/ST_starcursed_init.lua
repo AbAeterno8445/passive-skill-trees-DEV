@@ -849,6 +849,21 @@ PST.SCAncients = {
             deliriumRewards = {1, 6},
             beastRewards = {1, 6}
         }
+    },
+    emberedAzurite = {
+        weight = 100,
+        spriteFrame = 30,
+        name = "Embered Azurite",
+        description = {
+            "Item pedestals switch between a red pool and a blue pool item.",
+            "-8% all stats per difference between total collected blue and red passive items, up to -64%."
+        },
+        rewards = {
+            xpgain = 50,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

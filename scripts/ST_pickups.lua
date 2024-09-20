@@ -925,6 +925,7 @@ function PST:onPickupInit(pickup)
     end
 end
 
+---@param pickup EntityPickup
 function PST:onPickupUpdate(pickup)
     if pickup.Timeout > 0 then
         -- Mod: +time for temporary heart pickups
@@ -942,6 +943,26 @@ function PST:onPickupUpdate(pickup)
             if tmpMod > 0 and tempFirstSpawn then
                 pickup.Timeout = pickup.Timeout + math.floor(tmpMod * 30)
                 PST.specialNodes.temporaryCoins[pickup.InitSeed] = true
+            end
+        end
+    else
+        -- Ancient starcursed jewel: Embered Azurite
+        if PST:SC_getSnapshotMod("emberedAzurite", false) and pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and not
+        PST:arrHasValue(PST.progressionItems, pickup.SubType) then
+            local emberAzuriteItems = PST:getTreeSnapshotMod("SC_emberAzuriteItems", nil)
+            if emberAzuriteItems and not PST:arrHasValue(emberAzuriteItems, pickup.InitSeed) then
+                local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_ULTRA_SECRET)
+                if newItem ~= CollectibleType.COLLECTIBLE_NULL then
+                    pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true, true, true)
+                    table.insert(emberAzuriteItems, pickup.InitSeed)
+
+                    local newBlueItem = Game():GetItemPool():GetCollectibleFromList(PST.blueItemPool, Random() + 1, CollectibleType.COLLECTIBLE_NULL, true, true)
+                    if newBlueItem ~= CollectibleType.COLLECTIBLE_NULL then
+                        ---@diagnostic disable-next-line: undefined-field
+                        pickup:RemoveCollectibleCycle()
+                        pickup:AddCollectibleCycle(newBlueItem)
+                    end
+                end
             end
         end
     end

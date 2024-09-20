@@ -423,6 +423,22 @@ function PST:onCache(player, cacheFlag)
         elseif player:GetPurityState() == PurityState.ORANGE then dynamicMods.range = dynamicMods.range - 1.5 end
     end
 
+    -- Ancient starcursed jewel: Embered Azurite
+    if PST:SC_getSnapshotMod("emberedAzurite", false) then
+        local redItems = 0
+        local blueItems = 0
+        for itemID, itemAmt in pairs(player:GetCollectiblesList()) do
+            if itemAmt > 0 then
+                if PST:arrHasValue(PST.ultraSecretPool, itemID) then
+                    redItems = redItems + itemAmt
+                elseif PST:arrHasValue(PST.blueItemPool, itemID) then
+                    blueItems = blueItems + itemAmt
+                end
+            end
+        end
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - math.min(64, math.abs(redItems - blueItems) * 8)
+    end
+
     -- A True Ending? node (Lazarus' tree)
     if PST:getTreeSnapshotMod("aTrueEnding", false) and player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + PST:getTreeSnapshotMod("aTrueEndingCardUses", 0) * 2

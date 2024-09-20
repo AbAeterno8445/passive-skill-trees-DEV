@@ -128,6 +128,12 @@ function PST:onNewLevel()
         PST:addModifiers({ SC_anamnesisCursedRoom = { value = -1, set = true } }, true)
     end
 
+    -- Ancient starcursed jewel: Embered Azurite
+    tmpMod = PST:getTreeSnapshotMod("SC_emberAzuriteItems", nil)
+    if tmpMod and #tmpMod > 0 then
+        PST.modData.treeModSnapshot.SC_emberAzuriteItems = {}
+    end
+
     -- Challenge room clear proc
     if PST:getTreeSnapshotMod("SC_challClear", false) then
         PST:addModifiers({ SC_challClear = false }, true)
