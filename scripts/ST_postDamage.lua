@@ -178,7 +178,7 @@ function PST:postDamage(target, damage, flag, source)
 
                             -- Mod: +% random stat every 12 Dark Arts kills
                             tmpMod = PST:getTreeSnapshotMod("darkArtsKillStat", 0)
-                            if tmpMod > 0 and target.HitPoints <= isKillingHit then
+                            if tmpMod > 0 and isKillingHit then
                                 PST:addModifiers({ darkArtsKills = 1 }, true)
                                 if PST:getTreeSnapshotMod("darkArtsKills", 0) >= 10 then
                                     local randStat = PST:getRandomStat()
