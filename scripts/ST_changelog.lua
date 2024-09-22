@@ -6,6 +6,8 @@ function PST:getChangelogList()
         "v0.3.11",
         "- Crystallized Anamnesis (ancient jewel) now restores the purity aura immediately after clearing a room",
         "if it was gone.",
+        "- Fixed Embered Azurite (ancient jewel) affecting active item pedestals.",
+        "- Fixed T. Lost's quality upgrade nodes being able to affect progression items.",
         "",
 
         "v0.3.10",

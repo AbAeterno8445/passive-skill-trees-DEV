@@ -900,8 +900,8 @@ function PST:onNewRoom()
 		for i=2,0,-1 do
 			tmpMod = PST:getTreeSnapshotMod("quality" .. tostring(i) .. "Upgrade", 0)
 			if tmpMod > 0 then
-				for _, tmpItem in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, true)) do
-					if tmpItem.SubType > 0 then
+				for _, tmpItem in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)) do
+					if tmpItem.SubType > 0 and not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
 						local tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.SubType)
 						if tmpItemCfg and tmpItemCfg.Quality == i and 100 * math.random() < tmpMod then
 							if PST:rerollQualItem(tmpItem, i + 1) then
