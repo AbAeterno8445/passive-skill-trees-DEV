@@ -91,8 +91,11 @@ function PST:onCache(player, cacheFlag)
             local playerCollectibles = player:GetCollectiblesList()
             for _, tmpItem in ipairs(PST.poopItems) do
                 if playerCollectibles[tmpItem] > 0 then
-                    dynamicMods.luck = dynamicMods.luck + tmpTreeMod
+                    dynamicMods.luck = dynamicMods.luck + tmpTreeMod * playerCollectibles[tmpItem]
                 end
+            end
+            if playerCollectibles[CollectibleType.COLLECTIBLE_HALLOWED_GROUND] > 0 then
+                dynamicMods.luck = dynamicMods.luck + tmpTreeMod * playerCollectibles[CollectibleType.COLLECTIBLE_HALLOWED_GROUND]
             end
         end
 

@@ -14,6 +14,10 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
         local floor = PST:getLevel():GetStage()
         if PST:getRoom():GetType() == RoomType.ROOM_TREASURE and (floor == 1 or (floor > 1 and 100 * math.random() < 50)) then
             local tmpItem = itemPool:GetCollectibleFromList(PST.poopItems, Random() + 1, CollectibleType.COLLECTIBLE_BREAKFAST, true, false)
+            if tmpItem == CollectibleType.COLLECTIBLE_BREAKFAST and not PST:getTreeSnapshotMod("hallowedGroundProc", false) then
+                tmpItem = CollectibleType.COLLECTIBLE_HALLOWED_GROUND
+                PST:addModifiers({ hallowedGroundProc = true }, true)
+            end
             if tmpItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
                 return tmpItem
             end

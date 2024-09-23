@@ -63,8 +63,8 @@ PST.poopItems = {
 	CollectibleType.COLLECTIBLE_FLUSH, CollectibleType.COLLECTIBLE_POOP,
 	CollectibleType.COLLECTIBLE_BROWN_NUGGET, CollectibleType.COLLECTIBLE_E_COLI,
 	CollectibleType.COLLECTIBLE_BUTT_BOMBS, CollectibleType.COLLECTIBLE_DIRTY_MIND,
-	CollectibleType.COLLECTIBLE_HALLOWED_GROUND, CollectibleType.COLLECTIBLE_MONTEZUMAS_REVENGE,
-	CollectibleType.COLLECTIBLE_NUMBER_TWO, CollectibleType.COLLECTIBLE_SKATOLE
+	CollectibleType.COLLECTIBLE_MONTEZUMAS_REVENGE, CollectibleType.COLLECTIBLE_SKATOLE,
+	CollectibleType.COLLECTIBLE_NUMBER_TWO
 }
 PST.poopTrinkets = {
 	TrinketType.TRINKET_PETRIFIED_POOP, TrinketType.TRINKET_BUTT_PENNY, TrinketType.TRINKET_MECONIUM,
@@ -542,6 +542,7 @@ function PST:resetMods()
 		poopAllStatsProc = false,
 		soulHeartTearsRange = 0,
 		soulHeartTearsRangeTotal = 0,
+		hallowedGroundProc = false,
 		---- Eve's Tree ----
 		heartless = false,
 		heartlessTotal = 0,
