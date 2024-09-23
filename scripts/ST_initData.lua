@@ -672,7 +672,7 @@ function PST:resetMods()
 		nullDebuff = false,
 		harbingerLocusts = false,
 		harbingerLocustsFloorProc = false,
-		harbingerLocustsReplace = 2,
+		harbingerLocustsChampDrop = false,
 		voidBlueFlies = 0,
 		voidBlueSpiders = 0,
 		voidAnnihilation = 0,

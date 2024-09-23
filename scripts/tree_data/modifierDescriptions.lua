@@ -1001,8 +1001,8 @@ PST.treeModDescriptions = {
         str = {
             "Heartseeker Phantasm:",
             "    Dropped red and eternal hearts are converted to soul hearts",
-            "    Collecting a soul or black heart grants +0.2 luck",
-            "    +1%% all stats for every 3 hearts collected"
+            "    Collecting a soul or black heart grants +0.1 luck",
+            "    +1%% all stats for every 3 hearts collected, up to a total +20%%"
         },
         category = "charTree", sort = 2502
     },
@@ -1181,8 +1181,7 @@ PST.treeModDescriptions = {
             "Harbinger Locusts:",
             "    Spawn a random locust trinket in the second floor you enter",
             "    Spawn a random locust trinket after defeating Mom",
-            "    2%% chance to replace any non-locust trinket drop with a random locust trinket",
-            "    Defeating a boss increases this chance by 1%%, up to 10%%",
+            "    2%% chance for champion monsters to drop a random locust trinket on death, once per floor",
             "    Using void consumes all locust trinkets dropped in the room, applying their effects",
             "    to you passively"
         },

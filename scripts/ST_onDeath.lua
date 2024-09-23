@@ -306,9 +306,11 @@ function PST:onDeath(entity)
 
         -- Harbinger Locusts node (Apollyon's tree)
         if PST:getTreeSnapshotMod("harbingerLocusts", false) then
-            -- +1% chance to replace dropped trinkets with a random locust when defeating a boss, up to 10%
-            if entity:IsBoss() and entity.Parent == nil and PST:getTreeSnapshotMod("harbingerLocustsReplace", 2) < 10 then
-                PST:addModifiers({ harbingerLocustsReplace = 1 }, true)
+            -- 2% chance for champion monsters to drop a random locust trinket on kill, once per floor
+            if not PST:getTreeSnapshotMod("harbingerLocustsChampDrop", false) and 100 * math.random() < 2 then
+                local newLocust = PST.locustTrinketsNonGold[math.random(#PST.locustTrinketsNonGold)]
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, entity.Position, Vector.Zero, nil, newLocust, Random() + 1)
+                PST:addModifiers({ harbingerLocustsChampDrop = true }, true)
             end
         end
 

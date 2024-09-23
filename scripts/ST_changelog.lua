@@ -4,6 +4,13 @@ function PST:getChangelogList()
         "",
 
         "v0.3.12",
+        "- Tellurian Splinter (ancient jewel) no longer reduces the speed buff during the Ascent.",
+        "- The Lost's \"Heartseeker Phantasm\" now gives 0.1 luck when collecting a soul/black heart (from 0.2), and the +% all stats",
+        "is now capped to a total of +20%.",
+        "- Apollyon's \"Harbinger Locusts\" no longer has a chance to convert all trinkets to locusts. It now instead grants a",
+        "2% chance for champion monsters to drop a random locust trinket on death, once per floor.",
+        "- Fixed item pedestals triggering on-pickup effects constantly while the character is 'holding' an item, such as Bag of",
+        "Crafting.",
         "- Fixed error when dealing damage with Dark Arts.",
         "",
 

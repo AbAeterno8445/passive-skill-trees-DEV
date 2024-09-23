@@ -37,7 +37,7 @@ function PST:prePickup(pickup, collider, low)
 
     if player ~= nil then
         -- Collectibles
-        if variant == PickupVariant.PICKUP_COLLECTIBLE then
+        if variant == PickupVariant.PICKUP_COLLECTIBLE and not player:IsHoldingItem() then
             local removeOtherRoomItems = false
             -- Ancient starcursed jewel: Opalescent Purity
             if player ~= nil and PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
@@ -438,8 +438,9 @@ function PST:onPickup(pickup, collider, low)
                 -- Heartseeker Phantasm node (The Lost's tree)
                 if PST:getTreeSnapshotMod("heartseekerPhantasm", false) then
                     -- +0.2 luck when collecting soul or black hearts. +1% all stats for every 3 hearts collected
-                    PST:addModifiers({ luck = 0.2, heartseekerPhantasmCollected = 1 }, true)
-                    if PST:getTreeSnapshotMod("heartseekerPhantasmCollected", 0) % 3 == 0 then
+                    PST:addModifiers({ luck = 0.1, heartseekerPhantasmCollected = 1 }, true)
+                    local tmpCollected = PST:getTreeSnapshotMod("heartseekerPhantasmCollected", 0)
+                    if tmpCollected % 3 == 0 and tmpCollected <= 60 then
                         PST:addModifiers({ allstatsPerc = 1 }, true)
                     end
                 end
@@ -665,17 +666,6 @@ function PST:onPickupInit(pickup)
             PST:vanishPickup(pickup)
             PST.specialNodes.fickleFortuneVanish = false
             pickupGone = true
-        end
-
-        -- Harbinger Locusts node (Apollyon's tree)
-        if PST:getTreeSnapshotMod("harbingerLocusts", false) then
-            -- Chance to replace dropped trinkets with a random locust
-            if firstSpawn and 100 * math.random() < PST:getTreeSnapshotMod("harbingerLocustsReplace", 0) and not isShop then
-                pickup:Remove()
-                local tmpLocust = PST.locustTrinketsNonGold[math.random(#PST.locustTrinketsNonGold)]
-				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, pickup.Position, pickup.Velocity, nil, tmpLocust, Random() + 1)
-                pickupGone = true
-            end
         end
 
         -- Mod: chance for trinkets to drop as golden, if you have them unlocked

@@ -85,7 +85,7 @@ function PST:onUpdate()
 
 		-- Ancient starcursed jewel: Chronicler Stone
 		if PST:SC_getSnapshotMod("chroniclerStone", false) then
-			if level:GetDimension() == Dimension.DEATH_CERTIFICATE then
+			if inDeathCertificate then
 				PST:addModifiers({ SC_chroniclerRooms = { value = 0, set = true } }, true)
 			else
 				tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)

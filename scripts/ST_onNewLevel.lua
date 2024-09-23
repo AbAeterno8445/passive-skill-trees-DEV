@@ -114,7 +114,7 @@ function PST:onNewLevel()
 
     -- Ancient starcursed jewel: Tellurian Splinter
     tmpMod = PST:getTreeSnapshotMod("SC_tellurianBuff", 0)
-    if tmpMod > 0 then
+    if tmpMod > 0 and not level:IsAscent() then
         PST:addModifiers({ speedPerc = -tmpMod / 2, SC_tellurianBuff = -tmpMod / 2 }, true)
     end
 
@@ -247,6 +247,11 @@ function PST:onNewLevel()
         if not PST:getTreeSnapshotMod("nullActiveAbsorbed", false) and PST:getTreeSnapshotMod("nullAppliedBonus", 0) < 3 then
             PST:addModifiers({ allstatsPerc = 5, nullAppliedBonus = 1 }, true)
         end
+    end
+
+    -- Harbinger Locusts (Apollyon's tree)
+    if PST:getTreeSnapshotMod("harbingerLocustsChampDrop", false) then
+        PST:addModifiers({ harbingerLocustsChampDrop = false }, true)
     end
 
     -- Mod: +% all stats per wisp orbiting you when entering a floor, up to 15%
