@@ -504,6 +504,18 @@ function PST:onNewRun(isContinued)
         player:AddSmeltedTrinket(TrinketType.TRINKET_EXTENSION_CORD)
     end
 
+    -- Recall! node (T. Forgotten's tree)
+    if PST:getTreeSnapshotMod("forgRecall", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+    end
+
+    -- Magnetized Shell node (T. Forgotten's tree)
+    if PST:getTreeSnapshotMod("magnetizedShell", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR)
+        player:AddCollectible(CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

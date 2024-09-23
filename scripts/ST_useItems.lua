@@ -459,6 +459,21 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
         end
+    -- Recall
+    elseif itemType == CollectibleType.COLLECTIBLE_RECALL then
+        -- Recall! node (T. Forgotten's tree)
+        if PST:getTreeSnapshotMod("forgRecall", false) and PST:getTreeSnapshotMod("forgRecallUses", 0) < 10 then
+            PST:addModifiers({ forgRecallUses = 1 }, true)
+        end
+
+        -- Mod: +% damage for 2 seconds after using Recall
+        tmpMod = PST:getTreeSnapshotMod("recallDmg", 0)
+        if tmpMod > 0 then
+            if PST.specialNodes.recallDamageTimer == 0 then
+                PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+            end
+            PST.specialNodes.recallDamageTimer = 60
+        end
     end
 
     -- Mod: chance to spawn a regular wisp when using your active item

@@ -445,6 +445,14 @@ function PST:onRoomClear(level, room)
 				end
 			end
 
+			-- Mod: % chance to gain a smelted Polished Bone for the rest of the floor when clearing a room without taking damage
+			local tmpMod = PST:getTreeSnapshotMod("flawlessClearPBone", 0)
+			if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and not PST:getTreeSnapshotMod("flawlessPBoneProc", false) and
+			100 * math.random() < tmpMod then
+				player:AddSmeltedTrinket(TrinketType.TRINKET_POLISHED_BONE)
+				PST:addModifiers({ flawlessPBoneProc = true }, true)
+			end
+
 			-- Cosmic Realignment node
 			if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
 				-- Tainted Samson, take up to 1 heart damage if final buff was negative, then reset

@@ -2906,6 +2906,97 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 3670
     },
+    ---- T. FORGOTTEN'S TREE ----
+    forgRecall = {
+        str = {
+            "Recall!:",
+            "    Start with Birthright",
+            "    +0.4 seconds to Recall's cooldown on use, up to +4",
+            "    Reset Recall's cooldown when entering a new floor",
+            "    Birthright can no longer show up naturally"
+        },
+        category = "charTree", sort = 3700
+    },
+    harmonizedSpecters = {
+        str = {
+            "Harmonized Specters:",
+            "    +12%% damage dealt by Tainted Forgotten while on the floor",
+            "    +12%% damage dealt by Tainted Forgotten to enemies near Tainted Soul",
+            "    -20%% damage dealt if neither of the above conditions is fulfilled"
+        },
+        category = "charTree", sort = 3701
+    },
+    ballistosseous = {
+        str = {
+            "Ballistosseous:",
+            "    Tainted Forgotten shoots bone tears towards Tainted Soul while on the ground, if there are",
+            "    enemies in the room",
+            "    While holding Tainted Forgotten, fire bone tears towards nearby enemies instead",
+            "    Bone tears' rate of fire is based on your tears stat",
+            "    Bone tears deal 50%% of your damage on hit",
+            "    Fired bone tears have a 50%% chance of gaining homing if Tainted Forgotten is on the ground"
+        },
+        category = "charTree", sort = 3702
+    },
+    magnetizedShell = {
+        str = {
+            "Magnetized Shell:",
+            "    Start with Strange Attractor",
+            "    +2%% speed for the current room when killing an enemy near Tainted Forgotten, up to +20%%"
+        },
+        category = "charTree", sort = 3703
+    },
+    forgHoldSpeed = {
+        str = "%s%.2f%% speed while holding Tainted Forgotten",
+        addPlus = true,
+        category = "charTree", sort = 3710
+    },
+    forgNoHoldSpeed = {
+        str = "%s%.2f%% speed while not holding Tainted Forgotten",
+        addPlus = true,
+        category = "charTree", sort = 3711
+    },
+    forgBoneTearDmg = {
+        str = "Tainted Forgotten's bone tears gain an additional %d%% of your damage",
+        category = "charTree", sort = 3712
+    },
+    forgBoneTearPara = {
+        str = "%.2f%% chance for Tainted Forgotten's bone tears to paralyze enemies for 1 second on hit",
+        category = "charTree", sort = 3713
+    },
+    forgBoneTearSlow = {
+        str = "%.2f%% chance for Tainted Forgotten's bone tears to slow enemies on hit for 2 seconds",
+        category = "charTree", sort = 3714
+    },
+    paraEnemyDmg = {
+        str = "%s%d%% damage received by paralyzed enemies",
+        addPlus = true,
+        category = "charTree", sort = 3715
+    },
+    recallDmg = {
+        str = "%s%d%% damage for 2 seconds after using Recall",
+        addPlus = true,
+        category = "charTree", sort = 3716
+    },
+    forgTelekinesis = {
+        str = "%d%% chance to trigger Telekinesis' effect when launching Tainted Forgotten",
+        category = "charTree", sort = 3717
+    },
+    flawlessClearPBone = {
+        str = {
+            "%d%% chance to gain a smelted Polished Bone for the rest of the floor when clearing a room",
+            "without taking damage",
+            "    When hit by a monster, same chance to lose a smelted Polished Bone"
+        },
+        category = "charTree", sort = 3718
+    },
+    forgBoneTearKillLuck = {
+        str = {
+            "%d%% chance to gain +0.02 luck when Tainted Forgotten's bone tears kill an enemy",
+            "    Halve your total bonus when entering a new floor"
+        },
+        category = "charTree", sort = 3719
+    },
     --#endregion
 
     ---- STARMIGHT ----

@@ -159,8 +159,19 @@ function PST:postDamage(target, damage, flag, source)
                     end
                 end
                 if srcPlayer and target:IsVulnerableEnemy() then
+                    -- Player tear hit
+                    if source.Entity.Type == EntityType.ENTITY_TEAR then
+                        -- T. Forgotten bone tears
+                        if source.Entity.Variant == TearVariant.BONE and source.Entity.SpawnerEntity:ToPlayer():GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B and
+                        isKillingHit then
+                            -- Mod: % chance to gain +0.04 luck when T. Forgotten's bone tears kill an enemy
+                            local tmpMod = PST:getTreeSnapshotMod("forgBoneTearKillLuck", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                PST:addModifiers({ luck = 0.03, forgBoneTearLuckBuff = 0.03 }, true)
+                            end
+                        end
                     -- Player effect hit
-                    if source.Entity.Type == EntityType.ENTITY_EFFECT then
+                    elseif source.Entity.Type == EntityType.ENTITY_EFFECT then
                         -- Dark Arts
                         if source.Entity.Variant == EffectVariant.DARK_SNARE then
                             -- Bounty For The Lightless node (T. Judas' tree)
@@ -262,6 +273,13 @@ function PST:postDamage(target, damage, flag, source)
                     if tmpMod > 0 and not PST:getPlayer():HasTrinket(TrinketType.TRINKET_CRICKET_LEG) and 100 * math.random() < tmpMod then
                         PST:getPlayer():AddSmeltedTrinket(TrinketType.TRINKET_CRICKET_LEG)
                         PST:addModifiers({ killCricketLegProc = true }, true)
+                    end
+
+                    -- Magnetized Shell node (T. Forgotten's tree)
+                    if PST:getTreeSnapshotMod("magnetizedShell", false) and PST:getTreeSnapshotMod("magnetizedShellBuff", 0) < 20 then
+                        if target.Position:Distance(PST:getPlayer().Position) <= 100 then
+                            PST:addModifiers({ speedPerc = 2, magnetizedShellBuff = 2 }, true)
+                        end
                     end
                 end
             end

@@ -317,5 +317,11 @@ function PST:getActiveMaxCharge(itemType, player, varData, currentMaxCharge)
         if tmpMod ~= 0 then
             return currentMaxCharge + math.floor(tmpMod * 30)
         end
+    -- Recall
+    elseif itemType == CollectibleType.COLLECTIBLE_RECALL then
+        -- Recall! node (T. Forgotten's tree)
+        if PST:getTreeSnapshotMod("forgRecall", false) then
+            return currentMaxCharge + math.floor(math.min(4, PST:getTreeSnapshotMod("forgRecallUses", 0) * 0.4) * 30)
+        end
     end
 end

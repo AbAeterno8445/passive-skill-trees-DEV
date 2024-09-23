@@ -1226,6 +1226,24 @@ function PST:onUpdate()
 				tmpTwin:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
 			end
 		end
+
+		-- T. Forgotten
+		if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
+			local isHeld = tmpTwin:IsHoldingItem() and player.Position:Distance(tmpTwin.Position) <= 10
+			if isHeld and not PST:getTreeSnapshotMod("forgIsHeld", false) then
+				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+				PST:addModifiers({ speedPerc = tmpMod, forgIsHeld = true }, true)
+			elseif not isHeld and PST:getTreeSnapshotMod("forgIsHeld", false) then
+				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+				PST:addModifiers({ speedPerc = tmpMod, forgIsHeld = false }, true)
+
+				-- Mod: % chance to trigger Telekinesis' effect when launching T. Forgotten
+				tmpMod = PST:getTreeSnapshotMod("forgTelekinesis", 0)
+				if tmpMod > 0 and 100 * math.random() < tmpMod then
+					tmpTwin:UseActiveItem(CollectibleType.COLLECTIBLE_TELEKINESIS, UseFlag.USE_NOANIM)
+				end
+			end
+		end
 	end
 
 	-- Luck changes
@@ -1509,6 +1527,64 @@ function PST:onUpdate()
 	if PST:getTreeSnapshotMod("shieldlessBossSpeed", 0) > 0 and not PST:getTreeSnapshotMod("shieldlessBossProc", false) and room:GetType() == RoomType.ROOM_BOSS then
 		if PST:TLostHasAnyShield() then
 			PST:addModifiers({ shieldlessBossProc = true }, true)
+		end
+	end
+
+	-- Ballistosseous node (T. Forgotten's tree)
+	if PST:getTreeSnapshotMod("ballistosseous", false) then
+		if PST.specialNodes.ballistosseousTimer > 0 then
+			PST.specialNodes.ballistosseousTimer = PST.specialNodes.ballistosseousTimer - 1
+		end
+		if PST.specialNodes.ballistosseousTimer == 0 and room:GetAliveEnemiesCount() > 0 then
+			local tmpSoul = player:GetOtherTwin()
+			if tmpSoul then
+				local tearVel = Vector.Zero
+				local isHeld = false
+				if player.Position:Distance(tmpSoul.Position) <= 10 then
+					local nearbyEnemies = Isaac.FindInRadius(player.Position, 120, EntityPartition.ENEMY)
+					if #nearbyEnemies > 0 then
+						for _, tmpEnemy in ipairs(nearbyEnemies) do
+							if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() then
+								tearVel = (tmpEnemy.Position - player.Position):Normalized() * (10 * player.ShotSpeed)
+								break
+							end
+						end
+					end
+					isHeld = true
+				else
+					tearVel = (tmpSoul.Position - player.Position):Normalized() * (10 * player.ShotSpeed)
+				end
+				if tearVel.X ~= 0 or tearVel.Y ~= 0 then
+					local playerTears = 30 / (player.MaxFireDelay + 1)
+					PST.specialNodes.ballistosseousTimer = math.ceil(30 / playerTears)
+
+					local newTear = Game():Spawn(
+						EntityType.ENTITY_TEAR,
+						TearVariant.BONE,
+						player.Position,
+						tearVel,
+						player,
+						0,
+						Random() + 1
+					)
+					newTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL)
+					newTear:ToTear().Height = player.TearHeight
+					newTear:ToTear().FallingSpeed = -player.TearFallingSpeed
+					newTear.CollisionDamage = player.Damage * (0.5 + PST:getTreeSnapshotMod("forgBoneTearDmg", 0) / 100)
+
+					if not isHeld and 100 * math.random() < 50 then
+						newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING)
+					end
+				end
+			end
+		end
+	end
+
+	-- Mod: +% damage for 2 seconds after using Recall
+	if PST.specialNodes.recallDamageTimer > 0 then
+		PST.specialNodes.recallDamageTimer = PST.specialNodes.recallDamageTimer - 1
+		if PST.specialNodes.recallDamageTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 		end
 	end
 

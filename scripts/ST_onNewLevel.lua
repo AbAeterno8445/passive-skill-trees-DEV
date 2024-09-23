@@ -563,6 +563,23 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpMod / 2, locustKillLuckBuff = -tmpMod / 2 }, true)
     end
 
+    -- Recall! node (T. Forgotten's tree)
+    if PST:getTreeSnapshotMod("forgRecallUses", 0) > 0 then
+        PST:addModifiers({ forgRecallUses = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance to gain a smelted Polished Bone for the rest of the floor
+    if PST:getTreeSnapshotMod("flawlessPBoneProc", false) then
+        player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_POLISHED_BONE)
+        PST:addModifiers({ flawlessPBoneProc = false }, true)
+    end
+
+    -- Mod: % chance to gain +0.04 luck when T. Forgotten's bone tears kill an enemy (halve)
+    tmpMod = PST:getTreeSnapshotMod("forgBoneTearLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod / 2, forgBoneTearLuckBuff = -tmpMod / 2 }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

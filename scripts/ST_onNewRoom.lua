@@ -754,6 +754,12 @@ function PST:onNewRoom()
 		PST:addModifiers({ killCricketLegProc = false }, true)
 	end
 
+	-- Magnetized Shell node (T. Forgotten's tree)
+	tmpMod = PST:getTreeSnapshotMod("magnetizedShellBuff", 0)
+	if tmpMod > 0 then
+		PST:addModifiers({ speedPerc = -tmpMod, magnetizedShellBuff = { value = 0, set = true } }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums

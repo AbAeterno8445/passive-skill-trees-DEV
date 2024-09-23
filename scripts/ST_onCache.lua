@@ -234,6 +234,12 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
         end
+
+        -- Mod: +% damage for 2 seconds after using Recall
+        tmpTreeMod = PST:getTreeSnapshotMod("recallDmg", 0)
+        if tmpTreeMod ~= 0 and PST.specialNodes.recallDamageTimer > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -302,6 +308,17 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +% speed while you have Cricket Leg
         tmpTreeMod = PST:getTreeSnapshotMod("cricketLegSpeed", 0)
         if tmpTreeMod > 0 and player:HasTrinket(TrinketType.TRINKET_CRICKET_LEG) then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+        end
+
+        -- Mod: +-% speed while holding T. Forgotten
+        local forgHeld = PST:getTreeSnapshotMod("forgIsHeld", false)
+        if forgHeld then
+            tmpTreeMod = PST:getTreeSnapshotMod("forgHoldSpeed", 0)
+        else
+            tmpTreeMod = PST:getTreeSnapshotMod("forgNoHoldSpeed", 0)
+        end
+        if tmpTreeMod ~= 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
         end
     -- TEARS CACHE

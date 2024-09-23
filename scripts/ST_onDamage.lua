@@ -232,6 +232,13 @@ function PST:onDamage(target, damage, flag, source)
             return { Damage = 0 }
         end
 
+        -- Mod: % chance to lose smelted Polished Bone when hit
+        tmpMod = PST:getTreeSnapshotMod("flawlessClearPBone", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("flawlessPBoneProc", false) and 100 * math.random() < tmpMod then
+            player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_POLISHED_BONE)
+            PST:addModifiers({ flawlessPBoneProc = false }, true)
+        end
+
         -- Ancient starcursed jewel: Martian Ultimatum
         if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
             PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
@@ -497,6 +504,32 @@ function PST:onDamage(target, damage, flag, source)
                 end
             end
 
+            -- Harmonized Specters node (T. Forgotten's tree)
+            if PST:getTreeSnapshotMod("harmonizedSpecters", false) then
+                local tmpTwin = tmpPlayer:GetOtherTwin()
+                if tmpTwin then
+                    local tmpFulfilled = false
+                    local inGround = 1 - math.max(math.abs(tmpPlayer.Velocity.X), math.abs(tmpPlayer.Velocity.Y)) > 0.9
+                    if target.Position:Distance(tmpTwin.Position) <= 110 then
+                        dmgMult = dmgMult + 0.12
+                        tmpFulfilled = true
+                    end
+                    if tmpPlayer.Position:Distance(tmpTwin.Position) > 10 and inGround then
+                        dmgMult = dmgMult + 0.12
+                        tmpFulfilled = true
+                    end
+                    if not tmpFulfilled then
+                        dmgMult = dmgMult - 0.2
+                    end
+                end
+            end
+
+            -- Mod: +% damage taken by paralyzed enemies
+            tmpMod = PST:getTreeSnapshotMod("paraEnemyDmg", 0)
+            if tmpMod > 0 and target:GetFreezeCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod / 100
+            end
+
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
                 return { Damage = 0 }
@@ -744,6 +777,21 @@ function PST:onDamage(target, damage, flag, source)
                         local tmpMod = PST:getTreeSnapshotMod("coinTearsChance", 0)
                         if tmpMod > 0 and source.Entity.Variant == TearVariant.COIN and (target:GetSprite():GetRenderFlags() & AnimRenderFlags.GOLDEN) > 0 then
                             dmgMult = dmgMult + 0.1
+                        end
+
+                        -- T. Forgotten bone tears
+                        if source.Entity.Variant == TearVariant.BONE and source.Entity.SpawnerEntity:ToPlayer():GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
+                            -- Mod: % chance for T. Forgotten bone tears to paralyze enemies on hit for 1 second
+                            tmpMod = PST:getTreeSnapshotMod("forgBoneTearPara", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                target:AddFreeze(EntityRef(srcPlayer), 30)
+                            end
+
+                            -- Mod: % chance for T. Forgotten bone tears to slow enemies on hit for 2 seconds
+                            tmpMod = PST:getTreeSnapshotMod("forgBoneTearSlow", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                target:AddSlowing(EntityRef(srcPlayer), 60, 0.9, Color(0.9, 0.9, 0.9, 1))
+                            end
                         end
                     -- Player effect hit
                     elseif source.Entity.Type == EntityType.ENTITY_EFFECT then

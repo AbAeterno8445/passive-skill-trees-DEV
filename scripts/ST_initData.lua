@@ -1071,6 +1071,26 @@ function PST:resetMods()
 		cricketLegSpeed = 0,
 		locustKillLuck = 0,
 		locustKillLuckBuff = 0,
+		---- T. Forgotten ----
+		forgRecall = false,
+		forgRecallUses = 0,
+		harmonizedSpecters = false,
+		ballistosseous = false,
+		magnetizedShell = false,
+		magnetizedShellBuff = 0,
+		forgHoldSpeed = 0,
+		forgNoHoldSpeed = 0,
+		forgIsHeld = false,
+		forgBoneTearDmg = 0,
+		forgBoneTearPara = 0,
+		forgBoneTearSlow = 0,
+		paraEnemyDmg = 0,
+		recallDmg = 0,
+		forgTelekinesis = 0,
+		flawlessClearPBone = 0,
+		flawlessPBoneProc = false,
+		forgBoneTearKillLuck = 0,
+		forgBoneTearLuckBuff = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1208,6 +1228,8 @@ function PST:resetMods()
 		temporaryCoins = {},
 		activeLocusts = {},
 		locustKillTearsTimer = 0,
+		ballistosseousTimer = 0,
+		recallDamageTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
