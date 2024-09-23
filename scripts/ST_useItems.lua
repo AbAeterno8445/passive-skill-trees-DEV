@@ -104,7 +104,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Crystal Heart node (Magdalene's tree)
         if PST:getTreeSnapshotMod("crystalHeart", false) then
             player:AddHearts(1)
-            if 100 * math.random() < 4 and player:GetMaxHearts() > 2 then
+            if player:GetMaxHearts() > 2 and 100 * math.random() < 7 then
                 player:AddMaxHearts(-2)
                 player:AddBoneHearts(1)
                 player:AddHearts(2)

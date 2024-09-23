@@ -447,7 +447,7 @@ PST.treeModDescriptions = {
         str = {
             "Crystal Heart:",
             "    Yum Heart heals an additional 1/2 heart",
-            "    4%% chance for Yum Heart to turn a red heart into a bone heart"
+            "    7%% chance for Yum Heart to turn a red heart into a bone heart"
         },
         category = "charTree", sort = 2051
     },
