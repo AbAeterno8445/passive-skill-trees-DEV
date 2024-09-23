@@ -396,12 +396,14 @@ PST.treeModDescriptions = {
     magicDie = {
         str = {
             "Magic Die:",
-            "    Using the D6 grants a permanent stat boost. Boosted stats depend on the room you used the D6 in:",
+            "    Using the D6 grants a permanent stat buff. The buff's stats depend on the room you used the D6 in:",
             "    - Angel room: +7%% speed and tears",
             "    - Devil room: +6%% damage and range",
             "    - Treasure room and shop: +7%% shot speed and luck",
             "    - Boss room: if you have a boost, augment it by +3%%, otherwise +3%% all stats",
-            "    - Anywhere else: +2%% all stats"
+            "    - Anywhere else: +2%% all stats",
+            "    You can only have one of these stat buffs at a time. Using the D6 in a different room switches the",
+            "    stats gained"
         },
         category = "charTree", sort = 2001
     },
