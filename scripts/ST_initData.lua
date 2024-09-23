@@ -575,7 +575,9 @@ function PST:resetMods()
 		speedWhenHitTotal = 0,
 		bossCulling = 0,
 		bossQuickKillLuck = 0,
+		bossQuickKillLuckBuff = 0,
 		bossFlawlessLuck = 0,
+		bossFlawlessLuckBuff = 0,
 		---- Azazel's Tree ----
 		demonicSouvenirs = false,
 		demonicSouvenirsProc = false,

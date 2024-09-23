@@ -777,12 +777,12 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 2305
     },
     bossQuickKillLuck = {
-        str = "%s%.2f luck if you clear the boss room within 1 minute of entering it",
+        str = "%s%.2f luck if you clear the boss room within 30 seconds of entering it, up to a total +3",
         addPlus = true,
         category = "charTree", sort = 2306
     },
     bossFlawlessLuck = {
-        str = "%s%.2f luck if you clear the boss room without getting hit more than 3 times",
+        str = "%s%.2f luck if you clear the boss room without getting hit, up to a total +3",
         addPlus = true,
         category = "charTree", sort = 2306
     },

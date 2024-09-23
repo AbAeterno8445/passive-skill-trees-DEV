@@ -282,14 +282,22 @@ function PST:onRoomClear(level, room)
 
 			-- Mod: +luck if you clear the boss room within 40 seconds
 			tmpLuck = PST:getTreeSnapshotMod("bossQuickKillLuck", 0)
-			if isBossRoom and tmpLuck > 0 and room:GetFrameCount() <= 1200 then
-				PST:addModifiers({ luck = tmpLuck }, true)
+			if isBossRoom and tmpLuck > 0 and room:GetFrameCount() <= 900 then
+				local tmpTotal = PST:getTreeSnapshotMod("bossQuickKillLuckBuff", 0)
+				if tmpTotal < 3 then
+					local tmpAdd = math.min(tmpLuck, 3 - tmpTotal)
+					PST:addModifiers({ luck = tmpAdd, bossQuickKillLuckBuff = tmpAdd }, true)
+				end
 			end
 
-			-- Mod: +luck if you clear the boss room without getting hit more than 2 times
+			-- Mod: +luck if you clear the boss room without getting hit
 			tmpLuck = PST:getTreeSnapshotMod("bossFlawlessLuck", 0)
-			if isBossRoom and tmpLuck > 0 and PST.specialNodes.bossRoomHitsFrom <= 2 then
-				PST:addModifiers({ luck = tmpLuck }, true)
+			if isBossRoom and tmpLuck > 0 and PST.specialNodes.bossRoomHitsFrom == 0 then
+				local tmpTotal = PST:getTreeSnapshotMod("bossFlawlessLuckBuff", 0)
+				if tmpTotal < 3 then
+					local tmpAdd = math.min(tmpLuck, 3 - tmpTotal)
+					PST:addModifiers({ luck = tmpAdd, bossFlawlessLuckBuff = tmpAdd }, true)
+				end
 			end
 
 			-- A True Ending? node (Lazarus' tree)

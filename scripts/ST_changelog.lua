@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.3.12",
         "- Introduced new character skill trees for: Tainted Forgotten.",
         "- Tellurian Splinter (ancient jewel) no longer reduces the speed buff during the Ascent.",
+        "- Samson's boss-related luck nodes have been significantly toned down.",
         "- The Lost's \"Heartseeker Phantasm\" now gives 0.1 luck when collecting a soul/black heart (from 0.2),",
         "and the +% all stats is now capped to a total of +20%.",
         "- Apollyon's \"Harbinger Locusts\" no longer has a chance to convert all trinkets to locusts. It now",
