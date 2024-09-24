@@ -1,4 +1,6 @@
 local clearRoomProc = false
+---@param level Level
+---@param room Room
 function PST:onRoomClear(level, room)
     -- On room clear
 	if room:GetAliveEnemiesCount() == 0 and (not clearRoomProc or PST.modData.xpObtained > 0) then
@@ -459,6 +461,21 @@ function PST:onRoomClear(level, room)
 			100 * math.random() < tmpMod then
 				player:AddSmeltedTrinket(TrinketType.TRINKET_POLISHED_BONE)
 				PST:addModifiers({ flawlessPBoneProc = true }, true)
+			end
+
+			-- Red room clear
+			if PST:inRedRoom() then
+				-- Otherside Seeker node (T. Bethany's tree)
+				if PST:getTreeSnapshotMod("othersideSeeker", false) and PST:getTreeSnapshotMod("othersideSeekerBuff", 0) < 10 then
+					PST:addModifiers({ allstatsPerc = 1, othersideSeekerBuff = 1 }, true)
+				end
+
+				-- Mod: % chance to gain a smelted Blue Key when you clear a red room, if you don't already have one
+				tmpMod = PST:getTreeSnapshotMod("blueKeyRedClear", 0)
+				if tmpMod > 0 and not player:HasTrinket(TrinketType.TRINKET_BLUE_KEY) and 100 * math.random() < tmpMod then
+					player:AddSmeltedTrinket(TrinketType.TRINKET_BLUE_KEY)
+					PST:addModifiers({ blueKeyRedClearProc = true }, true)
+				end
 			end
 
 			-- Cosmic Realignment node

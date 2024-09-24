@@ -25,19 +25,39 @@ function PST:postDamage(target, damage, flag, source)
         -- Check if a familiar got hit
         local tmpFamiliar = target:ToFamiliar()
         if tmpFamiliar then
-            -- Will-o-the-Wisp node (Bethany's tree)
-            if PST:getTreeSnapshotMod("willOTheWisp", false) then
-                if isKillingHit and PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0) < 2.5 then
-                    PST:addModifiers({ damage = 0.5, willOTheWispDmgBuff = 0.5 }, true)
+            -- Wisp
+            if target.Variant == FamiliarVariant.WISP then
+                -- Will-o-the-Wisp node (Bethany's tree)
+                if PST:getTreeSnapshotMod("willOTheWisp", false) then
+                    if isKillingHit and PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0) < 2.5 then
+                        PST:addModifiers({ damage = 0.5, willOTheWispDmgBuff = 0.5 }, true)
+                    end
                 end
-            end
 
-            -- Mod: +luck when a wisp is destroyed, up to +2
-            local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
-            local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
-            if tmpBonus ~= 0 and tmpTotal < 2 and isKillingHit then
-                local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
-                PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
+                -- Mod: +luck when a wisp is destroyed, up to +2
+                local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
+                local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
+                if tmpBonus ~= 0 and tmpTotal < 2 and isKillingHit then
+                    local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
+                    PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
+                end
+            -- Item wisps
+            elseif target.Variant == FamiliarVariant.ITEM_WISP then
+                -- Inherited Chaos node (T. Bethany's tree)
+                if PST:getTreeSnapshotMod("inheritedChaos", false) and isKillingHit and target.SubType == CollectibleType.COLLECTIBLE_CHAOS and
+                PST:getTreeSnapshotMod("inheritedChaosDebuff", 0) < 12 then
+                    PST:addModifiers({ allstatsPerc = -3, inheritedChaosDebuff = 3 }, true)
+                end
+
+                local tmpMod = PST:getTreeSnapshotMod("destroyedWispItem", 0)
+                if tmpMod > 0 and isKillingHit and 100 * math.random() < tmpMod then
+                    local tmpItemList = PST:getTreeSnapshotMod("destroyedWispItemList", nil)
+                    if tmpItemList then
+                        PST:getPlayer():AddCollectible(tmpFamiliar.SubType, 0, false)
+                        table.insert(tmpItemList, tmpFamiliar.SubType)
+                        PST:createFloatTextFX("Gained wisp item!", Vector.Zero, PST:RGBColor(198, 112, 251), 0.13, 90, true)
+                    end
+                end
             end
         end
 
@@ -119,6 +139,21 @@ function PST:postDamage(target, damage, flag, source)
                         tmpMod = PST:getTreeSnapshotMod("locustKillLuck", 0)
                         if tmpMod > 0 and 100 * math.random() < tmpMod then
                             PST:addModifiers({ luck = 0.04, locustKillLuckBuff = 0.04 }, true)
+                        end
+                    end
+                -- Item wisps
+                elseif tmpFamiliar.Variant == FamiliarVariant.ITEM_WISP then
+                    if isKillingHit then
+                        -- Resilient Flickers node (T. Bethany's tree)
+                        if PST:getTreeSnapshotMod("resilientFlickers", false) then
+                            tmpFamiliar.HitPoints = tmpFamiliar.MaxHitPoints
+                        end
+
+                        -- Mod: % chance for enemies killed by wisps or their tears to drop a 1/2 soul heart if you have less than 3 soul hearts
+                        local tmpMod = PST:getTreeSnapshotMod("wispKillSoul", 0)
+                        if tmpMod > 0 and PST:getPlayer():GetSoulHearts() < 6 and PST:getTreeSnapshotMod("wispKillSoulDrops", 0) < 4 and 100 * math.random() < tmpMod then
+                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                            PST:addModifiers({ wispKillSoulDrops = 1 }, true)
                         end
                     end
                 end

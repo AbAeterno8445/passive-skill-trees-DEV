@@ -4,7 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.3.12",
-        "- Introduced new character skill trees for: Tainted Forgotten.",
+        "- Introduced new character skill trees for: Tainted Forgotten and Tainted Bethany.",
         "- Tellurian Splinter (ancient jewel) no longer reduces the speed buff during the Ascent.",
         "- Heart pickup related modifiers now trigger when purchasing hearts from a shop.",
         "- Magdalene's \"Crystal Heart\" now has a 7% chance to turn a red heart into a bone heart (from 4%).",
@@ -13,7 +13,7 @@ function PST:getChangelogList()
         "up to a total +3, and has its +% all stats capped to a total of +20%",
         "- Apollyon's \"Harbinger Locusts\" no longer has a chance to convert all trinkets to locusts. It now",
         "instead grants a 2% chance for champion monsters to drop a random locust trinket on death, once per floor.",
-        "- Modifiers that spawn poop-related items now only spawn Hallowed Ground once the other options are gone.",
+        "- Modifiers that spawn poop-related items can now only spawn Hallowed Ground once the other options are gone.",
         "- Fixed item pedestals triggering on-pickup effects constantly while the character is 'holding' an item, such",
         "as Bag of Crafting.",
         "- Fixed error when dealing damage with Dark Arts.",

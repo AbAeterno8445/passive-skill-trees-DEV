@@ -128,6 +128,17 @@ function PST:prePickup(pickup, collider, low)
                     end
                 end
             end
+
+            -- Mod: % chance to gain a destroyed wisp's item for the rest of the floor (remove item from list so it's not lost on next floor)
+            tmpMod = PST:getTreeSnapshotMod("destroyedWispItemList", nil)
+            if tmpMod and #tmpMod > 0 then
+                for i, tmpItem in ipairs(tmpMod) do
+                    if tmpItem == subtype then
+                        table.remove(tmpMod, i)
+                        break
+                    end
+                end
+            end
         else
             -- Keeper's Blessing node (Keeper's tree)
             if PST:getTreeSnapshotMod("keeperBlessing", false) then
@@ -544,6 +555,16 @@ function PST:onPickup(pickup, collider, low, forced)
                     tmpMod = PST:getTreeSnapshotMod("temporaryHeartLuck", 0)
                     if tmpMod > 0 and PST:getRoom():IsFirstVisit() and pickup.Timeout >= 54 and 100 * math.random() < 40 then
                         PST:addModifiers({ luck = tmpMod, temporaryHeartLuckBuff = tmpMod }, true)
+                    end
+                end
+
+                -- Mod: +% damage for the current room when picking up red hearts
+                tmpMod = PST:getTreeSnapshotMod("redHeartRoomDmg", 0)
+                if tmpMod > 0 then
+                    local tmpTotal = PST:getTreeSnapshotMod("redHeartRoomDmgBuff", 0)
+                    if tmpTotal < 15 then
+                        local tmpAdd = math.min(tmpMod, 15 - tmpTotal)
+                        PST:addModifiers({ damagePerc = tmpAdd, redHeartRoomDmgBuff = tmpAdd }, true)
                     end
                 end
             end

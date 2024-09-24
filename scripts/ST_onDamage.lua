@@ -555,6 +555,29 @@ function PST:onDamage(target, damage, flag, source)
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpFamiliar.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                     PST:addModifiers({ soulTrickleWispDrops = 1 }, true)
                 end
+            -- Item wisps
+            elseif tmpFamiliar.Variant == FamiliarVariant.ITEM_WISP then
+                -- Resilient Flickers node (T. Bethany's tree)
+                if PST:getTreeSnapshotMod("resilientFlickers", false) then
+                    dmgMult = dmgMult - 0.6
+                end
+
+                -- Inherited Chaos node (T. Bethany's tree)
+                if PST:getTreeSnapshotMod("inheritedChaos", false) and tmpFamiliar.SubType == CollectibleType.COLLECTIBLE_CHAOS then
+                    dmgMult = dmgMult + 2
+                end
+
+                -- Mod: % chance for wisps to fire a homing tear away from you when hit
+                local tmpMod = PST:getTreeSnapshotMod("wispHomingTearRetal", 0)
+                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                    local tmpVel = (tmpFamiliar.Position - PST:getPlayer().Position):Normalized() * 7
+                    local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLOOD, tmpFamiliar.Position, tmpVel, tmpFamiliar, 0, Random() + 1)
+                    newTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
+					newTear:ToTear().Height = PST:getPlayer().TearHeight
+					newTear:ToTear().FallingSpeed = -PST:getPlayer().TearFallingSpeed * 2
+                    newTear.CollisionDamage = 4
+                    newTear.Color = PST:RGBColor(120, 30, 182)
+                end
             -- Blood clots (Sumptorium)
             elseif tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
                 -- Mod: release a pulse that deals damage to nearby enemies when a clot gets hit
@@ -707,6 +730,14 @@ function PST:onDamage(target, damage, flag, source)
                         if tmpMod > 0 and 100 * math.random() < tmpMod then
                             target:AddSlowing(EntityRef(PST:getPlayer()), 60, 0.85, Color(0.9, 0.9, 0.9, 1))
                         end
+                    end
+                end
+
+                -- Item wisp hit
+                if tmpFamiliar.Variant == FamiliarVariant.ITEM_WISP then
+                    -- Resilient Flickers node (T. Bethany's tree)
+                    if PST:getTreeSnapshotMod("resilientFlickers", false) then
+                        dmgMult = dmgMult + 0.35
                     end
                 end
 
@@ -938,6 +969,13 @@ function PST:onDamage(target, damage, flag, source)
                             if 100 * math.random() < PST:getTreeSnapshotMod("flipBossHitCharge", 0) then
                                 tmpPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
                             end
+                        end
+
+                        -- Blood Harvest node (T. Bethany's tree)
+                        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestBossDrops", 0) < 4 and 100 * math.random() < 7 then
+                            local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
+                            tmpHeart.Timeout = 90
+                            PST:addModifiers({ bloodHarvestBossDrops = 1 }, true)
                         end
                     end
 

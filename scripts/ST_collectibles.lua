@@ -149,7 +149,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         end
 
         -- Ancient starcursed jewel: Chronicler Stone (halve debuff when first grabbing a book item)
-        local tmpMod = PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0)
+        tmpMod = PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0)
         if tmpMod > 0 and PST:arrHasValue(PST.bookItems, itemType) then
             PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_chroniclerDebuff = -tmpMod / 2 }, true)
         end
@@ -177,7 +177,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     end
 
     -- Mod: +% all stats per item obtained by the opposing brother, up to 15%
-    local tmpMod = PST:getTreeSnapshotMod("jacobItemAllstats", 0)
+    tmpMod = PST:getTreeSnapshotMod("jacobItemAllstats", 0)
     if tmpMod ~= 0 and player:GetOtherTwin() then
         player:AddCacheFlags(PST.allstatsCache, true)
         player:GetOtherTwin():AddCacheFlags(PST.allstatsCache, true)

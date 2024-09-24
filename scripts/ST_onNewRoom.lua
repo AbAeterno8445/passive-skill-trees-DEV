@@ -760,6 +760,17 @@ function PST:onNewRoom()
 		PST:addModifiers({ speedPerc = -tmpMod, magnetizedShellBuff = { value = 0, set = true } }, true)
 	end
 
+	-- Mod: +% damage for the current room when picking up red hearts
+	tmpMod = PST:getTreeSnapshotMod("redHeartRoomDmgBuff", 0)
+	if tmpMod > 0 then
+		PST:addModifiers({ damagePerc = -tmpMod, redHeartRoomDmgBuff = { value = 0, set = true } }, true)
+	end
+
+    -- Mod: % chance for enemies killed by wisps to drop a 1/2 soul heart (reset)
+    if PST:getTreeSnapshotMod("wispKillSoulDrops", 0) > 0 then
+        PST:addModifiers({ wispKillSoulDrops = { value = 0, set = true } }, true)
+    end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums
@@ -840,7 +851,7 @@ function PST:onNewRoom()
 		if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
 			if room:GetAliveEnemiesCount() > 0 then
 				local tmpBonus = (level:GetStage() - 1) * 1.7
-				if (level:GetCurrentRoomDesc().Flags & (1 << 10)) > 0 then
+				if PST:inRedRoom() then
 					tmpBonus = -15
 				end
 				PST:addModifiers({ SC_crimsonWarpKeyDrop = { value = 35 + tmpBonus, set = true } }, true)
@@ -851,7 +862,7 @@ function PST:onNewRoom()
 				if tmpDebuff > 0 then
 					PST:addModifiers({ allstatsPerc = tmpDebuff / 2, SC_crimsonWarpDebuff = -tmpDebuff / 2 }, true)
 				end
-			elseif (level:GetCurrentRoomDesc().Flags & (1 << 10)) > 0 then
+			elseif PST:inRedRoom() then
 				local tmpDebuff = PST:getTreeSnapshotMod("SC_crimsonWarpDebuff", 0)
 				if tmpDebuff > 0 then
 					PST:addModifiers({ allstatsPerc = 2.5, SC_crimsonWarpDebuff = -2.5 }, true)

@@ -279,6 +279,11 @@ function PST:onDeath(entity)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_HOLY, Random() + 1)
                 PST:addModifiers({ helpingHandsMomProc = true }, true)
             end
+
+            -- Otherside Seeker node (T. Bethany's tree)
+            if PST:getTreeSnapshotMod("othersideSeeker", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+                PST:getPlayer():AddSmeltedTrinket(TrinketType.TRINKET_CRYSTAL_KEY)
+            end
         -- Mom's Heart death procs
         elseif entity.Type == EntityType.ENTITY_MOMS_HEART and not PST.specialNodes.momHeartDeathProc then
             PST.specialNodes.momDeathProc = true
@@ -515,6 +520,26 @@ function PST:onDeath(entity)
                     end
                 end
             end
+        end
+
+        -- Blood Harvest node (T. Bethany's tree)
+        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestDrops", 0) < 6 and 100 * math.random() < 25 then
+            local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, entity.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
+            tmpHeart.Timeout = 90
+            PST:addModifiers({ bloodHarvestDrops = 1 }, true)
+        end
+
+        -- Mod: % chance to gain +luck when killing enemies while you have 1 soul/black heart or less, doubled against bosses
+        tmpMod = PST:getTreeSnapshotMod("tBethKillLuck", 0)
+        if entity:IsBoss() then
+            tmpMod = tmpMod * 3
+        end
+        if tmpMod > 0 and PST:getPlayer():GetSoulHearts() <= 2 and 100 * math.random() < tmpMod then
+            local tmpLuck = 0.03
+            if entity:IsBoss() then
+                tmpLuck = 0.1
+            end
+            PST:addModifiers({ luck = tmpLuck }, true)
         end
 
         -- Cosmic Realignment node

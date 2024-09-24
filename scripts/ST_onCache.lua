@@ -140,6 +140,14 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.luck = dynamicMods.luck + math.min(2, tmpTreeMod * tmpHeartDiff)
             end
         end
+
+        -- Resilient Flickers node (T. Bethany's tree)
+        if PST:getTreeSnapshotMod("resilientFlickers", false) then
+            local tmpWisps = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ITEM_WISP)
+            if #tmpWisps > 5 then
+                dynamicMods.luck = dynamicMods.luck - (#tmpWisps * 0.03)
+            end
+        end
     -- DAMAGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
         -- Mod: damage while dead bird is active
@@ -727,6 +735,15 @@ function PST:onCache(player, cacheFlag)
             if itemAmt > 0 and PST:arrHasValue(PST.deliriumFamiliarItems, itemID) then
                 dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpTreeMod
             end
+        end
+    end
+
+    -- Blood Harvest node (T. Bethany's tree)
+    if PST:getTreeSnapshotMod("bloodHarvest", false) then
+        local tmpDiff = math.min(25, player:GetEffectiveBloodCharge() - 20)
+        if tmpDiff > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc - tmpDiff
+            dynamicMods.speedPerc = dynamicMods.speedPerc - tmpDiff
         end
     end
 

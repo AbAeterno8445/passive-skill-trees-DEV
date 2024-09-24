@@ -480,16 +480,37 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         end
     end
 
-    -- Mod: chance to spawn a regular wisp when using your active item
-    if 100 * math.random() < PST:getTreeSnapshotMod("activeItemWisp", 0) then
-        Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.WISP, player.Position, Vector.Zero, nil, 0, Random() + 1)
-    end
+    -- Self-used items
+    if (useFlags & UseFlag.USE_OWNED) > 0 then
+        -- Mod: chance to spawn a regular wisp when using your active item
+        if 100 * math.random() < PST:getTreeSnapshotMod("activeItemWisp", 0) then
+            Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.WISP, player.Position, Vector.Zero, nil, 0, Random() + 1)
+        end
 
-    -- Chaos Take The World node (T. Eden's tree)
-    if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) and (useFlags & UseFlag.USE_OWNED) > 0 then
-        local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
-        if itemCfg and itemCfg.MaxCharges >= 2 then
-            player:UseActiveItem(CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS, UseFlag.USE_NOANIM)
+        -- Chaos Take The World node (T. Eden's tree)
+        if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) then
+            local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
+            if itemCfg and itemCfg.MaxCharges >= 2 then
+                player:UseActiveItem(CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS, UseFlag.USE_NOANIM)
+            end
+        end
+
+        -- Mod: % chance for wisps to fire a small homing tear towards you when you use an active item
+        tmpMod = PST:getTreeSnapshotMod("wispActiveTears", 0)
+        if tmpMod > 0 then
+            local tmpWisps = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ITEM_WISP)
+            for _, tmpWisp in ipairs(tmpWisps) do
+                if 100 * math.random() < tmpMod then
+                    local tmpVel = (player.Position - tmpWisp.Position):Normalized() * 7
+                    local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLOOD, tmpWisp.Position, tmpVel, tmpWisp, 0, Random() + 1)
+                    newTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
+                    newTear:ToTear().Height = player.TearHeight
+                    newTear:ToTear().FallingSpeed = -player.TearFallingSpeed * 2
+                    newTear.SpriteScale = Vector(0.8, 0.8)
+                    newTear.CollisionDamage = player.Damage * 0.3 + 2 * player:GetActiveMinUsableCharge(slot)
+                    newTear.Color = PST:RGBColor(120, 30, 182)
+                end
+            end
         end
     end
 

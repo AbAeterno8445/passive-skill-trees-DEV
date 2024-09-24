@@ -41,6 +41,7 @@ function PST:onUpdate()
 
 	if PST.floorFirstUpdate or not modResetUpdate then
 		updateTrackers.charTracker = PST:getCurrentCharName()
+		updateTrackers.bloodCharges = player:GetEffectiveBloodCharge()
 		if updateTrackers.isBerserk == nil then updateTrackers.isBerserk = PST:isBerserk() end
 		PST:resetHeartUpdater()
 		isFiring = false
@@ -245,6 +246,14 @@ function PST:onUpdate()
 				tmpItem:ToPickup().Wait = 30
 				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 				PST:addModifiers({ chimericAmalgamFloors = { value = 0, set = true } }, true)
+			end
+		end
+
+		-- Inherited Chaos node (T. Bethany's tree)
+		if PST:getTreeSnapshotMod("inheritedChaos", false) then
+			local chaosWisps = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ITEM_WISP, CollectibleType.COLLECTIBLE_CHAOS)
+			if chaosWisps == 0 then
+				player:AddItemWisp(CollectibleType.COLLECTIBLE_CHAOS, player.Position)
 			end
 		end
 
@@ -1301,6 +1310,73 @@ function PST:onUpdate()
 			PST:updateCacheDelayed()
 		end
 		updateTrackers.pocketTracker = pocketItemSum
+	end
+
+	-- Blood charge changes
+	if player:GetEffectiveBloodCharge() ~= updateTrackers.bloodCharges then
+		-- Blood Harvest node (T. Bethany's tree)
+		if PST:getTreeSnapshotMod("bloodHarvest", false) then
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED)
+		end
+
+		if updateTrackers.bloodCharges ~= nil then
+			local tmpDiff = player:GetEffectiveBloodCharge() - updateTrackers.bloodCharges
+			if tmpDiff ~= 0 then
+				-- Mod: % chance to gain +% to a random stat when consuming a blood charge, up to 30x per floor
+				local tmpStatList = PST:getTreeSnapshotMod("bloodChargeStatList", nil)
+				if tmpDiff < 0 and tmpStatList and PST:getTreeSnapshotMod("bloodChargeStatProcs", 0) < 30 then
+					tmpMod = PST:getTreeSnapshotMod("bloodChargeStat", 0)
+					if tmpMod > 0 then
+						local tmpStatMods = { bloodChargeStatProcs = 0 }
+						for _=1,math.abs(tmpDiff) do
+							if 100 * math.random() < tmpMod then
+								local randStat = PST:getRandomStat() .. "Perc"
+								if not tmpStatList[randStat] then
+									tmpStatList[randStat] = 0
+								end
+								tmpStatList[randStat] = tmpStatList[randStat] + 0.4
+
+								if not tmpStatMods[randStat] then
+									tmpStatMods[randStat] = 0
+								end
+								tmpStatMods[randStat] = tmpStatMods[randStat] + 0.4
+								tmpStatMods.bloodChargeStatProcs = tmpStatMods.bloodChargeStatProcs + 1
+							end
+						end
+						PST:addModifiers(tmpStatMods, true)
+					end
+				end
+			end
+		end
+		updateTrackers.bloodCharges = player:GetEffectiveBloodCharge()
+	end
+
+	-- Mod: every X total seconds spent firing, shoot an additional piercing/homing tear
+	tmpMod = PST:getTreeSnapshotMod("tBethHomingTear", 0)
+	if tmpMod > 0 then
+		local plInput = player:GetShootingInput()
+		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+		if isShooting then
+			if PST.specialNodes.tBethHomingTearTimer <= 0 then
+				PST.specialNodes.tBethHomingTearTimer = tmpMod * 30
+			elseif PST.specialNodes.tBethHomingTearTimer > 0 then
+				PST.specialNodes.tBethHomingTearTimer = PST.specialNodes.tBethHomingTearTimer - 1
+				if PST.specialNodes.tBethHomingTearTimer <= 0 then
+					local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BALLOON_BRIMSTONE, player.Position, plInput * 6, player, 0, Random() + 1)
+					newTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_HOMING)
+					newTear:ToTear().Height = -60
+					newTear:ToTear().FallingSpeed = -PST:getPlayer().TearFallingSpeed * 5
+					newTear.SpriteScale = Vector(1.2, 1.2)
+					newTear.Color = PST:RGBColor(120, 30, 182)
+					newTear.CollisionDamage = player.Damage * 1.5
+
+					local tmpFearChance = PST:getTreeSnapshotMod("tBethHomingTearFear", 0)
+					if tmpFearChance > 0 and 100 * math.random() < tmpFearChance then
+						newTear:ToTear():AddTearFlags(TearFlags.TEAR_FEAR)
+					end
+				end
+			end
+		end
 	end
 
 	-- Strange Coupon node (T. Keeper's tree)

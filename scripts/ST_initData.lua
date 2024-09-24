@@ -429,7 +429,8 @@ function PST:resetMods()
 			charTracker = "",
 			pocketTracker = 0,
 			craftBagPickups = 0,
-			isBerserk = false
+			isBerserk = false,
+			bloodCharges = 0
 		},
 
 		-- 'Keystone' nodes
@@ -1094,6 +1095,31 @@ function PST:resetMods()
 		flawlessPBoneProc = false,
 		forgBoneTearKillLuck = 0,
 		forgBoneTearLuckBuff = 0,
+		---- T. Bethany ----
+		bloodHarvest = false,
+		bloodHarvestDrops = 0,
+		bloodHarvestBossDrops = 0,
+		resilientFlickers = false,
+		othersideSeeker = false,
+		othersideSeekerBuff = 0,
+		inheritedChaos = false,
+		inheritedChaosDebuff = 0,
+		redHeartRoomDmg = 0,
+		redHeartRoomDmgBuff = 0,
+		wispHomingTearRetal = 0,
+		wispActiveTears = 0,
+		destroyedWispItem = 0,
+		destroyedWispItemList = {},
+		blueKeyRedClear = 0,
+		blueKeyRedClearProc = false,
+		bloodChargeStat = 0,
+		bloodChargeStatList = {},
+		bloodChargeStatProcs = 0,
+		wispKillSoul = 0,
+		wispKillSoulDrops = 0,
+		tBethHomingTear = 0,
+		tBethHomingTearFear = 0,
+		tBethKillLuck = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1233,6 +1259,7 @@ function PST:resetMods()
 		locustKillTearsTimer = 0,
 		ballistosseousTimer = 0,
 		recallDamageTimer = 0,
+		tBethHomingTearTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

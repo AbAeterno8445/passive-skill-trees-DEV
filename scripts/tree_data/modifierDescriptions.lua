@@ -3000,6 +3000,108 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 3719
     },
+    ---- T. BETHANY'S TREE ----
+    bloodHarvest = {
+        str = {
+            "Blood Harvest:",
+            "    Killing an enemy has a 25%% chance of dropping a 1/2 red heart, which vanishes after 3",
+            "    seconds, up to 6 per room",
+            "    Hitting a boss has a 7%% chance of dropping a 1/2 red heart, which vanishes after 3",
+            "    seconds, up to 4 per room",
+            "    -1%% damage and speed per blood charge past 20, up to -25%%"
+        },
+        category = "charTree", sort = 3750
+    },
+    resilientFlickers = {
+        str = {
+            "Resilient Flickers:",
+            "    Lemegeton wisps take 60%% reduced damage",
+            "    Lemegeton wisps deal 35%% increased contact damage",
+            "    Fully heal a wisp when it kills an enemy with contact damage",
+            "    -0.03 luck per active wisp past 5"
+        },
+        category = "charTree", sort = 3751
+    },
+    othersideSeeker = {
+        str = {
+            "Otherside Seeker:",
+            "    Start with 3 smelted Crystal Keys",
+            "    Defeating Mom without taking damage grants you an additional smelted Crystal Key",
+            "    +1%% all stats for the current floor when clearing a red room, up to +10%%"
+        },
+        category = "charTree", sort = 3752
+    },
+    inheritedChaos = {
+        str = {
+            "Inherited Chaos:",
+            "    When entering a floor, spawn a Chaos wisp if you don't currently have one",
+            "    Chaos wisps receive 200%% more damage when hit",
+            "    -3%% all stats whenever a Chaos wisp is destroyed, up to -12%%"
+        },
+        category = "charTree", sort = 3753
+    },
+    redHeartRoomDmg = {
+        str = "%s%.2f%% damage for the current room when picking up a red heart, up to +15%%",
+        addPlus = true,
+        category = "charTree", sort = 3760
+    },
+    wispHomingTearRetal = {
+        str = {
+            "%d%% chance for Wisps to fire a homing tear away from you when they get hit",
+            "    These tears deal 5 damage"
+        },
+        category = "charTree", sort = 3761
+    },
+    wispActiveTears = {
+        str = {
+            "%d%% chance for Wisps to fire a small homing tear towards you when using an active item",
+            "    These tears deal 30%% of your damage + an additional 2 damage per used charge"
+        },
+        category = "charTree", sort = 3762
+    },
+    destroyedWispItem = {
+        str = "%d%% chance to gain a destroyed wisp's item for the rest of the floor",
+        category = "charTree", sort = 3763
+    },
+    blueKeyRedClear = {
+        str = {
+            "%d%% chance to gain a smelted Blue Key for the current floor when clearing a red room, if",
+            "you don't currently have one"
+        },
+        category = "charTree", sort = 3764
+    },
+    bloodChargeStat = {
+        str = {
+            "%d%% chance to gain +0.4%% to a random stat per consumed blood charge, up to 30 times per",
+            "floor"
+        },
+        category = "charTree", sort = 3765
+    },
+    wispKillSoul = {
+        str = {
+            "%d%% chance for enemies killed by Wisps or their tears to drop a 1/2 soul heart if you have",
+            "less than 3 soul hearts, up to 4 per room"
+        },
+        category = "charTree", sort = 3766
+    },
+    tBethHomingTear = {
+        str = {
+            "Every %.2f total seconds spent firing, shoot an additional piercing and homing tear that",
+            "deals 150%% of your damage"
+        },
+        category = "charTree", sort = 3767
+    },
+    tBethHomingTearFear = {
+        str = "    %d%% chance for the shot tear to cause fear on enemies it hits",
+        category = "charTree", sort = 3768
+    },
+    tBethKillLuck = {
+        str = {
+            "%d%% chance to gain +0.03 luck when killing enemies while you have 1 soul/black heart or less",
+            "    Triple the chance and luck gain against bosses"
+        },
+        category = "charTree", sort = 3769
+    },
     --#endregion
 
     ---- STARMIGHT ----

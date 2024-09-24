@@ -516,6 +516,13 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR)
     end
 
+    -- Otherside Seeker node (T. Bethany's tree)
+    if PST:getTreeSnapshotMod("othersideSeeker", false) then
+        for _=1,3 do
+            player:AddSmeltedTrinket(TrinketType.TRINKET_CRYSTAL_KEY)
+        end
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

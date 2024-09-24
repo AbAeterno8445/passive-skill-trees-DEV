@@ -580,6 +580,47 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpMod / 2, forgBoneTearLuckBuff = -tmpMod / 2 }, true)
     end
 
+    -- Blood Harvest node (T. Bethany's tree)
+    if PST:getTreeSnapshotMod("bloodHarvestBossDrops", 0) > 0 or PST:getTreeSnapshotMod("bloodHarvestDrops", 0) > 0 then
+        PST:addModifiers({
+            bloodHarvestDrops = { value = 0, set = true },
+            bloodHarvestBossDrops = { value = 0, set = true }
+        }, true)
+    end
+
+    -- Otherside Seeker node (T. Bethany's tree)
+    tmpMod = PST:getTreeSnapshotMod("othersideSeekerBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ allstatsPerc = -tmpMod, othersideSeekerBuff = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance to gain a destroyed wisp's item (reset)
+    tmpMod = PST:getTreeSnapshotMod("destroyedWispItemList", nil)
+    if tmpMod and #tmpMod > 0 then
+        for _, tmpItem in ipairs(tmpMod) do
+            player:RemoveCollectible(tmpItem)
+        end
+        PST.modData.treeModSnapshot.destroyedWispItemList = {}
+    end
+
+    -- Mod: % chance to gain a smelted Blue Key when clearing a red room (reset)
+    if PST:getTreeSnapshotMod("blueKeyRedClearProc", false) then
+        player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_BLUE_KEY)
+        PST:addModifiers({ blueKeyRedClearProc = false }, true)
+    end
+
+    -- Mod: % chance to gain a random stat when consuming blood charges
+    tmpMod = PST:getTreeSnapshotMod("bloodChargeStatList", nil)
+    if tmpMod then
+        local tmpModChanges = {}
+        for tmpStat, statVal in pairs(tmpMod) do
+            tmpModChanges[tmpStat] = -statVal
+        end
+        tmpModChanges["bloodChargeStatProcs"] = { value = 0, set = true }
+        PST.modData.treeModSnapshot.bloodChargeStatList = {}
+        PST:addModifiers(tmpModChanges, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

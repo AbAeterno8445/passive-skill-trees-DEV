@@ -526,6 +526,10 @@ function PST:switchPurityState(newState)
 	PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SPEED | CacheFlag.CACHE_RANGE)
 end
 
+function PST:inRedRoom()
+	return (PST:getLevel():GetCurrentRoomDesc().Flags & (1 << 10)) > 0
+end
+
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
 ---@param player EntityPlayer
