@@ -608,10 +608,12 @@ function PST:onNewRoom()
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
 			if tmpDoor then
-				if roomType == RoomType.ROOM_CURSE then
-					tmpDoor:SetRoomTypes(RoomType.ROOM_DEFAULT, tmpDoor.TargetRoomType)
-				elseif tmpDoor.TargetRoomType == RoomType.ROOM_CURSE then
-					tmpDoor:SetRoomTypes(roomType, RoomType.ROOM_DEFAULT)
+				if roomType == RoomType.ROOM_CURSE or tmpDoor.TargetRoomType == RoomType.ROOM_CURSE then
+					local doorSprite = tmpDoor:GetSprite()
+					for _, tmpLayer in ipairs(doorSprite:GetAllLayers()) do
+						doorSprite:ReplaceSpritesheet(tmpLayer:GetLayerID(), "gfx/grid/door_04_selfsacrificeroomdoor_nospikes.png", true)
+					end
+					tmpDoor.VarData = 1
 				end
 			end
 		end

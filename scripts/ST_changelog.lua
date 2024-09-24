@@ -14,6 +14,8 @@ function PST:getChangelogList()
         "- Apollyon's \"Harbinger Locusts\" no longer has a chance to convert all trinkets to locusts. It now",
         "instead grants a 2% chance for champion monsters to drop a random locust trinket on death, once per floor.",
         "- Modifiers that spawn poop-related items can now only spawn Hallowed Ground once the other options are gone.",
+        "- Spiked curse room doors that are removed by the appropriate modifier now visually have their spikes removed,",
+        "instead of becoming regular doorways.",
         "- Fixed item pedestals triggering on-pickup effects constantly while the character is 'holding' an item, such",
         "as Bag of Crafting.",
         "- Fixed error when dealing damage with Dark Arts.",
