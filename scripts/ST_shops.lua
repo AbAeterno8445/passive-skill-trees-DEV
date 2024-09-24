@@ -4,6 +4,10 @@
 function PST:onShopPurchase(pickup, player, spent)
     local roomType = PST:getRoom():GetType()
     if spent > 0 then
+        if pickup.Variant == PickupVariant.PICKUP_HEART then
+            PST:onPickup(pickup, player, false, true)
+        end
+
         -- Mod: chance to steal shop item instead of purchasing
         if roomType == RoomType.ROOM_SHOP then
             local stealChance = PST:getTreeSnapshotMod("stealChance", 0)

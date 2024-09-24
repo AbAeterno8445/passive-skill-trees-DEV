@@ -397,13 +397,13 @@ function PST:prePickup(pickup, collider, low)
     end
 end
 
-function PST:onPickup(pickup, collider, low)
-    if pickup:GetSprite():GetAnimation() ~= "Collect" then return end
+function PST:onPickup(pickup, collider, low, forced)
+    if pickup:GetSprite():GetAnimation() ~= "Collect" and not forced then return end
 
     local player = collider:ToPlayer()
     local variant = pickup.Variant
     local subtype = pickup.SubType
-    if player ~= nil and not pickup:IsShopItem() then
+    if player ~= nil and (not pickup:IsShopItem() or forced) then
         if variant == PickupVariant.PICKUP_COIN then
             local coinChance = PST:getTreeSnapshotMod("coinDupe", 0)
             if coinChance > 0 and 100 * math.random() < coinChance then
@@ -437,9 +437,12 @@ function PST:onPickup(pickup, collider, low)
 
                 -- Heartseeker Phantasm node (The Lost's tree)
                 if PST:getTreeSnapshotMod("heartseekerPhantasm", false) then
-                    -- +0.2 luck when collecting soul or black hearts. +1% all stats for every 3 hearts collected
-                    PST:addModifiers({ luck = 0.1, heartseekerPhantasmCollected = 1 }, true)
+                    -- +0.1 luck when collecting soul or black hearts. +1% all stats for every 3 hearts collected
+                    PST:addModifiers({ heartseekerPhantasmCollected = 1 }, true)
                     local tmpCollected = PST:getTreeSnapshotMod("heartseekerPhantasmCollected", 0)
+                    if tmpCollected <= 30 then
+                        PST:addModifiers({ luck = 0.1 }, true)
+                    end
                     if tmpCollected % 3 == 0 and tmpCollected <= 60 then
                         PST:addModifiers({ allstatsPerc = 1 }, true)
                     end
@@ -465,9 +468,13 @@ function PST:onPickup(pickup, collider, low)
 
                 -- Heartseeker Phantasm node (The Lost's tree)
                 if PST:getTreeSnapshotMod("heartseekerPhantasm", false) then
-                    -- +0.2 luck when collecting soul or black hearts. +1% all stats for every 3 hearts collected
-                    PST:addModifiers({ luck = 0.2, heartseekerPhantasmCollected = 1 }, true)
-                    if PST:getTreeSnapshotMod("heartseekerPhantasmCollected", 0) % 3 == 0 then
+                    -- +0.1 luck when collecting soul or black hearts. +1% all stats for every 3 hearts collected
+                    PST:addModifiers({ heartseekerPhantasmCollected = 1 }, true)
+                    local tmpCollected = PST:getTreeSnapshotMod("heartseekerPhantasmCollected", 0)
+                    if tmpCollected <= 30 then
+                        PST:addModifiers({ luck = 0.1 }, true)
+                    end
+                    if tmpCollected % 3 == 0 and tmpCollected <= 60 then
                         PST:addModifiers({ allstatsPerc = 1 }, true)
                     end
                 end

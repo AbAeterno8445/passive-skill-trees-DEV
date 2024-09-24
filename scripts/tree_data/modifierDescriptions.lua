@@ -987,7 +987,8 @@ PST.treeModDescriptions = {
             "Spectral Advantage:",
             "    +2%% damage and +0.15 luck for each heart you would've gained from",
             "    items you pick up, up to a total 40%% damage, +3 luck",
-            "    If you obtain Birthright, gain +8%% tears"
+            "    If you obtain Birthright, gain +8%% tears",
+            "    Does not work on active items that grant hearts"
         },
         category = "charTree", sort = 2500
     },
@@ -1003,8 +1004,8 @@ PST.treeModDescriptions = {
         str = {
             "Heartseeker Phantasm:",
             "    Dropped red and eternal hearts are converted to soul hearts",
-            "    Collecting a soul or black heart grants +0.1 luck",
-            "    +1%% all stats for every 3 hearts collected, up to a total +20%%"
+            "    Collecting a soul or black heart pickup grants +0.1 luck, up to a total +3",
+            "    +1%% all stats for every 3 heart pickups collected, up to a total +20%%"
         },
         category = "charTree", sort = 2502
     },
