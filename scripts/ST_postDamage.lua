@@ -145,7 +145,7 @@ function PST:postDamage(target, damage, flag, source)
                 elseif tmpFamiliar.Variant == FamiliarVariant.ITEM_WISP then
                     if isKillingHit then
                         -- Resilient Flickers node (T. Bethany's tree)
-                        if PST:getTreeSnapshotMod("resilientFlickers", false) then
+                        if PST:getTreeSnapshotMod("resilientFlickers", false) and tmpFamiliar.HitPoints < tmpFamiliar.MaxHitPoints then
                             tmpFamiliar.HitPoints = tmpFamiliar.MaxHitPoints
                         end
 

@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.3.13",
         "- Optimized overall saving frequency throughout the mod, which should improve performance.",
+        "- Fixed T. Bethany's \"Resilient Flickers\" reducing birthright wisps' HP and size on proc.",
         "",
 
         "v0.3.12",
