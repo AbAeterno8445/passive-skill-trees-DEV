@@ -926,6 +926,8 @@ local function resetData(type)
 	end
 end
 
+local saveFileWait = 3
+
 local function preGameExit(_, shouldSave)
 	SaveManager.Utility.SendDebugMessage("pre game exit")
 	if shouldSave then
@@ -943,6 +945,7 @@ local function preGameExit(_, shouldSave)
 	loadedData = false
 	inRunButNotLoaded = false
 	shouldRestoreOnUse = false
+	saveFileWait = 0
 end
 
 ---@param ent Entity
@@ -1074,7 +1077,11 @@ local function postSaveSlotLoad(_, saveSlot, isSlotSelected, rawSlot)
 	if not isSlotSelected then
 		return
 	end
-	SaveManager.Load(false)
+	if saveFileWait < 3 then
+		saveFileWait = saveFileWait + 1
+	else
+		SaveManager.Load(false)
+	end
 end
 
 --#endregion
@@ -1143,6 +1150,7 @@ function SaveManager.Init(mod)
 		and loadedData
 		and not dontSaveModData
 		then
+			saveFileWait = 0
 			SaveManager.Save()
 		end
 	end)
