@@ -3,9 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.14",
+        "- Fixed T. Bethany's \"Resilient Flickers\" reducing birthright wisps' HP and size on proc.",
+        "",
+
         "v0.3.13",
         "- Optimized overall saving frequency throughout the mod, which should improve performance.",
-        "- Fixed T. Bethany's \"Resilient Flickers\" reducing birthright wisps' HP and size on proc.",
         "",
 
         "v0.3.12",
