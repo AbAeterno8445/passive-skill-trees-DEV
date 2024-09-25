@@ -61,7 +61,6 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                         magicDieData.value = 2
                     end
                 end
-                PST:save()
                 player:AddCacheFlags(PST.allstatsCache, true)
             end
         end

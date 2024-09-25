@@ -89,6 +89,9 @@ local treeControlDescController = {
     "Item + Select: display a list of all active modifiers"
 }
 
+-- For saving
+local treeHasChanges = false
+
 -- Starcursed menus
 PST.starcursedInvData = {
     open = "",
@@ -178,6 +181,10 @@ function PST:openTreeMenu()
 end
 
 function PST:closeTreeMenu(mute, force)
+    if treeHasChanges then
+        PST:save(true)
+        treeHasChanges = false
+    end
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
         MenuManager.SetInputMask(4294967295)
@@ -908,6 +915,7 @@ function PST:treeMenuRenderer()
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
         if hoveredNode ~= nil then
+            treeHasChanges = true
             if PST:isNodeAllocatable(currentTree, hoveredNode.id, true) then
                 if not PST.debugOptions.infSP then
                     if currentTree == "global" or currentTree == "starTree" then
@@ -971,6 +979,7 @@ function PST:treeMenuRenderer()
             end
         -- Cosmic Realignment node, pick hovered character
         elseif PST.cosmicRData.hoveredCharID ~= nil then
+            treeHasChanges = true
             if PST:cosmicRIsCharUnlocked(PST.cosmicRData.hoveredCharID) then
                 if not (cosmicRChar == PST.cosmicRData.hoveredCharID) then
                     PST.modData.cosmicRealignment = PST.cosmicRData.hoveredCharID
@@ -979,12 +988,12 @@ function PST:treeMenuRenderer()
                 end
                 sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
                 PST.cosmicRData.menuOpen = false
-                PST:save()
             else
                 sfx:Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
             end
         -- Starcursed inventory, identify/equip hovered jewel
         elseif PST.starcursedInvData.hoveredJewel ~= nil then
+            treeHasChanges = true
             local jewelData = PST.starcursedInvData.hoveredJewel
             if jewelData then
                 if jewelData.unidentified then
@@ -1004,6 +1013,7 @@ function PST:treeMenuRenderer()
     -- Input: Respec node
     if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
         if hoveredNode ~= nil then
+            treeHasChanges = true
             -- Check if node is socketed starcursed jewel
             local isSocketedJewel = false
             for _, tmpType in pairs(PSTStarcursedType) do
@@ -1016,7 +1026,6 @@ function PST:treeMenuRenderer()
                         sfx:Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
                         PST:updateStarTreeTotals()
                         isSocketedJewel = true
-                        PST:save()
                         break
                     end
                 end
@@ -1049,6 +1058,7 @@ function PST:treeMenuRenderer()
             end
         -- Starcursed inventory, attempt to destroy hovered jewel
         elseif PST.starcursedInvData.hoveredJewel ~= nil then
+            treeHasChanges = true
             if not PST.starcursedInvData.hoveredJewel.equipped then
                 if PST.starcursedInvData.hoveredJewel.converted ~= nil then
                     -- Cause Converter, remove boss and switch jewel back to seeking mode
@@ -1108,10 +1118,10 @@ function PST:treeMenuRenderer()
     -- Input: Toggle tree effects
     if PST:isKeybindActive(PSTKeybind.TOGGLE_TREE_MODS) then
         PST.modData.treeDisabled = not PST.modData.treeDisabled
-        PST:save()
         if PST.modData.treeDisabled then
             sfx:Play(SoundEffect.SOUND_BEEP, 0.6)
         end
+        treeHasChanges = true
     end
 
     -- Input: Toggle help menu

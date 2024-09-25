@@ -84,8 +84,8 @@ end
 -- Save mod data
 local lastSave = 0
 function PST:save(forceSave)
-	-- Limit saving to once every 250 ms
-	if not forceSave and lastSave ~= 0 and os.clock() - lastSave < 0.25 then
+	-- Limit saving to once every 200 ms
+	if not forceSave and lastSave ~= 0 and os.clock() - lastSave < 0.2 then
 		return
 	end
 
@@ -203,14 +203,14 @@ function PST:load()
 
 	if oldLoadFlag then
 		oldLoadFlag = false
-		PST:save()
+		PST:save(true)
 	end
 end
 
 function PST:resetSaveData()
 	PST:resetData()
 	PST:resetNodes()
-	PST:save()
+	PST:save(true)
 end
 
 function PST:onSaveSlot(slot, isSlotSelected)

@@ -543,8 +543,6 @@ function PST:onRoomClear(level, room)
 			PST.modData.xpObtained = 0
 		end
 
-		-- Save data
-		PST:save()
 		clearRoomProc = true
 	elseif room:GetAliveEnemiesCount() > 0 then
 		clearRoomProc = false

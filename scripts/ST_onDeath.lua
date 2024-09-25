@@ -548,7 +548,6 @@ function PST:onDeath(entity)
             -- Tainted Samson, +2% all stats when killing a monster, up to 10%
             if cosmicRCache.TSamsonBuffer < 10 then
                 cosmicRCache.TSamsonBuffer = cosmicRCache.TSamsonBuffer + 2
-                PST:save()
                 tmpPlayer:AddCacheFlags(PST.allstatsCache, true)
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then

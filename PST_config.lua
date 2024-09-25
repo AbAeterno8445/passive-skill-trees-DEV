@@ -164,7 +164,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(b)
                 PST.config.drawXPbar = b
-                PST:save()
             end,
             Info = {"Draw level and XP bar at the bottom of the screen", "during gameplay"}
         }
@@ -185,7 +184,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(b)
                 PST.config.floatingTexts = b
-                PST:save()
             end,
             Info = {"Draw floating texts during gameplay", "(e.g. xp gain, +1 respec, certain node effects, etc.)"}
         }
@@ -206,7 +204,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(b)
                 PST.config.charSelectInfoText = b
-                PST:save()
             end,
             Info = {"Draw char info text in character select screen"}
         }
@@ -227,7 +224,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(b)
                 PST.config.drawPauseText = b
-                PST:save()
             end,
             Info = {"Draw pause menu text showing tree opening controls"}
         }
@@ -248,7 +244,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(b)
                 PST.config.treeOnChallenges = b
-                PST:save()
             end,
             Info = {"Whether tree node effects are applied in challenges", "Default off"}
         }
@@ -269,7 +264,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(b)
                 PST.config.changelogPopup = b
-                PST:save()
             end,
             Info = {"Whether to have the changelog pop up in the tree screen when a new update arrives"}
         }
@@ -305,7 +299,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(n)
                 PST.config.xpMult = xpMultOptions[n]
-                PST:save()
             end,
             Info = {"XP Multiplier applied to most XP gains", "Default 1"}
         }

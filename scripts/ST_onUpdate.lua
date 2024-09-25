@@ -1240,10 +1240,8 @@ function PST:onUpdate()
 		if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
 			local isHeld = tmpTwin:IsHoldingItem() and player.Position:Distance(tmpTwin.Position) <= 10
 			if isHeld and not PST:getTreeSnapshotMod("forgIsHeld", false) then
-				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
 				PST:addModifiers({ speedPerc = tmpMod, forgIsHeld = true }, true)
 			elseif not isHeld and PST:getTreeSnapshotMod("forgIsHeld", false) then
-				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
 				PST:addModifiers({ speedPerc = tmpMod, forgIsHeld = false }, true)
 
 				-- Mod: % chance to trigger Telekinesis' effect when launching T. Forgotten
@@ -1807,7 +1805,6 @@ function PST:onUpdate()
 				end
 			end
 			updateTrackers.craftBagPickups = craftBagChecksum
-			PST:save()
 		end
 
 		-- Set bag full status to detect crafting
@@ -1901,7 +1898,6 @@ function PST:onUpdate()
 				if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
 					if PST:getTreeSnapshotMod("craftingBagFull", false) then
 						cosmicRCache.TCainUses = cosmicRCache.TCainUses + 1
-						PST:save()
 					end
 				end
 			end

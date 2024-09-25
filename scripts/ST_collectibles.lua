@@ -285,7 +285,6 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         if firstTime then
             player:AddLocust(itemType, player.Position)
             cosmicRCache.TApollyonLocusts = cosmicRCache.TApollyonLocusts + 1
-            PST:save()
             player:AddCacheFlags(PST.allstatsCache, true)
         end
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BETHANY_B) then

@@ -213,7 +213,7 @@ function PST:addModifiers(modList, addToSnapshot)
     if tmpFlags ~= 0 and addToSnapshot then
         PST:updateCacheDelayed(tmpFlags)
     end
-    PST:save()
+    PST.savePending = true
 end
 
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
@@ -271,7 +271,6 @@ function PST:allocateNodeID(tree, nodeID, allocation)
 
     PST.modData.treeNodes[tree][nodeID] = allocation
     PST:updateNodes(tree, true)
-    PST:save()
 end
 
 local nodeReachableFound = false

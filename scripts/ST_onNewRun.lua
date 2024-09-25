@@ -232,7 +232,6 @@ function PST:onNewRun(isContinued)
     end
 
     player:AddCacheFlags(PST.allstatsCache, true)
-    PST:save()
 
     -- Reset specialNodes that might be left over
     PST.specialNodes.SC_circadianSpawnTime = 0
@@ -611,7 +610,6 @@ function PST:onNewRun(isContinued)
         cosmicRCache.TLazarusBank1.rotten = player:GetRottenHearts()
         cosmicRCache.TLazarusBank1.broken = player:GetBrokenHearts()
         cosmicRCache.TLazarusBank1.eternal = player:GetEternalHearts()
-        PST:save()
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
         -- Tainted Lost, remove Wafer and Holy Mantle
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_WAFER)
@@ -643,4 +641,6 @@ function PST:onNewRun(isContinued)
     -- Initial level & room funcs
     PST:onNewLevel()
     PST:onNewRoom()
+
+    PST:save()
 end

@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.12"
+PST.modVersion = "v0.3.13"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -22,6 +22,9 @@ PST.level = nil
 
 -- For custom mod images
 PST.customNodeImages = {}
+
+-- For saving when entering a room
+PST.savePending = false
 
 -- Initialization performed on the first menu render call
 function PST:firstRenderInit()

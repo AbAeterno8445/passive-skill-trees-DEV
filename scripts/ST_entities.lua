@@ -18,7 +18,6 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
             if cosmicRCache.bethanyKeeperLuck > -2 then
                 PST:addModifiers({ luck = -0.01 }, true)
                 cosmicRCache.bethanyKeeperLuck = cosmicRCache.bethanyKeeperLuck - 0.01
-                PST:save()
             end
         end
     end

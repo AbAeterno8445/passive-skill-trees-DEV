@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.13",
+        "- Optimized overall saving frequency throughout the mod, which should improve performance.",
+        "",
+
         "v0.3.12",
         "- Introduced new character skill trees for: Tainted Forgotten and Tainted Bethany.",
         "- Tellurian Splinter (ancient jewel) no longer reduces the speed buff during the Ascent.",

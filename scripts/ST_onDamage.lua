@@ -122,7 +122,6 @@ function PST:onDamage(target, damage, flag, source)
             -- Tainted Samson, -5% all stats when hit, up to -20%
             if room:GetAliveEnemiesCount() > 0 and cosmicRCache.TSamsonBuffer > -20 then
                 cosmicRCache.TSamsonBuffer = cosmicRCache.TSamsonBuffer - 5
-                PST:save()
                 player:AddCacheFlags(PST.allstatsCache, true)
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN_B) then

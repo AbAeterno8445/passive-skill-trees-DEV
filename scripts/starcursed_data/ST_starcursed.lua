@@ -396,7 +396,6 @@ function PST:SC_equipJewel(jewel, socketID)
         oldJewel.equipped = nil
     end
     jewel.equipped = socketID
-    PST:save()
 end
 
 function PST:SC_canDestroyJewel(jewel)

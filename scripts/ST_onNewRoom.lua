@@ -1077,7 +1077,6 @@ function PST:onNewRoom()
 					PST:createFloatTextFX("Curse of T. Isaac", Vector.Zero, Color(1, 0.4, 0.4, 1), 0.09, 120, true)
 					SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
 					cosmicRCache.TIsaacProc = true
-					PST:save()
 				end
 			end
 		-- Planetarium
@@ -1088,5 +1087,10 @@ function PST:onNewRoom()
 				PST:addModifiers({ allstatsPerc = tmpStats, planetariumAllstatsProc = true }, true)
 			end
 		end
+	end
+
+	if PST.savePending then
+		PST:save()
+		PST.savePending = false
 	end
 end

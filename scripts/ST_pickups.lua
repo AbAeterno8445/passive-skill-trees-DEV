@@ -324,7 +324,6 @@ function PST:prePickup(pickup, collider, low)
                         PST:vanishPickup(pickup)
 
                         cosmicRCache.blueBabyHearts = cosmicRCache.blueBabyHearts + 1
-                        PST:save()
                         return false
                     end
                 end
@@ -354,7 +353,6 @@ function PST:prePickup(pickup, collider, low)
                             end
                             PST:createFloatTextFX("Keeper's curse: " .. cosmicRCache.keeperFloorCoins .. "/5", Vector.Zero, tmpColor, 0.1, 50, true)
                         end
-                        PST:save()
                     end
                 end
             elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
@@ -364,7 +362,6 @@ function PST:prePickup(pickup, collider, low)
                         if cosmicRCache.TJudasDmgUps < 5 then
                             cosmicRCache.TJudasDmgUps = cosmicRCache.TJudasDmgUps + 1
                             PST:addModifiers({ damage = 0.2 }, true)
-                            PST:save()
                         end
                         player:AddHearts(-2)
                     end
@@ -386,7 +383,6 @@ function PST:prePickup(pickup, collider, low)
                 if isKeeper and variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() then
                     if cosmicRCache.TLostKeeperCoins < 3 then
                         cosmicRCache.TLostKeeperCoins = cosmicRCache.TLostKeeperCoins + 1
-                        PST:save()
                     else
                         player:AddHearts(-2)
                     end
@@ -631,7 +627,6 @@ function PST:onPickup(pickup, collider, low, forced)
                 if cosmicRCache.TJudasDmgUps < 3 then
                     cosmicRCache.TJudasDmgUps = cosmicRCache.TJudasDmgUps + 1
                     PST:addModifiers({ damage = 0.4 }, true)
-                    PST:save()
                 end
             end
         end
