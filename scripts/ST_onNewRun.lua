@@ -522,6 +522,11 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    -- Reaper Wraiths node (T. Jacob's tree)
+    if PST:getTreeSnapshotMod("reaperWraiths", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

@@ -257,6 +257,18 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Reaper Wraiths node (T. Jacob's tree)
+		if PST:getTreeSnapshotMod("reaperWraiths", false) then
+			if player:GetPlayerType() == PlayerType.PLAYER_JACOB_B then
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
+				SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE, 0.9, 2, false, 1.15)
+				player:ChangePlayerType(PlayerType.PLAYER_JACOB2_B)
+			end
+			if player:GetEternalHearts() == 0 then
+				player:AddEternalHearts(1)
+			end
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -1717,7 +1729,8 @@ function PST:onUpdate()
 				end
 			end
 			if not spawned then
-				Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector.Zero, nil, 0, Random() + 1)
+				local tmpDarkEsau = Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector.Zero, player, 0, Random() + 1)
+            	tmpDarkEsau:AddEntityFlags(EntityFlag.FLAG_PERSISTENT | EntityFlag.FLAG_NO_TARGET | EntityFlag.FLAG_NO_STATUS_EFFECTS)
 				PST.specialNodes.TJacobEsauSpawned = true
 			end
 		end
@@ -2144,6 +2157,75 @@ function PST:onUpdate()
 		PST.specialNodes.locustKillTearsTimer = PST.specialNodes.locustKillTearsTimer - 1
 		if PST.specialNodes.locustKillTearsTimer == 0 then
 			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+
+	-- Anima Sola, update chained enemies
+	if PST.specialNodes.checkAnimaChain then
+		PST.specialNodes.animaChainedMobs = {}
+
+		local darkEsauChained = false
+		local animaChains = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.ANIMA_CHAIN, 0)
+		if #animaChains > 0 then
+			for _, tmpChain in ipairs(animaChains) do
+				local target = tmpChain.Target
+				if target and not PST:arrHasValue(PST.specialNodes.animaChainedMobs, target.InitSeed) then
+					table.insert(PST.specialNodes.animaChainedMobs, target.InitSeed)
+
+					if target.Type == EntityType.ENTITY_DARK_ESAU then
+						darkEsauChained = true
+					end
+				end
+
+				-- Mod: +% to Anima Sola's chain duration
+				tmpMod = PST:getTreeSnapshotMod("animaSolaDuration", 0)
+				if tmpMod > 0 and PST:arrHasValue(PST.specialNodes.animaNewChains, tmpChain.InitSeed) then
+					tmpChain:ToEffect():SetTimeout(math.floor(tmpChain:ToEffect().Timeout * (1 + tmpMod / 100)))
+				end
+			end
+			PST.specialNodes.animaNewChains = {}
+		end
+		PST.specialNodes.checkAnimaChain = false
+
+		-- Dark Esau got unchained
+		if not darkEsauChained and PST.specialNodes.darkEsauChained then
+			-- Wrathful Chains node (T. Jacob's tree)
+			if PST:getTreeSnapshotMod("wrathfulChains", false) then
+				for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+					local tmpNPC = tmpEntity:ToNPC()
+					if tmpNPC and tmpNPC:IsActiveEnemy(false) and not tmpNPC:IsBoss() and tmpNPC.Type ~= EntityType.ENTITY_DARK_ESAU then
+						tmpNPC:AddSlowing(EntityRef(player), 90, 0.9, Color(0.9, 0.9, 0.9, 1))
+					end
+				end
+			end
+		end
+		PST.specialNodes.darkEsauChained = darkEsauChained
+	end
+
+	-- Mod: +% damage and speed while near Dark Esau
+	tmpMod = PST:getTreeSnapshotMod("darkEsauProxDmgSpeed", 0)
+	if tmpMod > 0 then
+		local inProximity = false
+		if (room:GetFrameCount() % 10) == 0 then
+			local darkEsauQuery = Isaac.FindByType(EntityType.ENTITY_DARK_ESAU)
+			if #darkEsauQuery > 0 then
+				for _, tmpDarkEsau in ipairs(darkEsauQuery) do
+					if tmpDarkEsau.Position:Distance(player.Position) <= 100 then
+						if PST.specialNodes.darkEsauProxBuffTimer == 0 then
+							PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED)
+						end
+						PST.specialNodes.darkEsauProxBuffTimer = 60
+						inProximity = true
+						break
+					end
+				end
+			end
+		end
+		if not inProximity and PST.specialNodes.darkEsauProxBuffTimer > 0 then
+			PST.specialNodes.darkEsauProxBuffTimer = PST.specialNodes.darkEsauProxBuffTimer - 1
+			if PST.specialNodes.darkEsauProxBuffTimer == 0 then
+				PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED)
+			end
 		end
 	end
 

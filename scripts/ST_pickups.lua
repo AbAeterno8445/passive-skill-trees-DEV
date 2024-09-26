@@ -787,6 +787,12 @@ function PST:onPickupInit(pickup)
             100 * math.random() < PST:getTreeSnapshotMod("halfHeartPickupToFull", 0) then
                 pickup:Morph(pickup.Type, variant, HeartSubType.HEART_FULL)
             end
+
+            -- Mod: chance to convert dropped red hearts to eternal hearts while T. Jacob is in dead spirit state
+            if firstSpawn and not pickupGone and (subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_FULL) and
+            PST:getPlayer():GetPlayerType() == PlayerType.PLAYER_JACOB2_B and 100 * math.random() < PST:getTreeSnapshotMod("heartEternalConv", 0) then
+                pickup:Morph(pickup.Type, variant, HeartSubType.HEART_ETERNAL)
+            end
         -- Coins
         elseif variant == PickupVariant.PICKUP_COIN then
             -- Mod: chance to replace pennies with lucky pennies

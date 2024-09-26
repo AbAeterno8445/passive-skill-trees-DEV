@@ -477,6 +477,40 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             end
             PST.specialNodes.recallDamageTimer = 60
         end
+    -- Anima Sola
+    elseif itemType == CollectibleType.COLLECTIBLE_ANIMA_SOLA then
+        if (useFlags & UseFlag.USE_OWNED) > 0 then
+            local darkEsauPresent = #Isaac.FindByType(EntityType.ENTITY_DARK_ESAU) > 0
+            local animaRepeats = 0
+
+            -- Wrathful Chains node (T. Jacob's tree)
+            if PST:getTreeSnapshotMod("wrathfulChains", false) and darkEsauPresent then
+                animaRepeats = 1
+            end
+
+            -- Mod: % chance for Anima Sola to affect additional monsters
+            tmpMod = PST:getTreeSnapshotMod("animaAddChains", 0)
+            if tmpMod > 0 and PST:getRoom():GetAliveEnemiesCount() > 0 then
+                while tmpMod > 0 do
+                    if tmpMod >= 100 or 100 * math.random() < tmpMod then
+                        animaRepeats = animaRepeats + 1
+                    end
+                    tmpMod = tmpMod - 100
+                end
+            end
+
+            if animaRepeats > 0 then
+                for _=1,animaRepeats do
+                    player:UseActiveItem(CollectibleType.COLLECTIBLE_ANIMA_SOLA, UseFlag.USE_NOANIM)
+                end
+            end
+
+            -- Allow summoning Dark Esau with Anima Sola while in T. Jacob's dead spirit state
+            if not darkEsauPresent and player:GetPlayerType() == PlayerType.PLAYER_JACOB2_B then
+                local tmpDarkEsau = Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, PST:getRoom():GetCenterPos(), Vector.Zero, player, 0, Random() + 1)
+                tmpDarkEsau:AddEntityFlags(EntityFlag.FLAG_PERSISTENT | EntityFlag.FLAG_NO_TARGET | EntityFlag.FLAG_NO_STATUS_EFFECTS)
+            end
+        end
     end
 
     -- Self-used items

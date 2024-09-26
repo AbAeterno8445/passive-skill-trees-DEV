@@ -252,6 +252,7 @@ function PST:onExitGame()
 	PST.room = nil
 
 	PST.specialNodes.activeLocusts = {}
+	PST.specialNodes.darkEsauChained = false
 end
 
 include("scripts.ST_utility")
@@ -327,6 +328,7 @@ PST:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE, PST.onGrabCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_TRIGGER_COLLECTIBLE_REMOVED, PST.onRemoveCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_ENTITY_TAKE_DMG, PST.postDamage)
 PST:AddCallback(ModCallbacks.MC_PRE_PLAYER_TAKE_DMG, PST.prePlayerDamage)
+PST:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, PST.preNPCCollision)
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_COLLISION, PST.onPlayerCollision)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_EVENT, PST.onCompletionEvent)
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_SHOP_PURCHASE, PST.onShopPurchase)

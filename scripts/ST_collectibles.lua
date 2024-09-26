@@ -326,5 +326,12 @@ function PST:getActiveMaxCharge(itemType, player, varData, currentMaxCharge)
         if PST:getTreeSnapshotMod("forgRecall", false) then
             return currentMaxCharge + math.floor(math.min(4, PST:getTreeSnapshotMod("forgRecallUses", 0) * 0.4) * 30)
         end
+    -- Anima Sola
+    elseif itemType == CollectibleType.COLLECTIBLE_ANIMA_SOLA then
+        -- Mod: +- Anima Sola's cooldown
+        local tmpMod = PST:getTreeSnapshotMod("animaSolaCooldown", 0)
+        if tmpMod ~= 0 then
+            return currentMaxCharge + math.floor(tmpMod * 30)
+        end
     end
 end

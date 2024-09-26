@@ -271,7 +271,9 @@ function PST:cosmicRIsCharUnlocked(char)
 	return Isaac.GetPersistentGameData():Unlocked(PST.cosmicRData.characters[char].unlockReq)
 end
 
-function PST:onNPCPickTarget(NPC, target)
+---@param npc EntityNPC
+---@param target Entity
+function PST:onNPCPickTarget(npc, target)
 	if not target then return end
 
 	local player = target:ToPlayer()
@@ -285,6 +287,15 @@ function PST:onNPCPickTarget(NPC, target)
 					return mainPlayer
 				end
 			end
+		end
+	end
+
+	-- Dark Esau targeting
+	if npc.Type == EntityType.ENTITY_DARK_ESAU then
+		-- Spiritual Covenant node (T. Jacob's tree)
+		if PST:getTreeSnapshotMod("spiritualCovenant", false) and PST.specialNodes.spiritCovenantTarget ~= nil and
+		PST.specialNodes.spiritCovenantTarget:Exists() then
+			return PST.specialNodes.spiritCovenantTarget
 		end
 	end
 end
@@ -647,6 +658,11 @@ function PST:preSFXPlay(sfxID)
 		if sfxID == SoundEffect.SOUND_SIREN_SCREAM or sfxID == SoundEffect.SOUND_SIREN_LUNGE then
 			return false
 		end
+	end
+
+	-- Anima chains broken, update chained enemies
+	if sfxID == SoundEffect.SOUND_ANIMA_BREAK then
+		PST.specialNodes.checkAnimaChain = true
 	end
 end
 

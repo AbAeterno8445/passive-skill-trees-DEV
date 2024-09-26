@@ -23,11 +23,18 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
     end
 end
 
+---@param effect EntityEffect
 function PST:onEffectInit(effect)
     -- Lingering Malice node (T. Magdalene's tree)
     if PST:getTreeSnapshotMod("lingeringMalice", false) and PST:arrHasValue(PST.playerDamagingCreep, effect.Variant) then
         table.insert(PST.specialNodes.lingMaliceCreepList, effect)
     end
+
+    -- Anima sola chain (main)
+	if effect.Variant == EffectVariant.ANIMA_CHAIN and effect.SubType == 0 then
+        table.insert(PST.specialNodes.animaNewChains, effect.InitSeed)
+        PST.specialNodes.checkAnimaChain = true
+	end
 end
 
 function PST:postNPCInit(npc)
@@ -37,6 +44,7 @@ function PST:postNPCInit(npc)
     end
 end
 
+---@param npc EntityNPC
 function PST:onNPCUpdate(npc)
     -- Ancient starcursed jewel: Cause Converter - remove boss minions
     if npc.Parent and PST.specialNodes.SC_causeConvBossEnt and npc.Parent.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed then

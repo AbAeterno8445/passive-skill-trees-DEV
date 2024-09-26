@@ -529,6 +529,21 @@ function PST:onDamage(target, damage, flag, source)
                 dmgMult = dmgMult + tmpMod / 100
             end
 
+            -- Enemies chained by Anima Sola
+            if PST:arrHasValue(PST.specialNodes.animaChainedMobs, target.InitSeed) then
+                -- Mod: +% damage taken by enemies chained by Anima Sola
+                tmpMod = PST:getTreeSnapshotMod("chainedEnemyDmg", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
+            end
+
+            -- Mod: +% damage taken by slowed enemies
+            tmpMod = PST:getTreeSnapshotMod("slowEnemyDmg", 0)
+            if tmpMod > 0 and target:GetSlowingCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod / 100
+            end
+
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
                 return { Damage = 0 }
@@ -773,6 +788,30 @@ function PST:onDamage(target, damage, flag, source)
                 if tmpMod > 0 and PST:getTreeSnapshotMod("bobHeadFliesSpawned", 0) < 8 and 100 * math.random() < tmpMod then
                     Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, source.Entity.Position, Vector.Zero, PST:getPlayer(), 0, Random() + 1)
                     PST:addModifiers({ bobHeadFliesSpawned = 1 }, true)
+                end
+            -- Dark Esau hit
+            elseif source.Type == EntityType.ENTITY_DARK_ESAU then
+                -- Spiritual Covenant node (T. Jacob's tree)
+                if PST:getTreeSnapshotMod("spiritualCovenant", false) and PST:getPlayer():GetPlayerType() == PlayerType.PLAYER_JACOB2_B then
+                    damage = math.min(40, PST:getPlayer().Damage * 2)
+                end
+
+                -- Kinetic Vengeance node (T. Jacob's tree)
+                if PST:getTreeSnapshotMod("kineticVengeance", false) then
+                    local tmpDarkEsau = source.Entity:ToNPC()
+                    if tmpDarkEsau then
+                        if tmpDarkEsau.State == 3 then
+                            dmgMult = dmgMult - 0.25
+                        elseif not PST:arrHasValue(PST.specialNodes.animaChainedMobs, tmpDarkEsau.InitSeed) then
+                            dmgMult = dmgMult + 0.25
+                        end
+                    end
+                end
+
+                -- Mod: +% damage dealt by Dark Esau against monsters
+                local tmpMod = PST:getTreeSnapshotMod("darkEsauDmg", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult + tmpMod / 100
                 end
             else
                 if PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt:Exists() then
@@ -1107,6 +1146,11 @@ function PST:onDamage(target, damage, flag, source)
                         dmgMult = dmgMult + tmpMod * distMult
                     end
 
+                    -- Spiritual Covenant node (T. Jacob's tree)
+                    if PST:getTreeSnapshotMod("spiritualCovenant", false) then
+                        PST.specialNodes.spiritCovenantTarget = target
+                    end
+
                     -- Ancient starcursed jewel: Primordial Kaleidoscope
                     if PST:SC_getSnapshotMod("primordialKaleidoscope", false) then
                         if not target:HasEntityFlags(EntityFlag.FLAG_BAITED | EntityFlag.FLAG_BLEED_OUT | EntityFlag.FLAG_BURN | EntityFlag.FLAG_CHARM | EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_FEAR | EntityFlag.FLAG_POISON | EntityFlag.FLAG_SLOW | EntityFlag.FLAG_SHRINK | EntityFlag.FLAG_FREEZE) then
@@ -1169,6 +1213,16 @@ function PST:prePlayerDamage(player, damage, flag, source)
     tmpMod = PST:getTreeSnapshotMod("stairwayBoon", 0)
     if tmpMod > 0 then
         PST:addModifiers({ stairwayBoon = -tmpMod / 2 }, true)
+    end
+end
+
+function PST:preNPCCollision(npc, collider, low)
+    local player = collider:ToPlayer()
+    if player then
+        -- Reaper Wraiths node (T. Jacob's tree)
+        if PST:getTreeSnapshotMod("reaperWraiths", false) and npc.Type == EntityType.ENTITY_DARK_ESAU then
+            return { Collide = false, SkipCollisionEffects = true }
+        end
     end
 end
 

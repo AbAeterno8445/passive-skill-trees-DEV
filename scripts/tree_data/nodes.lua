@@ -210,10 +210,12 @@ function PST:addModifiers(modList, addToSnapshot)
             end
         end
     end
-    if tmpFlags ~= 0 and addToSnapshot then
-        PST:updateCacheDelayed(tmpFlags)
+    if addToSnapshot then
+        if tmpFlags ~= 0 then
+            PST:updateCacheDelayed(tmpFlags)
+        end
+        PST.savePending = true
     end
-    PST.savePending = true
 end
 
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
@@ -369,6 +371,7 @@ include("scripts.tree_data.tainted.taintedKeeperTreeBank")
 include("scripts.tree_data.tainted.taintedApollyonTreeBank")
 include("scripts.tree_data.tainted.taintedForgottenTreeBank")
 include("scripts.tree_data.tainted.taintedBethanyTreeBank")
+include("scripts.tree_data.tainted.taintedJacobTreeBank")
 -- Custom chars
 include("scripts.tree_data.sirenTreeBank")
 PST.loadingBaseTrees = false

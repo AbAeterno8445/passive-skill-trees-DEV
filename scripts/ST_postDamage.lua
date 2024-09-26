@@ -182,6 +182,15 @@ function PST:postDamage(target, damage, flag, source)
                         srcPlayer:SetActiveCharge(srcPlayer:GetActiveCharge(tmpSlot) + 15, tmpSlot)
                     end
                 end
+            -- Dark Esau hit
+            elseif source.Type == EntityType.ENTITY_DARK_ESAU then
+                if isKillingHit then
+                    -- Mod: % chance to gain +luck when Dark Esau kills an enemy
+                    local tmpMod = PST:getTreeSnapshotMod("darkEsauKillLuck", 0)
+                    if tmpMod > 0 and 100 * math.random() < tmpMod then
+                        PST:addModifiers({ luck = 0.04, darkEsauKillLuckBuff = 0.04 }, true)
+                    end
+                end
             else
                 -- Player hit to enemy (direct/through tears)
                 local srcPlayer = source.Entity:ToPlayer()
@@ -305,15 +314,43 @@ function PST:postDamage(target, damage, flag, source)
 
                     -- Mod: % chance to gain a smelted Cricket Leg when you kill an enemy
                     tmpMod = PST:getTreeSnapshotMod("killCricketLeg", 0)
-                    if tmpMod > 0 and not PST:getPlayer():HasTrinket(TrinketType.TRINKET_CRICKET_LEG) and 100 * math.random() < tmpMod then
-                        PST:getPlayer():AddSmeltedTrinket(TrinketType.TRINKET_CRICKET_LEG)
+                    if tmpMod > 0 and not srcPlayer:HasTrinket(TrinketType.TRINKET_CRICKET_LEG) and 100 * math.random() < tmpMod then
+                        srcPlayer:AddSmeltedTrinket(TrinketType.TRINKET_CRICKET_LEG)
                         PST:addModifiers({ killCricketLegProc = true }, true)
                     end
 
                     -- Magnetized Shell node (T. Forgotten's tree)
                     if PST:getTreeSnapshotMod("magnetizedShell", false) and PST:getTreeSnapshotMod("magnetizedShellBuff", 0) < 20 then
-                        if target.Position:Distance(PST:getPlayer().Position) <= 100 then
+                        if target.Position:Distance(srcPlayer.Position) <= 100 then
                             PST:addModifiers({ speedPerc = 2, magnetizedShellBuff = 2 }, true)
+                        end
+                    end
+
+                    -- Enemies chained by Anima Sola
+                    if PST:arrHasValue(PST.specialNodes.animaChainedMobs, target.InitSeed) then
+                        -- Wrathful Chains node (T. Jacob's tree)
+                        if PST:getTreeSnapshotMod("wrathfulChains", false) then
+                            local nearbyEnemies = Isaac.FindInRadius(target.Position, 100, EntityPartition.ENEMY)
+                            if #nearbyEnemies > 0 then
+                                for _, tmpEnemy in ipairs(nearbyEnemies) do
+                                    if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and tmpEnemy.Type ~= EntityType.ENTITY_DARK_ESAU and
+                                    tmpEnemy.InitSeed ~= target.InitSeed then
+                                        tmpEnemy:TakeDamage(damage * 0.4, 0, EntityRef(srcPlayer), 0)
+                                    end
+                                end
+                            end
+                        end
+
+                        if isKillingHit then
+                            -- Mod: +% tears for the current floor when killing an enemy chained by Anima Sola (reset)
+                            tmpMod = PST:getTreeSnapshotMod("animaSolaKillTears", 0)
+                            if tmpMod > 0 then
+                                local tmpTotal = PST:getTreeSnapshotMod("animaSolaKillTearsBuff", 0)
+                                if tmpTotal < 15 then
+                                    local tmpAdd = math.min(tmpMod, 15 - tmpTotal)
+                                    PST:addModifiers({ tearsPerc = tmpAdd, animaSolaKillTearsBuff = tmpAdd }, true)
+                                end
+                            end
                         end
                     end
                 end

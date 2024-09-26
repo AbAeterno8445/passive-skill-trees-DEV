@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.15",
+        "- Introduced new character skill trees for: Tainted Jacob.",
+        "",
+
         "v0.3.14",
         "- Fixed T. Bethany's \"Resilient Flickers\" reducing birthright wisps' HP and size on proc.",
         "",

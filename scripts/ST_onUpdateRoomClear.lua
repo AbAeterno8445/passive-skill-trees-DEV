@@ -478,6 +478,16 @@ function PST:onRoomClear(level, room)
 				end
 			end
 
+			-- Reaper Wraiths node (T. Jacob's tree)
+			if PST:getTreeSnapshotMod("reaperWraiths", false) and not PST:getTreeSnapshotMod("reaperWraithsSpawned", false) then
+				local darkEsauPresent = #Isaac.FindByType(EntityType.ENTITY_DARK_ESAU) > 0
+				if not darkEsauPresent then
+					local tmpDarkEsau = Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, PST:getRoom():GetCenterPos(), Vector.Zero, player, 0, Random() + 1)
+            		tmpDarkEsau:AddEntityFlags(EntityFlag.FLAG_PERSISTENT | EntityFlag.FLAG_NO_TARGET | EntityFlag.FLAG_NO_STATUS_EFFECTS)
+				end
+				PST:addModifiers({ reaperWraithsSpawned = true }, true)
+			end
+
 			-- Cosmic Realignment node
 			if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
 				-- Tainted Samson, take up to 1 heart damage if final buff was negative, then reset

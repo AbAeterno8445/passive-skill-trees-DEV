@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.14"
+PST.modVersion = "v0.3.15"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -1123,6 +1123,24 @@ function PST:resetMods()
 		tBethHomingTear = 0,
 		tBethHomingTearFear = 0,
 		tBethKillLuck = 0,
+		---- T. Jacob ----
+		reaperWraiths = false,
+		reaperWraithsSpawned = false,
+		wrathfulChains = false,
+		spiritualCovenant = false,
+		kineticVengeance = false,
+		chainedEnemyDmg = 0,
+		darkEsauProxDmgSpeed = 0,
+		darkEsauDmg = 0,
+		animaSolaCooldown = 0,
+		animaSolaKillTears = 0,
+		animaSolaKillTearsBuff = 0,
+		heartEternalConv = 0,
+		slowEnemyDmg = 0,
+		animaSolaDuration = 0,
+		darkEsauKillLuck = 0,
+		darkEsauKillLuckBuff = 0,
+		animaAddChains = 0,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1263,6 +1281,13 @@ function PST:resetMods()
 		ballistosseousTimer = 0,
 		recallDamageTimer = 0,
 		tBethHomingTearTimer = 0,
+		animaChainedMobs = {},
+		animaNewChains = {},
+		checkAnimaChain = false,
+		darkEsauChained = false,
+		animaUseProcs = false,
+		spiritCovenantTarget = nil,
+		darkEsauProxBuffTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

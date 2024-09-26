@@ -26,6 +26,7 @@ function PST:onNewRoom()
 	PST.specialNodes.anarchyBombProcs = 0
 	PST.specialNodes.howToJumpPulseTimer = 0
 	PST.specialNodes.temporaryCoins = {}
+	PST.specialNodes.spiritCovenantTarget = nil
 
 	local player = PST:getPlayer()
 	local room = Game():GetRoom()
@@ -772,6 +773,14 @@ function PST:onNewRoom()
     if PST:getTreeSnapshotMod("wispKillSoulDrops", 0) > 0 then
         PST:addModifiers({ wispKillSoulDrops = { value = 0, set = true } }, true)
     end
+
+	-- Reaper Wraiths node (T. Jacob's tree)
+	if PST:getTreeSnapshotMod("reaperWraiths", false) and PST:getTreeSnapshotMod("reaperWraithsSpawned", false) then
+		local darkEsauPresent = #Isaac.FindByType(EntityType.ENTITY_DARK_ESAU) > 0
+		if not darkEsauPresent then
+			PST:addModifiers({ reaperWraithsSpawned = false }, true)
+		end
+	end
 
 	-- First room entry
 	if room:IsFirstVisit() then

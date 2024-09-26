@@ -621,6 +621,24 @@ function PST:onNewLevel()
         PST:addModifiers(tmpModChanges, true)
     end
 
+    -- Reaper Wraiths node (T. Jacob's tree)
+    if PST:getTreeSnapshotMod("reaperWraiths", false) then
+        player:AddEternalHearts(-player:GetEternalHearts())
+        player:AddSoulHearts(-player:GetSoulHearts())
+    end
+
+    -- Mod: +% tears for the current floor when killing an enemy chained by Anima Sola (reset)
+    tmpMod = PST:getTreeSnapshotMod("animaSolaKillTearsBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ tearsPerc = -tmpMod, animaSolaKillTearsBuff = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance to gain +luck for the current floor when Dark Esau kills an enemy (reset)
+    tmpMod = PST:getTreeSnapshotMod("darkEsauKillLuckBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod, darkEsauKillLuckBuff = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then

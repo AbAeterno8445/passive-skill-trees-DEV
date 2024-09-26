@@ -747,6 +747,13 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- Mod: +% damage and speed while near Dark Esau
+    tmpTreeMod = PST:getTreeSnapshotMod("darkEsauProxDmgSpeed", 0)
+    if tmpTreeMod > 0 and PST.specialNodes.darkEsauProxBuffTimer > 0 then
+        dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
+        dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB

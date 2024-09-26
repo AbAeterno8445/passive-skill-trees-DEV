@@ -3102,6 +3102,104 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 3769
     },
+    ---- T. JACOB'S TREE
+    reaperWraiths = {
+        str = {
+            "Reaper Wraiths:",
+            "    Start with Holy Mantle",
+            "    Start with an additional eternal heart. Entering a floor grants you an eternal heart if",
+            "    you don't have one",
+            "    When entering a floor, remove all soul/black hearts",
+            "    Tainted Jacob now starts in his dead spirit state, and entering a floor no longer revives",
+            "    you",
+            "    Dark Esau no longer deals contact damage to you"
+        },
+        category = "charTree", sort = 3800
+    },
+    wrathfulChains = {
+        str = {
+            "Wrathful Chains:",
+            "    When Dark Esau is unchained from Anima Sola, all non-boss enemies are slowed for 3 seconds",
+            "    Using Anima Sola while Dark Esau is present additionally chains another random enemy in",
+            "    the room",
+            "    Hitting an enemy chained by Anima Sola deals 40%% of the damage to other nearby enemies"
+        },
+        category = "charTree", sort = 3801
+    },
+    spiritualCovenant = {
+        str = {
+            "Spiritual Covenant:",
+            "    Hitting an enemy causes Dark Esau to target it if Tainted Jacob is in the dead spirit",
+            "    state",
+            "    Dark Esau's base contact damage is now 200%% of your damage stat, capped at 40"
+        },
+        category = "charTree", sort = 3802
+    },
+    kineticVengeance = {
+        str = {
+            "Kinetic Vengeance:",
+            "    Dark Esau deals 25%% increased damage while charging",
+            "    Dark Esau deals 25%% reduced damage while not charging"
+        },
+        category = "charTree", sort = 3803
+    },
+    chainedEnemyDmg = {
+        str = "Enemies chained by Anima Sola receive %d%% more damage",
+        category = "charTree", sort = 3810
+    },
+    darkEsauProxDmgSpeed = {
+        str = {
+            "%s%d%% speed and damage when near Dark Esau",
+            "    Buff lingers for 2 seconds when the condition is no longer met"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3811
+    },
+    darkEsauDmg = {
+        str = "%s%d%% damage dealt by Dark Esau to monsters",
+        addPlus = true,
+        category = "charTree", sort = 3812
+    },
+    animaSolaCooldown = {
+        str = "%s%.2f seconds to Anima Sola's cooldown",
+        addPlus = true,
+        category = "charTree", sort = 3813
+    },
+    animaSolaKillTears = {
+        str = {
+            "%s%.2f%% tears for the current floor when killing an enemy chained by Anima Sola,",
+            "up to +15%%"
+        },
+        addPlus = true,
+        category = "charTree", sort = 3814
+    },
+    heartEternalConv = {
+        str = {
+            "%.2f%% chance for dropped red heart pickups to be replaced with eternal hearts while Jacob is",
+            "in his dead spirit state"
+        },
+        category = "charTree", sort = 3815
+    },
+    slowEnemyDmg = {
+        str = "Slowed enemies receive %d%% more damage",
+        category = "charTree", sort = 3816
+    },
+    animaSolaDuration = {
+        str = "%s%d%% to Anima Sola's chains duration",
+        addPlus = true,
+        category = "charTree", sort = 3817
+    },
+    darkEsauKillLuck = {
+        str = "%d%% chance to gain +0.04 luck for the current floor when Dark Esau kills an enemy",
+        category = "charTree", sort = 3818
+    },
+    animaAddChains = {
+        str = {
+            "%d%% chance for Anima Sola to chain an additional enemy on use",
+            "    Effect rolls multiple times above 100%% chance"
+        },
+        category = "charTree", sort = 3819
+    },
     --#endregion
 
     ---- STARMIGHT ----
