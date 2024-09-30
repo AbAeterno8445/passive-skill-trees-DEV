@@ -221,7 +221,8 @@ function PST:onDamage(target, damage, flag, source)
 
         -- Death's Trial nodes (T. Lost's tree)
         local tmpMod = PST:getTreeSnapshotMod("deathTrial", 0)
-        if tmpMod > 0 and damage >= tmpHP and not PST:getTreeSnapshotMod("deathTrialProc", false) and 100 * math.random() < tmpMod then
+        if tmpMod > 0 and player:GetPlayerType() == PlayerType.PLAYER_THELOST_B and damage >= tmpHP and not PST:getTreeSnapshotMod("deathTrialProc", false) and
+        100 * math.random() < tmpMod then
             player:UseActiveItem(CollectibleType.COLLECTIBLE_FORGET_ME_NOW, UseFlag.USE_NOANIM)
             for i=1,0,-1 do
                 if player:GetCard(i) == Card.CARD_HOLY then player:RemovePocketItem(i) end

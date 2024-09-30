@@ -7,6 +7,8 @@ function PST:getChangelogList()
         "- Introduced new character skill trees for: Tainted Jacob.",
         "- Victory laps now apply an XP gain penalty, starting at -60% on the first, increasing by 10% on further laps, up to",
         "a maximum -95%.",
+        "- T. Lost's \"Death's Trial\" nodes should no longer trigger when secondary players die, such as when using Soul of",
+        "the Forgotten.",
         "- Fixed Blue Baby's \"Blue Gambit\" being able to damage you when using non-card pocket consumables. Additionally,",
         "it now no longer damages you when using reverse cards.",
         "- Fixed T. Lost's \"Spin-down\" removing Spindown dice if re-obtained.",
