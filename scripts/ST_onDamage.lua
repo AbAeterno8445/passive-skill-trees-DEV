@@ -1210,6 +1210,14 @@ end
 ---@param flag DamageFlag
 ---@param source EntityRef
 function PST:prePlayerDamage(player, damage, flag, source)
+    -- Reaper Wraiths node (T. Jacob's tree)
+    if PST:getTreeSnapshotMod("reaperWraiths", false) and source.Entity then
+        if source.Type == EntityType.ENTITY_DARK_ESAU or (source.Entity.Parent and source.Entity.Parent.Type == EntityType.ENTITY_DARK_ESAU) or
+        (source.Entity.SpawnerEntity and source.Entity.SpawnerEntity.Type == EntityType.ENTITY_DARK_ESAU) then
+            return false
+        end
+    end
+
     -- Mod: halve chance to receive The Stairway
     tmpMod = PST:getTreeSnapshotMod("stairwayBoon", 0)
     if tmpMod > 0 then

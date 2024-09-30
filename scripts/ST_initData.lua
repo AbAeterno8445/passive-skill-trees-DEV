@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.15"
+PST.modVersion = "v0.3.16"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -366,6 +366,7 @@ PST.grandConsonanceWhitelist = {
 - Jaw Bone: periodically launched while firing
 - Lil Portal: launched from you
 - Bird Cage: same as Dead Bird?
+- My Shadow: shadow is centered on you, bigger default size, slowly grows while firing, and shrinks back to normal while not firing
 ------------------------------]]
 -- Generated when relevant
 PST.ultraSecretPool = {}

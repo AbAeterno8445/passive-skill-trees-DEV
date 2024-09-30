@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.16",
+        "- Fixed T. Jacob's \"Reaper Wraiths\" allowing Dark Esau's flames to damage you.",
+        "- Fixed T. Jacob's Anima Sola repeats being able to keep chaining after all mobs in the room were affected.",
+        "- Fixed error with T. Jacob's \"Wrathful Chains\" when damaging chained enemies near other chained enemies.",
+        "",
+
         "v0.3.15",
         "- Introduced new character skill trees for: Tainted Jacob.",
         "- Victory laps now apply an XP gain penalty, starting at -60% on the first, increasing by 10% on further laps, up to",

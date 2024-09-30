@@ -480,7 +480,8 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- Anima Sola
     elseif itemType == CollectibleType.COLLECTIBLE_ANIMA_SOLA then
         if (useFlags & UseFlag.USE_OWNED) > 0 then
-            local darkEsauPresent = #Isaac.FindByType(EntityType.ENTITY_DARK_ESAU) > 0
+            local darkEsauCount = #Isaac.FindByType(EntityType.ENTITY_DARK_ESAU)
+            local darkEsauPresent = darkEsauCount > 0
             local animaRepeats = 0
 
             -- Wrathful Chains node (T. Jacob's tree)
@@ -500,8 +501,11 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             end
 
             if animaRepeats > 0 then
-                for _=1,animaRepeats do
-                    player:UseActiveItem(CollectibleType.COLLECTIBLE_ANIMA_SOLA, UseFlag.USE_NOANIM)
+                local enemyCount = PST:getRoom():GetAliveEnemiesCount() + darkEsauCount
+                for i=1,animaRepeats do
+                    if i < enemyCount then
+                        player:UseActiveItem(CollectibleType.COLLECTIBLE_ANIMA_SOLA, UseFlag.USE_NOANIM)
+                    end
                 end
             end
 

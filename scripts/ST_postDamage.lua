@@ -334,7 +334,7 @@ function PST:postDamage(target, damage, flag, source)
                             if #nearbyEnemies > 0 then
                                 for _, tmpEnemy in ipairs(nearbyEnemies) do
                                     if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and tmpEnemy.Type ~= EntityType.ENTITY_DARK_ESAU and
-                                    tmpEnemy.InitSeed ~= target.InitSeed then
+                                    tmpEnemy.InitSeed ~= target.InitSeed and not PST:arrHasValue(PST.specialNodes.animaChainedMobs, tmpEnemy.InitSeed) then
                                         tmpEnemy:TakeDamage(damage * 0.4, 0, EntityRef(srcPlayer), 0)
                                     end
                                 end

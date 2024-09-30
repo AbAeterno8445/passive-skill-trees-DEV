@@ -1721,13 +1721,7 @@ function PST:onUpdate()
 	elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB_B) then
 		-- Tainted Jacob, spawn Dark Esau if he's not around
 		if room:GetAliveEnemiesCount() > 0 and not PST.specialNodes.TJacobEsauSpawned then
-			local spawned = false
-			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
-				if tmpEntity.Type == EntityType.ENTITY_DARK_ESAU then
-					spawned = true
-					break
-				end
-			end
+			local spawned = #Isaac.FindByType(EntityType.ENTITY_DARK_ESAU) > 0
 			if not spawned then
 				local tmpDarkEsau = Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, room:GetCenterPos(), Vector.Zero, player, 0, Random() + 1)
             	tmpDarkEsau:AddEntityFlags(EntityFlag.FLAG_PERSISTENT | EntityFlag.FLAG_NO_TARGET | EntityFlag.FLAG_NO_STATUS_EFFECTS)
