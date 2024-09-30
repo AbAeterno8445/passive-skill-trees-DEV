@@ -251,6 +251,18 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         PST:updateCacheDelayed()
     end
 
+    -- Reaper Wraiths node (T. Jacob's tree)
+    if PST:getTreeSnapshotMod("reaperWraiths", false) and itemType == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+        local darkEsauQuery = Isaac.FindByType(EntityType.ENTITY_DARK_ESAU, 0)
+        if #darkEsauQuery == 1 then
+            local tmpDarkEsau = darkEsauQuery[1]
+            if tmpDarkEsau.SubType == 0 then
+                local tmpDarkEsauAlt = Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, tmpDarkEsau.Position + Vector(10, 0), Vector.Zero, PST:getPlayer(), 1, Random() + 1)
+                tmpDarkEsauAlt:AddEntityFlags(EntityFlag.FLAG_PERSISTENT | EntityFlag.FLAG_NO_TARGET | EntityFlag.FLAG_NO_STATUS_EFFECTS)
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then

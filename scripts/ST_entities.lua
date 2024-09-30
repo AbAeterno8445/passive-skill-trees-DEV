@@ -37,10 +37,21 @@ function PST:onEffectInit(effect)
 	end
 end
 
+---@param npc EntityNPC
 function PST:postNPCInit(npc)
     -- Mod: Greed has lower health
     if npc.Type == EntityType.ENTITY_GREED then
         npc.HitPoints = npc.HitPoints - math.min(npc.HitPoints / 2, npc.MaxHitPoints * (PST:getTreeSnapshotMod("greedLowerHealth", 0) / 100))
+    end
+
+    -- Reaper Wraiths node (T. Jacob's tree)
+    if npc.Type == EntityType.ENTITY_DARK_ESAU and npc.Variant == 0 and npc.SubType == 0 and PST:getTreeSnapshotMod("reaperWraiths", false) and
+    PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+        local darkEsauAltCount = #Isaac.FindByType(EntityType.ENTITY_DARK_ESAU, 0, 1)
+        if darkEsauAltCount == 0 then
+            local tmpDarkEsauAlt = Game():Spawn(EntityType.ENTITY_DARK_ESAU, 0, npc.Position + Vector(10, 0), Vector.Zero, PST:getPlayer(), 1, Random() + 1)
+            tmpDarkEsauAlt:AddEntityFlags(EntityFlag.FLAG_PERSISTENT | EntityFlag.FLAG_NO_TARGET | EntityFlag.FLAG_NO_STATUS_EFFECTS)
+        end
     end
 end
 

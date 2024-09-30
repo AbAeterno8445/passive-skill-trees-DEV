@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.3.16",
+        "- Birthright now spawns the alternate Dark Esau while \"Reaper Wraiths\" is allocated (for T. Jacob).",
         "- Fixed T. Jacob's \"Reaper Wraiths\" allowing Dark Esau's flames to damage you.",
         "- Fixed T. Jacob's Anima Sola repeats being able to keep chaining after all mobs in the room were affected.",
         "- Fixed error with T. Jacob's \"Wrathful Chains\" when damaging chained enemies near other chained enemies.",
