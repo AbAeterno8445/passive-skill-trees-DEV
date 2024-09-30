@@ -168,6 +168,12 @@ function PST:addTempXP(xp, showText, noMult)
 		xpMult = 1
 	end
 
+	-- Victory lap XP penalty
+	local victoryLap = Game():GetVictoryLap()
+	if victoryLap > 0 then
+		xpMult = xpMult * math.max(0.05, 0.5 - 0.1 * victoryLap)
+	end
+
 	local xpGain = xp * math.max(0.01, xpMult)
 	PST.modData.xpObtained = PST.modData.xpObtained + xpGain
 	if showText then
