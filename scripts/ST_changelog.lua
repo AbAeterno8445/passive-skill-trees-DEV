@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Introduced new character skill trees for: Tainted Jacob.",
         "- Fixed Blue Baby's \"Blue Gambit\" being able to damage you when using non-card pocket consumables. Additionally,",
         "it now no longer damages you when using reverse cards.",
+        "- Fixed T. Lost's \"Spin-down\" removing Spindown dice if re-obtained.",
         "",
 
         "v0.3.14",

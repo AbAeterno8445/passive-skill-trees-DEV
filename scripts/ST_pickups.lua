@@ -139,6 +139,12 @@ function PST:prePickup(pickup, collider, low)
                     end
                 end
             end
+
+            -- Spin-down node (T. Lost's tree)
+            if PST:getTreeSnapshotMod("spindown", false) and subtype == CollectibleType.COLLECTIBLE_SPINDOWN_DICE then
+                -- Set uses >2 to prevent removal
+                PST:addModifiers({ spindownUses = { value = 3, set = true } }, true)
+            end
         else
             -- Keeper's Blessing node (Keeper's tree)
             if PST:getTreeSnapshotMod("keeperBlessing", false) then

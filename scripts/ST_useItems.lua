@@ -433,7 +433,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Spindown node (T. Lost's tree)
         if PST:getTreeSnapshotMod("spindown", false) then
             PST:addModifiers({ spindownUses = 1 }, true)
-            if PST:getTreeSnapshotMod("spindownUses", 0) >= 2 then
+            if PST:getTreeSnapshotMod("spindownUses", 0) == 2 then
                 player:RemoveCollectible(CollectibleType.COLLECTIBLE_SPINDOWN_DICE)
             end
 

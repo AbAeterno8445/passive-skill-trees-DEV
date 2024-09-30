@@ -331,7 +331,7 @@ function PST:onUpdate()
 
 			-- Mod: chance to smelt currently held trinkets
 			tmpMod = PST:getTreeSnapshotMod("floorSmeltTrinket", 0)
-			if tmpMod > 0 and 100 * math.random() < tmpMod then
+			if not inDeathCertificate and tmpMod > 0 and 100 * math.random() < tmpMod then
 				local tmpTrinket = player:GetTrinket(0)
 				if tmpTrinket and tmpTrinket > 0 then
 					if player:AddSmeltedTrinket(tmpTrinket) then
