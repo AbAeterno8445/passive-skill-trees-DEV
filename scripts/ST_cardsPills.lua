@@ -91,8 +91,8 @@ function PST:onUseCard(card, player, useFlags)
     end
 
     -- Blue Gambit node (Blue Baby's tree)
-    if PST:getTreeSnapshotMod("blueGambit", false) then
-        if card ~= Card.CARD_HIEROPHANT and card ~= Card.CARD_CRACKED_KEY and 100 * math.random() < 20 then
+    if PST:getTreeSnapshotMod("blueGambit", false) and PST:arrHasValue(PST.blueGambitCards, card) then
+        if card ~= Card.CARD_HIEROPHANT and 100 * math.random() < 20 then
             player:TakeDamage(1, 0, EntityRef(player), 0)
         end
     end

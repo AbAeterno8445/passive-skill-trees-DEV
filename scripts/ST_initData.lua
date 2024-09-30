@@ -246,6 +246,14 @@ PST.allRunes = {
 	Card.RUNE_ALGIZ, Card.RUNE_ANSUZ, Card.RUNE_BERKANO, Card.RUNE_BLACK, Card.RUNE_BLANK, Card.RUNE_DAGAZ, Card.RUNE_EHWAZ, Card.RUNE_HAGALAZ,
 	Card.RUNE_JERA, Card.RUNE_PERTHRO, Card.RUNE_SHARD
 }
+PST.blueGambitCards = {
+	Card.CARD_ACE_OF_CLUBS, Card.CARD_ACE_OF_DIAMONDS, Card.CARD_ACE_OF_HEARTS, Card.CARD_ACE_OF_SPADES, Card.CARD_ANCIENT_RECALL, Card.CARD_CHARIOT,
+	Card.CARD_CLUBS_2, Card.CARD_DEATH, Card.CARD_DEVIL, Card.CARD_DIAMONDS_2, Card.CARD_EMERGENCY_CONTACT, Card.CARD_EMPEROR, Card.CARD_EMPRESS,
+	Card.CARD_ERA_WALK, Card.CARD_FOOL, Card.CARD_GET_OUT_OF_JAIL, Card.CARD_HANGED_MAN, Card.CARD_HEARTS_2, Card.CARD_HERMIT, Card.CARD_HIEROPHANT,
+	Card.CARD_HIGH_PRIESTESS, Card.CARD_HOLY, Card.CARD_HUMANITY, Card.CARD_JOKER, Card.CARD_JUDGEMENT, Card.CARD_JUSTICE, Card.CARD_LOVERS,
+	Card.CARD_MAGICIAN, Card.CARD_MOON, Card.CARD_QUEEN_OF_HEARTS, Card.CARD_QUESTIONMARK, Card.CARD_RULES, Card.CARD_SPADES_2, Card.CARD_STARS,
+	Card.CARD_STRENGTH, Card.CARD_SUN, Card.CARD_TEMPERANCE, Card.CARD_TOWER, Card.CARD_WHEEL_OF_FORTUNE, Card.CARD_WILD, Card.CARD_WORLD
+}
 PST.playerDamagingCreep = {
 	EffectVariant.PLAYER_CREEP_GREEN, EffectVariant.PLAYER_CREEP_HOLYWATER, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL,
 	EffectVariant.PLAYER_CREEP_LEMON_MISHAP, EffectVariant.PLAYER_CREEP_LEMON_PARTY, EffectVariant.PLAYER_CREEP_RED
@@ -309,6 +317,56 @@ PST.anamnesisListTypes = {
 	[PurityState.YELLOW] = "Treasure",
 	[PurityState.ORANGE] = "Other"
 }
+PST.grandConsonanceWhitelist = {
+	FamiliarVariant.BROTHER_BOBBY, FamiliarVariant.SISTER_MAGGY, FamiliarVariant.LITTLE_CHUBBY, FamiliarVariant.SACK_OF_PENNIES,
+	FamiliarVariant.ROBO_BABY, FamiliarVariant.LITTLE_CHAD, FamiliarVariant.RELIC, FamiliarVariant.LITTLE_GISH,
+	FamiliarVariant.LITTLE_STEVEN, FamiliarVariant.DEMON_BABY, FamiliarVariant.DEAD_BIRD, FamiliarVariant.BOMB_BAG,
+	FamiliarVariant.BUM_FRIEND, FamiliarVariant.GHOST_BABY, FamiliarVariant.HARLEQUIN_BABY, FamiliarVariant.DADDY_LONGLEGS,
+	FamiliarVariant.RAINBOW_BABY, FamiliarVariant.HOLY_WATER, FamiliarVariant.GUPPYS_HAIRBALL, FamiliarVariant.DRY_BABY,
+	FamiliarVariant.JUICY_SACK, FamiliarVariant.ROBO_BABY_2, FamiliarVariant.ROTTEN_BABY, FamiliarVariant.HEADLESS_BABY,
+	FamiliarVariant.LEECH, FamiliarVariant.MYSTERY_SACK, FamiliarVariant.BBF, FamiliarVariant.BOBS_BRAIN,
+	FamiliarVariant.LIL_BRIMSTONE, FamiliarVariant.ISAACS_HEART, FamiliarVariant.LIL_HAUNT, FamiliarVariant.DARK_BUM,
+	FamiliarVariant.CAINS_OTHER_EYE, FamiliarVariant.SAMSONS_CHAINS, FamiliarVariant.MONGO_BABY, FamiliarVariant.INCUBUS,
+	FamiliarVariant.FATES_REWARD, FamiliarVariant.LIL_CHEST, FamiliarVariant.SWORN_PROTECTOR, FamiliarVariant.CHARGED_BABY,
+	FamiliarVariant.LIL_GURDY, FamiliarVariant.CENSER, FamiliarVariant.KEY_BUM, FamiliarVariant.RUNE_BAG,
+	FamiliarVariant.SERAPHIM, FamiliarVariant.SPIDER_MOD, FamiliarVariant.FARTING_BABY, FamiliarVariant.GB_BUG,
+	FamiliarVariant.SUCCUBUS, FamiliarVariant.PAPA_FLY, FamiliarVariant.LIL_LOKI, FamiliarVariant.MILK,
+	FamiliarVariant.FINGER, FamiliarVariant.DEPRESSION, FamiliarVariant.LIL_MONSTRO, FamiliarVariant.KING_BABY,
+	FamiliarVariant.BIG_CHUBBY, FamiliarVariant.ACID_BABY, FamiliarVariant.SACK_OF_SACKS, FamiliarVariant.MOMS_RAZOR,
+	FamiliarVariant.BLOODSHOT_EYE, FamiliarVariant.LIL_HARBINGERS, FamiliarVariant.LIL_SPEWER, FamiliarVariant.MYSTERY_EGG,
+	FamiliarVariant.HALLOWED_GROUND, FamiliarVariant.POINTY_RIB, FamiliarVariant.JAW_BONE, FamiliarVariant.ISAACS_HEAD,
+	FamiliarVariant.BOILED_BABY, FamiliarVariant.FREEZER_BABY, FamiliarVariant.BOT_FLY,
+	FamiliarVariant.FRUITY_PLUM, FamiliarVariant.LIL_ABADDON, FamiliarVariant.LIL_PORTAL, FamiliarVariant.TWISTED_BABY,
+	FamiliarVariant.BIRD_CAGE
+}
+--[[ GRAND CONSONANCE TODO EFFECTS
+- Little Chubby: launched from you
+- Dead Bird: launch multiple short lived small dead birds while firing (rate of fire based on tears? reduced damage?)
+- Bum Friend: trigger his effect every 12 coins picked by you
+- Holy Water: launched from you
+- Guppy's Hairball: launched from you, stays active while firing
+- Dry Baby: pops out of you while firing, stays close towards the direction you're firing
+- Leech: launch multiple short lived small leeches (reduced damage?)
+- BBF: M80 trinket effect?
+- Bob's Brain: launch the brain, which then slowly comes to a halt, then explodes after flashing & a delay, piercing and poisoning enemies in the way + nerf the damage
+- 7 seals: make war locusts deal less damage and not explode when close to you
+- Lil Haunt: when entering a room with monsters, gain camouflage for 3 seconds or until you fire, then gain +10% speed for 2 seconds and spawn a lil haunt that lasts for the room
+- Dark Bum: trigger his effect every 4 hearts taken
+- Samson's Chains: launched from you, stays active while firing
+- Sworn Protector: similar to Dry Baby, launched from you while firing
+- Lil gurdy: launched from you
+- Censer: don't scale to 0 for invisibility
+- Succubus: don't scale to 0 for invisibility
+- Finger: launches out while firing
+- Depression: chance to retaliate with a Crack the Sky beam on the attacking enemy when hit
+- Big Chubby: same as lil chubby, slower
+- Mom's Razor: grants all familiar damage a tiny chance to cause bleeding
+- Bloodshot Eye: periodically launched while firing, moves forwards then slows down while quickly spinning (looking in all directions), then returns to you after a delay
+- Pointy Rib: same as Finger
+- Jaw Bone: periodically launched while firing
+- Lil Portal: launched from you
+- Bird Cage: same as Dead Bird?
+------------------------------]]
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}

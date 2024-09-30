@@ -608,7 +608,8 @@ PST.treeModDescriptions = {
             "Blue Gambit:",
             "    The first card you find is guaranteed to be V - The Hierophant",
             "    The first pill you find is guaranteed to be Balls of Steel",
-            "    20%% chance to take 1/2 heart damage when using a card or pill that isn't either of the above"
+            "    20%% chance to take 1/2 heart damage when using a card or pill that isn't either of the above",
+            "    Reverse cards do not trigger this damage effect"
         },
         category = "charTree", sort = 2200
     },
