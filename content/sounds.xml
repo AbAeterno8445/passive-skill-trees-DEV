@@ -1,0 +1,5 @@
+<sounds root="sfx/">
+	<sound name="siren note">
+		<sample weight="1" path="Player/siren note.wav"/>
+	</sound>
+</sounds>

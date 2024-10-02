@@ -263,6 +263,21 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         end
     end
 
+    -- Song Of The Few node (T. Siren's tree)
+    if PST:getTreeSnapshotMod("songOfTheFew", false) and PST:arrHasValue(PST.songOfTheFewFamiliars, itemType) then
+        PST:addModifiers({ songOfTheFewItems = 1 }, true)
+
+        if player:HasTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY) then
+            local tmpItems = PST:getTreeSnapshotMod("songOfTheFewItems", 0)
+            if tmpItems > 3 then
+                local tmpChance = 20 + 15 * (tmpItems - 4)
+                if 100 * math.random() < tmpChance then
+                    player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY)
+                end
+            end
+        end
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then

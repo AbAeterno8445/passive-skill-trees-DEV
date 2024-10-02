@@ -527,6 +527,11 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
     end
 
+    -- Song Of The Few node (T. Siren's tree)
+    if PST:getTreeSnapshotMod("songOfTheFew", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

@@ -1223,6 +1223,11 @@ function PST:prePlayerDamage(player, damage, flag, source)
     if tmpMod > 0 then
         PST:addModifiers({ stairwayBoon = -tmpMod / 2 }, true)
     end
+
+    -- Shadowmeld item - take no damage during transition
+    if PST.specialFX.shadowmeldTransition then
+        return false
+    end
 end
 
 function PST:preNPCCollision(npc, collider, low)

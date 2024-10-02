@@ -554,7 +554,7 @@ function PST:onNewRoom()
 	end
 
 	-- Gilded Regrowth node (T. Azazel's tree)
-	tmpMod = PST:getTreeSnapshotMod("gildedRegrowthKills", false)
+	tmpMod = PST:getTreeSnapshotMod("gildedRegrowthKills", 0)
 	if tmpMod > 0 then
 		if tmpMod >= 5 and not player:HasCollectible(CollectibleType.COLLECTIBLE_LORD_OF_THE_PIT) then
 			player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_LORD_OF_THE_PIT))

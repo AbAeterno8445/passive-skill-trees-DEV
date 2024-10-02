@@ -20,6 +20,9 @@ PST.config = {
     -- Make changelog pop up when on new version updates
     changelogPopup = true,
 
+    -- Tainted Siren: use a singing sound for Manifest Melody instead of the default sound
+    tSirenSing = false,
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed
@@ -149,10 +152,10 @@ function PST:initModConfigMenu()
     end
 
     -- Draw XP bar setting
-    ModConfigMenu.RemoveSetting(PST.modName, nil, "drawXPbar")
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "drawXPbar")
     ModConfigMenu.AddSetting(
         PST.modName,
-        nil,
+        "Main",
         {
             Type = ModConfigMenu.OptionType.BOOLEAN,
             Attribute = "drawXPbar",
@@ -169,10 +172,10 @@ function PST:initModConfigMenu()
         }
     )
     -- Draw floating texts setting
-    ModConfigMenu.RemoveSetting(PST.modName, nil, "floatingTexts")
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "floatingTexts")
     ModConfigMenu.AddSetting(
         PST.modName,
-        nil,
+        "Main",
         {
             Type = ModConfigMenu.OptionType.BOOLEAN,
             Attribute = "floatingTexts",
@@ -189,10 +192,10 @@ function PST:initModConfigMenu()
         }
     )
     -- Draw selected character info setting
-    ModConfigMenu.RemoveSetting(PST.modName, nil, "charSelectInfoText")
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "charSelectInfoText")
     ModConfigMenu.AddSetting(
         PST.modName,
-        nil,
+        "Main",
         {
             Type = ModConfigMenu.OptionType.BOOLEAN,
             Attribute = "charSelectInfoText",
@@ -209,10 +212,10 @@ function PST:initModConfigMenu()
         }
     )
     -- Draw pause menu controls text setting
-    ModConfigMenu.RemoveSetting(PST.modName, nil, "drawPauseText")
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "drawPauseText")
     ModConfigMenu.AddSetting(
         PST.modName,
-        nil,
+        "Main",
         {
             Type = ModConfigMenu.OptionType.BOOLEAN,
             Attribute = "drawPauseText",
@@ -229,10 +232,10 @@ function PST:initModConfigMenu()
         }
     )
     -- Tree enabled on challenges setting
-    ModConfigMenu.RemoveSetting(PST.modName, nil, "treeOnChallenges")
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "treeOnChallenges")
     ModConfigMenu.AddSetting(
         PST.modName,
-        nil,
+        "Main",
         {
             Type = ModConfigMenu.OptionType.BOOLEAN,
             Attribute = "treeOnChallenges",
@@ -249,10 +252,10 @@ function PST:initModConfigMenu()
         }
     )
     -- Changelog popup on new version setting
-    ModConfigMenu.RemoveSetting(PST.modName, nil, "changelogPopup")
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "changelogPopup")
     ModConfigMenu.AddSetting(
         PST.modName,
-        nil,
+        "Main",
         {
             Type = ModConfigMenu.OptionType.BOOLEAN,
             Attribute = "changelogPopup",
@@ -282,10 +285,10 @@ function PST:initModConfigMenu()
         end
         return 9
     end
-    ModConfigMenu.RemoveSetting(PST.modName, nil, "xpMult")
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "xpMult")
     ModConfigMenu.AddSetting(
         PST.modName,
-        nil,
+        "Main",
         {
             Type = ModConfigMenu.OptionType.NUMBER,
             Attribute = "xpMult",
@@ -301,6 +304,28 @@ function PST:initModConfigMenu()
                 PST.config.xpMult = xpMultOptions[n]
             end,
             Info = {"XP Multiplier applied to most XP gains", "Default 1"}
+        }
+    )
+
+    ---- MISC SETTINGS ----
+    -- Tainted Siren singing toggle
+    ModConfigMenu.RemoveSetting(PST.modName, "Misc", "tSirenSing")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Misc",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "tSirenSing",
+            CurrentSetting = function()
+                return PST.config.tSirenSing
+            end,
+            Display = function()
+                return "Tainted Siren Singing: " .. (PST.config.tSirenSing and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.tSirenSing = b
+            end,
+            Info = {"Makes Tainted Siren sing when using Manifest Melody"}
         }
     )
 end

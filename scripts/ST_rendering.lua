@@ -62,6 +62,7 @@ chroniclerUISprite:Play("Chronicler UI", true)
 
 -- Rendering function
 function PST:Render()
+	local player = PST:getPlayer()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
 	local screenRatioY = Isaac.GetScreenHeight() / 270
 
@@ -145,22 +146,85 @@ function PST:Render()
 	end
 	-- Ancient starcursed jewel: Crimson Warpstone (cracked key stacks text)
 	local tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyStacks", 0)
-	if tmpMod > 0 and PST:getPlayer():GetCard(0) == Card.CARD_CRACKED_KEY then
+	if tmpMod > 0 and player:GetCard(0) == Card.CARD_CRACKED_KEY then
 		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
 	end
 
 	-- Mod: rune shards can stack
 	if PST:getTreeSnapshotMod("runeshardStacking", false) then
 		tmpMod = PST:getTreeSnapshotMod("runeshardStacks", 0)
-		if tmpMod > 0 and PST:getPlayer():GetCard(0) == Card.RUNE_SHARD then
+		if tmpMod > 0 and player:GetCard(0) == Card.RUNE_SHARD then
 			tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
 		end
 	end
 
 	-- Helping Hands node (T. Lost's tree) (Holy Card stacks text)
 	tmpMod = PST:getTreeSnapshotMod("holyCardStacks", 0)
-	if tmpMod > 0 and PST:getPlayer():GetCard(0) == Card.CARD_HOLY then
+	if tmpMod > 0 and player:GetCard(0) == Card.CARD_HOLY then
 		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
+	end
+
+	-- Shadowmeld item transition phase
+	if PST.specialFX.shadowmeldTransition and not Game():IsPaused() then
+		PST.specialFX.shadowmeldStep = PST.specialFX.shadowmeldStep + 1
+
+		-- Player & siren minion fade out
+		local playerSprite = player:GetSprite()
+		local playerChange = false
+		if PST.specialFX.shadowmeldStep < 6 then
+			playerSprite.Color.A = math.max(0, playerSprite.Color.A - 0.2)
+			playerChange = true
+		end
+
+		-- SFX
+		if PST.specialFX.shadowmeldStep == 7 then
+			SFXManager():Play(SoundEffect.SOUND_PORTAL_OPEN)
+		end
+
+		local isEvenFrame = room:GetFrameCount() % 2 == 0
+		PST.specialFX.shadowmeldStartFX:Render(room:WorldToScreenPosition(PST.specialFX.shadowmeldStartPos))
+		if isEvenFrame then PST.specialFX.shadowmeldStartFX:Update() end
+
+		-- Start end portal sprite
+		if PST.specialFX.shadowmeldStartFX:IsEventTriggered("StartEndPortal") or PST.specialFX.shadowmeldStartFX:WasEventTriggered("StartEndPortal") then
+			PST.specialFX.shadowmeldEndFX:Render(room:WorldToScreenPosition(PST.specialFX.shadowmeldEndPos))
+			if isEvenFrame then PST.specialFX.shadowmeldEndFX:Update() end
+		end
+
+		-- Player teleport
+		if PST.specialFX.shadowmeldStartFX:IsEventTriggered("Teleport") then
+			SFXManager():Play(SoundEffect.SOUND_PORTAL_SPAWN)
+		end
+		if PST.specialFX.shadowmeldStartFX:IsEventTriggered("Teleport") or PST.specialFX.shadowmeldStartFX:WasEventTriggered("Teleport") then
+			player.Position = PST.specialFX.shadowmeldEndPos
+		end
+
+		-- Transition done
+		if PST.specialFX.shadowmeldEndFX:IsEventTriggered("TransitionDone") then
+			player:SetMinDamageCooldown(30)
+			PST.specialFX.shadowmeldTransition = false
+		end
+
+		-- Player & Siren minion fade in
+		if PST.specialFX.shadowmeldEndFX:IsEventTriggered("FadeIn") or PST.specialFX.shadowmeldEndFX:WasEventTriggered("FadeIn") then
+			playerSprite.Color.A = math.min(1, playerSprite.Color.A + 0.2)
+			playerChange = true
+		end
+		if playerChange then
+			local sirenMinions = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, Isaac.GetEntityVariantByName("Siren Minion"))
+			for _, tmpMinion in ipairs(sirenMinions) do
+				tmpMinion:GetSprite().Color.A = playerSprite.Color.A
+			end
+		end
+	end
+
+	-- Shadowmeld marker removal with drop key
+	if Input.IsActionTriggered(ButtonAction.ACTION_DROP, player.ControllerIndex) and (PST:getTreeSnapshotMod("shadowmeld", false) or
+	player:HasCollectible(Isaac.GetItemIdByName("Shadowmeld"))) then
+		local tmpMarkers = Isaac.FindByType(EntityType.ENTITY_EFFECT, Isaac.GetEntityVariantByName("Shadowmeld Marker"))
+		for _, marker in ipairs(tmpMarkers) do
+			marker:Remove()
+		end
 	end
 
 	-- Manage floating texts
@@ -173,7 +237,6 @@ function PST:Render()
     end
 
 	if #floatingTexts > 0 then
-		local player = PST:getPlayer()
         for i = #floatingTexts, 1, -1 do
             local textFX = floatingTexts[i]
 			local worldPos = room:WorldToScreenPosition(textFX.position)

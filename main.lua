@@ -253,6 +253,8 @@ function PST:onExitGame()
 
 	PST.specialNodes.activeLocusts = {}
 	PST.specialNodes.darkEsauChained = false
+
+	PST.specialFX.shadowmeldTransition = false
 end
 
 include("scripts.ST_utility")

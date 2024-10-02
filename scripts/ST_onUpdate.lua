@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 local sfx = SFXManager()
 
 local inDeathCertificate = false
@@ -2221,6 +2222,59 @@ function PST:onUpdate()
 				PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED)
 			end
 		end
+	end
+
+	-- Shadowmeld node (T. Siren's tree)
+	if PST:getTreeSnapshotMod("shadowmeld", false) then
+		local shadowmeldID = Isaac.GetItemIdByName("Shadowmeld")
+		local shadowmeldSlot = player:GetActiveItemSlot(shadowmeldID)
+		if room:GetAliveEnemiesCount() > 0 and shadowmeldSlot == -1 then
+			local tmpSlot = PST:getSirenMelodySlot()
+			if tmpSlot ~= -1 then
+				local oldMelody = player:GetActiveItem(tmpSlot)
+				PST:addModifiers({ sirenOldMelody = { value = oldMelody, set = true } }, true)
+
+				-- Trick Siren mod's update function into thinking we have the melody to avoid it resetting pocket items
+				player:AddInnateCollectible(oldMelody)
+
+				player:SetPocketActiveItem(shadowmeldID, tmpSlot, false)
+			end
+		elseif room:GetAliveEnemiesCount() == 0 and shadowmeldSlot ~= -1 then
+			local oldMelody = PST:getTreeSnapshotMod("sirenOldMelody", Isaac.GetItemIdByName("Empty Notes"))
+			player:SetPocketActiveItem(oldMelody, shadowmeldSlot, false)
+			player:AddInnateCollectible(oldMelody, -1)
+
+			local tmpMarkers = Isaac.FindByType(EntityType.ENTITY_EFFECT, Isaac.GetEntityVariantByName("Shadowmeld Marker"))
+			for _, marker in ipairs(tmpMarkers) do
+				marker:Remove()
+			end
+		end
+	end
+
+	-- Dark Arpeggio node (T. Siren's tree)
+	if PST:getTreeSnapshotMod("darkArpeggio", false) then
+		local plInput = player:GetShootingInput()
+		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+		if isShooting then
+			if PST.specialNodes.darkArpeggioTimer <= 0 then
+				PST.specialNodes.darkArpeggioTimer = 30 * (4 + PST:getTreeSnapshotMod("darkArpeggioTearDelay", 0))
+			elseif PST.specialNodes.darkArpeggioTimer > 0 then
+				PST.specialNodes.darkArpeggioTimer = PST.specialNodes.darkArpeggioTimer - 1
+				if PST.specialNodes.darkArpeggioTimer == 0 then
+					local sirenMinions = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, Isaac.GetEntityVariantByName("Siren Minion"))
+					for _, tmpMinion in ipairs(sirenMinions) do
+						local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER, tmpMinion.Position, plInput * 7, tmpMinion, 0, Random() + 1)
+						newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING | TearFlags.TEAR_FEAR)
+						newTear:ToTear().FallingSpeed = -1
+						newTear.Color = PST:RGBColor(120, 30, 182)
+					end
+				end
+			end
+		end
+	end
+
+	if PST.specialNodes.sirenUsedMelody ~= -1 and player:IsExtraAnimationFinished() then
+		PST.specialNodes.sirenUsedMelody = -1
 	end
 
 	-- Room clear update check

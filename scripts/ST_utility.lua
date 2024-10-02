@@ -508,6 +508,18 @@ function PST:removePlayerShields()
 	playerEff:RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BOOK_OF_SHADOWS, -1)
 end
 
+function PST:getSirenMelodySlot()
+	local player = PST:getPlayer()
+	for _, tmpMelody in ipairs(PST.sirenMelodies) do
+		local tmpItem = Isaac.GetItemIdByName(tmpMelody)
+		if tmpItem ~= -1 then
+			local tmpSlot = player:GetActiveItemSlot(tmpItem)
+			if tmpSlot ~= -1 then return tmpSlot end
+		end
+	end
+	return -1
+end
+
 ---@param itemPool ItemPoolType
 ---@param item CollectibleType
 function PST:poolHasCollectible(itemPool, item)
@@ -658,7 +670,7 @@ function PST:NPCChampionAvailable(npc)
 	return true
 end
 
-function PST:preSFXPlay(sfxID)
+function PST:preSFXPlay(sfxID, volume, frameDelay, loop, pitch, pan)
 	-- Ancient starcursed jewel: Cause Converter - mute Siren screech!!
 	if PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt.Type == EntityType.ENTITY_SIREN then
 		if sfxID == SoundEffect.SOUND_SIREN_SCREAM or sfxID == SoundEffect.SOUND_SIREN_LUNGE then
@@ -669,6 +681,86 @@ function PST:preSFXPlay(sfxID)
 	-- Anima chains broken, update chained enemies
 	if sfxID == SoundEffect.SOUND_ANIMA_BREAK then
 		PST.specialNodes.checkAnimaChain = true
+	end
+
+	if sfxID == SoundEffect.SOUND_PENNYPICKUP then
+		if PST:getPlayer():GetPlayerType() == Isaac.GetPlayerTypeByName("Siren", true) then
+			-- Chromatic Blessing node (T. Siren's tree) - detect notes
+			if PST:getTreeSnapshotMod("chromaticBlessing", false) then
+				if pitch >= 2.3999 and pitch <= 2.4001 then
+					-- UP
+					table.insert(PST.specialNodes.chromBlessingBuffer, "u")
+					PST.specialNodes.sirenUsedMelody = PST.specialNodes.sirenUsedMelody + 1
+				elseif pitch >= 1.5999 and pitch <= 1.6001 then
+					-- DOWN
+					table.insert(PST.specialNodes.chromBlessingBuffer, "d")
+					PST.specialNodes.sirenUsedMelody = PST.specialNodes.sirenUsedMelody + 1
+				elseif pitch >= 1.9999 and pitch <= 2.0001 then
+					-- LEFT
+					table.insert(PST.specialNodes.chromBlessingBuffer, "l")
+					PST.specialNodes.sirenUsedMelody = PST.specialNodes.sirenUsedMelody + 1
+				elseif pitch >= 1.7999 and pitch <= 1.8001 then
+					-- RIGHT
+					table.insert(PST.specialNodes.chromBlessingBuffer, "r")
+					PST.specialNodes.sirenUsedMelody = PST.specialNodes.sirenUsedMelody + 1
+				end
+				if #PST.specialNodes.chromBlessingBuffer > 3 then
+					table.remove(PST.specialNodes.chromBlessingBuffer, 1)
+				end
+			end
+
+			-- T. Siren singing option
+			if PST.config.tSirenSing then
+				if pitch >= 2.3999 and pitch <= 2.4001 then
+					SFXManager():Play(Isaac.GetSoundIdByName("siren note"), volume, frameDelay, loop, 1.48, pan)
+					return false
+				elseif pitch >= 1.5999 and pitch <= 1.6001 then
+					SFXManager():Play(Isaac.GetSoundIdByName("siren note"), volume, frameDelay, loop, 1, pan)
+					return false
+				elseif pitch >= 1.9999 and pitch <= 2.0001 then
+					SFXManager():Play(Isaac.GetSoundIdByName("siren note"), volume, frameDelay, loop, 1.24, pan)
+					return false
+				elseif pitch >= 1.7999 and pitch <= 1.8001 then
+					SFXManager():Play(Isaac.GetSoundIdByName("siren note"), volume, frameDelay, loop, 1.12, pan)
+					return false
+				end
+			end
+		end
+	end
+
+	if sfxID == SoundEffect.SOUND_THUMBSUP then
+		-- Chromatic Blessing node (T. Siren's tree), apply buff when successfully summoning familiar with Manifest Melody
+		if PST:getTreeSnapshotMod("chromaticBlessing", false) and PST.specialNodes.sirenUsedMelody == 3 then
+			local buffNotes = {
+				l = {"speedPerc"},
+				r = {"tearsPerc"},
+				u = {"damagePerc"},
+				d = {"rangePerc", "luckPerc"}
+			}
+			local buffList = PST:getTreeSnapshotMod("chromBlessingBuffs", nil)
+			if buffList then
+				for _, tmpNote in ipairs(PST.specialNodes.chromBlessingBuffer) do
+					if buffNotes[tmpNote] then
+						for _, tmpStat in ipairs(buffNotes[tmpNote]) do
+							if not buffList[tmpStat] then
+								buffList[tmpStat] = 0
+							end
+							local tmpTotal = buffList[tmpStat]
+							if tmpTotal < 15 then
+								PST:addModifiers({ [tmpStat] = 0.5 }, true)
+								buffList[tmpStat] = buffList[tmpStat] + 0.5
+							end
+						end
+					end
+				end
+			end
+			PST.specialNodes.sirenUsedMelody = -1
+		end
+	elseif sfxID == SoundEffect.SOUND_THUMBS_DOWN then
+		-- Chromatic Blessing node (T. Siren's tree), reset on failure
+		if PST:getTreeSnapshotMod("chromaticBlessing", false) and PST.specialNodes.sirenUsedMelody == 3 then
+			PST.specialNodes.sirenUsedMelody = -1
+		end
 	end
 end
 

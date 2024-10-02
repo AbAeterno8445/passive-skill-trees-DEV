@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.3.16"
+PST.modVersion = "v0.3.17"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.selectedMenuChar = -1
@@ -316,6 +316,26 @@ PST.anamnesisListTypes = {
 	[PurityState.BLUE] = "Angel",
 	[PurityState.YELLOW] = "Treasure",
 	[PurityState.ORANGE] = "Other"
+}
+PST.sirenMelodies = {"Empty Notes", "Mini Melody", "Middling Melody", "Mighty Melody", "Manifest Melody"}
+PST.songOfTheFewFamiliars = {
+	CollectibleType.COLLECTIBLE_BROTHER_BOBBY, CollectibleType.COLLECTIBLE_SISTER_MAGGY, CollectibleType.COLLECTIBLE_LITTLE_CHUBBY,
+	CollectibleType.COLLECTIBLE_ROBO_BABY, CollectibleType.COLLECTIBLE_LITTLE_CHAD, CollectibleType.COLLECTIBLE_LITTLE_GISH,
+	CollectibleType.COLLECTIBLE_LITTLE_STEVEN, CollectibleType.COLLECTIBLE_DEMON_BABY, CollectibleType.COLLECTIBLE_DEAD_BIRD,
+	CollectibleType.COLLECTIBLE_GHOST_BABY, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY, CollectibleType.COLLECTIBLE_DADDY_LONGLEGS,
+	CollectibleType.COLLECTIBLE_RAINBOW_BABY, CollectibleType.COLLECTIBLE_DRY_BABY, CollectibleType.COLLECTIBLE_ROBO_BABY_2,
+	CollectibleType.COLLECTIBLE_ROTTEN_BABY, CollectibleType.COLLECTIBLE_HEADLESS_BABY, CollectibleType.COLLECTIBLE_LEECH,
+	CollectibleType.COLLECTIBLE_BBF, CollectibleType.COLLECTIBLE_BOBS_BRAIN, CollectibleType.COLLECTIBLE_LIL_BRIMSTONE,
+	CollectibleType.COLLECTIBLE_ISAACS_HEART, CollectibleType.COLLECTIBLE_LIL_HAUNT, CollectibleType.COLLECTIBLE_MONGO_BABY,
+	CollectibleType.COLLECTIBLE_INCUBUS, CollectibleType.COLLECTIBLE_FATES_REWARD, CollectibleType.COLLECTIBLE_SWORN_PROTECTOR,
+	CollectibleType.COLLECTIBLE_LIL_GURDY, CollectibleType.COLLECTIBLE_SERAPHIM, CollectibleType.COLLECTIBLE_FARTING_BABY,
+	CollectibleType.COLLECTIBLE_SUCCUBUS, CollectibleType.COLLECTIBLE_PAPA_FLY, CollectibleType.COLLECTIBLE_LIL_LOKI,
+	CollectibleType.COLLECTIBLE_FINGER, CollectibleType.COLLECTIBLE_DEPRESSION, CollectibleType.COLLECTIBLE_LIL_MONSTRO,
+	CollectibleType.COLLECTIBLE_KING_BABY, CollectibleType.COLLECTIBLE_BIG_CHUBBY, CollectibleType.COLLECTIBLE_ACID_BABY,
+	CollectibleType.COLLECTIBLE_BLOODSHOT_EYE, CollectibleType.COLLECTIBLE_7_SEALS, CollectibleType.COLLECTIBLE_LIL_SPEWER,
+	CollectibleType.COLLECTIBLE_HALLOWED_GROUND, CollectibleType.COLLECTIBLE_BOILED_BABY, CollectibleType.COLLECTIBLE_FREEZER_BABY,
+	CollectibleType.COLLECTIBLE_BOT_FLY, CollectibleType.COLLECTIBLE_FRUITY_PLUM, CollectibleType.COLLECTIBLE_LIL_ABADDON,
+	CollectibleType.COLLECTIBLE_LIL_PORTAL, CollectibleType.COLLECTIBLE_TWISTED_PAIR, CollectibleType.COLLECTIBLE_BIRD_CAGE
 }
 PST.grandConsonanceWhitelist = {
 	FamiliarVariant.BROTHER_BOBBY, FamiliarVariant.SISTER_MAGGY, FamiliarVariant.LITTLE_CHUBBY, FamiliarVariant.SACK_OF_PENNIES,
@@ -1200,6 +1220,25 @@ function PST:resetMods()
 		darkEsauKillLuck = 0,
 		darkEsauKillLuckBuff = 0,
 		animaAddChains = 0,
+		---- T. Siren ----
+		shadowmeld = false,
+		darkArpeggio = false,
+		chromaticBlessing = false,
+		chromBlessingBuffs = {},
+		grandConsonance = false, -- TODO
+		songOfTheFew = false,
+		songOfTheFewItems = 0,
+		fearedDmg = 0, -- TODO
+		fearedTearBurst = 0, -- TODO
+		acridGaze = 0, -- TODO
+		sirenMinionDmg = 0, -- TODO
+		darkArpeggioTearDelay = 0,
+		shadowmeldExplosion = 0, -- TODO
+		shadowmeldExplosionDmg = 0, -- TODO
+		blackHeartFearKill = 0, -- TODO
+		fearedKillLuck = 0, -- TODO
+		soulOfTheSiren = false, -- TODO
+		sirenOldMelody = -1,
 		--#endregion
 
 		--#region STAR TREE --
@@ -1347,6 +1386,10 @@ function PST:resetMods()
 		animaUseProcs = false,
 		spiritCovenantTarget = nil,
 		darkEsauProxBuffTimer = 0,
+		sirenUpdateFunc = nil,
+		darkArpeggioTimer = 0,
+		chromBlessingBuffer = {},
+		sirenUsedMelody = -1,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
@@ -1378,11 +1421,26 @@ function PST:resetMods()
 		SC_anamnesisItemPicked = 0,
 		SC_anamnesisJustReset = false,
 	}
+	-- Temporary data for misc custom effects
+	PST.specialFX = {
+		-- Shadowmeld item
+		shadowmeldTransition = false,
+		shadowmeldStartFX = Sprite("gfx/effect_shadowmeld_player.anm2", true),
+		shadowmeldEndFX = Sprite("gfx/effect_shadowmeld_player.anm2", true),
+		shadowmeldStep = 0,
+		shadowmeldStartPos = Vector.Zero,
+		shadowmeldEndPos = Vector.Zero
+	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)
 	PST.specialNodes.SC_nullstonePoofFX.sprite.PlaybackSpeed = 0.5
 	PST.specialNodes.SC_nullstonePoofFX.stoneSprite:SetFrame("Ancients", 17)
 	PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 0)
+
+	PST.specialFX.shadowmeldStartFX.Scale = Vector(0.8, 0.8)
+	PST.specialFX.shadowmeldStartFX.PlaybackSpeed = 0.8
+	PST.specialFX.shadowmeldEndFX.Scale = Vector(0.8, 0.8)
+	PST.specialFX.shadowmeldEndFX.PlaybackSpeed = 0.8
 
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

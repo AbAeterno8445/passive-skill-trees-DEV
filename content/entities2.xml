@@ -1,0 +1,3 @@
+<entities anm2root="gfx/" version="5">
+    <entity anm2path="effect_shadowmeld_marker.anm2" id="1000" variant="2100" name="Shadowmeld Marker" />
+</entities>
