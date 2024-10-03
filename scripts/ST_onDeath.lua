@@ -542,6 +542,23 @@ function PST:onDeath(entity)
             PST:addModifiers({ luck = tmpLuck }, true)
         end
 
+        -- Grand Consonance node (T. Siren's tree)
+        if PST:getTreeSnapshotMod("grandConsonance", false) then
+            local tmpPlayer = PST:getPlayer()
+            -- Leech: 5% chance on kill to gain half a red heart. If this triggers but your health is full and you have less than 3 black hearts, 25% chance to gain a 1/2 black heart instead
+            -- Increase both chances by 4% per additional leech
+            local tmpLeeches = tmpPlayer:GetCollectibleNum(CollectibleType.COLLECTIBLE_LEECH)
+            if tmpLeeches > 0 and 100 * math.random() < 5 then
+                if tmpPlayer:GetHearts() < tmpPlayer:GetMaxHearts() then
+                    tmpPlayer:AddHearts(1)
+                    SFXManager():Play(SoundEffect.SOUND_VAMP_GULP)
+                elseif PST:GetBlackHeartCount(tmpPlayer) < 6 and 100 * math.random() < 25 then
+                    tmpPlayer:AddBlackHearts(1)
+                    SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.9, 2, false, 0.85)
+                end
+            end
+        end
+
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
             local tmpPlayer = PST:getPlayer()

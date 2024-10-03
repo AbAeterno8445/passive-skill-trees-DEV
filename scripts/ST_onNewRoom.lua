@@ -782,6 +782,39 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Grand Consonance node (T. Siren's tree)
+	if PST:getTreeSnapshotMod("grandConsonance", false) then
+		local consonanceCache = PST:getTreeSnapshotMod("grandConsonanceCache", nil)
+		if consonanceCache then
+			if consonanceCache.dryBabyProcs and consonanceCache.dryBabyProcs > 0 then
+				consonanceCache.dryBabyProcs = 0
+			end
+			if consonanceCache.BBFProcs and consonanceCache.BBFProcs > 0 then
+				consonanceCache.BBFProcs = 0
+			end
+		end
+
+		if PST.specialNodes.consonanceLilHauntOut then
+			PST.specialNodes.consonanceLilHauntOut = false
+		end
+
+		if room:GetAliveEnemiesCount() > 0 then
+			-- Lil Haunt effect
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_LIL_HAUNT) then
+				local tmpColor = player:GetColor()
+				player:SetColor(Color(tmpColor.R, tmpColor.G, tmpColor.B, 0.4), 90, 1, false, false)
+				PST.specialNodes.consonanceLilHauntTimer = 90
+
+				for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+					local tmpNPC = tmpEntity:ToNPC()
+					if tmpNPC and tmpNPC:IsActiveEnemy(false) then
+						tmpNPC:AddConfusion(EntityRef(player), 90, false)
+					end
+				end
+			end
+		end
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums

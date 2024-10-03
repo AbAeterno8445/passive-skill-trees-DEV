@@ -45,6 +45,30 @@ function PST:createFloatTextFX(text, position, color, speed, totalSteps, playerR
     end
 end
 
+local floatingIcons = {}
+local floatIconDelay = 0
+local floatIconQueue = {}
+
+-- Create a floating fading icon (sprite)
+function PST:createFloatIconFX(sprite, position, speed, totalSteps, playerRelative)
+	if not PST.config.floatingTexts then return end
+
+	local tmpIcon = {
+		sprite = sprite,
+		position = position,
+		speed = speed,
+		totalSteps = totalSteps,
+		playerRelative = playerRelative,
+		step = 0
+	}
+	if floatIconDelay == 0 then
+		table.insert(floatingIcons, tmpIcon)
+		floatIconDelay = floatTextDelayDefault
+	else
+		table.insert(floatIconQueue, tmpIcon)
+	end
+end
+
 -- XP bar setup
 local barWidth = 256
 local xpbarSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2", true)
@@ -228,53 +252,95 @@ function PST:Render()
 	end
 
 	-- Manage floating texts
-    if floatTextDelay > 0 then
-        floatTextDelay = floatTextDelay - 1
-    elseif floatTextDelay == 0 and #floatTextQueue > 0 then
-        table.insert(floatingTexts, floatTextQueue[1])
-        table.remove(floatTextQueue, 1)
-        floatTextDelay = floatTextDelayDefault
-    end
-
-	if #floatingTexts > 0 then
-        for i = #floatingTexts, 1, -1 do
-            local textFX = floatingTexts[i]
-			local worldPos = room:WorldToScreenPosition(textFX.position)
-			local textX = worldPos.X
-			local textY = worldPos.Y
-            if textFX.playerRelative then
-				if not room:IsMirrorWorld() then
-					worldPos = room:WorldToScreenPosition(Vector(player.Position.X, player.Position.Y))
-				else
-					-- Calculate diametric opposite X if in mirror world
-					local newX = room:GetCenterPos().X - (player.Position.X - room:GetCenterPos().X)
-					worldPos = room:WorldToScreenPosition(Vector(newX, player.Position.Y))
-				end
-				textX = worldPos.X + textFX.position.X - string.len(textFX.text) * 3
-                textY = worldPos.Y + textFX.position.Y - 40
-			else
-				textX = textX - string.len(textFX.text) * 3
-                textY = textY - 20
-            end
-
-            textY = textY - textFX.step * textFX.speed
-
-            Isaac.RenderText(
-                textFX.text,
-                textX,
-                textY,
-                textFX.color.R,
-                textFX.color.G,
-                textFX.color.B,
-                textFX.color.A - textFX.startAlpha * textFX.step / textFX.totalSteps
-            )
-
-            textFX.step = textFX.step + 1
-            if textFX.step >= textFX.totalSteps then
-                table.remove(floatingTexts, i)
-            end
+	if not Game():IsPaused() then
+		if floatTextDelay > 0 then
+			floatTextDelay = floatTextDelay - 1
+		elseif floatTextDelay == 0 and #floatTextQueue > 0 then
+			table.insert(floatingTexts, floatTextQueue[1])
+			table.remove(floatTextQueue, 1)
+			floatTextDelay = floatTextDelayDefault
 		end
-    end
+
+		if #floatingTexts > 0 then
+			for i = #floatingTexts, 1, -1 do
+				local textFX = floatingTexts[i]
+				local worldPos = room:WorldToScreenPosition(textFX.position)
+				local textX = worldPos.X
+				local textY = worldPos.Y
+				if textFX.playerRelative then
+					if not room:IsMirrorWorld() then
+						worldPos = room:WorldToScreenPosition(player.Position)
+					else
+						-- Calculate diametric opposite X if in mirror world
+						local newX = room:GetCenterPos().X - (player.Position.X - room:GetCenterPos().X)
+						worldPos = room:WorldToScreenPosition(Vector(newX, player.Position.Y))
+					end
+					textX = worldPos.X + textFX.position.X - string.len(textFX.text) * 3
+					textY = worldPos.Y + textFX.position.Y - 40
+				else
+					textX = textX - string.len(textFX.text) * 3
+					textY = textY - 20
+				end
+
+				textY = textY - textFX.step * textFX.speed
+
+				Isaac.RenderText(
+					textFX.text,
+					textX,
+					textY,
+					textFX.color.R,
+					textFX.color.G,
+					textFX.color.B,
+					textFX.color.A - textFX.startAlpha * textFX.step / textFX.totalSteps
+				)
+
+				textFX.step = textFX.step + 1
+				if textFX.step >= textFX.totalSteps then
+					table.remove(floatingTexts, i)
+				end
+			end
+		end
+
+		-- Manage floating icons
+		if floatIconDelay > 0 then
+			floatIconDelay = floatIconDelay - 1
+		elseif floatIconDelay == 0 and #floatIconQueue > 0 then
+			table.insert(floatingIcons, floatIconQueue[1])
+			table.remove(floatIconQueue, 1)
+			floatIconDelay = floatTextDelayDefault
+		end
+
+		if #floatingIcons > 0 then
+			for i = #floatingIcons, 1, -1 do
+				local tmpIcon = floatingIcons[i]
+				local worldPos = room:WorldToScreenPosition(tmpIcon.position)
+				local iconX = worldPos.X
+				local iconY = worldPos.Y
+				if tmpIcon.playerRelative then
+					if not room:IsMirrorWorld() then
+						worldPos = room:WorldToScreenPosition(player.Position)
+					else
+						local newX = room:GetCenterPos().X - (player.Position.X - room:GetCenterPos().X)
+						worldPos = room:WorldToScreenPosition(Vector(newX, player.Position.Y))
+					end
+					iconX = worldPos.X + tmpIcon.position.X
+					iconY = worldPos.Y + tmpIcon.position.Y - 30
+				else
+					iconY = iconY - 10
+				end
+
+				iconY = iconY - tmpIcon.step * tmpIcon.speed
+
+				tmpIcon.sprite:Render(Vector(iconX, iconY))
+				tmpIcon.sprite.Color.A = (tmpIcon.totalSteps - tmpIcon.step) / tmpIcon.totalSteps
+
+				tmpIcon.step = tmpIcon.step + 1
+				if tmpIcon.step >= tmpIcon.totalSteps then
+					table.remove(floatingIcons, i)
+				end
+			end
+		end
+	end
 end
 
 -- Render Cosmic Realignment completion marks on relevant characters (original marks take priority)

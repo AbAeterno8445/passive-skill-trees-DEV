@@ -2277,6 +2277,35 @@ function PST:onUpdate()
 		PST.specialNodes.sirenUsedMelody = -1
 	end
 
+	-- Grand Consonance node (T. Siren's tree)
+	if PST:getTreeSnapshotMod("grandConsonance", false) then
+		-- Lil Haunt effect
+		if PST.specialNodes.consonanceLilHauntTimer > 0 then
+			local plInput = player:GetShootingInput()
+			local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+			if isShooting then
+				PST.specialNodes.consonanceLilHauntTimer = 0
+			else
+				PST.specialNodes.consonanceLilHauntTimer = PST.specialNodes.consonanceLilHauntTimer - 1
+			end
+			if PST.specialNodes.consonanceLilHauntTimer == 0 then
+				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, player.Position, Vector.Zero, nil)
+				SFXManager():Play(SoundEffect.SOUND_BLACK_POOF)
+				PST.specialNodes.consonanceLilHauntOut = true
+				player:GetSprite().Color.A = 1
+
+				PST.specialNodes.consonanceLilHauntBuffTimer = 61
+				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+			end
+		end
+		if PST.specialNodes.consonanceLilHauntBuffTimer > 0 then
+			PST.specialNodes.consonanceLilHauntBuffTimer = PST.specialNodes.consonanceLilHauntBuffTimer - 1
+			if PST.specialNodes.consonanceLilHauntBuffTimer == 0 then
+				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+			end
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

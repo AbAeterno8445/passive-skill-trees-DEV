@@ -347,47 +347,18 @@ PST.grandConsonanceWhitelist = {
 	FamiliarVariant.LEECH, FamiliarVariant.MYSTERY_SACK, FamiliarVariant.BBF, FamiliarVariant.BOBS_BRAIN,
 	FamiliarVariant.LIL_BRIMSTONE, FamiliarVariant.ISAACS_HEART, FamiliarVariant.LIL_HAUNT, FamiliarVariant.DARK_BUM,
 	FamiliarVariant.CAINS_OTHER_EYE, FamiliarVariant.SAMSONS_CHAINS, FamiliarVariant.MONGO_BABY, FamiliarVariant.INCUBUS,
-	FamiliarVariant.FATES_REWARD, FamiliarVariant.LIL_CHEST, FamiliarVariant.SWORN_PROTECTOR, FamiliarVariant.CHARGED_BABY,
+	FamiliarVariant.FATES_REWARD, FamiliarVariant.LIL_CHEST, FamiliarVariant.CHARGED_BABY,
 	FamiliarVariant.LIL_GURDY, FamiliarVariant.CENSER, FamiliarVariant.KEY_BUM, FamiliarVariant.RUNE_BAG,
 	FamiliarVariant.SERAPHIM, FamiliarVariant.SPIDER_MOD, FamiliarVariant.FARTING_BABY, FamiliarVariant.GB_BUG,
 	FamiliarVariant.SUCCUBUS, FamiliarVariant.PAPA_FLY, FamiliarVariant.LIL_LOKI, FamiliarVariant.MILK,
 	FamiliarVariant.FINGER, FamiliarVariant.DEPRESSION, FamiliarVariant.LIL_MONSTRO, FamiliarVariant.KING_BABY,
 	FamiliarVariant.BIG_CHUBBY, FamiliarVariant.ACID_BABY, FamiliarVariant.SACK_OF_SACKS, FamiliarVariant.MOMS_RAZOR,
 	FamiliarVariant.BLOODSHOT_EYE, FamiliarVariant.LIL_HARBINGERS, FamiliarVariant.LIL_SPEWER, FamiliarVariant.MYSTERY_EGG,
-	FamiliarVariant.HALLOWED_GROUND, FamiliarVariant.POINTY_RIB, FamiliarVariant.JAW_BONE, FamiliarVariant.ISAACS_HEAD,
+	FamiliarVariant.HALLOWED_GROUND, FamiliarVariant.JAW_BONE, FamiliarVariant.ISAACS_HEAD,
 	FamiliarVariant.BOILED_BABY, FamiliarVariant.FREEZER_BABY, FamiliarVariant.BOT_FLY,
 	FamiliarVariant.FRUITY_PLUM, FamiliarVariant.LIL_ABADDON, FamiliarVariant.LIL_PORTAL, FamiliarVariant.TWISTED_BABY,
-	FamiliarVariant.BIRD_CAGE
+	131 -- My Shadow
 }
---[[ GRAND CONSONANCE TODO EFFECTS
-- Little Chubby: launched from you
-- Dead Bird: launch multiple short lived small dead birds while firing (rate of fire based on tears? reduced damage?)
-- Bum Friend: trigger his effect every 12 coins picked by you
-- Holy Water: launched from you
-- Guppy's Hairball: launched from you, stays active while firing
-- Dry Baby: pops out of you while firing, stays close towards the direction you're firing
-- Leech: launch multiple short lived small leeches (reduced damage?)
-- BBF: M80 trinket effect?
-- Bob's Brain: launch the brain, which then slowly comes to a halt, then explodes after flashing & a delay, piercing and poisoning enemies in the way + nerf the damage
-- 7 seals: make war locusts deal less damage and not explode when close to you
-- Lil Haunt: when entering a room with monsters, gain camouflage for 3 seconds or until you fire, then gain +10% speed for 2 seconds and spawn a lil haunt that lasts for the room
-- Dark Bum: trigger his effect every 4 hearts taken
-- Samson's Chains: launched from you, stays active while firing
-- Sworn Protector: similar to Dry Baby, launched from you while firing
-- Lil gurdy: launched from you
-- Censer: don't scale to 0 for invisibility
-- Succubus: don't scale to 0 for invisibility
-- Finger: launches out while firing
-- Depression: chance to retaliate with a Crack the Sky beam on the attacking enemy when hit
-- Big Chubby: same as lil chubby, slower
-- Mom's Razor: grants all familiar damage a tiny chance to cause bleeding
-- Bloodshot Eye: periodically launched while firing, moves forwards then slows down while quickly spinning (looking in all directions), then returns to you after a delay
-- Pointy Rib: same as Finger
-- Jaw Bone: periodically launched while firing
-- Lil Portal: launched from you
-- Bird Cage: same as Dead Bird?
-- My Shadow: shadow is centered on you, bigger default size, slowly grows while firing, and shrinks back to normal while not firing
-------------------------------]]
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}
@@ -1225,7 +1196,8 @@ function PST:resetMods()
 		darkArpeggio = false,
 		chromaticBlessing = false,
 		chromBlessingBuffs = {},
-		grandConsonance = false, -- TODO
+		grandConsonance = false,
+		grandConsonanceCache = {},
 		songOfTheFew = false,
 		songOfTheFewItems = 0,
 		fearedDmg = 0, -- TODO
@@ -1390,6 +1362,9 @@ function PST:resetMods()
 		darkArpeggioTimer = 0,
 		chromBlessingBuffer = {},
 		sirenUsedMelody = -1,
+		consonanceLilHauntTimer = 0,
+		consonanceLilHauntOut = false,
+		consonanceLilHauntBuffTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
@@ -1513,4 +1488,42 @@ if EID then
 		Isaac.GetTrinketIdByName("Ancient Starcursed Jewel"),
 		"Can feature unique challenge-like run modifiers.#Gets added unidentified to your Star Tree inventory once picked up."
 	)
+
+	-- Grand Consonance node (T. Siren's tree)
+	local GC_EID_Data = {
+		[CollectibleType.COLLECTIBLE_LITTLE_CHUBBY] = "Launched from you",
+		[CollectibleType.COLLECTIBLE_DEAD_BIRD] = "After getting hit, launch short lived small dead birds while firing",
+		[CollectibleType.COLLECTIBLE_BUM_FRIEND] = "Triggers Bum Friend's reward every 12 coins picked up",
+		[CollectibleType.COLLECTIBLE_HOLY_WATER] = "Launched from you",
+		[CollectibleType.COLLECTIBLE_GUPPYS_HAIRBALL] = "Launched from you, stays active while firing",
+		[CollectibleType.COLLECTIBLE_DRY_BABY] = "25% chance to block hits, up to 3 per room. 25% chance on block to trigger Necronomicon",
+		[CollectibleType.COLLECTIBLE_LEECH] = "5% chance on kill to gain a 1/2 red heart. If this triggers at full health, 25% chance to gain a 1/2 black heart, up to 3",
+		[CollectibleType.COLLECTIBLE_BBF] = "50% chance when hit to trigger an explosion at your position, once per room",
+		[CollectibleType.COLLECTIBLE_BOBS_BRAIN] = "Launched from you. On enemy collision, slows down to a halt then explodes after a delay",
+		[CollectibleType.COLLECTIBLE_7_SEALS] = "Locusts spawn from you. War locusts no longer explode while you're close",
+		[CollectibleType.COLLECTIBLE_LIL_HAUNT] = "When entering a room with monsters, fade away from vision for 3 seconds or until you shoot, confusing monsters",
+		[CollectibleType.COLLECTIBLE_DARK_BUM] = "Triggers Dark Bum's reward every 4 total red hearts picked up",
+		[CollectibleType.COLLECTIBLE_SAMSONS_CHAINS] = "Launched from you, stays active while firing",
+		[CollectibleType.COLLECTIBLE_LIL_GURDY] = "Launched from you",
+		[CollectibleType.COLLECTIBLE_CENSER] = "Aura projected from you",
+		[CollectibleType.COLLECTIBLE_SUCCUBUS] = "Aura projected from you",
+		[CollectibleType.COLLECTIBLE_DEPRESSION] = "Creates puddle from you. Chance on hit to retaliate with a Crack the Sky beam",
+		[CollectibleType.COLLECTIBLE_BIG_CHUBBY] = "Launched from you",
+		[CollectibleType.COLLECTIBLE_MOMS_RAZOR] = "All familiar damage gains a small chance to cause Bleed for 4 seconds",
+		[CollectibleType.COLLECTIBLE_BLOODSHOT_EYE] = "Eye tears gain homing and a chance to inflict fear on hit",
+		[CollectibleType.COLLECTIBLE_JAW_BONE] = "Launched from you",
+		[CollectibleType.COLLECTIBLE_LIL_PORTAL] = "Launched from you",
+		[CollectibleType.COLLECTIBLE_MY_SHADOW] = "Shadow is centered on you, grows while firing and shrinks otherwise, and deals contact damage with a chance to spawn chargers"
+	}
+	local GC_conditionFunc = function(descObj)
+		if PST:getTreeSnapshotMod("grandConsonance", false) and descObj.ObjType == EntityType.ENTITY_PICKUP and
+		descObj.ObjVariant == PickupVariant.PICKUP_COLLECTIBLE and GC_EID_Data[descObj.ObjSubType] ~= nil then
+			return true
+		end
+	end
+	local GC_callbackFunc = function(descObj)
+		EID:appendToDescription(descObj, "#Grand Consonance: " .. GC_EID_Data[descObj.ObjSubType])
+		return descObj
+	end
+	EID:addDescriptionModifier("PST Grand Consonance", GC_conditionFunc, GC_callbackFunc)
 end

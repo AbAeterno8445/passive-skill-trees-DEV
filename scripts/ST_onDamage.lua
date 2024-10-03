@@ -239,6 +239,49 @@ function PST:onDamage(target, damage, flag, source)
             PST:addModifiers({ flawlessPBoneProc = false }, true)
         end
 
+        -- Grand Consonance node (T. Siren's tree)
+        if PST:getTreeSnapshotMod("grandConsonance", false) then
+            local consonanceCache = PST:getTreeSnapshotMod("grandConsonanceCache", nil)
+            if consonanceCache then
+                -- Dry Baby: 25% chance to block incoming hits, up to thrice per room. 25% chance on block to trigger necronomicon
+                -- Additional dry babies increase max blocks per room by 2
+                local dryBabies = player:GetCollectibleNum(CollectibleType.COLLECTIBLE_DRY_BABY)
+                if dryBabies > 0 then
+                    if consonanceCache.dryBabyProcs == nil then consonanceCache.dryBabyProcs = 0 end
+                    local maxProcs = 3 + (dryBabies - 1) * 2
+                    if consonanceCache.dryBabyProcs < maxProcs and 100 * math.random() < 25 then
+                        local tmpSprite = Sprite("gfx/003.265_drybaby.anm2", true)
+                        tmpSprite:SetFrame("Hit", 16)
+                        PST:createFloatIconFX(tmpSprite, Vector.Zero, 0.13, 100, true)
+                        SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.35)
+                        consonanceCache.dryBabyProcs = consonanceCache.dryBabyProcs + 1
+
+                        if 100 * math.random() < 25 then
+                            player:UseActiveItem(CollectibleType.COLLECTIBLE_NECRONOMICON)
+                        end
+                        return { Damage = 0 }
+                    end
+                end
+
+                -- BBF: 50% chance when hit to trigger an explosion at your position, once per room. +1 max explosion per room per additional BBF
+                local BBFs = player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BBF)
+                if BBFs > 0 then
+                    if consonanceCache.BBFProcs == nil then consonanceCache.BBFProcs = 0 end
+                    if consonanceCache.BBFProcs < BBFs and 100 * math.random() < 50 then
+                        Isaac.Explode(player.Position, player, 100)
+                        consonanceCache.BBFProcs = consonanceCache.BBFProcs + 1
+                    end
+                end
+            end
+
+            -- Depression: chance to retaliate with a crack the sky beam when hit
+            local depressionCount = player:GetCollectibleNum(CollectibleType.COLLECTIBLE_DEPRESSION)
+            if depressionCount > 0 and 100 * math.random() < math.min(15, 5 * depressionCount) then
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, source.Entity.Position, Vector.Zero, nil)
+            end
+        end
+        
+
         -- Ancient starcursed jewel: Martian Ultimatum
         if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
             PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
@@ -760,6 +803,15 @@ function PST:onDamage(target, damage, flag, source)
                 tmpMod = PST:getTreeSnapshotMod("nonWhipDmg", 0)
                 if tmpMod ~= 0 then
                     dmgMult = dmgMult + tmpMod / 100
+                end
+
+                -- Grand Consonance node (T. Siren's tree)
+                if PST:getTreeSnapshotMod("grandConsonance", false) then
+                    -- Mom's Razor: chance for familiar hits to cause bleeding
+                    local tmpRazors = PST:getPlayer():GetCollectibleNum(CollectibleType.COLLECTIBLE_MOMS_RAZOR)
+                    if tmpRazors > 0 and 100 * math.random() < math.min(9, 3 * tmpRazors) then
+                        target:AddBleeding(EntityRef(PST:getPlayer()), 120)
+                    end
                 end
             -- Bomb hits enemy
             elseif source.Type == EntityType.ENTITY_BOMB then

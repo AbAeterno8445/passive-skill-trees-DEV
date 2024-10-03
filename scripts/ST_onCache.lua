@@ -332,6 +332,11 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
         end
+
+        -- Grand Consonance node (T. Siren's tree) - Lil Haunt effect speed buff
+        if PST.specialNodes.consonanceLilHauntBuffTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + 10 * math.max(1, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_LIL_HAUNT))
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active

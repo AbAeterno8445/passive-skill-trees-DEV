@@ -410,6 +410,10 @@ function PST:prePickup(pickup, collider, low)
     end
 end
 
+---@param pickup EntityPickup
+---@param collider Entity
+---@param low boolean
+---@param forced boolean
 function PST:onPickup(pickup, collider, low, forced)
     if pickup:GetSprite():GetAnimation() ~= "Collect" and not forced then return end
 
@@ -423,6 +427,36 @@ function PST:onPickup(pickup, collider, low, forced)
                 player:AddCoins(1)
             end
             PST:tryGrabBag()
+
+            -- Grand Consonance node (T. Siren's tree) - Bum Friend
+            if PST:getTreeSnapshotMod("grandConsonance", false) and player:HasCollectible(CollectibleType.COLLECTIBLE_BUM_FRIEND) then
+                local consonanceCache = PST:getTreeSnapshotMod("grandConsonanceCache", nil)
+                if consonanceCache then
+                    if consonanceCache.bumFriendCoins == nil then consonanceCache.bumFriendCoins = 0 end
+                    consonanceCache.bumFriendCoins = consonanceCache.bumFriendCoins + pickup:GetCoinValue()
+                    if consonanceCache.bumFriendCoins >= 12 then
+                        local bumQuery = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BUM_FRIEND)
+                        if #bumQuery > 0 then
+                            local rewarded = false
+                            for _, tmpBum in ipairs(bumQuery) do
+                                local tmpAnim = tmpBum:GetSprite():GetAnimation()
+                                if tmpAnim ~= "PreSpawn" and tmpAnim ~= "Spawn" then
+                                    tmpBum:GetSprite():Play("PreSpawn")
+                                    rewarded = true
+                                end
+                            end
+
+                            if rewarded then
+                                local tmpSprite = Sprite("gfx/003.024_bum fiend.anm2", true)
+                                tmpSprite:SetFrame("Spawn", 1)
+                                PST:createFloatIconFX(tmpSprite, Vector.Zero, 0.25, 50, true)
+                                SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
+                                consonanceCache.bumFriendCoins = consonanceCache.bumFriendCoins - 12
+                            end
+                        end
+                    end
+                end
+            end
         elseif variant == PickupVariant.PICKUP_KEY then
             local keyChance = PST:getTreeSnapshotMod("keyDupe", 0)
             if keyChance > 0 and 100 * math.random() < keyChance then
@@ -504,7 +538,7 @@ function PST:onPickup(pickup, collider, low, forced)
                 end
             end
             -- Red heart pickups
-            if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_BLENDED then
+            if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_BLENDED or subtype == HeartSubType.HEART_DOUBLEPACK then
                 -- Mod: chance to gain a soul charge when picking up a red heart
                 if 100 * math.random() < PST:getTreeSnapshotMod("redHeartsSoulCharge", 0) then
                     SFXManager():Play(SoundEffect.SOUND_BEEP)
@@ -567,6 +601,42 @@ function PST:onPickup(pickup, collider, low, forced)
                     if tmpTotal < 15 then
                         local tmpAdd = math.min(tmpMod, 15 - tmpTotal)
                         PST:addModifiers({ damagePerc = tmpAdd, redHeartRoomDmgBuff = tmpAdd }, true)
+                    end
+                end
+
+                -- Grand Consonance node (T. Siren's tree) - Dark Bum
+                if PST:getTreeSnapshotMod("grandConsonance", false) and player:HasCollectible(CollectibleType.COLLECTIBLE_DARK_BUM) then
+                    local consonanceCache = PST:getTreeSnapshotMod("grandConsonanceCache", nil)
+                    if consonanceCache then
+                        if consonanceCache.darkBumHearts == nil then consonanceCache.darkBumHearts = 0 end
+                        if subtype == HeartSubType.HEART_FULL then
+                            consonanceCache.darkBumHearts = consonanceCache.darkBumHearts + 2
+                        elseif subtype == HeartSubType.HEART_DOUBLEPACK then
+                            consonanceCache.darkBumHearts = consonanceCache.darkBumHearts + 4
+                        else
+                            consonanceCache.darkBumHearts = consonanceCache.darkBumHearts + 1
+                        end
+                        if consonanceCache.darkBumHearts >= 8 then
+                            local bumQuery = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.DARK_BUM)
+                            if #bumQuery > 0 then
+                                local rewarded = false
+                                for _, tmpBum in ipairs(bumQuery) do
+                                    local tmpAnim = tmpBum:GetSprite():GetAnimation()
+                                    if tmpAnim ~= "PreSpawn" and tmpAnim ~= "Spawn" then
+                                        tmpBum:GetSprite():Play("PreSpawn")
+                                        rewarded = true
+                                    end
+                                end
+
+                                if rewarded then
+                                    local tmpSprite = Sprite("gfx/003.278_darkbum.anm2", true)
+                                    tmpSprite:SetFrame("Spawn", 1)
+                                    PST:createFloatIconFX(tmpSprite, Vector.Zero, 0.25, 50, true)
+                                    SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
+                                    consonanceCache.darkBumHearts = consonanceCache.darkBumHearts - 8
+                                end
+                            end
+                        end
                     end
                 end
             end
