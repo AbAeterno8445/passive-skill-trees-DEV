@@ -860,7 +860,7 @@ function PST:treeMenuRenderer()
                 bothDone = false
             end
             if bothDone then
-                table.insert(tmpDescription, {"Soul Of The Siren is now present in the soul stone pool.", KColor(0.7, 1, 0.7, 1)})
+                table.insert(tmpDescription, {"Boss Rush and Hush completed.", KColor(0.7, 1, 0.7, 1)})
             end
         elseif isAllocated then
             -- Starcursed inventory/socket nodes
