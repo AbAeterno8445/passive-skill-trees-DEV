@@ -269,8 +269,8 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
 
         if player:HasTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY) then
             local tmpItems = PST:getTreeSnapshotMod("songOfTheFewItems", 0)
-            if tmpItems > 3 then
-                local tmpChance = 20 + 15 * (tmpItems - 4)
+            if tmpItems > 2 then
+                local tmpChance = 20 + 15 * (tmpItems - 3)
                 if 100 * math.random() < tmpChance then
                     player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY)
                 end

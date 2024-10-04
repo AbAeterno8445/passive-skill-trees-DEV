@@ -3240,8 +3240,7 @@ PST.treeModDescriptions = {
             "Grand Consonance:",
             "    Whenever you gain a familiar, instead absorb its power and gain an effect based on the",
             "    familiar",
-            "    -50%% damage dealt",
-            "    Each damage-dealing familiar you obtain decreases this debuff by 4%%"
+            "    -4%% damage dealt to enemies for each damage-dealing familiar you obtain, up to -48%%"
         },
         category = "charTree", sort = 3853
     },
@@ -3249,8 +3248,8 @@ PST.treeModDescriptions = {
         str = {
             "Song Of The Few:",
             "    Start with a smelted Forgotten Lullaby",
-            "    Once you have at least 3 familiar items, 20% chance to lose a smelted Forgotten Lullaby",
-            "    when obtaining more familiar items",
+            "    Once you have at least 2 damage-dealing familiar items, 20%% chance to lose a smelted",
+            "    Forgotten Lullaby when obtaining more familiar items",
             "    This chance increases by 15%% per familiar item obtained past 3"
         },
         category = "charTree", sort = 3854

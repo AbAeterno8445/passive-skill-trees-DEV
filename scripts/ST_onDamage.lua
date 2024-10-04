@@ -829,7 +829,7 @@ function PST:onDamage(target, damage, flag, source)
                     end
 
                     -- Damage reduction
-                    local tmpReduction = math.max(0, 50 - PST:getTreeSnapshotMod("grandConsonanceDmg", 0) * 4)
+                    local tmpReduction = math.min(12, PST:getTreeSnapshotMod("grandConsonanceDmg", 0)) * 4
                     if tmpReduction > 0 then
                         dmgMult = dmgMult - tmpReduction / 100
                     end
