@@ -1197,19 +1197,22 @@ function PST:resetMods()
 		chromaticBlessing = false,
 		chromBlessingBuffs = {},
 		grandConsonance = false,
+		grandConsonanceDmg = 0,
 		grandConsonanceCache = {},
 		songOfTheFew = false,
 		songOfTheFewItems = 0,
-		fearedDmg = 0, -- TODO
-		fearedTearBurst = 0, -- TODO
-		acridGaze = 0, -- TODO
-		sirenMinionDmg = 0, -- TODO
+		fearedDmg = 0,
+		fearedTearBurst = 0,
+		acridGaze = 0,
+		sirenMinionDmg = 0,
 		darkArpeggioTearDelay = 0,
-		shadowmeldExplosion = 0, -- TODO
-		shadowmeldExplosionDmg = 0, -- TODO
-		blackHeartFearKill = 0, -- TODO
-		fearedKillLuck = 0, -- TODO
-		soulOfTheSiren = false, -- TODO
+		shadowmeldExplosion = 0,
+		shadowmeldExplosionDmg = 0,
+		blackHeartFearKill = 0,
+		blackHeartFearKillGiven = 0,
+		fearedKillLuck = 0,
+		fearedKillLuckBuff = 0,
+		soulOfTheSiren = false,
 		sirenOldMelody = -1,
 		--#endregion
 
@@ -1365,6 +1368,11 @@ function PST:resetMods()
 		consonanceLilHauntTimer = 0,
 		consonanceLilHauntOut = false,
 		consonanceLilHauntBuffTimer = 0,
+		acridGazeTimer = 0,
+		shadowmeldExplosionFX = {
+			sprite = Sprite("gfx/effect_siren_ring.anm2", true),
+			position = Vector.Zero
+		},
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
@@ -1404,13 +1412,19 @@ function PST:resetMods()
 		shadowmeldEndFX = Sprite("gfx/effect_shadowmeld_player.anm2", true),
 		shadowmeldStep = 0,
 		shadowmeldStartPos = Vector.Zero,
-		shadowmeldEndPos = Vector.Zero
+		shadowmeldEndPos = Vector.Zero,
+		-- Soul of the Siren effect
+		sirenSoulUses = {},
 	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)
 	PST.specialNodes.SC_nullstonePoofFX.sprite.PlaybackSpeed = 0.5
 	PST.specialNodes.SC_nullstonePoofFX.stoneSprite:SetFrame("Ancients", 17)
 	PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 0)
+
+	PST.specialNodes.shadowmeldExplosionFX.sprite.Scale = Vector(0.8, 0.8)
+	PST.specialNodes.shadowmeldExplosionFX.sprite.Color = Color(0.1, 0.1, 0.1, 1)
+	PST.specialNodes.shadowmeldExplosionFX.sprite.PlaybackSpeed = 1.4
 
 	PST.specialFX.shadowmeldStartFX.Scale = Vector(0.8, 0.8)
 	PST.specialFX.shadowmeldStartFX.PlaybackSpeed = 0.8
@@ -1488,6 +1502,14 @@ if EID then
 		Isaac.GetTrinketIdByName("Ancient Starcursed Jewel"),
 		"Can feature unique challenge-like run modifiers.#Gets added unidentified to your Star Tree inventory once picked up."
 	)
+
+	-- Soul of the Siren soul stone
+	if Isaac.GetCardIdByName("SoulOfTheSiren") ~= -1 then
+		EID:addCard(
+			Isaac.GetCardIdByName("SoulOfTheSiren"),
+			"Charms all monsters in the room for 10 seconds.#For the next 60 seconds, gain 3 random baby familiars, a smelted Friendship Necklace, and charm all monsters for 10 seconds when entering a room."
+		)
+	end
 
 	-- Grand Consonance node (T. Siren's tree)
 	local GC_EID_Data = {

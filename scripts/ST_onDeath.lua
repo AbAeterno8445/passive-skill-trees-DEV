@@ -385,7 +385,7 @@ function PST:onDeath(entity)
                         if math.random() < 0.4 then
                             newClot = 1 + math.random(5)
                         end
-                        local newClotEnt = Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, tmpClot.Position, Vector.Zero, player, newClot, Random() + 1)
+                        local newClotEnt = Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, tmpClot.Position, Vector.Zero, PST:getPlayer(), newClot, Random() + 1)
                         newClotEnt:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
                         tmpClot:Remove()
                         PST:addModifiers({ mysticVampirismProcs = 1 }, true)
@@ -556,6 +556,36 @@ function PST:onDeath(entity)
                     tmpPlayer:AddBlackHearts(1)
                     SFXManager():Play(SoundEffect.SOUND_VAMP_GULP, 0.9, 2, false, 0.85)
                 end
+            end
+        end
+
+        -- Feared mob kill
+        if entity:GetFearCountdown() > 0 then
+            -- Mod: % chance for feared enemies to release 3-4 homing tears on death that cause fear
+            tmpMod = PST:getTreeSnapshotMod("fearedTearBurst", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local totalTears = math.random(3, 4)
+                for _=1,totalTears do
+                    local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER, entity.Position, RandomVector() * 6, PST:getPlayer(), 0, Random() + 1)
+                    newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING | TearFlags.TEAR_FEAR)
+                    newTear:ToTear().FallingSpeed = -1
+                    newTear.CollisionDamage = math.min(20, math.max(3, entity.MaxHitPoints * 0.04))
+                    newTear.Color = PST:RGBColor(120, 30, 182)
+                end
+            end
+
+            -- Mod: % chance to receive 1/2 a black heart when killing a feared enemy if you have less than 3 black hearts, up to twice per room
+            tmpMod = PST:getTreeSnapshotMod("blackHeartFearKill", 0)
+            if tmpMod > 0 and PST:GetBlackHeartCount(PST:getPlayer()) < 6 and PST:getTreeSnapshotMod("blackHeartFearKillGiven", 0) < 2 and
+            100 * math.random() < tmpMod then
+                PST:getPlayer():AddBlackHearts(1)
+                PST:addModifiers({ blackHeartFearKillGiven = 1 }, true)
+            end
+
+            -- Mod: % chance to gain +0.02 luck when killing a feared enemy, up to a total +3
+            tmpMod = PST:getTreeSnapshotMod("fearedKillLuck", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("fearedKillLuckBuff", 0) < 3 and 100 * math.random() < tmpMod then
+                PST:addModifiers({ luck = 0.02, fearedKillLuckBuff = 0.02 }, true)
             end
         end
 

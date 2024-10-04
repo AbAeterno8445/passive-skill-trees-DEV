@@ -3201,6 +3201,111 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 3819
     },
+    ---- T. SIREN'S TREE ----
+    shadowmeld = {
+        str = {
+            "Shadowmeld:",
+            "    While in a room with monsters, Manifest Melody becomes Shadowmeld",
+            "    Shadowmeld creates a marked shadow at your current position",
+            "    Re-using Shadowmeld causes you to sink into the shadows then reappear at the marked shadow's",
+            "    location",
+            "    While sinking or reappearing, and for 0.5 seconds afterwards, you can't be damaged",
+            "    Press the Drop key to remove placed markers"
+        },
+        category = "charTree", sort = 3850
+    },
+    darkArpeggio = {
+        str = {
+            "Dark Arpeggio:",
+            "    Every 4 total seconds spent firing, your Siren Minions fire a homing tear that inflicts fear",
+            "    on enemies hit"
+        },
+        category = "charTree", sort = 3851
+    },
+    chromaticBlessing = {
+        str = {
+            "Chromatic Blessing:",
+            "    When successfully summoning a familiar through Manifest Melody, gain stats based on the",
+            "    used notes:",
+            "      - Left: +0.5%% speed",
+            "      - Right: +0.5%% tears",
+            "      - Up: +0.5%% damage",
+            "      - Down: +0.5%% range and luck",
+            "    Each individual buff has a limit of 15%%"
+        },
+        category = "charTree", sort = 3852
+    },
+    grandConsonance = {
+        str = {
+            "Grand Consonance:",
+            "    Whenever you gain a familiar, instead absorb its power and gain an effect based on the",
+            "    familiar",
+            "    -50%% damage dealt",
+            "    Each damage-dealing familiar you obtain decreases this debuff by 4%%"
+        },
+        category = "charTree", sort = 3853
+    },
+    songOfTheFew = {
+        str = {
+            "Song Of The Few:",
+            "    Start with a smelted Forgotten Lullaby",
+            "    Once you have at least 3 familiar items, 20% chance to lose a smelted Forgotten Lullaby",
+            "    when obtaining more familiar items",
+            "    This chance increases by 15%% per familiar item obtained past 3"
+        },
+        category = "charTree", sort = 3854
+    },
+    fearedDmg = {
+        str = "Feared enemies receive %d%% more damage",
+        category = "charTree", sort = 3860
+    },
+    fearedTearBurst = {
+        str = {
+            "%.2f%% chance for feared enemies to release 3-4 homing tears on death that cause fear",
+            "    These tears deal 4%% of the killed monster's HP as damage on hit, minimum 3 damage"
+        },
+        category = "charTree", sort = 3861
+    },
+    acridGaze = {
+        str = {
+            "Every 1.5 total seconds spent firing, unleash a pulse that damages and fears nearby",
+            "enemies for 2 seconds",
+            "    Damage dealt by the pulse is 120%% of your luck stat, up to 10",
+            "    +%d%% pulse size"
+        },
+        category = "charTree", sort = 3862
+    },
+    sirenMinionDmg = {
+        str = "%d%% more damage dealt by your Siren Minions",
+        category = "charTree", sort = 3863
+    },
+    darkArpeggioTearDelay = {
+        str = "%s%.2f total seconds required for Siren Minions to fire the Dark Arpeggio tear",
+        addPlus = true,
+        category = "charTree", sort = 3864
+    },
+    shadowmeldExplosion = {
+        str = {
+            "%d%% chance to cause a dark explosion when reappearing with Shadowmeld, dealing 100%% of your",
+            "damage to nearby enemies and fearing them"
+        },
+        category = "charTree", sort = 3865
+    },
+    shadowmeldExplosionDmg = {
+        str = "Shadowmeld explosion deals an additional %d%% of your damage",
+        category = "charTree", sort = 3866
+    },
+    blackHeartFearKill = {
+        str = {
+            "%d%% chance to receive 1/2 a black heart when killing a feared enemy, if you have less than",
+            "3 black hearts, up to twice per room"
+        },
+        category = "charTree", sort = 3867
+    },
+    fearedKillLuck = {
+        str = "%d%% chance to gain +0.02 luck when killing a feared enemy, up to a total +3",
+        category = "charTree", sort = 3868
+    },
     --#endregion
 
     ---- STARMIGHT ----

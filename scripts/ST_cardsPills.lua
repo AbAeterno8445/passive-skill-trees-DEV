@@ -1,3 +1,5 @@
+---@param RNG RNG
+---@param card Card
 function PST:onGetCard(RNG, card)
     -- Blue Gambit node (Blue Baby's tree)
     if PST:getTreeSnapshotMod("blueGambit", false) then
@@ -5,6 +7,18 @@ function PST:onGetCard(RNG, card)
             PST:addModifiers({ blueGambitCardProc = true }, true)
             return Card.CARD_HIEROPHANT
         end
+    end
+
+    -- Re-roll Soul of the Siren drop if not unlocked
+    local sirenSoulID = Isaac.GetCardIdByName("SoulOfTheSiren")
+    if card == sirenSoulID and not PST:isSoulOfTheSirenUnlocked() then
+        local newCard = Game():GetItemPool():GetCard(RNG:GetSeed(), false, true, true)
+        local failsafe = 0
+        while newCard == sirenSoulID and failsafe < 200 do
+            newCard = Game():GetItemPool():GetCard(RNG:Next(), false, true, true)
+            failsafe = failsafe + 1
+        end
+        if failsafe < 200 then return newCard end
     end
 end
 
@@ -84,6 +98,9 @@ function PST:preUseCard(card, player, useFlag)
     end
 end
 
+---@param card Card
+---@param player EntityPlayer
+---@param useFlags UseFlag
 function PST:onUseCard(card, player, useFlags)
     -- Skip if using Rev High Priestess with Nightmare Projector (ancient jewel)
     if card == Card.CARD_REVERSE_HIGH_PRIESTESS and PST:SC_getSnapshotMod("nightmareProjector", false) then
@@ -266,7 +283,7 @@ function PST:onUseCard(card, player, useFlags)
     -- Ancient starcursed jewel: Luminescent Die
     if PST:SC_getSnapshotMod("luminescentDie", false) then
         PST:addModifiers({ SC_luminescentUsedCard = true }, true)
-        local tmpMod = PST:getTreeSnapshotMod("SC_luminescentDebuff", 0)
+        tmpMod = PST:getTreeSnapshotMod("SC_luminescentDebuff", 0)
         if tmpMod > 0 then
             PST:addModifiers({
                 allstatsPerc = tmpMod / 2,
@@ -287,6 +304,38 @@ function PST:onUseCard(card, player, useFlags)
         if not PST:getTreeSnapshotMod("SC_empHeirloomUsedCard", false) then
             PST:addModifiers({ SC_empHeirloomUsedCard = true }, true)
         end
+    end
+
+    -- Soul of the Siren effect
+    if card == Isaac.GetCardIdByName("SoulOfTheSiren") then
+        SFXManager():Play(SoundEffect.SOUND_SIREN_SING, 0.6, 2, false, 1.1)
+
+        -- Charm all enemies in the room for 10 seconds
+        for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+				tmpNPC:AddCharmed(EntityRef(player), 300)
+			end
+		end
+
+        -- Gain a smelted friendship necklace
+        local smeltedTrinkets = player:GetSmeltedTrinkets()
+        if smeltedTrinkets[TrinketType.TRINKET_FRIENDSHIP_NECKLACE].trinketAmount == 0 and smeltedTrinkets[TrinketType.TRINKET_FRIENDSHIP_NECKLACE].goldenTrinketAmount == 0 then
+            player:AddSmeltedTrinket(TrinketType.TRINKET_FRIENDSHIP_NECKLACE)
+        end
+
+        -- Add 3 random baby familiars as innate effects
+        local rolledFamiliars = {}
+        local failsafe = 0
+        while #rolledFamiliars < 3 and failsafe < 500 do
+            local newFamiliar = Game():GetItemPool():GetCollectibleFromList(PST.babyFamiliarItems)
+            if not PST:arrHasValue(rolledFamiliars, newFamiliar) then
+                player:AddInnateCollectible(newFamiliar)
+                table.insert(rolledFamiliars, newFamiliar)
+            end
+            failsafe = failsafe + 1
+        end
+        table.insert(PST.specialFX.sirenSoulUses, { timer = 1800, familiars = rolledFamiliars })
     end
 end
 

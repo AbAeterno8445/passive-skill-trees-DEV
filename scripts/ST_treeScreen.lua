@@ -845,6 +845,23 @@ function PST:treeMenuRenderer()
         elseif PST:strStartsWith(hoveredNode.name, "Grand Ingredient") and PST:grandIngredientNodes(false) > 2 then
             tmpDescription = {table.unpack(hoveredNode.description)}
             table.insert(tmpDescription, {"You have more than 2 Grand Ingredient nodes allocated!", KColor(1, 0.6, 0.6, 1)})
+        -- Soul Of The Siren node, track boss rush/hush completions
+        elseif hoveredNode.name == "Soul Of The Siren" then
+            tmpDescription = {table.unpack(hoveredNode.description)}
+            local bothDone = true
+            -- Boss rush
+            if Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.BOSS_RUSH) == 0 then
+                table.insert(tmpDescription, {"Missing Boss Rush completion with T. Siren!", KColor(1, 0.6, 0.6, 1)})
+                bothDone = false
+            end
+            -- Hush
+            if Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.HUSH) == 0 then
+                table.insert(tmpDescription, {"Missing Hush completion with T. Siren!", KColor(1, 0.6, 0.6, 1)})
+                bothDone = false
+            end
+            if bothDone then
+                table.insert(tmpDescription, {"Soul Of The Siren is now present in the soul stone pool.", KColor(0.7, 1, 0.7, 1)})
+            end
         elseif isAllocated then
             -- Starcursed inventory/socket nodes
             for _, tmpType in pairs(PSTStarcursedType) do

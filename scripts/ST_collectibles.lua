@@ -278,6 +278,11 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         end
     end
 
+    -- Grand Consonance node (T. Siren's tree)
+    if PST:getTreeSnapshotMod("grandConsonance", false) and PST:arrHasValue(PST.songOfTheFewFamiliars, itemType) then
+        PST:addModifiers({ grandConsonanceDmg = 1 }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then

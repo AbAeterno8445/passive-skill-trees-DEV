@@ -1,0 +1,3 @@
+<pocketitems>
+    <card type="rune" pickup="200" gfx="soul_of_the_siren.png" description="All shall serve" id="1" name="Soul of the Siren" mimiccharge="4" hud="SoulOfTheSiren" />
+</pocketitems>

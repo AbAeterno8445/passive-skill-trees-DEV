@@ -815,6 +815,21 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Mod: % chance to receive 1/2 a black heart when killing a feared enemy if you have less than 3 black hearts, up to twice per room (reset)
+	if PST:getTreeSnapshotMod("blackHeartFearKillGiven", 0) > 0 then
+		PST:addModifiers({ blackHeartFearKillGiven = { value = 0, set = true } }, true)
+	end
+
+	-- Soul of the Siren effect
+	if #PST.specialFX.sirenSoulUses > 0 then
+		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+				tmpNPC:AddCharmed(EntityRef(player), 300)
+			end
+		end
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums

@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.3.17",
         "- Introduced new character skill trees for: Tainted Siren.",
         "- Added an option to have T. Siren sing when using Manifest Melody.",
+        "- Embered Azurite (ancient jewel) should now affect active item pedestals or shop items.",
         "- Fixed double red heart pickups not triggering red heart on-pickup effects.",
         "",
 

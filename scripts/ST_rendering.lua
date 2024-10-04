@@ -188,6 +188,7 @@ function PST:Render()
 		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
 	end
 
+	local isEvenFrame = room:GetFrameCount() % 2 == 0
 	-- Shadowmeld item transition phase
 	if PST.specialFX.shadowmeldTransition and not Game():IsPaused() then
 		PST.specialFX.shadowmeldStep = PST.specialFX.shadowmeldStep + 1
@@ -205,7 +206,6 @@ function PST:Render()
 			SFXManager():Play(SoundEffect.SOUND_PORTAL_OPEN)
 		end
 
-		local isEvenFrame = room:GetFrameCount() % 2 == 0
 		PST.specialFX.shadowmeldStartFX:Render(room:WorldToScreenPosition(PST.specialFX.shadowmeldStartPos))
 		if isEvenFrame then PST.specialFX.shadowmeldStartFX:Update() end
 
@@ -221,6 +221,16 @@ function PST:Render()
 		end
 		if PST.specialFX.shadowmeldStartFX:IsEventTriggered("Teleport") or PST.specialFX.shadowmeldStartFX:WasEventTriggered("Teleport") then
 			player.Position = PST.specialFX.shadowmeldEndPos
+		end
+
+		-- Mod: % chance to cause a dark explosion when reappearing with Shadowmeld, delaing 100% damage to nearby enemies and fearing them
+		if PST.specialFX.shadowmeldEndFX:IsEventTriggered("ExplosionTrigger") then
+			tmpMod = PST:getTreeSnapshotMod("shadowmeldExplosion", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
+				PST.specialNodes.shadowmeldExplosionFX.position = player.Position + Vector(0, -50)
+				PST.specialNodes.shadowmeldExplosionFX.sprite:Play("Idle", true)
+				SFXManager():Play(SoundEffect.SOUND_PORTAL_SPAWN, 1, 0, false, 0.8 + 0.2 * math.random())
+			end
 		end
 
 		-- Transition done
@@ -239,6 +249,30 @@ function PST:Render()
 			for _, tmpMinion in ipairs(sirenMinions) do
 				tmpMinion:GetSprite().Color.A = playerSprite.Color.A
 			end
+		end
+	end
+
+	-- Shadowmeld explosion FX & damage
+	local shadowmeldFXData = PST.specialNodes.shadowmeldExplosionFX
+	if (shadowmeldFXData.position.X ~= 0 or shadowmeldFXData.position.Y ~= 0) and not Game():IsPaused() then
+		if not shadowmeldFXData.sprite:IsFinished() then
+			shadowmeldFXData.sprite:Render(room:WorldToScreenPosition(shadowmeldFXData.position))
+			if isEvenFrame then
+				shadowmeldFXData.sprite:Update()
+				if shadowmeldFXData.sprite:IsEventTriggered("DamageTick") then
+					SFXManager():Play(SoundEffect.SOUND_PORTAL_SPAWN, 1, 0, false, 0.8 + 0.2 * math.random())
+					for _, tmpEntity in ipairs(Isaac.FindInRadius(player.Position, 140, EntityPartition.ENEMY)) do
+						local tmpNPC = tmpEntity:ToNPC()
+						if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+							local tmpDmg = math.min(8, (player.Damage * (0.75 + PST:getTreeSnapshotMod("shadowmeldExplosionDmg", 0) / 100)) / 3)
+							tmpNPC:TakeDamage(tmpDmg, 0, EntityRef(player), 0)
+							tmpNPC:AddFear(EntityRef(player), 90)
+						end
+					end
+				end
+			end
+		else
+			shadowmeldFXData.position = Vector.Zero
 		end
 	end
 

@@ -1044,8 +1044,9 @@ function PST:onPickupUpdate(pickup)
         -- Ancient starcursed jewel: Embered Azurite
         if PST:SC_getSnapshotMod("emberedAzurite", false) and pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and not
         PST:arrHasValue(PST.progressionItems, pickup.SubType) then
-            local itemCfg = Isaac.GetItemConfig():GetCollectible(pickup.SubType)
-            if itemCfg and itemCfg.Type ~= ItemType.ITEM_ACTIVE then
+            -- Embered Azurite was deliberately avoiding active item pedestals... but why? Remove this check for now
+            --local itemCfg = Isaac.GetItemConfig():GetCollectible(pickup.SubType)
+            --if itemCfg and itemCfg.Type ~= ItemType.ITEM_ACTIVE then
                 local emberAzuriteItems = PST:getTreeSnapshotMod("SC_emberAzuriteItems", nil)
                 if emberAzuriteItems and not PST:arrHasValue(emberAzuriteItems, pickup.InitSeed) then
                     local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_ULTRA_SECRET)
@@ -1061,7 +1062,7 @@ function PST:onPickupUpdate(pickup)
                         end
                     end
                 end
-            end
+            --end
         end
     end
 end

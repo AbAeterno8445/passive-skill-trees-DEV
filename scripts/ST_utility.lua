@@ -520,6 +520,11 @@ function PST:getSirenMelodySlot()
 	return -1
 end
 
+function PST:isSoulOfTheSirenUnlocked()
+	return PST:getTreeSnapshotMod("soulOfTheSiren", false) and Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.BOSS_RUSH) > 0 and
+	Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.HUSH) > 0
+end
+
 ---@param itemPool ItemPoolType
 ---@param item CollectibleType
 function PST:poolHasCollectible(itemPool, item)

@@ -588,6 +588,12 @@ function PST:onDamage(target, damage, flag, source)
                 dmgMult = dmgMult + tmpMod / 100
             end
 
+            -- Mod: +% damage taken by feared enemies
+            tmpMod = PST:getTreeSnapshotMod("fearedDmg", 0)
+            if tmpMod > 0 and target:GetFearCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod / 100
+            end
+
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
                 return { Damage = 0 }
@@ -717,7 +723,7 @@ function PST:onDamage(target, damage, flag, source)
                         end
 
                         -- Mod: +% lil clot damage
-                        tmpMod = PST:getTreeSnapshotMod("lilClotDmg", 0)
+                        local tmpMod = PST:getTreeSnapshotMod("lilClotDmg", 0)
                         if tmpMod ~= 0 then
                             dmgMult = dmgMult + tmpMod / 100
                         end
@@ -799,8 +805,17 @@ function PST:onDamage(target, damage, flag, source)
                     end
                 end
 
+                -- Siren Minion hit
+                if tmpFamiliar.Variant == Isaac.GetEntityVariantByName("Siren Minion") then
+                    -- Mod: +% damage dealt by Siren Minions
+                    local tmpMod = PST:getTreeSnapshotMod("sirenMinionDmg", 0)
+                    if tmpMod > 0 then
+                        dmgMult = dmgMult + tmpMod / 100
+                    end
+                end
+
                 -- Mod: % non-whip damage
-                tmpMod = PST:getTreeSnapshotMod("nonWhipDmg", 0)
+                local tmpMod = PST:getTreeSnapshotMod("nonWhipDmg", 0)
                 if tmpMod ~= 0 then
                     dmgMult = dmgMult + tmpMod / 100
                 end
@@ -811,6 +826,12 @@ function PST:onDamage(target, damage, flag, source)
                     local tmpRazors = PST:getPlayer():GetCollectibleNum(CollectibleType.COLLECTIBLE_MOMS_RAZOR)
                     if tmpRazors > 0 and 100 * math.random() < math.min(9, 3 * tmpRazors) then
                         target:AddBleeding(EntityRef(PST:getPlayer()), 120)
+                    end
+
+                    -- Damage reduction
+                    local tmpReduction = math.max(0, 50 - PST:getTreeSnapshotMod("grandConsonanceDmg", 0) * 4)
+                    if tmpReduction > 0 then
+                        dmgMult = dmgMult - tmpReduction / 100
                     end
                 end
             -- Bomb hits enemy

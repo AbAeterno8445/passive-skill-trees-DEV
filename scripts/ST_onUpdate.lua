@@ -1465,7 +1465,7 @@ function PST:onUpdate()
 		for i = #PST.specialNodes.lingMaliceCreepList, 1, -1 do
 			local tmpCreep = PST.specialNodes.lingMaliceCreepList[i]
 			if tmpCreep.Timeout > 0 then
-				local tmpEnemies = Isaac.FindInRadius(tmpCreep.Position, tmpCreep.Size)
+				local tmpEnemies = Isaac.FindInRadius(tmpCreep.Position, tmpCreep.Size, EntityPartition.ENEMY)
 				for _, tmpEntity in ipairs(tmpEnemies) do
 					local tmpNPC = tmpEntity:ToNPC()
 					if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and tmpNPC:IsFlying() then
@@ -1931,9 +1931,9 @@ function PST:onUpdate()
 			pulseEffect.Color = Color(0.38, 0.1, 0.5, 1)
 			SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 1, 2, false, 1.3)
 
-			for _, tmpEntity in ipairs(Isaac.FindInRadius(player.Position, 80)) do
+			for _, tmpEntity in ipairs(Isaac.FindInRadius(player.Position, 80, EntityPartition.ENEMY)) do
 				local tmpNPC = tmpEntity:ToNPC()
-				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
 					tmpNPC:TakeDamage(player.Damage * 1.5, 0, EntityRef(tmpNPC), 0)
 				end
 			end
@@ -2075,9 +2075,9 @@ function PST:onUpdate()
 						SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.75, 2, false, 1.5)
 
 						local pulseDmgMult = 0.7 + PST:getTreeSnapshotMod("gelloPulseDmg", 0) / 100
-						for _, tmpEntity in ipairs(Isaac.FindInRadius(PST.specialNodes.gelloEntity.Position, 80)) do
+						for _, tmpEntity in ipairs(Isaac.FindInRadius(PST.specialNodes.gelloEntity.Position, 80, EntityPartition.ENEMY)) do
 							local tmpNPC = tmpEntity:ToNPC()
-							if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+							if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
 								PST.specialNodes.gelloPulseDmgFlag = true
 								tmpNPC:TakeDamage(player.Damage * pulseDmgMult, 0, EntityRef(tmpNPC), 0)
 							end
@@ -2239,7 +2239,7 @@ function PST:onUpdate()
 
 				player:SetPocketActiveItem(shadowmeldID, tmpSlot, false)
 			end
-		elseif room:GetAliveEnemiesCount() == 0 and shadowmeldSlot ~= -1 then
+		elseif room:GetAliveEnemiesCount() == 0 and (shadowmeldSlot == ActiveSlot.SLOT_POCKET or shadowmeldSlot == ActiveSlot.SLOT_POCKET2) then
 			local oldMelody = PST:getTreeSnapshotMod("sirenOldMelody", Isaac.GetItemIdByName("Empty Notes"))
 			player:SetPocketActiveItem(oldMelody, shadowmeldSlot, false)
 			player:AddInnateCollectible(oldMelody, -1)
@@ -2302,6 +2302,53 @@ function PST:onUpdate()
 			PST.specialNodes.consonanceLilHauntBuffTimer = PST.specialNodes.consonanceLilHauntBuffTimer - 1
 			if PST.specialNodes.consonanceLilHauntBuffTimer == 0 then
 				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+			end
+		end
+	end
+
+	-- Acrid Gaze nodes (T. Siren's tree)
+	tmpMod = PST:getTreeSnapshotMod("acridGaze", 0)
+	if tmpMod > 0 then
+		local plInput = player:GetShootingInput()
+		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+		if isShooting then
+			if PST.specialNodes.acridGazeTimer == 0 then
+				PST.specialNodes.acridGazeTimer = 45
+			elseif PST.specialNodes.acridGazeTimer > 0 then
+				PST.specialNodes.acridGazeTimer = PST.specialNodes.acridGazeTimer - 1
+				if PST.specialNodes.acridGazeTimer == 0 then
+					local tmpScale = 1.5 + tmpMod / 100
+					local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
+                    pulseEffect:GetSprite().Scale = Vector(tmpScale, tmpScale)
+                    pulseEffect.Color = PST:RGBColor(48, 25, 52)
+                    SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.5, 2, false, 1.4)
+
+                    for _, tmpEntity in ipairs(Isaac.FindInRadius(player.Position, 30 * tmpScale, EntityPartition.ENEMY)) do
+                        local tmpNPC = tmpEntity:ToNPC()
+                        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                            local tmpDmg = math.min(10, player.Luck * 1.2)
+                            tmpNPC:TakeDamage(tmpDmg, 0, EntityRef(player), 0)
+							tmpNPC:AddFear(EntityRef(player), 60)
+                        end
+                    end
+				end
+			end
+		end
+	end
+
+	-- Soul of the Siren effect
+	if #PST.specialFX.sirenSoulUses > 0 then
+		for i=#PST.specialFX.sirenSoulUses, 1, -1 do
+			tmpUseData = PST.specialFX.sirenSoulUses[i]
+			if tmpUseData.timer > 0 then
+				tmpUseData.timer = tmpUseData.timer - 1
+				if tmpUseData.timer == 0 then
+					for _, tmpFamiliar in ipairs(tmpUseData.familiars) do
+						player:AddInnateCollectible(tmpFamiliar, -1)
+					end
+					player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_FRIENDSHIP_NECKLACE)
+					table.remove(PST.specialFX.sirenSoulUses, i)
+				end
 			end
 		end
 	end

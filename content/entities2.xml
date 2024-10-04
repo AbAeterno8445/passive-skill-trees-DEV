@@ -1,3 +1,9 @@
 <entities anm2root="gfx/" version="5">
+    <!-- Shadowmeld marker -->
     <entity anm2path="effect_shadowmeld_marker.anm2" id="1000" variant="2100" name="Shadowmeld Marker" />
+
+    <!-- Soul of the Siren soul stone -->
+    <entity anm2path="soul_of_the_siren.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Soul of the Siren" numGridCollisionPoints="24" shadowSize="16" stageHP="0" subtype="200" variant="300">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+    </entity>
 </entities>
