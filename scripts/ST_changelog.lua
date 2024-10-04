@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.18",
+        "- Fixed T. Siren's \"Soul of the Siren\" node not being allocatable.",
+        "",
+
         "v0.3.17",
         "- Introduced new character skill trees for: Tainted Siren.",
         "- Tainted Siren's tree includes a node that allows unlocking a new Soul Stone, Soul of the Siren.",
