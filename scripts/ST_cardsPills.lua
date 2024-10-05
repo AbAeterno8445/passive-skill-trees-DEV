@@ -10,7 +10,7 @@ function PST:onGetCard(RNG, card)
     -- Re-roll Soul of the Siren drop if not unlocked
     local sirenSoulID = Isaac.GetCardIdByName("SoulOfTheSiren")
     if sirenSoulID ~= -1 and card == sirenSoulID and not PST:isSoulOfTheSirenUnlocked() then
-        local newCard = Game():GetItemPool():GetCard(RNG:GetSeed(), false, true, true)
+        local newCard = Game():GetItemPool():GetCard(RNG:Next(), false, true, true)
         local failsafe = 0
         while newCard == sirenSoulID and failsafe < 200 do
             newCard = Game():GetItemPool():GetCard(RNG:Next(), false, true, true)

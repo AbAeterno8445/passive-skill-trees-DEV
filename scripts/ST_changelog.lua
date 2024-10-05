@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.20",
+        "- Fixed stack overflow error on run start when the Epiphany mod was enabled.",
+        "- Fixed Blue Baby's \"Blue Gambit\" affecting non-cards (such as runes) before they got spawned.",
+        "",
+
         "v0.3.19",
         "- Adjusted player cache update on run init to avoid potential issues.",
         "",
