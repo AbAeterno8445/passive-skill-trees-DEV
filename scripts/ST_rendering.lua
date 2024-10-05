@@ -223,7 +223,7 @@ function PST:Render()
 			player.Position = PST.specialFX.shadowmeldEndPos
 		end
 
-		-- Mod: % chance to cause a dark explosion when reappearing with Shadowmeld, delaing 100% damage to nearby enemies and fearing them
+		-- Mod: % chance to cause a dark explosion when reappearing with Shadowmeld, dealing 100% damage to nearby enemies and fearing them
 		if PST.specialFX.shadowmeldEndFX:IsEventTriggered("ExplosionTrigger") then
 			tmpMod = PST:getTreeSnapshotMod("shadowmeldExplosion", 0)
 			if tmpMod > 0 and 100 * math.random() < tmpMod then
