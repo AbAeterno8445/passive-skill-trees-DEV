@@ -2261,12 +2261,15 @@ function PST:onUpdate()
 			elseif PST.specialNodes.darkArpeggioTimer > 0 then
 				PST.specialNodes.darkArpeggioTimer = PST.specialNodes.darkArpeggioTimer - 1
 				if PST.specialNodes.darkArpeggioTimer == 0 then
-					local sirenMinions = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, Isaac.GetEntityVariantByName("Siren Minion"))
-					for _, tmpMinion in ipairs(sirenMinions) do
-						local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER, tmpMinion.Position, plInput * 7, tmpMinion, 0, Random() + 1)
-						newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING | TearFlags.TEAR_FEAR)
-						newTear:ToTear().FallingSpeed = -1
-						newTear.Color = PST:RGBColor(120, 30, 182)
+					local sirenMinionID = Isaac.GetEntityVariantByName("Siren Minion")
+					if sirenMinionID ~= -1 then
+						local sirenMinions = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, sirenMinionID)
+						for _, tmpMinion in ipairs(sirenMinions) do
+							local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER, tmpMinion.Position, plInput * 7, tmpMinion, 0, Random() + 1)
+							newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING | TearFlags.TEAR_FEAR)
+							newTear:ToTear().FallingSpeed = -1
+							newTear.Color = PST:RGBColor(120, 30, 182)
+						end
 					end
 				end
 			end

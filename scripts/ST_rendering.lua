@@ -245,9 +245,12 @@ function PST:Render()
 			playerChange = true
 		end
 		if playerChange then
-			local sirenMinions = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, Isaac.GetEntityVariantByName("Siren Minion"))
-			for _, tmpMinion in ipairs(sirenMinions) do
-				tmpMinion:GetSprite().Color.A = playerSprite.Color.A
+			local sirenMinionID = Isaac.GetEntityVariantByName("Siren Minion")
+			if sirenMinionID ~= -1 then
+				local sirenMinions = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, sirenMinionID)
+				for _, tmpMinion in ipairs(sirenMinions) do
+					tmpMinion:GetSprite().Color.A = playerSprite.Color.A
+				end
 			end
 		end
 	end

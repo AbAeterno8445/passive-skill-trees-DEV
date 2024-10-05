@@ -806,7 +806,8 @@ function PST:onDamage(target, damage, flag, source)
                 end
 
                 -- Siren Minion hit
-                if tmpFamiliar.Variant == Isaac.GetEntityVariantByName("Siren Minion") then
+                local sirenMinionID = Isaac.GetEntityVariantByName("Siren Minion")
+                if sirenMinionID ~= -1 and tmpFamiliar.Variant == sirenMinionID then
                     -- Mod: +% damage dealt by Siren Minions
                     local tmpMod = PST:getTreeSnapshotMod("sirenMinionDmg", 0)
                     if tmpMod > 0 then
