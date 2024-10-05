@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.19",
+        "- Adjusted player cache update on run init to avoid potential issues.",
+        "",
+
         "v0.3.18",
         "- Fixed T. Siren's \"Soul of the Siren\" node not being allocatable.",
         "",

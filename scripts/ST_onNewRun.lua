@@ -231,8 +231,6 @@ function PST:onNewRun(isContinued)
         end
     end
 
-    player:AddCacheFlags(PST.allstatsCache, true)
-
     -- Reset specialNodes that might be left over
     PST.specialNodes.SC_circadianSpawnTime = 0
     PST.specialNodes.SC_circadianSpawnProc = false
@@ -270,7 +268,6 @@ function PST:onNewRun(isContinued)
     if PST:getTreeSnapshotMod("hearty", false) then
         player:AddMaxHearts(2)
         player:SetFullHearts()
-        player:AddCacheFlags(CacheFlag.CACHE_DAMAGE, true)
     end
 
     -- Soulful Awakening node (Lazarus' tree)
@@ -647,6 +644,8 @@ function PST:onNewRun(isContinued)
     PST:closeTreeMenu(true)
     PST.player = player
     PST.gameInit = true
+
+    PST:updateCacheDelayed()
 
     -- Initial level & room funcs
     PST:onNewLevel()
