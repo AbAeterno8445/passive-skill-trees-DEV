@@ -244,6 +244,16 @@ function PST:getCurrentCharData()
 	return PST.modData.charData[currentChar]
 end
 
+function PST:postModsLoaded()
+	-- Associate Soul of the Siren to Siren playertype
+	local sirenType = Isaac.GetPlayerTypeByName("Siren")
+	local tSirenType = Isaac.GetPlayerTypeByName("Siren", true)
+	if sirenType ~= -1 then
+		PST.playerSoulstones[sirenType] = Isaac.GetCardIdByName("SoulOfTheSiren")
+		PST.playerSoulstones[tSirenType] = Isaac.GetCardIdByName("SoulOfTheSiren")
+	end
+end
+
 function PST:onExitGame()
 	PST:save(true)
 	PST.gameInit = false
@@ -350,6 +360,7 @@ PST:AddCallback(ModCallbacks.MC_PRE_USE_CARD, PST.preUseCard)
 PST:AddCallback(ModCallbacks.MC_PLAYER_GET_ACTIVE_MAX_CHARGE, PST.getActiveMaxCharge)
 PST:AddCallback(ModCallbacks.MC_POST_WEAPON_FIRE, PST.postWeaponFire)
 PST:AddCallback(ModCallbacks.MC_PRE_SFX_PLAY, PST.preSFXPlay)
+PST:AddCallback(ModCallbacks.MC_POST_MODS_LOADED, PST.postModsLoaded)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
 if Isaac.IsInGame() then

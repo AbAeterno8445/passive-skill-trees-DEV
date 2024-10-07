@@ -586,51 +586,23 @@ function PST:debugMod(modName)
 	print(PST:getTreeSnapshotMod(modName, "N/A"))
 end
 
-local playerSoulstones = {
-	[PlayerType.PLAYER_APOLLYON] = Card.CARD_SOUL_APOLLYON,
-	[PlayerType.PLAYER_APOLLYON_B] = Card.CARD_SOUL_APOLLYON,
-	[PlayerType.PLAYER_AZAZEL] = Card.CARD_SOUL_AZAZEL,
-	[PlayerType.PLAYER_AZAZEL_B] = Card.CARD_SOUL_AZAZEL,
-	[PlayerType.PLAYER_BETHANY] = Card.CARD_SOUL_BETHANY,
-	[PlayerType.PLAYER_BETHANY_B] = Card.CARD_SOUL_BETHANY,
-	[PlayerType.PLAYER_BLUEBABY] = Card.CARD_SOUL_BLUEBABY,
-	[PlayerType.PLAYER_BLUEBABY_B] = Card.CARD_SOUL_BLUEBABY,
-	[PlayerType.PLAYER_CAIN] = Card.CARD_SOUL_CAIN,
-	[PlayerType.PLAYER_CAIN_B] = Card.CARD_SOUL_CAIN,
-	[PlayerType.PLAYER_EDEN] = Card.CARD_SOUL_EDEN,
-	[PlayerType.PLAYER_EDEN_B] = Card.CARD_SOUL_EDEN,
-	[PlayerType.PLAYER_EVE] = Card.CARD_SOUL_EVE,
-	[PlayerType.PLAYER_EVE_B] = Card.CARD_SOUL_EVE,
-	[PlayerType.PLAYER_ISAAC] = Card.CARD_SOUL_ISAAC,
-	[PlayerType.PLAYER_ISAAC_B] = Card.CARD_SOUL_ISAAC,
-	[PlayerType.PLAYER_JACOB] = Card.CARD_SOUL_JACOB,
-	[PlayerType.PLAYER_JACOB_B] = Card.CARD_SOUL_JACOB,
-	[PlayerType.PLAYER_JUDAS] = Card.CARD_SOUL_JUDAS,
-	[PlayerType.PLAYER_JUDAS_B] = Card.CARD_SOUL_JUDAS,
-	[PlayerType.PLAYER_BLACKJUDAS] = Card.CARD_SOUL_JUDAS,
-	[PlayerType.PLAYER_KEEPER] = Card.CARD_SOUL_KEEPER,
-	[PlayerType.PLAYER_KEEPER_B] = Card.CARD_SOUL_KEEPER,
-	[PlayerType.PLAYER_LAZARUS] = Card.CARD_SOUL_LAZARUS,
-	[PlayerType.PLAYER_LAZARUS_B] = Card.CARD_SOUL_LAZARUS,
-	[PlayerType.PLAYER_LAZARUS2] = Card.CARD_SOUL_LAZARUS,
-	[PlayerType.PLAYER_LAZARUS2_B] = Card.CARD_SOUL_LAZARUS,
-	[PlayerType.PLAYER_LILITH] = Card.CARD_SOUL_LILITH,
-	[PlayerType.PLAYER_LILITH_B] = Card.CARD_SOUL_LILITH,
-	[PlayerType.PLAYER_MAGDALENE] = Card.CARD_SOUL_MAGDALENE,
-	[PlayerType.PLAYER_MAGDALENE_B] = Card.CARD_SOUL_MAGDALENE,
-	[PlayerType.PLAYER_SAMSON] = Card.CARD_SOUL_SAMSON,
-	[PlayerType.PLAYER_SAMSON_B] = Card.CARD_SOUL_SAMSON,
-	[PlayerType.PLAYER_THEFORGOTTEN] = Card.CARD_SOUL_FORGOTTEN,
-	[PlayerType.PLAYER_THEFORGOTTEN_B] = Card.CARD_SOUL_FORGOTTEN,
-	[PlayerType.PLAYER_THELOST] = Card.CARD_SOUL_LOST,
-	[PlayerType.PLAYER_THELOST_B] = Card.CARD_SOUL_LOST
-}
 -- Returns a matching soul stone type for the given player type. If not found or nil, returns a random soul stone.
 ---@param playerType PlayerType|nil
 ---@return Card
 function PST:getMatchingSoulstone(playerType)
-	if playerSoulstones[playerType] then return playerSoulstones[playerType] end
-	return playerSoulstones[math.random(#playerSoulstones)]
+	if PST.playerSoulstones[playerType] then return PST.playerSoulstones[playerType] end
+
+	local newSoulstone = PST.playerSoulstones[math.random(#PST.playerSoulstones)]
+	local failsafe = 0
+	while newSoulstone == nil and failsafe < 200 do
+		newSoulstone = PST.playerSoulstones[math.random(#PST.playerSoulstones)]
+		failsafe = failsafe + 1
+	end
+	if newSoulstone then
+		return newSoulstone
+	else
+		return PST.playerSoulstones[0]
+	end
 end
 
 local weightedRunes = {
