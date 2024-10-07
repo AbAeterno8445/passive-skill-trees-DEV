@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.3.21",
         "- Fixed Coalescing Soul (from tainted char trees) dropping random soul stones for the Siren character.",
         "- Fixed potential error when triggering Coalescing Soul.",
+        "- Fixed cursed room door sprite in secret rooms when blowing up the adjacent wall.",
         "",
 
         "v0.3.20",

@@ -604,12 +604,13 @@ function PST:onNewRoom()
 		end
 	end
 
-	-- Mod: chance to turn adjacent curse room spiked door into a regular one
+	-- Mod: chance to turn adjacent curse room spiked door into a 'filed spikes' one
 	if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
 			if tmpDoor then
-				if roomType == RoomType.ROOM_CURSE or tmpDoor.TargetRoomType == RoomType.ROOM_CURSE then
+				if (roomType == RoomType.ROOM_CURSE or tmpDoor.TargetRoomType == RoomType.ROOM_CURSE) and roomType ~= RoomType.ROOM_SECRET and
+				tmpDoor.TargetRoomType ~= RoomType.ROOM_SECRET then
 					local doorSprite = tmpDoor:GetSprite()
 					for _, tmpLayer in ipairs(doorSprite:GetAllLayers()) do
 						doorSprite:ReplaceSpritesheet(tmpLayer:GetLayerID(), "gfx/grid/door_04_selfsacrificeroomdoor_nospikes.png", true)
