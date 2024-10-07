@@ -941,7 +941,7 @@ function PST:treeMenuRenderer()
                         PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints - 1
                     end
                 end
-                PST:allocateNodeID(currentTree, hoveredNode.id, true)
+                PST:allocateNodeID(currentTree, hoveredNode.id, 1)
                 sfx:Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.5)
                 PST:updateStarTreeTotals()
 
@@ -1064,7 +1064,7 @@ function PST:treeMenuRenderer()
                                 PST.modData.charData[currentTree].skillPoints = PST.modData.charData[currentTree].skillPoints + 1
                             end
                         end
-                        PST:allocateNodeID(currentTree, hoveredNode.id, false)
+                        PST:allocateNodeID(currentTree, hoveredNode.id, 0)
                         sfx:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
                         PST.starcursedInvData.open = ""
                         PST:updateStarTreeTotals()

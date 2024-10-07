@@ -53,6 +53,18 @@ function PST:onNewRun(isContinued)
 
     PST.modData.treeModSnapshot = PST:copyTable(PST.treeMods)
 
+    -- Remove defaults
+    for k, v in pairs(PST.modData.treeModSnapshot) do
+        if (PST.defaultTreeMods[k] ~= nil and PST.defaultTreeMods[k] == v) or (PST.defaultTreeMods[k] == nil and v == nil) then
+            PST.modData.treeModSnapshot[k] = nil
+        end
+    end
+    if PST.debugOptions.printModsOnStart then
+        for k, v in pairs(PST.modData.treeModSnapshot) do
+            print("Applied mod:", k, v)
+        end
+    end
+
     -- Starcursed jewel mods
     if treeActive then
         local starcursedMods = PST:SC_getTotalJewelMods()

@@ -363,8 +363,8 @@ function PST:SC_getTotalJewelMods()
 
         -- Mod: +starmight per socketed jewel for each type
         local tmpStarmightMods = {}
-        for nodeID, isAllocated in pairs(PST.modData.treeNodes["starTree"]) do
-            if isAllocated then
+        for nodeID, _ in pairs(PST.modData.treeNodes["starTree"]) do
+            if PST:isNodeAllocated("starTree", nodeID) then
                 for modName, modVal in pairs(PST.trees["starTree"][nodeID].modifiers) do
                     if modName == "azureStarmight" or modName == "crimsonStarmight" or modName == "viridianStarmight" or modName == "ancientStarmight" then
                         if tmpStarmightMods[modName] == nil then

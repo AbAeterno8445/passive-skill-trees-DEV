@@ -604,7 +604,7 @@ function PST:onNewRoom()
 		end
 	end
 
-	-- Mod: chance to turn adjacent curse room spiked door into a 'filed spikes' one
+	-- Mod: chance to turn adjacent curse room spiked door into a 'filed spikes' one (use seed "K37Y LNGV" to debug)
 	if PST:getTreeSnapshotMod("curseRoomSpikesOutProc", false) then
 		for i=0,7 do
 			local tmpDoor = room:GetDoor(i)
@@ -1035,7 +1035,7 @@ function PST:onNewRoom()
 		end
 
 		-- Mod: % chance for room monsters to be gilded
-		tmpMod = PST:getTreeSnapshotMod("gildMonsters", false)
+		tmpMod = PST:getTreeSnapshotMod("gildMonsters", 0)
 		if tmpMod > 0 then
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				local tmpNPC = tmpEntity:ToNPC()

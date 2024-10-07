@@ -119,11 +119,11 @@ function PST:updateAllCharsXPReq()
 	end
 	-- Update global level
 	local projectedLevel = PST.modData.skillPoints
-	for _, allocated in pairs(PST.modData.treeNodes["global"]) do
-		if allocated then projectedLevel = projectedLevel + 1 end
+	for nodeID, _ in pairs(PST.modData.treeNodes["global"]) do
+		if PST:isNodeAllocated("global", nodeID) then projectedLevel = projectedLevel + 1 end
 	end
-	for _, allocated in pairs(PST.modData.treeNodes["starTree"]) do
-		if allocated then projectedLevel = projectedLevel + 1 end
+	for nodeID, _ in pairs(PST.modData.treeNodes["starTree"]) do
+		if PST:isNodeAllocated("starTree", nodeID) then projectedLevel = projectedLevel + 1 end
 	end
 	if PST.modData.level < projectedLevel then
 		PST.modData.level = projectedLevel
@@ -407,7 +407,7 @@ function PST:songNodesAllocated(checkSnapshot)
 	local tmpCount = 0
 	if not checkSnapshot then
 		for nodeID, node in pairs(PST.trees["Siren"]) do
-			if PST:strStartsWith(node.name, "Song of") and PST.modData.treeNodes["Siren"][nodeID] then
+			if PST:strStartsWith(node.name, "Song of") and PST:isNodeAllocated("Siren", nodeID) then
 				tmpCount = tmpCount + 1
 			end
 		end
@@ -425,7 +425,7 @@ function PST:grandIngredientNodes(checkSnapshot)
 	local tmpCount = 0
 	if not checkSnapshot then
 		for nodeID, node in pairs(PST.trees["T. Cain"]) do
-			if PST:strStartsWith(node.name, "Grand Ingredient") and PST.modData.treeNodes["T. Cain"][nodeID] then
+			if PST:strStartsWith(node.name, "Grand Ingredient") and PST:isNodeAllocated("T. Cain", nodeID) then
 				tmpCount = tmpCount + 1
 			end
 		end
@@ -807,16 +807,4 @@ end
 ---@param p2 Vector
 function PST:distBetweenPoints(p1, p2)
 	return math.sqrt((p1.X - p2.X)^2 + (p1.Y - p2.Y)^2)
-end
-
-function PST:copyTable(dataTable)
-	local tmpTable = {}
-	if type(dataTable) == "table" then
-	  	for k, v in pairs(dataTable) do
-			tmpTable[k] = PST:copyTable(v)
-		end
-	else
-	  	tmpTable = dataTable
-	end
-	return tmpTable
 end

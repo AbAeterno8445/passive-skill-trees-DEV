@@ -53,6 +53,7 @@ PST.debugOptions = {
 	allAvailable = false, -- Makes all nodes available
 	cosmicRUnlocked = false, -- Removes character unlock requirement from the Cosmic Realignment node
 	drawNodeIDs = false, -- Draw node IDs on the tree screen
+	printModsOnStart = false, -- Print modifiers applied to the snapshot on run start
 }
 
 local localDebugMode = false
@@ -137,6 +138,14 @@ function PST:processLoadedData(loadedData)
 				tmpTreeNodes[tonumber(nodeID)] = nodeVal
 			end
 			loadedData.treeNodes[k] = tmpTreeNodes
+		end
+		-- Convert saved boolean node allocations to 0 or 1
+		for nodeID, nodeVal in pairs(loadedData.treeNodes[k]) do
+			if type(nodeVal) == "boolean" then
+				local newAlloc = 0
+				if loadedData.treeNodes[k][nodeID] then newAlloc = 1 end
+				loadedData.treeNodes[k][nodeID] = newAlloc
+			end
 		end
 	end
 	for k, v in pairs(PST.modData.starTreeInventory) do

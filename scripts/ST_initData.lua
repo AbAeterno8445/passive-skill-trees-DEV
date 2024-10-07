@@ -413,6 +413,18 @@ PST.floorFirstUpdate = false
 PST.delayedCacheUpdate = 0
 PST.delayedCacheFlags = 0
 
+function PST:copyTable(dataTable)
+	local tmpTable = {}
+	if type(dataTable) == "table" then
+	  	for k, v in pairs(dataTable) do
+			tmpTable[k] = PST:copyTable(v)
+		end
+	else
+	  	tmpTable = dataTable
+	end
+	return tmpTable
+end
+
 function PST:resetMods()
 	-- List of available tree modifiers
 	PST.treeMods = {
@@ -1322,6 +1334,7 @@ function PST:resetMods()
 		SC_emberAzuriteItems = {},
 		--#endregion
 	}
+	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
 		TJacobEsauSpawned = false,
@@ -1568,7 +1581,7 @@ if EID then
 		[CollectibleType.COLLECTIBLE_LIL_GURDY] = "Launched from you",
 		[CollectibleType.COLLECTIBLE_CENSER] = "Aura projected from you",
 		[CollectibleType.COLLECTIBLE_SUCCUBUS] = "Aura projected from you",
-		[CollectibleType.COLLECTIBLE_DEPRESSION] = "Creates puddle from you. Chance on hit to retaliate with a Crack the Sky beam",
+		[CollectibleType.COLLECTIBLE_DEPRESSION] = "Creates puddle from you. Chance when hit to retaliate with a Crack the Sky beam",
 		[CollectibleType.COLLECTIBLE_BIG_CHUBBY] = "Launched from you",
 		[CollectibleType.COLLECTIBLE_MOMS_RAZOR] = "All familiar damage gains a small chance to cause Bleed for 4 seconds",
 		[CollectibleType.COLLECTIBLE_BLOODSHOT_EYE] = "Eye tears gain homing and a chance to inflict fear on hit",

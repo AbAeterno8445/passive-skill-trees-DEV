@@ -7,16 +7,15 @@ include("scripts.tree_data.modifierDescriptions")
 
 -- Check if node is allocated
 function PST:isNodeAllocated(tree, nodeID)
-    if not PST.modData.treeNodes[tree] then return false end
-    return PST.modData.treeNodes[tree][nodeID]
+    return PST.modData.treeNodes[tree][nodeID] == 1
 end
 
 -- Check if node with given name is allocated
 function PST:isNodeNameAllocated(tree, nodeName)
     if not PST.modData.treeNodes[tree] then return false end
-    for nodeID, allocated in pairs(PST.modData.treeNodes[tree]) do
+    for nodeID, _ in pairs(PST.modData.treeNodes[tree]) do
         local targetNode = PST.trees[tree][nodeID]
-        if allocated and targetNode and targetNode.name == nodeName then
+        if PST:isNodeAllocated(tree, nodeID) and targetNode and targetNode.name == nodeName then
             return true
         end
     end
@@ -268,9 +267,8 @@ end
 -- Allocates a node in the given tree
 function PST:allocateNodeID(tree, nodeID, allocation)
     if allocation == nil then
-        allocation = false
+        allocation = 0
     end
-
     PST.modData.treeNodes[tree][nodeID] = allocation
     PST:updateNodes(tree, true)
 end
