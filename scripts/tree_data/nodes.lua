@@ -7,6 +7,7 @@ include("scripts.tree_data.modifierDescriptions")
 
 -- Check if node is allocated
 function PST:isNodeAllocated(tree, nodeID)
+    if not PST.modData.treeNodes[tree] then return false end
     return PST.modData.treeNodes[tree][nodeID] == 1
 end
 

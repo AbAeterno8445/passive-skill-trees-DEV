@@ -92,6 +92,17 @@ local treeControlDescController = {
 -- For saving
 local treeHasChanges = false
 
+local PSTbackups = {}
+local backupsPopup = false
+local backupsMsg = {
+    {"Potential data loss has been detected, and backup files are present.", KColor(1, 0.8, 0.8, 1)},
+    {"Press up/down to select one of these available backups, and E to attempt loading it.", KColor(1, 0.8, 0.8, 1)},
+    {"Press ESC / Back to dismiss popup.", KColor(1, 0.8, 0.8, 1)},
+    {"(This popup will stop showing up once your global level is higher than 1)", KColor(1, 0.8, 0.8, 1)},
+    ""
+}
+local selectedBackup = 1
+
 -- Starcursed menus
 PST.starcursedInvData = {
     open = "",
@@ -178,6 +189,20 @@ function PST:openTreeMenu()
         changelogPopup = true
         helpOpen = "changelog"
     end
+
+    -- Backups popup
+    if PST_BackupSave and PST.modData.level == 1 and PST_BackupExists(PST.saveSlot, 1) then
+        PSTbackups = {}
+        for i=1,3 do
+            if PST_BackupExists(PST.saveSlot, i) then
+                local tmpBackupData = PST_BackupFetch(PST.saveSlot, i)
+                if tmpBackupData ~= nil then
+                    table.insert(PSTbackups, tmpBackupData)
+                end
+            end
+        end
+        backupsPopup = true
+    end
 end
 
 function PST:closeTreeMenu(mute, force)
@@ -201,6 +226,7 @@ function PST:closeTreeMenu(mute, force)
     helpOpen = ""
     totalModsMenuOpen = false
     treeMenuOpen = false
+    backupsPopup = false
     currentTree = "global"
 
     if Isaac.IsInGame() then
@@ -432,9 +458,11 @@ function PST:treeMenuRenderer()
         if totalModsMenuOpen then
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
             totalModsMenuOpen = false
-        elseif helpOpen == "changelog" then
+        elseif helpOpen ~= "" then
             sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
             helpOpen = ""
+        elseif backupsPopup then
+            backupsPopup = false
         else
             PST:closeTreeMenu()
         end
@@ -493,37 +521,56 @@ function PST:treeMenuRenderer()
     if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
         cameraSpeed = 8 * (1 + 1 - zoomScale)
     end
-    if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
-        if not totalModsMenuOpen and helpOpen ~= "changelog" then
-            if treeCamera.Y > -2000 then
-                treeCamera.Y = treeCamera.Y - cameraSpeed
-                PST_updateCamZoomOffset()
+    if not backupsPopup then
+        -- UP
+        if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
+            if not totalModsMenuOpen and helpOpen ~= "changelog" then
+                if treeCamera.Y > -2000 then
+                    treeCamera.Y = treeCamera.Y - cameraSpeed
+                    PST_updateCamZoomOffset()
+                end
+            else
+                menuScrollY = math.min(0, menuScrollY + cameraSpeed)
             end
-        else
-            menuScrollY = math.min(0, menuScrollY + cameraSpeed)
-        end
-    elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
-        if not totalModsMenuOpen and helpOpen ~= "changelog" then
-            if treeCamera.Y < 2000 then
-                treeCamera.Y = treeCamera.Y + cameraSpeed
-                PST_updateCamZoomOffset()
-            end
-        else
-            menuScrollY = menuScrollY - cameraSpeed
-        end
-    end
-    if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
-        if not totalModsMenuOpen and helpOpen ~= "changelog" then
-            if treeCamera.X > -2000 then
-                treeCamera.X = treeCamera.X - cameraSpeed
-                PST_updateCamZoomOffset()
+        -- DOWN
+        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
+            if not totalModsMenuOpen and helpOpen ~= "changelog" then
+                if treeCamera.Y < 2000 then
+                    treeCamera.Y = treeCamera.Y + cameraSpeed
+                    PST_updateCamZoomOffset()
+                end
+            else
+                menuScrollY = menuScrollY - cameraSpeed
             end
         end
-    elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
-        if not totalModsMenuOpen and helpOpen ~= "changelog" then
-            if treeCamera.X < 2000 then
-                treeCamera.X = treeCamera.X + cameraSpeed
-                PST_updateCamZoomOffset()
+        -- LEFT
+        if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
+            if not totalModsMenuOpen and helpOpen ~= "changelog" then
+                if treeCamera.X > -2000 then
+                    treeCamera.X = treeCamera.X - cameraSpeed
+                    PST_updateCamZoomOffset()
+                end
+            end
+        -- RIGHT
+        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
+            if not totalModsMenuOpen and helpOpen ~= "changelog" then
+                if treeCamera.X < 2000 then
+                    treeCamera.X = treeCamera.X + cameraSpeed
+                    PST_updateCamZoomOffset()
+                end
+            end
+        end
+    -- Backup popup selection
+    else
+        if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, false) then
+            selectedBackup = selectedBackup - 1
+            if selectedBackup <= 0 then
+                selectedBackup = #PSTbackups
+            end
+        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, false) then
+            selectedBackup = selectedBackup + 1
+            if selectedBackup > #PSTbackups then
+                selectedBackup = 1
             end
         end
     end
@@ -931,7 +978,14 @@ function PST:treeMenuRenderer()
 
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
-        if hoveredNode ~= nil then
+        if backupsPopup and PSTbackups[selectedBackup] ~= nil then
+            -- Load selected backup if popup
+            if PST_BackupReplace(PST.saveSlot, selectedBackup) then
+                SFXManager():Play(SoundEffect.SOUND_1UP)
+                PST.saveManager.Load(false)
+                PST:closeTreeMenu()
+            end
+        elseif hoveredNode ~= nil then
             treeHasChanges = true
             if PST:isNodeAllocatable(currentTree, hoveredNode.id, true) then
                 if not PST.debugOptions.infSP then
@@ -1142,166 +1196,168 @@ function PST:treeMenuRenderer()
     end
 
     -- Input: Toggle help menu
-    if PST:isKeybindActive(PSTKeybind.TOGGLE_HELP) then
-        if helpOpen ~= "keyboard" then
-            helpOpen = "keyboard"
-        else
+    if not backupsPopup then
+        if PST:isKeybindActive(PSTKeybind.TOGGLE_HELP) then
+            if helpOpen ~= "keyboard" then
+                helpOpen = "keyboard"
+            else
+                helpOpen = ""
+            end
+            totalModsMenuOpen = false
+        -- Input: Toggle help menu (controller)
+        elseif PST:isKeybindActive(PSTKeybind.TOGGLE_HELP_CONTROLLER) then
+            if helpOpen ~= "controller" then
+                helpOpen = "controller"
+            else
+                helpOpen = ""
+            end
+            totalModsMenuOpen = false
+        -- Input: Toggle changelog
+        elseif PST:isKeybindActive(PSTKeybind.TOGGLE_CHANGELOG) then
+            if helpOpen ~= "changelog" then
+                helpOpen = "changelog"
+                menuScrollY = 0
+            else
+                helpOpen = ""
+            end
+            totalModsMenuOpen = false
+        -- Input: Toggle total modifiers menu
+        elseif PST:isKeybindActive(PSTKeybind.TOGGLE_TOTAL_MODS) then
             helpOpen = ""
-        end
-        totalModsMenuOpen = false
-    -- Input: Toggle help menu (controller)
-    elseif PST:isKeybindActive(PSTKeybind.TOGGLE_HELP_CONTROLLER) then
-        if helpOpen ~= "controller" then
-            helpOpen = "controller"
-        else
-            helpOpen = ""
-        end
-        totalModsMenuOpen = false
-    -- Input: Toggle changelog
-    elseif PST:isKeybindActive(PSTKeybind.TOGGLE_CHANGELOG) then
-        if helpOpen ~= "changelog" then
-            helpOpen = "changelog"
             menuScrollY = 0
-        else
-            helpOpen = ""
-        end
-        totalModsMenuOpen = false
-    -- Input: Toggle total modifiers menu
-    elseif PST:isKeybindActive(PSTKeybind.TOGGLE_TOTAL_MODS) then
-        helpOpen = ""
-        menuScrollY = 0
-        totalModsMenuOpen = not totalModsMenuOpen
-        sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
+            totalModsMenuOpen = not totalModsMenuOpen
+            sfx:Play(SoundEffect.SOUND_BUTTON_PRESS)
 
-        -- Compile list of active modifiers
-        local sortedModNames = {}
-        local tmpModsList = {}
-        totalModsList = {}
-        if totalModsMenuOpen then
-            local function processTreeNodes(tmpTree)
-                for tmpNodeID, tmpNode in pairs(PST.trees[tmpTree]) do
-                    if PST:isNodeAllocated(tmpTree, tmpNodeID) then
-                        -- Create sorted table of modifier names
-                        for tmpModName, _ in pairs(tmpNode.modifiers) do
-                            if PST.treeModDescriptions[tmpModName] ~= nil and not PST:arrHasValue(sortedModNames, tmpModName) then
-                                table.insert(sortedModNames, tmpModName)
+            -- Compile list of active modifiers
+            local sortedModNames = {}
+            local tmpModsList = {}
+            totalModsList = {}
+            if totalModsMenuOpen then
+                local function processTreeNodes(tmpTree)
+                    for tmpNodeID, tmpNode in pairs(PST.trees[tmpTree]) do
+                        if PST:isNodeAllocated(tmpTree, tmpNodeID) then
+                            -- Create sorted table of modifier names
+                            for tmpModName, _ in pairs(tmpNode.modifiers) do
+                                if PST.treeModDescriptions[tmpModName] ~= nil and not PST:arrHasValue(sortedModNames, tmpModName) then
+                                    table.insert(sortedModNames, tmpModName)
+                                end
                             end
-                        end
 
-                        -- Create table with totals for each modifier
-                        for tmpModName, tmpModVal in pairs(tmpNode.modifiers) do
-                            if tmpModsList[tmpModName] == nil then
-                                tmpModsList[tmpModName] = tmpModVal
-                            elseif type(tmpModsList[tmpModName]) == "number" then
-                                tmpModsList[tmpModName] = tmpModsList[tmpModName] + tmpModVal
+                            -- Create table with totals for each modifier
+                            for tmpModName, tmpModVal in pairs(tmpNode.modifiers) do
+                                if tmpModsList[tmpModName] == nil then
+                                    tmpModsList[tmpModName] = tmpModVal
+                                elseif type(tmpModsList[tmpModName]) == "number" then
+                                    tmpModsList[tmpModName] = tmpModsList[tmpModName] + tmpModVal
+                                end
                             end
                         end
                     end
                 end
-            end
-            processTreeNodes("global")
-            local tmpCharName = PST.charNames[1 + PST.selectedMenuChar]
-            if tmpCharName and PST.trees[tmpCharName] ~= nil then
-                processTreeNodes(tmpCharName)
-            end
-
-            table.sort(sortedModNames, function(a, b)
-                if PST.treeModDescriptions[a] == nil or PST.treeModDescriptions[b] == nil then
-                    return false
-                end
-                return PST.treeModDescriptions[a].sort < PST.treeModDescriptions[b].sort
-            end)
-
-            -- Create final description table
-            local lastCategory = nil
-            for _, tmpModName in ipairs(sortedModNames) do
-                local tmpModVal = tmpModsList[tmpModName]
-
-                -- Category change
-                local categorySwitch = lastCategory == nil
-                if lastCategory ~= nil and lastCategory ~= PST.treeModDescriptions[tmpModName].category then
-                    table.insert(totalModsList, "")
-                    categorySwitch = true
-                end
-                lastCategory = PST.treeModDescriptions[tmpModName].category
-
-                local tmpColor = KColor(1, 1, 1, 1)
-                if PST.treeModDescriptionCategories[lastCategory] then
-                    tmpColor = PST.treeModDescriptionCategories[lastCategory].color
-                end
-                -- Mom heart proc mods - show as disabled if mom's heart needs to be re-defeated
-                if PST.modData.momHeartProc[tmpModName] == false then
-                    tmpColor = KColor(0.5, 0.5, 0.5, 1)
+                processTreeNodes("global")
+                local tmpCharName = PST.charNames[1 + PST.selectedMenuChar]
+                if tmpCharName and PST.trees[tmpCharName] ~= nil then
+                    processTreeNodes(tmpCharName)
                 end
 
-                -- Category title
-                if categorySwitch and tmpCharName and PST.trees[tmpCharName] ~= nil then
-                    local tmpName = PST.treeModDescriptionCategories[lastCategory].name
-                    if lastCategory == "charTree" then
-                        local tmpPossessive = "s"
-                        if string.sub(currentTree, -1) == "s" then
-                            tmpPossessive = ""
-                        end
-                        tmpName = tmpCharName .. "'" .. tmpPossessive .. " tree:"
+                table.sort(sortedModNames, function(a, b)
+                    if PST.treeModDescriptions[a] == nil or PST.treeModDescriptions[b] == nil then
+                        return false
                     end
-                    table.insert(totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
-                end
+                    return PST.treeModDescriptions[a].sort < PST.treeModDescriptions[b].sort
+                end)
 
-                local parsedModLines = PST:parseModifierLines(tmpModName, tmpModVal)
-                for _, tmpLine in ipairs(parsedModLines) do
-                    -- Harmonic modifiers, check if disabled
-                    if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
+                -- Create final description table
+                local lastCategory = nil
+                for _, tmpModName in ipairs(sortedModNames) do
+                    local tmpModVal = tmpModsList[tmpModName]
+
+                    -- Category change
+                    local categorySwitch = lastCategory == nil
+                    if lastCategory ~= nil and lastCategory ~= PST.treeModDescriptions[tmpModName].category then
+                        table.insert(totalModsList, "")
+                        categorySwitch = true
+                    end
+                    lastCategory = PST.treeModDescriptions[tmpModName].category
+
+                    local tmpColor = KColor(1, 1, 1, 1)
+                    if PST.treeModDescriptionCategories[lastCategory] then
+                        tmpColor = PST.treeModDescriptionCategories[lastCategory].color
+                    end
+                    -- Mom heart proc mods - show as disabled if mom's heart needs to be re-defeated
+                    if PST.modData.momHeartProc[tmpModName] == false then
                         tmpColor = KColor(0.5, 0.5, 0.5, 1)
                     end
-                    table.insert(totalModsList, {tmpLine, tmpColor})
-                end
 
-                if PST.modData.momHeartProc[tmpModName] == false then
-                    table.insert(totalModsList, {"   Inactive until Mom's Heart is defeated again.", KColor(1, 0.6, 0.6, 1)})
-                end
-            end
-
-            -- Star tree mods for description table
-            if starcursedTotalMods and (next(starcursedTotalMods.totalMods) ~= nil or starcursedTotalMods.totalStarmight > 0) then
-                local starTreeModsColor = KColor(1, 0.8, 0.2, 1)
-                local starTreeMods = {}
-                table.insert(totalModsList, "")
-                table.insert(totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
-                for _, modData in pairs(starcursedTotalMods.totalMods) do
-                    if type(modData) == "table" then
-                        table.insert(starTreeMods, {modData.description, starTreeModsColor})
+                    -- Category title
+                    if categorySwitch and tmpCharName and PST.trees[tmpCharName] ~= nil then
+                        local tmpName = PST.treeModDescriptionCategories[lastCategory].name
+                        if lastCategory == "charTree" then
+                            local tmpPossessive = "s"
+                            if string.sub(currentTree, -1) == "s" then
+                                tmpPossessive = ""
+                            end
+                            tmpName = tmpCharName .. "'" .. tmpPossessive .. " tree:"
+                        end
+                        table.insert(totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
                     end
-                end
-                table.sort(starTreeMods, function(a, b)
-                    if not a[1] or not b[1] then return false end
-                    return a[1] < b[1]
-                end)
-                -- Starmight
-                table.insert(starTreeMods, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
-                table.insert(starTreeMods, {"Starmight bonuses:", starTreeModsColor})
-                for modName, modVal in pairs(PST:SC_getStarmightImplicits(starcursedTotalMods.totalStarmight)) do
-                    local parsedModLines = PST:parseModifierLines(modName, modVal)
+
+                    local parsedModLines = PST:parseModifierLines(tmpModName, tmpModVal)
                     for _, tmpLine in ipairs(parsedModLines) do
-                        table.insert(starTreeMods, {"   " .. tmpLine, starTreeModsColor})
+                        -- Harmonic modifiers, check if disabled
+                        if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
+                            tmpColor = KColor(0.5, 0.5, 0.5, 1)
+                        end
+                        table.insert(totalModsList, {tmpLine, tmpColor})
+                    end
+
+                    if PST.modData.momHeartProc[tmpModName] == false then
+                        table.insert(totalModsList, {"   Inactive until Mom's Heart is defeated again.", KColor(1, 0.6, 0.6, 1)})
                     end
                 end
-                for _, item in ipairs(starTreeMods) do
-                    table.insert(totalModsList, item)
-                end
-            end
 
-            -- Add Cosmic Realignment mod to description table
-            if type(cosmicRChar) == "number" then
-                tmpCharName = PST.charNames[1 + cosmicRChar]
-                table.insert(totalModsList, "")
-                table.insert(totalModsList, {
-                    "Cosmic Realignment (" .. tmpCharName .. ")",
-                    KColor(0.85, 0.85, 1, 1)
-                })
-                table.insert(totalModsList, {
-                    "Can now get unlocks as if playing as " .. tmpCharName,
-                    KColor(0.85, 0.85, 1, 1)
-                })
+                -- Star tree mods for description table
+                if starcursedTotalMods and (next(starcursedTotalMods.totalMods) ~= nil or starcursedTotalMods.totalStarmight > 0) then
+                    local starTreeModsColor = KColor(1, 0.8, 0.2, 1)
+                    local starTreeMods = {}
+                    table.insert(totalModsList, "")
+                    table.insert(totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
+                    for _, modData in pairs(starcursedTotalMods.totalMods) do
+                        if type(modData) == "table" then
+                            table.insert(starTreeMods, {modData.description, starTreeModsColor})
+                        end
+                    end
+                    table.sort(starTreeMods, function(a, b)
+                        if not a[1] or not b[1] then return false end
+                        return a[1] < b[1]
+                    end)
+                    -- Starmight
+                    table.insert(starTreeMods, {tostring(starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
+                    table.insert(starTreeMods, {"Starmight bonuses:", starTreeModsColor})
+                    for modName, modVal in pairs(PST:SC_getStarmightImplicits(starcursedTotalMods.totalStarmight)) do
+                        local parsedModLines = PST:parseModifierLines(modName, modVal)
+                        for _, tmpLine in ipairs(parsedModLines) do
+                            table.insert(starTreeMods, {"   " .. tmpLine, starTreeModsColor})
+                        end
+                    end
+                    for _, item in ipairs(starTreeMods) do
+                        table.insert(totalModsList, item)
+                    end
+                end
+
+                -- Add Cosmic Realignment mod to description table
+                if type(cosmicRChar) == "number" then
+                    tmpCharName = PST.charNames[1 + cosmicRChar]
+                    table.insert(totalModsList, "")
+                    table.insert(totalModsList, {
+                        "Cosmic Realignment (" .. tmpCharName .. ")",
+                        KColor(0.85, 0.85, 1, 1)
+                    })
+                    table.insert(totalModsList, {
+                        "Can now get unlocks as if playing as " .. tmpCharName,
+                        KColor(0.85, 0.85, 1, 1)
+                    })
+                end
             end
         end
     end
@@ -1325,7 +1381,7 @@ function PST:treeMenuRenderer()
 
     --#endregion
 
-    if not totalModsMenuOpen and helpOpen ~= "changelog" then
+    if not totalModsMenuOpen and not backupsPopup and helpOpen ~= "changelog" then
         -- HUD data
         Isaac.RenderText(
             "Skill points: " .. skPoints .. " / Respecs: " .. PST.modData.respecPoints,
@@ -1354,6 +1410,22 @@ function PST:treeMenuRenderer()
     -- Draw total modifiers menu
     elseif totalModsMenuOpen then
         drawNodeBox("Active Modifiers", totalModsList, 16, 16 + menuScrollY, true, 1)
+    -- Draw backups popup
+    elseif backupsPopup then
+        local tmpBackupsMsg = {table.unpack(backupsMsg)}
+        for i, tmpBackup in ipairs(PSTbackups) do
+            local backupData = tmpBackup[1]
+            if backupData then
+                local tmpColor = KColor(1, 1, 1, 1)
+                local backupLine = tostring(i) .. ". Level: " .. tostring(tmpBackup[2])
+                if selectedBackup == i then
+                    tmpColor = KColor(0.6, 0.75, 1, 1)
+                    backupLine = backupLine .. " (E / Action Button to load this backup)"
+                end
+                table.insert(tmpBackupsMsg, {backupLine, tmpColor})
+            end
+        end
+        drawNodeBox("Data Loss Detected", tmpBackupsMsg, 32, 32, true, 1)
     end
 
     -- Update tree visibility if debug mode allAvailable changes

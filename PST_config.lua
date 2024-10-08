@@ -23,6 +23,9 @@ PST.config = {
     -- Tainted Siren: use a singing sound for Manifest Melody instead of the default sound
     tSirenSing = false,
 
+    -- Max amount of backups to keep (if backup dll is present)
+    maxBackups = 3,
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed

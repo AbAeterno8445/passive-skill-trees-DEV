@@ -246,6 +246,10 @@
     "XMLNode",
     "REPENTOGON",
     "ModConfigMenu",
-    "SaveManager"
+    "SaveManager",
+    "PST_BackupSave",
+    "PST_BackupExists",
+    "PST_BackupFetch",
+    "PST_BackupReplace"
   ]
 }

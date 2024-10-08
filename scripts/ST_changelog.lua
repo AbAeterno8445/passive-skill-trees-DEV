@@ -4,6 +4,10 @@ function PST:getChangelogList()
         "",
 
         "v0.3.21",
+        "- Optimized savefile size.",
+        "- Introduced a savefile backup system. If data loss is detected and backups are present, a prompt will appear when",
+        "opening the tree that will allow you to pick one of the existing backups to try and load. Activating this system",
+        "requires downloading a DLL from the mod's workshop page.",
         "- Fixed Coalescing Soul (from tainted char trees) dropping random soul stones for the Siren character.",
         "- Fixed potential error when triggering Coalescing Soul.",
         "- Fixed cursed room door sprite in secret rooms when blowing up the adjacent wall.",

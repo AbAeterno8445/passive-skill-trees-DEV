@@ -1,13 +1,13 @@
 PST = RegisterMod("PST", 1)
-local saveManager = include("scripts.libs.save_manager")
-saveManager.Init(PST)
+PST.saveManager = include("scripts.libs.save_manager")
+PST.saveManager.Init(PST)
 
 include("scripts.ST_initData")
 include("PST_config")
 PST:resetData()
 
 local oldLoadFlag = false
-saveManager.AddCallback(saveManager.Utility.CustomCallback.PRE_DATA_LOAD, function(modRef, saveData, isLuamod)
+PST.saveManager.AddCallback(PST.saveManager.Utility.CustomCallback.PRE_DATA_LOAD, function(modRef, saveData, isLuamod)
 	if modRef == PST and saveData.skillPoints then
 		-- Loading from old version of savefile, update to new system
 		Isaac.DebugString("Detected old savefile layout for Passive Skill Trees, converting to SaveManager layout...")
@@ -41,7 +41,7 @@ saveManager.AddCallback(saveManager.Utility.CustomCallback.PRE_DATA_LOAD, functi
 		}
 	end
 end)
-saveManager.AddCallback(saveManager.Utility.CustomCallback.POST_DATA_LOAD, function(modRef, saveData, isLuamod)
+PST.saveManager.AddCallback(PST.saveManager.Utility.CustomCallback.POST_DATA_LOAD, function(modRef, saveData, isLuamod)
 	if modRef == PST and isLuamod ~= nil then
 		PST:load()
 	end
@@ -92,20 +92,20 @@ function PST:save(forceSave)
 
 	-- Save config
 	local tmpSaved = false
-	local settingsSave = saveManager.GetSettingsSave()
+	local settingsSave = PST.saveManager.GetSettingsSave()
 	if settingsSave then
 		settingsSave.config = PST:copyTable(PST.config)
 		tmpSaved = true
 	end
 
-	local modSave = saveManager.GetPersistentSave()
+	local modSave = PST.saveManager.GetPersistentSave()
 	if modSave then
 		modSave.modData = PST:copyTable(PST.modData)
 		tmpSaved = true
 	end
 
 	if tmpSaved then
-		saveManager.Save()
+		PST.saveManager.Save()
 		lastSave = os.clock()
 	end
 end
@@ -199,14 +199,20 @@ function PST:processLoadedData(loadedData)
 	PST:updateAllCharsXPReq()
 end
 function PST:load()
-	local modDataSave = saveManager.GetPersistentSave()
+	local modDataSave = PST.saveManager.GetPersistentSave()
 	if modDataSave.modData then
 		PST:processLoadedData(modDataSave.modData)
 		PST:updateNodes()
 	end
 
-	local modConfigSave = saveManager.GetSettingsSave()
+	local modConfigSave = PST.saveManager.GetSettingsSave()
 	if modConfigSave.config then
+		-- Load new config options
+		for k, v in pairs(PST.config) do
+			if modConfigSave.config[k] == nil then
+				modConfigSave.config[k] = v
+			end
+		end
 		PST.config = modConfigSave.config
 	end
 
@@ -230,10 +236,11 @@ function PST:onSaveSlot(slot, isSlotSelected)
 		print("Passive Skill Trees: initialized fresh savefile on slot", slot)
 		-- Generate savefile through save manager, if it doesn't exist
 		if not PST:HasData() then
-			saveManager.Save()
+			PST.saveManager.Save()
 		end
 		PST:resetSaveData()
 	end
+	PST.saveSlot = slot
 end
 
 -- On player init

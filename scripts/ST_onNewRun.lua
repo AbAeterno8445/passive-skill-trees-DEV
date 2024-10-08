@@ -664,4 +664,10 @@ function PST:onNewRun(isContinued)
     PST:onNewRoom()
 
     PST:save()
+
+    -- Create backup if available
+    if PST_BackupSave then
+        PST_BackupSave(PST.saveSlot, PST.config.maxBackups, PST.modData.level)
+        print("PST: Created backup for slot", PST.saveSlot)
+    end
 end
