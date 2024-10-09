@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.22",
+        "- Fixed Ancient Starcursed Jewel completion rewards not being granted.",
+        "",
+
         "v0.3.21",
         "- Optimized savefile size.",
         "- Introduced a savefile backup system. If data loss is detected and backups are present, a prompt will appear when",

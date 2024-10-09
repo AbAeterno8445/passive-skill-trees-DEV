@@ -40,24 +40,27 @@ function PST:onCompletionEvent(event)
 	-- Ancient starcursed jewel rewards
 	for i=1,2 do
 		local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
-		if ancientJewel and ancientJewel.rewards then
-			if not PST.modData.ancientRewards[ancientJewel.name] then
-				PST.modData.ancientRewards[ancientJewel.name] = {}
-			end
+		if ancientJewel then
+			local ancientData = PST:SC_getAncientByName(ancientJewel.name)
+			if ancientData and ancientData.rewards then
+				if not PST.modData.ancientRewards[ancientJewel.name] then
+					PST.modData.ancientRewards[ancientJewel.name] = {}
+				end
 
-			-- Skill point and respec point reward mods
-			for tmpEvent, rewardMod in pairs(starcursedEvents) do
-				local tmpRewards = ancientJewel.rewards[rewardMod]
-				if tmpRewards and event == tmpEvent and not PST.modData.ancientRewards[ancientJewel.name][rewardMod] then
-					PST.modData.skillPoints = PST.modData.skillPoints + tmpRewards[1]
-					--[[for _, charData in pairs(PST.modData.charData) do
-						charData.skillPoints = charData.skillPoints + tmpRewards[1]
-					end]]
-					PST.modData.respecPoints = PST.modData.respecPoints + tmpRewards[2]
-					PST.modData.ancientRewards[ancientJewel.name][rewardMod] = true
+				-- Skill point and respec point reward mods
+				for tmpEvent, rewardMod in pairs(starcursedEvents) do
+					local tmpRewards = ancientData.rewards[rewardMod]
+					if tmpRewards and event == tmpEvent and not PST.modData.ancientRewards[ancientJewel.name][rewardMod] then
+						PST.modData.skillPoints = PST.modData.skillPoints + tmpRewards[1]
+						--[[for _, charData in pairs(PST.modData.charData) do
+							charData.skillPoints = charData.skillPoints + tmpRewards[1]
+						end]]
+						PST.modData.respecPoints = PST.modData.respecPoints + tmpRewards[2]
+						PST.modData.ancientRewards[ancientJewel.name][rewardMod] = true
 
-					SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
-					PST:createFloatTextFX("Ancient jewel objective complete!", Vector.Zero, Color(1, 0.9, 0.5, 1), 0.13, 160, true)
+						SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
+						PST:createFloatTextFX("Ancient jewel objective complete!", Vector.Zero, Color(1, 0.9, 0.5, 1), 0.13, 160, true)
+					end
 				end
 			end
 		end

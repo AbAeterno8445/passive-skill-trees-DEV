@@ -266,6 +266,15 @@ function PST:SC_getNewAncient()
     end
 end
 
+function PST:SC_getAncientByName(ancientName)
+    for _, tmpAncientData in pairs(PST.SCAncients) do
+        if tmpAncientData.name == ancientName then
+            return tmpAncientData
+        end
+    end
+    return nil
+end
+
 function PST:SC_setSpriteToJewel(sprite, jewel)
     if jewel.type ~= PSTStarcursedType.ANCIENT then
         sprite:Play(jewel.type)
