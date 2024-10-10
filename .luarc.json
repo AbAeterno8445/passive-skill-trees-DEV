@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
   "runtime.version": "Lua 5.3",
   "workspace.library": [
-    "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.9.5\\out\\emmylua\\repentogon"
+    "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.10.0\\out\\emmylua\\repentogon"
   ],
   "diagnostics.globals": [
     "ActionTriggers",
@@ -251,5 +251,6 @@
     "PST_BackupExists",
     "PST_BackupFetch",
     "PST_BackupReplace"
-  ]
+  ],
+  "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

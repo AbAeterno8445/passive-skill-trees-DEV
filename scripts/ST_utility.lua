@@ -802,6 +802,11 @@ function PST:roundFloat(number, digit)
 	return math.floor(number / precision) * precision
 end
 
+function PST:ParametricBlend(t)
+    local sqr = t ^ 2
+    return sqr / (2 * (sqr - t) + 1)
+end
+
 -- Returns the distance between two given Vector positions
 ---@param p1 Vector
 ---@param p2 Vector

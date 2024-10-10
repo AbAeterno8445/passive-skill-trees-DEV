@@ -1,11 +1,7 @@
 -- Init Cosmic Realignment node data
 PST.cosmicRData = {
-    menuOpen = false,
-    menuX = 0,
-    menuY = 0,
     charSprite = Sprite("gfx/ui/skilltrees/cosmic_realignment_chars.anm2", true),
     lockedCharSprite = Sprite("gfx/ui/skilltrees/cosmic_realignment_chars.anm2", true),
-    hoveredCharID = nil,
     characters = {
         [PlayerType.PLAYER_ISAAC] = {
             curseDesc = { "-0.1 all stats" },

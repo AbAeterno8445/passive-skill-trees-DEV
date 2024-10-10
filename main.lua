@@ -195,7 +195,7 @@ function PST:processLoadedData(loadedData)
 	end
 	-- Post-load data update funcs
 	PST:oldJewelReplacements()
-	PST:updateStarTreeTotals()
+	PST.treeScreen:UpdateStarTreeTotals()
 	PST:updateAllCharsXPReq()
 end
 function PST:load()
@@ -286,7 +286,8 @@ end
 include("scripts.ST_utility")
 include("scripts.ST_completionEvents")
 include("scripts.ST_cosmicRData")
-include("scripts.ST_treeScreen")
+include("scripts.tree_data.nodes")
+include("scripts.tree_screen.treescreenInit")
 include("scripts.ST_onNewRoom")
 include("scripts.ST_onDamage")
 include("scripts.ST_postDamage")
