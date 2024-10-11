@@ -37,11 +37,18 @@ end
 
 -- Draw a 'node description box'
 function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
-    local tmpFont = PST.normalFont
+    local tmpFont = PST.miniFont
+    if PST.config.descriptionBoxStyle == 1 then
+        tmpFont = PST.normalFont
+    end
+
     -- Base offset from center cursor
     local offX = 4
     local offY = 10
-    local tmpScale = 1 / Isaac.GetScreenPointScale()
+    local tmpScale = 1
+    if PST.config.descriptionBoxStyle == 1 then
+        tmpScale = 1 / Isaac.GetScreenPointScale()
+    end
 
     -- Calculate longest description line, and offset accordingly
     local longestStr = name
@@ -54,9 +61,9 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
             longestStr = tmpStr
         end
     end
-    local longestStrWidth = 8 + offX + tmpFont:GetStringWidth(longestStr)
-    if longestStrWidth * tmpScale > paramX / 2 then
-        offX = offX - (longestStrWidth * tmpScale - paramX / 2 + 8)
+    local longestStrWidth = (8 + offX + tmpFont:GetStringWidth(longestStr)) * tmpScale
+    if longestStrWidth > paramX / 2 then
+        offX = offX - (longestStrWidth - paramX / 2 + 8)
     end
 
     -- Draw description background
@@ -67,16 +74,18 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
         drawY = paramY
     end
 
-    local descW = longestStrWidth * tmpScale + 4
+    local descW = longestStrWidth + 4
     local descH = ((PST.miniFont:GetLineHeight() + 2) * (#description + 1)) * tmpScale + 4
     if not absolute and descH + offY > paramY / 2 - 8 then
         drawY = drawY - (descH + offY - paramY / 2 + 8)
     end
 
     -- Scale down if box overflows screen width
-    --[[if not absolute and descW > paramX then
-        tmpScale = PST:roundFloat(paramX / descW, -2)
-    end]]
+    if PST.config.descriptionBoxStyle == 0 then
+        if not absolute and descW > paramX then
+            tmpScale = PST:roundFloat(paramX / descW, -2)
+        end
+    end
 
     self.descBGSprite.Scale.X = descW
     self.descBGSprite.Scale.Y = descH

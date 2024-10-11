@@ -20,6 +20,9 @@ PST.config = {
     -- Make changelog pop up when on new version updates
     changelogPopup = true,
 
+    -- Tree description boxes style (0: old, 1: new)
+    descriptionBoxStyle = 0,
+
     -- Tainted Siren: use a singing sound for Manifest Melody instead of the default sound
     tSirenSing = false,
 
@@ -272,6 +275,29 @@ function PST:initModConfigMenu()
                 PST.config.changelogPopup = b
             end,
             Info = {"Whether to have the changelog pop up in the tree screen when a new update arrives"}
+        }
+    )
+    -- Tree description boxes style setting
+    local descBoxStyleNames = {"old", "new"}
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "descriptionBoxStyle")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "descriptionBoxStyle",
+            CurrentSetting = function()
+                return PST.config.descriptionBoxStyle
+            end,
+            Minimum = 0,
+            Maximum = 1,
+            Display = function()
+                return "Description Box Style: " .. descBoxStyleNames[PST.config.descriptionBoxStyle + 1]
+            end,
+            OnChange = function(n)
+                PST.config.descriptionBoxStyle = n
+            end,
+            Info = {"Tree node description box visual style", "New can look better in fullscreen or small resolutions"}
         }
     )
 
