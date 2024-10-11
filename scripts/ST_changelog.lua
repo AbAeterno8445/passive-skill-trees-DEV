@@ -3,6 +3,13 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.23",
+        "- Refactored the entirety of the tree rendering code, in preparation for future features.",
+        "It should all work the same as before, but reporting any issues you find would be of great help.",
+        "- Reworked the help screen (opened with H / Select) to provide additional info about the mod's",
+        "features. More info will be added to this screen as new features emerge.",
+        "",
+
         "v0.3.22",
         "- Fixed Ancient Starcursed Jewel completion rewards not being granted.",
         "",
