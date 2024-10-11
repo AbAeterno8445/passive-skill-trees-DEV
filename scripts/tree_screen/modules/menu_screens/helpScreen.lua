@@ -154,7 +154,7 @@ function helpScreen:Render(tScreen)
             local screenScale = 1 / Isaac.GetScreenPointScale()
 
             local buttonX = renderPos.X + (16 + ((i - 1) % helpButtonCols) * (456 / helpButtonCols)) * screenScale
-            local buttonY = renderPos.Y + (44 + math.floor((i - 1) / helpButtonCols) * 80) * screenScale
+            local buttonY = renderPos.Y + (62 + math.floor((i - 1) / helpButtonCols) * 80) * screenScale
             local buttonFrame = 0
             if self.selectedButton == i then buttonFrame = 1 end
             self.helpButtonSprite:SetFrame("Default", buttonFrame)
@@ -176,6 +176,23 @@ function helpScreen:Render(tScreen)
             local titlePosX = buttonX + (19 - PST.miniFont:GetStringWidth(tmpButton.title) / 2) * screenScale
             local titlePosY = buttonY + 50 * screenScale
             PST.miniFont:DrawStringScaled(tmpButton.title, titlePosX, titlePosY, textScale.X, textScale.Y, KColor(1, 1, 1, 1))
+        end
+    else
+        -- Decor icons for pages
+        local pageName = self.pages[self.currentPage]
+        if pageName then
+            local buttonID = tonumber(pageName:sub(1, 1))
+            if buttonID then
+                local tmpButton = self.helpButtons[buttonID]
+                if tmpButton and tmpButton.iconID then
+                    local menuScale = self:GetMenuScale()
+                    self.helpButtonSprite.Scale = menuScale * 0.82
+                    self.helpButtonSprite:SetFrame("Icons", tmpButton.iconID)
+                    self.helpButtonSprite:Render(renderPos)
+                    self.helpButtonSprite:Render(Vector(renderPos.X + 454 * menuScale.X, renderPos.Y))
+                    self.helpButtonSprite.Scale = menuScale
+                end
+            end
         end
     end
 end
