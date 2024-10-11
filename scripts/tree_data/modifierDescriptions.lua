@@ -294,7 +294,7 @@ PST.treeModDescriptions = {
     },
     goldenTrinkets = {
         str = {
-            "When a trinket drops, %.2f%% additional chance to replace it with its golden version",
+            "When first grabbing a trinket, %.2f%% chance to turn it into its golden version",
             "    Requires having golden trinkets unlocked"
         },
         category = "extra", sort = 1106
