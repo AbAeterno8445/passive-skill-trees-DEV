@@ -3,23 +3,32 @@ include("scripts.tree_screen.modules.input.inputRespec")
 
 local menuKeys = {
     [PSTKeybind.TOGGLE_CHANGELOG] = PSTTreeScreenMenu.CHANGELOG,
-    [PSTKeybind.TOGGLE_TOTAL_MODS] = PSTTreeScreenMenu.TOTALMODS
+    [PSTKeybind.TOGGLE_TOTAL_MODS] = PSTTreeScreenMenu.TOTALMODS,
+    [PSTKeybind.TOGGLE_HELP] = PSTTreeScreenMenu.HELP
 }
 
 function PST.treeScreen:Inputs()
     local menuScreensModule = self.modules.menuScreensModule
     local currentMenu = menuScreensModule.currentMenu
+    local currentMenuModule = menuScreensModule.menus[currentMenu]
 
     -- Input: Close tree
     if PST:isKeybindActive(PSTKeybind.CLOSE_TREE) then
         if self.backupsPopup then
             self.backupsPopup = false
+        elseif currentMenuModule and currentMenuModule.OnClose then
+            currentMenuModule:OnClose(menuScreensModule)
         elseif currentMenu ~= PSTTreeScreenMenu.NONE then
             SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
             menuScreensModule:CloseMenu()
         else
             PST:closeTreeMenu()
         end
+    end
+
+    -- Menu inputs
+    if currentMenuModule and currentMenuModule.OnInput then
+        menuScreensModule.menus[currentMenu]:OnInput()
     end
 
     -- Input: Allocate node
@@ -123,24 +132,8 @@ function PST.treeScreen:Inputs()
                 else
                     menuScreensModule:SwitchToMenu(tmpMenu)
                 end
-                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 break
             end
-        end
-    end
-
-    -- Help popups
-    if PST:isKeybindActive(PSTKeybind.TOGGLE_HELP) then
-        if self.helpPopup ~= "helpkeyboard" then
-            self.helpPopup = "helpkeyboard"
-        else
-            self.helpPopup = ""
-        end
-    elseif PST:isKeybindActive(PSTKeybind.TOGGLE_HELP_CONTROLLER) then
-        if self.helpPopup ~= "helpcontroller" then
-            self.helpPopup = "helpcontroller"
-        else
-            self.helpPopup = ""
         end
     end
 

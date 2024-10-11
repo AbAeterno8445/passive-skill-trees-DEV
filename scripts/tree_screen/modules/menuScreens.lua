@@ -18,7 +18,8 @@ local menuScreensModule = {
 
     menus = {
         [PSTTreeScreenMenu.CHANGELOG] = moduleRequire("scripts.tree_screen.modules.menu_screens.changelogScreen"),
-        [PSTTreeScreenMenu.TOTALMODS] = moduleRequire("scripts.tree_screen.modules.menu_screens.totalmodsScreen")
+        [PSTTreeScreenMenu.TOTALMODS] = moduleRequire("scripts.tree_screen.modules.menu_screens.totalmodsScreen"),
+        [PSTTreeScreenMenu.HELP] = moduleRequire("scripts.tree_screen.modules.menu_screens.helpScreen")
     }
 }
 

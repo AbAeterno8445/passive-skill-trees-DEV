@@ -34,6 +34,9 @@ PST.savePending = false
 PST.miniFont = Font()
 PST.miniFont:Load("font/cjk/lanapixel.fnt")
 
+PST.luaminiFont = Font()
+PST.luaminiFont:Load("font/luamini.fnt")
+
 -- Initialization performed on the first menu render call
 function PST:firstRenderInit()
 	-- Init mod char names here
