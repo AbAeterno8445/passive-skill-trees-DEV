@@ -37,10 +37,11 @@ end
 
 -- Draw a 'node description box'
 function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute, bgAlpha)
+    local tmpFont = PST.normalFont
     -- Base offset from center cursor
     local offX = 4
     local offY = 10
-    local tmpScale = 1
+    local tmpScale = 1 / Isaac.GetScreenPointScale()
 
     -- Calculate longest description line, and offset accordingly
     local longestStr = name
@@ -53,9 +54,9 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
             longestStr = tmpStr
         end
     end
-    local longestStrWidth = 8 + offX + PST.miniFont:GetStringWidth(longestStr)
-    if longestStrWidth > paramX / 2 then
-        offX = offX - (longestStrWidth - paramX / 2 + 8)
+    local longestStrWidth = 8 + offX + tmpFont:GetStringWidth(longestStr)
+    if longestStrWidth * tmpScale > paramX / 2 then
+        offX = offX - (longestStrWidth * tmpScale - paramX / 2 + 8)
     end
 
     -- Draw description background
@@ -66,23 +67,23 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
         drawY = paramY
     end
 
-    local descW = longestStrWidth + 4
-    local descH = (PST.miniFont:GetLineHeight() + 2) * (#description + 1) + 4
+    local descW = longestStrWidth * tmpScale + 4
+    local descH = ((PST.miniFont:GetLineHeight() + 2) * (#description + 1)) * tmpScale + 4
     if not absolute and descH + offY > paramY / 2 - 8 then
         drawY = drawY - (descH + offY - paramY / 2 + 8)
     end
 
     -- Scale down if box overflows screen width
-    if not absolute and descW > paramX then
+    --[[if not absolute and descW > paramX then
         tmpScale = PST:roundFloat(paramX / descW, -2)
-    end
+    end]]
 
-    self.descBGSprite.Scale.X = descW * tmpScale
-    self.descBGSprite.Scale.Y = descH * tmpScale
+    self.descBGSprite.Scale.X = descW
+    self.descBGSprite.Scale.Y = descH
     self.descBGSprite.Color.A = bgAlpha or 0.85
     self.descBGSprite:Render(Vector(drawX - 2, drawY - 2))
 
-    PST.miniFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, KColor(1, 1, 1, 1))
+    tmpFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, KColor(1, 1, 1, 1))
     for i = 1, #description do
         local tmpStr = description[i]
         local tmpColor = KColor(1, 1, 1, 0.9)
@@ -99,7 +100,7 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
                 end
             end
         end
-        PST.miniFont:DrawStringScaled(tmpStr, drawX + 6 * tmpScale, drawY + 14 * tmpScale * i, tmpScale, tmpScale, tmpColor)
+        tmpFont:DrawStringScaled(tmpStr, drawX + 6 * tmpScale, drawY + 14 * tmpScale * i, tmpScale, tmpScale, tmpColor)
     end
 end
 

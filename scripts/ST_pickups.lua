@@ -147,6 +147,7 @@ function PST:prePickup(pickup, collider, low)
             end
         -- Trinkets
         elseif variant == PickupVariant.PICKUP_TRINKET then
+            -- Trinket picked up
             if not player:IsHoldingItem() then
                 -- Mod: chance for trinkets to turn golden when first collected, if you have them unlocked
                 if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then

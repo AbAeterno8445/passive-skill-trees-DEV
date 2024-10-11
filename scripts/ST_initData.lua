@@ -34,6 +34,9 @@ PST.savePending = false
 PST.miniFont = Font()
 PST.miniFont:Load("font/cjk/lanapixel.fnt")
 
+PST.normalFont = Font()
+PST.normalFont:Load("font/terminus8.fnt")
+
 PST.luaminiFont = Font()
 PST.luaminiFont:Load("font/luamini.fnt")
 
