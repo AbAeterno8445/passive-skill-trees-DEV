@@ -8,6 +8,8 @@ function PST:getChangelogList()
         "It should all work the same as before, but reporting any issues you find would be of great help.",
         "- Reworked the help screen (opened with H / Select) to provide additional info about the mod's",
         "features. More info will be added to this screen as new features emerge.",
+        "- Modified Golden Trinket nodes. Now these grant \"When first grabbing a trinket, % chance to turn",
+        "it into its golden version.\".",
         "",
 
         "v0.3.22",

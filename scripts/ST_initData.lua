@@ -528,6 +528,7 @@ function PST:resetMods()
 		eldritchMapping = false,
 		eldritchMappingDebuffs = 0,
 		trollBombDisarm = 0,
+		gildedTrinkets = {},
 
 		craftingBagFull = false,
 
