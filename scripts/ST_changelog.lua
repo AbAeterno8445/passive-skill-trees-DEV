@@ -5,7 +5,7 @@ function PST:getChangelogList()
 
         "v0.3.23",
         "- Refactored the entirety of the tree rendering code, in preparation for future features.",
-        "It should all work the same as before, but reporting any issues you find would be of great help.",
+        "It should all work the same as before, but let me know if issues pop up.",
         "- Reworked the help screen (opened with H / Select) to provide additional info about the mod's",
         "features. More info will be added to this screen as new features emerge.",
         "- Added an option to use a different style for tree node description boxes, which might look better",
