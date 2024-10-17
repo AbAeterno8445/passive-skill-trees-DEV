@@ -52,6 +52,10 @@ function PST.treeScreen:InputAllocate()
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     self.currentTree = "starTree"
                     self:CenterCamera()
+                -- Arcane Astrolabe node, open Astral Expedition menu
+                elseif self.hoveredNode.name == "Arcane Astrolabe" then
+                    self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.EXPEDITION)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do

@@ -1,0 +1,284 @@
+include("scripts.expedition_data.ST_expedition_init")
+
+local function reversedipairsiter(t, i)
+    i = i - 1
+    if i ~= 0 then
+        return i, t[i]
+    end
+end
+local function reversedipairs(t)
+    return reversedipairsiter, t, #t + 1
+end
+
+-- Generate a set of nodes for an astral expedition
+---@param depth number
+---@param seed? integer
+---@param modifiers? table
+function PST:generateExpedition(depth, seed, modifiers)
+    local expSeed = seed or math.random(100000000)
+    local expRNG = RNG(expSeed)
+    local expLength = math.min(15, 5 + math.floor(depth / 3))
+
+    -- Reward type weights (starting value, addition per advanced column, min or max value)
+    local rewardWeights = {
+        [PSTExpNodeRewardType.OBOLS] = { val = 500, add = -40, min = 200 },
+        [PSTExpNodeRewardType.EXP] = { val = 100, add = -1, min = 60 },
+        [PSTExpNodeRewardType.ITEM] = { val = 50, add = 0.1, max = 80 },
+        [PSTExpNodeRewardType.BOON] = { val = 20, add = 0.2, max = 35 },
+        [PSTExpNodeRewardType.ATTEMPTS] = { val = 15, add = 0, max = 15}
+    }
+    local pickedItems = {}
+
+    -- Curse node chance
+    local curseChance = 0.1
+
+    -- Boon upgrade node chance & total maximum
+    local boonUpgradeChance = 0.04
+    local boonUpgrades = 2
+
+    -- Create layout of columns & nodes
+    ---@type PSTExpNode[][]
+    local expNodes = {}
+    for col=1,expLength do
+        ---@type PSTExpNode[]
+        local expColumn = {}
+        local minNodes = 3
+        local maxNodes = 5
+        if depth >= 8 then maxNodes = 6 end
+
+        local nodeAmt = expRNG:RandomInt(minNodes, maxNodes)
+        if col == 1 then nodeAmt = 3 end
+        if col == expLength then nodeAmt = 1 end
+
+        -- Max curse nodes per column (past second col)
+        local colCurses = 2
+        if depth >= 10 then colCurses = 3 end
+
+        for _=1,nodeAmt do
+            ---@type PSTExpNode
+            local newNode = {
+                nodeType = PSTExpNodeType.NORMAL,
+                rewardType = PSTExpNodeRewardType.OBOLS,
+                connections = {}
+            }
+            -- Final node
+            if col == expLength then newNode.nodeType = PSTExpNodeType.FINAL end
+
+            -- Guarantee expedition curses in second column
+            if col == 2 then newNode.nodeType = PSTExpNodeType.CURSED end
+
+            -- Past second column
+            if col > 2 then
+                if newNode.nodeType == PSTExpNodeType.NORMAL then
+                    -- Chance for curse nodes
+                    if colCurses > 0 and expRNG:RandomFloat() < curseChance then
+                        newNode.nodeType = PSTExpNodeType.CURSED
+                        colCurses = colCurses - 1
+                    -- Chance for boon upgrade nodes
+                    elseif boonUpgrades > 0 and expRNG:RandomFloat() < boonUpgradeChance then
+                        newNode.nodeType = PSTExpNodeType.BOONUPGRADE
+                        boonUpgrades = boonUpgrades - 1
+                    end
+                end
+            end
+
+            -- Assign objective
+            local newObjective = { name = "", reqs = {} }
+            local tmpSrcTable = PST.expeditionObjectiveList
+            local tmpTargetTable = PST.expeditionObjectives
+            if newNode.nodeType == PSTExpNodeType.FINAL then
+                tmpSrcTable = PST.expeditionObjectiveFinalList
+                tmpTargetTable = PST.expeditionObjectivesFinal
+            end
+            -- Check for min depth requirement
+            local tmpObjectiveName = tmpSrcTable[expRNG:RandomInt(1, #tmpSrcTable)]
+            local tmpObjective = tmpTargetTable[tmpObjectiveName]
+            while tmpObjective.minDepth and depth < tmpObjective.minDepth do
+                tmpObjectiveName = tmpSrcTable[expRNG:RandomInt(1, #tmpSrcTable)]
+                tmpObjective = tmpSrcTable[tmpObjectiveName]
+            end
+            -- Objective variants
+            if tmpObjective.variants ~= nil then
+                local tmpVariants = {}
+                local totalWeight = 0
+                for variantName, tmpVariant in pairs(tmpObjective.variants) do
+                    if not tmpVariant.minDepth or (tmpVariant.minDepth and depth >= tmpVariant.minDepth) then
+                        table.insert(tmpVariant, variantName)
+                        totalWeight = totalWeight + (tmpVariant.weight or 1)
+                    end
+                end
+                -- Pick variant based on weight
+                if totalWeight > 0 then
+                    local randWeight = expRNG:RandomInt(totalWeight)
+                    for _, tmpVariantName in ipairs(tmpVariants) do
+                        local tmpVariant = tmpObjective.variants[tmpVariantName]
+                        randWeight = randWeight - tmpVariant.weight
+                        if randWeight <= 0 then
+                            -- Replace objective attributes with picked variant's
+                            for k, v in pairs(tmpVariant) do
+                                tmpObjective[k] = v
+                            end
+                            break
+                        end
+                    end
+                end
+            end
+
+            -- Objective requirements
+            if tmpObjective.reqFunc then
+                newObjective.reqs = tmpObjective.reqFunc(depth, col)
+            end
+            if #newObjective.reqs > 0 then
+                newObjective.name = tmpObjectiveName
+                newNode.objective = newObjective
+            end
+
+            -- Assign curse
+            if newNode.nodeType == PSTExpNodeType.CURSED then
+                local newCurseID = expRNG:RandomInt(1, #PST.expeditionCurses)
+                local newCurse = PST.expeditionCurses[newCurseID]
+                while newCurse.minDepth and depth < newCurse.minDepth do
+                    newCurseID = expRNG:RandomInt(1, #PST.expeditionCurses)
+                    newCurse = PST.expeditionCurses[newCurseID]
+                end
+                newNode.curse = newCurseID
+            end
+
+            -- Assign reward type
+            local totalWeight = 0
+            for _, tmpWeight in pairs(rewardWeights) do
+                totalWeight = totalWeight + tmpWeight.val
+            end
+            local randWeight = expRNG:RandomInt(math.floor(totalWeight))
+            for rewardType, tmpWeight in pairs(rewardWeights) do
+                randWeight = randWeight - tmpWeight.val
+                if randWeight <= 0 then
+                    newNode.rewardType = rewardType
+                    break
+                end
+            end
+
+            -- No item rewards in first or last column
+            if (col == 1 or col == expLength) and newNode.rewardType == PSTExpNodeRewardType.ITEM then
+                newNode.rewardType = PSTExpNodeRewardType.OBOLS
+            end
+
+            -- Assign reward data
+            local rewardFunc = PST.expeditionRewardData[newNode.rewardType]
+            if rewardFunc ~= nil then
+                newNode.rewardData = rewardFunc(expRNG, depth, col)
+            end
+
+            -- Item reward type, pick an item
+            if newNode.rewardType == PSTExpNodeRewardType.ITEM then
+                local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE, false, expRNG:RandomInt(100000))
+                local failsafe = 0
+                while PST:arrHasValue(pickedItems, newItem) and failsafe < 200 do
+                    newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE, false, expRNG:RandomInt(100000))
+                    failsafe = failsafe + 1
+                end
+                newNode.rewardData = newItem
+                table.insert(pickedItems, newItem)
+            end
+
+            table.insert(expColumn, newNode)
+        end
+        table.insert(expNodes, expColumn)
+
+        -- Affect reward weights as we go deeper into expedition
+        for _, tmpReward in pairs(rewardWeights) do
+            tmpReward.val = tmpReward.val + tmpReward.add
+            if tmpReward.min and tmpReward.val < tmpReward.min then
+                tmpReward.val = tmpReward.min
+            elseif tmpReward.max and tmpReward.val > tmpReward.max then
+                tmpReward.val = tmpReward.max
+            end
+        end
+        -- Node curse chance as we go deeper
+        curseChance = curseChance + 0.01
+        -- Boon upgrade node chance as we go deeper
+        boonUpgradeChance = boonUpgradeChance + 0.005
+    end
+
+    -- Create shuffled list of all nodes
+    local nodeList = {}
+    for colID, tmpColumn in ipairs(expNodes) do
+        for nodeID, _ in ipairs(tmpColumn) do
+            table.insert(nodeList, {colID, nodeID})
+        end
+    end
+    PST:shuffleList(nodeList, expRNG)
+
+    -- Node connections
+    local madeConnections = {}
+    for _, nodeData in ipairs(nodeList) do
+        local nodeColID = nodeData[1]
+        local nodeCol = expNodes[nodeColID]
+        local nextCol = expNodes[nodeColID + 1]
+
+        local nodeID = nodeData[2]
+        local tmpNode = nodeCol[nodeID]
+
+        if nextCol then
+            -- Connect all top nodes with each other, or if next column has only 1 node, connect to it directly
+            if nodeID == 1 or #nextCol == 1 then
+                table.insert(tmpNode.connections, 1)
+            -- Connect all bottom nodes with each other
+            elseif nodeID == #nodeCol then
+                table.insert(tmpNode.connections, #nextCol)
+            end
+
+            -- Middle connections
+            if #nextCol > 1 then
+                local reachableNodes = {}
+
+                -- Randomly loop reachable nodes forwards or backwards to prevent bias towards top-to-down connections
+                local flip = expRNG:RandomFloat() < 0.5
+                local tmpIter = ipairs
+                if flip then tmpIter = reversedipairs end
+
+                for nextNodeID, _ in tmpIter(nextCol) do
+                    -- Determine if next node is close enough to form connection (up to 3), and that no connections block access to it
+                    local myHeight = #nodeCol - (nodeID - 1) * 2
+                    local nextHeight = #nextCol - (nextNodeID - 1) * 2
+                    if math.abs(myHeight - nextHeight) <= 3 and #reachableNodes < 3 then
+                        local connectionPossible = true
+
+                        -- Determine if a connection here would collide with previous connections
+                        for _, connData in ipairs(madeConnections) do
+                            if connData.col == nodeColID then
+                                -- Prevent connection if node above this one connects to node below target, or node below this one connects to node above target
+                                if (connData.startHeight > myHeight and connData.endHeight < nextHeight) or
+                                (connData.startHeight < myHeight and connData.endHeight > nextHeight) then
+                                    connectionPossible = false
+                                    break
+                                end
+                            end
+                        end
+                        if connectionPossible then
+                            table.insert(reachableNodes, nextNodeID)
+                            table.insert(madeConnections, { col = nodeColID, startHeight = myHeight, endHeight = nextHeight })
+                            table.insert(tmpNode.connections, nextNodeID)
+                        end
+                    end
+                end
+            end
+        end
+    end
+    -- Add astrolabe first column
+    table.insert(expNodes, 1, {{
+        nodeType = PSTExpNodeType.ASTROLABE,
+        rewardType = PSTExpNodeRewardType.NONE,
+        connections = {1, 2, 3}
+    }})
+
+    return {
+        nodes = expNodes,
+        seed = expSeed,
+        modifiers = modifiers
+    }
+end
+
+function PST:resetExpedition(depth)
+    PST.modData.expeditionsData[depth] = PST:generateExpedition(depth)
+end

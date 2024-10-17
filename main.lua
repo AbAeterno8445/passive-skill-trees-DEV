@@ -175,6 +175,13 @@ function PST:processLoadedData(loadedData)
 		end
 	end
 
+	-- Expeditions data number indexes
+	local tmpExpeditionsData = { [0] = {} }
+	for k, v in pairs(PST.modData.expeditionsData) do
+		tmpExpeditionsData[tonumber(k)] = v
+	end
+	PST.modData.expeditionsData = tmpExpeditionsData
+
 	-- Refund allocated nodes that no longer exist
 	for tree, nodes in pairs(PST.modData.treeNodes) do
 		for nodeID, allocated in pairs(nodes) do
@@ -286,6 +293,7 @@ end
 include("scripts.ST_utility")
 include("scripts.ST_completionEvents")
 include("scripts.ST_cosmicRData")
+include("scripts.expedition_data.ST_expedition")
 include("scripts.tree_data.nodes")
 include("scripts.tree_screen.treescreenInit")
 include("scripts.ST_onNewRoom")

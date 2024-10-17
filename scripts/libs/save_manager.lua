@@ -340,7 +340,7 @@ function SaveManager.Utility.ValidateForJson(tab)
 		return SaveManager.Utility.ValidityState.INVALID, SaveManager.Utility.JsonIncompatibilityType.CIRCULAR_TABLE
 	end
 
-	for _, value in pairs(tab) do
+	for valueName, value in pairs(tab) do
 		-- check for NaN and infinite values
 		-- http://lua-users.org/wiki/InfAndNanComparisons
 		if type(value) == "number" then
@@ -356,8 +356,10 @@ function SaveManager.Utility.ValidateForJson(tab)
 		if type(value) == "table" then
 			local valid, error = SaveManager.Utility.ValidateForJson(value)
 			if valid == SaveManager.Utility.ValidityState.INVALID then
+				print("Culprit:", valueName)
 				return valid, error
 			elseif valid == SaveManager.Utility.ValidityState.VALID_WITH_WARNING then
+				print("Culprit:", valueName)
 				hasWarning = error
 			end
 		end

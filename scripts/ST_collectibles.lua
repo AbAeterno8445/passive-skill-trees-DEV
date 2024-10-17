@@ -1,25 +1,27 @@
 function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
-    local itemPool = Game():GetItemPool()
+    if Isaac.IsInGame() then
+        local itemPool = Game():GetItemPool()
 
-    -- Cosmic Realignment node
-    if PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH) then
-        -- Lilith, 75% chance to reroll follower items
-        if 100 * math.random() <= 75 then
-            if PST:arrHasValue(PST.babyFamiliarItems, selected) then
-                return itemPool:GetCollectible(itemPool:GetLastPool())
+        -- Cosmic Realignment node
+        if PST:cosmicRCharPicked(PlayerType.PLAYER_LILITH) then
+            -- Lilith, 75% chance to reroll follower items
+            if 100 * math.random() <= 75 then
+                if PST:arrHasValue(PST.babyFamiliarItems, selected) then
+                    return itemPool:GetCollectible(itemPool:GetLastPool())
+                end
             end
-        end
-    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY_B) then
-        -- Tainted ???, first floor treasure room guarantees a poop item, second floor onwards is a 50% chance
-        local floor = PST:getLevel():GetStage()
-        if PST:getRoom():GetType() == RoomType.ROOM_TREASURE and (floor == 1 or (floor > 1 and 100 * math.random() < 50)) then
-            local tmpItem = itemPool:GetCollectibleFromList(PST.poopItems, Random() + 1, CollectibleType.COLLECTIBLE_BREAKFAST, true, false)
-            if tmpItem == CollectibleType.COLLECTIBLE_BREAKFAST and not PST:getTreeSnapshotMod("hallowedGroundProc", false) then
-                tmpItem = CollectibleType.COLLECTIBLE_HALLOWED_GROUND
-                PST:addModifiers({ hallowedGroundProc = true }, true)
-            end
-            if tmpItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
-                return tmpItem
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY_B) then
+            -- Tainted ???, first floor treasure room guarantees a poop item, second floor onwards is a 50% chance
+            local floor = PST:getLevel():GetStage()
+            if PST:getRoom():GetType() == RoomType.ROOM_TREASURE and (floor == 1 or (floor > 1 and 100 * math.random() < 50)) then
+                local tmpItem = itemPool:GetCollectibleFromList(PST.poopItems, Random() + 1, CollectibleType.COLLECTIBLE_BREAKFAST, true, false)
+                if tmpItem == CollectibleType.COLLECTIBLE_BREAKFAST and not PST:getTreeSnapshotMod("hallowedGroundProc", false) then
+                    tmpItem = CollectibleType.COLLECTIBLE_HALLOWED_GROUND
+                    PST:addModifiers({ hallowedGroundProc = true }, true)
+                end
+                if tmpItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
+                    return tmpItem
+                end
             end
         end
     end

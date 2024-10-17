@@ -10,6 +10,8 @@ PST.treeScreen = {
     screenH = 0,
     resized = false,
 
+    disabledInputs = {},
+
     -- Camera control
     treeCamera = Vector(-Isaac.GetScreenWidth() / 2, -Isaac.GetScreenHeight() / 2),
     cameraSpeed = 3,
@@ -53,6 +55,8 @@ PST.treeScreen = {
 
     -- Stop rendering the HUD (tree name & level, 'Press H for help', etc.) when true
     hideHUD = false,
+
+    hideNodes = false,
 
     -- List of modules with update/render functionality, each ideally containing Update() or Render() funcs
     modules = {

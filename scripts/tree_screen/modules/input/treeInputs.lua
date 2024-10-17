@@ -12,8 +12,15 @@ function PST.treeScreen:Inputs()
     local currentMenu = menuScreensModule.currentMenu
     local currentMenuModule = menuScreensModule.menus[currentMenu]
 
+    -- Current menu input overrides
+    if currentMenuModule and currentMenuModule.inputOverrides then
+        for _, tmpInput in ipairs(currentMenuModule.inputOverrides) do
+            table.insert(self.disabledInputs, tmpInput)
+        end
+    end
+
     -- Input: Close tree
-    if PST:isKeybindActive(PSTKeybind.CLOSE_TREE) then
+    if PST:isKeybindActive(PSTKeybind.CLOSE_TREE) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.CLOSE_TREE) then
         if self.backupsPopup then
             self.backupsPopup = false
         elseif currentMenuModule and currentMenuModule.OnClose then
@@ -32,19 +39,23 @@ function PST.treeScreen:Inputs()
     end
 
     -- Input: Allocate node
-    self:InputAllocate()
+    if not PST:arrHasValue(self.disabledInputs, PSTKeybind.ALLOCATE_NODE) or self.backupsPopup then
+        self:InputAllocate()
+    end
 
     -- Input: Respec node
-    self:InputRespec()
+    if not PST:arrHasValue(self.disabledInputs, PSTKeybind.RESPEC_NODE) then
+        self:InputRespec()
+    end
 
     -- Input: Faster panning
-    if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
+    if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.PAN_FASTER) then
         self.cameraSpeed = 8 * (1 + 1 - self.zoomScale)
     end
     -- Input: Directional keys/buttons
     if not self.backupsPopup then
         -- UP
-        if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then
+        if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.TREE_PAN_UP) then
             if currentMenu == PSTTreeScreenMenu.NONE then
                 if self.treeCamera.Y > -2000 then
                     self.treeCamera.Y = self.treeCamera.Y - self.cameraSpeed
@@ -54,7 +65,7 @@ function PST.treeScreen:Inputs()
                 menuScreensModule.menuScrollY = math.min(0, menuScreensModule.menuScrollY + math.floor(self.cameraSpeed * 1.5))
             end
         -- DOWN
-        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) then
+        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN, true) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.TREE_PAN_DOWN) then
             if currentMenu == PSTTreeScreenMenu.NONE then
                 if self.treeCamera.Y < 2000 then
                     self.treeCamera.Y = self.treeCamera.Y + self.cameraSpeed
@@ -65,7 +76,7 @@ function PST.treeScreen:Inputs()
             end
         end
         -- LEFT
-        if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
+        if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.TREE_PAN_LEFT) then
             if currentMenu == PSTTreeScreenMenu.NONE then
                 if self.treeCamera.X > -2000 then
                     self.treeCamera.X = self.treeCamera.X - self.cameraSpeed
@@ -73,7 +84,7 @@ function PST.treeScreen:Inputs()
                 end
             end
         -- RIGHT
-        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) then
+        elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT, true) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.TREE_PAN_RIGHT) then
             if currentMenu == PSTTreeScreenMenu.NONE then
                 if self.treeCamera.X < 2000 then
                     self.treeCamera.X = self.treeCamera.X + self.cameraSpeed
@@ -97,7 +108,7 @@ function PST.treeScreen:Inputs()
     end
 
     -- Input: Switch tree
-    if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
+    if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.SWITCH_TREE) then
         local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
         if selectedCharName and PST.trees[selectedCharName] ~= nil then
             if self.currentTree == "global" then
@@ -115,7 +126,7 @@ function PST.treeScreen:Inputs()
     end
 
     -- Input: Toggle tree effects
-    if PST:isKeybindActive(PSTKeybind.TOGGLE_TREE_MODS) then
+    if PST:isKeybindActive(PSTKeybind.TOGGLE_TREE_MODS) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.TOGGLE_TREE_MODS) then
         PST.modData.treeDisabled = not PST.modData.treeDisabled
         if PST.modData.treeDisabled then
             SFXManager():Play(SoundEffect.SOUND_BEEP, 0.6)
@@ -139,18 +150,18 @@ function PST.treeScreen:Inputs()
 
     if Isaac.GetFrameCount() % 2 == 0 then
         -- Input: Zoom in
-        if PST:isKeybindActive(PSTKeybind.ZOOM_IN, true) and self.zoomScale < 1 then
+        if PST:isKeybindActive(PSTKeybind.ZOOM_IN, true) and self.zoomScale < 1 and not PST:arrHasValue(self.disabledInputs, PSTKeybind.ZOOM_IN) then
             self.zoomScale = self.zoomScale + 0.1
             self:UpdateCamZoomOffset()
         -- Input: Zoom out
-        elseif PST:isKeybindActive(PSTKeybind.ZOOM_OUT, true) and self.zoomScale > 0.6 then
+        elseif PST:isKeybindActive(PSTKeybind.ZOOM_OUT, true) and self.zoomScale > 0.6 and not PST:arrHasValue(self.disabledInputs, PSTKeybind.ZOOM_OUT) then
             self.zoomScale = self.zoomScale - 0.1
             self:UpdateCamZoomOffset()
         end
     end
 
     -- Input: Center camera
-    if PST:isKeybindActive(PSTKeybind.CENTER_CAMERA) then
+    if PST:isKeybindActive(PSTKeybind.CENTER_CAMERA) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.CENTER_CAMERA) then
         self:CenterCamera()
     end
 end

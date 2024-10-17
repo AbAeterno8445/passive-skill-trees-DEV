@@ -41,7 +41,9 @@ function PST.treeScreen:Render()
 
     -- Nodes
     self.hoveredNode = nil
-    self.modules.nodeDrawingModule:Render(self)
+    if not self.hideNodes then
+        self.modules.nodeDrawingModule:Render(self)
+    end
 
     -- Submenus
     self.modules.submenusModule:Render(self)

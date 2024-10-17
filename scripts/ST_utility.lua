@@ -813,3 +813,14 @@ end
 function PST:distBetweenPoints(p1, p2)
 	return math.sqrt((p1.X - p2.X)^2 + (p1.Y - p2.Y)^2)
 end
+
+---@param tbl table
+---@param RNG? RNG
+function PST:shuffleList(tbl, RNG)
+	for i = #tbl, 2, -1 do
+	  	local j = math.random(i)
+		if RNG then j = RNG:RandomInt(1, i) end
+	  	tbl[i], tbl[j] = tbl[j], tbl[i]
+	end
+	return tbl
+end

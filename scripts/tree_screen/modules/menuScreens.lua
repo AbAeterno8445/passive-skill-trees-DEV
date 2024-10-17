@@ -5,7 +5,8 @@ PSTTreeScreenMenu = {
     NONE = "",
     CHANGELOG = "changelog",
     TOTALMODS = "totalMods",
-    HELP = "helpmenu"
+    HELP = "helpmenu",
+    EXPEDITION = "expeditionMenu"
 }
 
 -- Hack to provide VSCode autocomplete functionality on modules (wtf?)
@@ -19,7 +20,8 @@ local menuScreensModule = {
     menus = {
         [PSTTreeScreenMenu.CHANGELOG] = moduleRequire("scripts.tree_screen.modules.menu_screens.changelogScreen"),
         [PSTTreeScreenMenu.TOTALMODS] = moduleRequire("scripts.tree_screen.modules.menu_screens.totalmodsScreen"),
-        [PSTTreeScreenMenu.HELP] = moduleRequire("scripts.tree_screen.modules.menu_screens.helpScreen")
+        [PSTTreeScreenMenu.HELP] = moduleRequire("scripts.tree_screen.modules.menu_screens.helpScreen"),
+        [PSTTreeScreenMenu.EXPEDITION] = moduleRequire("scripts.tree_screen.modules.menu_screens.expeditionScreen")
     }
 }
 
@@ -37,6 +39,14 @@ end
 
 function menuScreensModule:CloseMenu()
     self.currentMenu = PSTTreeScreenMenu.NONE
+end
+
+---@param tScreen PST.treeScreen
+function menuScreensModule:Update(tScreen)
+    local currentMenu = self.menus[self.currentMenu]
+    if currentMenu and currentMenu.Update then
+        currentMenu:Update(tScreen)
+    end
 end
 
 ---@param tScreen PST.treeScreen
