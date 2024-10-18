@@ -2363,6 +2363,9 @@ function PST:onUpdate()
 	if PST.delayedCacheUpdate > 0 and gameFrame > PST.delayedCacheUpdate + 1 then
 		PST.delayedCacheUpdate = 0
 		player:AddCacheFlags(PST.delayedCacheFlags, true)
+		if player:GetOtherTwin() then
+			player:GetOtherTwin():AddCacheFlags(PST.delayedCacheFlags, true)
+		end
 		PST.delayedCacheFlags = 0
 	end
 end

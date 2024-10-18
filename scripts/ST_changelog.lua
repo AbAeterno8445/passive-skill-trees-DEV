@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.3.24",
+        "- Fixed secondary characters (such as Esau) not getting their stats updated by certain effects.",
+        "",
+
         "v0.3.23",
         "- Refactored the entirety of the tree rendering code, in preparation for future features.",
         "It should all work the same as before, but let me know if issues pop up.",
