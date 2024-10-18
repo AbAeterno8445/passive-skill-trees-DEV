@@ -75,9 +75,9 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
     end
 
     local descW = longestStrWidth + 4
-    local descH = ((PST.miniFont:GetLineHeight() + 2) * (#description + 1)) * tmpScale + 4
-    if not absolute and descH + offY > paramY / 2 - 8 then
-        drawY = drawY - (descH + offY - paramY / 2 + 8)
+    local descH = ((PST.miniFont:GetLineHeight() + 1) * (#description + 1)) * tmpScale + 4
+    if not absolute and descH + offY > paramY / 2 - 24 then
+        drawY = drawY - (descH + offY - paramY / 2 + 24)
     end
 
     -- Scale down if box overflows screen width

@@ -11,6 +11,7 @@ function PST:preSlotCollision(slot, collider, low)
     end
 end
 
+---@param slot EntitySlot
 function PST:onSlotUpdate(slot)
     local isBeggar = slot.Variant == SlotVariant.BEGGAR or slot.Variant == SlotVariant.BATTERY_BUM or
     slot.Variant == SlotVariant.ROTTEN_BEGGAR or slot.Variant == SlotVariant.DEVIL_BEGGAR or
@@ -61,25 +62,21 @@ function PST:onSlotUpdate(slot)
             -- Impromptu Gambler node (Cain's tree)
             if PST:getTreeSnapshotMod("impromptuGambler", false) then
                 if PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
-                    player:AddCoins(-3)
+                    player:AddCoins(-2)
+                    lastResources.coins = player:GetNumCoins()
 
                     -- Remove natural treasure room items
-                    if #PST.specialNodes.impromptuGamblerItems > 0 and not PST:getTreeSnapshotMod("impromptuGamblerItemRemoved", false) then
+                    local IG_roomItemsRemoved = PST:getTreeSnapshotMod("impromptuGamblerItemsRemoved", nil)
+                    local roomIdx = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
+                    if IG_roomItemsRemoved and not PST:arrHasValue(IG_roomItemsRemoved, roomIdx) then
                         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
                             if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
                             not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
-                                local tmpX = math.floor(tmpEntity.Position.X / 40)
-                                local tmpY = math.floor(tmpEntity.Position.Y / 40)
-                                for _, itemPos in ipairs(PST.specialNodes.impromptuGamblerItems) do
-                                    if tmpX == itemPos.X and tmpY == itemPos.Y then
-                                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
-                                        tmpEntity:Remove()
-                                    end
-                                end
+                                Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+                                tmpEntity:Remove()
                             end
                         end
-                        PST.specialNodes.impromptuGamblerItems = {}
-                        PST:addModifiers({ impromptuGamblerItemRemoved = true }, true)
+                        table.insert(IG_roomItemsRemoved, roomIdx)
                     end
                 end
             end
@@ -129,6 +126,16 @@ function PST:onSlotUpdate(slot)
                 local tmpItem = PST.demonFamiliars[math.random(#PST.demonFamiliars)]
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, tmpItem, Random() + 1)
             end
+        end
+    end
+
+    -- Crane game regenerates item
+    if slot.Variant == SlotVariant.CRANE_GAME and slotSpr:GetAnimation() == "Regenerate" and slotSpr:GetFrame() == 1 then
+        -- Impromptu Gambler node (Cain's tree)
+        if PST:getTreeSnapshotMod("impromptuGambler", false) then
+            local randPool = PST.impromptuGamblerPools[math.random(#PST.impromptuGamblerPools)]
+			local newItem = Game():GetItemPool():GetCollectible(randPool, false, Random() + 1)
+            slot:SetPrizeCollectible(newItem)
         end
     end
 end

@@ -51,6 +51,7 @@ function PST:firstRenderInit()
 	end
 end
 
+PST.impromptuGamblerPools = { ItemPoolType.POOL_TREASURE, ItemPoolType.POOL_SHOP, ItemPoolType.POOL_DEVIL, ItemPoolType.POOL_ANGEL, ItemPoolType.POOL_CRANE_GAME }
 PST.babyFamiliarItems = {
     CollectibleType.COLLECTIBLE_BROTHER_BOBBY, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY,
     CollectibleType.COLLECTIBLE_HEADLESS_BABY, CollectibleType.COLLECTIBLE_LITTLE_STEVEN,
@@ -619,8 +620,8 @@ function PST:resetMods()
         healOnClear = 0,
 		---- Cain's tree ----
 		impromptuGambler = false,
-		impromptuGamblerProc = false,
-		impromptuGamblerItemRemoved = false,
+		impromptuGamblerProcs = {},
+		impromptuGamblerItemsRemoved = {},
 		thievery = false,
 		thieveryGreedProc = false,
 		fickleFortune = false,
@@ -1353,7 +1354,6 @@ function PST:resetMods()
 	-- Holds temporary data for allocated special nodes
 	PST.specialNodes = {
 		TJacobEsauSpawned = false,
-		impromptuGamblerItems = {}, -- Hold natural items in treasure room
 		fickleFortuneVanish = false,
 		deadBirdActive = false,
 		bossHits = 0,
