@@ -10,11 +10,57 @@ local function reversedipairs(t)
     return reversedipairsiter, t, #t + 1
 end
 
+-- Implicit modifiers applied to Astral Expeditions 
+function PST:getExpeditionImplicits(depth)
+    local implicits = {}
+
+    -- Starmight requirement
+    implicits.starmightReq = math.min(900, depth * 40)
+    -- Depths 2+ monster HP
+    if depth >= 2 then
+        implicits.mobHP = depth * 2
+    end
+    -- Depths 3+ monster speed
+    if depth >= 3 then
+        implicits.mobSpeed = math.min(30, math.floor(depth / 3) * 2)
+    end
+    -- Depths 4+ chance to receive a curse when entering a floor
+    if depth >= 4 then
+        implicits.floorCurse = math.min(30, depth - 3)
+    end
+    -- Depths 6+ coin, key, bomb, heart scarcity
+    if depth >= 6 then
+        implicits.pickupScarcity = math.min(33, depth - 3)
+    end
+    -- Depths 8+ remove random quality 4 items from the pool when starting a run
+    if depth >= 8 then
+        implicits.quality4Remove = math.min(28, depth - 7)
+    end
+    -- Depths 10 & 20, start with an additional broken heart, and heartbreak can no longer show up
+    if depth >= 10 then
+        implicits.heartbreak = 1
+        if depth >= 20 then implicits.heartbreak = 2 end
+    end
+    -- -expedition starting attempts
+    local lessAttemptsList = {5, 10, 15, 25, 40}
+    implicits.lessAttempts = 0
+    for _, tmpThreshold in ipairs(lessAttemptsList) do
+        if depth >= tmpThreshold then
+            implicits.lessAttempts = implicits.lessAttempts + 1
+        end
+    end
+    -- Depths 15+ monster damage reduction
+    if depth >= 15 then
+        implicits.mobDmgRed = math.min(60, math.floor((depth - 14) * 1.5))
+    end
+    return implicits
+end
+
 -- Generate a set of nodes for an astral expedition
 ---@param depth number
 ---@param seed? integer
----@param modifiers? table
-function PST:generateExpedition(depth, seed, modifiers)
+---@return PSTExpedition
+function PST:generateExpedition(depth, seed)
     local expSeed = seed or math.random(100000000)
     local expRNG = RNG(expSeed)
     local expLength = math.min(15, 5 + math.floor(depth / 3))
@@ -95,7 +141,7 @@ function PST:generateExpedition(depth, seed, modifiers)
             local tmpObjective = tmpTargetTable[tmpObjectiveName]
             while tmpObjective.minDepth and depth < tmpObjective.minDepth do
                 tmpObjectiveName = tmpSrcTable[expRNG:RandomInt(1, #tmpSrcTable)]
-                tmpObjective = tmpSrcTable[tmpObjectiveName]
+                tmpObjective = tmpTargetTable[tmpObjectiveName]
             end
             -- Objective variants
             if tmpObjective.variants ~= nil then
@@ -228,8 +274,6 @@ function PST:generateExpedition(depth, seed, modifiers)
 
             -- Middle connections
             if #nextCol > 1 then
-                local reachableNodes = {}
-
                 -- Randomly loop reachable nodes forwards or backwards to prevent bias towards top-to-down connections
                 local flip = expRNG:RandomFloat() < 0.5
                 local tmpIter = ipairs
@@ -239,7 +283,7 @@ function PST:generateExpedition(depth, seed, modifiers)
                     -- Determine if next node is close enough to form connection (up to 3), and that no connections block access to it
                     local myHeight = #nodeCol - (nodeID - 1) * 2
                     local nextHeight = #nextCol - (nextNodeID - 1) * 2
-                    if math.abs(myHeight - nextHeight) <= 3 and #reachableNodes < 3 then
+                    if math.abs(myHeight - nextHeight) <= 3 and #tmpNode.connections < 3 then
                         local connectionPossible = true
 
                         -- Determine if a connection here would collide with previous connections
@@ -254,7 +298,6 @@ function PST:generateExpedition(depth, seed, modifiers)
                             end
                         end
                         if connectionPossible then
-                            table.insert(reachableNodes, nextNodeID)
                             table.insert(madeConnections, { col = nodeColID, startHeight = myHeight, endHeight = nextHeight })
                             table.insert(tmpNode.connections, nextNodeID)
                         end
@@ -270,10 +313,20 @@ function PST:generateExpedition(depth, seed, modifiers)
         connections = {1, 2, 3}
     }})
 
+    -- Expedition implicit modifiers
+    local expImplicits = PST:getExpeditionImplicits(depth)
+    -- Expedition starting attempts
+    local expAttempts = 8 - expImplicits.lessAttempts
+
     return {
         nodes = expNodes,
         seed = expSeed,
-        modifiers = modifiers
+        implicits = expImplicits,
+        startAttempts = expAttempts,
+        attempts = expAttempts,
+        boons = {},
+        curses = {},
+        items = {}
     }
 end
 

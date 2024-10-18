@@ -1,3 +1,7 @@
+-- Hack to provide VSCode autocomplete functionality on modules (wtf?)
+local moduleRequire = require
+moduleRequire = include
+
 local expeditionScreen = {
     BGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true),
     expNodeSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_nodes.anm2", true),
@@ -14,7 +18,7 @@ local expeditionScreen = {
 
     inputOverrides = {
         PSTKeybind.TREE_PAN_DOWN, PSTKeybind.TREE_PAN_LEFT, PSTKeybind.TREE_PAN_RIGHT, PSTKeybind.TREE_PAN_UP,
-        PSTKeybind.CENTER_CAMERA, PSTKeybind.ZOOM_IN, PSTKeybind.ZOOM_OUT, PSTKeybind.PAN_FASTER
+        PSTKeybind.CENTER_CAMERA, PSTKeybind.ZOOM_IN, PSTKeybind.ZOOM_OUT, PSTKeybind.PAN_FASTER, PSTKeybind.TREE_TAB
     },
 
     -- Currently hovered node data
@@ -25,7 +29,7 @@ local expeditionScreen = {
         "Expedition",
         "Effects"
     },
-    currentTab = "Expedition",
+    currentTab = 1,
     currentDepth = 1,
 }
 
@@ -33,6 +37,10 @@ local expeditionScreen = {
 expeditionScreen.BGSprite:Play("Pixel", true)
 expeditionScreen.expLinkSprite:Play("Idle", true)
 expeditionScreen.itemRewardSprite:Play("ShopIdle", true)
+
+-- Tab rendering funcs
+local expedScreenMainTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenMainTab")
+local expedScreenEffectTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenEffectTab")
 
 -- Camera funcs
 function expeditionScreen:UpdateCamZoomOffset()
@@ -58,7 +66,7 @@ function expeditionScreen:CenterCamera()
 end
 
 function expeditionScreen:OnOpen(openData)
-    self.currentTab = "Expedition"
+    self.currentTab = 1
 end
 
 -- Input processing
@@ -97,6 +105,14 @@ function expeditionScreen:OnInput()
         end
     end
 
+    -- Input: Change tab
+    if PST:isKeybindActive(PSTKeybind.TREE_TAB) then
+        self.currentTab = self.currentTab + 1
+        if self.currentTab > #self.tabs then self.currentTab = 1 end
+        self:CenterCamera()
+        SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7)
+    end
+
     if Isaac.GetFrameCount() % 2 == 0 then
         -- Input: Zoom in
         if PST:isKeybindActive(PSTKeybind.ZOOM_IN, true) and self.zoomScale < 1 then
@@ -127,94 +143,35 @@ function expeditionScreen:Update(tScreen)
     end
 end
 
-local expNodeRewardFrame = {
-    [PSTExpNodeRewardType.EXP] = 0,
-    [PSTExpNodeRewardType.OBOLS] = 1,
-    [PSTExpNodeRewardType.BOON] = 2,
-    [PSTExpNodeRewardType.ATTEMPTS] = 3
-}
-
-local nodeSpacing = Vector(80, 60)
 ---@param tScreen PST.treeScreen
 function expeditionScreen:Render(tScreen)
     local expData = PST.modData.expeditionsData[self.currentDepth]
     if expData then
-        -- Drawing position func
-        local function PST_getNodePos(col, colTotal, row)
-            local xPos = self.camCenterX + (col - 1) * nodeSpacing.X - self.camera.X - self.camZoomOffset.X
-            local yPos = self.camCenterY - self.camera.Y - (colTotal + 1) * (nodeSpacing.Y / 2) + row * nodeSpacing.Y - self.camZoomOffset.Y
-            return Vector(xPos, yPos) * self.zoomScale
+        -- Expedition tab
+        if self.currentTab == 1 then
+            expedScreenMainTab(expData, self, tScreen)
+        -- Effects tab
+        elseif self.currentTab == 2 then
+            expedScreenEffectTab(expData, self, tScreen)
         end
+    end
 
-        -- Draw links
-        for i, tmpColumn in ipairs(expData.nodes) do
-            local nextColumn = expData.nodes[i + 1]
-            if nextColumn then
-                for j, tmpNode in ipairs(tmpColumn) do
-                    if #tmpNode.connections > 0 then
-                        for _, targetNode in ipairs(tmpNode.connections) do
-                            local linkBeam = Beam(self.expLinkSprite, 0, false, false)
-                            local startPos = PST_getNodePos(i, #tmpColumn, j)
-                            local endPos = PST_getNodePos(i + 1, #nextColumn, targetNode)
-                            local dist = math.ceil(startPos:Distance(endPos))
-                            linkBeam:Add(startPos, 0)
-                            linkBeam:Add(endPos, math.min(129, dist))
-                            linkBeam:Render()
-                        end
-                    end
-                end
-            end
+    -- HUD: Tabs
+    local tabW, tabH = 50, 20
+    self.BGSprite.Scale = Vector(tabW, tabH)
+    for i, tmpTab in ipairs(self.tabs) do
+        local drawX = tScreen.screenW / 2 - (#self.tabs * tabW) / 2 + ((i - 1) * tabW)
+
+        local tmpColor = KColor(1, 1, 1, 1)
+        local tmpBGColor = Color(1, 1, 1, 1, 0.1, 0.1, 0.1)
+        if i == self.currentTab then
+            tmpColor = KColor(0.5, 0.75, 1, 1)
+            tmpBGColor = Color(1, 1, 1, 1, 0.1, 0.45, 0.6)
         end
+        self.BGSprite.Color = tmpBGColor
+        self.BGSprite:Render(Vector(drawX, 0))
 
-        -- Draw nodes
-        for i, tmpColumn in ipairs(expData.nodes) do
-            for j, tmpNode in ipairs(tmpColumn) do
-                local drawPos = PST_getNodePos(i, #tmpColumn, j)
-                self.expNodeSprite:SetFrame("Nodes", tmpNode.nodeType)
-                self.expNodeSprite:Render(drawPos)
-
-                if tmpNode.rewardType ~= PSTExpNodeRewardType.ITEM then
-                    if expNodeRewardFrame[tmpNode.rewardType] ~= nil then
-                        self.expNodeSprite:SetFrame("Icons", expNodeRewardFrame[tmpNode.rewardType])
-                        self.expNodeSprite:Render(drawPos - Vector.One)
-                    end
-                elseif tmpNode.rewardData then
-                    local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpNode.rewardData)
-                    if itemCfg then
-                        self.itemRewardSprite:ReplaceSpritesheet(1, itemCfg.GfxFileName, true)
-                        self.itemRewardSprite:Render(drawPos - Vector(1, -8))
-                    end
-                end
-
-                -- Hovered node
-                local nodeHalf = 16 * tScreen.zoomScale
-                if self.camCenterX >= drawPos.X - nodeHalf and self.camCenterX <= drawPos.X + nodeHalf and
-                self.camCenterY >= drawPos.Y - nodeHalf and self.camCenterY <= drawPos.Y + nodeHalf then
-                    self.hoveredNode = tmpNode
-                end
-            end
-        end
-
-        -- Cursor
-        if self.hoveredNode ~= nil then
-            tScreen.cursorSprite:Play("Clicked", true)
-        else
-            tScreen.cursorSprite:Play("Idle", true)
-        end
-        tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
-
-        -- Hovered node description
-        if self.hoveredNode ~= nil then
-            local nodeName = "Expedition Node"
-            local nodeDesc = {}
-            if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
-                nodeName = "Arcane Astrolabe"
-                nodeDesc = {"Expedition Depth: " .. tostring(self.currentDepth)}
-            else
-                nodeDesc = PST:getExpNodeDescription(self.hoveredNode, self.currentDepth)
-            end
-            tScreen:DrawNodeBox(nodeName, nodeDesc, tScreen.screenW, tScreen.screenH)
-        end
+        PST.miniFont:DrawString(tmpTab, drawX, 2, tmpColor, tabW, true)
     end
 end
 

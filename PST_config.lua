@@ -125,6 +125,10 @@ PST.config = {
         toggleChangelog = {
             keyboardButton = Keyboard.KEY_C,
             shift = true,
+        },
+        tab = {
+            keyboardButton = Keyboard.KEY_TAB,
+            controllerAction = ButtonAction.ACTION_RESTART
         }
     }
 }
@@ -148,7 +152,8 @@ PSTKeybind = {
     ZOOM_IN = "zoomIn",
     ZOOM_OUT = "zoomOut",
     TOGGLE_TOTAL_MODS = "toggleTotalMods",
-    TOGGLE_CHANGELOG = "toggleChangelog"
+    TOGGLE_CHANGELOG = "toggleChangelog",
+    TREE_TAB = "tab"
 }
 
 -- Support for Mod Config Menu

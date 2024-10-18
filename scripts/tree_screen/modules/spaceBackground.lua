@@ -60,6 +60,14 @@ function spaceBGModule:Update(tScreen)
         self.treeSpaceSprite.Color.B = self.treeSpaceSprite.Color.B - colorStep
         self.treeStarfieldSprite.Color.B = self.treeStarfieldSprite.Color.B - colorStep
     end
+    local targetAlpha = self.targetSpaceColor.A / 2
+    if self.treeSpaceSprite.Color.A < targetAlpha then
+        self.treeSpaceSprite.Color.A = self.treeSpaceSprite.Color.A + colorStep / 2
+        self.treeStarfieldSprite.Color.A = self.treeStarfieldSprite.Color.A + colorStep / 2
+    elseif self.treeSpaceSprite.Color.A > targetAlpha then
+        self.treeSpaceSprite.Color.A = self.treeSpaceSprite.Color.A - colorStep / 2
+        self.treeStarfieldSprite.Color.A = self.treeStarfieldSprite.Color.A - colorStep / 2
+    end
 
     -- Space background movement
     if self.spaceOffStep < self.spaceOffTotalSteps / 2 then

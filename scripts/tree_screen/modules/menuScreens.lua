@@ -38,6 +38,10 @@ function menuScreensModule:SwitchToMenu(targetMenu, openData)
 end
 
 function menuScreensModule:CloseMenu()
+    local currentMenu = self.menus[self.currentMenu]
+    if currentMenu and currentMenu.OnClose then
+        currentMenu:OnClose()
+    end
     self.currentMenu = PSTTreeScreenMenu.NONE
 end
 

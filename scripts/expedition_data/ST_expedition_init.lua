@@ -18,6 +18,7 @@ PSTExpNodeType = {
     MIXED = 5
 }
 
+-- Expedition node class
 ---@class PSTExpNode
 ---@field nodeType PSTExpNodeType
 ---@field objective? table
@@ -25,6 +26,17 @@ PSTExpNodeType = {
 ---@field rewardType PSTExpNodeRewardType
 ---@field rewardData? any
 ---@field connections number[]
+
+-- Expedition class
+---@class PSTExpedition
+---@field nodes PSTExpNode[][]
+---@field seed integer
+---@field implicits? table
+---@field startAttempts number
+---@field attempts number
+---@field boons number[]
+---@field curses number[]
+---@field items CollectibleType[]
 
 -- List of available expedition boons
 PST.expeditionBoons = {

@@ -218,6 +218,12 @@ function PST:load()
 		for k, v in pairs(PST.config) do
 			if modConfigSave.config[k] == nil then
 				modConfigSave.config[k] = v
+			elseif type(v) == "table" then
+				for subK, subV in pairs(v) do
+					if modConfigSave.config[k][subK] == nil then
+						modConfigSave.config[k][subK] = subV
+					end
+				end
 			end
 		end
 		PST.config = modConfigSave.config

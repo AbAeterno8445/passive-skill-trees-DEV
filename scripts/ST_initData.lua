@@ -1541,6 +1541,7 @@ function PST:resetData()
 		ancientRewards = {},
 
 		-- Astral Expeditions
+		---@type PSTExpedition[]
 		expeditionsData = { [0] = {} },
 
 		-- For initializing new unsupported characters, so they can gain XP
