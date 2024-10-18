@@ -18,7 +18,7 @@ local expeditionScreen = {
     },
 
     -- Currently hovered node data
-    ---@type any
+    ---@type PSTExpNode|nil
     hoveredNode = nil,
 
     tabs = {
@@ -120,6 +120,8 @@ function expeditionScreen:Update(tScreen)
     tScreen.hideHUD = true
     tScreen.hideNodes = true
 
+    self.hoveredNode = nil
+
     if PST.modData.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
     end
@@ -137,6 +139,7 @@ local nodeSpacing = Vector(80, 60)
 function expeditionScreen:Render(tScreen)
     local expData = PST.modData.expeditionsData[self.currentDepth]
     if expData then
+        -- Drawing position func
         local function PST_getNodePos(col, colTotal, row)
             local xPos = self.camCenterX + (col - 1) * nodeSpacing.X - self.camera.X - self.camZoomOffset.X
             local yPos = self.camCenterY - self.camera.Y - (colTotal + 1) * (nodeSpacing.Y / 2) + row * nodeSpacing.Y - self.camZoomOffset.Y
@@ -182,11 +185,36 @@ function expeditionScreen:Render(tScreen)
                         self.itemRewardSprite:Render(drawPos - Vector(1, -8))
                     end
                 end
+
+                -- Hovered node
+                local nodeHalf = 16 * tScreen.zoomScale
+                if self.camCenterX >= drawPos.X - nodeHalf and self.camCenterX <= drawPos.X + nodeHalf and
+                self.camCenterY >= drawPos.Y - nodeHalf and self.camCenterY <= drawPos.Y + nodeHalf then
+                    self.hoveredNode = tmpNode
+                end
             end
         end
 
         -- Cursor
+        if self.hoveredNode ~= nil then
+            tScreen.cursorSprite:Play("Clicked", true)
+        else
+            tScreen.cursorSprite:Play("Idle", true)
+        end
         tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
+
+        -- Hovered node description
+        if self.hoveredNode ~= nil then
+            local nodeName = "Expedition Node"
+            local nodeDesc = {}
+            if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
+                nodeName = "Arcane Astrolabe"
+                nodeDesc = {"Expedition Depth: " .. tostring(self.currentDepth)}
+            else
+                nodeDesc = PST:getExpNodeDescription(self.hoveredNode, self.currentDepth)
+            end
+            tScreen:DrawNodeBox(nodeName, nodeDesc, tScreen.screenW, tScreen.screenH)
+        end
     end
 end
 

@@ -786,6 +786,14 @@ function PST:RGBColor(r, g, b, a)
 	return Color(r / 255, g / 255, b / 255, a or 1)
 end
 
+---@param r number
+---@param g number
+---@param b number
+---@param a? number
+function PST:RGBKColor(r, g, b, a)
+	return KColor(r / 255, g / 255, b / 255, a or 1)
+end
+
 -- Brian Kernighan's algorithm
 function PST:countSetBits(n)
 	if (n == 0) then return 0
@@ -823,4 +831,14 @@ function PST:shuffleList(tbl, RNG)
 	  	tbl[i], tbl[j] = tbl[j], tbl[i]
 	end
 	return tbl
+end
+
+-- Format a string utilizing curly braces to place variables
+---@param str string String to parse, such as "I'm looking for the value {{targetValue}}"
+---@param values table Table of values to format into the string, such as { targetValue = 123 }
+function PST:formatString(str, values)
+	local result = str:gsub("{{(%w+)}}", function(key)
+        return values[key] or ""
+    end)
+	return result
 end

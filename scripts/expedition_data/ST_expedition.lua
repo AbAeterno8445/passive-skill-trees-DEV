@@ -83,7 +83,7 @@ function PST:generateExpedition(depth, seed, modifiers)
             end
 
             -- Assign objective
-            local newObjective = { name = "", reqs = {} }
+            local newObjective = { name = "", req = 0 }
             local tmpSrcTable = PST.expeditionObjectiveList
             local tmpTargetTable = PST.expeditionObjectives
             if newNode.nodeType == PSTExpNodeType.FINAL then
@@ -124,11 +124,9 @@ function PST:generateExpedition(depth, seed, modifiers)
                 end
             end
 
-            -- Objective requirements
+            -- Objective requirements & assignment
             if tmpObjective.reqFunc then
-                newObjective.reqs = tmpObjective.reqFunc(depth, col)
-            end
-            if #newObjective.reqs > 0 then
+                newObjective.req = tmpObjective.reqFunc(depth, col)
                 newObjective.name = tmpObjectiveName
                 newNode.objective = newObjective
             end
@@ -281,4 +279,103 @@ end
 
 function PST:resetExpedition(depth)
     PST.modData.expeditionsData[depth] = PST:generateExpedition(depth)
+end
+
+---@param nodeData PSTExpNode
+function PST:getExpNodeDescription(nodeData, depth)
+    local tmpDescription = {}
+
+    -- Objective
+    if nodeData.objective and nodeData.objective.name then
+        local objectiveData = PST.expeditionObjectives[nodeData.objective.name]
+        if not objectiveData then
+            objectiveData = PST.expeditionObjectivesFinal[nodeData.objective.name]
+        end
+        if objectiveData then
+            local tmpColor = PST:RGBKColor(57, 150, 255)
+            local objProgress = 0
+            --[[if expeditionData.currentNode and expeditionData.currentNode.progress then
+                objProgress = expeditionData.currentNode.progress
+            end]]
+            local progressStr = tostring(objProgress) .. "/" .. tostring(nodeData.objective.req)
+            table.insert(tmpDescription, {"Objective:", tmpColor})
+            if type(objectiveData.description) == "table" then
+                for _, tmpLine in ipairs(objectiveData.description) do
+                    local formattedLine = PST:formatString(tmpLine, { progress = progressStr })
+                    table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
+                end
+            else
+                local formattedLine = PST:formatString(objectiveData.description, { progress = progressStr })
+                table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
+            end
+        end
+    end
+
+    -- Curse
+    if nodeData.curse then
+        local curseData = PST.expeditionCurses[nodeData.curse]
+        if curseData then
+            local tmpColor = PST:RGBKColor(255, 80, 93)
+            table.insert(tmpDescription, {"Curse of " .. curseData.name .. ":", tmpColor})
+            if type(curseData.description) == "table" then
+                for _, tmpLine in ipairs(curseData.description) do
+                    local formattedDesc = PST:formatString(tmpLine, curseData.modsFunc(depth))
+                    table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
+                end
+            else
+                local formattedDesc = PST:formatString(curseData.description, curseData.modsFunc(depth))
+                table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
+            end
+        end
+    end
+
+    -- Reward
+    local tmpColor = PST:RGBKColor(129, 255, 129)
+    table.insert(tmpDescription, {"Reward:", tmpColor})
+
+    -- Reward: Boon
+    if nodeData.rewardType == PSTExpNodeRewardType.BOON then
+        local boonData = PST.expeditionBoons[nodeData.rewardData]
+        if boonData then
+            table.insert(tmpDescription, {"   Gain Boon of " .. boonData.name .. ":", tmpColor})
+            if type(boonData.description) == "table" then
+                for _, tmpLine in ipairs(boonData.description) do
+                    local formattedDesc = PST:formatString(tmpLine, boonData.mods)
+                    table.insert(tmpDescription, {"      " .. formattedDesc, tmpColor})
+                end
+            else
+                local formattedDesc = PST:formatString(boonData.description, boonData.mods)
+                table.insert(tmpDescription, {"      " .. formattedDesc, tmpColor})
+            end
+        end
+    -- Reward: Obols
+    elseif nodeData.rewardType == PSTExpNodeRewardType.OBOLS then
+        table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Arcane Obols", tmpColor})
+    -- Reward: Exp
+    elseif nodeData.rewardType == PSTExpNodeRewardType.EXP then
+        table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " EXP", tmpColor})
+    -- Reward: Attempts
+    elseif nodeData.rewardType == PSTExpNodeRewardType.ATTEMPTS then
+        table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Expedition Attempts", tmpColor})
+    -- Reward: Item
+    elseif nodeData.rewardType == PSTExpNodeRewardType.ITEM then
+        local shownItem = false
+        local itemCfg = Isaac.GetItemConfig():GetCollectible(nodeData.rewardData)
+        if itemCfg then
+            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+			if itemName ~= "StringTable::InvalidKey" then
+				table.insert(tmpDescription, {"   Add " .. itemName .. " to this Expedition", tmpColor})
+                shownItem = true
+			end
+        end
+        if not shownItem then
+            table.insert(tmpDescription, {"   Add shown item to this Expedition", tmpColor})
+        end
+    end
+    -- Boon Upgrade node
+    if nodeData.nodeType == PSTExpNodeType.BOONUPGRADE or nodeData.nodeType == PSTExpNodeType.MIXED then
+        table.insert(tmpDescription, {"   +1 Boon upgrade point", tmpColor})
+    end
+
+    return tmpDescription
 end

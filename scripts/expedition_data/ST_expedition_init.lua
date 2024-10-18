@@ -30,56 +30,56 @@ PSTExpNodeType = {
 PST.expeditionBoons = {
     {
         name = "Wellbeing",
-        description = "+%d%% all stats.",
+        description = "+{{allstatsPerc}}% all stats.",
         spriteFrame = 0,
         mods = { allstatsPerc = 7 },
         upgradedMods = { allstatsPerc = 12 }
     },
     {
         name = "Damage",
-        description = "+%d%% damage.",
+        description = "+{{damagePerc}}% damage.",
         spriteFrame = 1,
         mods = { damagePerc = 10 },
         upgradedMods = { damagePerc = 16 }
     },
     {
         name = "Speed",
-        description = "+%d%% speed.",
+        description = "+{{speedPerc}}% speed.",
         spriteFrame = 2,
         mods = { speedPerc = 10 },
         upgradedMods = { speedPerc = 16 }
     },
     {
         name = "Tears",
-        description = "+%d%% tears.",
+        description = "+{{tearsPerc}}% tears.",
         spriteFrame = 3,
         mods = { tearsPerc = 10 },
         upgradedMods = { tearsPerc = 16 }
     },
     {
         name = "Range",
-        description = "+%d%% range.",
+        description = "+{{rangePerc}}% range.",
         spriteFrame = 4,
         mods = { rangePerc = 10 },
         upgradedMods = { rangePerc = 16 }
     },
     {
         name = "Luck",
-        description = "+%d%% luck.",
+        description = "+{{luckPerc}}% luck.",
         spriteFrame = 5,
         mods = { luckPerc = 10 },
         upgradedMods = { luckPerc = 16 }
     },
     {
         name = "Abundant Obols",
-        description = "Obols are twice as likely to drop within runs. +%d%% dropped obols.",
+        description = "Obols are twice as likely to drop within runs. +{{boonAbundantObols}}% dropped obols.",
         spriteFrame = 6,
         mods = { boonAbundantObols = 20 },
         upgradedMods = { boonAbundantObols = 50 }
     },
     {
         name = "Intangibility",
-        description = "When taking damage, %d%% chance for the invincibility frames to last 3x as long.",
+        description = "When taking damage, {{boonIntangibility}}% chance for the invincibility frames to last 3x as long.",
         spriteFrame = 7,
         mods = { boonIntangibility = 50 },
         upgradedMods = { boonIntangibility = 80 }
@@ -87,8 +87,8 @@ PST.expeditionBoons = {
     {
         name = "Mercy",
         description = {
-            "When hitting monsters and bosses affected by any status effect, %d%% chance to execute them if",
-            "their HP is below %d%%."
+            "When hitting monsters and bosses affected by any status effect, {{boonMercyChance}}% chance to execute them if",
+            "their HP is below {{boonMercyHP}}%."
         },
         spriteFrame = 8,
         mods = { boonMercyChance = 12, boonMercyHP = 15 },
@@ -96,7 +96,7 @@ PST.expeditionBoons = {
     },
     {
         name = "the Aegis",
-        description = "Block the first %d hits you receive every floor.",
+        description = "Block the first {{boonAegis}} hits you receive every floor.",
         spriteFrame = 9,
         mods = { boonAegis = 2 },
         upgradedMods = { boonAegis = 3 }
@@ -104,15 +104,15 @@ PST.expeditionBoons = {
     {
         name = "Generosity",
         description = "The first item you purchase in the run is free, including devil deals.",
-        upgradedDescription = "The first %d items you purchase in the run are free, including devil deals.",
+        upgradedDescription = "The first {{boonGenerosity}} items you purchase in the run are free, including devil deals.",
         spriteFrame = 10,
         mods = { boonGenerosity = 1 },
         upgradedMods = { boonGenerosity = 2 }
     },
     {
         name = "Protection",
-        description = "Gain a Holy Mantle shield every 2 floors. +10%% speed while holy mantle is active.",
-        upgradedDescription = "Gain a Holy Mantle shield every floor. +15%% speed while holy mantle is active.",
+        description = "Gain a Holy Mantle shield every 2 floors. +10% speed while holy mantle is active.",
+        upgradedDescription = "Gain a Holy Mantle shield every floor. +15% speed while holy mantle is active.",
         spriteFrame = 11,
         mods = { boonProtection = 1 },
         upgradedMods = { boonProtection = 2 }
@@ -120,8 +120,8 @@ PST.expeditionBoons = {
     {
         name = "Lethargy",
         description = {
-            "%d%% chance to slow enemies for %d seconds on hit.",
-            "Your minimum speed is now %.2f."
+            "{{boonLethargyChance}}% chance to slow enemies for {{boonLethargyLen}} seconds on hit.",
+            "Your minimum speed is now {{boonLethargyMinSpd}}."
         },
         spriteFrame = 12,
         mods = { boonLethargyChance = 7, boonLethargyLen = 2, boonLethargyMinSpd = 0.8 },
@@ -130,8 +130,8 @@ PST.expeditionBoons = {
     {
         name = "Horror",
         description = {
-            "%d%% chance to fear enemies for %d seconds on hit.",
-            "Feared enemies receive %d%% more damage."
+            "{{boonHorrorChance}}% chance to fear enemies for {{boonHorrorLen}} seconds on hit.",
+            "Feared enemies receive {{boonHorrorDmg}}% more damage."
         },
         spriteFrame = 13,
         mods = { boonHorrorChance = 7, boonHorrorLen = 3, boonHorrorDmg = 10 },
@@ -140,8 +140,8 @@ PST.expeditionBoons = {
     {
         name = "Hypnosis",
         description = {
-            "%d%% chance to charm enemies for %d seconds on hit.",
-            "Charmed enemies receive %d%% more damage."
+            "{{boonHypnoChance}}% chance to charm enemies for {{boonHypnoLen}} seconds on hit.",
+            "Charmed enemies receive {{boonHypnoDmg}}% more damage."
         },
         spriteFrame = 14,
         mods = { boonHypnoChance = 7, boonHypnoLen = 3, boonHypnoDmg = 10 },
@@ -150,7 +150,7 @@ PST.expeditionBoons = {
     {
         name = "Paralysis",
         description = {
-            "%d%% chance to paralyze enemies for %d seconds on hit.",
+            "{{boonParaChance}}% chance to paralyze enemies for {{boonParaLen}} seconds on hit.",
             "Paralyzed enemies take twice as much damage from explosions."
         },
         spriteFrame = 15,
@@ -159,8 +159,7 @@ PST.expeditionBoons = {
     },
     {
         name = "Activity",
-        description = "When using an active item with at least 1 charge, become invulnerable for 1.5 seconds.",
-        upgradedDescription = "When using an active item with at least 1 charge, become invulnerable for 2.5 seconds.",
+        description = "When using an active item with at least 1 charge, become invulnerable for {{boonActivity}} seconds.",
         spriteFrame = 16,
         mods = { boonActivity = 1.5 },
         upgradedMods = { boonActivity = 2.5 }
@@ -168,8 +167,8 @@ PST.expeditionBoons = {
     {
         name = "Plentiful Emptiness",
         description = {
-            "+%d%% damage while the active item slot is empty.",
-            "+%d%% tears while the trinket slot is empty."
+            "+{{boonEmptinessDmg}}% damage while the active item slot is empty.",
+            "+{{boonEmptinessTears}}% tears while the trinket slot is empty."
         },
         spriteFrame = 17,
         mods = { boonEmptinessDmg = 20, boonEmptinessTears = 20 },
@@ -178,8 +177,8 @@ PST.expeditionBoons = {
     {
         name = "Volatility",
         description = {
-            "Enemies take %d%% more damage from explosions.",
-            "Start with an additional %d bombs."
+            "Enemies take {{boonVolatilityDmg}}% more damage from explosions.",
+            "Start with an additional {{boonVolatilityBombs}} bombs."
         },
         spriteFrame = 18,
         mods = { boonVolatilityDmg = 30, boonVolatilityBombs = 2 },
@@ -188,21 +187,21 @@ PST.expeditionBoons = {
     {
         name = "Improvised Charges",
         description = "Consuming a Card, Pill or Rune on use grants all your active items 1 charge.",
-        upgradedDescription = "Consuming a Card, Pill or Rune on use grants all your active items %d charges.",
+        upgradedDescription = "Consuming a Card, Pill or Rune on use grants all your active items {{boonImpCharges}} charges.",
         spriteFrame = 19,
         mods = { boonImpCharges = 1 },
         upgradedMods = { boonImpCharges = 2 }
     },
     {
         name = "the Champion Slayer",
-        description = "+%d%% damage for the current floor when killing a champion monster, up to %d%%",
+        description = "+{{boonChampSlayDmg}}% damage for the current floor when killing a champion monster, up to {{boonChampSlayMax}}%",
         spriteFrame = 20,
         mods = { boonChampSlayDmg = 1, boonChampSlayMax = 15 },
         upgradedMods = { boonChampSlayDmg = 2, boonChampSlayMax = 25 }
     },
     {
         name = "Meek Giants",
-        description = "Bosses start with %d%% of their HP missing.",
+        description = "Bosses start with {{boonMeekGiants}}% of their HP missing.",
         spriteFrame = 21,
         mods = { boonMeekGiants = 12 },
         upgradedMods = { boonMeekGiants = 18 }
@@ -220,7 +219,7 @@ PST.expeditionBoons = {
         description = "You can no longer gain Expedition Curses.",
         upgradedDescription = {
             "You can no longer gain Expedition Curses.",
-            "For each existing Expedition Curse you have, gain +4%% all stats, up to +20%%"
+            "For each existing Expedition Curse you have, gain +4% all stats, up to +20%"
         },
         spriteFrame = 23,
         mods = { boonBlessedExp = 1 },
@@ -228,7 +227,7 @@ PST.expeditionBoons = {
     },
     {
         name = "Wisdom",
-        description = "+%d%% XP gain within expedition runs.",
+        description = "+{{xpgain}}% XP gain within expedition runs.",
         spriteFrame = 24,
         mods = { xpgain = 20 },
         upgradedMods = { xpgain = 40 }
@@ -253,7 +252,7 @@ PST.expeditionBoons = {
 PST.expeditionCurses = {
     {
         name = "Enfeeblement",
-        description = "-{{damagePerc}}% damage.",
+        description = "{{damagePerc}}% damage.",
         spriteFrame = 0,
         modsFunc = function(depth)
             return { damagePerc = -math.min(70, 25 + depth) }
@@ -261,7 +260,7 @@ PST.expeditionCurses = {
     },
     {
         name = "Lethargy",
-        description = "-{{speedPerc}}% speed.",
+        description = "{{speedPerc}}% speed.",
         spriteFrame = 1,
         modsFunc = function(depth)
             return { speedPerc = -math.min(70, 25 + depth) }
@@ -269,7 +268,7 @@ PST.expeditionCurses = {
     },
     {
         name = "Tear Deprivation",
-        description = "-{{tearsPerc}}% tears.",
+        description = "{{tearsPerc}}% tears.",
         spriteFrame = 2,
         modsFunc = function(depth)
             return { tearsPerc = -math.min(70, 25 + depth) }
@@ -277,7 +276,7 @@ PST.expeditionCurses = {
     },
     {
         name = "the Unfortunate",
-        description = "-{{luckPerc}}% luck.",
+        description = "{{luckPerc}}% luck.",
         spriteFrame = 3,
         modsFunc = function(depth)
             return { luckPerc = -math.min(70, 25 + depth) }
@@ -496,171 +495,171 @@ PST.expeditionCurses = {
 -- List of node objectives
 PST.expeditionObjectives = {
     defeatMonsters = {
-        description = "Defeat {{progress1}} monsters.",
+        description = "Defeat {{progress}} monsters.",
         reqFunc = function(depth, column)
             local req = 50 + depth * 2 + column * 2
-            return {req}
+            return req
         end
     },
     defeatChampions = {
-        description = "Defeat {{progress1}} champion monsters.",
+        description = "Defeat {{progress}} champion monsters.",
         reqFunc = function(depth, column)
             local req = 20 + math.floor(depth * 1.2) + math.floor(column * 1.25)
-            return {req}
+            return req
         end
     },
     defeatBosses = {
-        description = "Defeat {{progress1}} bosses.",
+        description = "Defeat {{progress}} bosses.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 3) + math.floor(column / 2)
-            return {req}
+            return req
         end
     },
     challengeRooms = {
-        description = "Clear {{progress1}} challenge rooms.",
+        description = "Clear {{progress}} challenge rooms.",
         reqFunc = function(depth, column)
             local req = 2 + math.floor(depth / 5) + math.floor(column / 6)
-            return {req}
+            return req
         end
     },
     experience = {
-        description = "Earn {{progress1}} experience.",
+        description = "Earn {{progress}} experience.",
         reqFunc = function(depth, column)
             local req = 500 + depth * 150 + column * 100
-            return {req}
+            return req
         end
     },
     obols = {
-        description = "Gather {{progress1}} Arcane Obols.",
+        description = "Gather {{progress}} Arcane Obols.",
         reqFunc = function(depth, column)
             local req = 20 + depth * 5 + column * 2
-            return {req}
+            return req
         end
     },
     coins = {
-        description = "Collect {{progress1}} coins.",
+        description = "Collect {{progress}} coins.",
         reqFunc = function(depth, column)
             local req = 30 + depth * 5 + column * 3
-            return {req}
+            return req
         end
     },
     purchases = {
-        description = "Purchase {{progress1}} items from shops or deals.",
+        description = "Purchase {{progress}} items from shops or deals.",
         reqFunc = function(depth, column)
             local req = 7 + depth + math.floor(column / 3)
-            return {req}
+            return req
         end
     },
     devilDeals = {
-        description = "Make {{progress1}} deals with the devil.",
+        description = "Make {{progress}} deals with the devil.",
         reqFunc = function(depth, column)
             local req = math.min(15, 2 + math.floor(depth / 3) + math.floor(column / 6))
-            return {req}
+            return req
         end
     },
     keys = {
-        description = "Spend {{progress1}} keys.",
+        description = "Spend {{progress}} keys.",
         reqFunc = function(depth, column)
             local req = 7 + math.floor(depth / 2) + math.floor(column / 2)
-            return {req}
+            return req
         end
     },
     beggars = {
-        description = "Assist any type of beggar {{progress1}} times.",
+        description = "Assist any type of beggar {{progress}} times.",
         reqFunc = function(depth, column)
             local req = 10 + depth + math.floor(column / 2)
-            return {req}
+            return req
         end
     },
     explosions = {
-        description = "Kill {{progress1}} enemies with explosions.",
+        description = "Kill {{progress}} enemies with explosions.",
         reqFunc = function(depth, column)
             local req = 10 + depth * 2 + column
-            return {req}
+            return req
         end
     },
     chests = {
-        description = "Open {{progress1}} chests of any type.",
+        description = "Open {{progress}} chests of any type.",
         reqFunc = function(depth, column)
             local req = 12 + depth + math.floor(column / 2)
-            return {req}
+            return req
         end
     },
     goldChests = {
-        description = "Open {{progress1}} golden chests.",
+        description = "Open {{progress}} golden chests.",
         reqFunc = function(depth, column)
             local req = 7 + math.floor(depth / 2) + math.floor(column / 2)
-            return {req}
+            return req
         end
     },
     redChests = {
-        description = "Open {{progress1}} red chests.",
+        description = "Open {{progress}} red chests.",
         reqFunc = function(depth, column)
             local req = 6 + math.floor(depth / 2) + math.floor(column / 3)
-            return {req}
+            return req
         end
     },
     rooms = {
-        description = "Clear {{progress1}} rooms containing at least 5 monsters.",
+        description = "Clear {{progress}} rooms containing at least 5 monsters.",
         reqFunc = function(depth, column)
             local req = 10 + depth * 2 + column
-            return {req}
+            return req
         end
     },
     bossRoomsNoDmg = {
-        description = "Clear {{progress1}} boss rooms without taking damage.",
+        description = "Clear {{progress}} boss rooms without taking damage.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 2) + math.floor(column / 3)
-            return {req}
+            return req
         end
     },
     cardsPillsRunes = {
-        description = "Use {{progress1}} cards, pills or runes.",
+        description = "Use {{progress}} cards, pills or runes.",
         reqFunc = function(depth, column)
             local req = 10 + depth + column
-            return {req}
+            return req
         end
     },
     secretRooms = {
-        description = "Enter {{progress1}} secret, super secret or ultra secret rooms.",
+        description = "Enter {{progress}} secret, super secret or ultra secret rooms.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 3) + math.floor(column / 4)
-            return {req}
+            return req
         end
     },
     hearts = {
-        description = "Pick up {{progress1}} hearts of any type.",
+        description = "Pick up {{progress}} hearts of any type.",
         reqFunc = function(depth, column)
             local req = 14 + math.floor(depth / 2) + math.floor(column / 2)
-            return {req}
+            return req
         end
     },
     shopDonation = {
-        description = "Donate {{progress1}} coins to the shop donation machine.",
+        description = "Donate {{progress}} coins to the shop donation machine.",
         reqFunc = function(depth, column)
             local req = math.min(99, 15 + depth + math.floor(column / 2))
-            return {req}
+            return req
         end
     },
     curseRooms = {
-        description = "Enter {{progress1}} curse rooms.",
+        description = "Enter {{progress}} curse rooms.",
         reqFunc = function(depth, column)
             local req = 5 + math.floor(depth / 3) + math.floor(column / 5)
-            return {req}
+            return req
         end
     },
     activeItems = {
-        description = "Use an active item with at least 3 charges {{progress1}} times.",
+        description = "Use an active item with at least 3 charges {{progress}} times.",
         reqFunc = function(depth, column)
             local req = 12 + math.floor(depth / 2) + math.floor(column / 2)
-            return {req}
+            return req
         end
     },
     tintedRocks = {
-        description = "Destroy {{progress1}} tinted rocks.",
+        description = "Destroy {{progress}} tinted rocks.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 4) + math.floor(column / 4)
-            return {req}
+            return req
         end
     }
 }
@@ -672,10 +671,10 @@ end
 -- Final node objectives
 PST.expeditionObjectivesFinal = {
     bossRush = {
-        description = "Complete {{progress1}} boss rush encounter(s).",
+        description = "Complete {{progress}} boss rush encounter(s).",
         reqFunc = function(depth, column)
             local req = 1 + math.floor(depth / 15)
-            return {req}
+            return req
         end
     },
     hush = {
@@ -696,34 +695,34 @@ PST.expeditionObjectivesFinal = {
     },
     finalBoss = {
         description = {
-            "Defeat any final boss {{progress1}} time(s).",
+            "Defeat any final boss {{progress}} time(s).",
             "Final bosses include Delirium, ???, The Lamb, Mega Satan, The Beast, Mother and Ultra Greed."
         },
         reqFunc = function(depth, column)
             local req = 1 + math.floor(depth / 10)
-            return {req}
+            return req
         end
     },
     floorNoDmgTwice = {
-        description = "Clear {{progress1}} floors without taking damage more than twice.",
+        description = "Clear {{progress}} floors without taking damage more than twice.",
         weight = 100,
         variants = {
             noDmgOnce = {
-                description = "Clear {{progress1}} floors without taking damage more than once.",
+                description = "Clear {{progress}} floors without taking damage more than once.",
                 minDepth = 10,
                 weight = 50
             }
         },
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 3)
-            return {req}
+            return req
         end
     },
     bossesNoDmg = {
-        description = "Clear {{progress1}} boss rooms past Chapter 3 (Womb and beyond) without taking damage.",
+        description = "Clear {{progress}} boss rooms past Chapter 3 (Womb and beyond) without taking damage.",
         reqFunc = function(depth, column)
             local req = math.min(12, 3 + math.floor(depth / 6))
-            return {req}
+            return req
         end
     },
     winItemPools = {
@@ -760,10 +759,10 @@ PST.expeditionRewardData = {
         return atts
     end,
     [PSTExpNodeRewardType.BOON] = function(RNG, depth, column)
-        local newBoonID = PST.expeditionBoons[RNG:RandomInt(1, #PST.expeditionBoons)]
+        local newBoonID = RNG:RandomInt(1, #PST.expeditionBoons)
         local newBoon = PST.expeditionBoons[newBoonID]
         while newBoon.minDepth and depth < newBoon.minDepth do
-            newBoonID = PST.expeditionBoons[RNG:RandomInt(1, #PST.expeditionBoons)]
+            newBoonID = RNG:RandomInt(1, #PST.expeditionBoons)
             newBoon = PST.expeditionBoons[newBoonID]
         end
         return newBoonID
