@@ -4,7 +4,14 @@ function PST:getChangelogList()
         "",
 
         "v0.3.24",
+        "- Added option to lower the drawn XP bar scale/size.",
+        "- Added option to disable Starcursed Jewel drops. You can disable all drops, or just jewels for which your",
+        "inventory is full.",
+        "- Isaac's \"Intermittent Conceptions\" should now only remove Birthright on a room's first visit.",
         "- Fixed secondary characters (such as Esau) not getting their stats updated by certain effects.",
+        "- Fixed Starcursed Jewel drops being able to be gilded by the Golden Trinkets nodes, preventing collection.",
+        "- Fixed \"Pickup Scarcity\" modifiers being able to remove existing pickups when re-entering rooms.",
+        "- Fixed troll bomb disarming modifiers being able to disarm existing troll bombs when re-entering rooms.",
         "",
 
         "v0.3.23",

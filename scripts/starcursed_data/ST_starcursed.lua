@@ -45,20 +45,26 @@ function PST:SC_getRandomJewelType()
 end
 
 function PST:SC_dropRandomJewelAt(position, ancientChance)
-    if not PST:getTreeSnapshotMod("enableSCJewels", false) then return end
+    if not PST:getTreeSnapshotMod("enableSCJewels", false) or PST.config.starJewelDrops == 2 then return end
 
     local ancientChanceModded = ancientChance + PST:getTreeSnapshotMod("SC_SMAncientChance", 0)
     if PST:SC_identifiedAllAncients() then
         ancientChanceModded = ancientChanceModded / 5
     end
 
-    local newJewelType = Isaac.GetTrinketIdByName(PST:SC_getRandomJewelType() .. " Starcursed Jewel")
+    local newJewelType = PST:SC_getRandomJewelType()
     if ancientChanceModded > 0 and 100 * math.random() < ancientChanceModded then
-        newJewelType = Isaac.GetTrinketIdByName(PSTStarcursedType.ANCIENT .. " Starcursed Jewel")
+        newJewelType = PSTStarcursedType.ANCIENT
     end
-    if newJewelType ~= -1 then
+    local newJewelTrinket = Isaac.GetTrinketIdByName(newJewelType .. " Starcursed Jewel")
+    if newJewelTrinket ~= -1 then
+        -- Config: disable inventory full jewel drops
+        if PST.config.starJewelDrops == 1 and PST:SC_isInvFull(newJewelType) then
+            return
+        end
+
         local tmpPos = Isaac.GetFreeNearPosition(position, 40)
-        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, newJewelType, Random() + 1)
+        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, newJewelTrinket, Random() + 1)
     end
 end
 

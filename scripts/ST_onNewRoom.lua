@@ -285,7 +285,7 @@ function PST:onNewRoom()
 	end
 
 	-- Intermittent Conceptions node (Isaac's tree)
-	if PST:getTreeSnapshotMod("intermittentConceptions", false) then
+	if PST:getTreeSnapshotMod("intermittentConceptions", false) and room:IsFirstVisit() then
 		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 			if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then

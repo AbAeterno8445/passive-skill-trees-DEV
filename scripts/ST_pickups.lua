@@ -147,27 +147,7 @@ function PST:prePickup(pickup, collider, low)
             end
         -- Trinkets
         elseif variant == PickupVariant.PICKUP_TRINKET then
-            -- Trinket picked up
-            if not player:IsHoldingItem() then
-                -- Mod: chance for trinkets to turn golden when first collected, if you have them unlocked
-                if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
-                    local tmpTrinketList = PST:getTreeSnapshotMod("gildedTrinkets", nil)
-                    if tmpTrinketList and not PST:arrHasValue(tmpTrinketList, subtype) then
-                        local tmpMod = PST:getTreeSnapshotMod("goldenTrinkets", 0)
-                        if tmpMod > 0 and 100 * math.random() < tmpMod and (subtype & TrinketType.TRINKET_GOLDEN_FLAG) == 0 then
-                            pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, subtype | TrinketType.TRINKET_GOLDEN_FLAG)
-
-                            local poofFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
-                            poofFX.Color = Color(1, 1, 0.5, 1)
-                            SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.9)
-                            PST:createFloatTextFX("Trinket gilded!", Vector.Zero, Color(1, 1, 0.6, 1), 0.13, 100, true)
-
-                            table.insert(tmpTrinketList, subtype)
-                            return
-                        end
-                    end
-                end
-            end
+            local trinketGone = false
 
             -- Starcursed jewel pickups
             local jewelInvFull = nil
@@ -178,6 +158,7 @@ function PST:prePickup(pickup, collider, low)
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
+                    trinketGone = true
                     PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
                     PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
@@ -192,6 +173,7 @@ function PST:prePickup(pickup, collider, low)
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
+                    trinketGone = true
                     PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
                     PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
@@ -206,6 +188,7 @@ function PST:prePickup(pickup, collider, low)
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
+                    trinketGone = true
                     PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
                     PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
@@ -219,6 +202,7 @@ function PST:prePickup(pickup, collider, low)
                 local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                 tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                 pickup:Remove()
+                trinketGone = true
                 PST:SC_addJewel(PSTStarcursedType.ANCIENT, false, 0)
                 PST:createFloatTextFX("+ Ancient Starcursed Jewel", Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
                 SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
@@ -235,6 +219,28 @@ function PST:prePickup(pickup, collider, low)
                     jewelCollisionTimer = jewelCollisionTimer - 1
                 end
                 return { Collide = false, SkipCollisionEffects = true }
+            elseif not trinketGone then
+                -- Trinket picked up
+                if not player:IsHoldingItem() then
+                    -- Mod: chance for trinkets to turn golden when first collected, if you have them unlocked
+                    if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
+                        local tmpTrinketList = PST:getTreeSnapshotMod("gildedTrinkets", nil)
+                        if tmpTrinketList and not PST:arrHasValue(tmpTrinketList, subtype) then
+                            local tmpMod = PST:getTreeSnapshotMod("goldenTrinkets", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod and (subtype & TrinketType.TRINKET_GOLDEN_FLAG) == 0 then
+                                pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, subtype | TrinketType.TRINKET_GOLDEN_FLAG)
+
+                                local poofFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
+                                poofFX.Color = Color(1, 1, 0.5, 1)
+                                SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.9)
+                                PST:createFloatTextFX("Trinket gilded!", Vector.Zero, Color(1, 1, 0.6, 1), 0.13, 100, true)
+
+                                table.insert(tmpTrinketList, subtype)
+                                return
+                            end
+                        end
+                    end
+                end
             end
         else
             -- Keeper's Blessing node (Keeper's tree)
@@ -815,8 +821,8 @@ function PST:onPickupInit(pickup)
     else
         -- Starcursed mod: coin, key and bomb scarcity
         local tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
-        if (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
-        variant == PickupVariant.PICKUP_KEY) and 100 * math.random() < tmpMod then
+        if firstSpawn and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
+        variant == PickupVariant.PICKUP_KEY) and tmpMod > 0 and 100 * math.random() < tmpMod then
             pickup:Remove()
             pickupGone = true
         end
@@ -825,7 +831,7 @@ function PST:onPickupInit(pickup)
         if variant == PickupVariant.PICKUP_HEART then
             -- Starcursed mod: heart scarcity
             tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
-            if 100 * math.random() < tmpMod then
+            if firstSpawn and tmpMod > 0 and 100 * math.random() < tmpMod then
                 pickup:Remove()
                 pickupGone = true
             end

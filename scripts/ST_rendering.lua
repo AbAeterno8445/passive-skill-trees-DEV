@@ -98,10 +98,11 @@ function PST:Render()
 	if PST.config.drawXPbar and hudVisible then
 		local charData = PST:getCurrentCharData()
 		if charData then
-			local barPos = Vector(112 * screenRatioX, Isaac.GetScreenHeight() - 12)
+			local tmpScale = PST.config.xpbarScale or 1
+			local barPos = Vector(112 * screenRatioX * (1 + (1 - tmpScale)), Isaac.GetScreenHeight() - 12)
 			local barPerc = math.min(1, charData.xp / math.max(1, charData.xpRequired))
 			local barPercGlobal = math.min(1, PST.modData.xp / math.max(1, PST.modData.xpRequired))
-			local barScale = Vector(screenRatioX, math.min(1, screenRatioY))
+			local barScale = Vector(screenRatioX, math.min(1, screenRatioY)) * tmpScale
 
 			xpbarTempSprite.Scale = barScale
 			xpbarFullSprite.Scale = barScale
@@ -130,11 +131,11 @@ function PST:Render()
 
 			-- Level text
 			local levelStr = "LV " .. charData.level
-			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) - 6, barPos.Y - 12, 1, 1, KColor(0.84, 0.5, 1, 0.7))
+			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 12 * tmpScale, tmpScale, tmpScale, KColor(0.84, 0.5, 1, 0.7))
 
 			-- Global level text
 			levelStr = "G.LV " .. PST.modData.level
-			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) - 6, barPos.Y - 5, 1, 1, KColor(0.1, 0.4, 1, 0.7))
+			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 5 * tmpScale, tmpScale, tmpScale, KColor(0.1, 0.4, 1, 0.7))
 		end
 	end
 

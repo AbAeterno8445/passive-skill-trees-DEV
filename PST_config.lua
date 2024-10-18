@@ -2,6 +2,9 @@ PST.config = {
     -- Draw level and XP bar at the bottom of the screen during gameplay
     drawXPbar = true,
 
+    -- XP bar scale
+    xpbarScale = 1,
+
     -- Draw floating texts during gameplay (e.g. xp gain, +1 respec, certain node effects, etc.)
     floatingTexts = true,
 
@@ -16,6 +19,9 @@ PST.config = {
 
     -- XP multiplier option
     xpMult = 1,
+
+    -- Toggle Starcursed Jewel drops (0: enable, 1: disable when inventory full, 2: disable all)
+    starJewelDrops = 0,
 
     -- Make changelog pop up when on new version updates
     changelogPopup = true,
@@ -157,6 +163,15 @@ function PST:initModConfigMenu()
         return
     end
 
+    local function getTableIndex(tbl, val, default)
+        for i, v in ipairs(tbl) do
+            if tostring(v) == tostring(val) then
+                return i
+            end
+        end
+        return default
+    end
+
     -- Draw XP bar setting
     ModConfigMenu.RemoveSetting(PST.modName, "Main", "drawXPbar")
     ModConfigMenu.AddSetting(
@@ -175,6 +190,29 @@ function PST:initModConfigMenu()
                 PST.config.drawXPbar = b
             end,
             Info = {"Draw level and XP bar at the bottom of the screen", "during gameplay"}
+        }
+    )
+    -- XP bar scale setting
+    local xpbarScaleOptions = {1, 0.75, 0.5}
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "xpbarScale")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "xpbarScale",
+            CurrentSetting = function()
+                return getTableIndex(xpbarScaleOptions, PST.config.xpbarScale, 1)
+            end,
+            Minimum = 1,
+            Maximum = #xpbarScaleOptions,
+            Display = function()
+                return "XP bar scale: " .. tostring(PST.config.xpbarScale)
+            end,
+            OnChange = function(n)
+                PST.config.xpbarScale = xpbarScaleOptions[n]
+            end,
+            Info = {"Drawn XP bar scale/size"}
         }
     )
     -- Draw floating texts setting
@@ -306,14 +344,6 @@ function PST:initModConfigMenu()
     for i=-9,20 do
         table.insert(xpMultOptions, 1 + i * 0.1)
     end
-    local function getTableIndex(tbl, val)
-        for i, v in ipairs(tbl) do
-            if tostring(v) == tostring(val) then
-                return i
-            end
-        end
-        return 9
-    end
     ModConfigMenu.RemoveSetting(PST.modName, "Main", "xpMult")
     ModConfigMenu.AddSetting(
         PST.modName,
@@ -322,7 +352,7 @@ function PST:initModConfigMenu()
             Type = ModConfigMenu.OptionType.NUMBER,
             Attribute = "xpMult",
             CurrentSetting = function()
-                return getTableIndex(xpMultOptions, PST.config.xpMult)
+                return getTableIndex(xpMultOptions, PST.config.xpMult, 9)
             end,
             Minimum = 1,
             Maximum = #xpMultOptions,
@@ -333,6 +363,30 @@ function PST:initModConfigMenu()
                 PST.config.xpMult = xpMultOptions[n]
             end,
             Info = {"XP Multiplier applied to most XP gains", "Default 1"}
+        }
+    )
+
+    -- Starcursed jewel drop toggle setting
+    local starJewelToggleStr = {"none", "inv full", "all"}
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "starJewelDrops")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "starJewelDrops",
+            CurrentSetting = function()
+                return PST.config.starJewelDrops
+            end,
+            Minimum = 0,
+            Maximum = 2,
+            Display = function()
+                return "Disable Jewel drops: " .. starJewelToggleStr[PST.config.starJewelDrops + 1]
+            end,
+            OnChange = function(n)
+                PST.config.starJewelDrops = n
+            end,
+            Info = {"Stop Starcursed Jewels from dropping", "Inv full only stops the jewel type for which your inventory is full"}
         }
     )
 
