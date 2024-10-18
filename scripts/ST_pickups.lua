@@ -66,12 +66,17 @@ function PST:prePickup(pickup, collider, low)
 
             -- Impromptu Gambler node (Cain's tree)
             if PST:getTreeSnapshotMod("impromptuGambler", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
-                -- Remove crane games
-                for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
-                    if tmpEntity.Type == EntityType.ENTITY_SLOT and tmpEntity.Variant == SlotVariant.CRANE_GAME then
-                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
-                        tmpEntity:Remove()
+                local IG_roomItemsRemoved = PST:getTreeSnapshotMod("impromptuGamblerItemsRemoved", nil)
+                local roomIdx = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
+                if IG_roomItemsRemoved and not PST:arrHasValue(IG_roomItemsRemoved, roomIdx) then
+                    -- Remove crane games
+                    local craneGames = Isaac.FindByType(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME)
+                    for _, tmpCrane in ipairs(craneGames) do
+                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCrane.Position, Vector.Zero, nil, 0, 0)
+                        tmpCrane:Remove()
                     end
+
+                    table.insert(IG_roomItemsRemoved, roomIdx)
                 end
             end
 

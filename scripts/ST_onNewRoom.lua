@@ -298,17 +298,10 @@ function PST:onNewRoom()
 
 	-- Impromptu Gambler node (Cain's tree)
 	if PST:getTreeSnapshotMod("impromptuGambler", false) and roomType == RoomType.ROOM_TREASURE and not PST:getLevel():IsAscent() then
-		if not PST:getTreeSnapshotMod("impromptuGamblerProc", false) then
-			PST.specialNodes.impromptuGamblerItems = {}
-			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
-				if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE then
-					table.insert(
-						PST.specialNodes.impromptuGamblerItems,
-						Vector(math.floor(tmpEntity.Position.X / 40), math.floor(tmpEntity.Position.Y / 40))
-					)
-				end
-			end
-			PST:addModifiers({ impromptuGamblerProc = true }, true)
+		local tmpProcs = PST:getTreeSnapshotMod("impromptuGamblerProcs", nil)
+		local roomIdx = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
+		if tmpProcs and not PST:arrHasValue(tmpProcs, roomIdx) then
+			table.insert(tmpProcs, roomIdx)
 
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 80)
 			local newCrane = Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME, tmpPos, Vector.Zero, nil, 0, Random() + 1)
@@ -316,7 +309,8 @@ function PST:onNewRoom()
 			SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND, 0.7)
 			newCrane:SetSize(0.6, Vector(0.6, 0.6), 1)
 
-			local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_NULL, false, Random() + 1)
+			local randPool = PST.impromptuGamblerPools[math.random(#PST.impromptuGamblerPools)]
+			local newItem = Game():GetItemPool():GetCollectible(randPool, false, Random() + 1)
 			newCrane:ToSlot():SetPrizeCollectible(newItem)
 		end
 	end

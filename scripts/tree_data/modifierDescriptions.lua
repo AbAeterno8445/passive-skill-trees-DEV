@@ -496,9 +496,10 @@ PST.treeModDescriptions = {
     impromptuGambler = {
         str = {
             "Impromptu Gambler:",
-            "    Spawn a crane game in treasure rooms. These can grant any unlocked item, but take an additional 3 coins on use, if possible",
+            "    Spawn a crane game in treasure rooms. These can draw items from the Treasure, Shop, Devil and",
+            "    Angel pools, but take an additional 2 coins on use, if possible",
             "    Interacting with the crane game removes the room's regular items",
-            "    Grabbing the regular item removes the crane game"
+            "    Grabbing the room's regular item removes the crane game"
         },
         category = "charTree", sort = 2100
     },
