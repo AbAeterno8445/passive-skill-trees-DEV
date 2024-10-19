@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="10/17/2024 2:25:16 PM" Version="4" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="10/19/2024 4:03:26 PM" Version="5" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="expedition_nodes.png" Id="0"/>
@@ -11,7 +11,7 @@
 		<Events/>
 	</Content>
 	<Animations DefaultAnimation="Nodes">
-		<Animation Name="Nodes" FrameNum="6" Loop="false">
+		<Animation Name="Nodes" FrameNum="7" Loop="false">
 			<RootAnimation>
 				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 			</RootAnimation>
@@ -23,6 +23,7 @@
 					<Frame XPosition="0" YPosition="0" XPivot="29" YPivot="29" XCrop="174" YCrop="0" Width="58" Height="58" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 					<Frame XPosition="0" YPosition="0" XPivot="16" YPivot="16" XCrop="232" YCrop="0" Width="32" Height="32" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 					<Frame XPosition="0" YPosition="0" XPivot="29" YPivot="29" XCrop="264" YCrop="0" Width="58" Height="58" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="29" YPivot="29" XCrop="322" YCrop="0" Width="58" Height="58" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 				</LayerAnimation>
 			</LayerAnimations>
 			<NullAnimations/>

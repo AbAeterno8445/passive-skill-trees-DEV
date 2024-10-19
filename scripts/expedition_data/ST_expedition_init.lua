@@ -15,12 +15,17 @@ PSTExpNodeType = {
     FINAL = 2,
     BOONUPGRADE = 3,
     ASTROLABE = 4,
-    MIXED = 5
+    MIXED = 5,
+    COMPLETED = 6
 }
 
 -- Expedition node class
 ---@class PSTExpNode
 ---@field nodeType PSTExpNodeType
+---@field col number
+---@field row number
+---@field accessible? boolean
+---@field completed? boolean
 ---@field objective? table
 ---@field curse? integer
 ---@field rewardType PSTExpNodeRewardType
