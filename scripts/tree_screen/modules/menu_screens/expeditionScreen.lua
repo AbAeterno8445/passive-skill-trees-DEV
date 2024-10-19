@@ -8,6 +8,8 @@ local expeditionScreen = {
     expLinkSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_node_link.anm2", true),
     itemRewardSprite = Sprite("gfx/005.100_collectible.anm2", true),
 
+    boonSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_boons.anm2", true),
+
     -- Camera control
     camera = Vector.Zero,
     cameraSpeed = 3,
@@ -18,12 +20,20 @@ local expeditionScreen = {
 
     inputOverrides = {
         PSTKeybind.TREE_PAN_DOWN, PSTKeybind.TREE_PAN_LEFT, PSTKeybind.TREE_PAN_RIGHT, PSTKeybind.TREE_PAN_UP,
-        PSTKeybind.CENTER_CAMERA, PSTKeybind.ZOOM_IN, PSTKeybind.ZOOM_OUT, PSTKeybind.PAN_FASTER, PSTKeybind.TREE_TAB
+        PSTKeybind.CENTER_CAMERA, PSTKeybind.ZOOM_IN, PSTKeybind.ZOOM_OUT, PSTKeybind.PAN_FASTER, PSTKeybind.TREE_TAB,
+        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE
     },
 
     -- Currently hovered node data
     ---@type PSTExpNode|nil
     hoveredNode = nil,
+
+    ---@type number|nil
+    hoveredBoon = nil,
+    ---@type number|nil
+    hoveredCurse = nil,
+    ---@type number|nil
+    hoveredItem = nil,
 
     tabs = {
         "Expedition",
@@ -113,6 +123,23 @@ function expeditionScreen:OnInput()
         SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7)
     end
 
+    -- Input: Allocate
+    if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
+        -- Hovered boon, attempt to upgrade
+        if self.hoveredBoon then
+            local expData = PST.modData.expeditionsData[self.currentDepth]
+            if expData then
+                local boonData = PST.expeditionBoons[self.hoveredBoon]
+                local isUpgraded = PST:arrHasValue(expData.upgradedBoons, self.hoveredBoon)
+                if boonData and not isUpgraded and expData.boonUpgradePoints >= 1 then
+                    PST:expedAddBoon(self.currentDepth, self.hoveredBoon)
+                    SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+                    expData.boonUpgradePoints = expData.boonUpgradePoints - 1
+                end
+            end
+        end
+    end
+
     if Isaac.GetFrameCount() % 2 == 0 then
         -- Input: Zoom in
         if PST:isKeybindActive(PSTKeybind.ZOOM_IN, true) and self.zoomScale < 1 then
@@ -153,6 +180,104 @@ function expeditionScreen:Render(tScreen)
         -- Effects tab
         elseif self.currentTab == 2 then
             expedScreenEffectTab(expData, self, tScreen)
+        end
+    end
+
+    -- Cursor
+    if self.hoveredNode or self.hoveredBoon or self.hoveredCurse or self.hoveredItem then
+        tScreen.cursorSprite:Play("Clicked", true)
+    else
+        tScreen.cursorSprite:Play("Idle", true)
+    end
+    tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
+
+    -- Hovered node description
+    if self.hoveredNode then
+        local nodeName = "Expedition Node"
+        local nodeDesc = {}
+        if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
+            nodeName = "Arcane Astrolabe"
+            nodeDesc = {"Expedition Depth: " .. tostring(self.currentDepth)}
+        else
+            nodeDesc = PST:getExpNodeDescription(self.hoveredNode, self.currentDepth)
+        end
+        tScreen:DrawNodeBox(nodeName, nodeDesc)
+
+    -- Hovered boon description
+    elseif self.hoveredBoon then
+        local tmpColor = KColor(0.7, 1, 0.7, 1)
+        local boonData = PST.expeditionBoons[self.hoveredBoon]
+        local boonName = "Boon of " .. boonData.name
+        local isUpgraded = PST:arrHasValue(expData.upgradedBoons, self.hoveredBoon)
+        if isUpgraded then boonName = boonName .. " (Upgraded)" end
+        local boonDesc = {}
+
+        -- Target description/mods based on upgrade status
+        local targetDesc = boonData.description
+        if isUpgraded and boonData.upgradedDescription then
+            targetDesc = boonData.upgradedDescription
+        end
+        local targetMods = boonData.mods
+        if isUpgraded then targetMods = boonData.upgradedMods end
+
+        if type(targetDesc) == "table" then
+            for _, tmpLine in ipairs(targetDesc) do
+                table.insert(boonDesc, {PST:formatString(tmpLine, targetMods), tmpColor})
+            end
+        else
+            table.insert(boonDesc, {PST:formatString(targetDesc, targetMods), tmpColor})
+        end
+        -- Upgrade available text
+        if not isUpgraded and boonData.upgradedMods then
+            local upgColor = KColor(0.4, 1, 0.4, 1)
+            table.insert(boonDesc, {"+ Upgrade available:", upgColor})
+
+            local upgDesc = boonData.upgradedDescription
+            if not upgDesc then upgDesc = boonData.description end
+            if type(upgDesc) == "table" then
+                for _, tmpLine in ipairs(upgDesc) do
+                    local tmpFormat = PST:formatString(tmpLine, boonData.upgradedMods)
+                    table.insert(boonDesc, {"   " .. tmpFormat, upgColor})
+                end
+            else
+                local tmpFormat = PST:formatString(upgDesc, boonData.upgradedMods)
+                table.insert(boonDesc, {"   " .. tmpFormat, upgColor})
+            end
+            table.insert(boonDesc, {"Press the Allocate button to upgrade this boon.", upgColor})
+            table.insert(boonDesc, {"Requires 1 boon upgrade point.", upgColor})
+        end
+
+        tScreen:DrawNodeBox(boonName, boonDesc)
+
+    -- Hovered curse description
+    elseif self.hoveredCurse then
+        local tmpColor = KColor(1, 0.7, 0.7, 1)
+        local curseData = PST.expeditionCurses[self.hoveredCurse]
+        local curseName = "Curse of " .. curseData.name
+        local curseMods = curseData.modsFunc(expData.depth)
+        local curseDesc = {}
+
+        if type(curseData.description) == "table" then
+            for _, tmpLine in ipairs(curseData.description) do
+                table.insert(curseDesc, {PST:formatString(tmpLine, curseMods), tmpColor})
+            end
+        else
+            table.insert(curseDesc, {PST:formatString(curseData.description, curseMods), tmpColor})
+        end
+
+        tScreen:DrawNodeBox(curseName, curseDesc)
+
+    -- Hovered item description
+    elseif self.hoveredItem then
+        local tmpColor = KColor(0.85, 0.55, 1, 1)
+        local itemCfg = Isaac.GetItemConfig():GetCollectible(self.hoveredItem)
+        if itemCfg then
+            local itemDesc = {}
+            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+			if itemName ~= "StringTable::InvalidKey" then
+				table.insert(itemDesc, {"Start with " .. itemName .. " in this expedition's runs", tmpColor})
+			end
+            tScreen:DrawNodeBox(itemName, itemDesc)
         end
     end
 

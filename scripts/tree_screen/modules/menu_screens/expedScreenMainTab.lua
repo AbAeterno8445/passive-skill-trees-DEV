@@ -65,27 +65,6 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             end
         end
     end
-
-    -- Cursor
-    if expedScreen.hoveredNode ~= nil then
-        tScreen.cursorSprite:Play("Clicked", true)
-    else
-        tScreen.cursorSprite:Play("Idle", true)
-    end
-    tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
-
-    -- Hovered node description
-    if expedScreen.hoveredNode ~= nil then
-        local nodeName = "Expedition Node"
-        local nodeDesc = {}
-        if expedScreen.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
-            nodeName = "Arcane Astrolabe"
-            nodeDesc = {"Expedition Depth: " .. tostring(expedScreen.currentDepth)}
-        else
-            nodeDesc = PST:getExpNodeDescription(expedScreen.hoveredNode, expedScreen.currentDepth)
-        end
-        tScreen:DrawNodeBox(nodeName, nodeDesc, tScreen.screenW, tScreen.screenH)
-    end
 end
 
 return expedScreenMainTab

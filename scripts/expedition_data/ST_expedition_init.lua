@@ -29,12 +29,15 @@ PSTExpNodeType = {
 
 -- Expedition class
 ---@class PSTExpedition
+---@field depth number
 ---@field nodes PSTExpNode[][]
 ---@field seed integer
 ---@field implicits? table
 ---@field startAttempts number
 ---@field attempts number
 ---@field boons number[]
+---@field upgradedBoons number[]
+---@field boonUpgradePoints number
 ---@field curses number[]
 ---@field items CollectibleType[]
 
@@ -779,4 +782,19 @@ PST.expeditionRewardData = {
         end
         return newBoonID
     end,
+}
+
+-- Expedition-specific modifier descriptions
+PST.expedDescriptions = {
+    mobHP = "+%d%% monster HP.",
+    mobSpeed = "+%d%% monster speed.",
+    floorCurse = "+%d%% chance to receive a curse when entering a floor.",
+    pickupScarcity = "+%d%% coin, key, bomb and heart scarcity.",
+    quality4Remove = "Remove %d random quality 4 items from the pool when starting a run.",
+    heartbreak = {
+        "Start with %d additional broken heart(s).",
+        "Heartbreak can no longer show up."
+    },
+    lessAttempts = "-%d max expedition attempts.",
+    mobDmgRed = "+%d%% monster damage reduction."
 }

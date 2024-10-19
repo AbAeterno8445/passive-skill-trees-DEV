@@ -41,6 +41,8 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
     if PST.config.descriptionBoxStyle == 1 then
         tmpFont = PST.normalFont
     end
+    paramX = paramX or self.screenW
+    paramY = paramY or self.screenH
 
     -- Base offset from center cursor
     local offX = 4

@@ -148,7 +148,7 @@ function descriptionBoxesModule:Render(tScreen)
             tmpDescription = newDescData.description
         end
 
-        tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description, tScreen.screenW, tScreen.screenH)
+        tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description)
     else
         -- Submenu-related description boxes
         local submenusModule = tScreen.modules.submenusModule
@@ -162,7 +162,7 @@ function descriptionBoxesModule:Render(tScreen)
                 if PST:cosmicRIsCharUnlocked(charID) then
                     tmpDescription = PST.cosmicRData.characters[charID].curseDesc
                 end
-                tScreen:DrawNodeBox(PST.charNames[1 + charID], tmpDescription, tScreen.screenW, tScreen.screenH)
+                tScreen:DrawNodeBox(PST.charNames[1 + charID], tmpDescription)
             end
         -- Starcursed inventory, hovered jewel data
         elseif submenusModule.currentSubmenu == PSTSubmenu.STARJEWELINV then
@@ -179,7 +179,7 @@ function descriptionBoxesModule:Render(tScreen)
                 if jewelData.mighty then
                     jewelTitle = jewelTitle .. " (Mighty)"
                 end
-                tScreen:DrawNodeBox(jewelTitle, tmpDescription, tScreen.screenW, tScreen.screenH)
+                tScreen:DrawNodeBox(jewelTitle, tmpDescription)
             end
         end
     end

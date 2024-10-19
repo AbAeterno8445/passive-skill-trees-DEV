@@ -318,13 +318,17 @@ function PST:generateExpedition(depth, seed)
     -- Expedition starting attempts
     local expAttempts = 8 - expImplicits.lessAttempts
 
+    ---@type PSTExpedition
     return {
+        depth = depth,
         nodes = expNodes,
         seed = expSeed,
         implicits = expImplicits,
         startAttempts = expAttempts,
         attempts = expAttempts,
         boons = {},
+        upgradedBoons = {},
+        boonUpgradePoints = 0,
         curses = {},
         items = {}
     }
@@ -332,9 +336,46 @@ end
 
 function PST:resetExpedition(depth)
     PST.modData.expeditionsData[depth] = PST:generateExpedition(depth)
+    return PST.modData.expeditionsData[depth]
+end
+
+-- For testing - reset expedition depth and switch to it in the expedition screen menu
+function PST:resetExpeditionDebug(depth)
+    PST:resetExpedition(depth)
+    PST.treeScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.EXPEDITION].currentDepth = depth
+end
+
+-- Add boon to expedition, or upgrade it if already present
+function PST:expedAddBoon(depth, boonID)
+    local tmpExpedition = PST.modData.expeditionsData[depth]
+    if tmpExpedition and boonID <= #PST.expeditionBoons then
+        if not PST:arrHasValue(tmpExpedition.boons, boonID) then
+            table.insert(tmpExpedition.boons, boonID)
+        elseif not PST:arrHasValue(tmpExpedition.upgradedBoons, boonID) then
+            table.insert(tmpExpedition.upgradedBoons, boonID)
+        end
+    end
+end
+
+-- Add curse to expedition
+function PST:expedAddCurse(depth, curseID)
+    local tmpExpedition = PST.modData.expeditionsData[depth]
+    if tmpExpedition and curseID <= #PST.expeditionCurses and not PST:arrHasValue(tmpExpedition.curses, curseID) then
+        table.insert(tmpExpedition.curses, curseID)
+    end
+end
+
+-- Add item to expedition
+---@param itemID CollectibleType
+function PST:expedAddItem(depth, itemID)
+    local tmpExpedition = PST.modData.expeditionsData[depth]
+    if tmpExpedition and not PST:arrHasValue(tmpExpedition.items, itemID) then
+        table.insert(tmpExpedition.items, itemID)
+    end
 end
 
 ---@param nodeData PSTExpNode
+---@param depth number
 function PST:getExpNodeDescription(nodeData, depth)
     local tmpDescription = {}
 
@@ -409,7 +450,7 @@ function PST:getExpNodeDescription(nodeData, depth)
         table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " EXP", tmpColor})
     -- Reward: Attempts
     elseif nodeData.rewardType == PSTExpNodeRewardType.ATTEMPTS then
-        table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Expedition Attempts", tmpColor})
+        table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Expedition Attempt(s)", tmpColor})
     -- Reward: Item
     elseif nodeData.rewardType == PSTExpNodeRewardType.ITEM then
         local shownItem = false
@@ -431,4 +472,23 @@ function PST:getExpNodeDescription(nodeData, depth)
     end
 
     return tmpDescription
+end
+
+---@param expData PSTExpedition
+function PST:getExpedCurseMods(expData)
+    local curseMods = {}
+    for _, curseID in ipairs(expData.curses) do
+        local tmpCurse = PST.expeditionCurses[curseID]
+        if tmpCurse then
+            local tmpMods = tmpCurse.modsFunc(expData.depth)
+            for tmpModName, tmpModVal in pairs(tmpMods) do
+                if curseMods[tmpModName] == nil then
+                    curseMods[tmpModName] = tmpModVal
+                elseif type(curseMods[tmpModName]) == "number" then
+                    curseMods[tmpModName] = curseMods[tmpModName] + tmpModVal
+                end
+            end
+        end
+    end
+    return curseMods
 end
