@@ -21,7 +21,7 @@ local expeditionScreen = {
     inputOverrides = {
         PSTKeybind.TREE_PAN_DOWN, PSTKeybind.TREE_PAN_LEFT, PSTKeybind.TREE_PAN_RIGHT, PSTKeybind.TREE_PAN_UP,
         PSTKeybind.CENTER_CAMERA, PSTKeybind.ZOOM_IN, PSTKeybind.ZOOM_OUT, PSTKeybind.PAN_FASTER, PSTKeybind.TREE_TAB,
-        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE
+        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE, PSTKeybind.SWITCH_TREE
     },
 
     -- Currently hovered node data
@@ -77,6 +77,11 @@ end
 
 function expeditionScreen:OnOpen(openData)
     self.currentTab = 1
+
+    if PST.modData.expeditionsData[self.currentDepth] == nil then
+        PST:resetExpedition(self.currentDepth)
+    end
+    PST:updateExpedAccess(self.currentDepth)
 end
 
 -- Input processing
@@ -125,10 +130,26 @@ function expeditionScreen:OnInput()
 
     -- Input: Allocate
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
-        -- Hovered boon, attempt to upgrade
-        if self.hoveredBoon then
-            local expData = PST.modData.expeditionsData[self.currentDepth]
-            if expData then
+        local expData = PST.modData.expeditionsData[self.currentDepth]
+        if expData then
+            -- Hovered node, attempt to select
+            if self.hoveredNode then
+                if self.hoveredNode.selectable and (not expData.selectedNode or (expData.selectedNode and
+                (expData.selectedNode.col ~= self.hoveredNode.col or expData.selectedNode.row ~= self.hoveredNode.row)) and
+                PST.modData.skillPoints >= 1 and PST.modData.respecPoints >= 5) then
+                    if expData.selectedNode then
+                        PST.modData.skillPoints = PST.modData.skillPoints - 1
+                        PST.modData.respecPoints = PST.modData.respecPoints - 5
+                    end
+                    expData.selectedNode = {
+                        col = self.hoveredNode.col,
+                        row = self.hoveredNode.row,
+                        objProgress = 0
+                    }
+                    SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                end
+            -- Hovered boon, attempt to upgrade
+            elseif self.hoveredBoon then
                 local boonData = PST.expeditionBoons[self.hoveredBoon]
                 local isUpgraded = PST:arrHasValue(expData.upgradedBoons, self.hoveredBoon)
                 if boonData and not isUpgraded and expData.boonUpgradePoints >= 1 then
@@ -173,14 +194,16 @@ end
 ---@param tScreen PST.treeScreen
 function expeditionScreen:Render(tScreen)
     local expData = PST.modData.expeditionsData[self.currentDepth]
-    if expData then
-        -- Expedition tab
-        if self.currentTab == 1 then
-            expedScreenMainTab(expData, self, tScreen)
-        -- Effects tab
-        elseif self.currentTab == 2 then
-            expedScreenEffectTab(expData, self, tScreen)
-        end
+    if not expData then
+        return
+    end
+
+    -- Expedition tab
+    if self.currentTab == 1 then
+        expedScreenMainTab(expData, self, tScreen)
+    -- Effects tab
+    elseif self.currentTab == 2 then
+        expedScreenEffectTab(expData, self, tScreen)
     end
 
     -- Cursor
@@ -199,7 +222,18 @@ function expeditionScreen:Render(tScreen)
             nodeName = "Arcane Astrolabe"
             nodeDesc = {"Expedition Depth: " .. tostring(self.currentDepth)}
         else
-            nodeDesc = PST:getExpNodeDescription(self.hoveredNode, self.currentDepth)
+            nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
+        end
+        if expData.selectedNode then
+            if expData.selectedNode.col == self.hoveredNode.col and expData.selectedNode.row == self.hoveredNode.row then
+                nodeName = nodeName .. " (Selected)"
+            elseif self.hoveredNode.selectable then
+                table.insert(nodeDesc, "Press the Allocate button to switch selected node to this one.")
+                table.insert(nodeDesc, {"  > Switching node selection costs 1 global SP and 5 respec points.", KColor(1, 0.7, 0.7, 1)})
+            end
+        elseif self.hoveredNode.selectable then
+            table.insert(nodeDesc, "Press the Allocate button to select this node.")
+            table.insert(nodeDesc, {"  > Switching the selection to a different node will cost 1 global SP and 5 respec points.", KColor(1, 0.7, 0.7, 1)})
         end
         tScreen:DrawNodeBox(nodeName, nodeDesc)
 
@@ -298,6 +332,18 @@ function expeditionScreen:Render(tScreen)
 
         PST.miniFont:DrawString(tmpTab, drawX, 2, tmpColor, tabW, true)
     end
+
+    -- HUD: resources
+    local tmpX = 12
+    local tmpY = tabH + 2
+    -- Global SP
+    PST.miniFont:DrawString("Global SP: " .. tostring(PST.modData.skillPoints), tmpX, tmpY, KColor(0.7, 0.7, 1, 1))
+    tmpY = tmpY + 14
+    -- Respecs
+    PST.miniFont:DrawString("Respecs: " .. tostring(PST.modData.respecPoints), tmpX, tmpY, KColor(1, 1, 1, 1))
+    tmpY = tmpY + 14
+    -- Arcane Obols
+    PST.miniFont:DrawString("Arcane Obols: " .. tostring(PST.modData.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
 end
 
 return expeditionScreen

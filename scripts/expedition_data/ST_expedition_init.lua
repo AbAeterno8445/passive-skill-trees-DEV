@@ -25,6 +25,7 @@ PSTExpNodeType = {
 ---@field col number
 ---@field row number
 ---@field accessible? boolean
+---@field selectable? boolean
 ---@field completed? boolean
 ---@field objective? table
 ---@field curse? integer
@@ -32,10 +33,17 @@ PSTExpNodeType = {
 ---@field rewardData? any
 ---@field connections number[]
 
+-- Selected node class
+---@class PSTSelectedExpNode
+---@field col number
+---@field row number
+---@field objProgress number
+
 -- Expedition class
 ---@class PSTExpedition
 ---@field depth number
 ---@field nodes PSTExpNode[][]
+---@field selectedNode PSTSelectedExpNode|nil
 ---@field seed integer
 ---@field implicits? table
 ---@field startAttempts number
@@ -800,6 +808,6 @@ PST.expedDescriptions = {
         "Start with %d additional broken heart(s).",
         "Heartbreak can no longer show up."
     },
-    lessAttempts = "-%d max expedition attempts.",
+    lessAttempts = "-%d max expedition attempt(s).",
     mobDmgRed = "+%d%% monster damage reduction."
 }

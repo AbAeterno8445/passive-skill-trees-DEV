@@ -54,16 +54,30 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
     end
 
     -- Draw nodes
-    for i, tmpColumn in ipairs(expData.nodes) do
-        for j, tmpNode in ipairs(tmpColumn) do
-            local drawPos = PST_getNodePos(i, #tmpColumn, j)
+    for col, tmpColumn in ipairs(expData.nodes) do
+        for row, tmpNode in ipairs(tmpColumn) do
+            local drawPos = PST_getNodePos(col, #tmpColumn, row)
 
+            local isSelected = expData.selectedNode and expData.selectedNode.col == col and expData.selectedNode.row == row
+            -- Gray out inaccessible nodes
             if tmpNode.accessible == false and tmpNode.nodeType ~= PSTExpNodeType.COMPLETED then
                 expedScreen.expNodeSprite.Color = colGray
                 expedScreen.itemRewardSprite.Color = colGray
             else
                 expedScreen.expNodeSprite.Color = colWhite
                 expedScreen.itemRewardSprite.Color = colWhite
+
+                -- Selectable node effect
+                if tmpNode.selectable and not isSelected then
+                    local oldAlpha = expedScreen.expNodeSprite.Color.A
+                    expedScreen.expNodeSprite:SetFrame("Nodes", PSTExpNodeType.COMPLETED)
+
+                    expedScreen.expNodeSprite.Color.A = tScreen.modules.nodeDrawingModule.alphaFlash
+                    expedScreen.expNodeSprite.Scale = expedScreen.expNodeSprite.Scale + Vector(0.1, 0.1)
+                    expedScreen.expNodeSprite:Render(drawPos)
+                    expedScreen.expNodeSprite.Color.A = oldAlpha
+                    expedScreen.expNodeSprite.Scale = expedScreen.expNodeSprite.Scale - Vector(0.1, 0.1)
+                end
             end
 
             expedScreen.expNodeSprite:SetFrame("Nodes", tmpNode.nodeType)
@@ -79,9 +93,22 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
                     local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpNode.rewardData)
                     if itemCfg then
                         expedScreen.itemRewardSprite:ReplaceSpritesheet(1, itemCfg.GfxFileName, true)
-                        expedScreen.itemRewardSprite:Render(drawPos - Vector(1, -8))
+                        expedScreen.itemRewardSprite:Render(drawPos - Vector(1, -8) * expedScreen.zoomScale)
                     end
                 end
+            end
+
+            -- Selected node bubble
+            if isSelected then
+                expedScreen.boonSprite:SetFrame("Bubbles", 4)
+                expedScreen.boonSprite:Render(drawPos)
+            end
+
+            -- Astrolabe - draw depth num txt
+            if tmpNode.nodeType == PSTExpNodeType.ASTROLABE then
+                local depthNum = tostring(expData.depth)
+                local tmpWidth = PST.miniFont:GetStringWidth(depthNum)
+                PST.miniFont:DrawStringScaled(depthNum, drawPos.X + (13 - tmpWidth) * expedScreen.zoomScale, drawPos.Y + 3, expedScreen.zoomScale, expedScreen.zoomScale, KColor(1, 1, 1, 1))
             end
 
             -- Hovered node

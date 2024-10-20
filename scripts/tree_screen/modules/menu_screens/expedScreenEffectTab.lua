@@ -23,6 +23,9 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     -- Requirement values are tables: {requirement description string, true/false whether req is met}
     local tmpRequirements = {}
 
+    -- Node selection requirement
+    table.insert(tmpRequirements, {"Selected expedition node.", expData.selectedNode ~= nil})
+
     -- Starmight requirement
     if expData.implicits then
         local tmpReq = expData.implicits.starmightReq
@@ -41,7 +44,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     -- Ancient starcursed jewel requirement
     if expCurses["curseAncientStars"] then
         local ancientSocketed = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, "1") or PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, "2")
-        table.insert(tmpRequirements, {"Socketed Ancient Starcursed Jewel required.", ancientSocketed})
+        table.insert(tmpRequirements, {"Socketed Ancient Starcursed Jewel.", ancientSocketed})
     end
 
     -- Requirements
@@ -62,27 +65,46 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
         tmpRenderText("")
     end
 
+    -- Current objective
+    if expData.selectedNode then
+        local tmpNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+        if tmpNode then
+            for _, tmpLine in ipairs(PST:getExpNodeObjectiveDesc(tmpNode, expData)) do
+                tmpRenderText(tmpLine[1], tmpLine[2])
+            end
+            tmpRenderText("")
+        end
+    end
+
     -- Implicit modifiers
-    if expData.implicits and #expData.implicits > 0 then
+    if expData.implicits then
         local tmpColor = KColor(1, 0.8, 0.8, 1)
-        tmpRenderText("Implicit modifiers:", tmpColor)
+        local firstDraw = false
         for impName, impVal in pairs(expData.implicits) do
-            local tmpDescription = PST.expedDescriptions[impName]
-            if tmpDescription then
-                local formatLines = {}
-                if type(tmpDescription) == "table" then
-                    for _, tmpLine in ipairs(tmpDescription) do
-                        table.insert(formatLines, string.format(tmpLine, impVal))
-                    end
-                else
-                    table.insert(formatLines, string.format(tmpDescription, impVal))
+            if impName ~= "starmightReq" then
+                if not firstDraw then
+                    tmpRenderText("Implicit modifiers:", tmpColor)
+                    firstDraw = true
                 end
-                for _, tmpLine in ipairs(formatLines) do
-                    tmpRenderText("    " .. tmpLine, tmpColor)
+                local tmpDescription = PST.expedDescriptions[impName]
+                if tmpDescription then
+                    local formatLines = {}
+                    if type(tmpDescription) == "table" then
+                        for _, tmpLine in ipairs(tmpDescription) do
+                            table.insert(formatLines, string.format(tmpLine, impVal))
+                        end
+                    else
+                        table.insert(formatLines, string.format(tmpDescription, impVal))
+                    end
+                    for _, tmpLine in ipairs(formatLines) do
+                        tmpRenderText("    " .. tmpLine, tmpColor)
+                    end
                 end
             end
         end
-        tmpRenderText("")
+        if firstDraw then
+            tmpRenderText("")
+        end
     end
 
     -- Items

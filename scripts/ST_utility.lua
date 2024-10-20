@@ -188,7 +188,8 @@ end
 -- Add XP
 ---@param xpParam number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
-function PST:addXP(xpParam, showText)
+---@param overflow? boolean Whether XP overflow is limited
+function PST:addXP(xpParam, showText, overflow)
 	local charData = PST:getCurrentCharData()
 	if charData then
 		local xp = xpParam
@@ -210,13 +211,21 @@ function PST:addXP(xpParam, showText)
 				charData.level = charData.level + 1
 				charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
 
-				local xpRemaining = charData.xp - charData.xpRequired
-
 				-- Next level xp requirement formula
 				charData.xpRequired = PST:getLevelXPReq(charData.level)
 
 				-- Add overflowing xp to next level, capped at 33%
-				charData.xp = math.min(math.floor(charData.xpRequired * 0.33), xpRemaining)
+				if not overflow then
+					local xpRemaining = charData.xp - charData.xpRequired
+					charData.xp = math.min(math.floor(charData.xpRequired * 0.33), xpRemaining)
+				else
+					while charData.xp >= charData.xpRequired do
+						charData.xp = charData.xp - charData.xpRequired
+						charData.level = charData.level + 1
+						charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
+						charData.xpRequired = PST:getLevelXPReq(charData.level)
+					end
+				end
 
 				PST:createFloatTextFX("Level up!", Vector.Zero, Color(0.7, 0.85, 1, 0.7), 0.17, 100, true)
 			end

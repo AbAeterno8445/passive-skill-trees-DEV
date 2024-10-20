@@ -1543,6 +1543,8 @@ function PST:resetData()
 		-- Astral Expeditions
 		---@type PSTExpedition[]
 		expeditionsData = { [0] = {} },
+		arcaneObols = 0,
+		expeditionDepth = 1,
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},

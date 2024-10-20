@@ -43,9 +43,9 @@ function PST:getExpeditionImplicits(depth)
     end
     -- -expedition starting attempts
     local lessAttemptsList = {5, 10, 15, 25, 40}
-    implicits.lessAttempts = 0
     for _, tmpThreshold in ipairs(lessAttemptsList) do
         if depth >= tmpThreshold then
+            if not implicits.lessAttempts then implicits.lessAttempts = 0 end
             implicits.lessAttempts = implicits.lessAttempts + 1
         end
     end
@@ -104,7 +104,7 @@ function PST:generateExpedition(depth, seed)
             ---@type PSTExpNode
             local newNode = {
                 nodeType = PSTExpNodeType.NORMAL,
-                col = col,
+                col = col + 1, -- Account for astrolabe column
                 row = row,
                 rewardType = PSTExpNodeRewardType.OBOLS,
                 connections = {},
@@ -318,7 +318,8 @@ function PST:generateExpedition(depth, seed)
     -- Expedition implicit modifiers
     local expImplicits = PST:getExpeditionImplicits(depth)
     -- Expedition starting attempts
-    local expAttempts = 8 - expImplicits.lessAttempts
+    local lessAttempts = expImplicits.lessAttempts or 0
+    local expAttempts = 8 - lessAttempts
 
     ---@type PSTExpedition
     return {
@@ -348,19 +349,24 @@ function PST:updateExpedAccess(depth)
                 if tmpNode.nodeType ~= PSTExpNodeType.COMPLETED and tmpNode.nodeType ~= PSTExpNodeType.ASTROLABE and
                 tmpNode.nodeType ~= PSTExpNodeType.FINAL then
                     tmpNode.accessible = false
-                else
+                elseif tmpNode.nodeType == PSTExpNodeType.COMPLETED then
                     completed = completed + 1
                     table.insert(completedCols, col)
                     tmpNode.accessible = nil
                 end
+                tmpNode.selectable = nil
             end
         end
 
         if completed == 0 then
             -- No completed nodes, set everything back to accessible
-            for _, tmpCol in ipairs(tmpExpedition.nodes) do
+            for col, tmpCol in ipairs(tmpExpedition.nodes) do
                 for _, tmpNode in ipairs(tmpCol) do
                     tmpNode.accessible = nil
+                    if col == 2 then
+                        -- Selectable nodes after astrolabe
+                        tmpNode.selectable = true
+                    end
                 end
             end
         else
@@ -379,7 +385,13 @@ function PST:updateExpedAccess(depth)
                         tmpNode.accessible = nil
                         if not PST:arrHasValue(completedCols, col + 1) then
                             for _, adjNode in ipairs(tmpNode.connections) do
-                                table.insert(nodeCheckList, {col + 1, adjNode})
+                                local targetNode = tmpExpedition.nodes[col + 1][adjNode]
+                                if targetNode then
+                                    if tmpNode.nodeType == PSTExpNodeType.COMPLETED then
+                                        targetNode.selectable = true
+                                    end
+                                    table.insert(nodeCheckList, {col + 1, adjNode})
+                                end
                             end
                         end
                     end
@@ -389,12 +401,40 @@ function PST:updateExpedAccess(depth)
     end
 end
 
-function PST:completeExpedNode(depth, col, row)
+function PST:completeExpedNode(depth, col, row, giveReward)
     local tmpExpedition = PST.modData.expeditionsData[depth]
     if tmpExpedition then
         for _, tmpNode in ipairs(tmpExpedition.nodes[col]) do
             if tmpNode.row == row then
+                -- Give node reward
+                if giveReward then
+                    -- Expedition attempts
+                    if tmpNode.rewardType == PSTExpNodeRewardType.ATTEMPTS then
+                        tmpExpedition.startAttempts = tmpExpedition.startAttempts + tmpNode.rewardData
+                        tmpExpedition.attempts = tmpExpedition.attempts + tmpNode.rewardData
+                    -- Boon
+                    elseif tmpNode.rewardType == PSTExpNodeRewardType.BOON and not PST:arrHasValue(tmpExpedition.boons, tmpNode.rewardData) then
+                        table.insert(tmpExpedition.boons, tmpNode.rewardData)
+                    -- Exp
+                    elseif tmpNode.rewardType == PSTExpNodeRewardType.EXP then
+                        PST:addXP(tmpNode.rewardData, false)
+                    -- Item
+                    elseif tmpNode.rewardType == PSTExpNodeRewardType.ITEM and not PST:arrHasValue(tmpExpedition.items, tmpNode.rewardData) then
+                        table.insert(tmpExpedition.items, tmpNode.rewardData)
+                    -- Arcane obols
+                    elseif tmpNode.rewardType == PSTExpNodeRewardType.OBOLS then
+                        PST.modData.arcaneObols = PST.modData.arcaneObols + tmpNode.rewardData
+                    end
+                    -- Boon upgrade point reward
+                    if tmpNode.nodeType == PSTExpNodeType.BOONUPGRADE or tmpNode.nodeType == PSTExpNodeType.MIXED then
+                        tmpExpedition.boonUpgradePoints = tmpExpedition.boonUpgradePoints + 1
+                    end
+                end
+
                 tmpNode.nodeType = PSTExpNodeType.COMPLETED
+                if tmpExpedition.selectedNode.col == col and tmpExpedition.selectedNode.row == row then
+                    tmpExpedition.selectedNode = nil
+                end
                 break
             end
         end
@@ -404,6 +444,7 @@ end
 
 function PST:resetExpedition(depth)
     PST.modData.expeditionsData[depth] = PST:generateExpedition(depth)
+    PST:updateExpedAccess(depth)
     return PST.modData.expeditionsData[depth]
 end
 
@@ -443,8 +484,38 @@ function PST:expedAddItem(depth, itemID)
 end
 
 ---@param nodeData PSTExpNode
----@param depth number
-function PST:getExpNodeDescription(nodeData, depth)
+---@param expData PSTExpedition
+function PST:getExpNodeObjectiveDesc(nodeData, expData)
+    local tmpDescription = {}
+    local objectiveData = PST.expeditionObjectives[nodeData.objective.name]
+    if not objectiveData then
+        objectiveData = PST.expeditionObjectivesFinal[nodeData.objective.name]
+    end
+    if objectiveData then
+        local tmpColor = PST:RGBKColor(57, 150, 255)
+        if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
+
+        local objProgress = 0
+        if expData.selectedNode then objProgress = expData.selectedNode.objProgress end
+
+        local progressStr = tostring(objProgress) .. "/" .. tostring(nodeData.objective.req)
+        table.insert(tmpDescription, {"Objective:", tmpColor})
+        if type(objectiveData.description) == "table" then
+            for _, tmpLine in ipairs(objectiveData.description) do
+                local formattedLine = PST:formatString(tmpLine, { progress = progressStr })
+                table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
+            end
+        else
+            local formattedLine = PST:formatString(objectiveData.description, { progress = progressStr })
+            table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
+        end
+    end
+    return tmpDescription
+end
+
+---@param nodeData PSTExpNode
+---@param expData PSTExpedition
+function PST:getExpNodeDescription(nodeData, expData)
     local tmpDescription = {}
 
     -- Completed node
@@ -457,28 +528,8 @@ function PST:getExpNodeDescription(nodeData, depth)
 
     -- Objective
     if nodeData.objective and nodeData.objective.name then
-        local objectiveData = PST.expeditionObjectives[nodeData.objective.name]
-        if not objectiveData then
-            objectiveData = PST.expeditionObjectivesFinal[nodeData.objective.name]
-        end
-        if objectiveData then
-            local tmpColor = PST:RGBKColor(57, 150, 255)
-            if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
-            local objProgress = 0
-            --[[if expeditionData.currentNode and expeditionData.currentNode.progress then
-                objProgress = expeditionData.currentNode.progress
-            end]]
-            local progressStr = tostring(objProgress) .. "/" .. tostring(nodeData.objective.req)
-            table.insert(tmpDescription, {"Objective:", tmpColor})
-            if type(objectiveData.description) == "table" then
-                for _, tmpLine in ipairs(objectiveData.description) do
-                    local formattedLine = PST:formatString(tmpLine, { progress = progressStr })
-                    table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
-                end
-            else
-                local formattedLine = PST:formatString(objectiveData.description, { progress = progressStr })
-                table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
-            end
+        for _, tmpLine in ipairs(PST:getExpNodeObjectiveDesc(nodeData, expData)) do
+            table.insert(tmpDescription, tmpLine)
         end
     end
 
@@ -491,11 +542,11 @@ function PST:getExpNodeDescription(nodeData, depth)
             table.insert(tmpDescription, {"Curse of " .. curseData.name .. ":", tmpColor})
             if type(curseData.description) == "table" then
                 for _, tmpLine in ipairs(curseData.description) do
-                    local formattedDesc = PST:formatString(tmpLine, curseData.modsFunc(depth))
+                    local formattedDesc = PST:formatString(tmpLine, curseData.modsFunc(expData.depth))
                     table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
                 end
             else
-                local formattedDesc = PST:formatString(curseData.description, curseData.modsFunc(depth))
+                local formattedDesc = PST:formatString(curseData.description, curseData.modsFunc(expData.depth))
                 table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
             end
         end

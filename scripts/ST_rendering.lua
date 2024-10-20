@@ -25,7 +25,7 @@ tempestasFont:Load("font/pftempestasevencondensed.fnt")
 ---@param totalSteps number -- How many frames the text lasts. Used for fading effect
 ---@param playerRelative boolean -- Whether the text should stick to the player. If true, the position vector becomes relative to the player
 function PST:createFloatTextFX(text, position, color, speed, totalSteps, playerRelative)
-	if not PST.config.floatingTexts then return end
+	if not PST.config.floatingTexts or not Isaac.IsInGame() then return end
 
 	local tmpText = {
 		text = text,
