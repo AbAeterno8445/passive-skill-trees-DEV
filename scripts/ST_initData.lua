@@ -1546,6 +1546,7 @@ function PST:resetData()
 		arcaneObols = 0,
 		expeditionDepth = 1,
 		expedLastDepth = 1, -- Remember last visited depth for menu
+		expedEnabled = false,
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},

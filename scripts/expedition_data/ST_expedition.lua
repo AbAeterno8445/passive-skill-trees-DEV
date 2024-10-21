@@ -103,6 +103,29 @@ function PST:expedAddProgress(depth, prog)
     end
 end
 
+function PST:expedMeetsRequirements(depth)
+    local tmpExpedition = PST.expeditionsData[depth]
+    if tmpExpedition then
+        -- Selected node
+        if not tmpExpedition.selectedNode then return false end
+        -- Starmight requirement
+        if tmpExpedition.implicits then
+            local tmpReq = tmpExpedition.implicits.starmightReq
+            if tmpReq and tmpReq > 0 and PST.treeScreen.starcursedTotalMods.totalStarmight < tmpReq then
+                return false
+            end
+        end
+        -- Ancient Starcursed Jewel requirement (curse)
+        local expCurses = PST:getExpedCurseMods(tmpExpedition)
+        if expCurses["curseAncientStars"] then
+            local ancientSocketed = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, "1") or PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, "2")
+            if not ancientSocketed then return false end
+        end
+        return true
+    end
+    return false
+end
+
 function PST:completeExpedNode(depth, col, row, giveReward)
     local tmpExpedition = PST.expeditionsData[depth]
     local tmpNode = PST:expedGetNodeAt(depth, col, row)

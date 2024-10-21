@@ -232,18 +232,23 @@ function expeditionScreen:OnInput()
                     PST.modData.skillPoints = PST.modData.skillPoints - 1
                     PST.modData.arcaneObols = PST.modData.arcaneObols - obolCost
                     PST:resetExpedition(self.currentDepth)
-
-                    self.resetTimer = 0
                     SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
                 end
+                self.resetTimer = 0
             elseif self.resetTimer % 60 == 0 then
                 SFXManager():Play(SoundEffect.SOUND_1UP)
             end
         end
     else
         self.resetTimer = 0
+    end
+
+    -- Input: Switch tree (enable/disable expeditions)
+    if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
+        PST.modData.expedEnabled = not PST.modData.expedEnabled
+        SFXManager():Play(SoundEffect.SOUND_BEEP)
     end
 
     if Isaac.GetFrameCount() % 2 == 0 then
@@ -311,13 +316,27 @@ function expeditionScreen:Render(tScreen)
         local nodeName = "Expedition Node"
         local nodeDesc = {}
         if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
+            -- Arcane Astrolabe description
             nodeName = "Arcane Astrolabe"
-            nodeDesc = {
-                "Expedition Depth: " .. tostring(self.currentDepth),
-                "Hold the Respec button for 3 seconds to reset this expedition.",
-                {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth)) .. " Arcane Obols.", KColor(0.8, 0.35, 1, 1)}
-            }
+            -- Depth
+            table.insert(nodeDesc, "Expedition Depth: " .. tostring(self.currentDepth))
+            -- Expedition enabled/disabled
+            if PST.modData.expedEnabled then
+                local tmpColor = KColor(0.5, 1, 0.5, 1)
+                local tmpStr = "Expedition Run Enabled"
+                if not PST:expedMeetsRequirements(self.currentDepth) then
+                    tmpColor = KColor(1, 0.5, 0.5, 1)
+                    tmpStr = tmpStr .. " (Reqs not met!)"
+                end
+                table.insert(nodeDesc, {tmpStr, tmpColor})
+            else
+                table.insert(nodeDesc, {"Expedition Run Disabled", KColor(1, 0.5, 0.5, 1)})
+            end
+            -- Respec for reset
+            table.insert(nodeDesc, "Hold the Respec button for 3 seconds to reset and reroll this expedition.")
+            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth)) .. " Arcane Obols.", KColor(0.8, 0.35, 1, 1)})
         else
+            -- Normal expedition node description
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
         end
         if expData.selectedNode then
@@ -485,6 +504,21 @@ function expeditionScreen:Render(tScreen)
     tmpY = tmpY + 28
     -- Expedition attempts
     PST.miniFont:DrawString("Attempts: " .. tostring(expData.attempts) .. "/" .. tostring(expData.startAttempts), tmpX, tmpY, PST:RGBKColor(57, 150, 255))
+    tmpY = tmpY + 28
+    if self.currentTab == 1 then
+        -- Expedition enabled/disabled
+        if PST.modData.expedEnabled then
+            local tmpColor = KColor(0.5, 1, 0.5, 1)
+            local tmpStr = "Expedition Run Enabled"
+            if not PST:expedMeetsRequirements(self.currentDepth) then
+                tmpColor = KColor(1, 0.5, 0.5, 1)
+                tmpStr = tmpStr .. " (Reqs not met!)"
+            end
+            PST.miniFont:DrawString(tmpStr, tmpX, tmpY, tmpColor)
+        else
+            PST.miniFont:DrawString("Expedition Run Disabled", tmpX, tmpY, KColor(1, 0.5, 0.5, 1))
+        end
+    end
 end
 
 return expeditionScreen
