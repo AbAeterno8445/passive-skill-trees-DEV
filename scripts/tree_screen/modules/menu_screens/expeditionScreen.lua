@@ -25,6 +25,8 @@ local expeditionScreen = {
         PSTKeybind.NUM1, PSTKeybind.NUM2, PSTKeybind.NUM3
     },
 
+    resetTimer = 0,
+
     -- Currently hovered node data
     ---@type PSTExpNode|nil
     hoveredNode = nil,
@@ -219,6 +221,31 @@ function expeditionScreen:OnInput()
         end
     end
 
+    -- Input: Respec (hold)
+    if PST:isKeybindActive(PSTKeybind.RESPEC_NODE, true) then
+        -- Hold Respec on Astrolabe for 3 seconds to reset expedition, if you can afford it
+        if self.hoveredNode and self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
+            self.resetTimer = self.resetTimer + 1
+            if self.resetTimer == 180 then
+                local obolCost = PST:getExpedResetCost(self.currentDepth)
+                if PST.modData.skillPoints >= 1 and PST.modData.arcaneObols >= obolCost then
+                    PST.modData.skillPoints = PST.modData.skillPoints - 1
+                    PST.modData.arcaneObols = PST.modData.arcaneObols - obolCost
+                    PST:resetExpedition(self.currentDepth)
+
+                    self.resetTimer = 0
+                    SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
+                else
+                    SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
+                end
+            elseif self.resetTimer % 60 == 0 then
+                SFXManager():Play(SoundEffect.SOUND_1UP)
+            end
+        end
+    else
+        self.resetTimer = 0
+    end
+
     if Isaac.GetFrameCount() % 2 == 0 then
         -- Input: Zoom in
         if PST:isKeybindActive(PSTKeybind.ZOOM_IN, true) and self.zoomScale < 1 then
@@ -285,7 +312,11 @@ function expeditionScreen:Render(tScreen)
         local nodeDesc = {}
         if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
             nodeName = "Arcane Astrolabe"
-            nodeDesc = {"Expedition Depth: " .. tostring(self.currentDepth)}
+            nodeDesc = {
+                "Expedition Depth: " .. tostring(self.currentDepth),
+                "Hold the Respec button for 3 seconds to reset this expedition.",
+                {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth)) .. " Arcane Obols.", KColor(0.8, 0.35, 1, 1)}
+            }
         else
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
         end

@@ -197,6 +197,10 @@ function PST:getExpNodeObjectiveDesc(nodeData, expData)
     return tmpDescription
 end
 
+function PST:getExpedResetCost(depth)
+    return depth * 40
+end
+
 ---@param nodeData PSTExpNode
 ---@param expData PSTExpedition
 function PST:getExpNodeDescription(nodeData, expData)
