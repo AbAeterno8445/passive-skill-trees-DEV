@@ -21,7 +21,8 @@ local expeditionScreen = {
     inputOverrides = {
         PSTKeybind.TREE_PAN_DOWN, PSTKeybind.TREE_PAN_LEFT, PSTKeybind.TREE_PAN_RIGHT, PSTKeybind.TREE_PAN_UP,
         PSTKeybind.CENTER_CAMERA, PSTKeybind.ZOOM_IN, PSTKeybind.ZOOM_OUT, PSTKeybind.PAN_FASTER, PSTKeybind.TREE_TAB,
-        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE, PSTKeybind.SWITCH_TREE
+        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE, PSTKeybind.SWITCH_TREE,
+        PSTKeybind.NUM1, PSTKeybind.NUM2, PSTKeybind.NUM3
     },
 
     -- Currently hovered node data
@@ -34,6 +35,8 @@ local expeditionScreen = {
     hoveredCurse = nil,
     ---@type number|nil
     hoveredItem = nil,
+    ---@type number|nil
+    hoveredDepth = nil,
 
     tabs = {
         "Expedition",
@@ -52,6 +55,7 @@ expeditionScreen.itemRewardSprite:Play("ShopIdle", true)
 -- Tab rendering funcs
 local expedScreenMainTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenMainTab")
 local expedScreenEffectTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenEffectTab")
+local expedScreenDepthTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenDepthTab")
 
 -- Camera funcs
 function expeditionScreen:UpdateCamZoomOffset()
@@ -79,10 +83,19 @@ end
 function expeditionScreen:OnOpen(openData)
     self.currentTab = 1
 
+    if PST.modData.expedLastDepth ~= self.currentDepth then
+        self.currentDepth = PST.modData.expedLastDepth
+    end
+
     if PST.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
     end
     PST:updateExpedAccess(self.currentDepth)
+end
+
+function expeditionScreen:OnSwitchTab()
+    self:CenterCamera()
+    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7)
 end
 
 -- Input processing
@@ -125,8 +138,16 @@ function expeditionScreen:OnInput()
     if PST:isKeybindActive(PSTKeybind.TREE_TAB) then
         self.currentTab = self.currentTab + 1
         if self.currentTab > #self.tabs then self.currentTab = 1 end
-        self:CenterCamera()
-        SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7)
+        self:OnSwitchTab()
+    end
+
+    -- Input: Nums (for tab switching)
+    for i=1,#self.tabs do
+        if PST:isKeybindActive(PSTKeybind["NUM" .. tostring(i)]) then
+            self.currentTab = i
+            self:OnSwitchTab()
+            break
+        end
     end
 
     -- Input: Allocate
@@ -180,6 +201,20 @@ function expeditionScreen:OnInput()
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
                     expData.boonUpgradePoints = expData.boonUpgradePoints - 1
                 end
+            -- Hovered depth, attempt to switch to it
+            elseif self.hoveredDepth then
+                if self.hoveredDepth ~= self.currentDepth then
+                    if self.hoveredDepth <= PST.modData.expeditionDepth then
+                        if not PST.expeditionsData[self.hoveredDepth] then
+                            PST:resetExpedition(self.hoveredDepth)
+                        end
+                        self.currentDepth = self.hoveredDepth
+                        PST.modData.expedLastDepth = self.hoveredDepth
+                        SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                    else
+                        SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
+                    end
+                end
             end
         end
     end
@@ -208,6 +243,10 @@ function expeditionScreen:Update(tScreen)
     tScreen.hideNodes = true
 
     self.hoveredNode = nil
+    self.hoveredBoon = nil
+    self.hoveredCurse = nil
+    self.hoveredItem = nil
+    self.hoveredDepth = nil
 
     if PST.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
@@ -227,10 +266,13 @@ function expeditionScreen:Render(tScreen)
     -- Effects tab
     elseif self.currentTab == 2 then
         expedScreenEffectTab(expData, self, tScreen)
+    -- Depth tab
+    elseif self.currentTab == 3 then
+        expedScreenDepthTab(expData, self, tScreen)
     end
 
     -- Cursor
-    if self.hoveredNode or self.hoveredBoon or self.hoveredCurse or self.hoveredItem then
+    if self.hoveredNode or self.hoveredBoon or self.hoveredCurse or self.hoveredItem or self.hoveredDepth then
         tScreen.cursorSprite:Play("Clicked", true)
     else
         tScreen.cursorSprite:Play("Idle", true)
@@ -238,7 +280,7 @@ function expeditionScreen:Render(tScreen)
     tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
 
     -- Hovered node description
-    if self.currentTab == 1 and self.hoveredNode then
+    if self.hoveredNode then
         local nodeName = "Expedition Node"
         local nodeDesc = {}
         if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
@@ -268,7 +310,7 @@ function expeditionScreen:Render(tScreen)
         tScreen:DrawNodeBox(nodeName, nodeDesc)
 
     -- Hovered boon description
-    elseif self.currentTab == 2 and self.hoveredBoon then
+    elseif self.hoveredBoon then
         local tmpColor = KColor(0.7, 1, 0.7, 1)
         local boonData = PST.expeditionBoons[self.hoveredBoon]
         local boonName = "Boon of " .. boonData.name
@@ -314,7 +356,7 @@ function expeditionScreen:Render(tScreen)
         tScreen:DrawNodeBox(boonName, boonDesc)
 
     -- Hovered curse description
-    elseif self.currentTab == 2 and self.hoveredCurse then
+    elseif self.hoveredCurse then
         local tmpColor = KColor(1, 0.7, 0.7, 1)
         local curseData = PST.expeditionCurses[self.hoveredCurse]
         local curseName = "Curse of " .. curseData.name
@@ -332,7 +374,7 @@ function expeditionScreen:Render(tScreen)
         tScreen:DrawNodeBox(curseName, curseDesc)
 
     -- Hovered item description
-    elseif self.currentTab == 2 and self.hoveredItem then
+    elseif self.hoveredItem then
         local tmpColor = KColor(0.85, 0.55, 1, 1)
         local itemCfg = Isaac.GetItemConfig():GetCollectible(self.hoveredItem)
         if itemCfg then
@@ -343,6 +385,41 @@ function expeditionScreen:Render(tScreen)
 			end
             tScreen:DrawNodeBox(itemName, itemDesc)
         end
+    
+    -- Hovered depth description
+    elseif self.hoveredDepth then
+        local depthDesc = {}
+        local tgtExped = PST.expeditionsData[self.hoveredDepth]
+        -- Locked depth
+        if self.hoveredDepth > PST.modData.expeditionDepth then
+            table.insert(depthDesc, "Complete the previous depth level to unlock.")
+        -- Unvisited depth
+        elseif not tgtExped then
+            table.insert(depthDesc, "Not visited yet.")
+        -- Depth info
+        elseif self.hoveredDepth <= PST.modData.expeditionDepth then
+            local compNodes = 0
+            for _, tmpCol in ipairs(tgtExped.nodes) do
+                for _, tmpNode in ipairs(tmpCol) do
+                    if tmpNode.nodeType == PSTExpNodeType.COMPLETED then
+                        compNodes = compNodes + 1
+                    end
+                end
+            end
+            -- Attempts
+            table.insert(depthDesc, {"Attempts: " .. tostring(tgtExped.attempts) .. "/" .. tostring(tgtExped.startAttempts), PST:RGBKColor(57, 150, 255)})
+            -- Completed nodes
+            table.insert(depthDesc, {"Completed nodes: " .. tostring(compNodes), PST:RGBKColor(57, 150, 255)})
+            -- Items
+            if #tgtExped.items > 0 then
+                table.insert(depthDesc, {"Items: " .. tostring(#tgtExped.items), KColor(0.8, 0.3, 1, 1)})
+            end
+            -- Boons
+            table.insert(depthDesc, {"Boons: " .. tostring(#tgtExped.boons), KColor(0.4, 1, 0.4, 1)})
+            -- Curses
+            table.insert(depthDesc, {"Curses: " .. tostring(#tgtExped.curses), KColor(1, 0.7, 0.7, 1)})
+        end
+        tScreen:DrawNodeBox("Depth " .. tostring(self.hoveredDepth), depthDesc)
     end
 
     -- HUD: Tabs
@@ -374,6 +451,9 @@ function expeditionScreen:Render(tScreen)
     tmpY = tmpY + 14
     -- Arcane Obols
     PST.miniFont:DrawString("Arcane Obols: " .. tostring(PST.modData.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+    tmpY = tmpY + 28
+    -- Expedition attempts
+    PST.miniFont:DrawString("Attempts: " .. tostring(expData.attempts) .. "/" .. tostring(expData.startAttempts), tmpX, tmpY, PST:RGBKColor(57, 150, 255))
 end
 
 return expeditionScreen

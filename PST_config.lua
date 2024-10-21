@@ -135,7 +135,16 @@ PST.config = {
         tab = {
             keyboardButton = Keyboard.KEY_TAB,
             controllerAction = ButtonAction.ACTION_RESTART
-        }
+        },
+        num1 = { keyboardButton = Keyboard.KEY_1 },
+        num2 = { keyboardButton = Keyboard.KEY_2 },
+        num3 = { keyboardButton = Keyboard.KEY_3 },
+        num4 = { keyboardButton = Keyboard.KEY_4 },
+        num5 = { keyboardButton = Keyboard.KEY_5 },
+        num6 = { keyboardButton = Keyboard.KEY_6 },
+        num7 = { keyboardButton = Keyboard.KEY_7 },
+        num8 = { keyboardButton = Keyboard.KEY_8 },
+        num9 = { keyboardButton = Keyboard.KEY_9 }
     }
 }
 
@@ -159,7 +168,16 @@ PSTKeybind = {
     ZOOM_OUT = "zoomOut",
     TOGGLE_TOTAL_MODS = "toggleTotalMods",
     TOGGLE_CHANGELOG = "toggleChangelog",
-    TREE_TAB = "tab"
+    TREE_TAB = "tab",
+    NUM1 = "num1",
+    NUM2 = "num2",
+    NUM3 = "num3",
+    NUM4 = "num4",
+    NUM5 = "num5",
+    NUM6 = "num6",
+    NUM7 = "num7",
+    NUM8 = "num8",
+    NUM9 = "num9"
 }
 
 -- Support for Mod Config Menu
