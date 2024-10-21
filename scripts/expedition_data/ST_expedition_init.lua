@@ -1,3 +1,7 @@
+---@type PSTExpedition[]
+PST.expeditionsData = {}
+PST.expedMinLevel = 70
+
 ---@enum PSTExpNodeRewardType
 PSTExpNodeRewardType = {
     NONE = 0,
@@ -15,7 +19,6 @@ PSTExpNodeType = {
     FINAL = 2,
     BOONUPGRADE = 3,
     ASTROLABE = 4,
-    MIXED = 5,
     COMPLETED = 6
 }
 
@@ -26,7 +29,6 @@ PSTExpNodeType = {
 ---@field row number
 ---@field accessible? boolean
 ---@field selectable? boolean
----@field completed? boolean
 ---@field objective? table
 ---@field curse? integer
 ---@field rewardType PSTExpNodeRewardType
@@ -53,6 +55,16 @@ PSTExpNodeType = {
 ---@field boonUpgradePoints number
 ---@field curses number[]
 ---@field items CollectibleType[]
+
+-- Expedition save class (expedition data that gets stored in savefile)
+---@class PSTExpeditionSave
+---@field seed integer
+---@field selNode? PSTSelectedExpNode|nil
+---@field compNodes? number[]
+---@field upgBoons? number[]
+---@field upgBoonPts? number
+---@field usedAttempts? number
+---@field modifiers? table
 
 -- List of available expedition boons
 PST.expeditionBoons = {
@@ -376,7 +388,7 @@ PST.expeditionCurses = {
     {
         name = "Flimsy Gadgets",
         description = {
-            "When hit, {{curseflimGadgDrop}}% chance to drop held trinkets.",
+            "When hit, {{curseFlimGadgDrop}}% chance to drop held trinkets.",
             "{{curseFlimGadgVanish}}% chance for dropped trinkets to vanish instead."
         },
         spriteFrame = 10,
@@ -771,29 +783,23 @@ end
 
 -- Node reward data
 PST.expeditionRewardData = {
+    -- Arcane obols
     [PSTExpNodeRewardType.OBOLS] = function(RNG, depth, column)
         local baseAmt = 2 + RNG:RandomInt(1, 3)
         return baseAmt + depth * 4 + column * 2
     end,
+    -- EXP
     [PSTExpNodeRewardType.EXP] = function(RNG, depth, column)
         local baseAmt = math.floor(100 + 200 * RNG:RandomFloat())
         return baseAmt + depth * 50 + column * 40
     end,
+    -- Expedition attempts
     [PSTExpNodeRewardType.ATTEMPTS] = function(RNG, depth, column)
         local atts = 1
         if depth >= 6 and column >= 4 and RNG:RandomFloat() < 0.2 then
             atts = 2
         end
         return atts
-    end,
-    [PSTExpNodeRewardType.BOON] = function(RNG, depth, column)
-        local newBoonID = RNG:RandomInt(1, #PST.expeditionBoons)
-        local newBoon = PST.expeditionBoons[newBoonID]
-        while newBoon.minDepth and depth < newBoon.minDepth do
-            newBoonID = RNG:RandomInt(1, #PST.expeditionBoons)
-            newBoon = PST.expeditionBoons[newBoonID]
-        end
-        return newBoonID
     end,
 }
 

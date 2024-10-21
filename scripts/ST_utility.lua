@@ -32,8 +32,13 @@ end
 -- Get current char name (different to EntityPlayer's GetName() func as it uses a custom name table)
 function PST:getCurrentCharName()
 	if not PST.charNames then return nil end
-	local player = PST:getPlayer()
-	return PST.charNames[1 + player:GetPlayerType()]
+	if Isaac.IsInGame() then
+		local player = PST:getPlayer()
+		return PST.charNames[1 + player:GetPlayerType()]
+	elseif PST.selectedMenuChar then
+		return PST.charNames[1 + PST.selectedMenuChar]
+	end
+	return nil
 end
 
 -- Attempt to init a non-vanilla character so they can earn XP
@@ -140,6 +145,11 @@ end
 ---@param noMult? boolean If true, apply no multipliers to xp
 function PST:addTempXP(xp, showText, noMult)
 	if PST:getCurrentCharData() == nil then return end
+
+	-- Tie challenge xp gain to 'enable tree on challenges' option
+	if not PST.config.treeOnChallenges and Isaac.GetChallenge() ~= 0 then
+		return
+	end
 
 	local room = PST:getRoom()
 	local roomType = room:GetType()
@@ -850,4 +860,14 @@ function PST:formatString(str, values)
         return values[key] or ""
     end)
 	return result
+end
+
+-- Removes the first matching value in the given table
+function PST:tableRemoveFirst(t, val)
+	for i, tmpVal in ipairs(t) do
+		if tmpVal == val then
+			table.remove(t, i)
+			break
+		end
+	end
 end

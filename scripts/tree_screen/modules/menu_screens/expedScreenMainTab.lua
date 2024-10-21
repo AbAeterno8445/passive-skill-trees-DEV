@@ -57,6 +57,7 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
     for col, tmpColumn in ipairs(expData.nodes) do
         for row, tmpNode in ipairs(tmpColumn) do
             local drawPos = PST_getNodePos(col, #tmpColumn, row)
+            local oldAlpha = expedScreen.expNodeSprite.Color.A
 
             local isSelected = expData.selectedNode and expData.selectedNode.col == col and expData.selectedNode.row == row
             -- Gray out inaccessible nodes
@@ -69,10 +70,10 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
 
                 -- Selectable node effect
                 if tmpNode.selectable and not isSelected then
-                    local oldAlpha = expedScreen.expNodeSprite.Color.A
                     expedScreen.expNodeSprite:SetFrame("Nodes", PSTExpNodeType.COMPLETED)
 
-                    expedScreen.expNodeSprite.Color.A = tScreen.modules.nodeDrawingModule.alphaFlash
+                    local flashAlpha = tScreen.modules.nodeDrawingModule.alphaFlash
+                    expedScreen.expNodeSprite.Color.A = flashAlpha
                     expedScreen.expNodeSprite.Scale = expedScreen.expNodeSprite.Scale + Vector(0.1, 0.1)
                     expedScreen.expNodeSprite:Render(drawPos)
                     expedScreen.expNodeSprite.Color.A = oldAlpha
@@ -83,6 +84,7 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             expedScreen.expNodeSprite:SetFrame("Nodes", tmpNode.nodeType)
             expedScreen.expNodeSprite:Render(drawPos)
 
+            -- Draw reward icon
             if tmpNode.nodeType ~= PSTExpNodeType.COMPLETED then
                 if tmpNode.rewardType ~= PSTExpNodeRewardType.ITEM then
                     if expNodeRewardFrame[tmpNode.rewardType] ~= nil then
@@ -96,6 +98,16 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
                         expedScreen.itemRewardSprite:Render(drawPos - Vector(1, -8) * expedScreen.zoomScale)
                     end
                 end
+            end
+
+            -- 'Pending completion' node effect
+            if expData.selectedNode and expData.selectedNode.col == tmpNode.col and expData.selectedNode.row == tmpNode.row and
+            PST:expedNodeIsObjectiveDone(expedScreen.currentDepth, tmpNode) then
+                local flashAlpha = tScreen.modules.nodeDrawingModule.alphaFlash
+                expedScreen.expNodeSprite.Color.A = flashAlpha
+                expedScreen.expNodeSprite:SetFrame("Nodes", 5)
+                expedScreen.expNodeSprite:Render(drawPos)
+                expedScreen.expNodeSprite.Color.A = oldAlpha
             end
 
             -- Selected node bubble

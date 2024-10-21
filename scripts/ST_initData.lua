@@ -1541,7 +1541,7 @@ function PST:resetData()
 		ancientRewards = {},
 
 		-- Astral Expeditions
-		---@type PSTExpedition[]
+		---@type PSTExpeditionSave[]
 		expeditionsData = { [0] = {} },
 		arcaneObols = 0,
 		expeditionDepth = 1,

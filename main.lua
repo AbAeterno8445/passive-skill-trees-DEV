@@ -100,6 +100,11 @@ function PST:save(forceSave)
 
 	local modSave = PST.saveManager.GetPersistentSave()
 	if modSave then
+		-- Save expeditions
+		for depth, expData in pairs(PST.expeditionsData) do
+			PST.modData.expeditionsData[depth] = PST:getExpedSave(expData)
+		end
+
 		modSave.modData = PST:copyTable(PST.modData)
 		tmpSaved = true
 	end
@@ -175,10 +180,16 @@ function PST:processLoadedData(loadedData)
 		end
 	end
 
+	---- Load Astral Expeditions
 	-- Expeditions data number indexes
 	local tmpExpeditionsData = { [0] = {} }
 	for k, v in pairs(PST.modData.expeditionsData) do
 		tmpExpeditionsData[tonumber(k)] = v
+	end
+	for depth, tmpExpedSave in pairs(tmpExpeditionsData) do
+		if depth > 0 then
+			PST:loadExpedition(depth, tmpExpedSave)
+		end
 	end
 	PST.modData.expeditionsData = tmpExpeditionsData
 

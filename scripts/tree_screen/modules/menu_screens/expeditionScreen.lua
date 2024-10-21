@@ -37,7 +37,8 @@ local expeditionScreen = {
 
     tabs = {
         "Expedition",
-        "Effects"
+        "Effects",
+        "Depth"
     },
     currentTab = 1,
     currentDepth = 1,
@@ -78,7 +79,7 @@ end
 function expeditionScreen:OnOpen(openData)
     self.currentTab = 1
 
-    if PST.modData.expeditionsData[self.currentDepth] == nil then
+    if PST.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
     end
     PST:updateExpedAccess(self.currentDepth)
@@ -130,22 +131,44 @@ function expeditionScreen:OnInput()
 
     -- Input: Allocate
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
-        local expData = PST.modData.expeditionsData[self.currentDepth]
+        local expData = PST.expeditionsData[self.currentDepth]
         if expData then
-            -- Hovered node, attempt to select
+            -- Hovered node
             if self.hoveredNode then
-                if self.hoveredNode.selectable and (not expData.selectedNode or (expData.selectedNode and
+                -- Attempt to complete if pending
+                if expData.selectedNode and self.hoveredNode.col == expData.selectedNode.col and self.hoveredNode.row == expData.selectedNode.row and
+                PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode) then
+                    -- Final node: center camera since expedition resets
+                    if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
+                        self:CenterCamera()
+                    end
+                    PST:completeExpedNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, true)
+                    SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
+                -- Attempt to select selectable node
+                elseif self.hoveredNode.selectable and (not expData.selectedNode or (expData.selectedNode and
                 (expData.selectedNode.col ~= self.hoveredNode.col or expData.selectedNode.row ~= self.hoveredNode.row)) and
                 PST.modData.skillPoints >= 1 and PST.modData.respecPoints >= 5) then
+                    -- Switching selection costs global SP and respecs
                     if expData.selectedNode then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
                         PST.modData.respecPoints = PST.modData.respecPoints - 5
+
+                        -- Remove other node's curse if present
+                        local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+                        if selNode and selNode.curse and selNode.curse > 0 then
+                            PST:expedRemoveCurse(self.currentDepth, selNode.curse)
+                        end
                     end
                     expData.selectedNode = {
                         col = self.hoveredNode.col,
                         row = self.hoveredNode.row,
                         objProgress = 0
                     }
+                    -- Add selected node curse if present
+                    local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+                    if selNode and selNode.curse and selNode.curse > 0 then
+                        PST:expedAddCurse(self.currentDepth, selNode.curse)
+                    end
                     SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
                 end
             -- Hovered boon, attempt to upgrade
@@ -186,14 +209,14 @@ function expeditionScreen:Update(tScreen)
 
     self.hoveredNode = nil
 
-    if PST.modData.expeditionsData[self.currentDepth] == nil then
+    if PST.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
     end
 end
 
 ---@param tScreen PST.treeScreen
 function expeditionScreen:Render(tScreen)
-    local expData = PST.modData.expeditionsData[self.currentDepth]
+    local expData = PST.expeditionsData[self.currentDepth]
     if not expData then
         return
     end
@@ -215,7 +238,7 @@ function expeditionScreen:Render(tScreen)
     tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
 
     -- Hovered node description
-    if self.hoveredNode then
+    if self.currentTab == 1 and self.hoveredNode then
         local nodeName = "Expedition Node"
         local nodeDesc = {}
         if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
@@ -227,6 +250,13 @@ function expeditionScreen:Render(tScreen)
         if expData.selectedNode then
             if expData.selectedNode.col == self.hoveredNode.col and expData.selectedNode.row == self.hoveredNode.row then
                 nodeName = nodeName .. " (Selected)"
+                if PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode) then
+                    table.insert(nodeDesc, "Press the Allocate button to complete this node and claim its rewards.")
+                    -- Final node
+                    if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
+                        table.insert(nodeDesc, "Final Node: completing it will reset this expedition and unlock the next depth.")
+                    end
+                end
             elseif self.hoveredNode.selectable then
                 table.insert(nodeDesc, "Press the Allocate button to switch selected node to this one.")
                 table.insert(nodeDesc, {"  > Switching node selection costs 1 global SP and 5 respec points.", KColor(1, 0.7, 0.7, 1)})
@@ -238,7 +268,7 @@ function expeditionScreen:Render(tScreen)
         tScreen:DrawNodeBox(nodeName, nodeDesc)
 
     -- Hovered boon description
-    elseif self.hoveredBoon then
+    elseif self.currentTab == 2 and self.hoveredBoon then
         local tmpColor = KColor(0.7, 1, 0.7, 1)
         local boonData = PST.expeditionBoons[self.hoveredBoon]
         local boonName = "Boon of " .. boonData.name
@@ -284,7 +314,7 @@ function expeditionScreen:Render(tScreen)
         tScreen:DrawNodeBox(boonName, boonDesc)
 
     -- Hovered curse description
-    elseif self.hoveredCurse then
+    elseif self.currentTab == 2 and self.hoveredCurse then
         local tmpColor = KColor(1, 0.7, 0.7, 1)
         local curseData = PST.expeditionCurses[self.hoveredCurse]
         local curseName = "Curse of " .. curseData.name
@@ -302,7 +332,7 @@ function expeditionScreen:Render(tScreen)
         tScreen:DrawNodeBox(curseName, curseDesc)
 
     -- Hovered item description
-    elseif self.hoveredItem then
+    elseif self.currentTab == 2 and self.hoveredItem then
         local tmpColor = KColor(0.85, 0.55, 1, 1)
         local itemCfg = Isaac.GetItemConfig():GetCollectible(self.hoveredItem)
         if itemCfg then
