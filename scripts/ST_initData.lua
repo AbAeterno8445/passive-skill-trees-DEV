@@ -1349,6 +1349,69 @@ function PST:resetMods()
 		SC_anamnesisOther = {},
 		SC_emberAzuriteItems = {},
 		--#endregion
+
+		--#region ASTRAL EXPEDITIONS --
+		isExpedRun = false,
+		expedDepth = 0,
+		-- Boons
+		boonAbundantObols = 0, -- TODO
+		boonIntangibility = 0, -- TODO
+		boonMercyChance = 0, -- TODO
+		boonMercyHP = 0, -- TODO
+		boonAegis = 0, -- TODO
+		boonGenerosity = 0, -- TODO
+		boonProtection = 0, -- TODO
+		boonLethargyChance = 0, -- TODO
+		boonLethargyLen = 0, -- TODO
+		boonLethargyMinSpd = 0, -- TODO
+		boonHorrorChance = 0, -- TODO
+		boonHorrorLen = 0, -- TODO
+		boonHorrorDmg = 0, -- TODO
+		boonHypnoChance = 0, -- TODO
+		boonHypnoLen = 0, -- TODO
+		boonHypnoDmg = 0, -- TODO
+		boonParaChance = 0, -- TODO
+		boonParaLen = 0, -- TODO
+		boonActivity = 0, -- TODO
+		boonEmptinessDmg = 0, -- TODO
+		boonEmptinessTears = 0, -- TODO
+		boonVolatilityDmg = 0, -- TODO
+		boonVolatilityBombs = 0, -- TODO
+		boonImpCharges = 0, -- TODO
+		boonChampSlayDmg = 0, -- TODO
+		boonChampSlayMax = 0, -- TODO
+		boonMeekGiants = 0, -- TODO
+		boonLastGasp = 0, -- TODO
+		boonBlessedExp = 0, -- TODO
+		boonUnexGifts = 0, -- TODO
+		-- Curses
+		curseInvFortune = 0, -- TODO
+		curseInvFortuneMax = 0, -- TODO
+		curseResilience = 0, -- TODO
+		curseEphPieces = 0, -- TODO
+		cursePowerDemandCharges = 0, -- TODO
+		cursePowerDemandCD = 0, -- TODO
+		curseGiantsFort = 0, -- TODO
+		curseGreaterExpenses = 0, -- TODO
+		curseFlimGadgDrop = 0, -- TODO
+		curseFlimGadgVanish = 0, -- TODO
+		curseAbundantMightChance = 0, -- TODO
+		curseAbundantMightDmgRed = 0, -- TODO
+		curseVanishingWealth = 0, -- TODO
+		cursePrecarious = 0, -- TODO
+		curseUnexpectedTax = 0, -- TODO
+		curseFadingKeys = 0, -- TODO
+		cursePunishment = 0, -- TODO
+		curseMortality = false, -- TODO
+		curseDimPowerLaser = 0, -- TODO
+		curseDimPowerExpl = 0, -- TODO
+		curseHeartbroken = 0, -- TODO
+		curseWitless = false, -- TODO
+		-- Objective
+		expedSelNodeCol = -1,
+		expedSelNodeRow = -1,
+		expedSelNodeObjName = ""
+		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
 	-- Holds temporary data for allocated special nodes
@@ -1544,7 +1607,8 @@ function PST:resetData()
 		---@type PSTExpeditionSave[]
 		expeditionsData = { [0] = {} },
 		arcaneObols = 0,
-		expeditionDepth = 1,
+		expedSelDepth = 1, -- Selected depth
+		expeditionDepth = 1, -- Farthest depth reached
 		expedLastDepth = 1, -- Remember last visited depth for menu
 		expedEnabled = false,
 

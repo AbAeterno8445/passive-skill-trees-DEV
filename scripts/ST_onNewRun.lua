@@ -243,6 +243,47 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    -- Astral Expeditions
+    if treeActive and PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth) then
+        local expData = PST.expeditionsData[PST.modData.expedSelDepth]
+        if expData and expData.selectedNode then
+            PST.modData.treeModSnapshot.isExpedRun = true
+            PST.modData.treeModSnapshot.expedDepth = PST.modData.expedSelDepth
+
+            -- Set objective
+            local origNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+            if origNode then
+                PST.modData.treeModSnapshot.expedSelNodeCol = expData.selectedNode.col
+                PST.modData.treeModSnapshot.expedSelNodeRow = expData.selectedNode.row
+                PST.modData.treeModSnapshot.expedSelNodeObjName = origNode.objective.name
+            end
+
+            -- Expedition items
+            for _, tmpItem in ipairs(expData.items) do
+                player:AddCollectible(tmpItem)
+            end
+
+            -- Expedition boons
+            for _, boonID in ipairs(expData.boons) do
+                local isUpgraded = PST:arrHasValue(expData.upgradedBoons, boonID)
+                local boonData = PST.expeditionBoons[boonID]
+                if boonData then
+                    local tgtMods = boonData.mods
+                    if isUpgraded and boonData.upgradedMods then tgtMods = boonData.upgradedMods end
+                    PST:addModifiers(tgtMods, true)
+                end
+            end
+
+            -- Expedition curses
+            for _, curseID in ipairs(expData.curses) do
+                local curseData = PST.expeditionCurses[curseID]
+                if curseData and curseData.modsFunc then
+                    PST:addModifiers(curseData.modsFunc(PST.modData.expedSelDepth), true)
+                end
+            end
+        end
+    end
+
     -- Reset specialNodes that might be left over
     PST.specialNodes.SC_circadianSpawnTime = 0
     PST.specialNodes.SC_circadianSpawnProc = false

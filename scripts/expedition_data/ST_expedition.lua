@@ -89,15 +89,75 @@ function PST:expedRemoveItem(depth, itemID)
     end
 end
 
--- Add progress to an expedition's current objective, and check for node completion
-function PST:expedAddProgress(depth, prog)
+-- Returns whether the current run can progress towards the current expedition's objective, based on selected node
+function PST:expedCanProgress(depth)
+    local tmpExpedition = PST.expeditionsData[depth]
+    if tmpExpedition and PST:getTreeSnapshotMod("isExpedRun", false) and tmpExpedition.selectedNode then
+        -- Check snapshot selected node matches current selected node
+        if PST:getTreeSnapshotMod("expedSelNodeCol", -1) == tmpExpedition.selectedNode.col and
+        PST:getTreeSnapshotMod("expedSelNodeRow", -1) == tmpExpedition.selectedNode.row then
+            -- Check snapshot objective type matches
+            local selCol = tmpExpedition.nodes[tmpExpedition.selectedNode.col]
+            if selCol then
+                local selNode = selCol[tmpExpedition.selectedNode.row]
+                return selNode and selNode.objective.name == PST:getTreeSnapshotMod("expedSelNodeObjName", "N/A")
+            end
+        end
+    end
+    return false
+end
+
+-- Add progress to an expedition's current objective, and check for node completion. If in run, show progress text popups
+---@param depth number
+---@param prog number
+---@param objName? string -- If provided, will check whether this objective name matches the currently selected one in the expedition
+function PST:expedAddProgress(depth, prog, objName)
     local tmpExpedition = PST.expeditionsData[depth]
     if tmpExpedition and tmpExpedition.selectedNode then
         local tgtCol = tmpExpedition.nodes[tmpExpedition.selectedNode.col]
         if tgtCol then
             local tgtNode = tgtCol[tmpExpedition.selectedNode.row]
-            if tgtNode and tmpExpedition.selectedNode.objProgress < tgtNode.objective.req then
+            if tgtNode and tmpExpedition.selectedNode.objProgress <= tgtNode.objective.req and
+            (not objName or (objName and tgtNode.objective.name == objName)) then
+                local oldVal = tmpExpedition.selectedNode.objProgress
                 tmpExpedition.selectedNode.objProgress = math.min(tgtNode.objective.req, tmpExpedition.selectedNode.objProgress + prog)
+
+                -- Expedition objective progress text popups
+                if Isaac.IsInGame() then
+                    local newVal = tmpExpedition.selectedNode.objProgress
+                    local progTotalSteps = 4 -- Could be a config option
+                    local lastStep = 0
+                    for i=1,progTotalSteps do
+                        local progThreshold = (i / progTotalSteps)
+                        if oldVal / tgtNode.objective.req < progThreshold and newVal / tgtNode.objective.req >= progThreshold then
+                            lastStep = i
+                        end
+                    end
+                    if lastStep > 0 then
+                        local tmpVal = math.ceil(PST:roundFloat(lastStep / progTotalSteps, -2) * 100)
+                        local tmpColor = PST:RGBColor(57, 150, 255)
+                        if tmpVal == 100 then
+                            tmpColor = PST:RGBColor(80, 255, 255)
+                            SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.5, 2, false, 1.1)
+                        end
+                        PST:createFloatTextFX("Expedition objective: " .. tostring(tmpVal) .. "%", Vector.Zero, tmpColor, 0.13, 100, true)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- In-run helper function to add progress to the given objective
+function PST:expedAddProgInRun(objName, prog)
+    if PST:getTreeSnapshotMod("isExpedRun", false) then
+        local expDepth = PST:getTreeSnapshotMod("expedDepth", 0)
+        local expData = PST.expeditionsData[expDepth]
+        if expData then
+            local selNodeCol = PST:getTreeSnapshotMod("expedSelNodeCol", -1)
+            local selNodeRow = PST:getTreeSnapshotMod("expedSelNodeRow", -1)
+            if selNodeCol == expData.selectedNode.col and selNodeRow == expData.selectedNode.row then
+                PST:expedAddProgress(expDepth, prog, objName)
             end
         end
     end

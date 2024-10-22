@@ -139,6 +139,7 @@ function PST:openTreeMenu()
     spaceModule.spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
 
     PST:updateNodes("global", true)
+    PST.treeScreen.currentNodeTab = 0
     PST.treeScreen.open = true
 
     -- New version changelog popup

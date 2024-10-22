@@ -2,6 +2,8 @@
 PST.expeditionsData = {}
 PST.expedMinLevel = 70
 
+PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500}
+
 ---@enum PSTExpNodeRewardType
 PSTExpNodeRewardType = {
     NONE = 0,
@@ -555,7 +557,7 @@ PST.expeditionObjectives = {
             return req
         end
     },
-    challengeRooms = {
+    challengeRooms = { -- TODO
         description = "Clear {{progress}} challenge rooms.",
         reqFunc = function(depth, column)
             local req = 2 + math.floor(depth / 5) + math.floor(column / 6)
@@ -563,7 +565,7 @@ PST.expeditionObjectives = {
         end
     },
     experience = {
-        description = "Earn {{progress}} experience.",
+        description = "Earn {{progress}} experience within runs.",
         reqFunc = function(depth, column)
             local req = 500 + depth * 150 + column * 100
             return req
@@ -576,126 +578,126 @@ PST.expeditionObjectives = {
             return req
         end
     },
-    coins = {
+    coins = { -- TODO
         description = "Collect {{progress}} coins.",
         reqFunc = function(depth, column)
             local req = 30 + depth * 5 + column * 3
             return req
         end
     },
-    purchases = {
+    purchases = { -- TODO
         description = "Purchase {{progress}} items from shops or deals.",
         reqFunc = function(depth, column)
             local req = 7 + depth + math.floor(column / 3)
             return req
         end
     },
-    devilDeals = {
+    devilDeals = { -- TODO
         description = "Make {{progress}} deals with the devil.",
         reqFunc = function(depth, column)
             local req = math.min(15, 2 + math.floor(depth / 3) + math.floor(column / 6))
             return req
         end
     },
-    keys = {
+    keys = { -- TODO
         description = "Spend {{progress}} keys.",
         reqFunc = function(depth, column)
             local req = 7 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    beggars = {
+    beggars = { -- TODO
         description = "Assist any type of beggar {{progress}} times.",
         reqFunc = function(depth, column)
             local req = 10 + depth + math.floor(column / 2)
             return req
         end
     },
-    explosions = {
+    explosions = { -- TODO
         description = "Kill {{progress}} enemies with explosions.",
         reqFunc = function(depth, column)
             local req = 10 + depth * 2 + column
             return req
         end
     },
-    chests = {
+    chests = { -- TODO
         description = "Open {{progress}} chests of any type.",
         reqFunc = function(depth, column)
             local req = 12 + depth + math.floor(column / 2)
             return req
         end
     },
-    goldChests = {
+    goldChests = { -- TODO
         description = "Open {{progress}} golden chests.",
         reqFunc = function(depth, column)
             local req = 7 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    redChests = {
+    redChests = { -- TODO
         description = "Open {{progress}} red chests.",
         reqFunc = function(depth, column)
             local req = 6 + math.floor(depth / 2) + math.floor(column / 3)
             return req
         end
     },
-    rooms = {
+    rooms = { -- TODO
         description = "Clear {{progress}} rooms containing at least 5 monsters.",
         reqFunc = function(depth, column)
             local req = 10 + depth * 2 + column
             return req
         end
     },
-    bossRoomsNoDmg = {
+    bossRoomsNoDmg = { -- TODO
         description = "Clear {{progress}} boss rooms without taking damage.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 2) + math.floor(column / 3)
             return req
         end
     },
-    cardsPillsRunes = {
+    cardsPillsRunes = { -- TODO
         description = "Use {{progress}} cards, pills or runes.",
         reqFunc = function(depth, column)
             local req = 10 + depth + column
             return req
         end
     },
-    secretRooms = {
+    secretRooms = { -- TODO
         description = "Enter {{progress}} secret, super secret or ultra secret rooms.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 3) + math.floor(column / 4)
             return req
         end
     },
-    hearts = {
+    hearts = { -- TODO
         description = "Pick up {{progress}} hearts of any type.",
         reqFunc = function(depth, column)
             local req = 14 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    shopDonation = {
+    shopDonation = { -- TODO
         description = "Donate {{progress}} coins to the shop donation machine.",
         reqFunc = function(depth, column)
             local req = math.min(99, 15 + depth + math.floor(column / 2))
             return req
         end
     },
-    curseRooms = {
+    curseRooms = { -- TODO
         description = "Enter {{progress}} curse rooms.",
         reqFunc = function(depth, column)
             local req = 5 + math.floor(depth / 3) + math.floor(column / 5)
             return req
         end
     },
-    activeItems = {
+    activeItems = { -- TODO
         description = "Use an active item with at least 3 charges {{progress}} times.",
         reqFunc = function(depth, column)
             local req = 12 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    tintedRocks = {
+    tintedRocks = { -- TODO
         description = "Destroy {{progress}} tinted rocks.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 4) + math.floor(column / 4)
@@ -710,14 +712,14 @@ end
 
 -- Final node objectives
 PST.expeditionObjectivesFinal = {
-    bossRush = {
+    bossRush = { -- TODO
         description = "Complete {{progress}} boss rush encounter(s).",
         reqFunc = function(depth, column)
             local req = 1 + math.floor(depth / 15)
             return req
         end
     },
-    hush = {
+    hush = { -- TODO
         description = "Defeat Hush.",
         weight = 5,
         variants = {
@@ -731,9 +733,10 @@ PST.expeditionObjectivesFinal = {
                 minDepth = 14,
                 weight = 40
             }
-        }
+        },
+        reqFunc = function() return 1 end
     },
-    finalBoss = {
+    finalBoss = { -- TODO
         description = {
             "Defeat any final boss {{progress}} time(s).",
             "Final bosses include Delirium, ???, The Lamb, Mega Satan, The Beast, Mother and Ultra Greed."
@@ -743,7 +746,7 @@ PST.expeditionObjectivesFinal = {
             return req
         end
     },
-    floorNoDmgTwice = {
+    floorNoDmgTwice = { -- TODO
         description = "Clear {{progress}} floors without taking damage more than twice.",
         weight = 100,
         variants = {
@@ -758,21 +761,23 @@ PST.expeditionObjectivesFinal = {
             return req
         end
     },
-    bossesNoDmg = {
+    bossesNoDmg = { -- TODO
         description = "Clear {{progress}} boss rooms past Chapter 3 (Womb and beyond) without taking damage.",
         reqFunc = function(depth, column)
             local req = math.min(12, 3 + math.floor(depth / 6))
             return req
         end
     },
-    winItemPools = {
+    winItemPools = { -- TODO
         description = {
             "Complete a run while possessing at least one item for each of these item pools:",
             "Treasure, Shop, Angel, Devil"
-        }
+        },
+        reqFunc = function() return 1 end
     },
-    beastDeliNoDmg = {
+    beastDeliNoDmg = { -- TODO
         description = "Defeat The Beast or Delirium without taking damage more than once.",
+        reqFunc = function() return 1 end,
         minDepth = 12
     }
 }

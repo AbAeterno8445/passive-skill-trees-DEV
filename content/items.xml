@@ -5,4 +5,19 @@
     <trinket description="The stars gaze back..." gfx="trinket_ancient_starcursed_jewel.png" id="4" name="Ancient Starcursed Jewel" achievement="99999" />
 
     <active name="Shadowmeld" description="Sink into the shadows" id="5" gfx="Collectibles_Shadowmeld.png" maxcharges="360" chargetype="timed" cooldown="30" achievement="99999" />
+
+    <!-- Awards 2 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_1.png" id="6" name="Arcane Obols 1" achievement="99999" />
+    <!-- Awards 5 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_1.png" id="7" name="Arcane Obols 2" achievement="99999" />
+    <!-- Awards 10 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_2.png" id="8" name="Arcane Obols 3" achievement="99999" />
+    <!-- Awards 25 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_3.png" id="9" name="Arcane Obols 4" achievement="99999" />
+    <!-- Awards 50 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_4.png" id="10" name="Arcane Obols 5" achievement="99999" />
+    <!-- Awards 100 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_5.png" id="11" name="Arcane Obols 6" achievement="99999" />
+    <!-- Awards 500 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_6.png" id="12" name="Arcane Obols 7" achievement="99999" />
 </items>

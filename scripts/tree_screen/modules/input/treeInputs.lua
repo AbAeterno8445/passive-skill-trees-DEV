@@ -107,6 +107,22 @@ function PST.treeScreen:Inputs()
         end
     end
 
+    -- Input: Tab (pan to appropriate nodes if defined)
+    if PST:isKeybindActive(PSTKeybind.TREE_TAB) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.TREE_TAB) then
+        local tabNodes = self.tabNodes[self.currentTree]
+        if tabNodes and #tabNodes > 0 then
+            self.currentNodeTab = self.currentNodeTab + 1
+            if self.currentNodeTab > #tabNodes then
+                self.currentNodeTab = 1
+            end
+            local tgtNode = tabNodes[self.currentNodeTab]
+            self.treeCamera.X = tgtNode.X - Isaac.GetScreenWidth() / 2
+            self.treeCamera.Y = tgtNode.Y - Isaac.GetScreenHeight() / 2
+            self:UpdateCamZoomOffset()
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+        end
+    end
+
     -- Input: Switch tree
     if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.SWITCH_TREE) then
         local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]

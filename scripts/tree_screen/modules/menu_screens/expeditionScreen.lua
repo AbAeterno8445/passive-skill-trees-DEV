@@ -283,6 +283,8 @@ function expeditionScreen:Update(tScreen)
     if PST.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
     end
+
+    PST.modData.expedSelDepth = self.currentDepth
 end
 
 ---@param tScreen PST.treeScreen
@@ -517,6 +519,19 @@ function expeditionScreen:Render(tScreen)
             PST.miniFont:DrawString(tmpStr, tmpX, tmpY, tmpColor)
         else
             PST.miniFont:DrawString("Expedition Run Disabled", tmpX, tmpY, KColor(1, 0.5, 0.5, 1))
+        end
+        tmpY = tmpY + 14
+        PST.miniFont:DrawString("(Q / Menu Tab to toggle)", tmpX, tmpY, KColor(1, 1, 1, 1))
+        tmpY = tmpY + 28
+
+        -- In run - Progress enabled/disabled (for selected objective)
+        local runDepth = PST:getTreeSnapshotMod("expedDepth", 0)
+        if Isaac.IsInGame() and runDepth > 0 then
+            if PST:expedCanProgress(runDepth) then
+                PST.miniFont:DrawString("In run - Progress enabled", tmpX, tmpY, KColor(0.5, 1, 0.5, 1))
+            else
+                PST.miniFont:DrawString("In run - Progress disabled", tmpX, tmpY, KColor(1, 0.5, 0.5, 1))
+            end
         end
     end
 end

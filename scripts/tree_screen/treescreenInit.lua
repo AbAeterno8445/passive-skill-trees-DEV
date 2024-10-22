@@ -56,7 +56,12 @@ PST.treeScreen = {
     -- Stop rendering the HUD (tree name & level, 'Press H for help', etc.) when true
     hideHUD = false,
 
+    -- Whether to render tree nodes
     hideNodes = false,
+
+    -- Node positions to pan the camera to when hitting Tab
+    tabNodes = {},
+    currentNodeTab = 0,
 
     -- List of modules with update/render functionality, each ideally containing Update() or Render() funcs
     modules = {
@@ -73,6 +78,20 @@ PST.treeScreen.treeBGSprite:Play("Default", true)
 PST.treeScreen.descBGSprite:Play("Pixel", true)
 PST.treeScreen.cursorSprite.Color.A = 0.7
 PST.treeScreen.cursorSprite:Play("Idle", true)
+
+-- Tab-able nodes
+local tabNodes = {
+    global = {"Star Tree"},
+    starTree = {"Arcane Astrolabe"}
+}
+for treeName, nodeNameList in pairs(tabNodes) do
+    PST.treeScreen.tabNodes[treeName] = {}
+    for _, tmpNode in pairs(PST.trees[treeName]) do
+        if PST:arrHasValue(nodeNameList, tmpNode.name) then
+            table.insert(PST.treeScreen.tabNodes[treeName], tmpNode.pos * 38)
+        end
+    end
+end
 
 include("scripts.tree_screen.treescreenRender")
 include("scripts.tree_screen.treescreenUpdate")
