@@ -388,5 +388,17 @@ function PST:postDamage(target, damage, flag, source)
                 end
             end
         end
+
+        -- Generic checks
+        if target:IsActiveEnemy(false) and target:IsVulnerableEnemy() then
+            -- Generic explosion hits enemy
+            if (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+                -- Enemy dies to explosion
+                if isKillingHit then
+                    -- Expedition objective: kill enemies with explosions
+				    PST:expedAddProgInRun("explosions", 1)
+                end
+            end
+        end
     end
 end

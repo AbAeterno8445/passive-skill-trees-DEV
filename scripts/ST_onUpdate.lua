@@ -43,6 +43,7 @@ function PST:onUpdate()
 	if PST.floorFirstUpdate or not modResetUpdate then
 		updateTrackers.charTracker = PST:getCurrentCharName()
 		updateTrackers.bloodCharges = player:GetEffectiveBloodCharge()
+		updateTrackers.keyTracker = player:GetNumKeys()
 		if updateTrackers.isBerserk == nil then updateTrackers.isBerserk = PST:isBerserk() end
 		PST:resetHeartUpdater()
 		isFiring = false
@@ -1296,6 +1297,17 @@ function PST:onUpdate()
 			end
 		end
 		updateTrackers.coinTracker = player:GetNumCoins()
+	end
+
+	-- Key changes
+	if player:GetNumKeys() ~= updateTrackers.keyTracker then
+		local diff = player:GetNumKeys() - updateTrackers.keyTracker
+		-- Spent/lost keys
+		if diff < 0 then
+			-- Expedition objective: spend keys
+			PST:expedAddProgInRun("keys", math.abs(diff))
+		end
+		updateTrackers.keyTracker = player:GetNumKeys()
 	end
 
 	-- Level curse changes

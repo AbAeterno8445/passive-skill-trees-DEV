@@ -80,14 +80,27 @@ function PST:onSlotUpdate(slot)
                     end
                 end
             end
+        -- Shop donation machine
+        elseif slot.Variant == SlotVariant.DONATION_MACHINE and spentCoins then
+            -- Expedition objective: donate to the shop/greed donation machine
+            PST:expedAddProgInRun("shopDonation", lastResources.coins - player:GetNumCoins())
+
+        -- Greed donation machine
+        elseif slot.Variant == SlotVariant.GREED_DONATION_MACHINE and spentCoins then
+            -- Expedition objective: donate to the shop/greed donation machine
+            PST:expedAddProgInRun("shopDonation", lastResources.coins - player:GetNumCoins())
         else
-            -- Beggar luck mod
-            local beggarLuck = PST:getTreeSnapshotMod("beggarLuck", 0)
-            local tmpTotal = PST:getTreeSnapshotMod("beggarLuckTotal", 0)
-            if isBeggar and beggarLuck > 0 and tmpTotal < 1 then
-                if spentCoins or spentHearts or spentKeys or spentBombs then
+            -- Spent something helping a beggar
+            if isBeggar and (spentCoins or spentHearts or spentKeys or spentBombs) then
+                -- Beggar luck mod
+                local beggarLuck = PST:getTreeSnapshotMod("beggarLuck", 0)
+                local tmpTotal = PST:getTreeSnapshotMod("beggarLuckTotal", 0)
+                if beggarLuck > 0 and tmpTotal < 1 then
                     PST:addModifiers({ luck = beggarLuck, beggarLuckTotal = beggarLuck }, true)
                 end
+
+                -- Expedition objective: help any type of beggar
+				PST:expedAddProgInRun("beggars", 1)
             end
 
             -- Mod: chance for devil beggar to grant half a black heart when helped

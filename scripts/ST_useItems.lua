@@ -573,6 +573,11 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             end
         end
     end
+
+    -- Expedition objective: use active item with at least 3 charges
+    if player:GetActiveMaxCharge(slot) >= 3 then
+	    PST:expedAddProgInRun("activeItems", 1)
+    end
 end
 
 ---- CUSTOM ITEMS ----

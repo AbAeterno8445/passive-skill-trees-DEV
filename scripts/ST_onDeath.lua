@@ -69,6 +69,9 @@ function PST:onDeath(entity)
         -- Expedition objective: defeat monsters
         PST:expedAddProgInRun("defeatMonsters", 1)
 
+        -- Room kills
+        PST:addModifiers({ roomKills = 1 }, true)
+
         local tmpNPC = entity:ToNPC()
         if tmpNPC then
             -- Expedition objective: defeat champions

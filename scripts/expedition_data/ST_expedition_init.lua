@@ -560,7 +560,7 @@ PST.expeditionObjectives = {
             return req
         end
     },
-    challengeRooms = { -- TODO
+    challengeRooms = {
         description = "Clear {{progress}} challenge rooms.",
         reqFunc = function(depth, column)
             local req = 2 + math.floor(depth / 5) + math.floor(column / 6)
@@ -581,126 +581,133 @@ PST.expeditionObjectives = {
             return req
         end
     },
-    coins = { -- TODO
+    coins = {
         description = "Collect {{progress}} coins.",
         reqFunc = function(depth, column)
             local req = 30 + depth * 5 + column * 3
             return req
         end
     },
-    purchases = { -- TODO
+    purchases = {
         description = "Purchase {{progress}} items from shops or deals.",
         reqFunc = function(depth, column)
             local req = 7 + depth + math.floor(column / 3)
             return req
         end
     },
-    devilDeals = { -- TODO
+    devilDeals = {
         description = "Make {{progress}} deals with the devil.",
         reqFunc = function(depth, column)
             local req = math.min(15, 2 + math.floor(depth / 3) + math.floor(column / 6))
             return req
         end
     },
-    keys = { -- TODO
+    keys = {
         description = "Spend {{progress}} keys.",
         reqFunc = function(depth, column)
             local req = 7 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    beggars = { -- TODO
+    beggars = {
         description = "Assist any type of beggar {{progress}} times.",
         reqFunc = function(depth, column)
             local req = 10 + depth + math.floor(column / 2)
             return req
         end
     },
-    explosions = { -- TODO
+    explosions = {
         description = "Kill {{progress}} enemies with explosions.",
         reqFunc = function(depth, column)
             local req = 10 + depth * 2 + column
             return req
         end
     },
-    chests = { -- TODO
+    chests = {
         description = "Open {{progress}} chests of any type.",
         reqFunc = function(depth, column)
             local req = 12 + depth + math.floor(column / 2)
             return req
         end
     },
-    goldChests = { -- TODO
+    goldChests = {
         description = "Open {{progress}} golden chests.",
         reqFunc = function(depth, column)
             local req = 7 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    redChests = { -- TODO
+    redChests = {
         description = "Open {{progress}} red chests.",
         reqFunc = function(depth, column)
             local req = 6 + math.floor(depth / 2) + math.floor(column / 3)
             return req
         end
     },
-    rooms = { -- TODO
+    stoneChests = {
+        description = "Open {{progress}} stone chests.",
+        reqFunc = function(depth, column)
+            local req = 2 + math.floor(depth / 4) + math.floor(column / 5)
+            return req
+        end
+    },
+    rooms = {
         description = "Clear {{progress}} rooms containing at least 5 monsters.",
         reqFunc = function(depth, column)
             local req = 10 + depth * 2 + column
             return req
         end
     },
-    bossRoomsNoDmg = { -- TODO
+    bossRoomsNoDmg = {
         description = "Clear {{progress}} boss rooms without taking damage.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 2) + math.floor(column / 3)
             return req
         end
     },
-    cardsPillsRunes = { -- TODO
+    cardsPillsRunes = {
         description = "Use {{progress}} cards, pills or runes.",
         reqFunc = function(depth, column)
             local req = 10 + depth + column
             return req
         end
     },
-    secretRooms = { -- TODO
+    secretRooms = {
         description = "Enter {{progress}} secret, super secret or ultra secret rooms.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 3) + math.floor(column / 4)
             return req
         end
     },
-    hearts = { -- TODO
+    hearts = {
         description = "Pick up {{progress}} hearts of any type.",
         reqFunc = function(depth, column)
             local req = 14 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    shopDonation = { -- TODO
-        description = "Donate {{progress}} coins to the shop donation machine.",
+    shopDonation = {
+        description = "Donate {{progress}} coins to the shop/greed donation machine.",
         reqFunc = function(depth, column)
             local req = math.min(99, 15 + depth + math.floor(column / 2))
             return req
         end
     },
-    curseRooms = { -- TODO
+    curseRooms = {
         description = "Enter {{progress}} curse rooms.",
         reqFunc = function(depth, column)
             local req = 5 + math.floor(depth / 3) + math.floor(column / 5)
             return req
         end
     },
-    activeItems = { -- TODO
+    activeItems = {
         description = "Use an active item with at least 3 charges {{progress}} times.",
         reqFunc = function(depth, column)
             local req = 12 + math.floor(depth / 2) + math.floor(column / 2)
             return req
         end
     },
-    tintedRocks = { -- TODO
+    tintedRocks = {
         description = "Destroy {{progress}} tinted rocks.",
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 4) + math.floor(column / 4)

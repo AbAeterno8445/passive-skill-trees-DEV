@@ -1080,6 +1080,9 @@ function PST:onNewRoom()
 				end
 				PST:addModifiers(tmpAdd, true)
 			end
+
+			-- Expedition objective: enter secret, super secret or ultra secret rooms
+			PST:expedAddProgInRun("secretRooms", 1)
 		-- Devil/Angel rooms
 		elseif roomType == RoomType.ROOM_DEVIL or roomType == RoomType.ROOM_ANGEL then
 			local randomStat = PST:getRandomStat()
@@ -1138,6 +1141,10 @@ function PST:onNewRoom()
 			if tmpStats ~= 0 and not PST:getTreeSnapshotMod("planetariumAllstatsProc") then
 				PST:addModifiers({ allstatsPerc = tmpStats, planetariumAllstatsProc = true }, true)
 			end
+		-- Curse rooms
+		elseif roomType == RoomType.ROOM_CURSE then
+			-- Expedition objective: enter curse rooms
+			PST:expedAddProgInRun("curseRooms", 1)
 		end
 	end
 

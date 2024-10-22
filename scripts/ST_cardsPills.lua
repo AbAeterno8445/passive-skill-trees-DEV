@@ -335,6 +335,9 @@ function PST:onUseCard(card, player, useFlags)
         end
         table.insert(PST.specialFX.sirenSoulUses, { timer = 1800, familiars = rolledFamiliars })
     end
+
+    -- Expedition objective: use cards, pills or runes
+    PST:expedAddProgInRun("cardsPillsRunes", 1)
 end
 
 function PST:blueGambitPillSwap(oldColor, oldEffect, newColor)
@@ -398,4 +401,7 @@ function PST:onUsePill(pillEffect, player, useFlags)
             end
         end
     end
+
+    -- Expedition objective: use cards, pills or runes
+    PST:expedAddProgInRun("cardsPillsRunes", 1)
 end

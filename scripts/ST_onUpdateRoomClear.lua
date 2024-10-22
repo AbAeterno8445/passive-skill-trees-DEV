@@ -44,6 +44,9 @@ function PST:onRoomClear(level, room)
 					end
 					PST:addModifiers({ SC_challClear = true }, true)
 				end
+
+				-- Expedition objective: clear challenge rooms
+				PST:expedAddProgInRun("challengeRooms", 1)
 			end
 		-- Boss rooms
 		elseif room:GetType() == RoomType.ROOM_BOSS then
@@ -148,6 +151,9 @@ function PST:onRoomClear(level, room)
                         PST:addModifiers({ ephemeralBond = 1, gainedTempEphBond = 1 }, true)
                         PST:createFloatTextFX("+1 Ephemeral Bond", Vector.Zero, Color(0.8, 0.8, 1, 1), 0.12, 12, true)
                     end
+
+					-- Expedition objective: clear boss rooms without taking damage
+			        PST:expedAddProgInRun("bossRoomsNoDmg", 1)
 				end
 
 				-- Boss room + took no damage in floor
@@ -562,6 +568,14 @@ function PST:onRoomClear(level, room)
 
 			PST.modData.xpObtained = 0
 		end
+
+		-- Expedition objective: clear rooms with at least 5 monsters
+		if PST:getTreeSnapshotMod("roomKills", 0) >= 5 then
+			PST:expedAddProgInRun("rooms", 1)
+		end
+
+		-- Reset room kills
+		PST:addModifiers({ roomKills = { value = 0, set = true } }, true)
 
 		clearRoomProc = true
 	elseif room:GetAliveEnemiesCount() > 0 then

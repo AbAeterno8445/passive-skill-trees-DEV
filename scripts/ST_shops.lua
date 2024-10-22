@@ -60,11 +60,19 @@ function PST:onShopPurchase(pickup, player, spent)
                 player:RemoveCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE)
             end
         end
+
+        -- Expedition objective: purchase shop items
+		PST:expedAddProgInRun("purchases", 1)
     elseif spent < 0 then
         -- Mod: chance to gain a black heart when spending hearts on deals
         local tmpMod = PST:getTreeSnapshotMod("blackHeartOnDeals", 0)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             player:AddBlackHearts(2)
+        end
+
+        -- Expedition objective: make devil deals
+        if roomType == RoomType.ROOM_DEVIL then
+		    PST:expedAddProgInRun("devilDeals", 1)
         end
     end
 

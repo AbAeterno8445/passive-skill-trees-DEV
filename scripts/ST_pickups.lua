@@ -466,12 +466,16 @@ function PST:onPickup(pickup, collider, low, forced)
     local variant = pickup.Variant
     local subtype = pickup.SubType
     if player ~= nil and (not pickup:IsShopItem() or forced) then
+        -- On pickup coin
         if variant == PickupVariant.PICKUP_COIN then
             local coinChance = PST:getTreeSnapshotMod("coinDupe", 0)
             if coinChance > 0 and 100 * math.random() < coinChance then
                 player:AddCoins(1)
             end
             PST:tryGrabBag()
+
+            -- Expedition objective: grab coins
+			PST:expedAddProgInRun("coins", pickup:GetCoinValue())
 
             -- Grand Consonance node (T. Siren's tree) - Bum Friend
             if PST:getTreeSnapshotMod("grandConsonance", false) and player:HasCollectible(CollectibleType.COLLECTIBLE_BUM_FRIEND) then
@@ -502,18 +506,21 @@ function PST:onPickup(pickup, collider, low, forced)
                     end
                 end
             end
+        -- On pickup key
         elseif variant == PickupVariant.PICKUP_KEY then
             local keyChance = PST:getTreeSnapshotMod("keyDupe", 0)
             if keyChance > 0 and 100 * math.random() < keyChance then
                 player:AddKeys(1)
             end
             PST:tryGrabBag()
+        -- On pickup bomb
         elseif variant == PickupVariant.PICKUP_BOMB then
             local bombChance = PST:getTreeSnapshotMod("bombDupe", 0)
             if bombChance > 0 and 100 * math.random() < bombChance then
                 player:AddBombs(1)
             end
             PST:tryGrabBag()
+        -- On pickup hearts
         elseif variant == PickupVariant.PICKUP_HEART then
             -- Black heart pickup
             if subtype == HeartSubType.HEART_BLACK then
@@ -699,6 +706,10 @@ function PST:onPickup(pickup, collider, low, forced)
             PST:getTreeSnapshotMod("theSoulBoneDamage", 0) ~= 0 or PST:getTreeSnapshotMod("theSoulBoneTears", 0) ~= 0 then
                 player:AddCacheFlags(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY, true)
             end
+
+            -- Expedition objective: pick up hearts of any type
+            PST:expedAddProgInRun("hearts", 1)
+        -- On pickup poops
         elseif variant == PickupVariant.PICKUP_POOP then
             -- Mod: chance to transmute a random poop in your bar to a different one when obtaining a poop pickup
             local tmpMod = PST:getTreeSnapshotMod("poopTransmutation", 0)
@@ -1098,6 +1109,30 @@ function PST:onPickupUpdate(pickup)
                     end
                 end
             --end
+        end
+
+        -- Chests
+        if PST:arrHasValue(PST.regularChests, pickup.Variant) or PST:arrHasValue(PST.lockedChests, pickup.Variant) then
+            local pickupSpr = pickup:GetSprite()
+            -- Opened chest
+            if pickupSpr:GetAnimation() == "Open" and pickupSpr:GetFrame() == 1 then
+                -- Expedition objective: open any chest
+			    PST:expedAddProgInRun("chests", 1)
+
+                -- Locked chests
+                if pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST then
+                    -- Expedition objective: open locked chests
+			        PST:expedAddProgInRun("goldChests", 1)
+                -- Red chests
+                elseif pickup.Variant == PickupVariant.PICKUP_REDCHEST then
+                    -- Expedition objective: open red chests
+			        PST:expedAddProgInRun("redChests", 1)
+                -- Stone chests
+                elseif pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
+                    -- Expedition objective: open stone/bomb chests
+			        PST:expedAddProgInRun("stoneChests", 1)
+                end
+            end
         end
     end
 end

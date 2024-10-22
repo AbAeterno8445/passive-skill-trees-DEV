@@ -150,6 +150,9 @@ function PST:gridEntityRockUpdate(entityParam)
                     if tmpMod ~= 0 then
                         PST:addModifiers({ allstats = tmpMod }, true)
                     end
+
+                    -- Expedition objective: destroy tinted rocks
+			        PST:expedAddProgInRun("tintedRocks", 1)
                 end
             end
         end

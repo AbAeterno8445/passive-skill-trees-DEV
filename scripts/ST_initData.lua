@@ -486,6 +486,8 @@ function PST:resetMods()
 
 		firstRoomID = 0,
 
+		roomKills = 0,
+
 		luckyPennyChance = 0,
 		cardFloorLuck = 0,
 		pillFloorLuck = 0,
@@ -550,7 +552,8 @@ function PST:resetMods()
 			pocketTracker = 0,
 			craftBagPickups = 0,
 			isBerserk = false,
-			bloodCharges = 0
+			bloodCharges = 0,
+			keyTracker = 0
 		},
 
 		-- 'Keystone' nodes
