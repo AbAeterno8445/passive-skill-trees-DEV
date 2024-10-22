@@ -131,7 +131,7 @@ function PST:generateExpedition(depth, seed)
             end
 
             -- Assign objective
-            local newObjective = { name = "", req = 0 }
+            local newObjective = { name = "", req = 0, variant = "" }
             local tmpSrcTable = PST.expeditionObjectiveList
             local tmpTargetTable = PST.expeditionObjectives
             if newNode.nodeType == PSTExpNodeType.FINAL then
@@ -166,6 +166,7 @@ function PST:generateExpedition(depth, seed)
                             for k, v in pairs(tmpVariant) do
                                 tmpObjective[k] = v
                             end
+                            newObjective.variant = tmpVariantName
                             break
                         end
                     end

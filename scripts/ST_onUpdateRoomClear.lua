@@ -83,6 +83,9 @@ function PST:onRoomClear(level, room)
 					jewelDrop = true
 				end
 
+				-- Expedition objective: complete boss rush encounters
+				PST:expedAddProgInRun("bossRush", 1)
+
 				-- Obols on boss rush clear
                 if PST:getTreeSnapshotMod("isExpedRun", false) then
                     local tmpObols = PST.obolEvents.bossRush(PST:getTreeSnapshotMod("expedDepth", 1))
@@ -166,6 +169,11 @@ function PST:onRoomClear(level, room)
 
 					-- Expedition objective: clear boss rooms without taking damage
 			        PST:expedAddProgInRun("bossRoomsNoDmg", 1)
+
+					-- Expedition objective: clear boss rooms past chapter 3 (womb and beyond) without taking damage
+					if level:GetStage() >= 7 then
+						PST:expedAddProgInRun("bossesNoDmgC3", 1)
+					end
 				end
 
 				-- Boss room + took no damage in floor
@@ -183,6 +191,14 @@ function PST:onRoomClear(level, room)
 								Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_PENNY, Random() + 1)
 							end
 						end
+					end
+
+					-- Expedition objective: clear floors without taking damage more than twice
+					if PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 2 then
+						PST:expedAddProgInRun("floorNoDmgTwice", 1)
+					-- Expedition objective: clear floors without taking damage more than once
+					elseif PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 1 then
+						PST:expedAddProgInRun("floorNoDmgTwice", 1, "noDmgOnce")
 					end
 				end
 

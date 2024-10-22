@@ -722,14 +722,14 @@ end
 
 -- Final node objectives
 PST.expeditionObjectivesFinal = {
-    bossRush = { -- TODO
+    bossRush = {
         description = "Complete {{progress}} boss rush encounter(s).",
         reqFunc = function(depth, column)
             local req = 1 + math.floor(depth / 15)
             return req
         end
     },
-    hush = { -- TODO
+    hush = {
         description = "Defeat Hush.",
         weight = 5,
         variants = {
@@ -746,7 +746,7 @@ PST.expeditionObjectivesFinal = {
         },
         reqFunc = function() return 1 end
     },
-    finalBoss = { -- TODO
+    finalBoss = {
         description = {
             "Defeat any final boss {{progress}} time(s).",
             "Final bosses include Delirium, ???, The Lamb, Mega Satan, The Beast, Mother and Ultra Greed."
@@ -756,13 +756,13 @@ PST.expeditionObjectivesFinal = {
             return req
         end
     },
-    floorNoDmgTwice = { -- TODO
+    floorNoDmgTwice = {
         description = "Clear {{progress}} floors without taking damage more than twice.",
         weight = 100,
         variants = {
             noDmgOnce = {
                 description = "Clear {{progress}} floors without taking damage more than once.",
-                minDepth = 10,
+                minDepth = 8,
                 weight = 50
             }
         },
@@ -771,21 +771,21 @@ PST.expeditionObjectivesFinal = {
             return req
         end
     },
-    bossesNoDmg = { -- TODO
+    bossesNoDmgC3 = {
         description = "Clear {{progress}} boss rooms past Chapter 3 (Womb and beyond) without taking damage.",
         reqFunc = function(depth, column)
             local req = math.min(12, 3 + math.floor(depth / 6))
             return req
         end
     },
-    winItemPools = { -- TODO
+    --[[winItemPools = {
         description = {
             "Complete a run while possessing at least one item for each of these item pools:",
             "Treasure, Shop, Angel, Devil"
         },
         reqFunc = function() return 1 end
-    },
-    beastDeliNoDmg = { -- TODO
+    },]]
+    beastDeliNoDmg = {
         description = "Defeat The Beast or Delirium without taking damage more than once.",
         reqFunc = function() return 1 end,
         minDepth = 12

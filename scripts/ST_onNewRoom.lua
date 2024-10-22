@@ -560,6 +560,9 @@ function PST:onNewRoom()
 	if PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 		PST:addModifiers({ roomGotHitByMob = false }, true)
 	end
+	if PST:getTreeSnapshotMod("roomHitsReceived", 0) > 0 then
+		PST:addModifiers({ roomHitsReceived = { value = 0, set = true } }, true)
+	end
 
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)

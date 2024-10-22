@@ -700,6 +700,9 @@ function PST:onNewLevel()
     if PST:getTreeSnapshotMod("floorGotHit", false) then
         PST:addModifiers({ floorGotHit = false }, true)
     end
+	if PST:getTreeSnapshotMod("floorHitsReceived", 0) > 0 then
+		PST:addModifiers({ floorHitsReceived = { value = 0, set = true } }, true)
+	end
 
     PST:save()
 end

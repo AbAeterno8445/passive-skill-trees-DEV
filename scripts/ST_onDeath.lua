@@ -66,8 +66,38 @@ function PST:onDeath(entity)
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
-        -- Expedition objective: defeat monsters
-        PST:expedAddProgInRun("defeatMonsters", 1)
+        -- Expedition checks
+        if PST:getTreeSnapshotMod("isExpedRun", false) then
+            -- Expedition objective: defeat monsters
+            PST:expedAddProgInRun("defeatMonsters", 1)
+
+            -- Expedition objective: defeat Hush
+            if entity:GetType() == EntityType.ENTITY_HUSH then
+                PST:expedAddProgInRun("hush", 1)
+
+                -- Expedition objective: defeat hush without getting hit more than twice
+                if not PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
+                    PST:expedAddProgInRun("hush", 1, "noDmgTwice")
+                end
+
+                -- Expedition objective: defeat hush without getting hit more than once
+                if not PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
+                    PST:expedAddProgInRun("hush", 1, "noDmgOnce")
+                end
+            end
+
+            -- Expedition objective: defeat any final boss (add Isaac boss type check for blue baby boss on chest)
+            if PST:arrHasValue(PST.finalBosses, entity:GetType()) and (entity:GetType() ~= EntityType.ENTITY_ISAAC or (
+            entity:GetType() == EntityType.ENTITY_ISAAC and entity.SubType == 1)) then
+                PST:expedAddProgInRun("finalBoss", 1)
+            end
+
+            -- Expedition objective: defeat Delirium or The Beast without taking damage more than once
+            if (entity:GetType() == EntityType.ENTITY_DELIRIUM or entity:GetType() == EntityType.ENTITY_BEAST) and
+            PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
+                PST:expedAddProgInRun("beastDeliNoDmg", 1)
+            end
+        end
 
         -- Room kills
         PST:addModifiers({ roomKills = 1 }, true)

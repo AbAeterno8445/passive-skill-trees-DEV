@@ -51,7 +51,13 @@ function PST:firstRenderInit()
 	end
 end
 
-PST.impromptuGamblerPools = { ItemPoolType.POOL_TREASURE, ItemPoolType.POOL_SHOP, ItemPoolType.POOL_DEVIL, ItemPoolType.POOL_ANGEL, ItemPoolType.POOL_CRANE_GAME }
+PST.finalBosses = {
+	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_ISAAC, EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN,
+	EntityType.ENTITY_BEAST, EntityType.ENTITY_MOTHER, EntityType.ENTITY_ULTRA_GREED
+}
+PST.impromptuGamblerPools = {
+	ItemPoolType.POOL_TREASURE, ItemPoolType.POOL_SHOP, ItemPoolType.POOL_DEVIL, ItemPoolType.POOL_ANGEL, ItemPoolType.POOL_CRANE_GAME
+}
 PST.babyFamiliarItems = {
     CollectibleType.COLLECTIBLE_BROTHER_BOBBY, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY,
     CollectibleType.COLLECTIBLE_HEADLESS_BABY, CollectibleType.COLLECTIBLE_LITTLE_STEVEN,
@@ -480,7 +486,9 @@ function PST:resetMods()
 		staticEntitiesCache = {}, -- For storing the state of 'static entities' such as fireplaces, poop and tinted rocks
 		roomClearProc = false,
 
+		roomHitsReceived = 0,
 		roomGotHitByMob = false,
+		floorHitsReceived = 0,
 		floorGotHit = false,
 		runGotHit = false,
 

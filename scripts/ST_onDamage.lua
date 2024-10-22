@@ -310,6 +310,7 @@ function PST:onDamage(target, damage, flag, source)
                 if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
                     PST:addModifiers({ roomGotHitByMob = true }, true)
                 end
+                PST:addModifiers({ roomHitsReceived = 1, floorHitsReceived = 1 }, true)
 
                 -- Set floor-wide hit flag
                 if not PST:getTreeSnapshotMod("floorGotHit", false) then
