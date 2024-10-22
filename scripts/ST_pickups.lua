@@ -1068,6 +1068,11 @@ end
 
 ---@param pickup EntityPickup
 function PST:onPickupUpdate(pickup)
+    -- Init pickup
+    if pickup.FrameCount == 1 then
+        PST:onPickupInit(pickup)
+    end
+
     if pickup.Timeout > 0 then
         -- Mod: +time for temporary heart pickups
         if pickup.Variant == PickupVariant.PICKUP_HEART then

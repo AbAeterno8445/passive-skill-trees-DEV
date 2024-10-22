@@ -351,7 +351,7 @@ PST:AddCallback(ModCallbacks.MC_POST_NPC_INIT, PST.postNPCInit)
 PST:AddCallback(ModCallbacks.MC_NPC_UPDATE, PST.onNPCUpdate)
 PST:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, PST.familiarInit)
 PST:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, PST.familiarUpdate)
-PST:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, PST.onPickupInit)
+--PST:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, PST.onPickupInit) -- Now called on the first frame on pickup update
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, PST.onPickupUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_BOMB_INIT, PST.onBombInit)
 PST:AddCallback(ModCallbacks.MC_POST_UPDATE, PST.onUpdate)
