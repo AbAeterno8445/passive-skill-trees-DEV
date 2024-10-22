@@ -4,14 +4,28 @@
 function PST:getExpedSave(expData)
     ---@type PSTExpeditionSave
     local tmpExpSave = {seed = expData.seed}
-    -- Completed nodes
+    -- Save special node states
     for _, tmpCol in ipairs(expData.nodes) do
         for _, tmpNode in ipairs(tmpCol) do
+            -- Completed nodes
             if tmpNode.nodeType == PSTExpNodeType.COMPLETED then
                 if not tmpExpSave.compNodes then
                     tmpExpSave.compNodes = {}
                 end
                 table.insert(tmpExpSave.compNodes, {tmpNode.col, tmpNode.row})
+            -- Reward-less nodes
+            elseif tmpNode.rewardType == PSTExpNodeRewardType.NONE then
+                if not tmpExpSave.noRwNodes then
+                    tmpExpSave.noRwNodes = {}
+                end
+                table.insert(tmpExpSave.noRwNodes, {tmpNode.col, tmpNode.row})
+            end
+            -- Dead nodes
+            if tmpNode.deathState then
+                if not tmpExpSave.deadNodes then
+                    tmpExpSave.deadNodes = {}
+                end
+                table.insert(tmpExpSave.deadNodes, {tmpNode.col, tmpNode.row})
             end
         end
     end
@@ -63,6 +77,30 @@ function PST:loadExpedition(depth, expSave)
         end
         PST:updateExpedAccess(depth)
     end
+    -- Reward-less nodes
+    if expSave.noRwNodes then
+        for _, tmpRwNode in ipairs(expSave.noRwNodes) do
+            local tmpCol = tmpExped.nodes[tmpRwNode[1]]
+            if tmpCol then
+                local tmpNode = tmpCol[tmpRwNode[2]]
+                if tmpNode then
+                    tmpNode.rewardType = PSTExpNodeRewardType.NONE
+                end
+            end
+        end
+    end
+    -- Dead nodes
+    if expSave.deadNodes then
+        for _, tmpDeadNode in ipairs(expSave.deadNodes) do
+            local tmpCol = tmpExped.nodes[tmpDeadNode[1]]
+            if tmpCol then
+                local tmpNode = tmpCol[tmpDeadNode[2]]
+                if tmpNode then
+                    tmpNode.deathState = 1
+                end
+            end
+        end
+    end
     -- Selected node
     if expSave.selNode then
         tmpExped.selectedNode = expSave.selNode
@@ -85,4 +123,5 @@ function PST:loadExpedition(depth, expSave)
     if expSave.upgBoonPts then tmpExped.boonUpgradePoints = expSave.upgBoonPts end
 
     PST.expeditionsData[depth] = tmpExped
+    PST:updateExpedAccess(depth)
 end

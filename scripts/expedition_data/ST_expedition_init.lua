@@ -35,6 +35,7 @@ PSTExpNodeType = {
 ---@field curse? integer
 ---@field rewardType PSTExpNodeRewardType
 ---@field rewardData? any
+---@field deathState? number -- 1: inaccessible - for 'dead' nodes when losing and resetting expedition
 ---@field connections number[]
 
 -- Selected node class
@@ -63,6 +64,8 @@ PSTExpNodeType = {
 ---@field seed integer
 ---@field selNode? PSTSelectedExpNode|nil
 ---@field compNodes? number[]
+---@field deadNodes? number[]
+---@field noRwNodes? number[]
 ---@field upgBoons? number[]
 ---@field upgBoonPts? number
 ---@field usedAttempts? number

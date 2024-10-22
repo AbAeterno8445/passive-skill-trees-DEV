@@ -389,10 +389,12 @@ function PST:updateExpedAccess(depth)
             -- No completed nodes, set everything back to accessible
             for col, tmpCol in ipairs(tmpExpedition.nodes) do
                 for _, tmpNode in ipairs(tmpCol) do
-                    tmpNode.accessible = nil
-                    if col == 2 then
-                        -- Selectable nodes after astrolabe
-                        tmpNode.selectable = true
+                    if not tmpNode.deathState then
+                        tmpNode.accessible = nil
+                        if col == 2 then
+                            -- Selectable nodes after astrolabe
+                            tmpNode.selectable = true
+                        end
                     end
                 end
             end
