@@ -140,6 +140,12 @@ function PST:onSlotUpdate(slot)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, tmpItem, Random() + 1)
             end
         end
+
+        -- Obols on beggar help
+        if PST:getTreeSnapshotMod("isExpedRun", false) then
+            local tmpObols = PST.obolEvents.beggarHelp(PST:getTreeSnapshotMod("expedDepth", 1))
+            if tmpObols > 0 then PST:expedDropObolsAt(slot.Position, tmpObols) end
+        end
     end
 
     -- Crane game regenerates item

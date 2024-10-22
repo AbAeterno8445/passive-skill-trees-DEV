@@ -74,14 +74,28 @@ function PST:onDeath(entity)
 
         local tmpNPC = entity:ToNPC()
         if tmpNPC then
-            -- Expedition objective: defeat champions
+            -- Champion kill
             if tmpNPC:IsChampion() then
+                -- Expedition objective: defeat champions
                 PST:expedAddProgInRun("defeatChampions", 1)
+
+                -- Obols on champion kill
+                if PST:getTreeSnapshotMod("isExpedRun", false) then
+                    local tmpObols = PST.obolEvents.championKill(PST:getTreeSnapshotMod("expedDepth", 1))
+                    if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
+                end
             end
 
-            -- Expedition objective: defeat bosses
+            -- Boss kill
             if entity:IsBoss() then
+                -- Expedition objective: defeat bosses
                 PST:expedAddProgInRun("defeatBosses", 1)
+
+                -- Obols on boss kill
+                if PST:getTreeSnapshotMod("isExpedRun", false) then
+                    local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
+                    if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
+                end
             end
 
             -- Chance for champions to drop a random starcursed jewel

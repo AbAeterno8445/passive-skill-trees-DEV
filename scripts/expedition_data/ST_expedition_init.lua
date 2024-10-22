@@ -2,7 +2,7 @@
 PST.expeditionsData = {}
 PST.expedMinLevel = 70
 
-PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500}
+PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500, 1000}
 
 ---@enum PSTExpNodeRewardType
 PSTExpNodeRewardType = {
@@ -831,4 +831,44 @@ PST.expedDescriptions = {
     },
     lessAttempts = "-%d max expedition attempt(s).",
     mobDmgRed = "+%d%% monster damage reduction."
+}
+
+-- Obol-rewarding event quantities
+PST.obolEvents = {
+    -- On champion mob kill
+    championKill = function(depth, chanceMod)
+        local chance = 0.06 + (chanceMod or 0)
+        if math.random() < chance then
+            return 4 + 2 * (depth - 1)
+        end
+        return 0
+    end,
+    -- On boss kill
+    bossKill = function(depth, chanceMod)
+        local chance = 0.1 + (chanceMod or 0)
+        if math.random() < chance then
+            return 2 + PST:getLevel():GetStage() * 2 + 3 * (depth - 1)
+        end
+        return 0
+    end,
+    -- On challenge room clear
+    challClear = function(depth, chanceMod)
+        local chance = 0.35 + (chanceMod or 0)
+        if math.random() < chance then
+            return 5 + PST:getLevel():GetStage() * 3 + 3 * (depth - 1)
+        end
+        return 0
+    end,
+    -- On fully helping beggar (teleports away)
+    beggarHelp = function(depth, chanceMod)
+        local chance = 0.7 + (chanceMod or 0)
+        if math.random() < chance then
+            return 10 + 3 * (depth - 1)
+        end
+        return 0
+    end,
+    -- On boss rush clear
+    bossRush = function(depth)
+        return 10 + 5 * (depth - 1)
+    end
 }

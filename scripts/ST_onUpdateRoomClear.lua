@@ -47,6 +47,12 @@ function PST:onRoomClear(level, room)
 
 				-- Expedition objective: clear challenge rooms
 				PST:expedAddProgInRun("challengeRooms", 1)
+
+				-- Obols on challenge room clear
+                if PST:getTreeSnapshotMod("isExpedRun", false) then
+                    local tmpObols = PST.obolEvents.challClear(PST:getTreeSnapshotMod("expedDepth", 1))
+                    if tmpObols > 0 then PST:expedDropObolsAt(room:GetCenterPos(), tmpObols) end
+                end
 			end
 		-- Boss rooms
 		elseif room:GetType() == RoomType.ROOM_BOSS then
@@ -76,6 +82,12 @@ function PST:onRoomClear(level, room)
 					PST:addModifiers({ SC_bossrushJewel = true }, true)
 					jewelDrop = true
 				end
+
+				-- Obols on boss rush clear
+                if PST:getTreeSnapshotMod("isExpedRun", false) then
+                    local tmpObols = PST.obolEvents.bossRush(PST:getTreeSnapshotMod("expedDepth", 1))
+                    if tmpObols > 0 then PST:expedDropObolsAt(room:GetCenterPos(), tmpObols) end
+                end
 			end
 		end
 

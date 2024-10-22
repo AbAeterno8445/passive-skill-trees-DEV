@@ -89,6 +89,25 @@ function PST:expedRemoveItem(depth, itemID)
     end
 end
 
+-- Drop obols at the given position
+function PST:expedDropObolsAt(position, amount)
+    local tmpAmount = amount
+    local obolDrops = {}
+    for i=#PST.expedObolDropValues,1,-1 do
+        local obolValue = PST.expedObolDropValues[i]
+        while tmpAmount >= obolValue or (tmpAmount == 1 and obolValue == 2) do
+            table.insert(obolDrops, i)
+            tmpAmount = tmpAmount - obolValue
+        end
+    end
+    for _, tmpDrop in ipairs(obolDrops) do
+        local obolID = Isaac.GetTrinketIdByName("Arcane Obols " .. tostring(tmpDrop))
+        if obolID ~= -1 then
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, obolID, position, RandomVector() * 3 * math.random(), nil)
+        end
+    end
+end
+
 -- Returns whether the current run can progress towards the current expedition's objective, based on selected node
 function PST:expedCanProgress(depth)
     local tmpExpedition = PST.expeditionsData[depth]

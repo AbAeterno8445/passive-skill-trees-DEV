@@ -20,4 +20,6 @@
     <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_5.png" id="11" name="Arcane Obols 6" achievement="99999" />
     <!-- Awards 500 obols -->
     <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_6.png" id="12" name="Arcane Obols 7" achievement="99999" />
+    <!-- Awards 1000 obols -->
+    <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_6.png" id="13" name="Arcane Obols 8" achievement="99999" />
 </items>
