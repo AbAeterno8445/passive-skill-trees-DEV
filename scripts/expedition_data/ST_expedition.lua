@@ -142,9 +142,9 @@ function PST:expedAddProgress(depth, prog, objName)
                 tmpExpedition.selectedNode.objProgress = math.min(tgtNode.objective.req, tmpExpedition.selectedNode.objProgress + prog)
 
                 -- Expedition objective progress text popups
-                if Isaac.IsInGame() then
+                if Isaac.IsInGame() and PST.config.expedProgTextThreshold ~= 0 then
                     local newVal = tmpExpedition.selectedNode.objProgress
-                    local progTotalSteps = 4 -- Could be a config option
+                    local progTotalSteps = PST.config.expedProgTextThreshold
                     local lastStep = 0
                     for i=1,progTotalSteps do
                         local progThreshold = (i / progTotalSteps)

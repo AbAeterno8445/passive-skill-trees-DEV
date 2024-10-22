@@ -29,6 +29,9 @@ PST.config = {
     -- Tree description boxes style (0: old, 1: new)
     descriptionBoxStyle = 0,
 
+    -- Expedition progress text thresholds
+    expedProgTextThreshold = 4,
+
     -- Tainted Siren: use a singing sound for Manifest Melody instead of the default sound
     tSirenSing = false,
 
@@ -410,6 +413,37 @@ function PST:initModConfigMenu()
                 PST.config.starJewelDrops = n
             end,
             Info = {"Stop Starcursed Jewels from dropping", "Inv full only stops the jewel type for which your inventory is full"}
+        }
+    )
+
+    -- Expedition objective progress text popup threshold
+    local expObjThresholds = {20, 10, 5, 4, 3, 2, 1, 0}
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "expedProgTextThreshold")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "expedProgTextThreshold",
+            CurrentSetting = function()
+                return getTableIndex(expObjThresholds, PST.config.expedProgTextThreshold, 3)
+            end,
+            Minimum = 1,
+            Maximum = #expObjThresholds,
+            Display = function()
+                local tmpStr = "never"
+                if PST.config.expedProgTextThreshold ~= 0 then
+                    local roundNum = math.ceil(PST:roundFloat((1 / PST.config.expedProgTextThreshold) * 100, -2))
+                    if roundNum == 34 then roundNum = 33 end
+                    tmpStr = tostring(roundNum) .. "%"
+                end
+                return "Expedition progress texts: " .. tmpStr
+            end,
+            OnChange = function(n)
+                PST.config.expedProgTextThreshold = expObjThresholds[n]
+                print(PST.config.expedProgTextThreshold)
+            end,
+            Info = {"Expedition objective progress threshold to display floating text", "e.g. at 25%, show a floating text every 25% of progress made"}
         }
     )
 
