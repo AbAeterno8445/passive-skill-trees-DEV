@@ -766,9 +766,8 @@ function PST:onPickup(pickup, collider, low, forced)
 end
 
 ---@param pickup EntityPickup
-function PST:onPickupInit(pickup)
+function PST:onPickupInit(pickup, firstSpawn)
     local room = PST:getRoom()
-    local firstSpawn = room:GetFrameCount() >= 0 or room:IsFirstVisit()
     local isShop = room:GetType() == RoomType.ROOM_SHOP
     local variant = pickup.Variant
     local subtype = pickup.SubType
@@ -817,7 +816,7 @@ function PST:onPickupInit(pickup)
     -- Trinkets
     if variant == PickupVariant.PICKUP_TRINKET then
         -- Fickle Fortune node (Cain's tree), vanish proc
-        if PST:getTreeSnapshotMod("fickleFortune", false) and PST.specialNodes.fickleFortuneVanish then
+        if PST.specialNodes.fickleFortuneVanish then
             PST:vanishPickup(pickup)
             PST.specialNodes.fickleFortuneVanish = false
             pickupGone = true
@@ -854,6 +853,13 @@ function PST:onPickupInit(pickup)
         variant == PickupVariant.PICKUP_KEY) and tmpMod > 0 and 100 * math.random() < tmpMod then
             pickup:Remove()
             pickupGone = true
+        end
+
+        -- Expedition curse: ephemeral pieces
+        tmpMod = PST:getTreeSnapshotMod("curseEphPieces", 0)
+        if tmpMod > 0 and firstSpawn and pickup.Timeout == -1 and not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
+        variant == PickupVariant.PICKUP_KEY or variant == PickupVariant.PICKUP_HEART) then
+            pickup.Timeout = math.ceil(tmpMod * 30)
         end
 
         -- Hearts
@@ -1069,8 +1075,15 @@ end
 ---@param pickup EntityPickup
 function PST:onPickupUpdate(pickup)
     -- Init pickup
-    if pickup.FrameCount == 1 then
-        PST:onPickupInit(pickup)
+    if not pickup:GetData().PST_init then
+        local room = PST:getRoom()
+        if room:GetFrameCount() >= 0 or room:IsFirstVisit() then
+            PST:onPickupInit(pickup, true)
+            pickup:GetData().PST_init = true
+        elseif pickup.FrameCount == 1 then
+            PST:onPickupInit(pickup, false)
+            pickup:GetData().PST_init = true
+        end
     end
 
     if pickup.Timeout > 0 then

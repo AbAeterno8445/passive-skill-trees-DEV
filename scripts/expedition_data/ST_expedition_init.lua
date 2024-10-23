@@ -354,7 +354,7 @@ PST.expeditionCurses = {
         spriteFrame = 6,
         modsFunc = function(depth)
             local secs = 4
-            if depth >= 10 then secs = 5 end
+            if depth >= 10 then secs = 3 end
             if depth >= 25 then secs = 2 end
             return { curseEphPieces = secs }
         end
@@ -362,8 +362,8 @@ PST.expeditionCurses = {
     {
         name = "Power Demand",
         description = {
-            "+{{cursePowerDemandCharges}} required charges to non-charging active items.",
-            "+{{cursePowerDemandCD}} cooldown seconds to charging active items."
+            "+{{cursePowerDemandCharges}} required charges to non-timed active items.",
+            "+{{cursePowerDemandCD}} cooldown seconds to timed active items."
         },
         spriteFrame = 7,
         modsFunc = function(depth)
@@ -462,9 +462,9 @@ PST.expeditionCurses = {
         description = "Take 1/2 heart damage every {{cursePunishment}} rooms cleared. This cannot kill you.",
         spriteFrame = 16,
         modsFunc = function(depth)
-            local clears = 8
-            if depth >= 10 then clears = 7 end
-            if depth >= 25 then clears = 6 end
+            local clears = 9
+            if depth >= 10 then clears = 8 end
+            if depth >= 25 then clears = 7 end
             return { cursePunishment = clears }
         end
     },
@@ -529,10 +529,10 @@ PST.expeditionCurses = {
     },
     {
         name = "the Witless",
-        description = "XP gain is halved within expedition runs.",
+        description = "{{xpgain}}% XP gain within expedition runs.",
         spriteFrame = 23,
         modsFunc = function(depth)
-            return { curseWitless = true }
+            return { xpgain = -math.min(60, 40 + math.floor(depth / 2)) }
         end,
         minDepth = 5
     }

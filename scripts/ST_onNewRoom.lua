@@ -78,13 +78,20 @@ function PST:onNewRoom()
 						Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
 					end
 
-					-- SC mod: Chance to turn into champion
+					-- Chance to turn into champion
 					if not PST:arrHasValue(PST.deadlySinBosses, tmpNPC.Type) then
+						-- Jewel champion chance (affects most mobs)
 						local jewelChampChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
 						if PST:SC_getSnapshotMod("mightstone", false) then
 							jewelChampChance = jewelChampChance + 50
 						end
+
+						-- Normal champion chance (affects only mobs that can be champions in vanilla)
 						tmpChance = PST:getTreeSnapshotMod("championChance", 0)
+
+						-- Expedition curse: abundant might
+						tmpChance = tmpChance + PST:getTreeSnapshotMod("curseAbundantMightChance", 0)
+
 						if jewelChampChance > 0 and (not tmpNPC:IsBoss() or (tmpNPC:IsBoss() and PST:NPCChampionAvailable(tmpNPC)))
 						and not PST:arrHasValue(PST.noChampionMobsJewel, tmpNPC.Type) and 100 * math.random() < jewelChampChance then
 							tmpNPC:MakeChampion(Random() + 1)
@@ -98,13 +105,18 @@ function PST:onNewRoom()
 				if tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
 					local tmpHPMod = 0
 					local tmpHPMult = 1
+
 					local extraHPMult = 1
+					-- Halve monster HP boosts on the very first floor
 					if PST:isFirstOrigStage() then
 						extraHPMult = 0.5
 					end
+
+					-- Larry JR nerf
 					if tmpNPC.Type == EntityType.ENTITY_LARRYJR then
 						extraHPMult = extraHPMult / 2
 					end
+
 					if not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
 						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
 						tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * extraHPMult) / 100
@@ -120,11 +132,18 @@ function PST:onNewRoom()
 							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * extraHPMult) / 100
 						end
 					end
+
+					-- Expedition curse: resilience
+					local tmpMod = PST:getTreeSnapshotMod("curseResilience", 0)
+					if tmpMod > 0 then
+						tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
+					end
+
 					tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
 					tmpEntity.HitPoints = tmpEntity.MaxHitPoints
 
 					-- Boon: bosses start with % missing HP
-					local tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
+					tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
 					if tmpMod > 0 then
 						tmpEntity.HitPoints = math.ceil(tmpEntity.MaxHitPoints * (1 - tmpMod / 100))
 					end
@@ -1056,6 +1075,12 @@ function PST:onNewRoom()
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_NICKEL, Random() + 1)
 		end
 
+		-- Expedition curse: unexpected taxation
+		tmpMod = PST:getTreeSnapshotMod("curseUnexpectedTax", 0)
+		if tmpMod > 0 and room:GetAliveEnemiesCount() > 0 then
+			player:AddCoins(-tmpMod)
+		end
+
 		-- Secret rooms
 		if roomType == RoomType.ROOM_SECRET or
 		roomType == RoomType.ROOM_SUPERSECRET or
@@ -1179,6 +1204,16 @@ function PST:onNewRoom()
 		elseif roomType == RoomType.ROOM_CURSE then
 			-- Expedition objective: enter curse rooms
 			PST:expedAddProgInRun("curseRooms", 1)
+		-- Shops
+		elseif roomType == RoomType.ROOM_SHOP then
+			-- Expedition curse: precariousness
+			tmpMod = PST:getTreeSnapshotMod("cursePrecarious", 0)
+			if tmpMod > 0 then
+				local items = Isaac.FindByType(EntityType.ENTITY_PICKUP)
+				for i=1,math.min(#items, tmpMod) do
+					items[i]:Remove()
+				end
+			end
 		end
 	end
 

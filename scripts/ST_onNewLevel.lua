@@ -723,6 +723,12 @@ function PST:onNewLevel()
         PST:addModifiers({ damagePerc = -tmpMod, boonChampSlayBuff = { value = 0, set = true } }, true)
     end
 
+    -- Expedition curse: vanishing wealth
+    tmpMod = PST:getTreeSnapshotMod("curseVanishingWealth", 0)
+    if tmpMod > 0 and not PST:isFirstOrigStage() then
+        player:AddCoins(-tmpMod)
+    end
+
     PST:save()
 end
 

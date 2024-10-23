@@ -1306,6 +1306,12 @@ function PST:onUpdate()
 		if diff < 0 then
 			-- Expedition objective: spend keys
 			PST:expedAddProgInRun("keys", math.abs(diff))
+
+			-- Expedition curse: fading keys
+			tmpMod = PST:getTreeSnapshotMod("curseFadingKeys", 0)
+			if tmpMod > 0 then
+				player:AddKeys(-tmpMod)
+			end
 		end
 		updateTrackers.keyTracker = player:GetNumKeys()
 	end

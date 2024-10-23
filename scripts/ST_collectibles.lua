@@ -340,32 +340,49 @@ end
 
 -- Active item charge overrides
 function PST:getActiveMaxCharge(itemType, player, varData, currentMaxCharge)
+    local extraCharge = 0
+
     -- Dark Arts
     if itemType == CollectibleType.COLLECTIBLE_DARK_ARTS then
         -- Mod: +- Dark Arts' cooldown
         local tmpMod = PST:getTreeSnapshotMod("darkArtsCD", 0)
         if tmpMod ~= 0 then
-            return currentMaxCharge + math.floor(tmpMod * 30)
+            extraCharge = extraCharge + math.floor(tmpMod * 30)
         end
     -- Suplex!
     elseif itemType == CollectibleType.COLLECTIBLE_SUPLEX then
         -- Mod: +- Suplex's cooldown
         local tmpMod = PST:getTreeSnapshotMod("suplexCooldown", 0)
         if tmpMod ~= 0 then
-            return currentMaxCharge + math.floor(tmpMod * 30)
+            extraCharge = extraCharge + math.floor(tmpMod * 30)
         end
     -- Recall
     elseif itemType == CollectibleType.COLLECTIBLE_RECALL then
         -- Recall! node (T. Forgotten's tree)
         if PST:getTreeSnapshotMod("forgRecall", false) then
-            return currentMaxCharge + math.floor(math.min(4, PST:getTreeSnapshotMod("forgRecallUses", 0) * 0.4) * 30)
+            extraCharge = extraCharge + math.floor(math.min(4, PST:getTreeSnapshotMod("forgRecallUses", 0) * 0.4) * 30)
         end
     -- Anima Sola
     elseif itemType == CollectibleType.COLLECTIBLE_ANIMA_SOLA then
         -- Mod: +- Anima Sola's cooldown
         local tmpMod = PST:getTreeSnapshotMod("animaSolaCooldown", 0)
         if tmpMod ~= 0 then
-            return currentMaxCharge + math.floor(tmpMod * 30)
+            extraCharge = extraCharge + math.floor(tmpMod * 30)
         end
     end
+
+    -- Expedition curse: power demand
+    local tmpMod = PST:getTreeSnapshotMod("cursePowerDemandCharges", 0)
+    if tmpMod > 0 then
+        local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
+        if itemCfg then
+            if itemCfg.ChargeType == 0 then
+                extraCharge = extraCharge + tmpMod
+            elseif itemCfg.ChargeType == 1 then
+                extraCharge = extraCharge + math.floor(PST:getTreeSnapshotMod("cursePowerDemandCD", 0) * 30)
+            end
+        end
+    end
+
+    return currentMaxCharge + extraCharge
 end

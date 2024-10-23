@@ -562,6 +562,16 @@ function PST:onRoomClear(level, room)
 					player:AddEternalHearts(-player:GetEternalHearts() + newBank.eternal)
 				end
 			end
+
+			-- Expedition curse: punishment
+			tmpMod = PST:getTreeSnapshotMod("cursePunishment", 0)
+			if tmpMod > 0 and PST:getTreeSnapshotMod("roomKills", 0) > 0 then
+				PST:addModifiers({ cursePunishmentCount = 1 }, true)
+				if PST:getTreeSnapshotMod("cursePunishmentCount", 0) >= tmpMod then
+					player:TakeDamage(1, DamageFlag.DAMAGE_NOKILL, EntityRef(player), 0)
+					PST:addModifiers({ cursePunishmentCount = { value = 0, set = true } }, true)
+				end
+			end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)

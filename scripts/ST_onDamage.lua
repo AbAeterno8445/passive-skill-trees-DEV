@@ -21,9 +21,21 @@ function PST:onDamage(target, damage, flag, source)
             return { Damage = 0 }
         end
 
-        -- Fickle Fortune node (Cain's tree)
-        if PST:getTreeSnapshotMod("fickleFortune", false) and 100 * math.random() < 7 then
-            if 100 * math.random() < 7 then
+        -- Fickle Fortune node (Cain's tree) - also Expedition curse: flimsy gadgets
+        local tmpChance = 0
+        if PST:getTreeSnapshotMod("fickleFortune", false) then
+            tmpChance = 7
+        end
+        tmpChance = tmpChance + PST:getTreeSnapshotMod("curseFlimGadgDrop", 0)
+
+        if tmpChance > 0 and 100 * math.random() < tmpChance then
+            local vanishChance = 0
+            if PST:getTreeSnapshotMod("fickleFortune", false) then
+                vanishChance = 7
+            end
+            vanishChance = vanishChance + PST:getTreeSnapshotMod("curseFlimGadgVanish", 0)
+
+            if vanishChance > 0 and 100 * math.random() < vanishChance then
                 PST.specialNodes.fickleFortuneVanish = true
             end
             player:DropTrinket(player.Position, true)
@@ -637,6 +649,41 @@ function PST:onDamage(target, damage, flag, source)
                 tmpMod = PST:getTreeSnapshotMod("boonVolatilityDmg", 0)
                 if tmpMod > 0 then
                     dmgMult = dmgMult + tmpMod / 100
+                end
+
+                -- Expedition curse: diminished powers
+                tmpMod = PST:getTreeSnapshotMod("curseDimPowerExpl", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult - tmpMod / 100
+                end
+            end
+
+            -- Laser hits
+            if (flag & DamageFlag.DAMAGE_LASER) > 0 then
+                -- Expedition curse: diminished powers
+                tmpMod = PST:getTreeSnapshotMod("curseDimPowerLaser", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult - tmpMod / 100
+                end
+            end
+
+            -- Expedition curse: giants' fortification
+            tmpMod = PST:getTreeSnapshotMod("curseGiantsFort", 0)
+            if tmpMod > 0 and target:IsBoss() then
+                if not target:GetData().PST_giantFortBlocks then
+                    target:GetData().PST_giantFortBlocks = tmpMod
+                elseif target:GetData().PST_giantFortBlocks > 0 then
+                    partialBlock = true
+                    target:GetData().PST_giantFortBlocks = target:GetData().PST_giantFortBlocks - 1
+                end
+            end
+
+            -- Expedition curse: abundant might
+            tmpMod = PST:getTreeSnapshotMod("curseAbundantMightDmgRed", 0)
+            if tmpMod > 0 then
+                local tmpNPC = target:ToNPC()
+                if tmpNPC and tmpNPC:IsChampion() then
+                    dmgMult = dmgMult - tmpMod / 100
                 end
             end
 

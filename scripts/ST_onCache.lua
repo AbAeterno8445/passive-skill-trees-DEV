@@ -823,6 +823,16 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- Expedition curse: inverse fortune
+    tmpTreeMod = PST:getTreeSnapshotMod("curseInvFortune", 0)
+    if tmpTreeMod > 0 and player.Luck > 0 then
+        local allstatDebuff = math.min(
+            PST:getTreeSnapshotMod("curseInvFortuneMax", 30),
+            player.Luck * (PST:getTreeSnapshotMod("curseInvFortune", 0) / 100)
+        )
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - allstatDebuff
+    end
+
     local allstats = PST:getTreeSnapshotMod("allstats", 0) + dynamicMods.allstats
     local allstatsPerc = PST:getTreeSnapshotMod("allstatsPerc", 0) + dynamicMods.allstatsPerc
     if cacheFlag == CacheFlag.CACHE_DAMAGE then

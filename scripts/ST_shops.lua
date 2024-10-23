@@ -114,6 +114,7 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
 
     if price > 0 then
         local priceMod = 0
+        local priceMult = 1
 
         -- Starcursed mod: shop items cost more coins (except pickups)
         tmpMod = PST:SC_getSnapshotMod("shopExpensive", 0)
@@ -130,6 +131,12 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
         -- Ancient starcursed jewel: Baubleseeker
         if pickupVariant == PickupVariant.PICKUP_TRINKET and PST:SC_getSnapshotMod("baubleseeker", false) then
             priceMod = priceMod + 3
+        end
+
+        -- Expedition curse: greater expenses
+        tmpMod = PST:getTreeSnapshotMod("curseGreaterExpenses", 0)
+        if tmpMod > 0 and pickupVariant == PickupVariant.PICKUP_COLLECTIBLE then
+            priceMult = priceMult + tmpMod / 100
         end
 
         -- Mod: chance for a shop item to cost 2-4 less coins
@@ -156,10 +163,10 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
         -- Blessed Pennies node (T. Keeper's tree)
         if PST:getTreeSnapshotMod("blessedPennies", false) and pickupVariant == PickupVariant.PICKUP_TRINKET and
         PST:getTreeSnapshotMod("blessedPenniesSoldTrinket", 0) == subtype then
-            return price * 2
+            priceMult = priceMult + 1
         end
 
-        return math.max(1, price + priceMod)
+        return math.max(1, math.floor((price + priceMod) * priceMult))
     else
         -- Mod: % chance for devil deals to be free while you don't have flight
         if PST:getRoom():GetType() == RoomType.ROOM_DEVIL then

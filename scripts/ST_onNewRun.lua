@@ -292,6 +292,12 @@ function PST:onNewRun(isContinued)
             if PST:getTreeSnapshotMod("boonUnexGift", 0) > 0 then
                 PST:addModifiers({ boonUnexGiftsRooms = math.random(6) }, true)
             end
+
+            -- Expedition curse: heartbroken
+            tmpMod = PST:getTreeSnapshotMod("curseHeartbroken", 0)
+            if tmpMod > 0 then
+                player:AddBrokenHearts(tmpMod)
+            end
         end
     end
 
@@ -599,6 +605,13 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ totalFamiliars = { value = tmpFamiliars, set = true } }, true)
     end
 
+    local remove1UPItems = false
+
+    -- Expedition curse: mortality
+    if PST:getTreeSnapshotMod("curseMortality", false) then
+        remove1UPItems = true
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats
@@ -614,15 +627,7 @@ function PST:onNewRun(isContinued)
         PST:addModifiers({ rangePerc = -20 }, true)
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS) then
         -- Lazarus, remove items that give extra lives
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_1UP)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_DEAD_CAT)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INNER_CHILD)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_GUPPYS_COLLAR)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_LAZARUS_RAGS)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_ANKH)
-        itemPool:RemoveTrinket(TrinketType.TRINKET_BROKEN_ANKH)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
-        itemPool:RemoveTrinket(TrinketType.TRINKET_MISSING_POSTER)
+        remove1UPItems = true
     elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
         -- The Lost, if Holy Mantle is unlocked, start with Wafer
         if Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
@@ -703,6 +708,19 @@ function PST:onNewRun(isContinued)
             end
             player:SetFullHearts()
         end
+    end
+
+    -- Extra life items pool removal
+    if remove1UPItems then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_1UP)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_DEAD_CAT)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INNER_CHILD)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_GUPPYS_COLLAR)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_LAZARUS_RAGS)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_ANKH)
+        itemPool:RemoveTrinket(TrinketType.TRINKET_BROKEN_ANKH)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
+        itemPool:RemoveTrinket(TrinketType.TRINKET_MISSING_POSTER)
     end
 
     PST:closeTreeMenu(true)
