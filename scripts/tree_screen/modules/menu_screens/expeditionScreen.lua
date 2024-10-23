@@ -193,10 +193,14 @@ function expeditionScreen:OnInput()
                         row = self.hoveredNode.row,
                         objProgress = 0
                     }
-                    -- Add selected node curse if present
-                    local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
-                    if selNode and selNode.curse and selNode.curse > 0 then
-                        PST:expedAddCurse(self.currentDepth, selNode.curse)
+                    -- Boon of the Blessed Expedition (no curse application)
+                    local isBlessedExp = PST:arrHasValue(expData.boons, 24)
+                    if not isBlessedExp then
+                        -- Add selected node curse if present
+                        local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+                        if selNode and selNode.curse and selNode.curse > 0 then
+                            PST:expedAddCurse(self.currentDepth, selNode.curse)
+                        end
                     end
                     SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
                 end

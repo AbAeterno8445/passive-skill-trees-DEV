@@ -224,6 +224,10 @@ function PST:generateExpedition(depth, seed)
             if (col == 1 or col == expLength) and newNode.rewardType == PSTExpNodeRewardType.ITEM then
                 newNode.rewardType = PSTExpNodeRewardType.OBOLS
             end
+            -- No attempts reward in last column
+            if (col == expLength) and newNode.rewardType == PSTExpNodeRewardType.ATTEMPTS then
+                newNode.rewardType = PSTExpNodeRewardType.OBOLS
+            end
 
             -- Assign reward data
             local rewardFunc = PST.expeditionRewardData[newNode.rewardType]

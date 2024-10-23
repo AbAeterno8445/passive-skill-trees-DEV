@@ -85,18 +85,24 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             expedScreen.expNodeSprite:Render(drawPos)
 
             -- Draw reward icon
-            if tmpNode.nodeType ~= PSTExpNodeType.COMPLETED then
-                if tmpNode.rewardType ~= PSTExpNodeRewardType.ITEM then
-                    if expNodeRewardFrame[tmpNode.rewardType] ~= nil then
-                        expedScreen.expNodeSprite:SetFrame("Icons", expNodeRewardFrame[tmpNode.rewardType])
-                        expedScreen.expNodeSprite:Render(drawPos - Vector.One)
+            if tmpNode.nodeType ~= PSTExpNodeType.COMPLETED and tmpNode.rewardType ~= PSTExpNodeRewardType.NONE then
+                local hasShrouding = PST:arrHasValue(expData.curses, 21)
+                if not hasShrouding then
+                    if tmpNode.rewardType ~= PSTExpNodeRewardType.ITEM then
+                        if expNodeRewardFrame[tmpNode.rewardType] ~= nil then
+                            expedScreen.expNodeSprite:SetFrame("Icons", expNodeRewardFrame[tmpNode.rewardType])
+                            expedScreen.expNodeSprite:Render(drawPos - Vector.One)
+                        end
+                    elseif tmpNode.rewardData then
+                        local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpNode.rewardData)
+                        if itemCfg then
+                            expedScreen.itemRewardSprite:ReplaceSpritesheet(1, itemCfg.GfxFileName, true)
+                            expedScreen.itemRewardSprite:Render(drawPos - Vector(1, -8) * expedScreen.zoomScale)
+                        end
                     end
-                elseif tmpNode.rewardData then
-                    local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpNode.rewardData)
-                    if itemCfg then
-                        expedScreen.itemRewardSprite:ReplaceSpritesheet(1, itemCfg.GfxFileName, true)
-                        expedScreen.itemRewardSprite:Render(drawPos - Vector(1, -8) * expedScreen.zoomScale)
-                    end
+                else
+                    expedScreen.expNodeSprite:SetFrame("Icons", 4)
+                    expedScreen.expNodeSprite:Render(drawPos - Vector.One)
                 end
             end
 

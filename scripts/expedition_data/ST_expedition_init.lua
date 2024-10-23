@@ -296,7 +296,7 @@ PST.expeditionBoons = {
 
 -- List of available expedition curses
 PST.expeditionCurses = {
-    {
+    { -- 1
         name = "Enfeeblement",
         description = "{{damagePerc}}% damage.",
         spriteFrame = 0,
@@ -304,7 +304,7 @@ PST.expeditionCurses = {
             return { damagePerc = -math.min(70, 25 + depth) }
         end
     },
-    {
+    { -- 2
         name = "Lethargy",
         description = "{{speedPerc}}% speed.",
         spriteFrame = 1,
@@ -312,7 +312,7 @@ PST.expeditionCurses = {
             return { speedPerc = -math.min(70, 25 + depth) }
         end
     },
-    {
+    { -- 3
         name = "Tear Deprivation",
         description = "{{tearsPerc}}% tears.",
         spriteFrame = 2,
@@ -320,7 +320,7 @@ PST.expeditionCurses = {
             return { tearsPerc = -math.min(70, 25 + depth) }
         end
     },
-    {
+    { -- 4
         name = "the Unfortunate",
         description = "{{luckPerc}}% luck.",
         spriteFrame = 3,
@@ -328,7 +328,7 @@ PST.expeditionCurses = {
             return { luckPerc = -math.min(70, 25 + depth) }
         end
     },
-    {
+    { -- 5
         name = "the Inverse Fortune",
         description = {
             "If your luck is positive, apply {{curseInvFortune}}% of it as an all stats down percentage, up to -{{curseInvFortuneMax}}%.",
@@ -340,7 +340,7 @@ PST.expeditionCurses = {
         end,
         minDepth = 6
     },
-    {
+    { -- 6
         name = "Resilience",
         description = "+{{curseResilience}}% monster HP",
         spriteFrame = 5,
@@ -348,7 +348,7 @@ PST.expeditionCurses = {
             return { curseResilience = math.min(60, 25 + depth) }
         end
     },
-    {
+    { -- 7
         name = "Ephemeral Pieces",
         description = "All non-vanishing pickup drops now vanish after {{curseEphPieces}} seconds.",
         spriteFrame = 6,
@@ -359,7 +359,7 @@ PST.expeditionCurses = {
             return { curseEphPieces = secs }
         end
     },
-    {
+    { -- 8
         name = "Power Demand",
         description = {
             "+{{cursePowerDemandCharges}} required charges to non-timed active items.",
@@ -375,7 +375,7 @@ PST.expeditionCurses = {
             return { cursePowerDemandCharges = reqCharges, cursePowerDemandCD = CDsecs }
         end
     },
-    {
+    { -- 9
         name = "Giants' Fortification",
         description = "Bosses block the first {{curseGiantsFort}} hits they receive.",
         spriteFrame = 8,
@@ -383,7 +383,7 @@ PST.expeditionCurses = {
             return { curseGiantsFort = 7 + math.floor(depth / 3) }
         end
     },
-    {
+    { -- 10
         name = "Greater Expenses",
         description = "Non-pickup shop items are {{curseGreaterExpenses}}% more expensive.",
         spriteFrame = 9,
@@ -391,7 +391,7 @@ PST.expeditionCurses = {
             return { curseGreaterExpenses = 20 + depth }
         end
     },
-    {
+    { -- 11
         name = "Flimsy Gadgets",
         description = {
             "When hit, {{curseFlimGadgDrop}}% chance to drop held trinkets.",
@@ -405,7 +405,7 @@ PST.expeditionCurses = {
             }
         end
     },
-    {
+    { -- 12
         name = "Abundant Might",
         description = {
             "+{{curseAbundantMightChance}}% chance for monsters to be champions.",
@@ -419,7 +419,7 @@ PST.expeditionCurses = {
             }
         end
     },
-    {
+    { -- 13
         name = "Vanishing Wealth",
         description = "When entering a floor, lose {{curseVanishingWealth}} coins.",
         spriteFrame = 12,
@@ -427,7 +427,7 @@ PST.expeditionCurses = {
             return { curseVanishingWealth = math.min(20, 6 + depth) }
         end
     },
-    {
+    { -- 14
         name = "Precariousness",
         description = "When first entering a shop room, remove {{cursePrecarious}} random sold items.",
         spriteFrame = 13,
@@ -437,7 +437,7 @@ PST.expeditionCurses = {
             return { cursePrecarious = rem }
         end
     },
-    {
+    { -- 15
         name = "Unexpected Taxation",
         description = "When first entering a room with monsters, lose {{curseUnexpectedTax}} coin(s).",
         spriteFrame = 14,
@@ -447,7 +447,7 @@ PST.expeditionCurses = {
             return { curseUnexpectedTax = tax }
         end
     },
-    {
+    { -- 16
         name = "Fading Keys",
         description = "Whenever you spend a key, spend {{curseFadingKeys}} additional key(s).",
         spriteFrame = 15,
@@ -457,7 +457,7 @@ PST.expeditionCurses = {
             return { curseFadingKeys = keys }
         end
     },
-    {
+    { -- 17
         name = "Punishment",
         description = "Take 1/2 heart damage every {{cursePunishment}} rooms cleared. This cannot kill you.",
         spriteFrame = 16,
@@ -468,7 +468,7 @@ PST.expeditionCurses = {
             return { cursePunishment = clears }
         end
     },
-    {
+    { -- 18
         name = "Mortality",
         description = "Extra life items can no longer show up.",
         spriteFrame = 17,
@@ -476,7 +476,7 @@ PST.expeditionCurses = {
             return { curseMortality = true }
         end
     },
-    {
+    { -- 19
         name = "Ancient Stars",
         description = "Expedition runs now require an Ancient Starcursed Jewel to be socketed.",
         spriteFrame = 18,
@@ -484,7 +484,7 @@ PST.expeditionCurses = {
             return { curseAncientStars = true }
         end
     },
-    {
+    { -- 20
         name = "Diminished Powers",
         description = {
             "Your lasers deal -{{curseDimPowerLaser}}% damage.",
@@ -498,7 +498,7 @@ PST.expeditionCurses = {
             }
         end
     },
-    {
+    { -- 21
         name = "Shrouding",
         description = "Expedition node rewards and curses are no longer known.",
         spriteFrame = 20,
@@ -507,7 +507,7 @@ PST.expeditionCurses = {
         end,
         minDepth = 5
     },
-    {
+    { -- 22
         name = "the Boonless",
         description = "You can no longer gain Expedition boons.",
         spriteFrame = 21,
@@ -516,7 +516,7 @@ PST.expeditionCurses = {
         end,
         minDepth = 5
     },
-    {
+    { -- 23
         name = "the Heartbroken",
         description = "Start with an additional {{curseHeartbroken}} broken heart(s).",
         spriteFrame = 22,
@@ -527,7 +527,7 @@ PST.expeditionCurses = {
         end,
         minDepth = 8
     },
-    {
+    { -- 24
         name = "the Witless",
         description = "{{xpgain}}% XP gain within expedition runs.",
         spriteFrame = 23,

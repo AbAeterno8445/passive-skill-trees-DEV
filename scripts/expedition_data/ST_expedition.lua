@@ -232,7 +232,10 @@ function PST:completeExpedNode(depth, col, row, giveReward)
                 tmpExpedition.attempts = tmpExpedition.attempts + tmpNode.rewardData
             -- Boon
             elseif tmpNode.rewardType == PSTExpNodeRewardType.BOON and not PST:arrHasValue(tmpExpedition.boons, tmpNode.rewardData) then
-                PST:expedAddBoon(depth, tmpNode.rewardData)
+                -- Curse of the Boonless
+                if not PST:arrHasValue(tmpExpedition.curses, 22) then
+                    PST:expedAddBoon(depth, tmpNode.rewardData)
+                end
             -- Exp
             elseif tmpNode.rewardType == PSTExpNodeRewardType.EXP then
                 PST:addXP(tmpNode.rewardData, false)
@@ -375,22 +378,29 @@ function PST:getExpNodeDescription(nodeData, expData)
         end
     end
 
+    -- Curse of Shrouding
+    local hasShrouding = PST:arrHasValue(expData.curses, 21)
+
     -- Curse
     if nodeData.curse then
-        local curseData = PST.expeditionCurses[nodeData.curse]
-        if curseData then
-            local tmpColor = PST:RGBKColor(255, 80, 93)
-            if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
-            table.insert(tmpDescription, {"Curse of " .. curseData.name .. ":", tmpColor})
-            if type(curseData.description) == "table" then
-                for _, tmpLine in ipairs(curseData.description) do
-                    local formattedDesc = PST:formatString(tmpLine, curseData.modsFunc(expData.depth))
+        if not hasShrouding then
+            local curseData = PST.expeditionCurses[nodeData.curse]
+            if curseData then
+                local tmpColor = PST:RGBKColor(255, 80, 93)
+                if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
+                table.insert(tmpDescription, {"Curse of " .. curseData.name .. ":", tmpColor})
+                if type(curseData.description) == "table" then
+                    for _, tmpLine in ipairs(curseData.description) do
+                        local formattedDesc = PST:formatString(tmpLine, curseData.modsFunc(expData.depth))
+                        table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
+                    end
+                else
+                    local formattedDesc = PST:formatString(curseData.description, curseData.modsFunc(expData.depth))
                     table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
                 end
-            else
-                local formattedDesc = PST:formatString(curseData.description, curseData.modsFunc(expData.depth))
-                table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
             end
+        else
+            table.insert(tmpDescription, {"Unknown Curse (Shrouded)", PST:RGBKColor(220, 120, 255)})
         end
     end
 
@@ -398,50 +408,57 @@ function PST:getExpNodeDescription(nodeData, expData)
     if nodeData.rewardType ~= PSTExpNodeRewardType.NONE or nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then
         local tmpColor = PST:RGBKColor(129, 255, 129)
         if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
-        table.insert(tmpDescription, {"Reward:", tmpColor})
 
-        -- Reward: Boon
-        if nodeData.rewardType == PSTExpNodeRewardType.BOON then
-            local boonData = PST.expeditionBoons[nodeData.rewardData]
-            if boonData then
-                table.insert(tmpDescription, {"   Gain Boon of " .. boonData.name .. ":", tmpColor})
-                if type(boonData.description) == "table" then
-                    for _, tmpLine in ipairs(boonData.description) do
-                        local formattedDesc = PST:formatString(tmpLine, boonData.mods)
+        if not hasShrouding then
+            table.insert(tmpDescription, {"Reward:", tmpColor})
+
+            -- Reward: Boon
+            if nodeData.rewardType == PSTExpNodeRewardType.BOON then
+                local boonData = PST.expeditionBoons[nodeData.rewardData]
+                if boonData then
+                    table.insert(tmpDescription, {"   Gain Boon of " .. boonData.name .. ":", tmpColor})
+                    if type(boonData.description) == "table" then
+                        for _, tmpLine in ipairs(boonData.description) do
+                            local formattedDesc = PST:formatString(tmpLine, boonData.mods)
+                            table.insert(tmpDescription, {"      " .. formattedDesc, tmpColor})
+                        end
+                    else
+                        local formattedDesc = PST:formatString(boonData.description, boonData.mods)
                         table.insert(tmpDescription, {"      " .. formattedDesc, tmpColor})
                     end
-                else
-                    local formattedDesc = PST:formatString(boonData.description, boonData.mods)
-                    table.insert(tmpDescription, {"      " .. formattedDesc, tmpColor})
+                end
+            -- Reward: Obols
+            elseif nodeData.rewardType == PSTExpNodeRewardType.OBOLS then
+                table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Arcane Obols", tmpColor})
+            -- Reward: Exp
+            elseif nodeData.rewardType == PSTExpNodeRewardType.EXP then
+                table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " EXP", tmpColor})
+            -- Reward: Attempts
+            elseif nodeData.rewardType == PSTExpNodeRewardType.ATTEMPTS then
+                table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Expedition Attempt(s)", tmpColor})
+            -- Reward: Item
+            elseif nodeData.rewardType == PSTExpNodeRewardType.ITEM then
+                local shownItem = false
+                local itemCfg = Isaac.GetItemConfig():GetCollectible(nodeData.rewardData)
+                if itemCfg then
+                    local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+                    if itemName ~= "StringTable::InvalidKey" then
+                        table.insert(tmpDescription, {"   Add " .. itemName .. " to this Expedition", tmpColor})
+                        shownItem = true
+                    end
+                end
+                if not shownItem then
+                    table.insert(tmpDescription, {"   Add shown item to this Expedition", tmpColor})
                 end
             end
-        -- Reward: Obols
-        elseif nodeData.rewardType == PSTExpNodeRewardType.OBOLS then
-            table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Arcane Obols", tmpColor})
-        -- Reward: Exp
-        elseif nodeData.rewardType == PSTExpNodeRewardType.EXP then
-            table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " EXP", tmpColor})
-        -- Reward: Attempts
-        elseif nodeData.rewardType == PSTExpNodeRewardType.ATTEMPTS then
-            table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Expedition Attempt(s)", tmpColor})
-        -- Reward: Item
-        elseif nodeData.rewardType == PSTExpNodeRewardType.ITEM then
-            local shownItem = false
-            local itemCfg = Isaac.GetItemConfig():GetCollectible(nodeData.rewardData)
-            if itemCfg then
-                local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-                if itemName ~= "StringTable::InvalidKey" then
-                    table.insert(tmpDescription, {"   Add " .. itemName .. " to this Expedition", tmpColor})
-                    shownItem = true
-                end
+            -- Boon Upgrade node
+            if nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then
+                table.insert(tmpDescription, {"   +1 Boon upgrade point", tmpColor})
             end
-            if not shownItem then
-                table.insert(tmpDescription, {"   Add shown item to this Expedition", tmpColor})
-            end
-        end
-        -- Boon Upgrade node
-        if nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then
-            table.insert(tmpDescription, {"   +1 Boon upgrade point", tmpColor})
+        else
+            local tmpShroudColor = PST:RGBKColor(220, 120, 255)
+            if nodeData.accessible == false then tmpShroudColor = tmpColor end
+            table.insert(tmpDescription, {"Unknown Reward (Shrouded)", tmpShroudColor})
         end
     end
     -- Completed node
