@@ -101,8 +101,8 @@ function PST:onNewRoom()
 					end
 				end
 
-				-- HP modifiers
 				if tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
+					---- HP modifiers ----
 					local tmpHPMod = 0
 					local tmpHPMult = 1
 
@@ -112,7 +112,7 @@ function PST:onNewRoom()
 						extraHPMult = 0.5
 					end
 
-					-- Larry JR nerf
+					-- Larry Jr nerf
 					if tmpNPC.Type == EntityType.ENTITY_LARRYJR then
 						extraHPMult = extraHPMult / 2
 					end
@@ -133,8 +133,14 @@ function PST:onNewRoom()
 						end
 					end
 
+					-- Expedition implicit: mob hp
+					local tmpMod = PST:getTreeSnapshotMod("expedImp_mobHP", 0)
+					if tmpMod > 0 then
+						tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
+					end
+
 					-- Expedition curse: resilience
-					local tmpMod = PST:getTreeSnapshotMod("curseResilience", 0)
+					tmpMod = PST:getTreeSnapshotMod("curseResilience", 0)
 					if tmpMod > 0 then
 						tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
 					end
@@ -146,6 +152,14 @@ function PST:onNewRoom()
 					tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
 					if tmpMod > 0 then
 						tmpEntity.HitPoints = math.ceil(tmpEntity.MaxHitPoints * (1 - tmpMod / 100))
+					end
+
+					---- Speed modifiers ----
+					-- Expedition implicit: monster speed
+					tmpMod = PST:getTreeSnapshotMod("expedImp_mobSpeed", 0)
+					if tmpMod > 0 then
+						local tmpSpeed = tmpEntity:GetSpeedMultiplier()
+						tmpEntity:SetSpeedMultiplier(tmpSpeed * (1 + (tmpMod / 100)))
 					end
 				end
 			end

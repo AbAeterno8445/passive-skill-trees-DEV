@@ -1365,6 +1365,14 @@ function PST:resetMods()
 		--#region ASTRAL EXPEDITIONS --
 		isExpedRun = false,
 		expedDepth = 0,
+		-- Implicits
+		expedImp_mobHP = 0,
+		expedImp_mobSpeed = 0,
+		expedImp_floorCurse = 0,
+		expedImp_pickupScarcity = 0,
+		expedImp_quality4Remove = 0,
+		expedImp_heartbreak = 0,
+		expedImp_mobDmgRed = 0,
 		-- Boons
 		boonAbundantObols = 0,
 		boonIntangibility = 0,

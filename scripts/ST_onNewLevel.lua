@@ -758,6 +758,9 @@ function PST:onCurseEval(curses)
     -- Starcursed mod: additional chance to receive a random curse when entering a floor
     curseChance = curseChance + PST:SC_getSnapshotMod("floorCurse", 0)
 
+    -- Expedition implicit: floor curses
+    curseChance = curseChance + PST:getTreeSnapshotMod("expedImp_floorCurse", 0)
+
     -- Eldritch mapping curse chance
     tmpMod = PST:getTreeSnapshotMod("eldritchMappingDebuffs", 0)
     if tmpMod > 0 then

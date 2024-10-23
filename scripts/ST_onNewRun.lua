@@ -93,16 +93,13 @@ function PST:onNewRun(isContinued)
         if tmpMod[1] > 0 and tmpMod[2] > 0 then
             local pickedItems = 0
             local failsafe = 0
-            while pickedItems < tmpMod[1] do
+            while pickedItems < tmpMod[1] and failsafe < 2000 do
                 local tmpItem = itemPool:GetCollectible(math.random(ItemPoolType.NUM_ITEMPOOLS) - 1)
                 if Isaac.GetItemConfig():GetCollectible(tmpItem).Quality == tmpMod[2] then
                     itemPool:RemoveCollectible(tmpItem)
                     pickedItems = pickedItems + 1
                 end
                 failsafe = failsafe + 1
-                if failsafe > 5000 then
-                    break
-                end
             end
         end
 
@@ -263,6 +260,17 @@ function PST:onNewRun(isContinued)
                 player:AddCollectible(tmpItem)
             end
 
+            -- Expedition implicits
+            local tmpImplicits = {}
+            for impName, impVal in pairs(expData.implicits) do
+                if PST:strStartsWith(impName, "expedImp_") then
+                    tmpImplicits[impName] = impVal
+                end
+            end
+            if next(tmpImplicits) ~= nil then
+                PST:addModifiers(tmpImplicits, true)
+            end
+
             -- Expedition boons
             for _, boonID in ipairs(expData.boons) do
                 local isUpgraded = PST:arrHasValue(expData.upgradedBoons, boonID)
@@ -295,8 +303,30 @@ function PST:onNewRun(isContinued)
 
             -- Expedition curse: heartbroken
             tmpMod = PST:getTreeSnapshotMod("curseHeartbroken", 0)
+            -- Expedition implicit: additional broken hearts
+            tmpMod = PST:getTreeSnapshotMod("expedImp_heartbreak", 0)
             if tmpMod > 0 then
                 player:AddBrokenHearts(tmpMod)
+            end
+
+            -- Expedition implicit: heartbreak can no longer show up
+            if PST:getTreeSnapshotMod("expedImp_heartbreak", 0) > 0 then
+                itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HEARTBREAK)
+            end
+
+            -- Expedition implicit: remove quality 4 items
+            tmpMod = PST:getTreeSnapshotMod("expedImp_quality4Remove", 0)
+            if tmpMod > 0 then
+                local pickedItems = 0
+                local failsafe = 0
+                while pickedItems < tmpMod and failsafe < 2000 do
+                    local tmpItem = itemPool:GetCollectible(math.random(ItemPoolType.NUM_ITEMPOOLS) - 1)
+                    if Isaac.GetItemConfig():GetCollectible(tmpItem).Quality == 4 then
+                        itemPool:RemoveCollectible(tmpItem)
+                        pickedItems = pickedItems + 1
+                    end
+                    failsafe = failsafe + 1
+                end
             end
         end
     end

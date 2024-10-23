@@ -1392,6 +1392,12 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
+        -- Expedition implicit: monster damage reduction
+        local tmpMod = PST:getTreeSnapshotMod("expedImp_mobDmgRed", 0)
+        if tmpMod > 0 and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
+            damage = damage * (1 - tmpMod / 100)
+        end
+
         return { Damage = damage * math.max(0.01, dmgMult) + dmgExtra }
     end
 end

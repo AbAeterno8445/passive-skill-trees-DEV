@@ -849,6 +849,9 @@ function PST:onPickupInit(pickup, firstSpawn)
     else
         -- Starcursed mod: coin, key and bomb scarcity
         local tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
+        -- Expedition implicit: pickup scarcity
+        tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
+
         if firstSpawn and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
         variant == PickupVariant.PICKUP_KEY) and tmpMod > 0 and 100 * math.random() < tmpMod then
             pickup:Remove()
@@ -866,6 +869,9 @@ function PST:onPickupInit(pickup, firstSpawn)
         if variant == PickupVariant.PICKUP_HEART then
             -- Starcursed mod: heart scarcity
             tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
+            -- Expedition implicit: pickup scarcity
+            tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
+
             if firstSpawn and tmpMod > 0 and 100 * math.random() < tmpMod then
                 pickup:Remove()
                 pickupGone = true

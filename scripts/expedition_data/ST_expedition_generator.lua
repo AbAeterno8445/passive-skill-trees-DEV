@@ -10,34 +10,35 @@ end
 
 -- Implicit modifiers applied to Astral Expeditions 
 function PST:getExpeditionImplicits(depth)
+    -- Only implicits starting with "expedImp_" get added to the run snapshot
     local implicits = {}
 
     -- Starmight requirement
     implicits.starmightReq = math.min(900, depth * 40)
     -- Depths 2+ monster HP
     if depth >= 2 then
-        implicits.mobHP = depth * 2
+        implicits.expedImp_mobHP = 5 + depth * 3
     end
     -- Depths 3+ monster speed
     if depth >= 3 then
-        implicits.mobSpeed = math.min(30, math.floor(depth / 3) * 2)
+        implicits.expedImp_mobSpeed = math.min(30, math.floor(depth / 3) * 2)
     end
     -- Depths 4+ chance to receive a curse when entering a floor
     if depth >= 4 then
-        implicits.floorCurse = math.min(30, depth - 3)
+        implicits.expedImp_floorCurse = math.min(30, depth - 3)
     end
     -- Depths 6+ coin, key, bomb, heart scarcity
     if depth >= 6 then
-        implicits.pickupScarcity = math.min(33, depth - 3)
+        implicits.expedImp_pickupScarcity = math.min(33, depth - 3)
     end
     -- Depths 8+ remove random quality 4 items from the pool when starting a run
     if depth >= 8 then
-        implicits.quality4Remove = math.min(28, depth - 7)
+        implicits.expedImp_quality4Remove = math.min(15, math.floor(depth - 6) / 2)
     end
     -- Depths 10 & 20, start with an additional broken heart, and heartbreak can no longer show up
     if depth >= 10 then
-        implicits.heartbreak = 1
-        if depth >= 20 then implicits.heartbreak = 2 end
+        implicits.expedImp_heartbreak = 1
+        if depth >= 20 then implicits.expedImp_heartbreak = 2 end
     end
     -- -expedition starting attempts
     local lessAttemptsList = {5, 10, 15, 25, 40}
@@ -49,7 +50,7 @@ function PST:getExpeditionImplicits(depth)
     end
     -- Depths 15+ monster damage reduction
     if depth >= 15 then
-        implicits.mobDmgRed = math.min(60, math.floor((depth - 14) * 1.5))
+        implicits.expedImp_mobDmgRed = math.min(60, math.floor((depth - 14) * 1.5))
     end
     return implicits
 end
@@ -114,6 +115,13 @@ function PST:generateExpedition(depth, seed)
 
             -- Guarantee expedition curses in second column
             if col == 2 then newNode.nodeType = PSTExpNodeType.CURSED end
+
+            -- Past depth 5, guarantee curses in 6th column and every 4 columns thereafter
+            if depth >= 5 then
+                if ((col - 6) % 4) == 0 then
+                    newNode.nodeType = PSTExpNodeType.CURSED
+                end
+            end
 
             -- Past second column
             if col > 2 then

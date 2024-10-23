@@ -32,6 +32,7 @@ end
 -- For testing - reset expedition depth and switch to it in the expedition screen menu
 function PST:resetExpeditionDebug(depth)
     PST:resetExpedition(depth)
+    PST.modData.expedLastDepth = depth
     PST.treeScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.EXPEDITION].currentDepth = depth
 end
 

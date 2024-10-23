@@ -821,17 +821,17 @@ PST.expeditionRewardData = {
 
 -- Expedition-specific modifier descriptions
 PST.expedDescriptions = {
-    mobHP = "+%d%% monster HP.",
-    mobSpeed = "+%d%% monster speed.",
-    floorCurse = "+%d%% chance to receive a curse when entering a floor.",
-    pickupScarcity = "+%d%% coin, key, bomb and heart scarcity.",
-    quality4Remove = "Remove %d random quality 4 items from the pool when starting a run.",
-    heartbreak = {
+    expedImp_mobHP = "+%d%% monster HP.",
+    expedImp_mobSpeed = "+%d%% monster speed.",
+    expedImp_floorCurse = "+%d%% chance to receive a curse when entering a floor.",
+    expedImp_pickupScarcity = "+%d%% coin, key, bomb and heart scarcity.",
+    expedImp_quality4Remove = "Remove %d random quality 4 items from the pool when starting a run.",
+    expedImp_heartbreak = {
         "Start with %d additional broken heart(s).",
         "Heartbreak can no longer show up."
     },
     lessAttempts = "-%d max expedition attempt(s).",
-    mobDmgRed = "+%d%% monster damage reduction."
+    expedImp_mobDmgRed = "+%d%% monster damage reduction."
 }
 
 -- Obol-rewarding event quantities
