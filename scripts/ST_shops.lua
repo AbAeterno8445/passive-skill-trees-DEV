@@ -96,17 +96,27 @@ function PST:onShopPurchase(pickup, player, spent)
         end
     end
     if removeOtherRoomItems then PST:removeRoomItems() end
+
+    -- Boon: first X items/deals in the run are free
+    if PST:getTreeSnapshotMod("boonGenerosity", 0) > 0 then
+        PST:addModifiers({ boonGenerosity = -1 }, true)
+    end
 end
 
 local bannedSavingItems = {
     [PickupVariant.PICKUP_TAROTCARD] = Card.CARD_CRACKED_KEY
 }
 function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
+    -- Boon: first X items/deals in the run cost 1 coin instead
+    if PST:getTreeSnapshotMod("boonGenerosity", 0) > 0 then
+        return 1
+    end
+
     if price > 0 then
         local priceMod = 0
 
         -- Starcursed mod: shop items cost more coins (except pickups)
-        local tmpMod = PST:SC_getSnapshotMod("shopExpensive", 0)
+        tmpMod = PST:SC_getSnapshotMod("shopExpensive", 0)
         if tmpMod ~= 0 and pickupVariant == PickupVariant.PICKUP_COLLECTIBLE then
             priceMod = priceMod + tmpMod
         end
@@ -153,7 +163,7 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
     else
         -- Mod: % chance for devil deals to be free while you don't have flight
         if PST:getRoom():GetType() == RoomType.ROOM_DEVIL then
-            local tmpMod = PST:getTreeSnapshotMod("flightlessDevilDeal", 0)
+            tmpMod = PST:getTreeSnapshotMod("flightlessDevilDeal", 0)
             local flightlessDevilCache = PST:getTreeSnapshotMod("flightlessDevilCache", nil)
             if tmpMod > 0 and flightlessDevilCache then
                 local itemID = tostring(pickupVariant) .. "." .. tostring(subtype) .. "." .. tostring(shopID)

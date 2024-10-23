@@ -73,96 +73,97 @@ PSTExpNodeType = {
 
 -- List of available expedition boons
 PST.expeditionBoons = {
-    {
+    { -- 1
         name = "Wellbeing",
         description = "+{{allstatsPerc}}% all stats.",
         spriteFrame = 0,
         mods = { allstatsPerc = 7 },
         upgradedMods = { allstatsPerc = 12 }
     },
-    {
+    { -- 2
         name = "Damage",
         description = "+{{damagePerc}}% damage.",
         spriteFrame = 1,
         mods = { damagePerc = 10 },
         upgradedMods = { damagePerc = 16 }
     },
-    {
-        name = "Speed",
+    { -- 3
+        name = "Celerity",
         description = "+{{speedPerc}}% speed.",
         spriteFrame = 2,
         mods = { speedPerc = 10 },
         upgradedMods = { speedPerc = 16 }
     },
-    {
+    { -- 4
         name = "Tears",
         description = "+{{tearsPerc}}% tears.",
         spriteFrame = 3,
         mods = { tearsPerc = 10 },
         upgradedMods = { tearsPerc = 16 }
     },
-    {
-        name = "Range",
+    { -- 5
+        name = "Distance",
         description = "+{{rangePerc}}% range.",
         spriteFrame = 4,
         mods = { rangePerc = 10 },
         upgradedMods = { rangePerc = 16 }
     },
-    {
-        name = "Luck",
+    { -- 6
+        name = "Fortune",
         description = "+{{luckPerc}}% luck.",
         spriteFrame = 5,
         mods = { luckPerc = 10 },
         upgradedMods = { luckPerc = 16 }
     },
-    {
+    { -- 7
         name = "Abundant Obols",
         description = "Obols are twice as likely to drop within runs. +{{boonAbundantObols}}% dropped obols.",
         spriteFrame = 6,
         mods = { boonAbundantObols = 20 },
         upgradedMods = { boonAbundantObols = 50 }
     },
-    {
+    { -- 8
         name = "Intangibility",
-        description = "When taking damage, {{boonIntangibility}}% chance for the invincibility frames to last 3x as long.",
+        description = "When hit by a monster, {{boonIntangibility}}% chance for the invincibility frames to last 2.5x as long.",
         spriteFrame = 7,
         mods = { boonIntangibility = 50 },
         upgradedMods = { boonIntangibility = 80 }
     },
-    {
+    { -- 9
         name = "Mercy",
         description = {
             "When hitting monsters and bosses affected by any status effect, {{boonMercyChance}}% chance to execute them if",
-            "their HP is below {{boonMercyHP}}%."
+            "their HP is below {{boonMercyHP}}%.",
+            "Hitting a boss halves their current status effect cooldown."
         },
         spriteFrame = 8,
         mods = { boonMercyChance = 12, boonMercyHP = 15 },
         upgradedMods = { boonMercyChance = 20, boonMercyHP = 20 }
     },
-    {
+    { -- 10
         name = "the Aegis",
         description = "Block the first {{boonAegis}} hits you receive every floor.",
         spriteFrame = 9,
         mods = { boonAegis = 2 },
         upgradedMods = { boonAegis = 3 }
     },
-    {
+    { -- 11
         name = "Generosity",
-        description = "The first item you purchase in the run is free, including devil deals.",
-        upgradedDescription = "The first {{boonGenerosity}} items you purchase in the run are free, including devil deals.",
+        description = "The first item or deal you purchase in the run costs 1 coin.",
+        upgradedDescription = "The first {{boonGenerosity}} items or deals you purchase in the run cost 1 coin.",
         spriteFrame = 10,
         mods = { boonGenerosity = 1 },
         upgradedMods = { boonGenerosity = 2 }
     },
-    {
+    { -- 12
         name = "Protection",
         description = "Gain a Holy Mantle shield every 2 floors. +10% speed while holy mantle is active.",
         upgradedDescription = "Gain a Holy Mantle shield every floor. +15% speed while holy mantle is active.",
         spriteFrame = 11,
-        mods = { boonProtection = 1 },
-        upgradedMods = { boonProtection = 2 }
+        mods = { boonProtection = 2 },
+        upgradedMods = { boonProtection = 1 }
     },
-    {
+    { -- 13
         name = "Lethargy",
         description = {
             "{{boonLethargyChance}}% chance to slow enemies for {{boonLethargyLen}} seconds on hit.",
@@ -172,7 +173,7 @@ PST.expeditionBoons = {
         mods = { boonLethargyChance = 7, boonLethargyLen = 2, boonLethargyMinSpd = 0.8 },
         upgradedMods = { boonLethargyChance = 12, boonLethargyLen = 3, boonLethargyMinSpd = 1 },
     },
-    {
+    { -- 14
         name = "Horror",
         description = {
             "{{boonHorrorChance}}% chance to fear enemies for {{boonHorrorLen}} seconds on hit.",
@@ -182,7 +183,7 @@ PST.expeditionBoons = {
         mods = { boonHorrorChance = 7, boonHorrorLen = 3, boonHorrorDmg = 10 },
         upgradedMods = { boonHorrorChance = 12, boonHorrorLen = 4, boonHorrorDmg = 10 }
     },
-    {
+    { -- 15
         name = "Hypnosis",
         description = {
             "{{boonHypnoChance}}% chance to charm enemies for {{boonHypnoLen}} seconds on hit.",
@@ -192,24 +193,24 @@ PST.expeditionBoons = {
         mods = { boonHypnoChance = 7, boonHypnoLen = 3, boonHypnoDmg = 10 },
         upgradedMods = { boonHypnoChance = 12, boonHypnoLen = 4, boonHypnoDmg = 10 }
     },
-    {
+    { -- 16
         name = "Paralysis",
         description = {
             "{{boonParaChance}}% chance to paralyze enemies for {{boonParaLen}} seconds on hit.",
-            "Paralyzed enemies take twice as much damage from explosions."
+            "Paralyzed enemies take 30% more damage from explosions."
         },
         spriteFrame = 15,
         mods = { boonParaChance = 7, boonParaLen = 2 },
         upgradedMods = { boonParaChance = 12, boonParaLen = 3 }
     },
-    {
+    { -- 17
         name = "Activity",
-        description = "When using an active item with at least 1 charge, become invulnerable for {{boonActivity}} seconds.",
+        description = "When using an active item with at least 2 charges, become invulnerable for {{boonActivity}} seconds.",
         spriteFrame = 16,
         mods = { boonActivity = 1.5 },
         upgradedMods = { boonActivity = 2.5 }
     },
-    {
+    { -- 18
         name = "Plentiful Emptiness",
         description = {
             "+{{boonEmptinessDmg}}% damage while the active item slot is empty.",
@@ -219,7 +220,7 @@ PST.expeditionBoons = {
         mods = { boonEmptinessDmg = 20, boonEmptinessTears = 20 },
         upgradedMods = { boonEmptinessDmg = 35, boonEmptinessTears = 35 }
     },
-    {
+    { -- 19
         name = "Volatility",
         description = {
             "Enemies take {{boonVolatilityDmg}}% more damage from explosions.",
@@ -229,7 +230,7 @@ PST.expeditionBoons = {
         mods = { boonVolatilityDmg = 30, boonVolatilityBombs = 2 },
         upgradedMods = { boonVolatilityDmg = 50, boonVolatilityBombs = 4 }
     },
-    {
+    { -- 20
         name = "Improvised Charges",
         description = "Consuming a Card, Pill or Rune on use grants all your active items 1 charge.",
         upgradedDescription = "Consuming a Card, Pill or Rune on use grants all your active items {{boonImpCharges}} charges.",
@@ -237,29 +238,29 @@ PST.expeditionBoons = {
         mods = { boonImpCharges = 1 },
         upgradedMods = { boonImpCharges = 2 }
     },
-    {
+    { -- 21
         name = "the Champion Slayer",
         description = "+{{boonChampSlayDmg}}% damage for the current floor when killing a champion monster, up to {{boonChampSlayMax}}%",
         spriteFrame = 20,
         mods = { boonChampSlayDmg = 1, boonChampSlayMax = 15 },
         upgradedMods = { boonChampSlayDmg = 2, boonChampSlayMax = 25 }
     },
-    {
+    { -- 22
         name = "Meek Giants",
         description = "Bosses start with {{boonMeekGiants}}% of their HP missing.",
         spriteFrame = 21,
         mods = { boonMeekGiants = 12 },
         upgradedMods = { boonMeekGiants = 18 }
     },
-    {
+    { -- 23
         name = "the Last Gasp",
-        description = "Dying to any of the final bosses no longer consumes expedition attempts.",
-        upgradedDescription = "Dying at any point past Womb II (or alternates) no longer consumes expedition attempts.",
+        description = "Dying in any of the final boss floors no longer consumes expedition attempts.",
+        upgradedDescription = "Dying at any point at or past Womb II (or alternates) no longer consumes expedition attempts.",
         spriteFrame = 22,
         mods = { boonLastGasp = 1 },
         upgradedMods = { boonLastGasp = 2 }
     },
-    {
+    { -- 24
         name = "the Blessed Expedition",
         description = "You can no longer gain Expedition Curses.",
         upgradedDescription = {
@@ -270,26 +271,26 @@ PST.expeditionBoons = {
         mods = { boonBlessedExp = 1 },
         upgradedMods = { boonBlessedExp = 2 }
     },
-    {
+    { -- 25
         name = "Wisdom",
         description = "+{{xpgain}}% XP gain within expedition runs.",
         spriteFrame = 24,
         mods = { xpgain = 20 },
         upgradedMods = { xpgain = 40 }
     },
-    {
-        name = "Unexpected Gifts",
+    { -- 26
+        name = "Unexpected Gift",
         description = {
             "A random treasure room within the first 6 you visit will contain an additional passive item",
-            "from the treasure item pool."
+            "from the treasure or shop item pool."
         },
         upgradedDescription = {
-            "2 random treasure rooms within the first 6 you visit will contain an additional passive item",
-            "from a random item pool."
+            "A random treasure room within the first 6 you visit will contain an additional passive item",
+            "from the angel or devil item pool."
         },
         spriteFrame = 25,
-        mods = { boonUnexGifts = 1 },
-        upgradedMods = { boonUnexGifts = 2 }
+        mods = { boonUnexGift = 1 },
+        upgradedMods = { boonUnexGift = 2 }
     }
 }
 
@@ -838,37 +839,55 @@ PST.obolEvents = {
     -- On champion mob kill
     championKill = function(depth, chanceMod)
         local chance = 0.06 + (chanceMod or 0)
+        local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
+        if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
-            return 4 + 2 * (depth - 1)
+            local amt = 4 + 2 * (depth - 1)
+            amt = math.ceil(amt * (1 + abundantObols / 100))
+            return amt
         end
         return 0
     end,
     -- On boss kill
     bossKill = function(depth, chanceMod)
         local chance = 0.1 + (chanceMod or 0)
+        local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
+        if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
-            return 2 + PST:getLevel():GetStage() * 2 + 3 * (depth - 1)
+            local amt = 2 + PST:getLevel():GetStage() * 2 + 3 * (depth - 1)
+            amt = math.ceil(amt * (1 + abundantObols / 100))
+            return amt
         end
         return 0
     end,
     -- On challenge room clear
     challClear = function(depth, chanceMod)
         local chance = 0.35 + (chanceMod or 0)
+        local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
+        if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
-            return 5 + PST:getLevel():GetStage() * 3 + 3 * (depth - 1)
+            local amt = 5 + PST:getLevel():GetStage() * 3 + 3 * (depth - 1)
+            amt = math.ceil(amt * (1 + abundantObols / 100))
+            return amt
         end
         return 0
     end,
     -- On fully helping beggar (teleports away)
     beggarHelp = function(depth, chanceMod)
         local chance = 0.7 + (chanceMod or 0)
+        local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
+        if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
-            return 10 + 3 * (depth - 1)
+            local amt = 10 + 3 * (depth - 1)
+            amt = math.ceil(amt * (1 + abundantObols / 100))
+            return amt
         end
         return 0
     end,
     -- On boss rush clear
     bossRush = function(depth)
-        return 10 + 5 * (depth - 1)
+        local amt = 10 + 5 * (depth - 1)
+        amt = math.ceil(amt * (1 + PST:getTreeSnapshotMod("boonAbundantObols", 0) / 100))
+        return amt
     end
 }

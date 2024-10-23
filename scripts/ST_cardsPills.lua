@@ -338,6 +338,14 @@ function PST:onUseCard(card, player, useFlags)
 
     -- Expedition objective: use cards, pills or runes
     PST:expedAddProgInRun("cardsPillsRunes", 1)
+
+    -- Boon: when using a card, pill or rune, all active items gain X charges
+    tmpMod = PST:getTreeSnapshotMod("boonImpCharges", 0)
+    if tmpMod > 0 then
+        for i=0,3 do
+            player:AddActiveCharge(tmpMod, i, true, false, false)
+        end
+    end
 end
 
 function PST:blueGambitPillSwap(oldColor, oldEffect, newColor)
@@ -404,4 +412,12 @@ function PST:onUsePill(pillEffect, player, useFlags)
 
     -- Expedition objective: use cards, pills or runes
     PST:expedAddProgInRun("cardsPillsRunes", 1)
+
+    -- Boon: when using a card, pill or rune, all active items gain X charges
+    local tmpMod = PST:getTreeSnapshotMod("boonImpCharges", 0)
+    if tmpMod > 0 then
+        for i=0,3 do
+            player:AddActiveCharge(tmpMod, i, true, false, false)
+        end
+    end
 end

@@ -281,6 +281,17 @@ function PST:onNewRun(isContinued)
                     PST:addModifiers(curseData.modsFunc(PST.modData.expedSelDepth), true)
                 end
             end
+
+            -- Boon: + starting bombs
+            local tmpMod = PST:getTreeSnapshotMod("boonVolatilityBombs", 0)
+            if tmpMod > 0 then
+                player:AddBombs(tmpMod)
+            end
+
+            -- Boon: unexpected gift, decide how many treasure rooms for gift to show up
+            if PST:getTreeSnapshotMod("boonUnexGift", 0) > 0 then
+                PST:addModifiers({ boonUnexGiftsRooms = math.random(6) }, true)
+            end
         end
     end
 

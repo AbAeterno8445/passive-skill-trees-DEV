@@ -251,6 +251,12 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 and PST.specialNodes.recallDamageTimer > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
         end
+
+        -- Boon: +% damage while the active item slot is empty
+        tmpTreeMod = PST:getTreeSnapshotMod("boonEmptinessDmg", 0)
+        if tmpTreeMod ~= 0 and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == 0 and player:GetActiveItem(ActiveSlot.SLOT_SECONDARY) == 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -336,6 +342,13 @@ function PST:onCache(player, cacheFlag)
         -- Grand Consonance node (T. Siren's tree) - Lil Haunt effect speed buff
         if PST.specialNodes.consonanceLilHauntBuffTimer > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + 10 * math.max(1, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_LIL_HAUNT))
+        end
+
+        -- Boon: +% speed while holy mantle is active
+        tmpTreeMod = PST:getTreeSnapshotMod("boonProtection", 0)
+        if tmpTreeMod > 0 and player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + 10
+            if tmpTreeMod == 1 then dynamicMods.speedPerc = dynamicMods.speedPerc + 5 end
         end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
@@ -426,6 +439,12 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +% tears for 2 seconds after a locust kills an enemy
         tmpTreeMod = PST:getTreeSnapshotMod("locustKillTears", 0)
         if tmpTreeMod > 0 and PST.specialNodes.locustKillTearsTimer > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
+        end
+
+        -- Boon: +% tears while the trinket slot is empty
+        tmpTreeMod = PST:getTreeSnapshotMod("boonEmptinessTears", 0)
+        if tmpTreeMod ~= 0 and player:GetTrinket(0) == 0 and player:GetTrinket(1) == 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
         end
     -- RANGE CACHE
@@ -961,6 +980,12 @@ function PST:onCache(player, cacheFlag)
         -- Glass Specter node (T. Lost's tree)
         if PST:getTreeSnapshotMod("glassSpecter", false) and player.MoveSpeed > 1 and (PST.delayedCacheFlags & CacheFlag.CACHE_SPEED) == 0 then
             PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+        end
+
+        -- Boon: minimum speed
+        tmpMod = PST:getTreeSnapshotMod("boonLethargyMinSpd", 0)
+        if tmpMod > 0 and player.MoveSpeed < tmpMod then
+            player.MoveSpeed = tmpMod
         end
     end
 end

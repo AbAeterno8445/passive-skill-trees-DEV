@@ -60,7 +60,7 @@ function PST:onNewRoom()
 		PST.specialNodes.levelMazeCurseProc = false
 	end
 
-	-- Starcursed modifiers
+	-- Room monster modifiers
 	if room:GetAliveEnemiesCount() > 0 then
 		local mobsList = {}
 		local soulEaterList = {}
@@ -71,14 +71,14 @@ function PST:onNewRoom()
 				else table.insert(soulEaterList, tmpNPC) end
 
 				if roomType ~= RoomType.ROOM_BOSS then
-					-- Chance to duplicate
+					-- SC mod: Chance to duplicate
 					local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
 					if not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
 						local tmpPos = Isaac.GetFreeNearPosition(tmpEntity.Position, 5)
 						Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
 					end
 
-					-- Chance to turn into champion
+					-- SC mod: Chance to turn into champion
 					if not PST:arrHasValue(PST.deadlySinBosses, tmpNPC.Type) then
 						local jewelChampChance = PST:SC_getSnapshotMod("mobTurnChampion", 0)
 						if PST:SC_getSnapshotMod("mightstone", false) then
@@ -122,6 +122,12 @@ function PST:onNewRoom()
 					end
 					tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
 					tmpEntity.HitPoints = tmpEntity.MaxHitPoints
+
+					-- Boon: bosses start with % missing HP
+					local tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
+					if tmpMod > 0 then
+						tmpEntity.HitPoints = math.ceil(tmpEntity.MaxHitPoints * (1 - tmpMod / 100))
+					end
 				end
 			end
 		end
@@ -1123,6 +1129,31 @@ function PST:onNewRoom()
 			end
 		-- Treasure room
 		elseif roomType == RoomType.ROOM_TREASURE then
+			-- Boon: unexpected gift
+			if PST:getTreeSnapshotMod("boonUnexGiftRooms", 0) > 0 then
+				PST:addModifiers({ boonUnexGiftRooms = -1 }, true)
+				if PST:getTreeSnapshotMod("boonUnexGiftRooms", 0) == 0 then
+					tmpMod = PST:getTreeSnapshotMod("boonUnexGift", 0)
+					local itmPools = {ItemPoolType.POOL_TREASURE, ItemPoolType.POOL_SHOP}
+					if tmpMod == 2 then
+						itmPools = {ItemPoolType.POOL_ANGEL, ItemPoolType.POOL_DEVIL}
+					end
+
+					local newItem = Game():GetItemPool():GetCollectible(itmPools[math.random(#itmPools)])
+					local itemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+					local failsafe = 0
+					while (not itemCfg or (itemCfg and itemCfg.Type ~= ItemType.ITEM_PASSIVE)) and failsafe < 300 do
+						newItem = Game():GetItemPool():GetCollectible(itmPools[math.random(#itmPools)])
+						itemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
+						failsafe = failsafe + 1
+					end
+					if failsafe < 300 then
+						local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+						Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, tmpPos, Vector.Zero, nil)
+					end
+				end
+			end
+
 			-- Cosmic Realignment node
 			if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
 				-- Tainted Isaac, remove items from first treasure room entered

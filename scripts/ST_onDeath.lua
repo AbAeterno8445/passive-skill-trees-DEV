@@ -114,6 +114,15 @@ function PST:onDeath(entity)
                     local tmpObols = PST.obolEvents.championKill(PST:getTreeSnapshotMod("expedDepth", 1))
                     if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
                 end
+
+                -- Boon: +% damage for the current floor when killing a champion monster
+                local tmpMod = PST:getTreeSnapshotMod("boonChampSlayDmg", 0)
+                if tmpMod > 0 then
+                    local tmpAdd = math.min(tmpMod, PST:getTreeSnapshotMod("boonChampSlayMax", 0) - PST:getTreeSnapshotMod("boonChampSlayBuff", 0))
+                    if tmpAdd > 0 then
+                        PST:addModifiers({ damagePerc = tmpAdd, boonChampSlayBuff = tmpAdd }, true)
+                    end
+                end
             end
 
             -- Boss kill

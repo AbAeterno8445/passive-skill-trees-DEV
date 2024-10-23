@@ -578,6 +578,12 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     if player:GetActiveMaxCharge(slot) >= 3 then
 	    PST:expedAddProgInRun("activeItems", 1)
     end
+
+    -- Boon: when using active with at least 2 charges, become invulnerable for X seconds
+    tmpMod = PST:getTreeSnapshotMod("boonActivity", 0)
+    if tmpMod > 0 and player:GetActiveMaxCharge(slot) >= 2 then
+        player:SetMinDamageCooldown(math.ceil(tmpMod * 30))
+    end
 end
 
 ---- CUSTOM ITEMS ----

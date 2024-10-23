@@ -704,6 +704,25 @@ function PST:onNewLevel()
 		PST:addModifiers({ floorHitsReceived = { value = 0, set = true } }, true)
 	end
 
+    -- Boon: block the first X hits every floor
+    tmpMod = PST:getTreeSnapshotMod("boonAegis", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ boonAegisSpent = { value = tmpMod, set = true } }, true)
+    end
+
+    -- Boon: gain a holy mantle shield every X floors
+    tmpMod = PST:getTreeSnapshotMod("boonProtection", 0)
+    if tmpMod > 0 and (PST:getTreeSnapshotMod("floorClears", 0) % tmpMod) == 0 and
+    not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) then
+        player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
+    end
+
+    -- Boon: +% damage for the current floor when killing a champion monster (reset)
+    tmpMod = PST:getTreeSnapshotMod("boonChampSlayBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod, boonChampSlayBuff = { value = 0, set = true } }, true)
+    end
+
     PST:save()
 end
 

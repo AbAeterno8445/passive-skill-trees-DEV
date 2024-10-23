@@ -128,6 +128,9 @@ function PST:onRoomClear(level, room)
 					PST:addModifiers({ relearningFloors = 1 }, true)
 				end
 
+				-- Floor clear counter
+				PST:addModifiers({ floorClears = 1 }, true)
+
 				-- Ancient starcursed jewel: Luminescent Die
 				if PST:SC_getSnapshotMod("luminescentDie", false) then
 					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)

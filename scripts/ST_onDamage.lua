@@ -10,6 +10,17 @@ function PST:onDamage(target, damage, flag, source)
 
     -- Player gets hit
     if player then
+        -- Boon: block the first X hits you receive every floor
+        if PST:getTreeSnapshotMod("boonAegisSpent", 0) > 0 then
+            local tmpSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_boons.anm2", true)
+            tmpSprite:SetFrame("Boons", 9)
+            PST:createFloatIconFX(tmpSprite, Vector.Zero, 0.3, 70, true)
+
+            SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.6, 2, false, 1.2)
+            PST:addModifiers({ boonAegisSpent = -1 }, true)
+            return { Damage = 0 }
+        end
+
         -- Fickle Fortune node (Cain's tree)
         if PST:getTreeSnapshotMod("fickleFortune", false) and 100 * math.random() < 7 then
             if 100 * math.random() < 7 then
@@ -280,7 +291,6 @@ function PST:onDamage(target, damage, flag, source)
                 Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, source.Entity.Position, Vector.Zero, nil)
             end
         end
-        
 
         -- Ancient starcursed jewel: Martian Ultimatum
         if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
@@ -589,10 +599,45 @@ function PST:onDamage(target, damage, flag, source)
                 dmgMult = dmgMult + tmpMod / 100
             end
 
-            -- Mod: +% damage taken by feared enemies
-            tmpMod = PST:getTreeSnapshotMod("fearedDmg", 0)
-            if tmpMod > 0 and target:GetFearCountdown() > 0 then
-                dmgMult = dmgMult + tmpMod / 100
+            -- Feared enemies
+            if target:GetFearCountdown() > 0 then
+                -- Mod: +% damage taken by feared enemies
+                tmpMod = PST:getTreeSnapshotMod("fearedDmg", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
+
+                -- Boon: +% damage taken by feared enemies
+                tmpMod = PST:getTreeSnapshotMod("boonHorrorDmg", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
+            end
+
+            -- Charmed enemies
+            if target:GetCharmedCountdown() > 0 then
+                -- Boon: +% damage taken by charmed enemies
+                tmpMod = PST:getTreeSnapshotMod("boonHypnoDmg", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
+            end
+
+            -- Paralyzed enemies
+            if target:GetFreezeCountdown() > 0 then
+                -- Boon: paralyzed enemies take 30% more damage from explosions
+                if PST:getTreeSnapshotMod("boonParaChance", 0) > 0 and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+                    dmgMult = dmgMult + 0.3
+                end
+            end
+
+            -- Explosion hits
+            if (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+                -- Boon: enemies take % more damage from explosions
+                tmpMod = PST:getTreeSnapshotMod("boonVolatilityDmg", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
             end
 
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
@@ -601,6 +646,30 @@ function PST:onDamage(target, damage, flag, source)
             elseif partialBlock then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.4)
                 return { Damage = damage * dmgMult * 0.35 }
+            end
+
+            -- Boon: chance to slow enemy on hit
+            tmpMod = PST:getTreeSnapshotMod("boonLethargyChance", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                target:AddSlowing(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonLethargyLen", 0) * 30), 0.8, Color(0.8, 0.8, 0.8, 1))
+            end
+
+            -- Boon: chance to fear enemy on hit
+            tmpMod = PST:getTreeSnapshotMod("boonHorrorChance", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                target:AddFear(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonHorrorLen", 0) * 30))
+            end
+
+            -- Boon: chance to charm enemy on hit
+            tmpMod = PST:getTreeSnapshotMod("boonHypnoChance", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                target:AddCharmed(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonHypnoLen", 0) * 30))
+            end
+
+            -- Boon: chance to paralyze enemy on hit
+            tmpMod = PST:getTreeSnapshotMod("boonParaChance", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                target:AddFreeze(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonParaLen", 0) * 30))
             end
         end
 

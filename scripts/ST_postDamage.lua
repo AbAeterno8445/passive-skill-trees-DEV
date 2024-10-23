@@ -4,7 +4,16 @@
 ---@param flag DamageFlag
 ---@param source EntityRef
 function PST:postDamage(target, damage, flag, source)
-    if target and target.Type ~= EntityType.ENTITY_GIDEON then
+    local targetPlayer = target:ToPlayer()
+
+    -- Check if player got hit
+    if targetPlayer then
+        -- Expedition boon: chance for invulnerability frames to be 2x as long
+        tmpMod = PST:getTreeSnapshotMod("boonIntangibility", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            targetPlayer:SetMinDamageCooldown(math.ceil(targetPlayer:GetDamageCooldown() * 2.5))
+        end
+    elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
         local isKillingHit = target.HitPoints <= damage
 
         -- Starcursed modifiers
@@ -62,6 +71,8 @@ function PST:postDamage(target, damage, flag, source)
         end
 
         if source and source.Entity then
+            local srcPlayer = source.Entity:ToPlayer()
+
             -- Check if a familiar hit/killed enemy
             tmpFamiliar = source.Entity:ToFamiliar()
             if tmpFamiliar == nil and source.Entity.SpawnerEntity ~= nil then
@@ -193,7 +204,6 @@ function PST:postDamage(target, damage, flag, source)
                 end
             else
                 -- Player hit to enemy (direct/through tears)
-                local srcPlayer = source.Entity:ToPlayer()
                 if srcPlayer == nil then
                     if source.Entity.Parent then
                         srcPlayer = source.Entity.Parent:ToPlayer()
@@ -368,6 +378,24 @@ function PST:postDamage(target, damage, flag, source)
                     end
                 end
                 PST.specialNodes.gelloPulseDmgFlag = false
+            end
+
+            -- Boon: chance on hit to execute enemies affected by any status effect, halve boss status effect CD
+            if (srcPlayer or tmpFamiliar) and not isKillingHit and target:IsActiveEnemy(false) then
+                if target:GetBossStatusEffectCooldown() > 0 then
+                    target:SetBossStatusEffectCooldown(math.floor(target:GetBossStatusEffectCooldown() / 2))
+                end
+                if target:GetBaitedCountdown() > 0 or target:GetBleedingCountdown() > 0 or target:GetBurnCountdown() > 0 or
+                target:GetCharmedCountdown() > 0 or target:GetSlowingCountdown() > 0 or target:GetFearCountdown() > 0 or
+                target:GetShrinkCountdown() > 0 or target:GetFreezeCountdown() > 0 or
+                (target:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
+                    local tmpMod = PST:getTreeSnapshotMod("boonMercyChance", 0)
+                    local hpPerc = target.HitPoints / target.MaxHitPoints
+                    if tmpMod > 0 and hpPerc <= PST:getTreeSnapshotMod("boonMercyHP", 0) / 100 and 100 * math.random() < tmpMod then
+                        SFXManager():Play(SoundEffect.SOUND_KNIFE_PULL, 0.8)
+                        target:TakeDamage(target.MaxHitPoints, 0, EntityRef(srcPlayer or tmpFamiliar), 0)
+                    end
+                end
             end
 
             -- Cosmic Realignment node
