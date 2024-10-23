@@ -82,13 +82,16 @@ PST.treeScreen.cursorSprite:Play("Idle", true)
 -- Tab-able nodes
 local tabNodes = {
     global = {"Star Tree"},
-    starTree = {"Arcane Astrolabe"}
+    starTree = {"Sidereal Tree", "Arcane Astrolabe"}
 }
 for treeName, nodeNameList in pairs(tabNodes) do
     PST.treeScreen.tabNodes[treeName] = {}
-    for _, tmpNode in pairs(PST.trees[treeName]) do
-        if PST:arrHasValue(nodeNameList, tmpNode.name) then
-            table.insert(PST.treeScreen.tabNodes[treeName], tmpNode.pos * 38)
+    for _, nodeName in ipairs(nodeNameList) do
+        for _, tmpNode in pairs(PST.trees[treeName]) do
+            if tmpNode.name == nodeName then
+                table.insert(PST.treeScreen.tabNodes[treeName], tmpNode.pos * 38)
+                break
+            end
         end
     end
 end

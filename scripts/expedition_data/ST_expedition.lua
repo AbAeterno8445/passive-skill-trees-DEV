@@ -35,6 +35,15 @@ function PST:resetExpeditionDebug(depth)
     PST.treeScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.EXPEDITION].currentDepth = depth
 end
 
+-- Add obols to the currently selected/player character
+function PST:addCurrentCharObols(amount)
+    local currentChar = PST:getCurrentCharData()
+    if currentChar then
+        if not currentChar.arcaneObols then currentChar.arcaneObols = 0 end
+        currentChar.arcaneObols = currentChar.arcaneObols + amount
+    end
+end
+
 -- Add boon to expedition, or upgrade it if already present
 function PST:expedAddBoon(depth, boonID)
     local tmpExpedition = PST.expeditionsData[depth]
@@ -189,6 +198,9 @@ function PST:expedMeetsRequirements(depth)
     if tmpExpedition then
         -- Selected node
         if not tmpExpedition.selectedNode then return false end
+        -- Selected character level requirement
+        local currentChar = PST:getCurrentCharData()
+        if not currentChar or (currentChar and currentChar.level < PST.expedMinLevel) then return false end
         -- Starmight requirement
         if tmpExpedition.implicits then
             local tmpReq = tmpExpedition.implicits.starmightReq
@@ -228,7 +240,7 @@ function PST:completeExpedNode(depth, col, row, giveReward)
                 PST:expedAddItem(depth, tmpNode.rewardData)
             -- Arcane obols
             elseif tmpNode.rewardType == PSTExpNodeRewardType.OBOLS then
-                PST.modData.arcaneObols = PST.modData.arcaneObols + tmpNode.rewardData
+                PST:addCurrentCharObols(tmpNode.rewardData)
             end
             -- Boon upgrade point reward
             if tmpNode.nodeType == PSTExpNodeType.BOONUPGRADE then

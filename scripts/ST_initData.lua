@@ -1617,7 +1617,6 @@ function PST:resetData()
 		-- Astral Expeditions
 		---@type PSTExpeditionSave[]
 		expeditionsData = { [0] = {} },
-		arcaneObols = 0,
 		expedSelDepth = 1, -- Selected depth
 		expeditionDepth = 1, -- Farthest depth reached
 		expedLastDepth = 1, -- Remember last visited depth for menu

@@ -26,11 +26,19 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     -- Node selection requirement
     table.insert(tmpRequirements, {"Selected expedition node.", expData.selectedNode ~= nil})
 
+    -- Character level requirement
+    local currentChar = PST:getCurrentCharData()
+    local tmpStr = "Selected character level " .. tostring(PST.expedMinLevel) .. "+"
+    if currentChar then
+        tmpStr = tmpStr .. " (" .. PST:getCurrentCharName() .. " level: " .. tostring(currentChar.level) .. ")"
+    end
+    table.insert(tmpRequirements, {tmpStr, currentChar and currentChar.level >= PST.expedMinLevel})
+
     -- Starmight requirement
     if expData.implicits then
         local tmpReq = expData.implicits.starmightReq
         if tmpReq and tmpReq > 0 then
-            local tmpStr = "Starmight required: " .. tostring(tmpReq)
+            tmpStr = "Starmight required: " .. tostring(tmpReq)
             local totalStarmight = 0
             if tScreen.starcursedTotalMods and tScreen.starcursedTotalMods.totalStarmight then
                 totalStarmight = tScreen.starcursedTotalMods.totalStarmight

@@ -161,7 +161,7 @@ function PST:prePickup(pickup, collider, low)
                     pickup:Remove()
                     SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.6, 2, false, 0.8)
 
-                    PST.modData.arcaneObols = PST.modData.arcaneObols + obolValue
+                    PST:addCurrentCharObols(obolValue)
                     PST:createFloatTextFX("+" .. tostring(obolValue) .. " Arcane Obols", Vector.Zero, Color(0.8, 0.35, 1, 1), 0.13, 70, true)
 
                     -- Expedition objective: collect Arcane Obols

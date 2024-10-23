@@ -42,6 +42,12 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
         if hovered then expedScreen.boonSprite.Color = Color(1, 1, 1, 1) end
         expedScreen.boonSprite.Scale = Vector.One
 
+        -- Locked icon
+        if i > PST.modData.expeditionDepth then
+            PST.cosmicRData.charSprite:Play("Locked", true)
+            PST.cosmicRData.charSprite:Render(Vector(drawX + 3, drawY + 3))
+        end
+
         if not flip then
             if flipC == bubbleCols - 1 then
                 flip = true

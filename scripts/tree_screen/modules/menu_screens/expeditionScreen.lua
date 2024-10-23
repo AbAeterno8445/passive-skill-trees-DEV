@@ -89,6 +89,12 @@ function expeditionScreen:OnOpen(openData)
         self.currentDepth = PST.modData.expedLastDepth
     end
 
+    -- Make sure selected character has arcane obols defined
+    local currentChar = PST:getCurrentCharData()
+    if currentChar and not currentChar.arcaneObols then
+        currentChar.arcaneObols = 0
+    end
+
     if PST.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
     end
@@ -228,9 +234,10 @@ function expeditionScreen:OnInput()
             self.resetTimer = self.resetTimer + 1
             if self.resetTimer == 180 then
                 local obolCost = PST:getExpedResetCost(self.currentDepth)
-                if PST.modData.skillPoints >= 1 and PST.modData.arcaneObols >= obolCost then
+                local currentChar = PST:getCurrentCharData()
+                if currentChar and PST.modData.skillPoints >= 1 and currentChar.arcaneObols >= obolCost then
                     PST.modData.skillPoints = PST.modData.skillPoints - 1
-                    PST.modData.arcaneObols = PST.modData.arcaneObols - obolCost
+                    currentChar.arcaneObols = currentChar.arcaneObols - obolCost
                     PST:resetExpedition(self.currentDepth)
                     SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
                 else
@@ -492,6 +499,8 @@ function expeditionScreen:Render(tScreen)
         PST.miniFont:DrawString(tmpTab, drawX, 2, tmpColor, tabW, true)
     end
 
+    local currentChar = PST:getCurrentCharData()
+
     -- HUD: resources
     local tmpX = 12
     local tmpY = tabH + 2
@@ -502,8 +511,10 @@ function expeditionScreen:Render(tScreen)
     PST.miniFont:DrawString("Respecs: " .. tostring(PST.modData.respecPoints), tmpX, tmpY, KColor(1, 1, 1, 1))
     tmpY = tmpY + 14
     -- Arcane Obols
-    PST.miniFont:DrawString("Arcane Obols: " .. tostring(PST.modData.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
-    tmpY = tmpY + 28
+    if currentChar then
+        PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+        tmpY = tmpY + 28
+    end
     -- Expedition attempts
     PST.miniFont:DrawString("Attempts: " .. tostring(expData.attempts) .. "/" .. tostring(expData.startAttempts), tmpX, tmpY, PST:RGBKColor(57, 150, 255))
     tmpY = tmpY + 28
