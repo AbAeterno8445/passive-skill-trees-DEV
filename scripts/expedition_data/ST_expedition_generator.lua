@@ -72,6 +72,10 @@ function PST:generateExpedition(depth, seed)
         [PSTExpNodeRewardType.BOON] = { val = 20, add = 0.2, max = 35 },
         [PSTExpNodeRewardType.ATTEMPTS] = { val = 15, add = 0, max = 15}
     }
+    local rewardWeightVals = {
+        PSTExpNodeRewardType.OBOLS, PSTExpNodeRewardType.EXP, PSTExpNodeRewardType.ITEM,
+        PSTExpNodeRewardType.BOON, PSTExpNodeRewardType.ATTEMPTS
+    }
     local pickedItems = {}
     local pickedCurses = {}
     local pickedBoons = {}
@@ -146,39 +150,12 @@ function PST:generateExpedition(depth, seed)
                 tmpSrcTable = PST.expeditionObjectiveFinalList
                 tmpTargetTable = PST.expeditionObjectivesFinal
             end
-            -- Check for min depth requirement
+            -- Check for min/max depth requirement
             local tmpObjectiveName = tmpSrcTable[expRNG:RandomInt(1, #tmpSrcTable)]
             local tmpObjective = tmpTargetTable[tmpObjectiveName]
-            while tmpObjective.minDepth and depth < tmpObjective.minDepth do
+            while (tmpObjective.minDepth and depth < tmpObjective.minDepth) or (tmpObjective.maxDepth and depth > tmpObjective.maxDepth) do
                 tmpObjectiveName = tmpSrcTable[expRNG:RandomInt(1, #tmpSrcTable)]
                 tmpObjective = tmpTargetTable[tmpObjectiveName]
-            end
-            -- Objective variants
-            if tmpObjective.variants ~= nil then
-                local tmpVariants = {}
-                local totalWeight = 0
-                for variantName, tmpVariant in pairs(tmpObjective.variants) do
-                    if not tmpVariant.minDepth or (tmpVariant.minDepth and depth >= tmpVariant.minDepth) then
-                        table.insert(tmpVariant, variantName)
-                        totalWeight = totalWeight + (tmpVariant.weight or 1)
-                    end
-                end
-                -- Pick variant based on weight
-                if totalWeight > 0 then
-                    local randWeight = expRNG:RandomInt(totalWeight)
-                    for _, tmpVariantName in ipairs(tmpVariants) do
-                        local tmpVariant = tmpObjective.variants[tmpVariantName]
-                        randWeight = randWeight - tmpVariant.weight
-                        if randWeight <= 0 then
-                            -- Replace objective attributes with picked variant's
-                            for k, v in pairs(tmpVariant) do
-                                tmpObjective[k] = v
-                            end
-                            newObjective.variant = tmpVariantName
-                            break
-                        end
-                    end
-                end
             end
 
             -- Objective requirements & assignment
@@ -212,7 +189,8 @@ function PST:generateExpedition(depth, seed)
                 totalWeight = totalWeight + tmpWeight.val
             end
             local randWeight = expRNG:RandomInt(math.floor(totalWeight))
-            for rewardType, tmpWeight in pairs(rewardWeights) do
+            for _, rewardType in ipairs(rewardWeightVals) do
+                local tmpWeight = rewardWeights[rewardType]
                 randWeight = randWeight - tmpWeight.val
                 if randWeight <= 0 then
                     newNode.rewardType = rewardType
@@ -274,7 +252,8 @@ function PST:generateExpedition(depth, seed)
         table.insert(expNodes, expColumn)
 
         -- Affect reward weights as we go deeper into expedition
-        for _, tmpReward in pairs(rewardWeights) do
+        for _, rewardType in ipairs(rewardWeightVals) do
+            local tmpReward = rewardWeights[rewardType]
             tmpReward.val = tmpReward.val + tmpReward.add
             if tmpReward.min and tmpReward.val < tmpReward.min then
                 tmpReward.val = tmpReward.min

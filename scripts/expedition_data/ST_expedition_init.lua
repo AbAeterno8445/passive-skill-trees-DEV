@@ -4,6 +4,10 @@ PST.expedMinLevel = 70
 
 PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500, 1000}
 
+PST.siderealVicinityCost = 5
+PST.siderealRegionCost = 50
+PST.siderealExpanseCost = 100
+
 ---@enum PSTExpNodeRewardType
 PSTExpNodeRewardType = {
     NONE = 0,
@@ -716,10 +720,14 @@ PST.expeditionObjectives = {
         end
     }
 }
-PST.expeditionObjectiveList = {}
-for objName, _ in pairs(PST.expeditionObjectives) do
-    table.insert(PST.expeditionObjectiveList, objName)
-end
+-- Objective names list, make sure order is consistent as seeded generation depends on it
+PST.expeditionObjectiveList = {
+    "defeatMonsters", "defeatChampions", "defeatBosses", "challengeRooms", "experience",
+    "obols", "coins", "purchases", "devilDeals", "keys", "beggars", "explosions",
+    "chests", "goldChests", "redChests", "stoneChests", "rooms", "bossRoomsNoDmg",
+    "cardsPillsRunes", "secretRooms", "hearts", "shopDonation", "curseRooms",
+    "activeItems", "tintedRocks"
+}
 
 -- Final node objectives
 PST.expeditionObjectivesFinal = {
@@ -732,19 +740,17 @@ PST.expeditionObjectivesFinal = {
     },
     hush = {
         description = "Defeat Hush.",
-        weight = 5,
-        variants = {
-            noDmgTwice = {
-                description = "Defeat Hush without taking damage more than twice.",
-                minDepth = 6,
-                weight = 100
-            },
-            noDmgOnce = {
-                description = "Defeat Hush without taking damage more than once.",
-                minDepth = 14,
-                weight = 40
-            }
-        },
+        maxDepth = 8,
+        reqFunc = function() return 1 end
+    },
+    hushNoDmgTwice = {
+        description = "Defeat Hush without taking damage more than twice during the fight.",
+        minDepth = 6,
+        reqFunc = function() return 1 end
+    },
+    hushNoDmgOnce = {
+        description = "Defeat Hush without taking damage more than once during the fight.",
+        minDepth = 14,
         reqFunc = function() return 1 end
     },
     finalBoss = {
@@ -759,14 +765,14 @@ PST.expeditionObjectivesFinal = {
     },
     floorNoDmgTwice = {
         description = "Clear {{progress}} floors without taking damage more than twice.",
-        weight = 100,
-        variants = {
-            noDmgOnce = {
-                description = "Clear {{progress}} floors without taking damage more than once.",
-                minDepth = 8,
-                weight = 50
-            }
-        },
+        reqFunc = function(depth, column)
+            local req = 4 + math.floor(depth / 3)
+            return req
+        end
+    },
+    floorNoDmgOnce = {
+        description = "Clear {{progress}} floors without taking damage more than once.",
+        minDepth = 8,
         reqFunc = function(depth, column)
             local req = 4 + math.floor(depth / 3)
             return req
@@ -792,10 +798,9 @@ PST.expeditionObjectivesFinal = {
         minDepth = 12
     }
 }
-PST.expeditionObjectiveFinalList = {}
-for objName, _ in pairs(PST.expeditionObjectivesFinal) do
-    table.insert(PST.expeditionObjectiveFinalList, objName)
-end
+PST.expeditionObjectiveFinalList = {
+    "bossRush", "hush", "finalBoss", "floorNoDmgTwice", "bossesNoDmgC3", "beastDeliNoDmg"
+}
 
 -- Node reward data
 PST.expeditionRewardData = {

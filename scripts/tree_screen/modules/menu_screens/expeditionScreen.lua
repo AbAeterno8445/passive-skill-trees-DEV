@@ -516,6 +516,8 @@ function expeditionScreen:Render(tScreen)
     tmpY = tmpY + 14
     -- Arcane Obols
     if currentChar then
+        PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+        tmpY = tmpY + 14
         PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
         tmpY = tmpY + 28
     end
