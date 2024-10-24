@@ -218,10 +218,14 @@ function PST:addModifiers(modList, addToSnapshot)
     end
 end
 
+local siderealTravelNodes = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
+
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
 function PST:isNodeAllocatable(tree, nodeID, allocation)
     local infSP = PST.debugOptions.infSP
     local infRespec = PST.debugOptions.infRespec
+    local nodeData = PST.trees[tree][nodeID]
+    if not nodeData then return false end
 
     if allocation then
         -- Allocation
@@ -233,11 +237,30 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                     return false
                 end
             end
+
+            -- Special node requirements
+            local reqs = nodeData.reqs
+            if reqs then
+                local currentChar = PST:getCurrentCharData()
+                -- Arcane obols requirement
+                local obolReq = reqs.obols
+                if type(obolReq) == "table" and obolReq.var and PST[obolReq.var] then
+                    obolReq = PST[obolReq.var]
+                end
+                if obolReq and currentChar and (currentChar.arcaneObols or 0) < obolReq then
+                    return false
+                end
+
+                -- Sidereal tree: non-travel nodes require 1 global SP
+                if tree == "sidereal" and not PST:arrHasValue(siderealTravelNodes, nodeData.name) and PST.modData.skillPoints <= 0 then
+                    return false
+                end
+            end
         end
-        if PST.trees[tree][nodeID].name == "Star Tree" and not PST:SC_isStarTreeUnlocked() then
+        if nodeData.name == "Star Tree" and not PST:SC_isStarTreeUnlocked() then
             return false
         end
-        return PST.trees[tree][nodeID].available and not PST:isNodeAllocated(tree, nodeID)
+        return nodeData.available and not PST:isNodeAllocated(tree, nodeID)
     else
         -- Deallocation (e.g. respec)
         if not PST:isNodeAllocated(tree, nodeID) or
@@ -246,12 +269,12 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         end
 
         -- Check that adjacent nodes remain reachable from root nodes after deallocation
-        local adjacentNodes = PST.trees[tree][nodeID].adjacent
+        local adjacentNodes = nodeData.adjacent
         if adjacentNodes ~= nil then
             local adjacentReachable = true
             for _, adjacentID in ipairs(adjacentNodes) do
                 if PST:isNodeAllocated(tree, adjacentID) then
-                    if PST.trees[tree][nodeID].alwaysAvailable or not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
+                    if nodeData.alwaysAvailable or not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
                         adjacentReachable = false
                         break
                     end
@@ -336,6 +359,8 @@ include("scripts.tree_data.SkillTreesAPI")
 -- Include base tree node banks
 include("scripts.tree_data.globalTreeBank")
 include("scripts.tree_data.starTreeBank")
+include("scripts.tree_data.siderealTreeBank")
+-- Character Trees
 include("scripts.tree_data.isaacTreeBank")
 include("scripts.tree_data.magdaleneTreeBank")
 include("scripts.tree_data.cainTreeBank")

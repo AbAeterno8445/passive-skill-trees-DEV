@@ -68,6 +68,8 @@ function PST.treeScreen:Render()
                 tmpStarmight = self.starcursedTotalMods.totalStarmight
             end
             treeName = "Star Tree (" .. tmpStarmight .. " total starmight)"
+        elseif self.currentTree == "sidereal" then
+            treeName = "Sidereal Tree"
         else
             skPoints = PST.modData.charData[self.currentTree].skillPoints
             local tmpPossessive = "s"
@@ -80,20 +82,46 @@ function PST.treeScreen:Render()
 
     -- HUD
     if not self.hideHUD then
-        -- HUD data
+        local tmpX, tmpY = 8, 8
+
+        -- Global SP / Respecs
         Isaac.RenderText(
             "Skill points: " .. skPoints .. " / Respecs: " .. PST.modData.respecPoints,
-            8, 8, 1, 1, 1, 1
+            tmpX, tmpY, 1, 1, 1, 1
         )
-        PST.miniFont:DrawString(PST.modVersion, self.screenW - 4 - PST.miniFont:GetStringWidth(PST.modVersion), 4, KColor(1, 1, 1, 0.9))
-        Isaac.RenderText(treeName, 8, 24, 1, 1, 1, 1)
+        -- Mod version top right
+        PST.miniFont:DrawString(PST.modVersion, self.screenW - 4 - PST.miniFont:GetStringWidth(PST.modVersion), tmpY, KColor(1, 1, 1, 0.9))
+        tmpY = tmpY + 16
+
+        -- Tree name
+        Isaac.RenderText(treeName, tmpX, tmpY, 1, 1, 1, 1)
+        tmpY = tmpY + 16
+
+        -- Tree disabled warning
         if PST.modData.treeDisabled then
-            Isaac.RenderText("Tree effects disabled", 8, 40, 1, 0.4, 0.4, 1)
+            Isaac.RenderText("Tree effects disabled", tmpX, tmpY, 1, 0.4, 0.4, 1)
+            tmpY = tmpY + 16
         end
+
+        -- Help toggle indicator
         local tmpStr = "H / Select: toggle help"
         PST.miniFont:DrawString(tmpStr, 16, self.screenH - 24, KColor(1, 1, 1, 1))
+
+        -- In-run warning
         if Isaac.IsInGame() then
             PST.miniFont:DrawString("(IN RUN - Changes to the tree will be reflected on the next run you start)", 32 + string.len(tmpStr) * 4, self.screenH - 24, KColor(1, 0.7, 0.7, 1))
+        end
+
+        -- Sidereal tree extra
+        if self.currentTree == "sidereal" then
+            local currentChar = PST:getCurrentCharData()
+            if currentChar then
+                tmpY = tmpY + 14
+                PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+                tmpY = tmpY + 14
+                PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+                tmpY = tmpY + 28
+            end
         end
 
         -- Help popups

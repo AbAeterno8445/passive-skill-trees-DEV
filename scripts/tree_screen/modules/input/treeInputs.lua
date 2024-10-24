@@ -130,6 +130,9 @@ function PST.treeScreen:Inputs()
             if self.currentTree == "global" then
                 self.currentTree = selectedCharName
                 self.modules.spaceBGModule.targetSpaceColor = Color(1, 0.5, 1, 1)
+            elseif self.currentTree == "sidereal" then
+                self.currentTree = "starTree"
+                self.modules.spaceBGModule.targetSpaceColor = Color(0, 1, 1, 1)
             else
                 self.currentTree = "global"
                 self.modules.spaceBGModule.targetSpaceColor = Color(1, 1, 1, 1)

@@ -148,6 +148,19 @@ function descriptionBoxesModule:Render(tScreen)
             tmpDescription = newDescData.description
         end
 
+        -- Special node requirements
+        if hoveredNode.reqs then
+            -- Arcane obols requirement
+            local obolReq = hoveredNode.reqs.obols
+            if type(obolReq) == "table" and obolReq.var and PST[obolReq.var] then
+                obolReq = PST[obolReq.var]
+            end
+            if obolReq then
+                tmpDescription = {table.unpack(tmpDescription)}
+                table.insert(tmpDescription, {"Requires " .. tostring(obolReq) .. " Arcane Obols to allocate.", KColor(0.8, 0.35, 1, 1)})
+            end
+        end
+
         tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description)
     else
         -- Submenu-related description boxes

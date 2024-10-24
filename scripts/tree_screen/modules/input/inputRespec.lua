@@ -38,7 +38,7 @@ function PST.treeScreen:InputRespec()
                         if not PST.debugOptions.infSP then
                             if self.currentTree == "global" or self.currentTree == "starTree" then
                                 PST.modData.skillPoints = PST.modData.skillPoints + 1
-                            else
+                            elseif PST.modData.charData[self.currentTree] then
                                 PST.modData.charData[self.currentTree].skillPoints = PST.modData.charData[self.currentTree].skillPoints + 1
                             end
                         end

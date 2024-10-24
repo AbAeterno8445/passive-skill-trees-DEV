@@ -74,9 +74,11 @@ function nodeDrawingModule:Render(tScreen)
         if tScreen:IsSpriteVisibleAt(finalDrawX, finalDrawY, 38, 38) then
             local nodeAllocated = PST:isNodeAllocated(tScreen.currentTree, node.id)
             if node.available and not nodeAllocated then
+                --[[
                 local hasSP = ((tScreen.currentTree == "global" or tScreen.currentTree == "starTree") and PST.modData.skillPoints > 0) or
                     (PST.modData.charData[tScreen.currentTree] and PST.modData.charData[tScreen.currentTree].skillPoints > 0)
-                if hasSP then
+                ]]
+                if not PST.debugOptions.infSP and PST:isNodeAllocatable(tScreen.currentTree, node.id, true) then
                     self.nodesExtraSprite:SetFrame("Available " .. node.size, 0)
                     self.nodesExtraSprite.Color = Color(0.4, 0.4, 0.4, 1)
                     self.nodesExtraSprite.Color.A = self.alphaFlash
@@ -91,6 +93,12 @@ function nodeDrawingModule:Render(tScreen)
                 tmpSprite.Color = Color(1, 1, 1, 1)
             end
             tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+
+            -- Astral Forge node, draw sword icon
+            if node.name == "Astral Forge" then
+                tmpSprite:SetFrame("Default", 761)
+                tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+            end
 
             if PST:isNodeAllocated(tScreen.currentTree, node.id) then
                 self.nodesExtraSprite.Color = Color(1, 1, 1, 1)

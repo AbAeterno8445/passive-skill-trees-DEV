@@ -21,7 +21,7 @@ function PST.treeScreen:InputAllocate()
                 if not PST.debugOptions.infSP then
                     if self.currentTree == "global" or self.currentTree == "starTree" then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
-                    else
+                    elseif PST.modData.charData[self.currentTree] then
                         PST.modData.charData[self.currentTree].skillPoints = PST.modData.charData[self.currentTree].skillPoints - 1
                     end
                 end
@@ -33,6 +33,19 @@ function PST.treeScreen:InputAllocate()
                 -- Lost tree, unlock holy mantle if allocating Sacred Aegis
                 if self.hoveredNode.name == "Sacred Aegis" and not Isaac.GetPersistentGameData():Unlocked(Achievement.LOST_HOLDS_HOLY_MANTLE) then
                     Isaac.GetPersistentGameData():TryUnlock(Achievement.LOST_HOLDS_HOLY_MANTLE)
+                end
+
+                -- Special node requirement subtractions
+                if self.hoveredNode.reqs then
+                    local currentChar = PST:getCurrentCharData()
+                    -- Arcane obols requirement
+                    local obolReq = self.hoveredNode.reqs.obols
+                    if type(obolReq) == "table" and obolReq.var and PST[obolReq.var] then
+                        obolReq = PST[obolReq.var]
+                    end
+                    if obolReq and currentChar then
+                        currentChar.arcaneObols = currentChar.arcaneObols - obolReq
+                    end
                 end
 
             elseif not PST:isNodeAllocated(self.currentTree, self.hoveredNode.id) then
@@ -56,6 +69,12 @@ function PST.treeScreen:InputAllocate()
                 elseif self.hoveredNode.name == "Arcane Astrolabe" then
                     self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.EXPEDITION)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                -- Sidereal Tree node, switch to sidereal tree
+                elseif self.hoveredNode.name == "Sidereal Tree" and self.currentTree ~= "sidereal" then
+                    self.modules.spaceBGModule.targetSpaceColor = Color(0.3, 0.3, 1, 1)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    self.currentTree = "sidereal"
+                    self:CenterCamera()
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do

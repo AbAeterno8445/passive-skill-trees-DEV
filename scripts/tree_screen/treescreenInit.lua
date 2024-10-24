@@ -26,8 +26,11 @@ PST.treeScreen = {
     cursorSprite = Sprite("gfx/ui/cursor.anm2", true),
     cursorHighlight = false,
 
-    -- Currently displayed tree, "global", "starTree", or character name
+    -- Currently displayed tree or character name for character trees
     currentTree = "global",
+    globalTrees = {
+        "global", "starTree", "sidereal"
+    },
 
     -- For controls help popups
     helpPopup = "",
