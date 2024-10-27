@@ -70,6 +70,8 @@ function PST.treeScreen:Render()
             treeName = "Star Tree (" .. tmpStarmight .. " total starmight)"
         elseif self.currentTree == "sidereal" then
             treeName = "Sidereal Tree"
+            local curName = PST:getCurrentCharName()
+            if curName then treeName = treeName .. " (" .. curName .. ")" end
         else
             skPoints = PST.modData.charData[self.currentTree].skillPoints
             local tmpPossessive = "s"

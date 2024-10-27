@@ -5,16 +5,34 @@ PST.nodeLinks = {}
 
 include("scripts.tree_data.modifierDescriptions")
 
+function PST:getCurrentSiderealNodes()
+    local charData = PST:getCurrentCharData()
+    if charData and not charData.siderealNodes then charData.siderealNodes = { [0] = false } end
+    if charData then
+        return charData.siderealNodes
+    end
+    return nil
+end
+
 -- Check if node is allocated
 function PST:isNodeAllocated(tree, nodeID)
+    if tree == "sidereal" then
+        local siderealNodes = PST:getCurrentSiderealNodes()
+        if siderealNodes then return siderealNodes[nodeID] == 1 end
+        return false
+    end
     if not PST.modData.treeNodes[tree] then return false end
     return PST.modData.treeNodes[tree][nodeID] == 1
 end
 
 -- Check if node with given name is allocated
 function PST:isNodeNameAllocated(tree, nodeName)
-    if not PST.modData.treeNodes[tree] then return false end
-    for nodeID, _ in pairs(PST.modData.treeNodes[tree]) do
+    local tmpNodes = PST.modData.treeNodes[tree]
+    if tree == "sidereal" then
+        tmpNodes = PST:getCurrentSiderealNodes()
+    end
+    if not tmpNodes then return false end
+    for nodeID, _ in pairs(tmpNodes) do
         local targetNode = PST.trees[tree][nodeID]
         if PST:isNodeAllocated(tree, nodeID) and targetNode and targetNode.name == nodeName then
             return true
@@ -159,7 +177,13 @@ function PST:resetNodes(tree)
         return
     end
 
-    if PST.modData.treeNodes[tree] == nil then
+    if tree == "sidereal" then
+        local siderealNodes = PST:getCurrentSiderealNodes()
+        if siderealNodes == nil then
+            local currentChar = PST:getCurrentCharData()
+            if currentChar then currentChar.siderealNodes = { [0] = false } end
+        end
+    elseif PST.modData.treeNodes[tree] == nil then
         PST.modData.treeNodes[tree] = { [0] = false }
     end
 end
@@ -299,7 +323,12 @@ function PST:allocateNodeID(tree, nodeID, allocation)
     if allocation == nil then
         allocation = 0
     end
-    PST.modData.treeNodes[tree][nodeID] = allocation
+    if tree == "sidereal" then
+        local siderealNodes = PST:getCurrentSiderealNodes()
+        if siderealNodes then siderealNodes[nodeID] = allocation end
+    else
+        PST.modData.treeNodes[tree][nodeID] = allocation
+    end
     PST:updateNodes(tree, true)
 end
 

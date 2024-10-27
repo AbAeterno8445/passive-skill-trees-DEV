@@ -74,6 +74,7 @@ function PST.treeScreen:InputAllocate()
                     self.modules.spaceBGModule.targetSpaceColor = Color(0.3, 0.3, 1, 1)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     self.currentTree = "sidereal"
+                    PST:updateNodes("sidereal")
                     self:CenterCamera()
                 else
                     -- Star Tree: Open Inventories

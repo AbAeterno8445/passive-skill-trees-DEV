@@ -153,6 +153,17 @@ function PST:processLoadedData(loadedData)
 			end
 		end
 	end
+	-- Char-specific loading
+	for chName, chData in pairs(PST.modData.charData) do
+		-- Sidereal tree node allocations, convert node IDs to numbers
+		if chData.siderealNodes then
+			local tmpSiderealNodes = { [0] = false }
+			for nodeID, nodeVal in pairs(chData.siderealNodes) do
+				tmpSiderealNodes[tonumber(nodeID)] = nodeVal
+			end
+			loadedData.charData[chName].siderealNodes = tmpSiderealNodes
+		end
+	end
 	for k, v in pairs(PST.modData.starTreeInventory) do
 		if loadedData.starTreeInventory[k] == nil then
 			loadedData.starTreeInventory[k] = v

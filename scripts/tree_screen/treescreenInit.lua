@@ -85,7 +85,8 @@ PST.treeScreen.cursorSprite:Play("Idle", true)
 -- Tab-able nodes
 local tabNodes = {
     global = {"Star Tree"},
-    starTree = {"Sidereal Tree", "Arcane Astrolabe"}
+    starTree = {"Sidereal Tree", "Arcane Astrolabe"},
+    sidereal = {"Astral Forge"}
 }
 for treeName, nodeNameList in pairs(tabNodes) do
     PST.treeScreen.tabNodes[treeName] = {}
