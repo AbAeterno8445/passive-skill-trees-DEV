@@ -22,4 +22,90 @@
     <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_6.png" id="12" name="Arcane Obols 7" achievement="99999" />
     <!-- Awards 1000 obols -->
     <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_6.png" id="13" name="Arcane Obols 8" achievement="99999" />
+
+    <!-- ASTRAL WEAPONS: NORMAL / MAGIC -->
+    <trinket description="Astral weapon: Longsword" gfx="trinket_astralwep_longsword.png" id="14" name="Astral weapon: Longsword" achievement="99999" />
+    <trinket description="Astral weapon: Longsword (magic)" gfx="trinket_astralwep_longsword_magic.png" id="15" name="Astral weapon: Longsword (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Estoc" gfx="trinket_astralwep_estoc.png" id="16" name="Astral weapon: Estoc" achievement="99999" />
+    <trinket description="Astral weapon: Estoc (magic)" gfx="trinket_astralwep_estoc_magic.png" id="17" name="Astral weapon: Estoc (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Dagger" gfx="trinket_astralwep_dagger.png" id="18" name="Astral weapon: Dagger" achievement="99999" />
+    <trinket description="Astral weapon: Dagger (magic)" gfx="trinket_astralwep_dagger_magic.png" id="19" name="Astral weapon: Dagger (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Quickblade" gfx="trinket_astralwep_quickblade.png" id="20" name="Astral weapon: Quickblade" achievement="99999" />
+    <trinket description="Astral weapon: Quickblade (magic)" gfx="trinket_astralwep_quickblade_magic.png" id="21" name="Astral weapon: Quickblade (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Spear" gfx="trinket_astralwep_spear.png" id="22" name="Astral weapon: Spear" achievement="99999" />
+    <trinket description="Astral weapon: Spear (magic)" gfx="trinket_astralwep_spear_magic.png" id="23" name="Astral weapon: Spear (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Trident" gfx="trinket_astralwep_trident.png" id="24" name="Astral weapon: Trident" achievement="99999" />
+    <trinket description="Astral weapon: Trident (magic)" gfx="trinket_astralwep_trident_magic.png" id="25" name="Astral weapon: Trident (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Scythe" gfx="trinket_astralwep_scythe.png" id="26" name="Astral weapon: Scythe" achievement="99999" />
+    <trinket description="Astral weapon: Scythe (magic)" gfx="trinket_astralwep_scythe_magic.png" id="27" name="Astral weapon: Scythe (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Axe" gfx="trinket_astralwep_axe.png" id="28" name="Astral weapon: Axe" achievement="99999" />
+    <trinket description="Astral weapon: Axe (magic)" gfx="trinket_astralwep_axe_magic.png" id="29" name="Astral weapon: Axe (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Greataxe" gfx="trinket_astralwep_greataxe.png" id="30" name="Astral weapon: Greataxe" achievement="99999" />
+    <trinket description="Astral weapon: Greataxe (magic)" gfx="trinket_astralwep_greataxe_magic.png" id="31" name="Astral weapon: Greataxe (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Shortbow" gfx="trinket_astralwep_shortbow.png" id="32" name="Astral weapon: Shortbow" achievement="99999" />
+    <trinket description="Astral weapon: Shortbow (magic)" gfx="trinket_astralwep_shortbow_magic.png" id="33" name="Astral weapon: Shortbow (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Bow" gfx="trinket_astralwep_bow.png" id="34" name="Astral weapon: Bow" achievement="99999" />
+    <trinket description="Astral weapon: Bow (magic)" gfx="trinket_astralwep_bow_magic.png" id="35" name="Astral weapon: Bow (magic)" achievement="99999" />
+
+    <trinket description="Astral weapon: Crossbow" gfx="trinket_astralwep_crossbow.png" id="36" name="Astral weapon: Crossbow" achievement="99999" />
+    <trinket description="Astral weapon: Crossbow (magic)" gfx="trinket_astralwep_crossbow_magic.png" id="37" name="Astral weapon: Crossbow (magic)" achievement="99999" />
+
+    <!-- ASTRAL WEAPONS: ANCIENT -->
+    <trinket description="Ancient astral weapon: Grey Wind (longsword)" gfx="trinket_astralwep_greywind.png" id="38" name="Astral weapon: Grey Wind" achievement="99999" />
+    <trinket description="Ancient astral weapon: Executioner (longsword)" gfx="trinket_astralwep_executioner.png" id="39" name="Astral weapon: Executioner" achievement="99999" />
+    <trinket description="Ancient astral weapon: Sword of Song (longsword)" gfx="trinket_astralwep_sword_of_song.png" id="40" name="Astral weapon: Sword of Song" achievement="99999" />
+    <trinket description="Ancient astral weapon: Redbeak (longsword)" gfx="trinket_astralwep_redbeak.png" id="41" name="Astral weapon: Redbeak" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Arcing Needle (estoc)" gfx="trinket_astralwep_arcing_needle.png" id="42" name="Astral weapon: Arcing Needle" achievement="99999" />
+    <trinket description="Ancient astral weapon: Auric Persecutor (estoc)" gfx="trinket_astralwep_auric_persecutor.png" id="43" name="Astral weapon: Auric Persecutor" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: The Scrambler (dagger)" gfx="trinket_astralwep_scrambler.png" id="44" name="Astral weapon: The Scrambler" achievement="99999" />
+    <trinket description="Ancient astral weapon: Adrift Blade (dagger)" gfx="trinket_astralwep_adrift_blade.png" id="45" name="Astral weapon: Adrift Blade" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Nimble Twins (quickblade)" gfx="trinket_astralwep_nimble_twins.png" id="46" name="Astral weapon: Nimble Twins" achievement="99999" />
+    <trinket description="Ancient astral weapon: Crimson Altruist (quickblade)" gfx="trinket_astralwep_crimson_altruist.png" id="47" name="Astral weapon: Crimson Altruist" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Beastbane (spear)" gfx="trinket_astralwep_beastbane.png" id="48" name="Astral weapon: Beastbane" achievement="99999" />
+    <trinket description="Ancient astral weapon: Gravitas (spear)" gfx="trinket_astralwep_gravitas.png" id="49" name="Astral weapon: Gravitas" achievement="99999" />
+    <trinket description="Ancient astral weapon: Boreal Frostspear (spear)" gfx="trinket_astralwep_boreal_frostspear.png" id="50" name="Astral weapon: Boreal Frostspear" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Consecrator (trident)" gfx="trinket_astralwep_consecrator.png" id="51" name="Astral weapon: Consecrator" achievement="99999" />
+    <trinket description="Ancient astral weapon: Verdant Green (trident)" gfx="trinket_astralwep_verdant_green.png" id="52" name="Astral weapon: Verdant Green" achievement="99999" />
+    <trinket description="Ancient astral weapon: Lost Coral Trident (trident)" gfx="trinket_astralwep_lost_coral_trident.png" id="53" name="Astral weapon: Lost Coral trident" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Tale Ender (scythe)" gfx="trinket_astralwep_tale_ender.png" id="54" name="Astral weapon: Tale Ender" achievement="99999" />
+    <trinket description="Ancient astral weapon: Crimson Reaper (scythe)" gfx="trinket_astralwep_crimson_reaper.png" id="55" name="Astral weapon: Crimson Reaper" achievement="99999" />
+    <trinket description="Ancient astral weapon: Mobripper (scythe)" gfx="trinket_astralwep_mobripper.png" id="56" name="Astral weapon: Mobripper" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Starsteel Broadaxe (axe)" gfx="trinket_astralwep_starsteel_broadaxe.png" id="57" name="Astral weapon: Starsteel Broadaxe" achievement="99999" />
+    <trinket description="Ancient astral weapon: Ancient Runic Chopper (axe)" gfx="trinket_astralwep_ancient_runic_chopper.png" id="58" name="Astral weapon: Ancient Runic Chopper" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Berserker's Wrath (greataxe)" gfx="trinket_astralwep_berserker_wrath.png" id="59" name="Astral weapon: Berserker's Wrath" achievement="99999" />
+    <trinket description="Ancient astral weapon: Frozen Terror (greataxe)" gfx="trinket_astralwep_frozen_terror.png" id="60" name="Astral weapon: Frozen Terror" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Storm's Advance (shortbow)" gfx="trinket_astralwep_storm_advance.png" id="61" name="Astral weapon: Storm's Advance" achievement="99999" />
+    <trinket description="Ancient astral weapon: Quill rain (shortbow)" gfx="trinket_astralwep_quillrain.png" id="62" name="Astral weapon: Quill Rain" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Gilded Seeker (bow)" gfx="trinket_astralwep_gilded_seeker.png" id="63" name="Astral weapon: Gilded Seeker" achievement="99999" />
+    <trinket description="Ancient astral weapon: Twisted Oakstring (bow)" gfx="trinket_astralwep_twisted_oakstring.png" id="64" name="Astral weapon: Twisted Oakstring" achievement="99999" />
+    <trinket description="Ancient astral weapon: Brute's Onslaught (bow)" gfx="trinket_astralwep_brute_onslaught.png" id="65" name="Astral weapon: Brute's Onslaught" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Volatile Arbalest (crossbow)" gfx="trinket_astralwep_volatile_arbalest.png" id="66" name="Astral weapon: Volatile Arbalest" achievement="99999" />
+    <trinket description="Ancient astral weapon: Avelyn (crossbow)" gfx="trinket_astralwep_avelyn.png" id="67" name="Astral weapon: Avelyn" achievement="99999" />
+    <trinket description="Ancient astral weapon: Precise Seeker (crossbow)" gfx="trinket_astralwep_precise_seeker.png" id="68" name="Astral weapon: Precise Seeker" achievement="99999" />
+
+    <trinket description="Ancient astral weapon: Glowing Moonblade (longsword)" gfx="trinket_astralwep_glowing_moonblade.png" id="69" name="Astral weapon: Glowing Moonblade" achievement="99999" />
+    <trinket description="Ancient astral weapon: Maxwell's Thermic Engine (longsword)" gfx="trinket_astralwep_maxwell_engine.png" id="70" name="Astral weapon: Maxwell's Thermic Engine" achievement="99999" />
+    <trinket description="Ancient astral weapon: Viper Stinger (spear)" gfx="trinket_astralwep_viper_stinger.png" id="71" name="Astral weapon: Viper Stinger" achievement="99999" />
+    <trinket description="Ancient astral weapon: Oceanic Might (trident)" gfx="trinket_astralwep_oceanic_might.png" id="72" name="Astral weapon: Oceanic Might" achievement="99999" />
 </items>

@@ -251,6 +251,12 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                     return false
                 end
 
+                -- Expedition depth requirement
+                local expReq = reqs.expeditionDepth
+                if expReq and PST.modData.expeditionDepth <= expReq then
+                    return false
+                end
+
                 -- Sidereal tree: non-travel nodes require 1 global SP
                 if tree == "sidereal" and not PST:arrHasValue(siderealTravelNodes, nodeData.name) and PST.modData.skillPoints <= 0 then
                     return false

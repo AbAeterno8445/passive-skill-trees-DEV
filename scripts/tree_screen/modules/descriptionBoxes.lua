@@ -150,14 +150,25 @@ function descriptionBoxesModule:Render(tScreen)
 
         -- Special node requirements
         if hoveredNode.reqs then
+            tmpDescription = {table.unpack(tmpDescription)}
+
             -- Arcane obols requirement
             local obolReq = hoveredNode.reqs.obols
             if type(obolReq) == "table" and obolReq.var and PST[obolReq.var] then
                 obolReq = PST[obolReq.var]
             end
             if obolReq then
-                tmpDescription = {table.unpack(tmpDescription)}
                 table.insert(tmpDescription, {"Requires " .. tostring(obolReq) .. " Arcane Obols to allocate.", KColor(0.8, 0.35, 1, 1)})
+            end
+
+            -- Expedition depth requirement
+            local expReq = hoveredNode.reqs.expeditionDepth
+            if expReq then
+                local tmpColor = KColor(1, 0.7, 0.3, 1)
+                if PST.modData.expeditionDepth > expReq then
+                    tmpColor = KColor(0.6, 1, 0.6, 1)
+                end
+                table.insert(tmpDescription, {"Requires completing expedition depth " .. tostring(expReq), tmpColor})
             end
         end
 

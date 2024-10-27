@@ -1432,7 +1432,10 @@ function PST:resetMods()
 		-- Objective
 		expedSelNodeCol = -1,
 		expedSelNodeRow = -1,
-		expedSelNodeObjName = ""
+		expedSelNodeObjName = "",
+
+		-- Astral weapon helpers
+		astralWepTierDrops = 1,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
@@ -1632,6 +1635,12 @@ function PST:resetData()
 		expeditionDepth = 1, -- Farthest depth reached
 		expedLastDepth = 1, -- Remember last visited depth for menu
 		expedEnabled = false,
+
+		-- Astral forge - equipped astral weapon & inventory
+		---@type PSTAstralWeapon|nil
+		equippedAstralWep = nil,
+		---@type PSTAstralWeapon[]
+		astralWepInventory = {},
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},

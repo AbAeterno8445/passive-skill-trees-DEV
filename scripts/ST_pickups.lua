@@ -171,6 +171,19 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
 
+            -- Astral weapon pickup
+            local itemCfg = Isaac.GetItemConfig():GetTrinket(subtype)
+            if itemCfg and PST:strStartsWith(itemCfg.Name, "Astral weapon") then
+                local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                tmpFX.Color = Color(1, 1, 1, 1, 0.7, 0.7, 1)
+                pickup:Remove()
+                SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.8, 2, false, 1.1 + math.random())
+                PST:createFloatTextFX("+ " .. itemCfg.Name, Vector.Zero, Color(0.6, 0.6, 1, 1), 0.13, 100, true)
+
+                PST:astralWepTrinketPickup(itemCfg.Name)
+                return { Collide = false, SkipCollisionEffects = true }
+            end
+
             -- Starcursed jewel pickups
             local jewelInvFull = nil
             local isMighty = 100 * math.random() < PST:getTreeSnapshotMod("SC_SMMightyChance", 0)
