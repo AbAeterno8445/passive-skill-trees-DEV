@@ -6,7 +6,8 @@ PSTTreeScreenMenu = {
     CHANGELOG = "changelog",
     TOTALMODS = "totalMods",
     HELP = "helpmenu",
-    EXPEDITION = "expeditionMenu"
+    EXPEDITION = "expeditionMenu",
+    ASTRAL_FORGE = "astralForge"
 }
 
 -- Hack to provide VSCode autocomplete functionality on modules (wtf?)
@@ -21,7 +22,8 @@ local menuScreensModule = {
         [PSTTreeScreenMenu.CHANGELOG] = moduleRequire("scripts.tree_screen.modules.menu_screens.changelogScreen"),
         [PSTTreeScreenMenu.TOTALMODS] = moduleRequire("scripts.tree_screen.modules.menu_screens.totalmodsScreen"),
         [PSTTreeScreenMenu.HELP] = moduleRequire("scripts.tree_screen.modules.menu_screens.helpScreen"),
-        [PSTTreeScreenMenu.EXPEDITION] = moduleRequire("scripts.tree_screen.modules.menu_screens.expeditionScreen")
+        [PSTTreeScreenMenu.EXPEDITION] = moduleRequire("scripts.tree_screen.modules.menu_screens.expeditionScreen"),
+        [PSTTreeScreenMenu.ASTRAL_FORGE] = moduleRequire("scripts.tree_screen.modules.menu_screens.astralForgeScreen")
     }
 }
 

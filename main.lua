@@ -154,7 +154,7 @@ function PST:processLoadedData(loadedData)
 		end
 	end
 	-- Char-specific loading
-	for chName, chData in pairs(PST.modData.charData) do
+	for chName, chData in pairs(loadedData.charData) do
 		-- Sidereal tree node allocations, convert node IDs to numbers
 		if chData.siderealNodes then
 			local tmpSiderealNodes = { [0] = false }
@@ -208,7 +208,7 @@ function PST:processLoadedData(loadedData)
 	for tree, nodes in pairs(PST.modData.treeNodes) do
 		for nodeID, allocated in pairs(nodes) do
 			if PST.trees[tree] ~= nil then
-				if PST.trees[tree][nodeID] == nil and nodeID ~= 0 then
+				if PST.trees[tree][nodeID] == nil and nodeID ~= 0 and nodeID ~= "0" then
 					if allocated then
 						print("Passive Skill Trees: Found allocated non-existant node ID", nodeID, "for tree [", tree, "]. Refunding skill point.")
 						if tree == "global" or tree == "starTree" then

@@ -43,7 +43,7 @@ function PST.treeScreen:InputAllocate()
                     if type(obolReq) == "table" and obolReq.var and PST[obolReq.var] then
                         obolReq = PST[obolReq.var]
                     end
-                    if obolReq and currentChar then
+                    if obolReq and currentChar and not PST.debugOptions.infSP then
                         currentChar.arcaneObols = currentChar.arcaneObols - obolReq
                     end
                 end
@@ -76,6 +76,10 @@ function PST.treeScreen:InputAllocate()
                     self.currentTree = "sidereal"
                     PST:updateNodes("sidereal")
                     self:CenterCamera()
+                -- Astral Forge node, switch to Astral Forge menu
+                elseif self.hoveredNode.name == "Astral Forge" then
+                    self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.ASTRAL_FORGE)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do

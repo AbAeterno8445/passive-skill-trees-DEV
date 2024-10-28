@@ -1642,6 +1642,14 @@ function PST:resetData()
 		---@type PSTAstralWeapon[]
 		astralWepInventory = {},
 
+		-- Astral forge currencies
+		mundaneEssence = 0,
+		sparkEssence = 0,
+		ancientEssence = 0,
+		mundaneStardust = 0,
+		sparkStardust = 0,
+		ancientStardust = 0,
+
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},
 		newCharsTainted = {},

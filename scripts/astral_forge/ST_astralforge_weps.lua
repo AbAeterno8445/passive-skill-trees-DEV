@@ -95,19 +95,30 @@ function PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
         if math.random() < extraModChance then
             PST:astralWepAddMod(newWep)
         end
-    -- Ancient weapon, pick random one from type if not provided
-    elseif wepRarity == PSTAstralWepRarity.ANCIENT and not ancientID then
-        local totalWeight = 0
-        for _, tmpAncient in ipairs(wepTypeData.ancients) do
-            totalWeight = totalWeight + tmpAncient.weight
-        end
-        local randWeight = math.random(totalWeight)
-        for i, tmpAncient in ipairs(wepTypeData.ancients) do
-            randWeight = randWeight - tmpAncient.weight
-            if randWeight <= 0 then
-                newWep.ancientID = i
-                break
+    -- Ancient weapon
+    elseif wepRarity == PSTAstralWepRarity.ANCIENT then
+        -- Pick random one from type if not provided
+        if not ancientID then
+            local totalWeight = 0
+            for _, tmpAncient in ipairs(wepTypeData.ancients) do
+                totalWeight = totalWeight + tmpAncient.weight
             end
+            local randWeight = math.random(totalWeight)
+            for i, tmpAncient in ipairs(wepTypeData.ancients) do
+                randWeight = randWeight - tmpAncient.weight
+                if randWeight <= 0 then
+                    newWep.ancientID = i
+                    break
+                end
+            end
+        else
+            newWep.ancientID = ancientID
+        end
+
+        -- Assign ancient mods
+        for _, tmpMod in ipairs(wepTypeData.ancients[newWep.ancientID].ancientMods) do
+            if not newWep.mods then newWep.mods = {} end
+            table.insert(newWep.mods, {name = tmpMod})
         end
     end
 
@@ -191,6 +202,37 @@ function PST:astralWepTrinketPickup(trinketName)
     if wepType then
         local newWep = PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
         table.insert(PST.modData.astralWepInventory, newWep)
+    end
+end
+
+---@param wepData PSTAstralWeapon
+---@param wepSprite Sprite
+function PST:renderAstralWepAt(wepData, wepSprite, x, y)
+    local wepTypeData = PST.astralWepData[wepData.type]
+    local anim = "Normal"
+    local frame = wepTypeData.spriteFrames[wepData.rarity]
+
+    -- Ancient weapons
+    if wepData.rarity == PSTAstralWepRarity.ANCIENT then
+        anim = "Ancients"
+        frame = wepTypeData.ancients[wepData.ancientID].spriteFrame
+    end
+    wepSprite:SetFrame(anim, frame)
+    wepSprite:Render(Vector(x, y))
+
+    -- Magic weapons overlay
+    if wepData.rarity == PSTAstralWepRarity.MAGIC and wepData.mods then
+        wepSprite:SetFrame("Overlays", wepTypeData.spriteFrames.overlay)
+        local tmpColors = {}
+        for _, tmpMod in ipairs(wepData.mods) do
+            local tmpModData = PST.astralWepMods[tmpMod.name]
+            if tmpModData and tmpModData.color then
+                table.insert(tmpColors, PST:RGBColor(table.unpack(tmpModData.color)))
+            end
+        end
+        wepSprite.Color = PST:mixColors(tmpColors[1], tmpColors[2])
+        wepSprite:Render(Vector(x, y))
+        wepSprite.Color = Color(1, 1, 1, 1)
     end
 end
 
@@ -297,7 +339,7 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
     end
 
     -- Weapon tier
-    table.insert(tmpDescription, {"Tier " .. wepTierTxt(weaponData.tier), PST:RGBKColor(250, 250, 210)})
+    table.insert(tmpDescription, {"Tier " .. wepTierTxt[weaponData.tier], PST:RGBKColor(250, 250, 210)})
 
     return tmpDescription
 end

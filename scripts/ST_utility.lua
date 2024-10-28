@@ -871,3 +871,26 @@ function PST:tableRemoveFirst(t, val)
 		end
 	end
 end
+
+function PST:alphaBlend(color1, color2, alpha)
+    local r = color1.R * alpha + color2.R * (1 - alpha)
+    local g = color1.G * alpha + color2.G * (1 - alpha)
+    local b = color1.B * alpha + color2.B * (1 - alpha)
+    return Color(r, g, b)
+end
+
+function PST:mixColors(col1, col2)
+    local baseColor = Color(1, 1, 1, 1)
+    local mixedColor
+
+    if col1 and col2 then
+        local blend1 = PST:alphaBlend(col1, col2, 0.3) -- Blend the two enchantments
+        mixedColor = PST:alphaBlend(baseColor, blend1, 0.3) -- Blend the base with the result
+    elseif col1 then
+        mixedColor = PST:alphaBlend(baseColor, col1, 0.3) -- Blend base with the first enchantment
+    else
+        mixedColor = baseColor -- No enchantments, return the base color
+    end
+
+    return mixedColor
+end
