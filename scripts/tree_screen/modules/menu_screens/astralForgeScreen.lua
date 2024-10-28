@@ -1,3 +1,7 @@
+-- Hack to provide VSCode autocomplete functionality on modules (wtf?)
+local moduleRequire = require
+moduleRequire = include
+
 local astralForgeScreen = {
     BGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true),
     UILinkSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_node_link.anm2", true),
@@ -22,18 +26,44 @@ local astralForgeScreen = {
     ---@type PSTAstralWeapon|nil
     selectedWeapon = nil,
 
+    -- For deconstruction
+    deconMode = false,
+    deconHovered = false,
+    deconTimer = 0,
+
     -- Inventory filters
+    ---@type table|nil
     hoveredFilter = nil,
     appliedFilters = {
         weaponType = {},
         weaponRarity = {}
-    }
+    },
+
+    -- Inventory pagination
+    rowsPerPage = 6,
+    invPage = 1,
 }
 
 -- Init
 astralForgeScreen.BGSprite:Play("Pixel", true)
 astralForgeScreen.UILinkSprite:SetFrame("AstralForgeUI", 1)
 astralForgeScreen.forgeUISprite:Play("Default", true)
+
+-- Astral Forge rendering func
+local astralForgeScreenRender = moduleRequire("scripts.tree_screen.modules.menu_screens.astralForgeRender")
+
+local function PSTDeconstructWeapon(targetWep)
+    for i, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
+        if tmpWeapon == targetWep then
+            local wepMats = PST:getAstralWepDeconMats(targetWep)
+            PST.modData.mundaneEssence = PST.modData.mundaneEssence + wepMats.mundane
+            PST.modData.sparkEssence = PST.modData.sparkEssence + wepMats.spark
+            PST.modData.ancientEssence = PST.modData.ancientEssence + wepMats.ancient
+            table.remove(PST.modData.astralWepInventory, i)
+            break
+        end
+    end
+end
 
 function astralForgeScreen:CenterCamera()
     self.camera = Vector.Zero
@@ -92,6 +122,57 @@ function astralForgeScreen:OnInput()
                 end
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
             end
+        -- Hovered decon button, toggle mode
+        elseif self.deconHovered then
+            self.deconMode = not self.deconMode
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+        -- Hovered weapon
+        elseif self.hoveredWeapon then
+            if not self.deconMode then
+                if not PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
+                    PST:equipAstralWep(self.hoveredWeapon)
+                else
+                    -- Shift + Allocate: select hovered weapon for forging
+                    if self.selectedWeapon ~= self.hoveredWeapon then
+                        self.selectedWeapon = self.hoveredWeapon
+                    else
+                        self.selectedWeapon = nil
+                    end
+                end
+                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+            end
+        end
+    end
+
+    -- Input: Respec (hold)
+    if PST:isKeybindActive(PSTKeybind.RESPEC_NODE, true) then
+        -- Ancient weapon deconstruction
+        if self.deconMode and self.hoveredWeapon and self.hoveredWeapon.rarity == PSTAstralWepRarity.ANCIENT then
+            self.deconTimer = self.deconTimer + 1
+            if self.deconTimer == 60 then
+                if not self.hoveredWeapon.equipped then
+                    SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE)
+                    PSTDeconstructWeapon(self.hoveredWeapon)
+                else
+                    SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN)
+                end
+                self.deconTimer = 0
+            end
+        else
+            self.deconTimer = 0
+        end
+
+        -- Input: Respec (once)
+        if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
+            -- Deconstruct weapon
+            if self.deconMode and self.hoveredWeapon and self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
+                if not self.hoveredWeapon.equipped then
+                    SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE)
+                    PSTDeconstructWeapon(self.hoveredWeapon)
+                else
+                    SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN)
+                end
+            end
         end
     end
 
@@ -103,10 +184,13 @@ end
 
 ---@param tScreen PST.treeScreen
 function astralForgeScreen:Update(tScreen)
-    --tScreen.hideHUD = true
+    tScreen.hideHUD = true
     tScreen.hideNodes = true
     self.hoveredWeapon = nil
     self.hoveredFilter = nil
+
+    self.camCenterX = Isaac.GetScreenWidth() / 2
+    self.camCenterY = Isaac.GetScreenHeight() / 2
 end
 
 function astralForgeScreen:DrawUIBox(x, y, w, h)
@@ -144,115 +228,9 @@ function astralForgeScreen:DrawUIBox(x, y, w, h)
     linkBeam:Render()
 end
 
--- Indexes for these correspond to the frame # in the UI sprite's Filters anim
-local invFilters = {
-    { weaponType = PSTAstralWepType.LONGSWORD },
-    { weaponType = PSTAstralWepType.ESTOC },
-    { weaponType = PSTAstralWepType.DAGGER },
-    { weaponType = PSTAstralWepType.QUICKBLADE },
-    { weaponType = PSTAstralWepType.SPEAR },
-    { weaponType = PSTAstralWepType.TRIDENT },
-    { weaponType = PSTAstralWepType.SCYTHE },
-    { weaponType = PSTAstralWepType.AXE },
-    { weaponType = PSTAstralWepType.GREATAXE },
-    { weaponType = PSTAstralWepType.SHORTBOW },
-    { weaponType = PSTAstralWepType.BOW },
-    { weaponType = PSTAstralWepType.CROSSBOW },
-    { weaponRarity = PSTAstralWepRarity.NORMAL },
-    { weaponRarity = PSTAstralWepRarity.MAGIC },
-    { weaponRarity = PSTAstralWepRarity.ANCIENT }
-}
-local wepRarityStr = {"Normal", "Magic", "Ancient"}
-
 ---@param tScreen PST.treeScreen
 function astralForgeScreen:Render(tScreen)
-    local baseDrawX = self.camCenterX - self.camera.X
-    local baseDrawY = self.camCenterY - self.camera.Y
-
-    -- Draw inventory
-    local tmpX = baseDrawX - 200
-    local tmpY = baseDrawY - 80
-    self:DrawUIBox(tmpX, tmpY, 170, 182)
-    PST.miniFont:DrawString("Weapon Inventory", tmpX + 3, tmpY, KColor(1, 0.7, 0.3, 1))
-    tmpY = tmpY + 17
-
-    -- Inventory filter buttons
-    for i, tmpFilter in ipairs(invFilters) do
-        local filterX = tmpX + 3 + 18 * ((i - 1) % 8)
-        local filterY = tmpY + 18 * math.floor((i - 1) / 8)
-
-        if tmpFilter.weaponType ~= nil and PST:arrHasValue(self.appliedFilters.weaponType, tmpFilter.weaponType) or
-        tmpFilter.weaponRarity ~= nil and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpFilter.weaponRarity) then
-            self.forgeUISprite.Color.RO = 0.4
-            self.forgeUISprite.Color.GO = 0.4
-            self.forgeUISprite.Color.BO = 0.4
-        else
-            self.forgeUISprite.Color.RO = 0
-            self.forgeUISprite.Color.GO = 0
-            self.forgeUISprite.Color.BO = 0
-        end
-
-        self.forgeUISprite:SetFrame("Filters", i - 1)
-        self.forgeUISprite:Render(Vector(filterX, filterY))
-
-        -- Hovered filter
-        if self.camCenterX >= filterX and self.camCenterX <= filterX + 16 and
-        self.camCenterY >= filterY and self.camCenterY <= filterY + 16 then
-            self.hoveredFilter = tmpFilter
-        end
-    end
-    tmpY = tmpY + math.ceil(#invFilters / 8) * 18 + 3
-
-    -- Weapons
-    local drawnWeps = {}
-    local hasTypeFilter = #self.appliedFilters.weaponType > 0
-    local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
-    -- Create filtered list
-    if hasTypeFilter or hasRarityFilter then
-        for _, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
-            if (not hasTypeFilter or (hasTypeFilter and PST:arrHasValue(self.appliedFilters.weaponType, tmpWeapon.type))) and
-            (not hasRarityFilter or (hasRarityFilter and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpWeapon.rarity))) then
-                table.insert(drawnWeps, tmpWeapon)
-            end
-        end
-    else
-        drawnWeps = PST.modData.astralWepInventory
-    end
-    -- Draw weapons
-    for i, tmpWeapon in ipairs(drawnWeps) do
-        local wepX = tmpX + 18 + 34 * ((i - 1) % 5)
-        local wepY = tmpY + 16 + 34 * math.floor((i - 1) / 5)
-        PST:renderAstralWepAt(tmpWeapon, self.weaponSprite, wepX, wepY)
-
-        -- Hovered weapon
-        if self.camCenterX >= wepX - 16 and self.camCenterX <= wepX + 16 and
-        self.camCenterY >= wepY - 16 and self.camCenterY <= wepY + 16 then
-            self.hoveredWeapon = tmpWeapon
-        end
-    end
-
-    -- Cursor
-    if self.hoveredWeapon or self.hoveredFilter then
-        tScreen.cursorSprite:Play("Clicked", true)
-    else
-        tScreen.cursorSprite:Play("Idle", true)
-    end
-    tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
-
-    -- Hovered filter description
-    if self.hoveredFilter then
-        local hoverStr = "Filter: "
-        if self.hoveredFilter.weaponType then
-            hoverStr = hoverStr .. PST.astralWepData[self.hoveredFilter.weaponType].name .. "s"
-        elseif self.hoveredFilter.weaponRarity then
-            hoverStr = hoverStr .. wepRarityStr[self.hoveredFilter.weaponRarity + 1]
-        end
-        tScreen:DrawNodeBox(hoverStr, {"Press the Allocate button to apply this filter."})
-    -- Hovered weapon description
-    elseif self.hoveredWeapon then
-        local wepDesc = PST:getAstralWepDesc(self.hoveredWeapon, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))
-        tScreen:DrawNodeBox("Astral Weapon", wepDesc)
-    end
+    astralForgeScreenRender(self, tScreen)
 end
 
 return astralForgeScreen

@@ -80,6 +80,9 @@ function PST:charInit(charName, forceReset)
 			skillPoints = 0
 		}
 	end
+	-- Init misc char variables
+	local charData = PST.modData.charData[charName]
+	if not charData.arcaneObols then charData.arcaneObols = 0 end
 end
 
 -- Save mod data

@@ -534,7 +534,7 @@ function PST:onNewRoom()
 			tmpModList.allstatsPerc = tmpModList.allstatsPerc - 5
 			tmpModList.bloodfulDebuffProc = false
 		end
-		tmpMod = PST:getTreeSnapshotMod("bloodfulBuff", false)
+		tmpMod = PST:getTreeSnapshotMod("bloodfulBuff", 0)
 		if tmpMod > 0 then
 			tmpModList.allstatsPerc = tmpModList.allstatsPerc - tmpMod
 			tmpModList.bloodfulBuff = { value = 0, set = true }

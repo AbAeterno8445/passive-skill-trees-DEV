@@ -134,7 +134,6 @@ function PST:openTreeMenu()
     -- Sprinkle starfield sprites when opening tree
     local spaceModule = PST.treeScreen.modules.spaceBGModule
     spaceModule:ShuffleStarfield()
-    spaceModule.targetSpaceColor = Color(1, 1, 1, 1)
     spaceModule.spaceOffPos = Vector.Zero
     spaceModule.spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
 

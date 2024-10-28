@@ -94,7 +94,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
 
         -- Mod: chance to keep half the charge when using D6
         if 100 * math.random() < PST:getTreeSnapshotMod("d6HalfCharge", 0) then
-            if player:GetBatteryCharge(slot) == 0 then
+            if slot ~= -1 and player:GetBatteryCharge(slot) == 0 then
                 player:AddActiveCharge(math.ceil(player:GetActiveMaxCharge(slot) / 2), slot, true, true, false)
             end
         end
@@ -146,7 +146,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- Eternal D6
     elseif itemType == CollectibleType.COLLECTIBLE_ETERNAL_D6 then
         -- Mod: chance for Eternal D6 to not consume charges on use
-        if 100 * math.random() < PST:getTreeSnapshotMod("eternalD6Charge", 0) then
+        if slot ~= -1 and 100 * math.random() < PST:getTreeSnapshotMod("eternalD6Charge", 0) then
             player:AddActiveCharge(player:GetActiveMaxCharge(slot), slot, true, true, false)
         end
     -- Box of Friends
@@ -159,7 +159,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
 
         -- Mod: chance for Box of Friends to keep 1 charge on use
         if 100 * math.random() < PST:getTreeSnapshotMod("boxOfFriendsCharge", 0) then
-            if player:GetBatteryCharge(slot) == 0 then
+            if slot ~= -1 and player:GetBatteryCharge(slot) == 0 then
                 player:AddActiveCharge(1, slot, true, true, false)
             end
         end
@@ -331,8 +331,8 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         local poopRegainProc = false
 
         -- Mod: chance to regain the held poop on use
-        local tmpMod = PST:getTreeSnapshotMod("holdPoopRegain", 0)
-        if tmpMod > 0 and 100 * math.random() < tmpMod and PST.specialNodes.poopHeld > 0 then
+        tmpMod = PST:getTreeSnapshotMod("holdPoopRegain", 0)
+        if tmpMod > 0 and slot ~= -1 and 100 * math.random() < tmpMod and PST.specialNodes.poopHeld > 0 then
             player:RemoveCollectible(CollectibleType.COLLECTIBLE_HOLD)
             player:AddCollectible(CollectibleType.COLLECTIBLE_HOLD, 0, false, slot, PST.specialNodes.poopHeld)
             SFXManager():Play(SoundEffect.SOUND_BATTERYCHARGE)
@@ -549,7 +549,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         if tmpMod > 0 then
             local tmpWisps = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ITEM_WISP)
             for _, tmpWisp in ipairs(tmpWisps) do
-                if 100 * math.random() < tmpMod then
+                if slot ~= -1 and 100 * math.random() < tmpMod then
                     local tmpVel = (player.Position - tmpWisp.Position):Normalized() * 7
                     local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLOOD, tmpWisp.Position, tmpVel, tmpWisp, 0, Random() + 1)
                     newTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
@@ -575,13 +575,13 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     end
 
     -- Expedition objective: use active item with at least 3 charges
-    if player:GetActiveMaxCharge(slot) >= 3 then
+    if slot ~= -1 and player:GetActiveMaxCharge(slot) >= 3 then
 	    PST:expedAddProgInRun("activeItems", 1)
     end
 
     -- Boon: when using active with at least 2 charges, become invulnerable for X seconds
     tmpMod = PST:getTreeSnapshotMod("boonActivity", 0)
-    if tmpMod > 0 and player:GetActiveMaxCharge(slot) >= 2 then
+    if tmpMod > 0 and slot ~= -1 and player:GetActiveMaxCharge(slot) >= 2 then
         player:SetMinDamageCooldown(math.ceil(tmpMod * 30))
     end
 end

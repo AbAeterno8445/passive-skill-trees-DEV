@@ -35,6 +35,7 @@ PSTAstralWepRarity = {
 -- Weapon mods are stored as tables with {mod name (string), mod rolls (table)}, e.g. {consecFireDmg, {14}}
 ---@field mods? PSTAstralWepModEntry[]
 ---@field honing? number
+---@field equipped? boolean
 
 -- Astral weapon modifiers
 PST.astralWepMods = {

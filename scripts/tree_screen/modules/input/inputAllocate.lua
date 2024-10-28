@@ -61,7 +61,6 @@ function PST.treeScreen:InputAllocate()
                     })
                 -- Star Tree node, switch to star tree view
                 elseif self.hoveredNode.name == "Star Tree" and self.currentTree ~= "starTree" then
-                    self.modules.spaceBGModule.targetSpaceColor = Color(0, 1, 1, 1)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     self.currentTree = "starTree"
                     self:CenterCamera()
@@ -71,7 +70,6 @@ function PST.treeScreen:InputAllocate()
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 -- Sidereal Tree node, switch to sidereal tree
                 elseif self.hoveredNode.name == "Sidereal Tree" and self.currentTree ~= "sidereal" then
-                    self.modules.spaceBGModule.targetSpaceColor = Color(0.3, 0.3, 1, 1)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     self.currentTree = "sidereal"
                     PST:updateNodes("sidereal")

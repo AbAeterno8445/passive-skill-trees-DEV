@@ -7,6 +7,12 @@ local helpScreen = {
     helpButtonSprite = Sprite("gfx/ui/skilltrees/helpmenu/help_button.anm2", true),
     helpScreenSprite = Sprite("gfx/ui/skilltrees/helpmenu/help_screens.anm2", true),
 
+    inputOverrides = {
+        PSTKeybind.TREE_PAN_DOWN, PSTKeybind.TREE_PAN_LEFT, PSTKeybind.TREE_PAN_RIGHT, PSTKeybind.TREE_PAN_UP,
+        PSTKeybind.CENTER_CAMERA, PSTKeybind.PAN_FASTER, PSTKeybind.TREE_TAB,
+        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE, PSTKeybind.SWITCH_TREE
+    },
+
     pages = {
         "1.1", "1.2", "1.3", "1.4",
         "2.1", "2.2",
@@ -85,13 +91,13 @@ function helpScreen:OnOpen()
     self.helpButtonSprite.Scale = self:GetMenuScale()
 end
 
-function helpScreen:OnClose(menuScreensModule)
+function helpScreen:OnClose()
     if self.currentPage ~= 0 then
         SFXManager():Play(SoundEffect.SOUND_BOOK_PAGE_TURN_12, 0.5)
         self:SwitchPage(0)
+        return false
     else
         SFXManager():Play(SoundEffect.SOUND_PAPER_OUT, 0.5)
-        menuScreensModule:CloseMenu()
     end
 end
 

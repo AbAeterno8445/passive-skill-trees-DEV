@@ -36,8 +36,25 @@ function spaceBGModule:ShuffleStarfield()
     end
 end
 
+local targetColors = {
+    default = Color(1, 1, 1, 1),
+    starTree = Color(0, 1, 1, 1),
+    sidereal = Color(0.3, 0.3, 1, 1),
+    character = Color(1, 0.5, 1, 1)
+}
+
 ---@param tScreen PST.treeScreen
 function spaceBGModule:Update(tScreen)
+    -- Determine target background color based on tree status
+    self.targetSpaceColor = targetColors.default
+    if tScreen.currentTree == "starTree" then
+        self.targetSpaceColor = targetColors.starTree
+    elseif tScreen.currentTree == "sidereal" then
+        self.targetSpaceColor = targetColors.sidereal
+    elseif PST:arrHasValue(PST.charNames, tScreen.currentTree) then
+        self.targetSpaceColor = targetColors.character
+    end
+
     -- Space background color shifting
     if self.treeSpaceSprite.Color.R < self.targetSpaceColor.R then
         self.treeSpaceSprite.Color.R = self.treeSpaceSprite.Color.R + colorStep

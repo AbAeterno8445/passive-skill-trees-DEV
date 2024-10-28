@@ -23,11 +23,12 @@ function PST.treeScreen:Inputs()
     if PST:isKeybindActive(PSTKeybind.CLOSE_TREE) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.CLOSE_TREE) then
         if self.backupsPopup then
             self.backupsPopup = false
-        elseif currentMenuModule and currentMenuModule.OnClose then
-            currentMenuModule:OnClose(menuScreensModule)
         elseif currentMenu ~= PSTTreeScreenMenu.NONE then
-            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
             menuScreensModule:CloseMenu()
+        elseif self.currentTree == "sidereal" then
+            self.currentTree = "starTree"
+        elseif self.currentTree == "starTree" then
+            self.currentTree = "global"
         else
             PST:closeTreeMenu()
         end
@@ -129,13 +130,10 @@ function PST.treeScreen:Inputs()
         if selectedCharName and PST.trees[selectedCharName] ~= nil then
             if self.currentTree == "global" then
                 self.currentTree = selectedCharName
-                self.modules.spaceBGModule.targetSpaceColor = Color(1, 0.5, 1, 1)
             elseif self.currentTree == "sidereal" then
                 self.currentTree = "starTree"
-                self.modules.spaceBGModule.targetSpaceColor = Color(0, 1, 1, 1)
             else
                 self.currentTree = "global"
-                self.modules.spaceBGModule.targetSpaceColor = Color(1, 1, 1, 1)
             end
             self.modules.submenusModule:CloseSubmenu()
             SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)

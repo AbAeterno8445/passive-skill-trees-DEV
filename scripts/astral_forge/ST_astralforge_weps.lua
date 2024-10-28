@@ -236,7 +236,47 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y)
     end
 end
 
+function PST:getEquippedWeapon()
+    for _, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
+        if tmpWeapon.equipped then return tmpWeapon end
+    end
+    return nil
+end
+
+---@param weapon PSTAstralWeapon
+function PST:equipAstralWep(weapon)
+    if not weapon.equipped then
+        local tmpEqWeapon = PST:getEquippedWeapon()
+        if tmpEqWeapon then tmpEqWeapon.equipped = nil end
+        weapon.equipped = true
+    else
+        weapon.equipped = nil
+    end
+end
+
+-- Determine how many forging materials a weapon is worth
+---@param weaponData PSTAstralWeapon
+function PST:getAstralWepDeconMats(weaponData)
+    local mats = {
+        mundane = 5,
+        spark = 0,
+        ancient = 0
+    }
+    mats.mundane = mats.mundane + (weaponData.tier - 1) * 5 + (weaponData.honing or 0)
+    if weaponData.rarity ~= PSTAstralWepRarity.NORMAL then
+        mats.mundane = math.max(2, math.floor(mats.mundane / 4))
+    end
+    if weaponData.mods and #weaponData.mods > 0 then
+        mats.spark = math.floor(#weaponData.mods * 1.5 * weaponData.tier)
+    end
+    if weaponData.rarity == PSTAstralWepRarity.ANCIENT then
+        mats.ancient = 1 + math.floor(((weaponData.ancientUpg or 0) + weaponData.tier) / 3)
+    end
+    return mats
+end
+
 local wepTierTxt = {"I", "II", "III", "IV", "V"}
+
 ---@param weaponData PSTAstralWeapon
 ---@param showModRanges? boolean
 function PST:getAstralWepDesc(weaponData, showModRanges)
@@ -268,7 +308,15 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
         local impRolls = {}
         for i, tmpRoll in ipairs(weaponData.implicitMod) do
-            impRolls["roll" .. tostring(i)] = tmpRoll
+            local tgtRoll = "roll" .. tostring(i)
+            impRolls[tgtRoll] = tostring(tmpRoll)
+        end
+        -- Show max rolls
+        if showModRanges then
+            local maxRolls = wepTypeData.implicitMod.rollsFunc(50)
+            for tmpTgtRoll, tmpMaxRoll in pairs(maxRolls) do
+                impRolls[tmpTgtRoll] = impRolls[tmpTgtRoll] .. " (" .. tostring(tmpMaxRoll) .. ")"
+            end
         end
 
         local targetDesc = wepTypeData.implicitMod.description
@@ -295,16 +343,13 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
                 local tmpRollList = {}
                 if not tmpModData.ancient then
                     for i, tmpRoll in ipairs(tmpMod.rolls) do
-                        tmpRollList["roll" .. tostring(i)] = tostring(tmpRoll)
-                    end
-
-                    -- Show mod ranges
-                    if showModRanges then
-                        local minRolls = PST:astralWepRoundRolls(tmpModData.rollsFunc(weaponData.tier, 0))
-                        local maxRolls = PST:astralWepRoundRolls(tmpModData.rollsFunc(weaponData.tier, 1))
-                        for i, tmpRoll in ipairs(tmpMod.rolls) do
-                            local tgtRoll = "roll" .. tostring(i)
-                            tmpRollList[tgtRoll] = tostring(tmpRoll) .. " (" .. tostring(minRolls[tgtRoll]) .. "~" .. tostring(maxRolls[tgtRoll]) .. ")"
+                        local tgtRoll = "roll" .. tostring(i)
+                        tmpRollList[tgtRoll] = tostring(tmpRoll)
+                        -- Show mod ranges
+                        if showModRanges then
+                            local minRolls = PST:astralWepRoundRolls(tmpModData.rollsFunc(weaponData.tier, {0, 0, 0, 0, 0}))
+                            local maxRolls = PST:astralWepRoundRolls(tmpModData.rollsFunc(weaponData.tier, {1, 1, 1, 1, 1}))
+                            tmpRollList[tgtRoll] = tmpRollList[tgtRoll] .. " (" .. tostring(minRolls[i]) .. "~" .. tostring(maxRolls[i]) .. ")"
                         end
                     end
                 else
@@ -314,6 +359,10 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
                     for i, tmpRoll in ipairs(tmpModData.minRolls) do
                         local tgtRoll = "roll" .. tostring(i)
                         tmpRollList[tgtRoll] = tostring(tmpRoll + tmpModData.upgIncrements[i] * ancientUpgrades)
+                        -- Show max value
+                        if showModRanges then
+                            tmpRollList[tgtRoll] = tmpRollList[tgtRoll] .. " (" .. tostring(tmpModData.maxRolls[i]) .. ")"
+                        end
                     end
                 end
 

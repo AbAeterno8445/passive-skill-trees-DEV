@@ -41,10 +41,13 @@ end
 
 function menuScreensModule:CloseMenu()
     local currentMenu = self.menus[self.currentMenu]
+    local closeMenu = true
     if currentMenu and currentMenu.OnClose then
-        currentMenu:OnClose()
+        closeMenu = currentMenu:OnClose()
     end
-    self.currentMenu = PSTTreeScreenMenu.NONE
+    if closeMenu ~= false then
+        self.currentMenu = PSTTreeScreenMenu.NONE
+    end
 end
 
 ---@param tScreen PST.treeScreen

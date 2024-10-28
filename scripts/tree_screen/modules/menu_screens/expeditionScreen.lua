@@ -295,6 +295,9 @@ function expeditionScreen:Update(tScreen)
         PST:resetExpedition(self.currentDepth)
     end
 
+    self.camCenterX = Isaac.GetScreenWidth() / 2
+    self.camCenterY = Isaac.GetScreenHeight() / 2
+
     PST.modData.expedSelDepth = self.currentDepth
 end
 
