@@ -1,3 +1,5 @@
+local boxLineHeight = 14
+
 -- Indexes for these correspond to the frame # in the UI sprite's Filters anim
 local invFilters = {
     { weaponType = PSTAstralWepType.LONGSWORD },
@@ -156,6 +158,49 @@ local function astralForgeScreenRender(self, tScreen)
         self.weaponSprite.Color.BO = 0
     end
 
+    -- Weapon forging UI box
+    tmpX = startX + 176
+    tmpY = startY
+    -- Determine box width/height based on selected weapon info
+    local tmpBoxW, tmpBoxH = 320, 182
+    local selectedWepDesc = {}
+    if self.selectedWeapon then
+        selectedWepDesc = PST:getAstralWepDesc(self.selectedWeapon, true)
+        for _, tmpLine in ipairs(selectedWepDesc) do
+            local tmpStr = tmpLine
+            if type(tmpLine) == "table" then tmpStr = tmpLine[1] end
+            tmpBoxW = math.max(PST.miniFont:GetStringWidth(tmpStr) + 12, tmpBoxW)
+        end
+        tmpBoxH = math.max(#selectedWepDesc * boxLineHeight + 60, tmpBoxH)
+    end
+    self:DrawUIBox(tmpX, tmpY, tmpBoxW, tmpBoxH)
+
+    PST.miniFont:DrawString("Weapon Forging", tmpX + 3, tmpY, KColor(1, 0.7, 0.3, 1))
+    tmpY = tmpY + 17
+
+    -- Selected weapon slot
+    local selWepX = tmpX + 19
+    local selWepY = tmpY + 16
+    self.forgeUISprite:SetFrame("UI", 0)
+    self.forgeUISprite:Render(Vector(selWepX, selWepY))
+
+    if not self.selectedWeapon then
+        PST.miniFont:DrawString("Select a weapon from your inventory to begin forging.", selWepX + 18, tmpY, KColor(1, 1, 1, 1))
+    else
+        -- Selected weapon data
+        PST:renderAstralWepAt(self.selectedWeapon, self.weaponSprite, selWepX, selWepY)
+        selWepX = selWepX - 15
+        selWepY = selWepY + 18
+        for _, tmpLine in ipairs(selectedWepDesc) do
+            if type(tmpLine) == "table" then
+                PST.miniFont:DrawString(tmpLine[1], selWepX, selWepY, tmpLine[2])
+            else
+                PST.miniFont:DrawString(tmpLine, selWepX, selWepY, KColor(1, 1, 1, 1))
+            end
+            selWepY = selWepY + boxLineHeight
+        end
+    end
+
     -- Cursor
     if hoveredMat or self.hoveredWeapon or self.hoveredFilter or self.deconHovered then
         tScreen.cursorSprite:Play("Clicked", true)
@@ -165,10 +210,12 @@ local function astralForgeScreenRender(self, tScreen)
     tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
 
     -- Control hints
-    tmpY = startY + 180
-    PST.luaminiFont:DrawString("Press Allocate to equip hovered weapon.", startX, tmpY, KColor(1, 1, 1, 1))
-    tmpY = tmpY + 12
-    PST.luaminiFont:DrawString("Shift + Allocate to select hovered weapon for forging.", startX, tmpY, KColor(1, 1, 1, 1))
+    if not self.selectedWeapon then
+        tmpY = startY + 180
+        PST.luaminiFont:DrawString("Press Allocate to equip hovered weapon.", startX, tmpY, KColor(1, 1, 1, 1))
+        tmpY = tmpY + 12
+        PST.luaminiFont:DrawString("Shift + Allocate to select hovered weapon for forging.", startX, tmpY, KColor(1, 1, 1, 1))
+    end
 
     -- Hovered filter description
     if self.hoveredFilter then

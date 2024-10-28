@@ -129,18 +129,22 @@ function astralForgeScreen:OnInput()
         -- Hovered weapon
         elseif self.hoveredWeapon then
             if not self.deconMode then
-                if not PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
-                    PST:equipAstralWep(self.hoveredWeapon)
-                else
-                    -- Shift + Allocate: select hovered weapon for forging
-                    if self.selectedWeapon ~= self.hoveredWeapon then
-                        self.selectedWeapon = self.hoveredWeapon
-                    else
-                        self.selectedWeapon = nil
-                    end
-                end
+                PST:equipAstralWep(self.hoveredWeapon)
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
             end
+        end
+    end
+
+    -- Input: Shift + Allocate
+    if PST:isKeybindActive(PSTKeybind.SHIFT_ALLOCATE_NODE) then
+        -- Select hovered weapon
+        if self.hoveredWeapon then
+            if self.selectedWeapon ~= self.hoveredWeapon then
+                self.selectedWeapon = self.hoveredWeapon
+            else
+                self.selectedWeapon = nil
+            end
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
         end
     end
 
@@ -152,6 +156,9 @@ function astralForgeScreen:OnInput()
             if self.deconTimer == 60 then
                 if not self.hoveredWeapon.equipped then
                     SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE)
+                    if self.selectedWeapon == self.hoveredWeapon then
+                        self.selectedWeapon = nil
+                    end
                     PSTDeconstructWeapon(self.hoveredWeapon)
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN)
@@ -168,6 +175,9 @@ function astralForgeScreen:OnInput()
             if self.deconMode and self.hoveredWeapon and self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
                 if not self.hoveredWeapon.equipped then
                     SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE)
+                    if self.selectedWeapon == self.hoveredWeapon then
+                        self.selectedWeapon = nil
+                    end
                     PSTDeconstructWeapon(self.hoveredWeapon)
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN)
