@@ -2,20 +2,22 @@
 ---@param weaponData PSTAstralWeapon
 function PST:getAstralWepCraftCosts(weaponData)
     local costs = {
-        honing = {}, reroll = {}, addition = {}, removal = {}, imprinting = {}, ancUpgrade = {}, alteration = {}
+        honing = {}, reroll = {}, addition = {}, removal = {},
+        imprinting = {}, ancUpgrade = {}, alteration = {}, transmutation = {},
+        --ascension = {}
     }
     -- Honing
     costs.honing.mundaneEssence = 3 + math.ceil((weaponData.honing or 0) * 1.2)
     -- Rerolling modifiers
-    costs.reroll.mundaneEssence = 4 + weaponData.tier * 2
+    costs.reroll.mundaneEssence = 6 + weaponData.tier * 2
     costs.reroll.sparkEssence = 2 + weaponData.tier
     costs.reroll.sparkStardust = weaponData.tier
     -- Add missing modifier
-    costs.addition.mundaneEssence = 8
+    costs.addition.mundaneEssence = 15
     costs.addition.sparkEssence = weaponData.tier
     costs.addition.sparkStardust = 2 + weaponData.tier
     -- Remove random modifier
-    costs.removal.mundaneEssence = 10
+    costs.removal.mundaneEssence = 15
     costs.removal.sparkEssence = 3 + weaponData.tier
     costs.removal.sparkStardust = weaponData.tier
     -- Imprint modifier into Ancient
@@ -38,6 +40,16 @@ function PST:getAstralWepCraftCosts(weaponData)
         costs.alteration.sparkStardust = 5
         costs.alteration.ancientStardust = 1
     end
+    -- Transmutation: transform normal weapon into magic, adding 1 modifier
+    costs.transmutation.mundaneEssence = 20 + weaponData.tier * 5
+    costs.transmutation.sparkEssence = 4 + weaponData.tier * 3
+    costs.transmutation.sparkStardust = 3 + weaponData.tier * 2
+    --[[ Ascension: upgrade the weapon's tier
+    costs.ascension.mundaneEssence = 10 * weaponData.tier
+    costs.ascension.sparkEssence = 8 * weaponData.tier
+    costs.ascension.sparkStardust = 8 * weaponData.tier
+    costs.ascension.ancientEssence = 2 * weaponData.tier
+    costs.ascension.ancientStardust = 2 * weaponData.tier]]
     return costs
 end
 
@@ -92,7 +104,7 @@ end
 ---@param targetWeapon PSTAstralWeapon
 function PST:astralWepForgeImprint(weaponData, targetWeapon)
     if weaponData.rarity == PSTAstralWepRarity.ANCIENT and targetWeapon.rarity == PSTAstralWepRarity.MAGIC and
-    weaponData.mods and #weaponData.mods == 1 and targetWeapon.mods and #targetWeapon.mods > 0 then
+    weaponData.mods and #weaponData.mods == 1 and targetWeapon.mods and #targetWeapon.mods == 2 then
         local randMod = targetWeapon.mods[math.random(#targetWeapon.mods)]
         table.insert(weaponData.mods, PST:copyTable(randMod))
         return true
@@ -138,5 +150,14 @@ function PST:astralWepForgeAlter(weaponData)
 
         weaponData.mods[i].rolls = newModRolls
     end
+    return true
+end
+
+-- Turn normal weapon into magic, adding 1 modifier
+---@param weaponData PSTAstralWeapon
+function PST:astralWepForgeTransmute(weaponData)
+    if weaponData.rarity ~= PSTAstralWepRarity.NORMAL then return false end
+    weaponData.rarity = PSTAstralWepRarity.MAGIC
+    PST:astralWepAddMod(weaponData)
     return true
 end

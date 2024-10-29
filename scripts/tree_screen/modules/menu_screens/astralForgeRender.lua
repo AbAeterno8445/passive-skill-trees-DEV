@@ -58,6 +58,15 @@ local forgingButtons = {
         frame = 2
     },
     {
+        name = "Transmutation",
+        description = {"Transform this normal weapon into a magic weapon, adding 1 random modifier."},
+        targetAction = "transmutation",
+        actionFunc = PST.astralWepForgeTransmute,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_FLASHBACK, 0.8, 2, false, 1.3) end,
+        frame = 9,
+        reqRarity = PSTAstralWepRarity.NORMAL
+    },
+    {
         name = "Reroll Modifiers",
         description = {"Reroll the weapon's modifiers. Can result in 1 or 2 modifiers."},
         targetAction = "reroll",
@@ -97,6 +106,7 @@ local forgingButtons = {
         name = "Ancient Imprinting",
         description = {
             "Imprint a random modifier from another magic weapon into this Ancient weapon.",
+            "Target magic weapon must have 2 modifiers.",
             "Can only imprint 1 modifier per Ancient weapon.",
             "Imprinted modifiers can no longer be altered once applied."
         },
@@ -116,7 +126,21 @@ local forgingButtons = {
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE, 0.8, 2, false, 0.9 + 0.2 * math.random()) end,
         frame = 6,
         reqRarity = PSTAstralWepRarity.ANCIENT
-    }
+    },
+    --[[{
+        name = "Ascension",
+        description = {
+            "Upgrade the weapon's tier by 1 level, up to tier 5.",
+            "Higher tier weapon modifiers roll higher values."
+        },
+        targetAction = "ascension",
+        actionFunc = PST.astralWepForgeAscend,
+        soundFunc = function()
+            SFXManager():Play(SoundEffect.SOUND_CHOIR_UNLOCK, 0.8)
+            SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE, 0.8, 2, false, 0.9 + 0.2 * math.random())
+        end,
+        frame = 10
+    }]]
 }
 
 ---@param tScreen PST.treeScreen
@@ -331,6 +355,8 @@ local function astralForgeScreenRender(self, tScreen)
         tmpY = tmpY + 12
         PST.luaminiFont:DrawString("Shift + Allocate to equip hovered.", startX, tmpY, KColor(1, 1, 1, 1))
     end
+
+    Isaac.RenderText("Astral Forge", 8, 8, 1, 1, 1, 1)
 
     -- Hovered filter description
     if self.hoveredFilter then
