@@ -31,6 +31,11 @@ local astralForgeScreen = {
     deconHovered = false,
     deconTimer = 0,
 
+    -- Forge actions
+    ---@type table|nil
+    hoveredForgeButton = nil,
+    imprintMode = false,
+
     -- Inventory filters
     ---@type table|nil
     hoveredFilter = nil,
@@ -67,6 +72,12 @@ end
 
 function astralForgeScreen:CenterCamera()
     self.camera = Vector.Zero
+end
+
+function astralForgeScreen:OnClose()
+    self.deconMode = false
+    self.imprintMode = false
+    self.selectedWeapon = nil
 end
 
 -- Input processing
@@ -125,11 +136,71 @@ function astralForgeScreen:OnInput()
         -- Hovered decon button, toggle mode
         elseif self.deconHovered then
             self.deconMode = not self.deconMode
+            if self.deconMode then self.imprintMode = false end
             SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
         -- Hovered weapon
         elseif self.hoveredWeapon then
-            if not self.deconMode then
-                PST:equipAstralWep(self.hoveredWeapon)
+            if not self.imprintMode then
+                -- Select hovered weapon
+                if self.selectedWeapon ~= self.hoveredWeapon then
+                    self.selectedWeapon = self.hoveredWeapon
+                else
+                    self.selectedWeapon = nil
+                end
+                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+            -- Imprinting mode + magic weapon, attempt imprint
+            elseif self.imprintMode then
+                if self.selectedWeapon and self.selectedWeapon.rarity == PSTAstralWepRarity.ANCIENT then
+                    if self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
+                        local result = PST:astralWepForgeImprint(self.selectedWeapon, self.hoveredWeapon)
+                        if result then
+                            -- Successful imprint
+                            PSTDeconstructWeapon(self.hoveredWeapon)
+                            SFXManager():Play(SoundEffect.SOUND_FLASHBACK)
+                            SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.8)
+                            self.imprintMode = false
+                        else
+                            SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                        end
+                    else
+                        SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                    end
+                else
+                    self.imprintMode = false
+                end
+            end
+        -- Hovered forge action
+        elseif self.hoveredForgeButton and self.selectedWeapon then
+            local forgeCosts = PST:getAstralWepCraftCosts(self.selectedWeapon)[self.hoveredForgeButton.targetAction]
+
+            if self.hoveredForgeButton.targetAction ~= "imprinting" then
+                local canAfford = true
+                for matName, matCost in pairs(forgeCosts) do
+                    if not PST.modData[matName] or (PST.modData[matName] and PST.modData[matName] < matCost) then
+                        canAfford = false
+                        break
+                    end
+                end
+                if canAfford or PST.debugOptions.freeForging then
+                    local result = self.hoveredForgeButton.actionFunc(PST, self.selectedWeapon)
+                    if result ~= false then
+                        -- Successful craft
+                        if self.hoveredForgeButton.soundFunc then self.hoveredForgeButton.soundFunc() end
+                        if not PST.debugOptions.freeForging then
+                            for matName, matCost in pairs(forgeCosts) do
+                                PST.modData[matName] = PST.modData[matName] - matCost
+                            end
+                        end
+                    else
+                        SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                    end
+                else
+                    SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                end
+            else
+                -- Imprint mode toggle
+                self.imprintMode = not self.imprintMode
+                if self.imprintMode then self.deconMode = false end
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
             end
         end
@@ -137,13 +208,9 @@ function astralForgeScreen:OnInput()
 
     -- Input: Shift + Allocate
     if PST:isKeybindActive(PSTKeybind.SHIFT_ALLOCATE_NODE) then
-        -- Select hovered weapon
+        -- Equip hovered weapon
         if self.hoveredWeapon then
-            if self.selectedWeapon ~= self.hoveredWeapon then
-                self.selectedWeapon = self.hoveredWeapon
-            else
-                self.selectedWeapon = nil
-            end
+            PST:equipAstralWep(self.hoveredWeapon)
             SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
         end
     end
@@ -198,6 +265,7 @@ function astralForgeScreen:Update(tScreen)
     tScreen.hideNodes = true
     self.hoveredWeapon = nil
     self.hoveredFilter = nil
+    self.hoveredForgeButton = nil
 
     self.camCenterX = Isaac.GetScreenWidth() / 2
     self.camCenterY = Isaac.GetScreenHeight() / 2

@@ -53,7 +53,8 @@ PST.debugOptions = {
 	allAvailable = false, -- Makes all nodes available
 	cosmicRUnlocked = false, -- Removes character unlock requirement from the Cosmic Realignment node
 	drawNodeIDs = false, -- Draw node IDs on the tree screen
-	printModsOnStart = false, -- Print modifiers applied to the snapshot on run start
+	printModsOnStart = false, -- Print modifiers applied to the snapshot on run start,
+	freeForging = false, -- Astral Forge actions become free
 }
 
 local localDebugMode = false
@@ -63,6 +64,7 @@ function PST:toggleDebugMode()
 	PST.debugOptions.infRespec = localDebugMode
 	PST.debugOptions.allAvailable = localDebugMode
 	PST.debugOptions.cosmicRUnlocked = localDebugMode
+	PST.debugOptions.freeForging = localDebugMode
 	print("Passive Skill Trees: debug mode now", localDebugMode and "on" or "off")
 end
 

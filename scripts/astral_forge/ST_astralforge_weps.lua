@@ -70,14 +70,21 @@ function PST:astralWepAddMod(weaponData)
     })
 end
 
----@param wepType PSTAstralWepType
-function PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
-    ---@type PSTAstralWeapon
-    local newWep = {type = wepType, rarity = wepRarity, tier = wepTier or 1}
+---@param weaponData PSTAstralWeapon
+function PST:astralWepGenerateMagicMods(weaponData)
+    PST:astralWepAddMod(weaponData)
+    local extraModChance = 0.4 + 0.02 * weaponData.tier
+    if math.random() < extraModChance then
+        PST:astralWepAddMod(weaponData)
+    end
+end
 
-    local wepTypeData = PST.astralWepData[wepType]
-    -- Assign implicit modifier
-    local impRolls = wepTypeData.implicitMod.rollsFunc(0)
+---@param weaponData PSTAstralWeapon
+function PST:astralWepUpdateImplicit(weaponData, honing)
+    local wepTypeData = PST.astralWepData[weaponData.type]
+
+    honing = honing or weaponData.honing or 0
+    local impRolls = wepTypeData.implicitMod.rollsFunc(honing)
     local newImpRolls = {}
     for i=1,5 do
         local tmpRoll = impRolls["roll" .. tostring(i)]
@@ -85,16 +92,21 @@ function PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
             table.insert(newImpRolls, tmpRoll)
         end
     end
-    newWep.implicitMod = newImpRolls
+    weaponData.implicitMod = newImpRolls
+end
+
+---@param wepType PSTAstralWepType
+function PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
+    ---@type PSTAstralWeapon
+    local newWep = {type = wepType, rarity = wepRarity, tier = wepTier or 1}
+
+    local wepTypeData = PST.astralWepData[wepType]
+    -- Assign implicit modifier
+    PST:astralWepUpdateImplicit(newWep, 0)
 
     -- Magic weapon, generate modifiers
     if wepRarity == PSTAstralWepRarity.MAGIC then
-        PST:astralWepAddMod(newWep)
-
-        local extraModChance = 0.4 + 0.02 * newWep.tier
-        if math.random() < extraModChance then
-            PST:astralWepAddMod(newWep)
-        end
+        PST:astralWepGenerateMagicMods(newWep)
     -- Ancient weapon
     elseif wepRarity == PSTAstralWepRarity.ANCIENT then
         -- Pick random one from type if not provided
@@ -332,7 +344,7 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     -- Modifiers
     if weaponData.mods and #weaponData.mods > 0 then
-        table.insert(tmpDescription, {"---- Mods ----", KColor(0.5, 0.5, 0.5, 1)})
+        table.insert(tmpDescription, {"---- Mods (" .. tostring(#weaponData.mods) .. ") ----", KColor(0.5, 0.5, 0.5, 1)})
 
         for _, tmpMod in ipairs(weaponData.mods) do
             local tmpModData = PST.astralWepMods[tmpMod.name]
@@ -392,3 +404,5 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     return tmpDescription
 end
+
+include("scripts.astral_forge.ST_astralforge_forging")

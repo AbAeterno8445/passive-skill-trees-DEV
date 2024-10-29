@@ -19,6 +19,14 @@ local invFilters = {
     { weaponRarity = PSTAstralWepRarity.ANCIENT }
 }
 local wepRarityStr = {"Normal", "Magic", "Ancient"}
+local matsData = {
+    mundaneEssence = {"Mundane Essence", KColor(1, 1, 1, 1)},
+    sparkEssence = {"Sparkling Essence", KColor(0.8, 0.8, 1, 1)},
+    ancientEssence = {"Ancient Essence", PST:RGBKColor(255, 172, 28)},
+    sparkStardust = {"Sparkling Stardust", KColor(0.8, 0.8, 1, 1)},
+    ancientStardust = {"Ancient Stardust", PST:RGBKColor(255, 172, 28)}
+}
+local matsOrder = {"mundaneEssence", "sparkEssence", "sparkStardust", "ancientEssence", "ancientStardust"}
 local UIMats = {
     {
         -- Mundane Essence
@@ -40,6 +48,76 @@ local UIMats = {
         source = {"    Killing final bosses."}},
     }
 }
+local forgingButtons = {
+    {
+        name = "Honing",
+        description = {"Hone the weapon, improving its implicit modifier. Each weapon can be honed up to 50 times."},
+        targetAction = "honing",
+        actionFunc = PST.astralWepForgeHone,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BISHOP_HIT, 0.8) end,
+        frame = 2
+    },
+    {
+        name = "Reroll Modifiers",
+        description = {"Reroll the weapon's modifiers. Can result in 1 or 2 modifiers."},
+        targetAction = "reroll",
+        actionFunc = PST.astralWepForgeReroll,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BISHOP_HIT, 0.8, 2, false, 0.7) end,
+        frame = 3,
+        reqRarity = PSTAstralWepRarity.MAGIC
+    },
+    {
+        name = "Add Modifier",
+        description = {"Add a random modifier if the weapon only has 1."},
+        targetAction = "addition",
+        actionFunc = PST.astralWepForgeAdd,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BULB_FLASH, 0.8) end,
+        frame = 4,
+        reqRarity = PSTAstralWepRarity.MAGIC
+    },
+    {
+        name = "Remove Modifier",
+        description = {"Remove a random modifier if the weapon has 2."},
+        targetAction = "removal",
+        actionFunc = PST.astralWepForgeRemove,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BULB_FLASH, 0.8, 2, false, 0.5) end,
+        frame = 8,
+        reqRarity = PSTAstralWepRarity.MAGIC
+    },
+    {
+        name = "Alter Modifiers",
+        description = {"Randomise the values of the random, non-implicit modifiers on this weapon."},
+        targetAction = "alteration",
+        actionFunc = PST.astralWepForgeAlter,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_DEAD, 0.8, 2, false, 0.9 + 0.2 * math.random()) end,
+        frame = 7,
+        reqRarity = PSTAstralWepRarity.MAGIC
+    },
+    {
+        name = "Ancient Imprinting",
+        description = {
+            "Imprint a random modifier from another magic weapon into this Ancient weapon.",
+            "Can only imprint 1 modifier per Ancient weapon.",
+            "Imprinted modifiers can no longer be altered once applied."
+        },
+        imprintDescription = {
+            "Hover over the magic weapon you wish to imprint from in the inventory, then press Allocate to imprint.",
+            "Press Allocate on this button again to deactivate imprinting mode."
+        },
+        targetAction = "imprinting",
+        frame = 5,
+        reqRarity = PSTAstralWepRarity.ANCIENT
+    },
+    {
+        name = "Ancient Upgrade",
+        description = {"Improve this Ancient weapon's unique modifier."},
+        targetAction = "ancUpgrade",
+        actionFunc = PST.astralWepForgeAncUpg,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE, 0.8, 2, false, 0.9 + 0.2 * math.random()) end,
+        frame = 6,
+        reqRarity = PSTAstralWepRarity.ANCIENT
+    }
+}
 
 ---@param tScreen PST.treeScreen
 local function astralForgeScreenRender(self, tScreen)
@@ -51,7 +129,11 @@ local function astralForgeScreenRender(self, tScreen)
     -- Draw inventory
     local tmpX, tmpY = startX, startY
     self:DrawUIBox(tmpX, tmpY, 170, 182)
-    PST.miniFont:DrawString("Weapon Inventory", tmpX + 3, tmpY, KColor(1, 0.7, 0.3, 1))
+    -- Inventory title
+    local tmpTitle = "Weapon Inventory"
+    if self.deconMode then tmpTitle = tmpTitle .. " (Decon)"
+    elseif self.imprintMode then tmpTitle = tmpTitle .. " (Imprint)" end
+    PST.miniFont:DrawString(tmpTitle, tmpX + 3, tmpY, KColor(1, 0.7, 0.3, 1))
     tmpY = tmpY + 17
 
     -- Draw material counts UI box
@@ -119,43 +201,47 @@ local function astralForgeScreenRender(self, tScreen)
     tmpY = tmpY + math.ceil(#invFilters / 8) * 18 + 3
 
     -- Weapons
-    local drawnWeps = {}
-    local hasTypeFilter = #self.appliedFilters.weaponType > 0
-    local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
-    -- Create filtered list
-    if hasTypeFilter or hasRarityFilter then
-        for _, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
-            if (not hasTypeFilter or (hasTypeFilter and PST:arrHasValue(self.appliedFilters.weaponType, tmpWeapon.type))) and
-            (not hasRarityFilter or (hasRarityFilter and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpWeapon.rarity))) then
-                table.insert(drawnWeps, tmpWeapon)
-            end
-        end
+    if #PST.modData.astralWepInventory == 0 then
+        PST.miniFont:DrawString("Inventory Empty.", tmpX, tmpY, KColor(1, 1, 1, 1))
     else
-        drawnWeps = PST.modData.astralWepInventory
-    end
-    -- Draw weapons
-    for i, tmpWeapon in ipairs(drawnWeps) do
-        local wepX = tmpX + 18 + 34 * ((i - 1) % 5)
-        local wepY = tmpY + 16 + 34 * math.floor((i - 1) / 5)
-
-        -- Hovered weapon
-        if self.camCenterX >= wepX - 16 and self.camCenterX <= wepX + 16 and
-        self.camCenterY >= wepY - 16 and self.camCenterY <= wepY + 16 then
-            self.hoveredWeapon = tmpWeapon
-            self.weaponSprite.Color.RO = 0.4
-            self.weaponSprite.Color.GO = 0.4
-            self.weaponSprite.Color.BO = 0.4
+        local drawnWeps = {}
+        local hasTypeFilter = #self.appliedFilters.weaponType > 0
+        local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
+        -- Create filtered list
+        if hasTypeFilter or hasRarityFilter then
+            for _, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
+                if (not hasTypeFilter or (hasTypeFilter and PST:arrHasValue(self.appliedFilters.weaponType, tmpWeapon.type))) and
+                (not hasRarityFilter or (hasRarityFilter and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpWeapon.rarity))) then
+                    table.insert(drawnWeps, tmpWeapon)
+                end
+            end
+        else
+            drawnWeps = PST.modData.astralWepInventory
         end
-        PST:renderAstralWepAt(tmpWeapon, self.weaponSprite, wepX, wepY)
+        -- Draw weapons
+        for i, tmpWeapon in ipairs(drawnWeps) do
+            local wepX = tmpX + 18 + 34 * ((i - 1) % 5)
+            local wepY = tmpY + 16 + 34 * math.floor((i - 1) / 5)
 
-        -- Equipped
-        if tmpWeapon.equipped then
-            PST.miniFont:DrawString("E", wepX + 8, wepY + 4, KColor(1, 1, 0.7, 1))
+            -- Hovered weapon
+            if self.camCenterX >= wepX - 16 and self.camCenterX <= wepX + 16 and
+            self.camCenterY >= wepY - 16 and self.camCenterY <= wepY + 16 then
+                self.hoveredWeapon = tmpWeapon
+                self.weaponSprite.Color.RO = 0.4
+                self.weaponSprite.Color.GO = 0.4
+                self.weaponSprite.Color.BO = 0.4
+            end
+            PST:renderAstralWepAt(tmpWeapon, self.weaponSprite, wepX, wepY)
+
+            -- Equipped
+            if tmpWeapon.equipped then
+                PST.miniFont:DrawString("E", wepX + 8, wepY + 4, KColor(1, 1, 0.7, 1))
+            end
+
+            self.weaponSprite.Color.RO = 0
+            self.weaponSprite.Color.GO = 0
+            self.weaponSprite.Color.BO = 0
         end
-
-        self.weaponSprite.Color.RO = 0
-        self.weaponSprite.Color.GO = 0
-        self.weaponSprite.Color.BO = 0
     end
 
     -- Weapon forging UI box
@@ -187,8 +273,37 @@ local function astralForgeScreenRender(self, tScreen)
     if not self.selectedWeapon then
         PST.miniFont:DrawString("Select a weapon from your inventory to begin forging.", selWepX + 18, tmpY, KColor(1, 1, 1, 1))
     else
-        -- Selected weapon data
         PST:renderAstralWepAt(self.selectedWeapon, self.weaponSprite, selWepX, selWepY)
+        -- Forge action buttons
+        local drawnButtons = 0
+        for _, tmpButton in ipairs(forgingButtons) do
+            if not tmpButton.reqRarity or (tmpButton.reqRarity and self.selectedWeapon.rarity == tmpButton.reqRarity) then
+                local tmpButtonX = selWepX + 34 + 30 * drawnButtons
+                self.forgeUISprite:SetFrame("UI", tmpButton.frame)
+
+                -- Hovered button
+                if self.camCenterX >= tmpButtonX - 14 and self.camCenterX <= tmpButtonX + 14 and
+                self.camCenterY >= selWepY - 14 and self.camCenterY <= selWepY + 14 then
+                    self.hoveredForgeButton = tmpButton
+                    self.forgeUISprite.Color.RO = 0.25
+                    self.forgeUISprite.Color.GO = 0.25
+                    self.forgeUISprite.Color.BO = 0.25
+                end
+                self.forgeUISprite:Render(Vector(tmpButtonX, selWepY))
+                self.forgeUISprite.Color.RO = 0
+                self.forgeUISprite.Color.GO = 0
+                self.forgeUISprite.Color.BO = 0
+
+                if tmpButton.targetAction == "imprinting" and self.imprintMode then
+                    tScreen.modules.nodeDrawingModule.nodesExtraSprite:SetFrame("Allocated Small", 0)
+                    tScreen.modules.nodeDrawingModule.nodesExtraSprite:Render(Vector(tmpButtonX, selWepY))
+                end
+
+                drawnButtons = drawnButtons + 1
+            end
+        end
+
+        -- Selected weapon data
         selWepX = selWepX - 15
         selWepY = selWepY + 18
         for _, tmpLine in ipairs(selectedWepDesc) do
@@ -202,7 +317,7 @@ local function astralForgeScreenRender(self, tScreen)
     end
 
     -- Cursor
-    if hoveredMat or self.hoveredWeapon or self.hoveredFilter or self.deconHovered then
+    if hoveredMat or self.hoveredWeapon or self.hoveredFilter or self.deconHovered or self.hoveredForgeButton then
         tScreen.cursorSprite:Play("Clicked", true)
     else
         tScreen.cursorSprite:Play("Idle", true)
@@ -212,9 +327,9 @@ local function astralForgeScreenRender(self, tScreen)
     -- Control hints
     if not self.selectedWeapon then
         tmpY = startY + 180
-        PST.luaminiFont:DrawString("Press Allocate to equip hovered weapon.", startX, tmpY, KColor(1, 1, 1, 1))
+        PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, KColor(1, 1, 1, 1))
         tmpY = tmpY + 12
-        PST.luaminiFont:DrawString("Shift + Allocate to select hovered weapon for forging.", startX, tmpY, KColor(1, 1, 1, 1))
+        PST.luaminiFont:DrawString("Shift + Allocate to equip hovered.", startX, tmpY, KColor(1, 1, 1, 1))
     end
 
     -- Hovered filter description
@@ -243,19 +358,26 @@ local function astralForgeScreenRender(self, tScreen)
         local wepDesc = {}
         if not self.deconMode then
             wepDesc = PST:getAstralWepDesc(self.hoveredWeapon, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))
-        -- Deconstruction mode weapon description
+
+            -- Imprinting mode description extras
+            if self.imprintMode and self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
+                table.insert(wepDesc, 1, {"NOTE: Imprinting will destroy this weapon!", KColor(1, 0.5, 0.2, 1)})
+                table.insert(wepDesc, 1, {"Press Allocate to imprint this weapon into the currently selected Ancient weapon.", KColor(1, 0.75, 0.3, 1)})
+                table.insert(wepDesc, 1, {"* Imprinting Weapon *", KColor(1, 0.75, 0.3, 1)})
+            end
         else
+            -- Deconstruction mode description
             table.insert(wepDesc, {"* Deconstructing Weapon *", KColor(1, 0.5, 0.5, 1)})
             -- Get deconstruction materials
             local wepMats = PST:getAstralWepDeconMats(self.hoveredWeapon)
             if wepMats.mundane > 0 then
-                table.insert(wepDesc, tostring(wepMats.mundane) .. "x Mundane Essence.")
+                table.insert(wepDesc, {tostring(wepMats.mundane) .. "x " .. matsData.mundaneEssence[1] .. ".", matsData.mundaneEssence[2]})
             end
             if wepMats.spark > 0 then
-                table.insert(wepDesc, {tostring(wepMats.spark) .. "x Sparkling Essence.", KColor(0.8, 0.8, 1, 1)})
+                table.insert(wepDesc, {tostring(wepMats.spark) .. "x " .. matsData.sparkEssence[1] .. ".", matsData.sparkEssence[2]})
             end
             if wepMats.ancient > 0 then
-                table.insert(wepDesc, {tostring(wepMats.spark) .. "x Ancient Essence.", PST:RGBKColor(255, 172, 28)})
+                table.insert(wepDesc, {tostring(wepMats.spark) .. "x " .. matsData.ancientEssence[1] .. ".", matsData.ancientEssence[2]})
             end
             if self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
                 table.insert(wepDesc, "Press the Respec button to deconstruct this weapon and gain these materials.")
@@ -273,6 +395,33 @@ local function astralForgeScreenRender(self, tScreen)
             "forging materials, destroying it in the process."
         }
         tScreen:DrawNodeBox("Toggle Deconstruction Mode", deconDesc)
+    -- Hovered forge action button description
+    elseif self.hoveredForgeButton then
+        local forgeDesc = {table.unpack(self.hoveredForgeButton.description)}
+
+        -- Imprint mode description
+        local isImprintToggled = self.hoveredForgeButton.targetAction == "imprinting" and self.imprintMode
+        if isImprintToggled then
+            forgeDesc = {table.unpack(self.hoveredForgeButton.imprintDescription)}
+        end
+
+        -- Forge action costs
+        local wepCosts = PST:getAstralWepCraftCosts(self.selectedWeapon)[self.hoveredForgeButton.targetAction]
+        if wepCosts and not PST.debugOptions.freeForging then
+            table.insert(forgeDesc, "Costs:")
+            for _, tmpMat in ipairs(matsOrder) do
+                local tmpCost = wepCosts[tmpMat]
+                if tmpCost and matsData[tmpMat] then
+                    local tmpStr = "    x " .. tostring(tmpCost) .. " " .. matsData[tmpMat][1] .. "."
+                    local canAfford = PST.modData[tmpMat] and PST.modData[tmpMat] >= tmpCost
+                    if not canAfford then
+                        tmpStr = tmpStr .. " (missing, you have " .. tostring(PST.modData[tmpMat]) .. ")"
+                    end
+                    table.insert(forgeDesc, {tmpStr, matsData[tmpMat][2]})
+                end
+            end
+        end
+        tScreen:DrawNodeBox(self.hoveredForgeButton.name, forgeDesc)
     end
 end
 

@@ -91,7 +91,7 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
 
     self.descBGSprite.Scale.X = descW
     self.descBGSprite.Scale.Y = descH
-    self.descBGSprite.Color.A = bgAlpha or 0.85
+    self.descBGSprite.Color.A = bgAlpha or 0.9
     self.descBGSprite:Render(Vector(drawX - 2, drawY - 2))
 
     tmpFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, KColor(1, 1, 1, 1))

@@ -322,6 +322,16 @@ PST.astralWepMods = {
         end
     },
 
+    creepDmg = {
+        description = "+{{roll1}}% damage dealt while standing on creep.",
+        color = {150, 200, 255},
+        rollsFunc = function(wepTier, rollPerc)
+            return {
+                roll1 = 8 + 4 * rollPerc[1] + wepTier * 4
+            }
+        end
+    },
+
     ---- ANCIENT MODS ----
     -- Ancient Longswords
     greyWind = {
