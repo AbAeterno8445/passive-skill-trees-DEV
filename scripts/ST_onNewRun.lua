@@ -13,7 +13,7 @@ function PST:onNewRun(isContinued)
     PST:resetMods()
     local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and Isaac.GetChallenge() == 0) or PST.config.treeOnChallenges)
     if treeActive then
-        local globalTrees = {"global", "starTree"}
+        local globalTrees = {"global", "starTree", "sidereal"}
         -- Get snapshot of tree modifiers
         for _, tmpTree in ipairs(globalTrees) do
             for nodeID, node in pairs(PST.trees[tmpTree]) do
@@ -241,9 +241,11 @@ function PST:onNewRun(isContinued)
     end
 
     -- Astral Expeditions
+    local isExpedRun = false
     if treeActive and PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth) then
         local expData = PST.expeditionsData[PST.modData.expedSelDepth]
         if expData and expData.selectedNode then
+            isExpedRun = true
             PST.modData.treeModSnapshot.isExpedRun = true
             PST.modData.treeModSnapshot.expedDepth = PST.modData.expedSelDepth
 
@@ -326,6 +328,30 @@ function PST:onNewRun(isContinued)
                         pickedItems = pickedItems + 1
                     end
                     failsafe = failsafe + 1
+                end
+            end
+        end
+    end
+
+    -- Astral Forge - equipped weapon mods
+    if treeActive and isExpedRun and PST:isNodeNameAllocated("sidereal", "Astral Forge") then
+        local eqWeapon = PST:getEquippedAstralWep()
+        if eqWeapon then
+            local wepTypeData = PST.astralWepData[eqWeapon.type]
+
+            -- Weapon implicit mod
+            if eqWeapon.implicitMod then
+                local tmpModName = PST.astralWepPrefix + wepTypeData.implicitMod.name
+                PST.modData.treeModSnapshot[tmpModName] = eqWeapon.implicitMod
+                print("set", tmpModName, "to", eqWeapon.implicitMod)
+            end
+
+            -- Weapon modifiers
+            if eqWeapon.mods then
+                for _, tmpMod in ipairs(eqWeapon.mods) do
+                    local tmpModName = PST.astralWepPrefix + tmpMod.name
+                    PST.modData.treeModSnapshot[tmpModName] = tmpMod.rolls or true
+                    print("set", tmpModName, "to", PST.modData.treeModSnapshot[tmpModName])
                 end
             end
         end

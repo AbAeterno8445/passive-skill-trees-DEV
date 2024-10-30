@@ -39,9 +39,10 @@ PSTAstralWepRarity = {
 ---@field equipped? string
 
 -- Astral weapon modifiers
+-- These get added as "astralwep_" + key name when applied to the run snapshot, e.g. "astralwep_dmgStatus"
 PST.astralWepMods = {
     ---- GENERIC MODS ----
-    dmgStatus = {
+    dmgStatus = { -- TODO
         description = "+{{roll1}}% damage dealt to enemies affected by status effects.",
         color = {145, 203, 196},
         rollsFunc = function(wepTier, rollPerc)
@@ -50,7 +51,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusSlow = {
+    dmgStatusSlow = { -- TODO
         description = "+{{roll1}}% damage dealt to slowed enemies.",
         color = {185, 223, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -59,7 +60,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusCharm = {
+    dmgStatusCharm = { -- TODO
         description = "+{{roll1}}% damage dealt to charmed enemies.",
         color = {249, 185, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -68,7 +69,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusPara = {
+    dmgStatusPara = { -- TODO
         description = "+{{roll1}}% damage dealt to paralyzed enemies.",
         color = {72, 77, 92},
         rollsFunc = function(wepTier, rollPerc)
@@ -77,7 +78,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusFear = {
+    dmgStatusFear = { -- TODO
         description = "+{{roll1}}% damage dealt to feared enemies.",
         color = {135, 60, 185},
         rollsFunc = function(wepTier, rollPerc)
@@ -86,7 +87,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusBleed = {
+    dmgStatusBleed = { -- TODO
         description = "+{{roll1}}% damage dealt to bleeding enemies.",
         color = {185, 60, 93},
         rollsFunc = function(wepTier, rollPerc)
@@ -96,7 +97,7 @@ PST.astralWepMods = {
         end
     },
 
-    consecFireDmg = {
+    consecFireDmg = { -- TODO
         description = "+{{roll1}}% damage dealt after firing consecutively for 2 seconds. Resets when you stop firing.",
         color = {235, 167, 90},
         rollsFunc = function(wepTier, rollPerc)
@@ -105,7 +106,7 @@ PST.astralWepMods = {
             }
         end
     },
-    consecFireDmg2 = {
+    consecFireDmg2 = { -- TODO
         description = {
             "+{{roll1}}% damage dealt after firing consecutively for 3 seconds.", 
             "Resets 1 second after you stop firing."
@@ -118,7 +119,7 @@ PST.astralWepMods = {
         end
     },
 
-    farEnemyDmg = {
+    farEnemyDmg = { -- TODO
         description = "+{{roll1}}% damage dealt to enemies beyond 1.5 tiles of you.",
         color = {127, 107, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -127,7 +128,7 @@ PST.astralWepMods = {
             }
         end
     },
-    closeEnemyDmg = {
+    closeEnemyDmg = { -- TODO
         description = "+{{roll1}}% damage dealt to enemies within 1.5 tiles of you.",
         color = {255, 107, 107},
         rollsFunc = function(wepTier, rollPerc)
@@ -137,7 +138,7 @@ PST.astralWepMods = {
         end
     },
 
-    baseDmg = {
+    baseDmg = { -- TODO
         description = "+{{roll1}} base damage.",
         color = {175, 0, 0},
         rollsFunc = function(wepTier, rollPerc)
@@ -146,7 +147,7 @@ PST.astralWepMods = {
             }
         end
     },
-    baseDmg2 = {
+    baseDmg2 = { -- TODO
         description = "+{{roll1}} base damage, removed for 10 seconds when you get hit.",
         color = {200, 20, 20},
         rollsFunc = function(wepTier, rollPerc)
@@ -156,7 +157,7 @@ PST.astralWepMods = {
         end
     },
 
-    redHealDmg = {
+    redHealDmg = { -- TODO
         description = {
             "When healing red hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 red heart recovered,",
             "which stacks up to {{roll2}}%."
@@ -169,7 +170,7 @@ PST.astralWepMods = {
             }
         end
     },
-    soulHealDmg = {
+    soulHealDmg = { -- TODO
         description = {
             "When gaining soul hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 soul heart gained,",
             "which stacks up to {{roll2}}%."
@@ -182,7 +183,7 @@ PST.astralWepMods = {
             }
         end
     },
-    blackHealDmg = {
+    blackHealDmg = { -- TODO
         description = {
             "When gaining black hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 black heart gained,",
             "which stacks up to {{roll2}}%."
@@ -196,7 +197,7 @@ PST.astralWepMods = {
         end
     },
 
-    purchaseDmg = {
+    purchaseDmg = { -- TODO
         description = "+{{roll1}}% damage for {{roll2}} seconds after purchasing an item, which stacks up to {{roll3}}%.",
         color = {255, 250, 188},
         rollsFunc = function(wepTier, rollPerc)
@@ -208,7 +209,7 @@ PST.astralWepMods = {
         end
     },
 
-    coinPickupDmg = {
+    coinPickupDmg = { -- TODO
         description = "+{{roll1}}% damage dealt for {{roll2}} seconds after picking up any coin, which stacks up to {{roll3}}%.",
         color = {255, 244, 78},
         rollsFunc = function(wepTier, rollPerc)
@@ -219,7 +220,7 @@ PST.astralWepMods = {
             }
         end
     },
-    coinPermDmg = {
+    coinPermDmg = { -- TODO
         description = "+{{roll1}}% permanent damage after picking up any coin worth at least 5, up to {{roll2}}%.",
         color = {183, 172, 5},
         rollsFunc = function(wepTier, rollPerc)
@@ -230,7 +231,7 @@ PST.astralWepMods = {
         end
     },
 
-    onHitEnemyDmgTaken = {
+    onHitEnemyDmgTaken = { -- TODO
         description = "All enemies take {{roll1}}% more damage for {{roll2}} seconds after you get hit.",
         color = {186, 113, 113},
         rollsFunc = function(wepTier, rollPerc)
@@ -241,7 +242,7 @@ PST.astralWepMods = {
         end
     },
 
-    flyGroundDmg = {
+    flyGroundDmg = { -- TODO
         description = {
             "+{{roll1}}% damage dealt to flying enemies if you're on the ground.",
             "+{{roll1}}% damage dealt to ground enemies if you're flying."
@@ -254,7 +255,7 @@ PST.astralWepMods = {
         end
     },
 
-    activeFamDmg = {
+    activeFamDmg = { -- TODO
         description = "+{{roll1}}% damage dealt per active familiar.",
         color = {177, 225, 129},
         rollsFunc = function(wepTier, rollPerc)
@@ -263,7 +264,7 @@ PST.astralWepMods = {
             }
         end
     },
-    famKillDmg = {
+    famKillDmg = { -- TODO
         description = "+{{roll1}}% damage dealt for {{roll2}} seconds after a familiar kills an enemy.",
         color = {182, 255, 108},
         rollsFunc = function(wepTier, rollPerc)
@@ -274,7 +275,7 @@ PST.astralWepMods = {
         end
     },
 
-    holyMantleDmg = {
+    holyMantleDmg = { -- TODO
         description = "+{{roll1}}% damage dealt while you have a holy mantle shield.",
         color = {223, 253, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -284,7 +285,7 @@ PST.astralWepMods = {
         end
     },
 
-    eternalDmg = {
+    eternalDmg = { -- TODO
         description = "+{{roll1}}% damage dealt while you have an eternal heart.",
         color = {255, 255, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -294,7 +295,7 @@ PST.astralWepMods = {
         end
     },
 
-    activeDmg = {
+    activeDmg = { -- TODO
         description = "+{{roll1}}% damage dealt for {{roll2}} seconds after using an active item.",
         color = {0, 213, 192},
         rollsFunc = function(wepTier, rollPerc)
@@ -304,7 +305,7 @@ PST.astralWepMods = {
         end
     },
 
-    healthyMobDmg = {
+    healthyMobDmg = { -- TODO
         description = "+{{roll1}}% damage dealt to enemies above 90% HP.",
         color = {255, 0, 145},
         rollsFunc = function(wepTier, rollPerc)
@@ -313,7 +314,7 @@ PST.astralWepMods = {
             }
         end
     },
-    injuredMobDmg = {
+    injuredMobDmg = { -- TODO
         description = "+{{roll1}}% damage dealt to enemies below 15% HP.",
         color = {150, 0, 85},
         rollsFunc = function(wepTier, rollPerc)
@@ -323,7 +324,7 @@ PST.astralWepMods = {
         end
     },
 
-    creepDmg = {
+    creepDmg = { -- TODO
         description = "+{{roll1}}% damage dealt while standing on creep.",
         color = {150, 200, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -335,7 +336,7 @@ PST.astralWepMods = {
 
     ---- ANCIENT MODS ----
     -- Ancient Longswords
-    greyWind = {
+    greyWind = { -- TODO
         description = {
             "{{roll1}}% chance on hit to slash all enemies within 2 tiles of the target, dealing {{roll2}}%",
             "of the hit's damage. This effect has a 1 second cooldown.",
@@ -346,7 +347,7 @@ PST.astralWepMods = {
         maxRolls = {12, 160},
         upgIncrements = {0.5, 4}
     },
-    executioner = {
+    executioner = { -- TODO
         description = {
             "+{{roll1}}% damage.",
             "{{roll2}}% chance on hit to instantly kill enemies that are left with {{roll3}}% or less HP."
@@ -356,7 +357,7 @@ PST.astralWepMods = {
         maxRolls = {8, 35, 10},
         upgIncrements = {0.4, 1, 0.2}
     },
-    swordOfSong = {
+    swordOfSong = { -- TODO
         description = {
             "{{roll1}}% chance on hit to cause an area pulse at the hit's location that charms nearby enemies for 3 seconds.",
             "+1% damage whenever you kill a charmed monster.",
@@ -367,7 +368,7 @@ PST.astralWepMods = {
         maxRolls = {8, 10},
         upgIncrements = {0.2, -1}
     },
-    redbeak = {
+    redbeak = { -- TODO
         description = {
             "If half or more of your total red heart containers are empty:",
             "    +{{roll1}}% damage dealt.",
@@ -379,7 +380,7 @@ PST.astralWepMods = {
         maxRolls = {20, 15, 8},
         upgIncrements = {0.5, 0.5, 0.2}
     },
-    maxwellEngine = {
+    maxwellEngine = { -- TODO
         description = {
             "+0.5% damage for 3 seconds when hitting an enemy, which stacks up to {{roll1}}%.",
             "While the buff is maxed:",
@@ -393,7 +394,7 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 1}
     },
     -- Ancient Estocs
-    arcingNeedle = {
+    arcingNeedle = { -- TODO
         description = {
             "Every 0.5 seconds spent firing, {{roll1}}% chance to gain Jacob's Ladder as an innate effect for {{roll2}} seconds.",
             "Chance goes up in 2% increments as you keep firing, and resets once you stop firing.",
@@ -404,7 +405,7 @@ PST.astralWepMods = {
         maxRolls = {6, 4},
         upgIncrements = {0.25, 0.1}
     },
-    auricPersecutor = {
+    auricPersecutor = { -- TODO
         description = {
             "Half of your coin count now acts as a tears multiplier, up to {{roll1}}%.",
             "+{{roll2}}% damage for the current floor when picking up a coin worth at least 5, up to {{roll3}}%."
@@ -415,7 +416,7 @@ PST.astralWepMods = {
         upgIncrements = {1, 0.2, 0.5}
     },
     -- Ancient Daggers
-    scrambler = {
+    scrambler = { -- TODO
         description = {
             "3% chance on hit to confuse enemies. Double the chance against targets within 1.5 tiles.",
             "Deal {{roll1}}% more damage against confused enemies.",
@@ -426,14 +427,307 @@ PST.astralWepMods = {
         maxRolls = {40, 20},
         upgIncrements = {1, -2}
     },
-    adriftBlade = {
+    adriftBlade = { -- TODO
         description = "{{roll1}}% chance on hit to deal between {{roll2}}% and {{roll3}}% of the original damage.",
         ancient = true,
         minRolls = {25, 40, 200},
         maxRolls = {35, 60, 280},
         upgIncrements = {0.5, 1, 5}
+    },
+    -- Ancient Quickblades
+    nimbleTwins = { -- TODO
+        description = {
+            "+{{roll1}}% tears.",
+            "When hitting an enemy, additionally fire a slow-moving red tear and a quick blue tear towards them.",
+            "These tears have {{roll2}}% of your damage and range.",
+            "Gain +3% damage for 2 seconds when hitting enemies with the red tear, which stacks up to {{roll3}}%.",
+            "Gain +3% tears for 2 seconds when hitting enemies with the blue tear, which stacks up to {{roll3}}%."
+        },
+        ancient = true,
+        minRolls = {5, 25, 15},
+        maxRolls = {12, 50, 21},
+        upgIncrements = {0.5, 3, 0.5}
+    },
+    crimsonAltruist = { -- TODO
+        description = {
+            "+{{roll1}}% damage when using a blood donation machine, up to 100%.",
+            "+{{roll2}} tears when a blood donation machine explodes on use.",
+            "Halve the active bonuses when entering a new floor."
+        },
+        ancient = true,
+        minRolls = {2, 0.2},
+        maxRolls = {6, 0.4},
+        upgIncrements = {0.25, 0.02}
+    },
+    -- Ancient Spears
+    beastbane = { -- TODO
+        description = {
+            "+{{roll1}}% damage dealt to bosses.",
+            "Defeating a boss grants you a permanent +{{roll2}}% damage, once every 2 floors."
+        },
+        ancient = true,
+        minRolls = {12, 4},
+        maxRolls = {18, 6},
+        upgIncrements = {0.5, 0.1}
+    },
+    gravitas = { -- TODO
+        description = {
+            "When hitting enemies within 1.5 and 2.5 tiles away from you, {{roll1}}% chance to additionally fire",
+            "3 homing tears dealing {{roll2}}% of your damage. 0.5 seconds cooldown.",
+            "When hitting enemies with the homing tears, 1% chance to gain Spoon Bender for the current room.",
+            "-{{roll3}}% tears while you have Spoon Bender."
+        },
+        ancient = true,
+        minRolls = {6, 30, 12},
+        maxRolls = {10, 50, 6},
+        upgIncrements = {0.25, 2, -0.5}
+    },
+    borealSpear = { -- TODO
+        description = {
+            "{{roll1}}% chance on hit to slow enemies for 2 seconds.",
+            "When you hit a slowed enemy beyond {{roll2}} tiles of you, +1% chance to freeze that enemy.",
+            "Hitting enemies repeatedly increases the chance to freeze them, with the freeze chance being",
+            "individual to each enemy."
+        },
+        ancient = true,
+        minRolls = {6, 3},
+        maxRolls = {9, 1.5},
+        upgIncrements = {0.2, -0.1}
+    },
+    viperStinger = { -- TODO
+        description = {
+            "{{roll1}}% chance to paralyze enemies on hit for 2 seconds.",
+            "Double this chance against poisoned enemies.",
+            "Killing a paralyzed enemy releases a toxic cloud, poisoning and dealing {{roll2}}% of your damage",
+            "to nearby enemies."
+        },
+        ancient = true,
+        minRolls = {3, 80},
+        maxRolls = {5, 150},
+        upgIncrements = {0.1, 4}
+    },
+    -- Ancient Tridents
+    consecrator = { -- TODO
+        description = {
+            "Gain +{{roll1}}% damage when entering a devil room, up to {{roll2}}%.",
+            "Gain +{{roll1}}% tears when entering an angel room, up to {{roll2}}%.",
+            "Active buffs get halved when clearing a boss room.",
+            "+{{roll3}}% chance for angel/devil rooms to show up."
+        },
+        ancient = true,
+        minRolls = {6, 30, 5},
+        maxRolls = {10, 40, 10},
+        upgIncrements = {0.25, 1, 0.25}
+    },
+    verdantGreen = { -- TODO
+        description = {
+            "{{roll1}}% chance on hit to create a poison cloud.",
+            "Poison clouds periodically poison enemies within it. Poisoned enemies instead take {{roll2}}%",
+            "of your damage.",
+            "Up to 3 poison clouds can be active in the room simultaneously."
+        },
+        ancient = true,
+        minRolls = {6, 25},
+        maxRolls = {9, 40},
+        upgIncrements = {0.2, 1}
+    },
+    lostCoralTrident = { -- TODO
+        description = {
+            "Start with innate Neptunus.",
+            "-{{roll1}}% damage."
+        },
+        ancient = true,
+        minRolls = {25},
+        maxRolls = {12},
+        upgIncrements = {-0.8}
+    },
+    oceanicMight = { -- TODO
+        description = {
+            "Start with innate Aquarius.",
+            "Creeps of any type deal {{roll1}}% more damage to enemies.",
+            "+{{roll2}}% speed while standing on creep."
+        },
+        ancient = true,
+        minRolls = {30, 5},
+        maxRolls = {50, 10},
+        upgIncrements = {1, 0.25}
+    },
+    -- Ancient Scythes
+    taleEnder = { -- TODO
+        description = {
+            "+{{roll1}}% damage dealt to full health enemies.",
+            "{{roll2}}% chance to instantly kill the first non-boss enemy you hit in each room.",
+            "Halve this chance when the effect triggers, and reset it when entering a new floor."
+        },
+        ancient = true,
+        minRolls = {60, 75},
+        maxRolls = {120, 100},
+        upgIncrements = {3, 2}
+    },
+    crimsonReaper = { -- TODO
+        description = {
+            "When hitting a full health enemy, apply bleed to them for {{roll1}} seconds.",
+            "Double this duration against bosses.",
+            "Bleeding enemies below {{roll1}}% HP take increased damage based on their missing HP below {{roll2}}%."
+        },
+        ancient = true,
+        minRolls = {4, 20},
+        maxRolls = {6, 50},
+        upgIncrements = {0.2, 2}
+    },
+    mobripper = { -- TODO
+        description = {
+            "Circular slashes from the implicit modifier now deal {{roll1}}% of the hit's damage instead.",
+            "If the circular slash kills any enemy or hits a boss, fear all enemies hit by it for 3 seconds.",
+            "-{{roll2}}% damage."
+        },
+        ancient = true,
+        minRolls = {250, 25},
+        maxRolls = {350, 15},
+        upgIncrements = {8, -1}
+    },
+    -- Ancient Axes
+    starsteelBroadaxe = { -- TODO
+        description = {
+            "+2% tears for the current room when hitting bleeding enemies, up to {{roll1}}%.",
+            "Hitting a boss reduces their status effect cooldown by 0.5 seconds."
+        },
+        ancient = true,
+        minRolls = {20},
+        maxRolls = {40},
+        upgIncrements = {1}
+    },
+    ancientRunicChopper = { -- TODO
+        description = {
+            "+{{roll1}}% permanent damage whenever you use a rune, up to {{roll2}}%.",
+            "+{{roll3}}% tears for 10 seconds whenever you use a rune.",
+            "Receive half of these boosts when using rune shards."
+        },
+        ancient = true,
+        minRolls = {3, 24, 8},
+        maxRolls = {5, 36, 12},
+        upgIncrements = {0.1, 0.8, 0.2}
+    },
+    -- Ancient Greataxes
+    berserkerWrath = { -- TODO
+        description = {
+            "Gain Berserk! as an innate effect when entering a floor, if you don't have it.",
+            "Remove Berserk! once it triggers.",
+            "+{{roll1}} seconds to Berserk!'s duration.",
+            "+{{roll2}}% damage during berserk."
+        },
+        ancient = true,
+        minRolls = {3, 8},
+        maxRolls = {5, 15},
+        upgIncrements = {0.1, 0.5}
+    },
+    frozenTerror = { -- TODO
+        description = {
+            "When hitting bleeding enemies, {{roll1}}% chance to slow them for 2 seconds.",
+            "When hitting slowed enemies within {{roll2}} tile(s) of you, perform a circular slash around you",
+            "that can freeze slowed enemies. 1 second cooldown.",
+            "Slash deals {{roll3}}% of your damage."
+        },
+        ancient = true,
+        minRolls = {15, 1, 80},
+        maxRolls = {25, 2, 160},
+        upgIncrements = {1, 0.1, 4}
+    },
+    -- Ancient Shortbows
+    stormAdvance = { -- TODO
+        description = {
+            "When hitting enemies beyond 2.5 tiles of you, create a storm cloud at their position that",
+            "lasts 8 seconds. {{roll1}} second cooldown.",
+            "Storm clouds periodically zap enemies near it for {{roll2}} damage.",
+            "Gain +{{roll3}}% tears and electrified tears when inside a storm cloud."
+        },
+        ancient = true,
+        minRolls = {6, 5, 7},
+        maxRolls = {3, 8, 10},
+        upgIncrements = {-0.2, 0.2, 0.2}
+    },
+    quillRain = { -- TODO
+        description = {
+            "Start with innate Soy Milk.",
+            "Deal half as much damage to enemies within {{roll1}} tiles of you.",
+            "Turns the implicit shot speed to tear multiplier into a damage multiplier."
+        },
+        ancient = true,
+        minRolls = {3},
+        maxRolls = {1.5},
+        upgIncrements = {-0.1}
+    },
+    -- Ancient Bows
+    gildedSeeker = { -- TODO
+        description = {
+            "Gain +1% damage when collecting any coin, up to {{roll1}}%.",
+            "Halve your current bonus when clearing a room.",
+            "{{roll2}}% chance for fired tears to be coin tears."
+        },
+        ancient = true,
+        minRolls = {40, 5},
+        maxRolls = {60, 15},
+        upgIncrements = {1, 0.5}
+    },
+    twistedOakstring = { -- TODO
+        description = {
+            "When hitting enemies beyond {{roll1}} tiles of you, create an additional homing and",
+            "fearing tear at their position.",
+            "This tear deals {{roll2}}% of the hit's damage."
+        },
+        ancient = true,
+        minRolls = {3, 80},
+        maxRolls = {1.5, 140},
+        upgIncrements = {-0.1, 4}
+    },
+    bruteOnslaught = { -- TODO
+        description = {
+            "When using an active item, for each charge used, boost the next 3 hits' damage by {{roll1}}%.",
+            "+{{roll2}}% tears for 5 seconds after using an active item."
+        },
+        ancient = true,
+        minRolls = {20, 7},
+        maxRolls = {40, 12},
+        upgIncrements = {2, 0.2}
+    },
+    -- Ancient Crossbows
+    volatileArbalest = { -- TODO
+        description = {
+            "{{roll1}}% chance to cause a small explosion when hitting enemies beyond 2.5 tiles of you,",
+            "dealing {{roll2}}% of your damage. 2 seconds cooldown."
+        },
+        ancient = true,
+        minRolls = {6, 250},
+        maxRolls = {10, 400},
+        upgIncrements = {0.25, 10}
+    },
+    avelyn = { -- TODO
+        description = {
+            "Every {{roll1}} total seconds spent firing, shoot 3 tears towards a nearby enemy, each dealing {{roll2}}%",
+            "of your damage."
+        },
+        ancient = true,
+        minRolls = {4, 33},
+        maxRolls = {2.5, 50},
+        upgIncrements = {-0.1, 1}
+    },
+    preciseSeeker = { -- TODO
+        description = {
+            "When entering a room, mark a random enemy. Prioritizes bosses.",
+            "Every {{roll1}} seconds, fire a very quick piercing and spectral tear towards the marked enemy.",
+            "Fired tear deals {{roll2}}% of your damage, up to 80."
+        },
+        ancient = true,
+        minRolls = {6, 200},
+        maxRolls = {4, 400},
+        upgIncrements = {-0.1, 10}
     }
 }
+
+PST.astralWepPrefix = "astralwep_"
+function PST:getSnapAstralWepMod(modName)
+    return PST:getTreeSnapshotMod(PST.astralWepPrefix + modName, nil)
+end
 
 -- Astral weapon data (honing goes from 0-50 for implicit mod rolls)
 PST.astralWepData = {
@@ -445,7 +739,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 1,
             overlay = 0
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "longswordImp",
             description = "{{roll1}}% damage dealt to enemies within 1.5 tiles.",
             rollsFunc = function(honing)
@@ -507,7 +801,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 3,
             overlay = 1
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "estocImp",
             description = {
                 "Consecutive hits against enemies within 2 tiles of you grants +{{roll1}}% tears, up to {{roll2}}%.",
@@ -545,7 +839,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 5,
             overlay = 2
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "daggerImp",
             description = {
                 "{{roll1}}% chance for hits to deal {{roll2}}% more damage.",
@@ -583,7 +877,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 7,
             overlay = 3
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "quickbladeImp",
             description = {
                 "{{roll1}} tears for {{roll2}} second(s) when hitting a target, up to {{roll3}}. Stacks.",
@@ -598,7 +892,22 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Nimble Twins
+            {
+                name = "Nimble Twins",
+                spriteFrame = 8,
+                weight = 100,
+                ancientMods = {"nimbleTwins"}
+            },
+            -- Crimson Altruist
+            {
+                name = "Crimson Altruist",
+                spriteFrame = 9,
+                weight = 100,
+                ancientMods = {"crimsonAltruist"}
+            }
+        }
     },
     -- Spears
     [PSTAstralWepType.SPEAR] = {
@@ -608,7 +917,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 9,
             overlay = 4
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "spearImp",
             description = {
                 "+{{roll1}}% damage dealt to enemies between 1.5 and 2.5 tiles away from you.",
@@ -621,7 +930,36 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Beastbane
+            {
+                name = "Beastbane",
+                spriteFrame = 10,
+                weight = 100,
+                ancientMods = {"beastbane"}
+            },
+            -- Gravitas
+            {
+                name = "Gravitas",
+                spriteFrame = 11,
+                weight = 100,
+                ancientMods = {"gravitas"}
+            },
+            -- Boreal Frostspear
+            {
+                name = "Boreal Frostspear",
+                spriteFrame = 22,
+                weight = 100,
+                ancientMods = {"borealSpear"}
+            },
+            -- Viper Stinger
+            {
+                name = "Viper Stinger",
+                spriteFrame = 32,
+                weight = 100,
+                ancientMods = {"viperStinger"}
+            }
+        }
     },
     -- Tridents
     [PSTAstralWepType.TRIDENT] = {
@@ -631,7 +969,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 11,
             overlay = 5
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "tridentImp",
             description = {
                 "Consecutive hits against enemies beyond 1.5 tiles of you grant +{{roll1}}% damage and tears, up to {{roll2}}%.",
@@ -644,7 +982,36 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Consecrator
+            {
+                name = "Consecrator",
+                spriteFrame = 12,
+                weight = 100,
+                ancientMods = {"consecrator"}
+            },
+            -- Verdant Green
+            {
+                name = "Verdant Green",
+                spriteFrame = 13,
+                weight = 100,
+                ancientMods = {"verdantGreen"}
+            },
+            -- Lost Coral Trident
+            {
+                name = "Lost Coral Trident",
+                spriteFrame = 14,
+                weight = 100,
+                ancientMods = {"lostCoralTrident"}
+            },
+            -- Oceanic Might
+            {
+                name = "Oceanic Might",
+                spriteFrame = 33,
+                weight = 100,
+                ancientMods = {"oceanicMight"}
+            }
+        }
     },
     -- Scythes
     [PSTAstralWepType.SCYTHE] = {
@@ -654,7 +1021,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 13,
             overlay = 6
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "scytheImp",
             description = {
                 "Hitting an enemy causes a circular slash that hits nearby enemies for {{roll1}}% of the hit's damage.",
@@ -667,7 +1034,29 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Tale Ender
+            {
+                name = "Tale Ender",
+                spriteFrame = 15,
+                weight = 100,
+                ancientMods = {"taleEnder"}
+            },
+            -- Crimson Reaper
+            {
+                name = "Crimson Reaper",
+                spriteFrame = 16,
+                weight = 100,
+                ancientMods = {"crimsonReaper"}
+            },
+            -- Mobripper
+            {
+                name = "Mobripper",
+                spriteFrame = 17,
+                weight = 100,
+                ancientMods = {"mobripper"}
+            }
+        }
     },
     -- Axes
     [PSTAstralWepType.AXE] = {
@@ -677,7 +1066,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 15,
             overlay = 7
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "axeImp",
             description = {
                 "{{roll1}}% chance to cause bleeding for 3 seconds when hitting enemies.",
@@ -690,7 +1079,22 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Starsteel Broadaxe
+            {
+                name = "Starsteel Broadaxe",
+                spriteFrame = 18,
+                weight = 100,
+                ancientMods = {"starsteelBroadaxe"}
+            },
+            -- Ancient Runic Chopper
+            {
+                name = "Ancient Runic Chopper",
+                spriteFrame = 19,
+                weight = 100,
+                ancientMods = {"ancientRunicChopper"}
+            }
+        }
     },
     -- Greataxes
     [PSTAstralWepType.GREATAXE] = {
@@ -700,7 +1104,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 17,
             overlay = 8
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "greataxeImp",
             description = {
                 "Every {{roll1}}th hit against enemies causes bleeding for 4 seconds.",
@@ -715,7 +1119,22 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Berserker's Wrath
+            {
+                name = "Berserker's Wrath",
+                spriteFrame = 20,
+                weight = 100,
+                ancientMods = {"berserkerWrath"}
+            },
+            -- Frozen Terror
+            {
+                name = "Frozen Terror",
+                spriteFrame = 21,
+                weight = 100,
+                ancientMods = {"frozenTerror"}
+            }
+        }
     },
     -- Shortbows
     [PSTAstralWepType.SHORTBOW] = {
@@ -725,7 +1144,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 19,
             overlay = 9
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "shortbowImp",
             description = {
                 "+{{roll1}} shot speed.",
@@ -738,7 +1157,22 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Storm's Advance
+            {
+                name = "Storm's Advance",
+                spriteFrame = 24,
+                weight = 100,
+                ancientMods = {"stormAdvance"}
+            },
+            -- Quill Rain
+            {
+                name = "Quill Rain",
+                spriteFrame = 23,
+                weight = 50,
+                ancientMods = {"quillRain"}
+            }
+        }
     },
     -- Bows
     [PSTAstralWepType.BOW] = {
@@ -748,7 +1182,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 21,
             overlay = 10
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "bowImp",
             description = {
                 "+{{roll1}} shot speed.",
@@ -761,7 +1195,29 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Gilded Seeker
+            {
+                name = "Gilded Seeker",
+                spriteFrame = 25,
+                weight = 100,
+                ancientMods = {"gildedSeeker"}
+            },
+            -- Twisted Oakstring
+            {
+                name = "Twisted Oakstring",
+                spriteFrame = 26,
+                weight = 100,
+                ancientMods = {"twistedOakstring"}
+            },
+            -- Brute's Onslaught
+            {
+                name = "Brute's Onslaught",
+                spriteFrame = 27,
+                weight = 100,
+                ancientMods = {"bruteOnslaught"}
+            }
+        }
     },
     -- Crossbows
     [PSTAstralWepType.CROSSBOW] = {
@@ -771,7 +1227,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 23,
             overlay = 11
         },
-        implicitMod = {
+        implicitMod = { -- TODO
             name = "crossbowImp",
             description = {
                 "{{roll1}} tears.",
@@ -786,6 +1242,28 @@ PST.astralWepData = {
                 }
             end
         },
-        ancients = {}
+        ancients = {
+            -- Volatile Arbalest
+            {
+                name = "Volatile Arbalest",
+                spriteFrame = 28,
+                weight = 100,
+                ancientMods = {"volatileArbalest"}
+            },
+            -- Avelyn
+            {
+                name = "Avelyn",
+                spriteFrame = 29,
+                weight = 100,
+                ancientMods = {"avelyn"}
+            },
+            -- Precise Seeker
+            {
+                name = "Precise Seeker",
+                spriteFrame = 30,
+                weight = 100,
+                ancientMods = {"preciseSeeker"}
+            }
+        }
     }
 }

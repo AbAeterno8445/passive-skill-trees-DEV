@@ -124,7 +124,9 @@ function PST:astralWepForgeAncUpg(weaponData)
         local modData = PST.astralWepMods[tmpMod.name]
         if modData.ancient then
             for i, tmpRoll in ipairs(modData.minRolls) do
-                if tmpRoll + modData.upgIncrements[i] * weaponData.ancientUpg < modData.maxRolls[i] then
+                local isNegative = modData.upgIncrements[i] < 0
+                if (not isNegative and tmpRoll + modData.upgIncrements[i] * weaponData.ancientUpg < modData.maxRolls[i]) or
+                (isNegative and tmpRoll + modData.upgIncrements[i] * weaponData.ancientUpg > modData.maxRolls[i]) then
                     upgradeable = true
                     break
                 end
