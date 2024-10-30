@@ -110,6 +110,18 @@ local descriptionBoxesModule = {
             end
             return { name = descName, description = tmpDescription }
         end,
+
+        -- Astral Forge & equipped weapon
+        ["Astral Forge"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            if isAllocated then
+                local eqWeapon = PST:getEquippedAstralWep()
+                if eqWeapon then
+                    tmpDescription = PST:getAstralWepDesc(eqWeapon, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))
+                    table.insert(tmpDescription, "Press Allocate to access the Astral Forge menu.")
+                end
+            end
+            return { name = descName, description = tmpDescription }
+        end
     }
 }
 

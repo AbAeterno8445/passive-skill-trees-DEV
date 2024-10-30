@@ -376,9 +376,9 @@ local function astralForgeScreenRender(self, tScreen)
         tScreen:DrawNodeBox("Forge Material", tmpMatDesc)
     -- Hovered weapon description
     elseif self.hoveredWeapon then
-        local tmpTitle = "Astral Weapon"
+        tmpTitle = "Astral Weapon"
         if self.hoveredWeapon.equipped then
-            tmpTitle = tmpTitle .. " (Equipped)"
+            tmpTitle = tmpTitle .. " (Equipped by " .. self.hoveredWeapon.equipped .. ")"
         end
 
         local wepDesc = {}

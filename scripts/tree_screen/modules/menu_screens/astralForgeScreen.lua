@@ -84,7 +84,7 @@ end
 function astralForgeScreen:OnInput()
     -- Input: Faster panning
     if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then self.cameraSpeed = 8
-    else self.cameraSpeed = 3 end
+    else self.cameraSpeed = 4 end
 
     -- Input: Directional keys/buttons
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP, true) then

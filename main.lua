@@ -2,6 +2,7 @@ PST = RegisterMod("PST", 1)
 PST.saveManager = include("scripts.libs.save_manager")
 PST.saveManager.Init(PST)
 
+include("scripts.ST_colorsEnum")
 include("scripts.ST_initData")
 include("PST_config")
 PST:resetData()

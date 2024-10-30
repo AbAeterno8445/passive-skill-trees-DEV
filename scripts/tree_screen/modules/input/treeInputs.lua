@@ -4,7 +4,8 @@ include("scripts.tree_screen.modules.input.inputRespec")
 local menuKeys = {
     [PSTKeybind.TOGGLE_CHANGELOG] = PSTTreeScreenMenu.CHANGELOG,
     [PSTKeybind.TOGGLE_TOTAL_MODS] = PSTTreeScreenMenu.TOTALMODS,
-    [PSTKeybind.TOGGLE_HELP] = PSTTreeScreenMenu.HELP
+    [PSTKeybind.TOGGLE_HELP] = PSTTreeScreenMenu.HELP,
+    [PSTKeybind.TREE_TAB] = PSTTreeScreenMenu.MENU_TABBER
 }
 
 function PST.treeScreen:Inputs()
@@ -108,22 +109,6 @@ function PST.treeScreen:Inputs()
         end
     end
 
-    -- Input: Tab (pan to appropriate nodes if defined)
-    if PST:isKeybindActive(PSTKeybind.TREE_TAB) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.TREE_TAB) then
-        local tabNodes = self.tabNodes[self.currentTree]
-        if tabNodes and #tabNodes > 0 then
-            self.currentNodeTab = self.currentNodeTab + 1
-            if self.currentNodeTab > #tabNodes then
-                self.currentNodeTab = 1
-            end
-            local tgtNode = tabNodes[self.currentNodeTab]
-            self.treeCamera.X = tgtNode.X - Isaac.GetScreenWidth() / 2
-            self.treeCamera.Y = tgtNode.Y - Isaac.GetScreenHeight() / 2
-            self:UpdateCamZoomOffset()
-            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
-        end
-    end
-
     -- Input: Switch tree
     if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.SWITCH_TREE) then
         local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
@@ -154,7 +139,7 @@ function PST.treeScreen:Inputs()
     -- Menus
     if not self.backupsPopup then
         for tmpInput, tmpMenu in pairs(menuKeys) do
-            if PST:isKeybindActive(tmpInput) then
+            if PST:isKeybindActive(tmpInput) and not PST:arrHasValue(self.disabledInputs, tmpInput) then
                 if currentMenu == tmpMenu then
                     menuScreensModule:CloseMenu()
                 else

@@ -74,33 +74,45 @@ function nodeDrawingModule:Render(tScreen)
         if tScreen:IsSpriteVisibleAt(finalDrawX, finalDrawY, 38, 38) then
             local nodeAllocated = PST:isNodeAllocated(tScreen.currentTree, node.id)
             if node.available and not nodeAllocated then
-                --[[
-                local hasSP = ((tScreen.currentTree == "global" or tScreen.currentTree == "starTree") and PST.modData.skillPoints > 0) or
-                    (PST.modData.charData[tScreen.currentTree] and PST.modData.charData[tScreen.currentTree].skillPoints > 0)
-                ]]
                 if not PST.debugOptions.infSP and PST:isNodeAllocatable(tScreen.currentTree, node.id, true) then
                     self.nodesExtraSprite:SetFrame("Available " .. node.size, 0)
-                    self.nodesExtraSprite.Color = Color(0.4, 0.4, 0.4, 1)
+                    self.nodesExtraSprite.Color = PST.colors.GRAY3
                     self.nodesExtraSprite.Color.A = self.alphaFlash
                     self.nodesExtraSprite:Render(Vector(finalDrawX, finalDrawY))
                 end
             end
 
+            local isAllocated = PST:isNodeAllocated(tScreen.currentTree, node.id)
+            local isAstralForge = node.name == "Astral Forge"
+
+            if isAstralForge and isAllocated then
+                tmpSprite.Color.RO = 0.15
+                tmpSprite.Color.GO = 0.1
+            end
+
             tmpSprite:SetFrame("Default", node.sprite)
             if not nodeAllocated and not node.available then
-                tmpSprite.Color = Color(0.4, 0.4, 0.4, 1)
-            else
-                tmpSprite.Color = Color(1, 1, 1, 1)
+                tmpSprite.Color = PST.colors.GRAY3
             end
             tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+            tmpSprite.Color = PST.colors.WHITE
 
-            -- Astral Forge node, draw sword icon
-            if node.name == "Astral Forge" then
-                tmpSprite:SetFrame("Default", 761)
-                tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+            tmpSprite.Color.RO = 0
+            tmpSprite.Color.GO = 0
+
+            -- Astral Forge node, draw sword icon or equipped weapon
+            if isAstralForge then
+                local eqWeapon = PST:getEquippedAstralWep()
+                if eqWeapon and isAllocated then
+                    local forgeMenu = tScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.ASTRAL_FORGE]
+                    PST:renderAstralWepAt(eqWeapon, forgeMenu.weaponSprite, finalDrawX, finalDrawY, tScreen.zoomScale)
+                else
+                    tmpSprite:SetFrame("Default", 761)
+                    tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+                end
             end
 
-            if PST:isNodeAllocated(tScreen.currentTree, node.id) then
+            if not isAstralForge and isAllocated then
                 self.nodesExtraSprite.Color = Color(1, 1, 1, 1)
                 self.nodesExtraSprite.Color.A = 1
                 self.nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)

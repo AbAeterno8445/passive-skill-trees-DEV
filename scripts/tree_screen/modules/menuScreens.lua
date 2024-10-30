@@ -7,7 +7,8 @@ PSTTreeScreenMenu = {
     TOTALMODS = "totalMods",
     HELP = "helpmenu",
     EXPEDITION = "expeditionMenu",
-    ASTRAL_FORGE = "astralForge"
+    ASTRAL_FORGE = "astralForge",
+    MENU_TABBER = "menuTabber"
 }
 
 -- Hack to provide VSCode autocomplete functionality on modules (wtf?)
@@ -23,7 +24,8 @@ local menuScreensModule = {
         [PSTTreeScreenMenu.TOTALMODS] = moduleRequire("scripts.tree_screen.modules.menu_screens.totalmodsScreen"),
         [PSTTreeScreenMenu.HELP] = moduleRequire("scripts.tree_screen.modules.menu_screens.helpScreen"),
         [PSTTreeScreenMenu.EXPEDITION] = moduleRequire("scripts.tree_screen.modules.menu_screens.expeditionScreen"),
-        [PSTTreeScreenMenu.ASTRAL_FORGE] = moduleRequire("scripts.tree_screen.modules.menu_screens.astralForgeScreen")
+        [PSTTreeScreenMenu.ASTRAL_FORGE] = moduleRequire("scripts.tree_screen.modules.menu_screens.astralForgeScreen"),
+        [PSTTreeScreenMenu.MENU_TABBER] = moduleRequire("scripts.tree_screen.modules.menu_screens.menuTabberScreen")
     }
 }
 
@@ -41,6 +43,7 @@ end
 
 function menuScreensModule:CloseMenu()
     local currentMenu = self.menus[self.currentMenu]
+    ---@type boolean|nil
     local closeMenu = true
     if currentMenu and currentMenu.OnClose then
         closeMenu = currentMenu:OnClose()

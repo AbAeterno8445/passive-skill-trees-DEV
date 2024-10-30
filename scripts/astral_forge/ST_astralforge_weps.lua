@@ -219,7 +219,7 @@ end
 
 ---@param wepData PSTAstralWeapon
 ---@param wepSprite Sprite
-function PST:renderAstralWepAt(wepData, wepSprite, x, y)
+function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
     local wepTypeData = PST.astralWepData[wepData.type]
     local anim = "Normal"
     local frame = wepTypeData.spriteFrames[wepData.rarity]
@@ -229,8 +229,13 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y)
         anim = "Ancients"
         frame = wepTypeData.ancients[wepData.ancientID].spriteFrame
     end
+    local oldScaleX, oldScaleY = wepSprite.Scale.X, wepSprite.Scale.Y
+    if scale then
+        wepSprite.Scale = Vector(scale, scale)
+    end
     wepSprite:SetFrame(anim, frame)
     wepSprite:Render(Vector(x, y))
+    wepSprite.Scale = Vector(oldScaleX, oldScaleY)
 
     -- Magic weapons overlay
     if wepData.rarity == PSTAstralWepRarity.MAGIC and wepData.mods then
@@ -248,9 +253,9 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y)
     end
 end
 
-function PST:getEquippedWeapon()
+function PST:getEquippedAstralWep()
     for _, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
-        if tmpWeapon.equipped then return tmpWeapon end
+        if tmpWeapon.equipped == PST:getCurrentCharName() then return tmpWeapon end
     end
     return nil
 end
@@ -258,9 +263,9 @@ end
 ---@param weapon PSTAstralWeapon
 function PST:equipAstralWep(weapon)
     if not weapon.equipped then
-        local tmpEqWeapon = PST:getEquippedWeapon()
+        local tmpEqWeapon = PST:getEquippedAstralWep()
         if tmpEqWeapon then tmpEqWeapon.equipped = nil end
-        weapon.equipped = true
+        weapon.equipped = PST:getCurrentCharName()
     else
         weapon.equipped = nil
     end
