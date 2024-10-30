@@ -45,6 +45,7 @@ local targetScreens = {
         ---@param tScreen PST.treeScreen
         switchFunc = function(tScreen)
             tScreen.currentTree = "sidereal"
+            PST:updateNodes("sidereal")
             tScreen:CenterCamera()
         end
     },
@@ -124,12 +125,17 @@ function menuTabberScreen:Render(tScreen)
         -- Draw node
         local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
         local oldAlpha = nodeSprite.Color.A
+        local oldScaleX, oldScaleY = nodeSprite.Scale.X, nodeSprite.Scale.Y
         if not isEnabled then
             nodeSprite.Color.A = 0.5
         end
+        nodeSprite.Scale.X = 1
+        nodeSprite.Scale.Y = 1
         nodeSprite:SetFrame("Default", tmpTarget.nodeFrame)
         nodeSprite:Render(Vector(tmpDrawX + 20, nodeY))
         nodeSprite.Color.A = oldAlpha
+        nodeSprite.Scale.X = oldScaleX
+        nodeSprite.Scale.Y = oldScaleY
 
         -- Node text
         local tmpNodeTxt = tmpTarget.name

@@ -11,21 +11,17 @@ PSTTreeScreenMenu = {
     MENU_TABBER = "menuTabber"
 }
 
--- Hack to provide VSCode autocomplete functionality on modules (wtf?)
-local moduleRequire = require
-moduleRequire = include
-
 local menuScreensModule = {
     currentMenu = PSTTreeScreenMenu.NONE,
     menuScrollY = 0,
 
     menus = {
-        [PSTTreeScreenMenu.CHANGELOG] = moduleRequire("scripts.tree_screen.modules.menu_screens.changelogScreen"),
-        [PSTTreeScreenMenu.TOTALMODS] = moduleRequire("scripts.tree_screen.modules.menu_screens.totalmodsScreen"),
-        [PSTTreeScreenMenu.HELP] = moduleRequire("scripts.tree_screen.modules.menu_screens.helpScreen"),
-        [PSTTreeScreenMenu.EXPEDITION] = moduleRequire("scripts.tree_screen.modules.menu_screens.expeditionScreen"),
-        [PSTTreeScreenMenu.ASTRAL_FORGE] = moduleRequire("scripts.tree_screen.modules.menu_screens.astralForgeScreen"),
-        [PSTTreeScreenMenu.MENU_TABBER] = moduleRequire("scripts.tree_screen.modules.menu_screens.menuTabberScreen")
+        [PSTTreeScreenMenu.CHANGELOG] = include("scripts.tree_screen.modules.menu_screens.changelogScreen"),
+        [PSTTreeScreenMenu.TOTALMODS] = include("scripts.tree_screen.modules.menu_screens.totalmodsScreen"),
+        [PSTTreeScreenMenu.HELP] = include("scripts.tree_screen.modules.menu_screens.helpScreen"),
+        [PSTTreeScreenMenu.EXPEDITION] = include("scripts.tree_screen.modules.menu_screens.expeditionScreen"),
+        [PSTTreeScreenMenu.ASTRAL_FORGE] = include("scripts.tree_screen.modules.menu_screens.astralForgeScreen"),
+        [PSTTreeScreenMenu.MENU_TABBER] = include("scripts.tree_screen.modules.menu_screens.menuTabberScreen")
     }
 }
 

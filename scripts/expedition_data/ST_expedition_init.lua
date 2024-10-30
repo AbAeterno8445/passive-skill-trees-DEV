@@ -839,11 +839,12 @@ PST.expedDescriptions = {
     expedImp_mobDmgRed = "+%d%% monster damage reduction."
 }
 
+local obolStageFactor = 0.005
 -- Obol-rewarding event quantities
 PST.obolEvents = {
     -- On champion mob kill
     championKill = function(depth, chanceMod)
-        local chance = 0.06 + (chanceMod or 0)
+        local chance = 0.06 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
@@ -855,7 +856,7 @@ PST.obolEvents = {
     end,
     -- On boss kill
     bossKill = function(depth, chanceMod)
-        local chance = 0.1 + (chanceMod or 0)
+        local chance = 0.1 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
@@ -867,7 +868,7 @@ PST.obolEvents = {
     end,
     -- On challenge room clear
     challClear = function(depth, chanceMod)
-        local chance = 0.35 + (chanceMod or 0)
+        local chance = 0.35 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
@@ -879,7 +880,7 @@ PST.obolEvents = {
     end,
     -- On fully helping beggar (teleports away)
     beggarHelp = function(depth, chanceMod)
-        local chance = 0.7 + (chanceMod or 0)
+        local chance = 0.7 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
@@ -889,9 +890,20 @@ PST.obolEvents = {
         end
         return 0
     end,
+    -- On opening non-normal chests
+    chests = function(depth, chanceMod)
+        local chance = 0.05 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
+        local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
+        if abundantObols > 0 then chance = chance * 2 end
+        if math.random() < chance then
+            local amt = 5 + (depth - 1)
+            amt = math.ceil(amt * (1 + abundantObols / 100))
+            return amt
+        end
+    end,
     -- On boss rush clear
     bossRush = function(depth)
-        local amt = 10 + 5 * (depth - 1)
+        local amt = 10 + 5 * (depth - 1) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         amt = math.ceil(amt * (1 + PST:getTreeSnapshotMod("boonAbundantObols", 0) / 100))
         return amt
     end

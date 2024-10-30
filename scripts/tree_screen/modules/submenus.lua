@@ -5,10 +5,6 @@ PSTSubmenu = {
     STARJEWELINV = "starJewelInventory"
 }
 
--- Hack to provide VSCode autocomplete functionality on modules (wtf?)
-local moduleRequire = require
-moduleRequire = include
-
 -- Submenus refer to the smaller interactable menus that show up for e.g. Cosmic Realignment or starcursed jewel inventories
 local submenusModule = {
     currentSubmenu = PSTSubmenu.NONE,
@@ -16,8 +12,8 @@ local submenusModule = {
     BGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true),
 
     submenus = {
-        [PSTSubmenu.COSMICREALIGNMENT] = moduleRequire("scripts.tree_screen.modules.submenus.cosmicRSubmenu"),
-        [PSTSubmenu.STARJEWELINV] = moduleRequire("scripts.tree_screen.modules.submenus.starcursedInvSubmenu")
+        [PSTSubmenu.COSMICREALIGNMENT] = include("scripts.tree_screen.modules.submenus.cosmicRSubmenu"),
+        [PSTSubmenu.STARJEWELINV] = include("scripts.tree_screen.modules.submenus.starcursedInvSubmenu")
     },
 }
 

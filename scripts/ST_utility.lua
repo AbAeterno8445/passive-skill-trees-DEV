@@ -797,22 +797,6 @@ function PST:inMineshaftPuzzle()
 	return level:GetDimension() == Dimension.MINESHAFT and (level:GetStage() == LevelStage.STAGE2_1 or level:GetStage() == LevelStage.STAGE2_2)
 end
 
----@param r number
----@param g number
----@param b number
----@param a? number
-function PST:RGBColor(r, g, b, a)
-	return Color(r / 255, g / 255, b / 255, a or 1)
-end
-
----@param r number
----@param g number
----@param b number
----@param a? number
-function PST:RGBKColor(r, g, b, a)
-	return KColor(r / 255, g / 255, b / 255, a or 1)
-end
-
 -- Brian Kernighan's algorithm
 function PST:countSetBits(n)
 	if (n == 0) then return 0

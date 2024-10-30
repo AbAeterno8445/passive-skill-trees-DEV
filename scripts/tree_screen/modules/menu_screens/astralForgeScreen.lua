@@ -1,7 +1,3 @@
--- Hack to provide VSCode autocomplete functionality on modules (wtf?)
-local moduleRequire = require
-moduleRequire = include
-
 local astralForgeScreen = {
     BGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true),
     UILinkSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_node_link.anm2", true),
@@ -55,7 +51,7 @@ astralForgeScreen.UILinkSprite:SetFrame("AstralForgeUI", 1)
 astralForgeScreen.forgeUISprite:Play("Default", true)
 
 -- Astral Forge rendering func
-local astralForgeScreenRender = moduleRequire("scripts.tree_screen.modules.menu_screens.astralForgeRender")
+local astralForgeScreenRender = include("scripts.tree_screen.modules.menu_screens.astralForgeRender")
 
 local function PSTDeconstructWeapon(targetWep)
     for i, tmpWeapon in ipairs(PST.modData.astralWepInventory) do

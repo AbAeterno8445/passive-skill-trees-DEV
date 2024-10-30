@@ -66,6 +66,9 @@ function PST:onDeath(entity)
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
+        local isFinalBoss = PST:arrHasValue(PST.finalBosses, entity:GetType()) and (entity:GetType() ~= EntityType.ENTITY_ISAAC or
+        (entity:GetType() == EntityType.ENTITY_ISAAC and entity.SubType == 1))
+
         -- Expedition checks
         if PST:getTreeSnapshotMod("isExpedRun", false) then
             -- Expedition objective: defeat monsters
@@ -86,10 +89,15 @@ function PST:onDeath(entity)
                 end
             end
 
-            -- Expedition objective: defeat any final boss (add Isaac boss type check for blue baby boss on chest)
-            if PST:arrHasValue(PST.finalBosses, entity:GetType()) and (entity:GetType() ~= EntityType.ENTITY_ISAAC or (
-            entity:GetType() == EntityType.ENTITY_ISAAC and entity.SubType == 1)) then
+            -- Expedition final boss kill
+            if isFinalBoss then
+                -- Expedition objective: defeat any final boss (add Isaac boss type check for blue baby boss on chest)
                 PST:expedAddProgInRun("finalBoss", 1)
+
+                -- Ancient Stardust
+                PST.modData.ancientStardust = PST.modData.ancientStardust + 1
+                PST:createFloatTextFX("+1 Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
+                SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.25, 2, false, 1.5)
             end
 
             -- Expedition objective: defeat Delirium or The Beast without taking damage more than once
@@ -127,13 +135,30 @@ function PST:onDeath(entity)
 
             -- Boss kill
             if entity:IsBoss() then
-                -- Expedition objective: defeat bosses
-                PST:expedAddProgInRun("defeatBosses", 1)
+                -- Boss kills in current room
+                PST:addModifiers({ roomBossKills = 1 }, true)
 
-                -- Obols on boss kill
+                -- Expedition boss kill
                 if PST:getTreeSnapshotMod("isExpedRun", false) then
-                    local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
-                    if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
+                    -- Expedition objective: defeat bosses
+                    PST:expedAddProgInRun("defeatBosses", 1)
+
+                    -- Proc up to 5 times within this room
+                    if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
+                        -- Obols on boss kill
+                        if PST:getTreeSnapshotMod("isExpedRun", false) then
+                            local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
+                            if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
+                        end
+
+                        -- Chance for Sparkling Stardust
+                        local sparkStardustChance = 0.3 + PST:getLevel():GetStage() * 0.03
+                        if 100 * math.random() < sparkStardustChance then
+                            PST.modData.sparkStardust = PST.modData.sparkStardust + 1
+                            PST:createFloatTextFX("+1 Sparkling Stardust", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.13, 120, true)
+                            SFXManager():Play(SoundEffect.SOUND_POWERUP3, 0.25, 2, false, 1.5)
+                        end
+                    end
                 end
             end
 

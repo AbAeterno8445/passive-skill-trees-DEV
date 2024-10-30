@@ -1,7 +1,3 @@
--- Hack to provide VSCode autocomplete functionality on modules (wtf?)
-local moduleRequire = require
-moduleRequire = include
-
 local expeditionScreen = {
     BGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true),
     expNodeSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_nodes.anm2", true),
@@ -55,9 +51,9 @@ expeditionScreen.expLinkSprite:Play("Idle", true)
 expeditionScreen.itemRewardSprite:Play("ShopIdle", true)
 
 -- Tab rendering funcs
-local expedScreenMainTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenMainTab")
-local expedScreenEffectTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenEffectTab")
-local expedScreenDepthTab = moduleRequire("scripts.tree_screen.modules.menu_screens.expedScreenDepthTab")
+local expedScreenMainTab = include("scripts.tree_screen.modules.menu_screens.expedScreenMainTab")
+local expedScreenEffectTab = include("scripts.tree_screen.modules.menu_screens.expedScreenEffectTab")
+local expedScreenDepthTab = include("scripts.tree_screen.modules.menu_screens.expedScreenDepthTab")
 
 -- Camera funcs
 function expeditionScreen:UpdateCamZoomOffset()

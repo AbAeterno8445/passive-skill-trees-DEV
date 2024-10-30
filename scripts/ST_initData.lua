@@ -545,6 +545,8 @@ function PST:resetMods()
 		trollBombDisarm = 0,
 		gildedTrinkets = {},
 
+		roomBossKills = 0,
+
 		craftingBagFull = false,
 
 		causeCurse = false, -- If true, causes a curse when entering the next floor then flips back to false. Skipped by items like black candle
@@ -1636,9 +1638,7 @@ function PST:resetData()
 		expedLastDepth = 1, -- Remember last visited depth for menu
 		expedEnabled = false,
 
-		-- Astral forge - equipped astral weapon & inventory
-		---@type PSTAstralWeapon|nil
-		equippedAstralWep = nil,
+		-- Astral forge - astral weapon inventory
 		---@type PSTAstralWeapon[]
 		astralWepInventory = {},
 

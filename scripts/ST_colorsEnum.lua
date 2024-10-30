@@ -1,3 +1,19 @@
+---@param r number
+---@param g number
+---@param b number
+---@param a? number
+function PST:RGBColor(r, g, b, a)
+	return Color(r / 255, g / 255, b / 255, a or 1)
+end
+
+---@param r number
+---@param g number
+---@param b number
+---@param a? number
+function PST:RGBKColor(r, g, b, a)
+	return KColor(r / 255, g / 255, b / 255, a or 1)
+end
+
 PST.kcolors = {
     WHITE = KColor(1, 1, 1, 1),
     WHITE_FADED1 = KColor(1, 1, 1, 0.9),

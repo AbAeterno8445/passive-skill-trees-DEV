@@ -867,6 +867,11 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Reset room bosskills
+	if PST:getTreeSnapshotMod("roomBossKills", 0) > 0 then
+		PST:addModifiers({ roomBossKills = { value = 0, set = true } }, true)
+	end
+
 	-- First room entry
 	if room:IsFirstVisit() then
 		-- Starcursed jewel in planetariums

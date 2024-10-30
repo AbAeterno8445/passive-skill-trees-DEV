@@ -1169,6 +1169,14 @@ function PST:onPickupUpdate(pickup)
                     -- Expedition objective: open stone/bomb chests
 			        PST:expedAddProgInRun("stoneChests", 1)
                 end
+
+                -- Any special chest
+                if pickup.Variant ~= PickupVariant.PICKUP_CHEST then
+                    if PST:getTreeSnapshotMod("isExpedRun", false) then
+                        local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1))
+                        if tmpObols > 0 then PST:expedDropObolsAt(pickup.Position, tmpObols) end
+                    end
+                end
             end
         end
     end

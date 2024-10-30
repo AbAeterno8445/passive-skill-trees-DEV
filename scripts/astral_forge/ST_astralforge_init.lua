@@ -726,7 +726,7 @@ PST.astralWepMods = {
 
 PST.astralWepPrefix = "astralwep_"
 function PST:getSnapAstralWepMod(modName)
-    return PST:getTreeSnapshotMod(PST.astralWepPrefix + modName, nil)
+    return PST:getTreeSnapshotMod(PST.astralWepPrefix .. modName, nil)
 end
 
 -- Astral weapon data (honing goes from 0-50 for implicit mod rolls)

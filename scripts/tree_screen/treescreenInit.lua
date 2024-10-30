@@ -1,6 +1,4 @@
--- Hack to provide VSCode autocomplete functionality on modules (wtf?)
-local moduleRequire = require
-moduleRequire = include
+
 
 ---@class PST.treeScreen
 PST.treeScreen = {
@@ -68,11 +66,11 @@ PST.treeScreen = {
 
     -- List of modules with update/render functionality, each ideally containing Update() or Render() funcs
     modules = {
-        spaceBGModule = moduleRequire("scripts.tree_screen.modules.spaceBackground"),
-        nodeDrawingModule = moduleRequire("scripts.tree_screen.modules.nodeDrawing"),
-        submenusModule = moduleRequire("scripts.tree_screen.modules.submenus"),
-        descriptionBoxes = moduleRequire("scripts.tree_screen.modules.descriptionBoxes"),
-        menuScreensModule = moduleRequire("scripts.tree_screen.modules.menuScreens")
+        spaceBGModule = include("scripts.tree_screen.modules.spaceBackground"),
+        nodeDrawingModule = include("scripts.tree_screen.modules.nodeDrawing"),
+        submenusModule = include("scripts.tree_screen.modules.submenus"),
+        descriptionBoxes = include("scripts.tree_screen.modules.descriptionBoxes"),
+        menuScreensModule = include("scripts.tree_screen.modules.menuScreens")
     },
 }
 

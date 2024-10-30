@@ -249,6 +249,9 @@ function PST:onNewRun(isContinued)
             PST.modData.treeModSnapshot.isExpedRun = true
             PST.modData.treeModSnapshot.expedDepth = PST.modData.expedSelDepth
 
+            -- Astral weapon drop tiers (starts at 1, +1 every 10 depths until tier 5 max)
+            PST.modData.treeModSnapshot.astralWepTierDrops = math.min(5, 1 + math.floor(PST.modData.expedSelDepth / 10))
+
             -- Set objective
             local origNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
             if origNode then
@@ -341,17 +344,29 @@ function PST:onNewRun(isContinued)
 
             -- Weapon implicit mod
             if eqWeapon.implicitMod then
-                local tmpModName = PST.astralWepPrefix + wepTypeData.implicitMod.name
+                local tmpModName = PST.astralWepPrefix .. wepTypeData.implicitMod.name
                 PST.modData.treeModSnapshot[tmpModName] = eqWeapon.implicitMod
-                print("set", tmpModName, "to", eqWeapon.implicitMod)
             end
 
             -- Weapon modifiers
             if eqWeapon.mods then
                 for _, tmpMod in ipairs(eqWeapon.mods) do
-                    local tmpModName = PST.astralWepPrefix + tmpMod.name
+                    local tmpModName = PST.astralWepPrefix .. tmpMod.name
                     PST.modData.treeModSnapshot[tmpModName] = tmpMod.rolls or true
-                    print("set", tmpModName, "to", PST.modData.treeModSnapshot[tmpModName])
+
+                    -- Ancient mod rolls
+                    local tmpModData = PST.astralWepMods[tmpMod.name]
+                    if tmpModData.ancient then
+                        local ancRolls = {}
+                        for i, tmpMinRoll in ipairs(tmpModData.minRolls) do
+                            local newRoll = tmpMinRoll
+                            if eqWeapon.ancientUpg then
+                                newRoll = newRoll + tmpModData.upgIncrements[i] * eqWeapon.ancientUpg
+                            end
+                            table.insert(ancRolls, newRoll)
+                        end
+                        PST.modData.treeModSnapshot[tmpModName] = ancRolls
+                    end
                 end
             end
         end
