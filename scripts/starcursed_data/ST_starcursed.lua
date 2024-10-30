@@ -78,7 +78,7 @@ function PST:SC_getJewelDescription(jewel)
                     local modDescription = PST.SCMods[jewel.type][modName].description
                     if modDescription then
                         table.insert(tmpDescription, {
-                            string.format(modDescription, table.unpack(modData.rolls)), KColor(0.88, 1, 1, 1)
+                            string.format(modDescription, table.unpack(modData.rolls)), PST.kcolors.TEAL2
                         })
                     end
                 end
@@ -103,7 +103,7 @@ function PST:SC_getJewelDescription(jewel)
                     targetDesc = tmpAncient.descriptionConverted
                 end
                 for _, tmpLine in ipairs(targetDesc) do
-                    table.insert(tmpDescription, {tmpLine, KColor(1, 0.7, 0.3, 1)})
+                    table.insert(tmpDescription, {tmpLine, PST.kcolors.LIGHTORANGE1})
                 end
             end
             if jewel.converted ~= nil then
@@ -113,7 +113,7 @@ function PST:SC_getJewelDescription(jewel)
                     if bossName == "StringTable::InvalidKey" then
                         bossName = bossEnt:GetName()
                     end
-                    table.insert(tmpDescription, {"Converted boss: " .. bossName, KColor(1, 1, 0.7, 1)})
+                    table.insert(tmpDescription, {"Converted boss: " .. bossName, PST.kcolors.LIGHTYELLOW1})
                 end
             end
             if tmpAncient.rewards then
@@ -121,7 +121,7 @@ function PST:SC_getJewelDescription(jewel)
                     for _, tmpRewardMod in ipairs(PST.SCAncientRewardsSorted) do
                         local tmpRewardModVal = tmpAncient.rewards[tmpRewardMod]
                         if PST.SCMods[tmpRewardMod] ~= nil and tmpRewardModVal then
-                            local tmpColor = KColor(0.5, 0.9, 1, 1)
+                            local tmpColor = PST.kcolors.SKY_BLUE
                             local descStr
                             if type(tmpRewardModVal) == "table" then
                                 ---@diagnostic disable-next-line: param-type-mismatch
@@ -133,7 +133,7 @@ function PST:SC_getJewelDescription(jewel)
                             if tmpAncient.name then
                                 if PST.modData.ancientRewards[tmpAncient.name] and PST.modData.ancientRewards[tmpAncient.name][tmpRewardMod] then
                                     descStr = descStr .. " (Done)"
-                                    tmpColor = KColor(1, 0.9, 0.5, 1)
+                                    tmpColor = PST.kcolors.LIGHTYELLOW1
                                 end
                             end
                             table.insert(tmpDescription, {descStr, tmpColor})
@@ -143,10 +143,10 @@ function PST:SC_getJewelDescription(jewel)
             end
         end
         if jewel.starmight ~= 0 then
-            table.insert(tmpDescription, {"Starmight: " .. tostring(jewel.starmight), KColor(1, 0.75, 0, 1)})
+            table.insert(tmpDescription, {"Starmight: " .. tostring(jewel.starmight), PST.kcolors.STAR_ORANGE})
         end
     else
-        table.insert(tmpDescription, {"Unidentified. Press E to identify and reveal modifiers.", KColor(1, 0.7, 0.7, 1)})
+        table.insert(tmpDescription, {"Unidentified. Press E to identify and reveal modifiers.", PST.kcolors.RED2})
     end
     return tmpDescription
 end

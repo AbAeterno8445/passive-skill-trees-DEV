@@ -5,7 +5,7 @@ local baseDrawX, baseDrawY = 0, 0
 -- Text render helper
 local function tmpRenderText(txt, color, offsetY)
     if string.len(txt) > 0 then
-        PST.miniFont:DrawString(txt, baseDrawX, baseDrawY, color or KColor(1, 1, 1, 1))
+        PST.miniFont:DrawString(txt, baseDrawX, baseDrawY, color or PST.kcolors.WHITE)
     end
     offsetY = offsetY or drawLineHeight
     baseDrawY = baseDrawY + offsetY
@@ -18,7 +18,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     baseDrawX = tScreen.screenW * 0.2 - expedScreen.camera.X
     baseDrawY = 20 + drawLineHeight - expedScreen.camera.Y
 
-    tmpRenderText("Expedition depth " .. tostring(expData.depth), KColor(1, 1, 1, 1), drawLineHeight * 2)
+    tmpRenderText("Expedition depth " .. tostring(expData.depth), PST.kcolors.WHITE, drawLineHeight * 2)
 
     -- Requirement values are tables: {requirement description string, true/false whether req is met}
     local tmpRequirements = {}
@@ -58,17 +58,17 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     -- Requirements
     local requirementsMet = true
     if #tmpRequirements > 0 then
-        tmpRenderText("Expedition requirements:", KColor(1, 0.8, 0.2, 1))
+        tmpRenderText("Expedition requirements:", PST.kcolors.FORGE_ORANGE)
         for _, reqData in ipairs(tmpRequirements) do
-            local tmpColor = KColor(0.7, 1, 0.7, 1)
+            local tmpColor = PST.kcolors.GREEN2
             if not reqData[2] then
                 requirementsMet = false
-                tmpColor = KColor(1, 0.5, 0.5, 1)
+                tmpColor = PST.kcolors.RED1
             end
             tmpRenderText("    " .. reqData[1], tmpColor)
         end
         if not requirementsMet then
-            tmpRenderText("Warning: requirements not met! Next run can't be an expedition run.", KColor(1, 0.5, 0.5, 1))
+            tmpRenderText("Warning: requirements not met! Next run can't be an expedition run.", PST.kcolors.RED1)
         end
         tmpRenderText("")
     end
@@ -86,7 +86,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
 
     -- Implicit modifiers
     if expData.implicits then
-        local tmpColor = KColor(1, 0.8, 0.8, 1)
+        local tmpColor = PST.kcolors.LIGHTRED1
         local firstDraw = false
         for impName, impVal in pairs(expData.implicits) do
             if impName ~= "starmightReq" then
@@ -116,7 +116,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     end
 
     -- Items
-    local tmpColor = KColor(0.8, 0.3, 1, 1)
+    local tmpColor = PST.kcolors.EXPED_PURPLE
     tmpRenderText("Items:", tmpColor, drawLineHeight + 4)
 
     ---@type Sprite
@@ -148,7 +148,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
             if hovered then tmpSprite.Color = Color(1, 1, 1, 1, 0.5, 0.5, 0.5) end
             tmpSprite:SetFrame("Bubbles", 2)
             tmpSprite:Render(Vector(drawX, drawY))
-            if hovered then tmpSprite.Color = Color(1, 1, 1, 1) end
+            if hovered then tmpSprite.Color = Color() end
             tmpSprite = expedScreen.itemRewardSprite
 
             tmpDrawn = tmpDrawn + 1
@@ -162,7 +162,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     end
 
     -- Boons
-    tmpColor = KColor(0.4, 1, 0.4, 1)
+    tmpColor = PST.kcolors.GREEN1
     tmpRenderText("Boons:", tmpColor, drawLineHeight + 4)
 
     ---@type Sprite
@@ -196,7 +196,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
             if hovered then tmpSprite.Color = Color(1, 1, 1, 1, 0.5, 0.5, 0.5) end
             tmpSprite:SetFrame("Bubbles", tmpFrame)
             tmpSprite:Render(Vector(drawX, drawY))
-            if hovered then tmpSprite.Color = Color(1, 1, 1, 1) end
+            if hovered then tmpSprite.Color = Color() end
 
             tmpDrawn = tmpDrawn + 1
         end
@@ -213,7 +213,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     tmpRenderText("")
 
     -- Curses
-    tmpColor = KColor(1, 0.7, 0.7, 1)
+    tmpColor = PST.kcolors.RED2
     tmpRenderText("Curses:", tmpColor, drawLineHeight + 4)
 
     tmpDrawn = 0
@@ -241,7 +241,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
             if hovered then tmpSprite.Color = Color(1, 1, 1, 1, 0.5, 0.5, 0.5) end
             tmpSprite:SetFrame("Bubbles", 1)
             tmpSprite:Render(Vector(drawX, drawY))
-            if hovered then tmpSprite.Color = Color(1, 1, 1, 1) end
+            if hovered then tmpSprite.Color = Color() end
 
             tmpDrawn = tmpDrawn + 1
         end

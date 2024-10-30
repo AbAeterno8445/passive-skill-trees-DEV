@@ -111,7 +111,7 @@ function menuTabberScreen:Render(tScreen)
     self.BGSprite:Render(Vector(tmpDrawX, tmpDrawY))
 
     -- Info text
-    PST.miniFont:DrawString(tmpStr, tmpDrawX + 3, tmpDrawY + 1, KColor(1, 1, 1, 1))
+    PST.miniFont:DrawString(tmpStr, tmpDrawX + 3, tmpDrawY + 1, PST.kcolors.WHITE)
     tmpDrawY = tmpDrawY + 15
 
     -- Draw target screen selections
@@ -133,13 +133,13 @@ function menuTabberScreen:Render(tScreen)
 
         -- Node text
         local tmpNodeTxt = tmpTarget.name
-        local tmpColor = KColor(1, 1, 1, 1)
+        local tmpColor = PST.kcolors.WHITE
         if isSelected then
             tmpNodeTxt = "> " .. tmpNodeTxt
-            tmpColor = KColor(0, 0.8, 1, 1)
+            tmpColor = PST.kcolors.TEAL1
         end
         if not isEnabled then
-            tmpColor = KColor(1, 0.5, 0.5, 1)
+            tmpColor = PST.kcolors.RED1
             tmpNodeTxt = tmpNodeTxt .. " (locked)"
         end
         PST.miniFont:DrawString(tmpNodeTxt, tmpDrawX + 40, nodeY - 4, tmpColor)

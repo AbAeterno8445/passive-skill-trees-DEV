@@ -14,7 +14,7 @@ local descriptionBoxesModule = {
                     end
                 end
                 table.insert(tmpDescription, {
-                    "Can now get unlocks as if playing as " .. tmpCharName .. ".", KColor(0.85, 0.85, 1, 1)
+                    "Can now get unlocks as if playing as " .. tmpCharName .. ".", PST.kcolors.LIGHTBLUE1
                 })
                 table.insert(tmpDescription, "Press the Respec Node button to deselect this character.")
             elseif isAllocated then
@@ -30,7 +30,7 @@ local descriptionBoxesModule = {
                     descName = descName .. " (E to view Star Tree)"
                 elseif tScreen.starcursedTotalMods then
                     -- Append starmight description to Star Tree node
-                    local tmpColor = KColor(1, 0.8, 0.2, 1)
+                    local tmpColor = PST.kcolors.STAR_ORANGE
                     tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
                     table.insert(tmpDescription, {"Starmight: " .. tScreen.starcursedTotalMods.totalStarmight, tmpColor})
                     for modName, modVal in pairs(PST:SC_getStarmightImplicits(tScreen.starcursedTotalMods.totalStarmight)) do
@@ -42,7 +42,7 @@ local descriptionBoxesModule = {
                 end
             elseif not PST:SC_isStarTreeUnlocked() then
                 tmpDescription = {
-                    {"Reach level " .. tostring(PST.SCStarTreeUnlockLevel) .. " with at least one character to unlock.", KColor(1, 0.6, 0.6, 1)}
+                    {"Reach level " .. tostring(PST.SCStarTreeUnlockLevel) .. " with at least one character to unlock.", PST.kcolors.RED2}
                 }
             end
             return { name = descName, description = tmpDescription }
@@ -52,9 +52,9 @@ local descriptionBoxesModule = {
         ["Golden Trinkets"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
             if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
-                table.insert(tmpDescription, {"Golden trinkets are unlocked.", KColor(0.6, 1, 0.6, 1)})
+                table.insert(tmpDescription, {"Golden trinkets are unlocked.", PST.kcolors.GREEN1})
             else
-                table.insert(tmpDescription, {"Golden trinkets are not unlocked.", KColor(1, 0.6, 0.6, 1)})
+                table.insert(tmpDescription, {"Golden trinkets are not unlocked.", PST.kcolors.RED2})
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -63,7 +63,7 @@ local descriptionBoxesModule = {
         ["Grand Ingredient"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             if PST:grandIngredientNodes(false) > 2 then
                 tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
-                table.insert(tmpDescription, {"You have more than 2 Grand Ingredient nodes allocated!", KColor(1, 0.6, 0.6, 1)})
+                table.insert(tmpDescription, {"You have more than 2 Grand Ingredient nodes allocated!", PST.kcolors.RED2})
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -74,16 +74,16 @@ local descriptionBoxesModule = {
             local bothDone = true
             -- Boss rush
             if Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.BOSS_RUSH) == 0 then
-                table.insert(tmpDescription, {"Missing Boss Rush completion with T. Siren!", KColor(1, 0.6, 0.6, 1)})
+                table.insert(tmpDescription, {"Missing Boss Rush completion with T. Siren!", PST.kcolors.RED2})
                 bothDone = false
             end
             -- Hush
             if Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.HUSH) == 0 then
-                table.insert(tmpDescription, {"Missing Hush completion with T. Siren!", KColor(1, 0.6, 0.6, 1)})
+                table.insert(tmpDescription, {"Missing Hush completion with T. Siren!", PST.kcolors.RED2})
                 bothDone = false
             end
             if bothDone then
-                table.insert(tmpDescription, {"Boss Rush and Hush completed.", KColor(0.7, 1, 0.7, 1)})
+                table.insert(tmpDescription, {"Boss Rush and Hush completed.", PST.kcolors.GREEN1})
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -170,15 +170,15 @@ function descriptionBoxesModule:Render(tScreen)
                 obolReq = PST[obolReq.var]
             end
             if obolReq then
-                table.insert(tmpDescription, {"Requires " .. tostring(obolReq) .. " Arcane Obols to allocate.", KColor(0.8, 0.35, 1, 1)})
+                table.insert(tmpDescription, {"Requires " .. tostring(obolReq) .. " Arcane Obols to allocate.", PST.kcolors.PURPLE1})
             end
 
             -- Expedition depth requirement
             local expReq = hoveredNode.reqs.expeditionDepth
             if expReq then
-                local tmpColor = KColor(1, 0.7, 0.3, 1)
+                local tmpColor = PST.kcolors.LIGHTORANGE1
                 if PST.modData.expeditionDepth > expReq then
-                    tmpColor = KColor(0.6, 1, 0.6, 1)
+                    tmpColor = PST.kcolors.GREEN1
                 end
                 table.insert(tmpDescription, {"Requires completing expedition depth " .. tostring(expReq), tmpColor})
             end

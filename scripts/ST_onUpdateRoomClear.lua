@@ -97,7 +97,7 @@ function PST:onRoomClear(level, room)
 		-- Death's Trial nodes (T. Lost's tree)
 		if PST:getTreeSnapshotMod("deathTrialActive", false) then
 			PST:getLevel():GetCurrentRoomDesc().Flags = PST:getLevel():GetCurrentRoomDesc().Flags &~ RoomDescriptor.FLAG_CURSED_MIST
-			PST:createFloatTextFX("Death's Trial Complete!", Vector.Zero, Color(1, 1, 1, 1), 0.13, 90, true)
+			PST:createFloatTextFX("Death's Trial Complete!", Vector.Zero, Color(), 0.13, 90, true)
 			PST:addModifiers({ deathTrialActive = false }, true)
 		end
 
@@ -119,7 +119,7 @@ function PST:onRoomClear(level, room)
 						respecChance = respecChance - 100
 					end
 					if tmpRespecs > 0 then
-						PST:createFloatTextFX("+" .. tmpRespecs .. " Respec(s)", Vector.Zero, Color(1, 1, 1, 1), 0.12, 90, true)
+						PST:createFloatTextFX("+" .. tmpRespecs .. " Respec(s)", Vector.Zero, Color(), 0.12, 90, true)
 						SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
 						PST.modData.respecPoints = PST.modData.respecPoints + tmpRespecs
 					end
@@ -210,7 +210,7 @@ function PST:onRoomClear(level, room)
 					if not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) then
 						player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
 						player:GetEffects():AddNullEffect(NullItemID.ID_HOLY_CARD)
-						PST:createFloatTextFX("Deferred Aegis", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+						PST:createFloatTextFX("Deferred Aegis", Vector.Zero, Color(), 0.12, 70, true)
 					end
 				end
 

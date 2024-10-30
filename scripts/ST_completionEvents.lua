@@ -52,9 +52,6 @@ function PST:onCompletionEvent(event)
 					local tmpRewards = ancientData.rewards[rewardMod]
 					if tmpRewards and event == tmpEvent and not PST.modData.ancientRewards[ancientJewel.name][rewardMod] then
 						PST.modData.skillPoints = PST.modData.skillPoints + tmpRewards[1]
-						--[[for _, charData in pairs(PST.modData.charData) do
-							charData.skillPoints = charData.skillPoints + tmpRewards[1]
-						end]]
 						PST.modData.respecPoints = PST.modData.respecPoints + tmpRewards[2]
 						PST.modData.ancientRewards[ancientJewel.name][rewardMod] = true
 

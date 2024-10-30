@@ -331,18 +331,18 @@ function PST:getExpNodeObjectiveDesc(nodeData, expData)
         objectiveData = PST.expeditionObjectivesFinal[nodeData.objective.name]
     end
     if objectiveData then
-        local tmpColor = PST:RGBKColor(57, 150, 255)
-        if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
+        local tmpColor = PST.kcolors.EXPED_BLUE
+        if nodeData.accessible == false then tmpColor = PST.kcolors.GRAY1 end
 
         local objProgress = 0
         if nodeData.nodeType == PSTExpNodeType.COMPLETED then
             objProgress = nodeData.objective.req
-            tmpColor = PST:RGBKColor(80, 255, 255)
+            tmpColor = PST.kcolors.TEAL1
         elseif expData.selectedNode then
             if expData.selectedNode.col == nodeData.col and expData.selectedNode.row == nodeData.row then
                 objProgress = expData.selectedNode.objProgress
                 if expData.selectedNode.objProgress >= nodeData.objective.req then
-                    tmpColor = PST:RGBKColor(80, 255, 255)
+                    tmpColor = PST.kcolors.TEAL1
                 end
             end
         end
@@ -386,8 +386,8 @@ function PST:getExpNodeDescription(nodeData, expData)
         if not hasShrouding then
             local curseData = PST.expeditionCurses[nodeData.curse]
             if curseData then
-                local tmpColor = PST:RGBKColor(255, 80, 93)
-                if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
+                local tmpColor = PST.kcolors.RED3
+                if nodeData.accessible == false then tmpColor = PST.kcolors.GRAY1 end
                 table.insert(tmpDescription, {"Curse of " .. curseData.name .. ":", tmpColor})
                 if type(curseData.description) == "table" then
                     for _, tmpLine in ipairs(curseData.description) do
@@ -400,14 +400,14 @@ function PST:getExpNodeDescription(nodeData, expData)
                 end
             end
         else
-            table.insert(tmpDescription, {"Unknown Curse (Shrouded)", PST:RGBKColor(220, 120, 255)})
+            table.insert(tmpDescription, {"Unknown Curse (Shrouded)", PST.kcolors.PINK1})
         end
     end
 
     -- Reward
     if nodeData.rewardType ~= PSTExpNodeRewardType.NONE or nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then
-        local tmpColor = PST:RGBKColor(129, 255, 129)
-        if nodeData.accessible == false then tmpColor = KColor(0.5, 0.5, 0.5, 1) end
+        local tmpColor = PST.kcolors.GREEN1
+        if nodeData.accessible == false then tmpColor = PST.kcolors.GRAY1 end
 
         if not hasShrouding then
             table.insert(tmpDescription, {"Reward:", tmpColor})
@@ -456,14 +456,14 @@ function PST:getExpNodeDescription(nodeData, expData)
                 table.insert(tmpDescription, {"   +1 Boon upgrade point", tmpColor})
             end
         else
-            local tmpShroudColor = PST:RGBKColor(220, 120, 255)
+            local tmpShroudColor = PST.kcolors.PINK1
             if nodeData.accessible == false then tmpShroudColor = tmpColor end
             table.insert(tmpDescription, {"Unknown Reward (Shrouded)", tmpShroudColor})
         end
     end
     -- Completed node
     if nodeData.nodeType == PSTExpNodeType.COMPLETED then
-        table.insert(tmpDescription, {"Completed node.", KColor(0.5, 1, 1, 1)})
+        table.insert(tmpDescription, {"Completed node.", PST.kcolors.TEAL1})
     end
 
     return tmpDescription

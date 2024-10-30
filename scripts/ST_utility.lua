@@ -880,7 +880,7 @@ function PST:alphaBlend(color1, color2, alpha)
 end
 
 function PST:mixColors(col1, col2)
-    local baseColor = Color(1, 1, 1, 1)
+    local baseColor = Color()
     local mixedColor
 
     if col1 and col2 then

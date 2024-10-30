@@ -54,13 +54,13 @@ function totalmodsScreen:OnOpen(openData)
         end
         lastCategory = PST.treeModDescriptions[tmpModName].category
 
-        local tmpColor = KColor(1, 1, 1, 1)
+        local tmpColor = PST.kcolors.WHITE
         if PST.treeModDescriptionCategories[lastCategory] then
             tmpColor = PST.treeModDescriptionCategories[lastCategory].color
         end
         -- Mom heart proc mods - show as disabled if mom's heart needs to be re-defeated
         if PST.modData.momHeartProc[tmpModName] == false then
-            tmpColor = KColor(0.5, 0.5, 0.5, 1)
+            tmpColor = PST.kcolors.GRAY1
         end
 
         -- Category title
@@ -80,19 +80,19 @@ function totalmodsScreen:OnOpen(openData)
         for _, tmpLine in ipairs(parsedModLines) do
             -- Harmonic modifiers, check if disabled
             if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
-                tmpColor = KColor(0.5, 0.5, 0.5, 1)
+                tmpColor = PST.kcolors.GRAY1
             end
             table.insert(self.totalModsList, {tmpLine, tmpColor})
         end
 
         if PST.modData.momHeartProc[tmpModName] == false then
-            table.insert(self.totalModsList, {"   Inactive until Mom's Heart is defeated again.", KColor(1, 0.6, 0.6, 1)})
+            table.insert(self.totalModsList, {"   Inactive until Mom's Heart is defeated again.", PST.kcolors.RED2})
         end
     end
 
     -- Star tree mods for description table
     if self.starcursedTotalMods and (next(self.starcursedTotalMods.totalMods) ~= nil or self.starcursedTotalMods.totalStarmight > 0) then
-        local starTreeModsColor = KColor(1, 0.8, 0.2, 1)
+        local starTreeModsColor = PST.kcolors.STAR_ORANGE
         local starTreeMods = {}
         table.insert(self.totalModsList, "")
         table.insert(self.totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
@@ -126,11 +126,11 @@ function totalmodsScreen:OnOpen(openData)
         table.insert(self.totalModsList, "")
         table.insert(self.totalModsList, {
             "Cosmic Realignment (" .. tmpCharName .. ")",
-            KColor(0.85, 0.85, 1, 1)
+            PST.kcolors.LIGHTBLUE1
         })
         table.insert(self.totalModsList, {
             "Can now get unlocks as if playing as " .. tmpCharName,
-            KColor(0.85, 0.85, 1, 1)
+            PST.kcolors.LIGHTBLUE1
         })
     end
 end

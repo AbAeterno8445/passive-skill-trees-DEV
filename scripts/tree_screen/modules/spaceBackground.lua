@@ -1,7 +1,7 @@
 local colorStep = 0.02
 
 local spaceBGModule = {
-    targetSpaceColor = Color(1, 1, 1, 1),
+    targetSpaceColor = Color(),
 
     -- Space movement
     spaceOffPos = Vector.Zero,
@@ -37,7 +37,7 @@ function spaceBGModule:ShuffleStarfield()
 end
 
 local targetColors = {
-    default = Color(1, 1, 1, 1),
+    default = Color(),
     starTree = Color(0, 1, 1, 1),
     sidereal = Color(0.3, 0.3, 1, 1),
     character = Color(1, 0.5, 1, 1)

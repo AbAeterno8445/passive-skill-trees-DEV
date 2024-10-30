@@ -237,7 +237,7 @@ function PST:onDeath(entity)
                     PST.specialNodes.SC_nullstonePoofFX.x = entity.Position.X
                     PST.specialNodes.SC_nullstonePoofFX.y = entity.Position.Y
                     PST.specialNodes.SC_nullstonePoofFX.sprite:Play("Poof", true)
-                    PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 1)
+                    PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color()
                 end
             -- Spawn next enemy in sequence if killing nullified enemy in boss room
             elseif not PST:getTreeSnapshotMod("SC_nullstoneClear", false) and room:GetType() == RoomType.ROOM_BOSS
@@ -258,7 +258,7 @@ function PST:onDeath(entity)
 
                     PST.specialNodes.SC_nullstonePoofFX.x = entity.Position.X
                     PST.specialNodes.SC_nullstonePoofFX.y = entity.Position.Y
-                    PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color(1, 1, 1, 1)
+                    PST.specialNodes.SC_nullstonePoofFX.stoneSprite.Color = Color()
                 end
             end
         end

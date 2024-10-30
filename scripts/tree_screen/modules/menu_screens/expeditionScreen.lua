@@ -338,19 +338,19 @@ function expeditionScreen:Render(tScreen)
             table.insert(nodeDesc, "Expedition Depth: " .. tostring(self.currentDepth))
             -- Expedition enabled/disabled
             if PST.modData.expedEnabled then
-                local tmpColor = KColor(0.5, 1, 0.5, 1)
+                local tmpColor = PST.kcolors.GREEN1
                 local tmpStr = "Expedition Run Enabled"
                 if not PST:expedMeetsRequirements(self.currentDepth) then
-                    tmpColor = KColor(1, 0.5, 0.5, 1)
+                    tmpColor = PST.kcolors.RED1
                     tmpStr = tmpStr .. " (Reqs not met!)"
                 end
                 table.insert(nodeDesc, {tmpStr, tmpColor})
             else
-                table.insert(nodeDesc, {"Expedition Run Disabled", KColor(1, 0.5, 0.5, 1)})
+                table.insert(nodeDesc, {"Expedition Run Disabled", PST.kcolors.RED1})
             end
             -- Respec for reset
             table.insert(nodeDesc, "Hold the Respec button for 3 seconds to reset and reroll this expedition.")
-            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth)) .. " Arcane Obols.", KColor(0.8, 0.35, 1, 1)})
+            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth)) .. " Arcane Obols.", PST.kcolors.PURPLE1})
         else
             -- Normal expedition node description
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
@@ -367,17 +367,17 @@ function expeditionScreen:Render(tScreen)
                 end
             elseif self.hoveredNode.selectable then
                 table.insert(nodeDesc, "Press the Allocate button to switch selected node to this one.")
-                table.insert(nodeDesc, {"  > Switching node selection costs 1 global SP and 5 respec points.", KColor(1, 0.7, 0.7, 1)})
+                table.insert(nodeDesc, {"  > Switching node selection costs 1 global SP and 5 respec points.", PST.kcolors.RED2})
             end
         elseif self.hoveredNode.selectable then
             table.insert(nodeDesc, "Press the Allocate button to select this node.")
-            table.insert(nodeDesc, {"  > Switching the selection to a different node will cost 1 global SP and 5 respec points.", KColor(1, 0.7, 0.7, 1)})
+            table.insert(nodeDesc, {"  > Switching the selection to a different node will cost 1 global SP and 5 respec points.", PST.kcolors.RED2})
         end
         tScreen:DrawNodeBox(nodeName, nodeDesc)
 
     -- Hovered boon description
     elseif self.hoveredBoon then
-        local tmpColor = KColor(0.7, 1, 0.7, 1)
+        local tmpColor = PST.kcolors.GREEN2
         local boonData = PST.expeditionBoons[self.hoveredBoon]
         local boonName = "Boon of " .. boonData.name
         local isUpgraded = PST:arrHasValue(expData.upgradedBoons, self.hoveredBoon)
@@ -401,7 +401,7 @@ function expeditionScreen:Render(tScreen)
         end
         -- Upgrade available text
         if not isUpgraded and boonData.upgradedMods then
-            local upgColor = KColor(0.4, 1, 0.4, 1)
+            local upgColor = PST.kcolors.DARKGREEN1
             table.insert(boonDesc, {"+ Upgrade available:", upgColor})
 
             local upgDesc = boonData.upgradedDescription
@@ -423,7 +423,7 @@ function expeditionScreen:Render(tScreen)
 
     -- Hovered curse description
     elseif self.hoveredCurse then
-        local tmpColor = KColor(1, 0.7, 0.7, 1)
+        local tmpColor = PST.kcolors.RED2
         local curseData = PST.expeditionCurses[self.hoveredCurse]
         local curseName = "Curse of " .. curseData.name
         local curseMods = curseData.modsFunc(expData.depth)
@@ -441,7 +441,7 @@ function expeditionScreen:Render(tScreen)
 
     -- Hovered item description
     elseif self.hoveredItem then
-        local tmpColor = KColor(0.85, 0.55, 1, 1)
+        local tmpColor = PST.kcolors.EXPED_PURPLE
         local itemCfg = Isaac.GetItemConfig():GetCollectible(self.hoveredItem)
         if itemCfg then
             local itemDesc = {}
@@ -451,7 +451,6 @@ function expeditionScreen:Render(tScreen)
 			end
             tScreen:DrawNodeBox(itemName, itemDesc)
         end
-    
     -- Hovered depth description
     elseif self.hoveredDepth then
         local depthDesc = {}
@@ -473,17 +472,17 @@ function expeditionScreen:Render(tScreen)
                 end
             end
             -- Attempts
-            table.insert(depthDesc, {"Attempts: " .. tostring(tgtExped.attempts) .. "/" .. tostring(tgtExped.startAttempts), PST:RGBKColor(57, 150, 255)})
+            table.insert(depthDesc, {"Attempts: " .. tostring(tgtExped.attempts) .. "/" .. tostring(tgtExped.startAttempts), PST.kcolors.BLUE2})
             -- Completed nodes
-            table.insert(depthDesc, {"Completed nodes: " .. tostring(compNodes), PST:RGBKColor(57, 150, 255)})
+            table.insert(depthDesc, {"Completed nodes: " .. tostring(compNodes), PST.kcolors.BLUE2})
             -- Items
             if #tgtExped.items > 0 then
-                table.insert(depthDesc, {"Items: " .. tostring(#tgtExped.items), KColor(0.8, 0.3, 1, 1)})
+                table.insert(depthDesc, {"Items: " .. tostring(#tgtExped.items), PST.kcolors.EXPED_PURPLE})
             end
             -- Boons
-            table.insert(depthDesc, {"Boons: " .. tostring(#tgtExped.boons), KColor(0.4, 1, 0.4, 1)})
+            table.insert(depthDesc, {"Boons: " .. tostring(#tgtExped.boons), PST.kcolors.DARKGREEN1})
             -- Curses
-            table.insert(depthDesc, {"Curses: " .. tostring(#tgtExped.curses), KColor(1, 0.7, 0.7, 1)})
+            table.insert(depthDesc, {"Curses: " .. tostring(#tgtExped.curses), PST.kcolors.RED2})
         end
         tScreen:DrawNodeBox("Depth " .. tostring(self.hoveredDepth), depthDesc)
     end
@@ -494,10 +493,10 @@ function expeditionScreen:Render(tScreen)
     for i, tmpTab in ipairs(self.tabs) do
         local drawX = tScreen.screenW / 2 - (#self.tabs * tabW) / 2 + ((i - 1) * tabW)
 
-        local tmpColor = KColor(1, 1, 1, 1)
+        local tmpColor = PST.kcolors.WHITE
         local tmpBGColor = Color(1, 1, 1, 1, 0.1, 0.1, 0.1)
         if i == self.currentTab then
-            tmpColor = KColor(0.5, 0.75, 1, 1)
+            tmpColor = PST.kcolors.SKY_BLUE
             tmpBGColor = Color(1, 1, 1, 1, 0.1, 0.45, 0.6)
         end
         self.BGSprite.Color = tmpBGColor
@@ -512,45 +511,45 @@ function expeditionScreen:Render(tScreen)
     local tmpX = 12
     local tmpY = tabH + 2
     -- Global SP
-    PST.miniFont:DrawString("Global SP: " .. tostring(PST.modData.skillPoints), tmpX, tmpY, KColor(0.7, 0.7, 1, 1))
+    PST.miniFont:DrawString("Global SP: " .. tostring(PST.modData.skillPoints), tmpX, tmpY, PST.kcolors.LIGHTBLUE1)
     tmpY = tmpY + 14
     -- Respecs
-    PST.miniFont:DrawString("Respecs: " .. tostring(PST.modData.respecPoints), tmpX, tmpY, KColor(1, 1, 1, 1))
+    PST.miniFont:DrawString("Respecs: " .. tostring(PST.modData.respecPoints), tmpX, tmpY, PST.kcolors.WHITE)
     tmpY = tmpY + 14
     -- Arcane Obols
     if currentChar then
-        PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+        PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
         tmpY = tmpY + 14
-        PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+        PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, PST.kcolors.PURPLE1)
         tmpY = tmpY + 28
     end
     -- Expedition attempts
-    PST.miniFont:DrawString("Attempts: " .. tostring(expData.attempts) .. "/" .. tostring(expData.startAttempts), tmpX, tmpY, PST:RGBKColor(57, 150, 255))
+    PST.miniFont:DrawString("Attempts: " .. tostring(expData.attempts) .. "/" .. tostring(expData.startAttempts), tmpX, tmpY, PST.kcolors.EXPED_BLUE)
     tmpY = tmpY + 28
     if self.currentTab == 1 then
         -- Expedition enabled/disabled
         if PST.modData.expedEnabled then
-            local tmpColor = KColor(0.5, 1, 0.5, 1)
+            local tmpColor = PST.kcolors.GREEN1
             local tmpStr = "Expedition Run Enabled"
             if not PST:expedMeetsRequirements(self.currentDepth) then
-                tmpColor = KColor(1, 0.5, 0.5, 1)
+                tmpColor = PST.kcolors.RED1
                 tmpStr = tmpStr .. " (Reqs not met!)"
             end
             PST.miniFont:DrawString(tmpStr, tmpX, tmpY, tmpColor)
         else
-            PST.miniFont:DrawString("Expedition Run Disabled", tmpX, tmpY, KColor(1, 0.5, 0.5, 1))
+            PST.miniFont:DrawString("Expedition Run Disabled", tmpX, tmpY, PST.kcolors.RED1)
         end
         tmpY = tmpY + 14
-        PST.miniFont:DrawString("(Q / Menu Tab to toggle)", tmpX, tmpY, KColor(1, 1, 1, 1))
+        PST.miniFont:DrawString("(Q / Menu Tab to toggle)", tmpX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 28
 
         -- In run - Progress enabled/disabled (for selected objective)
         local runDepth = PST:getTreeSnapshotMod("expedDepth", 0)
         if Isaac.IsInGame() and runDepth > 0 then
             if PST:expedCanProgress(runDepth) then
-                PST.miniFont:DrawString("In run - Progress enabled", tmpX, tmpY, KColor(0.5, 1, 0.5, 1))
+                PST.miniFont:DrawString("In run - Progress enabled", tmpX, tmpY, PST.kcolors.GREEN1)
             else
-                PST.miniFont:DrawString("In run - Progress disabled", tmpX, tmpY, KColor(1, 0.5, 0.5, 1))
+                PST.miniFont:DrawString("In run - Progress disabled", tmpX, tmpY, PST.kcolors.RED1)
             end
         end
     end

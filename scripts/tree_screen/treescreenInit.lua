@@ -159,7 +159,7 @@ function PST:treeScreenMenuRender()
                     tmpStr,
                     Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2,
                     Isaac.GetScreenHeight() - 18,
-                    KColor(1, 0.8, 1, 1)
+                    PST.kcolors.UI_PINK
                 )
             end
         end
@@ -169,7 +169,7 @@ function PST:treeScreenMenuRender()
             tmpStr,
             Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2.5,
             Isaac.GetScreenHeight() - 40,
-            KColor(1, 0.8, 1, 1)
+            PST.kcolors.UI_PINK
         )
     end
 

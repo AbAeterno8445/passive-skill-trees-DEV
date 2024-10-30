@@ -176,12 +176,12 @@ function helpScreen:Render(tScreen)
             local textScale = Vector(screenScale, screenScale)
             local numPosX = buttonX + (19 - PST.luaminiFont:GetStringWidth(tostring(tmpButton.number)) / 2) * screenScale
             local numPosY = buttonY + 33 * screenScale
-            PST.luaminiFont:DrawStringScaled(tostring(tmpButton.number), numPosX, numPosY, textScale.X, textScale.Y, KColor(1, 1, 1, 1))
+            PST.luaminiFont:DrawStringScaled(tostring(tmpButton.number), numPosX, numPosY, textScale.X, textScale.Y, PST.kcolors.WHITE)
 
             -- Draw title
             local titlePosX = buttonX + (19 - PST.miniFont:GetStringWidth(tmpButton.title) / 2) * screenScale
             local titlePosY = buttonY + 50 * screenScale
-            PST.miniFont:DrawStringScaled(tmpButton.title, titlePosX, titlePosY, textScale.X, textScale.Y, KColor(1, 1, 1, 1))
+            PST.miniFont:DrawStringScaled(tmpButton.title, titlePosX, titlePosY, textScale.X, textScale.Y, PST.kcolors.WHITE)
         end
     else
         -- Decor icons for pages

@@ -411,7 +411,7 @@ function PST:prePickup(pickup, collider, low)
                         -- Track collected coins for next floor
                         cosmicRCache.keeperFloorCoins = cosmicRCache.keeperFloorCoins + 1
                         if cosmicRCache.keeperFloorCoins <= 5 then
-                            local tmpColor = Color(1, 1, 1, 1)
+                            local tmpColor = Color()
                             if cosmicRCache.keeperFloorCoins == 5 then
                                 tmpColor = Color(0.7, 1, 0.7, 1)
                             end

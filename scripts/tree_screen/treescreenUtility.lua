@@ -94,10 +94,10 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
     self.descBGSprite.Color.A = bgAlpha or 0.9
     self.descBGSprite:Render(Vector(drawX - 2, drawY - 2))
 
-    tmpFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, KColor(1, 1, 1, 1))
+    tmpFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, PST.kcolors.WHITE_FADED1)
     for i = 1, #description do
         local tmpStr = description[i]
-        local tmpColor = KColor(1, 1, 1, 0.9)
+        local tmpColor = PST.kcolors.WHITE_FADED1
         if type(tmpStr) == "table" then
             tmpStr = description[i][1]
             tmpColor = description[i][2]
@@ -105,9 +105,9 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
             -- Harmonic mods color (Siren's tree)
             if PST:strStartsWith(tmpStr, "[Harmonic]") then
                 if PST:songNodesAllocated(false) <= 2 then
-                    tmpColor = KColor(0.6, 0.9, 1, 1)
+                    tmpColor = PST.kcolors.SKY_BLUE
                 else
-                    tmpColor = KColor(0.4, 0.4, 0.4, 1)
+                    tmpColor = PST.kcolors.GRAY2
                 end
             end
         end

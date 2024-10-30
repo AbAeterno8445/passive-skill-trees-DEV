@@ -225,7 +225,7 @@ function PST:onDamage(target, damage, flag, source)
                     player:AddActiveCharge(-12, tmpSlot, false, false, false)
                 end
                 player:UseActiveItem(CollectibleType.COLLECTIBLE_FLIP, UseFlag.USE_NOANIM)
-                PST:createFloatTextFX("Entanglement!", Vector.Zero, Color(0.75, 0.9, 1, 1), 0.12, 100, true)
+                PST:createFloatTextFX("Entanglement!", Vector.Zero, Color(0.6, 0.9, 1, 1), 0.12, 100, true)
                 return { Damage = 0 }
             end
         end
@@ -234,7 +234,7 @@ function PST:onDamage(target, damage, flag, source)
         if PST:getTreeSnapshotMod("blessedCrucifix", false) and damage >= tmpHP then
             if player:HasTrinket(TrinketType.TRINKET_WOODEN_CROSS) then
                 SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
-                PST:createFloatTextFX("Blessed Crucifix", Vector.Zero, Color(1, 1, 1, 1), 0.12, 100, true)
+                PST:createFloatTextFX("Blessed Crucifix", Vector.Zero, Color(), 0.12, 100, true)
                 if not player:TryRemoveTrinket(TrinketType.TRINKET_WOODEN_CROSS) then
                     player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_WOODEN_CROSS)
                 end
@@ -434,7 +434,7 @@ function PST:onDamage(target, damage, flag, source)
                     player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
                     player:TakeDamage(damage, flag, EntityRef(nil), 0)
                     player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-                    PST:createFloatTextFX("Items Protected", Vector.Zero, Color(1, 1, 1, 1), 0.13, 70, true)
+                    PST:createFloatTextFX("Items Protected", Vector.Zero, Color(), 0.13, 70, true)
                     return { Damage = 0 }
                 end
 

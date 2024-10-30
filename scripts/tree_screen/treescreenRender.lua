@@ -20,10 +20,10 @@ local treeControlDescController = {
     "Item + Select: display a list of all active modifiers"
 }
 local backupsMsg = {
-    {"Potential data loss has been detected, and backup files are present.", KColor(1, 0.8, 0.8, 1)},
-    {"Press up/down to select one of these available backups, and E to attempt loading it.", KColor(1, 0.8, 0.8, 1)},
-    {"Press ESC / Back to dismiss popup.", KColor(1, 0.8, 0.8, 1)},
-    {"(This popup will stop showing up once your global level is higher than 1)", KColor(1, 0.8, 0.8, 1)},
+    {"Potential data loss has been detected, and backup files are present.", PST.kcolors.LIGHTRED1},
+    {"Press up/down to select one of these available backups, and E to attempt loading it.", PST.kcolors.LIGHTRED1},
+    {"Press ESC / Back to dismiss popup.", PST.kcolors.LIGHTRED1},
+    {"(This popup will stop showing up once your global level is higher than 1)", PST.kcolors.LIGHTRED1},
     ""
 }
 
@@ -92,7 +92,7 @@ function PST.treeScreen:Render()
             tmpX, tmpY, 1, 1, 1, 1
         )
         -- Mod version top right
-        PST.miniFont:DrawString(PST.modVersion, self.screenW - 4 - PST.miniFont:GetStringWidth(PST.modVersion), tmpY, KColor(1, 1, 1, 0.9))
+        PST.miniFont:DrawString(PST.modVersion, self.screenW - 4 - PST.miniFont:GetStringWidth(PST.modVersion), tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 16
 
         -- Tree name
@@ -107,11 +107,11 @@ function PST.treeScreen:Render()
 
         -- Help toggle indicator
         local tmpStr = "H / Select: toggle help"
-        PST.miniFont:DrawString(tmpStr, 16, self.screenH - 24, KColor(1, 1, 1, 1))
+        PST.miniFont:DrawString(tmpStr, 16, self.screenH - 24, PST.kcolors.WHITE)
 
         -- In-run warning
         if Isaac.IsInGame() then
-            PST.miniFont:DrawString("(IN RUN - Changes to the tree will be reflected on the next run you start)", 32 + string.len(tmpStr) * 4, self.screenH - 24, KColor(1, 0.7, 0.7, 1))
+            PST.miniFont:DrawString("(IN RUN - Changes to the tree will be reflected on the next run you start)", 32 + string.len(tmpStr) * 4, self.screenH - 24, PST.kcolors.RED1)
         end
 
         -- Sidereal tree extra
@@ -119,9 +119,9 @@ function PST.treeScreen:Render()
             local currentChar = PST:getCurrentCharData()
             if currentChar then
                 tmpY = tmpY + 14
-                PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+                PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
                 tmpY = tmpY + 14
-                PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, KColor(0.8, 0.35, 1, 1))
+                PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, PST.kcolors.PURPLE1)
                 tmpY = tmpY + 28
             end
         end
@@ -143,10 +143,10 @@ function PST.treeScreen:Render()
         for i, tmpBackup in ipairs(self.saveBackups) do
             local backupData = tmpBackup[1]
             if backupData then
-                local tmpColor = KColor(1, 1, 1, 1)
+                local tmpColor = PST.kcolors.WHITE
                 local backupLine = tostring(i) .. ". Level: " .. tostring(tmpBackup[2])
                 if self.selectedBackup == i then
-                    tmpColor = KColor(0.6, 0.75, 1, 1)
+                    tmpColor = PST.kcolors.BLUE1
                     backupLine = backupLine .. " (E / Action Button to load this backup)"
                 end
                 table.insert(tmpBackupsMsg, {backupLine, tmpColor})

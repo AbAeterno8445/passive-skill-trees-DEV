@@ -15,7 +15,7 @@ function PST:onShopPurchase(pickup, player, spent)
                 player:AddCoins(spent)
                 PST:addModifiers({ luck = spent / 100 }, true)
 
-                local tmpColor = Color(1, 1, 1, 1)
+                local tmpColor = Color()
                 -- Thievery node (Cain's tree)
                 if PST:getTreeSnapshotMod("thievery", false) and not PST:getTreeSnapshotMod("thieveryGreedProc", false) then
                     if 100 * math.random() < spent * 3 then

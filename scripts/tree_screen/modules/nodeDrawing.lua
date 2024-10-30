@@ -76,7 +76,7 @@ function nodeDrawingModule:Render(tScreen)
             if node.available and not nodeAllocated then
                 if not PST.debugOptions.infSP and PST:isNodeAllocatable(tScreen.currentTree, node.id, true) then
                     self.nodesExtraSprite:SetFrame("Available " .. node.size, 0)
-                    self.nodesExtraSprite.Color = PST.colors.GRAY3
+                    self.nodesExtraSprite.Color = Color(0.4, 0.4, 0.4, 1)
                     self.nodesExtraSprite.Color.A = self.alphaFlash
                     self.nodesExtraSprite:Render(Vector(finalDrawX, finalDrawY))
                 end
@@ -92,10 +92,10 @@ function nodeDrawingModule:Render(tScreen)
 
             tmpSprite:SetFrame("Default", node.sprite)
             if not nodeAllocated and not node.available then
-                tmpSprite.Color = PST.colors.GRAY3
+                tmpSprite.Color = Color(0.4, 0.4, 0.4, 1)
             end
             tmpSprite:Render(Vector(finalDrawX, finalDrawY))
-            tmpSprite.Color = PST.colors.WHITE
+            tmpSprite.Color = Color()
 
             tmpSprite.Color.RO = 0
             tmpSprite.Color.GO = 0
@@ -113,7 +113,7 @@ function nodeDrawingModule:Render(tScreen)
             end
 
             if not isAstralForge and isAllocated then
-                self.nodesExtraSprite.Color = Color(1, 1, 1, 1)
+                self.nodesExtraSprite.Color = Color()
                 self.nodesExtraSprite.Color.A = 1
                 self.nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)
                 self.nodesExtraSprite:Render(Vector(finalDrawX, finalDrawY))

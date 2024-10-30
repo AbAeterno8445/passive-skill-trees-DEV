@@ -20,31 +20,31 @@ local invFilters = {
 }
 local wepRarityStr = {"Normal", "Magic", "Ancient"}
 local matsData = {
-    mundaneEssence = {"Mundane Essence", KColor(1, 1, 1, 1)},
-    sparkEssence = {"Sparkling Essence", KColor(0.8, 0.8, 1, 1)},
-    ancientEssence = {"Ancient Essence", PST:RGBKColor(255, 172, 28)},
-    sparkStardust = {"Sparkling Stardust", KColor(0.8, 0.8, 1, 1)},
-    ancientStardust = {"Ancient Stardust", PST:RGBKColor(255, 172, 28)}
+    mundaneEssence = {"Mundane Essence", PST.kcolors.WHITE},
+    sparkEssence = {"Sparkling Essence", PST.kcolors.LIGHTBLUE1},
+    ancientEssence = {"Ancient Essence", PST.kcolors.ANCIENT_ORANGE},
+    sparkStardust = {"Sparkling Stardust", PST.kcolors.LIGHTBLUE1},
+    ancientStardust = {"Ancient Stardust", PST.kcolors.ANCIENT_ORANGE}
 }
 local matsOrder = {"mundaneEssence", "sparkEssence", "sparkStardust", "ancientEssence", "ancientStardust"}
 local UIMats = {
     {
         -- Mundane Essence
-        {name = "Mundane Essence", frame = 3, targetVal = "mundaneEssence", color = KColor(0.85, 0.85, 0.85, 1),
+        {name = "Mundane Essence", frame = 3, targetVal = "mundaneEssence", color = PST.kcolors.LIGHTGRAY1,
         source = {"    Deconstructing normal weapons." }},
         -- Sparkling Essence
-        {name = "Sparkling Essence", frame = 4, targetVal = "sparkEssence", color = KColor(0.8, 0.8, 1, 1),
+        {name = "Sparkling Essence", frame = 4, targetVal = "sparkEssence", color = PST.kcolors.LIGHTBLUE1,
         source = {"    Deconstructing weapons with modifiers (magic/ancient)."}},
         -- Ancient Essence
-        {name = "Ancient Essence", frame = 5, targetVal = "ancientEssence", color = PST:RGBKColor(255, 172, 28),
+        {name = "Ancient Essence", frame = 5, targetVal = "ancientEssence", color = PST.kcolors.ANCIENT_ORANGE,
         source = {"    Deconstructing ancient weapons."}},
     },
     {
         -- Sparkling Stardust
-        {name = "Sparkling Stardust", frame = 1, targetVal = "sparkStardust", color = KColor(0.8, 0.8, 1, 1),
+        {name = "Sparkling Stardust", frame = 1, targetVal = "sparkStardust", color = PST.kcolors.LIGHTBLUE1,
         source = {"    Killing bosses & clearing challenge rooms."}},
         -- Ancient Stardust
-        {name = "Ancient Stardust", frame = 2, targetVal = "ancientStardust", color = PST:RGBKColor(255, 172, 28),
+        {name = "Ancient Stardust", frame = 2, targetVal = "ancientStardust", color = PST.kcolors.ANCIENT_ORANGE,
         source = {"    Killing final bosses."}},
     }
 }
@@ -157,14 +157,14 @@ local function astralForgeScreenRender(self, tScreen)
     local tmpTitle = "Weapon Inventory"
     if self.deconMode then tmpTitle = tmpTitle .. " (Decon)"
     elseif self.imprintMode then tmpTitle = tmpTitle .. " (Imprint)" end
-    PST.miniFont:DrawString(tmpTitle, tmpX + 3, tmpY, KColor(1, 0.7, 0.3, 1))
+    PST.miniFont:DrawString(tmpTitle, tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
     tmpY = tmpY + 17
 
     -- Draw material counts UI box
     local matsX = startX
     local matsY = startY - 60
     self:DrawUIBox(matsX, matsY, 170, 54)
-    PST.miniFont:DrawString("Materials", matsX + 3, matsY, KColor(1, 0.7, 0.3, 1))
+    PST.miniFont:DrawString("Materials", matsX + 3, matsY, PST.kcolors.FORGE_ORANGE)
     matsX = matsX + 3
     matsY = matsY + 17
     local hoveredMat = nil
@@ -226,7 +226,7 @@ local function astralForgeScreenRender(self, tScreen)
 
     -- Weapons
     if #PST.modData.astralWepInventory == 0 then
-        PST.miniFont:DrawString("Inventory Empty.", tmpX, tmpY, KColor(1, 1, 1, 1))
+        PST.miniFont:DrawString("Inventory Empty.", tmpX, tmpY, PST.kcolors.WHITE)
     else
         local drawnWeps = {}
         local hasTypeFilter = #self.appliedFilters.weaponType > 0
@@ -259,7 +259,7 @@ local function astralForgeScreenRender(self, tScreen)
 
             -- Equipped
             if tmpWeapon.equipped then
-                PST.miniFont:DrawString("E", wepX + 8, wepY + 4, KColor(1, 1, 0.7, 1))
+                PST.miniFont:DrawString("E", wepX + 8, wepY + 4, PST.kcolors.LIGHTYELLOW1)
             end
 
             self.weaponSprite.Color.RO = 0
@@ -285,7 +285,7 @@ local function astralForgeScreenRender(self, tScreen)
     end
     self:DrawUIBox(tmpX, tmpY, tmpBoxW, tmpBoxH)
 
-    PST.miniFont:DrawString("Weapon Forging", tmpX + 3, tmpY, KColor(1, 0.7, 0.3, 1))
+    PST.miniFont:DrawString("Weapon Forging", tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
     tmpY = tmpY + 17
 
     -- Selected weapon slot
@@ -295,7 +295,7 @@ local function astralForgeScreenRender(self, tScreen)
     self.forgeUISprite:Render(Vector(selWepX, selWepY))
 
     if not self.selectedWeapon then
-        PST.miniFont:DrawString("Select a weapon from your inventory to begin forging.", selWepX + 18, tmpY, KColor(1, 1, 1, 1))
+        PST.miniFont:DrawString("Select a weapon from your inventory to begin forging.", selWepX + 18, tmpY, PST.kcolors.WHITE)
     else
         PST:renderAstralWepAt(self.selectedWeapon, self.weaponSprite, selWepX, selWepY)
         -- Forge action buttons
@@ -334,7 +334,7 @@ local function astralForgeScreenRender(self, tScreen)
             if type(tmpLine) == "table" then
                 PST.miniFont:DrawString(tmpLine[1], selWepX, selWepY, tmpLine[2])
             else
-                PST.miniFont:DrawString(tmpLine, selWepX, selWepY, KColor(1, 1, 1, 1))
+                PST.miniFont:DrawString(tmpLine, selWepX, selWepY, PST.kcolors.WHITE)
             end
             selWepY = selWepY + boxLineHeight
         end
@@ -351,9 +351,9 @@ local function astralForgeScreenRender(self, tScreen)
     -- Control hints
     if not self.selectedWeapon then
         tmpY = startY + 180
-        PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, KColor(1, 1, 1, 1))
+        PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 12
-        PST.luaminiFont:DrawString("Shift + Allocate to equip hovered.", startX, tmpY, KColor(1, 1, 1, 1))
+        PST.luaminiFont:DrawString("Shift + Allocate to equip hovered.", startX, tmpY, PST.kcolors.WHITE)
     end
 
     Isaac.RenderText("Astral Forge", 8, 8, 1, 1, 1, 1)
@@ -387,13 +387,13 @@ local function astralForgeScreenRender(self, tScreen)
 
             -- Imprinting mode description extras
             if self.imprintMode and self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
-                table.insert(wepDesc, 1, {"NOTE: Imprinting will destroy this weapon!", KColor(1, 0.5, 0.2, 1)})
-                table.insert(wepDesc, 1, {"Press Allocate to imprint this weapon into the currently selected Ancient weapon.", KColor(1, 0.75, 0.3, 1)})
-                table.insert(wepDesc, 1, {"* Imprinting Weapon *", KColor(1, 0.75, 0.3, 1)})
+                table.insert(wepDesc, 1, {"NOTE: Imprinting will destroy this weapon!", PST.kcolors.DARKORANGE1})
+                table.insert(wepDesc, 1, {"Press Allocate to imprint this weapon into the currently selected Ancient weapon.", PST.kcolors.FORGE_ORANGE})
+                table.insert(wepDesc, 1, {"* Imprinting Weapon *", PST.kcolors.FORGE_ORANGE})
             end
         else
             -- Deconstruction mode description
-            table.insert(wepDesc, {"* Deconstructing Weapon *", KColor(1, 0.5, 0.5, 1)})
+            table.insert(wepDesc, {"* Deconstructing Weapon *", PST.kcolors.RED1})
             -- Get deconstruction materials
             local wepMats = PST:getAstralWepDeconMats(self.hoveredWeapon)
             if wepMats.mundane > 0 then

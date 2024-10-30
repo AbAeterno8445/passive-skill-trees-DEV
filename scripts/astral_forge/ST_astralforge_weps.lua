@@ -249,7 +249,7 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
         end
         wepSprite.Color = PST:mixColors(tmpColors[1], tmpColors[2])
         wepSprite:Render(Vector(x, y))
-        wepSprite.Color = Color(1, 1, 1, 1)
+        wepSprite.Color = Color()
     end
 end
 
@@ -302,17 +302,17 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     -- Ancient name
     if weaponData.ancientID ~= nil and wepTypeData.ancients[weaponData.ancientID] then
-        table.insert(tmpDescription, {wepTypeData.ancients[weaponData.ancientID].name, PST:RGBKColor(255, 172, 28)})
+        table.insert(tmpDescription, {wepTypeData.ancients[weaponData.ancientID].name, PST.kcolors.ANCIENT_ORANGE})
     end
 
     -- Rarity + type
-    local tmpColor = KColor(1, 1, 1, 1)
+    local tmpColor = PST.kcolors.WHITE
     local tmpRarity = "Normal"
     if weaponData.rarity == PSTAstralWepRarity.MAGIC then
-        tmpColor = KColor(0.7, 0.7, 1, 1)
+        tmpColor = PST.kcolors.LIGHTBLUE1
         tmpRarity = "Magic"
     elseif weaponData.rarity == PSTAstralWepRarity.ANCIENT then
-        tmpColor = PST:RGBKColor(255, 172, 28)
+        tmpColor = PST.kcolors.ANCIENT_ORANGE
         tmpRarity = "Ancient"
     end
     local tmpType = wepTypeData.name
@@ -321,7 +321,7 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
     local modDisplayed = false
     -- Implicit modifier
     if weaponData.implicitMod then
-        table.insert(tmpDescription, {"---- Implicit ----", KColor(0.5, 0.5, 0.5, 1)})
+        table.insert(tmpDescription, {"---- Implicit ----", PST.kcolors.GRAY1})
 
         local impRolls = {}
         for i, tmpRoll in ipairs(weaponData.implicitMod) do
@@ -349,11 +349,11 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     -- Modifiers
     if weaponData.mods and #weaponData.mods > 0 then
-        table.insert(tmpDescription, {"---- Mods (" .. tostring(#weaponData.mods) .. ") ----", KColor(0.5, 0.5, 0.5, 1)})
+        table.insert(tmpDescription, {"---- Mods (" .. tostring(#weaponData.mods) .. ") ----", PST.kcolors.GRAY1})
 
         for _, tmpMod in ipairs(weaponData.mods) do
             local tmpModData = PST.astralWepMods[tmpMod.name]
-            tmpColor = KColor(0.8, 0.8, 1, 1)
+            tmpColor = PST.kcolors.LIGHTBLUE1
             if tmpModData and tmpModData.description then
                 local modDesc = tmpModData.description
 
@@ -371,7 +371,7 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
                     end
                 else
                     -- Ancient modifiers
-                    tmpColor = PST:RGBKColor(255, 172, 28)
+                    tmpColor = PST.kcolors.ANCIENT_ORANGE
                     local ancientUpgrades = weaponData.ancientUpg or 0
                     for i, tmpRoll in ipairs(tmpModData.minRolls) do
                         local tgtRoll = "roll" .. tostring(i)
@@ -405,7 +405,8 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
     end
 
     -- Weapon tier
-    table.insert(tmpDescription, {"Tier " .. wepTierTxt[weaponData.tier], PST:RGBKColor(250, 250, 210)})
+    local tmpTierStr = wepTierTxt[weaponData.tier]
+    table.insert(tmpDescription, {"Tier " .. tmpTierStr, PST.kcolors["WEP_TIER_" .. tmpTierStr]})
 
     return tmpDescription
 end

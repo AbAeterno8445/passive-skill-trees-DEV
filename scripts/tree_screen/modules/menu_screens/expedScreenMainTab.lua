@@ -7,7 +7,7 @@ local expNodeRewardFrame = {
 local nodeSpacing = Vector(80, 60)
 
 local colGray = Color(0.4, 0.4, 0.4, 1)
-local colWhite = Color(1, 1, 1, 1)
+local colWhite = Color()
 
 ---@param expData PSTExpedition
 ---@param expedScreen table
@@ -126,7 +126,7 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             if tmpNode.nodeType == PSTExpNodeType.ASTROLABE then
                 local depthNum = tostring(expData.depth)
                 local tmpWidth = PST.miniFont:GetStringWidth(depthNum)
-                PST.miniFont:DrawStringScaled(depthNum, drawPos.X + (13 - tmpWidth) * expedScreen.zoomScale, drawPos.Y + 3, expedScreen.zoomScale, expedScreen.zoomScale, KColor(1, 1, 1, 1))
+                PST.miniFont:DrawStringScaled(depthNum, drawPos.X + (13 - tmpWidth) * expedScreen.zoomScale, drawPos.Y + 3, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.WHITE)
             end
 
             -- Hovered node

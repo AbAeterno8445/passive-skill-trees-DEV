@@ -131,11 +131,11 @@ function PST:Render()
 
 			-- Level text
 			local levelStr = "LV " .. charData.level
-			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 12 * tmpScale, tmpScale, tmpScale, KColor(0.84, 0.5, 1, 0.7))
+			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 12 * tmpScale, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
 
 			-- Global level text
 			levelStr = "G.LV " .. PST.modData.level
-			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 5 * tmpScale, tmpScale, tmpScale, KColor(0.1, 0.4, 1, 0.7))
+			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 5 * tmpScale, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
 		end
 	end
 
@@ -143,9 +143,9 @@ function PST:Render()
 	if hudVisible then
 		if PST:SC_getSnapshotMod("chroniclerStone", false) then
 			local remaining = math.max(0, PST:getTreeSnapshotMod("SC_chroniclerRooms", 0))
-			local tmpColor = KColor(1, 0.6, 0.6, 1)
+			local tmpColor = PST.kcolors.RED2
 			if remaining == 0 then
-				tmpColor = KColor(0.6, 0.9, 1, 1)
+				tmpColor = PST.kcolors.SKY_BLUE
 			end
 
 			local drawX = 16 * screenRatioX
@@ -172,21 +172,21 @@ function PST:Render()
 	-- Ancient starcursed jewel: Crimson Warpstone (cracked key stacks text)
 	local tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyStacks", 0)
 	if tmpMod > 0 and player:GetCard(0) == Card.CARD_CRACKED_KEY then
-		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
+		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
 	end
 
 	-- Mod: rune shards can stack
 	if PST:getTreeSnapshotMod("runeshardStacking", false) then
 		tmpMod = PST:getTreeSnapshotMod("runeshardStacks", 0)
 		if tmpMod > 0 and player:GetCard(0) == Card.RUNE_SHARD then
-			tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
+			tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
 		end
 	end
 
 	-- Helping Hands node (T. Lost's tree) (Holy Card stacks text)
 	tmpMod = PST:getTreeSnapshotMod("holyCardStacks", 0)
 	if tmpMod > 0 and player:GetCard(0) == Card.CARD_HOLY then
-		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, KColor(1, 1, 1, 1))
+		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
 	end
 
 	local isEvenFrame = room:GetFrameCount() % 2 == 0

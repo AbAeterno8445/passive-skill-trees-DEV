@@ -80,7 +80,7 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
                                 "E",
                                 jewelX - tScreen.treeCamera.X - tScreen.camZoomOffset.X + 8,
                                 jewelY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y,
-                                KColor(1, 1, 0.6, 1)
+                                PST.kcolors.YELLOW1
                             )
                         end
                         if jewelData.mighty then
@@ -88,7 +88,7 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
                                 "*",
                                 jewelX - tScreen.treeCamera.X - tScreen.camZoomOffset.X + 8,
                                 jewelY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y - 16,
-                                KColor(0.6, 1, 1, 1)
+                                PST.kcolors.TEAL2
                             )
                         end
                     end

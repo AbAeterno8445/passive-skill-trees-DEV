@@ -185,7 +185,7 @@ function PST:onUpdate()
 
 		-- Mod: chance to cleanse natural curses (proc)
 		if PST:getTreeSnapshotMod("naturalCurseCleanseProc", false) then
-			PST:createFloatTextFX("Natural curse cleansed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+			PST:createFloatTextFX("Natural curse cleansed!", Vector.Zero, Color(), 0.12, 70, true)
 		end
 
 		-- Mod: +luck when clearing a room below full red hearts (reset)
@@ -231,7 +231,7 @@ function PST:onUpdate()
 
 		-- Death's Trial nodes (T. Lost's tree)
 		if PST:getTreeSnapshotMod("deathTrialActive", false) then
-			PST:createFloatTextFX("Death's Trial!", Vector.Zero, Color(1, 1, 1, 1), 0.13, 90, true)
+			PST:createFloatTextFX("Death's Trial!", Vector.Zero, Color(), 0.13, 90, true)
 		end
 
 		-- Mod: remove The Stairway once it triggers when entering a floor
@@ -328,7 +328,7 @@ function PST:onUpdate()
 			-- Mod: chance to reveal map
 			if PST:getTreeSnapshotMod("mapRevealed", false) then
 				level:ShowMap()
-				PST:createFloatTextFX("Map revealed!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+				PST:createFloatTextFX("Map revealed!", Vector.Zero, Color(), 0.12, 70, true)
 			end
 
 			-- Mod: chance to smelt currently held trinkets
@@ -338,7 +338,7 @@ function PST:onUpdate()
 				if tmpTrinket and tmpTrinket > 0 then
 					if player:AddSmeltedTrinket(tmpTrinket) then
 						player:TryRemoveTrinket(tmpTrinket)
-						PST:createFloatTextFX("Trinket smelted!", Vector.Zero, Color(1, 1, 1, 1), 0.12, 70, true)
+						PST:createFloatTextFX("Trinket smelted!", Vector.Zero, Color(), 0.12, 70, true)
 					end
 				end
 			end

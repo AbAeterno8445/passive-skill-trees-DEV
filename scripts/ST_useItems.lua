@@ -458,7 +458,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 player:RemoveCollectible(CollectibleType.COLLECTIBLE_COUPON)
                 if not player:HasCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE) then
                     player:AddCollectible(CollectibleType.COLLECTIBLE_STEAM_SALE)
-                    PST:createFloatTextFX("Coupon -> Steam Sale", Vector.Zero, Color(1, 1, 1, 1), 0.12, 90, true)
+                    PST:createFloatTextFX("Coupon -> Steam Sale", Vector.Zero, Color(), 0.12, 90, true)
                 end
             end
         end

@@ -11,13 +11,13 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
         local drawY = baseDrawY + math.floor((i - 1) / bubbleCols) * 40
 
         -- Depth num
-        local tmpColor = KColor(1, 1, 1, 1)
+        local tmpColor = PST.kcolors.WHITE
         if i == expedScreen.currentDepth then
-            tmpColor = KColor(0.5, 1, 0.5, 1)
+            tmpColor = PST.kcolors.GREEN1
         elseif i > PST.modData.expeditionDepth then
-            tmpColor = KColor(0.6, 0.6, 0.6, 1)
+            tmpColor = PST.kcolors.LIGHTGRAY2
         elseif PST.expeditionsData[i] then
-            tmpColor = KColor(0.3, 0.6, 1, 1)
+            tmpColor = PST.kcolors.EXPED_BLUE
         end
         PST.miniFont:DrawString(tostring(i), drawX - PST.miniFont:GetStringWidth(tostring(i)) / 2, drawY - 7, tmpColor)
 
@@ -39,7 +39,7 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
         expedScreen.boonSprite:SetFrame("Bubbles", tmpFrame)
         expedScreen.boonSprite:Render(Vector(drawX, drawY))
 
-        if hovered then expedScreen.boonSprite.Color = Color(1, 1, 1, 1) end
+        if hovered then expedScreen.boonSprite.Color = Color() end
         expedScreen.boonSprite.Scale = Vector.One
 
         -- Locked icon
