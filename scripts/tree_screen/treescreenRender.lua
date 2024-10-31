@@ -103,10 +103,13 @@ function PST.treeScreen:Render()
         if PST.modData.treeDisabled then
             Isaac.RenderText("Tree effects disabled", tmpX, tmpY, 1, 0.4, 0.4, 1)
             tmpY = tmpY + 16
+        elseif PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth) then
+            Isaac.RenderText("Expedition run enabled", tmpX, tmpY, 0.5, 1, 0.5, 1)
+            tmpY = tmpY + 16
         end
 
         -- Help toggle indicator
-        local tmpStr = "H / Select: toggle help"
+        local tmpStr = "H / Select: toggle help  |  Tab: Menu quick select"
         PST.miniFont:DrawString(tmpStr, 16, self.screenH - 24, PST.kcolors.WHITE)
 
         -- In-run warning

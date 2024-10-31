@@ -41,8 +41,9 @@ local astralForgeScreen = {
     },
 
     -- Inventory pagination
-    rowsPerPage = 6,
+    rowsPerPage = 5,
     invPage = 1,
+    hoveredPageButton = "",
 }
 
 -- Init
@@ -74,6 +75,7 @@ function astralForgeScreen:OnClose()
     self.deconMode = false
     self.imprintMode = false
     self.selectedWeapon = nil
+    self.invPage = 1
 end
 
 -- Input processing
@@ -199,6 +201,14 @@ function astralForgeScreen:OnInput()
                 if self.imprintMode then self.deconMode = false end
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
             end
+        -- Hovered pagination button
+        elseif self.hoveredPageButton ~= "" then
+            if self.hoveredPageButton == "prev" and self.invPage > 1 then
+                self.invPage = self.invPage - 1
+            elseif self.hoveredPageButton == "next" then
+                self.invPage = self.invPage + 1
+            end
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
         end
     end
 
@@ -262,6 +272,7 @@ function astralForgeScreen:Update(tScreen)
     self.hoveredWeapon = nil
     self.hoveredFilter = nil
     self.hoveredForgeButton = nil
+    self.hoveredPageButton = ""
 
     self.camCenterX = Isaac.GetScreenWidth() / 2
     self.camCenterY = Isaac.GetScreenHeight() / 2

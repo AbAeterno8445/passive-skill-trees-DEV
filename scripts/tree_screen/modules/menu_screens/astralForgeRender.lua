@@ -152,7 +152,7 @@ local function astralForgeScreenRender(self, tScreen)
     local startY = baseDrawY - 80
     -- Draw inventory
     local tmpX, tmpY = startX, startY
-    self:DrawUIBox(tmpX, tmpY, 170, 182)
+    self:DrawUIBox(tmpX, tmpY, 170, 250)
     -- Inventory title
     local tmpTitle = "Weapon Inventory"
     if self.deconMode then tmpTitle = tmpTitle .. " (Decon)"
@@ -225,10 +225,10 @@ local function astralForgeScreenRender(self, tScreen)
     tmpY = tmpY + math.ceil(#invFilters / 8) * 18 + 3
 
     -- Weapons
+    local drawnWeps = {}
     if #PST.modData.astralWepInventory == 0 then
         PST.miniFont:DrawString("Inventory Empty.", tmpX, tmpY, PST.kcolors.WHITE)
     else
-        local drawnWeps = {}
         local hasTypeFilter = #self.appliedFilters.weaponType > 0
         local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
         -- Create filtered list
@@ -243,28 +243,35 @@ local function astralForgeScreenRender(self, tScreen)
             drawnWeps = PST.modData.astralWepInventory
         end
         -- Draw weapons
-        for i, tmpWeapon in ipairs(drawnWeps) do
-            local wepX = tmpX + 18 + 34 * ((i - 1) % 5)
-            local wepY = tmpY + 16 + 34 * math.floor((i - 1) / 5)
+        local startVal = 1 + 5 * self.rowsPerPage * (self.invPage - 1)
+        local endVal = startVal + 5 * self.rowsPerPage - 1
+        local j = 1
+        for i=startVal,endVal do
+            local tmpWeapon = drawnWeps[i]
+            if tmpWeapon then
+                local wepX = tmpX + 18 + 34 * ((j - 1) % 5)
+                local wepY = tmpY + 16 + 34 * math.floor((j - 1) / 5)
 
-            -- Hovered weapon
-            if self.camCenterX >= wepX - 16 and self.camCenterX <= wepX + 16 and
-            self.camCenterY >= wepY - 16 and self.camCenterY <= wepY + 16 then
-                self.hoveredWeapon = tmpWeapon
-                self.weaponSprite.Color.RO = 0.4
-                self.weaponSprite.Color.GO = 0.4
-                self.weaponSprite.Color.BO = 0.4
-            end
-            PST:renderAstralWepAt(tmpWeapon, self.weaponSprite, wepX, wepY)
+                -- Hovered weapon
+                if self.camCenterX >= wepX - 16 and self.camCenterX <= wepX + 16 and
+                self.camCenterY >= wepY - 16 and self.camCenterY <= wepY + 16 then
+                    self.hoveredWeapon = tmpWeapon
+                    self.weaponSprite.Color.RO = 0.4
+                    self.weaponSprite.Color.GO = 0.4
+                    self.weaponSprite.Color.BO = 0.4
+                end
+                PST:renderAstralWepAt(tmpWeapon, self.weaponSprite, wepX, wepY)
 
-            -- Equipped
-            if tmpWeapon.equipped then
-                PST.miniFont:DrawString("E", wepX + 8, wepY + 4, PST.kcolors.LIGHTYELLOW1)
-            end
+                -- Equipped
+                if tmpWeapon.equipped then
+                    PST.miniFont:DrawString("E", wepX + 8, wepY + 4, PST.kcolors.LIGHTYELLOW1)
+                end
 
-            self.weaponSprite.Color.RO = 0
-            self.weaponSprite.Color.GO = 0
-            self.weaponSprite.Color.BO = 0
+                self.weaponSprite.Color.RO = 0
+                self.weaponSprite.Color.GO = 0
+                self.weaponSprite.Color.BO = 0
+                j = j + 1
+            else break end
         end
     end
 
@@ -340,21 +347,59 @@ local function astralForgeScreenRender(self, tScreen)
         end
     end
 
+    -- Inventory pagination
+    local invPageAmt = math.ceil(#drawnWeps / (self.rowsPerPage * 5))
+    tmpX = startX + 24
+    tmpY = startY + 227
+    local tmpColor = PST.kcolors.WHITE
+    -- Prev button
+    if self.invPage == 1 then
+        tmpColor = PST.kcolors.GRAY1
+    else
+        -- Hovered
+        if self.camCenterX >= tmpX - 20 and self.camCenterX <= tmpX + 20 and
+        self.camCenterY >= tmpY - 12 and self.camCenterY <= tmpY + 12 then
+            self.hoveredPageButton = "prev"
+            tmpColor = PST.kcolors.TEAL1
+        end
+    end
+    PST.miniFont:DrawString("Prev", tmpX, tmpY, tmpColor)
+
+    tmpX = tmpX + 100
+    tmpColor = PST.kcolors.WHITE
+    -- Next button
+    if self.invPage >= invPageAmt then
+        tmpColor = PST.kcolors.GRAY1
+    else
+        -- Hovered
+        if self.camCenterX >= tmpX - 20 and self.camCenterX <= tmpX + 20 and
+        self.camCenterY >= tmpY - 12 and self.camCenterY <= tmpY + 12 then
+            self.hoveredPageButton = "next"
+            tmpColor = PST.kcolors.TEAL1
+        end
+    end
+    PST.miniFont:DrawString("Next", tmpX, tmpY, tmpColor)
+
+    -- Current page text
+    tmpX = tmpX - 50
+    local tmpStr = tostring(self.invPage) .. "/" .. invPageAmt
+    PST.miniFont:DrawString(tmpStr, tmpX, tmpY, PST.kcolors.WHITE)
+
+    -- Control hints
+    if not self.selectedWeapon then
+        tmpY = startY + 250
+        PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, PST.kcolors.WHITE)
+        tmpY = tmpY + 12
+        PST.luaminiFont:DrawString("Shift + Allocate to equip hovered weapon.", startX, tmpY, PST.kcolors.WHITE)
+    end
+
     -- Cursor
-    if hoveredMat or self.hoveredWeapon or self.hoveredFilter or self.deconHovered or self.hoveredForgeButton then
+    if hoveredMat or self.hoveredWeapon or self.hoveredFilter or self.deconHovered or self.hoveredForgeButton or self.hoveredPageButton ~= "" then
         tScreen.cursorSprite:Play("Clicked", true)
     else
         tScreen.cursorSprite:Play("Idle", true)
     end
     tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
-
-    -- Control hints
-    if not self.selectedWeapon then
-        tmpY = startY + 180
-        PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, PST.kcolors.WHITE)
-        tmpY = tmpY + 12
-        PST.luaminiFont:DrawString("Shift + Allocate to equip hovered.", startX, tmpY, PST.kcolors.WHITE)
-    end
 
     Isaac.RenderText("Astral Forge", 8, 8, 1, 1, 1, 1)
 

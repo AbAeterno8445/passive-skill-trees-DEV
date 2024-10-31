@@ -46,10 +46,11 @@ local targetColors = {
 ---@param tScreen PST.treeScreen
 function spaceBGModule:Update(tScreen)
     -- Determine target background color based on tree status
+    local openMenu = tScreen.modules.menuScreensModule.currentMenu
     self.targetSpaceColor = targetColors.default
     if tScreen.currentTree == "starTree" then
         self.targetSpaceColor = targetColors.starTree
-    elseif tScreen.currentTree == "sidereal" then
+    elseif tScreen.currentTree == "sidereal" or openMenu == PSTTreeScreenMenu.ASTRAL_FORGE then
         self.targetSpaceColor = targetColors.sidereal
     elseif PST:arrHasValue(PST.charNames, tScreen.currentTree) then
         self.targetSpaceColor = targetColors.character
