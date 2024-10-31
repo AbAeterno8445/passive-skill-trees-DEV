@@ -481,6 +481,21 @@ function PST:onDamage(target, damage, flag, source)
                     PST:addModifiers({ voodooTrickHits = 1 }, true)
                 end
 
+                -- Astral weapon mod: + base damage, removed for X secs when you get hit
+                tmpMod = PST:getSnapAstralWepMod("baseDmg2")
+                if tmpMod then
+                    if PST.specialNodes.astralwep_baseDmg2Disable == 0 then
+                        PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                    end
+                    PST.specialNodes.astralwep_baseDmg2Disable = math.ceil(tmpMod[2] * 30)
+                end
+
+                -- Astral weapon mod: enemies take % more damage for X seconds after you get hit
+                tmpMod = PST:getSnapAstralWepMod("onHitEnemyDmgTaken")
+                if tmpMod then
+                    PST.specialNodes.astralwep_onHitEnemyDmgTimer = math.ceil(tmpMod[2] * 30)
+                end
+
                 -- Chance for normal monsters to deal an extra 1/2 heart damage
                 tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then
@@ -853,6 +868,205 @@ function PST:onDamage(target, damage, flag, source)
                     local maxDist = 250
                     dmgMult = dmgMult + tmpMod[2] * math.min(1, dist / maxDist)
                 end
+            end
+
+            -- Astral weapon mod: +% damage dealt to enemies affected by status effects
+            tmpMod = PST:getSnapAstralWepMod("dmgStatus")
+            if tmpMod then
+                if target:GetBurnCountdown() > 0 or target:GetFearCountdown() > 0 or target:GetBaitedCountdown() > 0 or
+                target:GetFreezeCountdown() > 0 or target:GetShrinkCountdown() > 0 or target:GetCharmedCountdown() > 0 or
+                target:GetSlowingCountdown() > 0 or target:GetBleedingCountdown() > 0 or
+                (target:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
+                    dmgMult = dmgMult + tmpMod[1] / 100
+                end
+            end
+
+            -- Astral weapon mod: +% damage dealt to slowed denemies
+            tmpMod = PST:getSnapAstralWepMod("dmgStatusSlow")
+            if tmpMod and target:GetSlowingCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to charmed denemies
+            tmpMod = PST:getSnapAstralWepMod("dmgStatusCharm")
+            if tmpMod and target:GetCharmedCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to paralyzed denemies
+            tmpMod = PST:getSnapAstralWepMod("dmgStatusPara")
+            if tmpMod and target:GetFreezeCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to feared denemies
+            tmpMod = PST:getSnapAstralWepMod("dmgStatusFear")
+            if tmpMod and target:GetFearCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to bleeding denemies
+            tmpMod = PST:getSnapAstralWepMod("dmgStatusBleed")
+            if tmpMod and target:GetBleedingCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to poisoned denemies
+            tmpMod = PST:getSnapAstralWepMod("dmgStatusPoison")
+            if tmpMod and (target:GetEntityFlags() & EntityFlag.FLAG_POISON) > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to burning denemies
+            tmpMod = PST:getSnapAstralWepMod("dmgStatusBurn")
+            if tmpMod and target:GetBurnCountdown() > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt after firing consecutively for 2 seconds
+            tmpMod = PST:getSnapAstralWepMod("consecFireDmg")
+            if tmpMod and PST.specialNodes.consecutiveFire >= 60 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt after firing consecutively for 3 seconds
+            tmpMod = PST:getSnapAstralWepMod("consecFireDmg2")
+            if tmpMod and (PST.specialNodes.consecutiveFire >= 90 or PST.specialNodes.astralwep_consecFireBuffTimer > 0) then
+                dmgMult = dmgMult + tmpMod[1] / 100
+                PST.specialNodes.astralwep_consecFireBuffTimer = 30
+            end
+
+            -- Astral weapon mod: +% damage dealt to enemies beyond 2 tiles of you
+            tmpMod = PST:getSnapAstralWepMod("farEnemyDmg")
+            if tmpMod and PST:getPlayer().Position:Distance(target.Position) > PST:getTilesDist(2) then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to enemies within 2 tiles of you
+            tmpMod = PST:getSnapAstralWepMod("closeEnemyDmg")
+            if tmpMod and PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(2) then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt for 5 seconds when healing red hearts, up to %
+            tmpMod = PST:getSnapAstralWepMod("redHealDmg")
+            if tmpMod and PST.specialNodes.astralwep_redHealTimer > 0 then
+                dmgMult = dmgMult + PST.specialNodes.astralwep_redHealBuff / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt for 5 seconds when gaining soul hearts, up to %
+            tmpMod = PST:getSnapAstralWepMod("soulHealDmg")
+            if tmpMod and PST.specialNodes.astralwep_soulHealTimer > 0 then
+                dmgMult = dmgMult + PST.specialNodes.astralwep_soulHealBuff / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt for 5 seconds when gaining black hearts, up to %
+            tmpMod = PST:getSnapAstralWepMod("blackHealDmg")
+            if tmpMod and PST.specialNodes.astralwep_blackHealTimer > 0 then
+                dmgMult = dmgMult + PST.specialNodes.astralwep_blackHealBuff / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt for X seconds after purchasing an item
+            tmpMod = PST:getSnapAstralWepMod("purchaseDmg")
+            if tmpMod and PST.specialNodes.astralwep_purchaseTimer > 0 then
+                dmgMult = dmgMult + PST.specialNodes.astralwep_purchaseBuff / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt for X seconds after picking up any coin
+            tmpMod = PST:getSnapAstralWepMod("coinPickupDmg")
+            if tmpMod and PST.specialNodes.astralwep_coinTimer > 0 then
+                dmgMult = dmgMult + PST.specialNodes.astralwep_coinBuff / 100
+            end
+
+            -- Astral weapon mod: enemies take % more damage for X seconds after you get hit
+            tmpMod = PST:getSnapAstralWepMod("onHitEnemyDmgTaken")
+            if tmpMod and PST.specialNodes.astralwep_onHitEnemyDmgTimer > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to flying if you're on ground, & vice versa
+            tmpMod = PST:getSnapAstralWepMod("flyGroundDmg")
+            if tmpMod and ((PST:getPlayer():IsFlying() and not target:IsFlying()) or (not PST:getPlayer():IsFlying() and target:IsFlying())) then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt per active familiar, up to 40%
+            tmpMod = PST:getSnapAstralWepMod("activeFamDmg")
+            if tmpMod then
+                local activeFam = PST:getTreeSnapshotMod("totalFamiliars", 0)
+                if activeFam > 0 then
+                    dmgMult = dmgMult + math.min(0.4, (tmpMod[1] * activeFam) / 100)
+                end
+            end
+
+            -- Astral weapon mod: +% damage dealt for X seconds after a familiar kills an enemy
+            tmpMod = PST:getSnapAstralWepMod("famKillDmg")
+            if tmpMod and PST.specialNodes.astralwep_famKillTimer > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt while you have a holy mantle shield
+            tmpMod = PST:getSnapAstralWepMod("holyMantleDmg")
+            if tmpMod then
+                local plEffects = PST:getPlayer():GetEffects()
+                if plEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) or plEffects:HasTrinketEffect(TrinketType.TRINKET_WOODEN_CROSS) then
+                    dmgMult = dmgMult + tmpMod[1] / 100
+                end
+            end
+
+            -- Astral weapon mod: +% damage dealt while you have an eternal heart
+            tmpMod = PST:getSnapAstralWepMod("eternalDmg")
+            if tmpMod and PST:getPlayer():GetEternalHearts() > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt for X seconds after using an active item
+            tmpMod = PST:getSnapAstralWepMod("activeDmg")
+            if tmpMod and PST.specialNodes.astralwep_activeDmgTimer > 0 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            local targetHPPerc = target.HitPoints / target.MaxHitPoints
+            -- Astral weapon mod: +% damage dealt to enemies above 90% HP
+            tmpMod = PST:getSnapAstralWepMod("healthyMobDmg")
+            if tmpMod and targetHPPerc >= 0.9 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt to enemies below 15% HP
+            tmpMod = PST:getSnapAstralWepMod("injuredMobDmg")
+            if tmpMod and targetHPPerc <= 0.15 then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt while standing on creep
+            tmpMod = PST:getSnapAstralWepMod("creepDmg")
+            if tmpMod then
+                local effectList = Isaac.FindByType(EntityType.ENTITY_EFFECT)
+                for _, tmpEffect in ipairs(effectList) do
+                    if PST:arrHasValue(PST.allCreep, tmpEffect.Variant) and PST:getPlayer().Position:Distance(tmpEffect.Position) <= 50 then
+                        dmgMult = dmgMult + tmpMod[1] / 100
+                        break
+                    end
+                end
+            end
+
+            -- Astral weapon mod: +% damage dealt by player creep
+            tmpMod = PST:getSnapAstralWepMod("playerCreepDmg")
+            if tmpMod and source.Type == EntityType.ENTITY_EFFECT and PST:arrHasValue(PST.playerDamagingCreep, source.Variant) then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt with lasers
+            tmpMod = PST:getSnapAstralWepMod("laserDmg")
+            if tmpMod and (flag & DamageFlag.DAMAGE_LASER) then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt with explosions
+            tmpMod = PST:getSnapAstralWepMod("explosionDmg")
+            if tmpMod and (flag & DamageFlag.DAMAGE_EXPLOSION) then
+                dmgMult = dmgMult + tmpMod[1] / 100
             end
         end
 

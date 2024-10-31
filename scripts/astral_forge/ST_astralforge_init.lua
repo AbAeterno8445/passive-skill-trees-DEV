@@ -42,7 +42,7 @@ PSTAstralWepRarity = {
 -- These get added as "astralwep_" + key name when applied to the run snapshot, e.g. "astralwep_dmgStatus"
 PST.astralWepMods = {
     ---- GENERIC MODS ----
-    dmgStatus = { -- TODO
+    dmgStatus = {
         description = "+{{roll1}}% damage dealt to enemies affected by status effects.",
         color = {145, 203, 196},
         rollsFunc = function(wepTier, rollPerc)
@@ -51,7 +51,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusSlow = { -- TODO
+    dmgStatusSlow = {
         description = "+{{roll1}}% damage dealt to slowed enemies.",
         color = {185, 223, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -60,7 +60,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusCharm = { -- TODO
+    dmgStatusCharm = {
         description = "+{{roll1}}% damage dealt to charmed enemies.",
         color = {249, 185, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -69,7 +69,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusPara = { -- TODO
+    dmgStatusPara = {
         description = "+{{roll1}}% damage dealt to paralyzed enemies.",
         color = {72, 77, 92},
         rollsFunc = function(wepTier, rollPerc)
@@ -78,7 +78,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusFear = { -- TODO
+    dmgStatusFear = {
         description = "+{{roll1}}% damage dealt to feared enemies.",
         color = {135, 60, 185},
         rollsFunc = function(wepTier, rollPerc)
@@ -87,7 +87,7 @@ PST.astralWepMods = {
             }
         end
     },
-    dmgStatusBleed = { -- TODO
+    dmgStatusBleed = {
         description = "+{{roll1}}% damage dealt to bleeding enemies.",
         color = {185, 60, 93},
         rollsFunc = function(wepTier, rollPerc)
@@ -96,8 +96,26 @@ PST.astralWepMods = {
             }
         end
     },
+    dmgStatusPoison = {
+        description = "+{{roll1}}% damage dealt to poisoned enemies.",
+        color = {55, 172, 50},
+        rollsFunc = function(wepTier, rollPerc)
+            return {
+                roll1 = 7 + 5 * rollPerc[1] + wepTier * 2
+            }
+        end
+    },
+    dmgStatusBurn = {
+        description = "+{{roll1}}% damage dealt to burning enemies.",
+        color = {255, 137, 20},
+        rollsFunc = function(wepTier, rollPerc)
+            return {
+                roll1 = 7 + 5 * rollPerc[1] + wepTier * 2
+            }
+        end
+    },
 
-    consecFireDmg = { -- TODO
+    consecFireDmg = {
         description = "+{{roll1}}% damage dealt after firing consecutively for 2 seconds. Resets when you stop firing.",
         color = {235, 167, 90},
         rollsFunc = function(wepTier, rollPerc)
@@ -106,9 +124,9 @@ PST.astralWepMods = {
             }
         end
     },
-    consecFireDmg2 = { -- TODO
+    consecFireDmg2 = {
         description = {
-            "+{{roll1}}% damage dealt after firing consecutively for 3 seconds.", 
+            "+{{roll1}}% damage dealt after firing consecutively for 3 seconds.",
             "Resets 1 second after you stop firing."
         },
         color = {255, 140, 10},
@@ -119,8 +137,8 @@ PST.astralWepMods = {
         end
     },
 
-    farEnemyDmg = { -- TODO
-        description = "+{{roll1}}% damage dealt to enemies beyond 1.5 tiles of you.",
+    farEnemyDmg = {
+        description = "+{{roll1}}% damage dealt to enemies beyond 2 tiles of you.",
         color = {127, 107, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -128,8 +146,8 @@ PST.astralWepMods = {
             }
         end
     },
-    closeEnemyDmg = { -- TODO
-        description = "+{{roll1}}% damage dealt to enemies within 1.5 tiles of you.",
+    closeEnemyDmg = {
+        description = "+{{roll1}}% damage dealt to enemies within 2 tiles of you.",
         color = {255, 107, 107},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -138,7 +156,7 @@ PST.astralWepMods = {
         end
     },
 
-    baseDmg = { -- TODO
+    baseDmg = {
         description = "+{{roll1}} base damage.",
         color = {175, 0, 0},
         rollsFunc = function(wepTier, rollPerc)
@@ -147,17 +165,18 @@ PST.astralWepMods = {
             }
         end
     },
-    baseDmg2 = { -- TODO
-        description = "+{{roll1}} base damage, removed for 10 seconds when you get hit.",
+    baseDmg2 = {
+        description = "+{{roll1}} base damage, removed for {{roll2}} seconds when you get hit.",
         color = {200, 20, 20},
         rollsFunc = function(wepTier, rollPerc)
             return {
-                roll1 = 0.3 + 0.2 * rollPerc[1] + wepTier * 0.2
+                roll1 = 0.3 + 0.2 * rollPerc[1] + wepTier * 0.2,
+                roll2 = 5 + 5 * rollPerc[2] - (wepTier - 1) * 0.4
             }
         end
     },
 
-    redHealDmg = { -- TODO
+    redHealDmg = {
         description = {
             "When healing red hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 red heart recovered,",
             "which stacks up to {{roll2}}%."
@@ -166,11 +185,11 @@ PST.astralWepMods = {
         rollsFunc = function(wepTier, rollPerc)
             return {
                 roll1 = 1.5 + 2.5 * rollPerc[1] + wepTier,
-                roll2 = 10 + 2 * rollPerc[2] + wepTier * 2
+                roll2 = 10 + 4 * rollPerc[2] + wepTier * 2
             }
         end
     },
-    soulHealDmg = { -- TODO
+    soulHealDmg = {
         description = {
             "When gaining soul hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 soul heart gained,",
             "which stacks up to {{roll2}}%."
@@ -183,7 +202,7 @@ PST.astralWepMods = {
             }
         end
     },
-    blackHealDmg = { -- TODO
+    blackHealDmg = {
         description = {
             "When gaining black hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 black heart gained,",
             "which stacks up to {{roll2}}%."
@@ -197,8 +216,11 @@ PST.astralWepMods = {
         end
     },
 
-    purchaseDmg = { -- TODO
-        description = "+{{roll1}}% damage for {{roll2}} seconds after purchasing an item, which stacks up to {{roll3}}%.",
+    purchaseDmg = {
+        description = {
+            "+{{roll1}}% damage dealt for {{roll2}} seconds after purchasing an item, which stacks",
+            "up to {{roll3}}%."
+        },
         color = {255, 250, 188},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -209,8 +231,11 @@ PST.astralWepMods = {
         end
     },
 
-    coinPickupDmg = { -- TODO
-        description = "+{{roll1}}% damage dealt for {{roll2}} seconds after picking up any coin, which stacks up to {{roll3}}%.",
+    coinPickupDmg = {
+        description = {
+            "+{{roll1}}% damage dealt for {{roll2}} seconds after picking up any coin, which stacks",
+            "up to {{roll3}}%."
+        },
         color = {255, 244, 78},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -220,7 +245,7 @@ PST.astralWepMods = {
             }
         end
     },
-    coinPermDmg = { -- TODO
+    coinPermDmg = {
         description = "+{{roll1}}% permanent damage after picking up any coin worth at least 5, up to {{roll2}}%.",
         color = {183, 172, 5},
         rollsFunc = function(wepTier, rollPerc)
@@ -231,18 +256,18 @@ PST.astralWepMods = {
         end
     },
 
-    onHitEnemyDmgTaken = { -- TODO
+    onHitEnemyDmgTaken = {
         description = "All enemies take {{roll1}}% more damage for {{roll2}} seconds after you get hit.",
         color = {186, 113, 113},
         rollsFunc = function(wepTier, rollPerc)
             return {
-                roll1 = 7 + 3 * rollPerc[1] + wepTier * 2,
+                roll1 = 10 + 8 * rollPerc[1] + wepTier * 2,
                 roll2 = 3 + 2 * rollPerc[2] + wepTier / 2
             }
         end
     },
 
-    flyGroundDmg = { -- TODO
+    flyGroundDmg = {
         description = {
             "+{{roll1}}% damage dealt to flying enemies if you're on the ground.",
             "+{{roll1}}% damage dealt to ground enemies if you're flying."
@@ -250,13 +275,13 @@ PST.astralWepMods = {
         color = {158, 255, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
-                roll1 = 5 + 3 * rollPerc[1] + wepTier * 3
+                roll1 = 9 + 4 * rollPerc[1] + wepTier * 3
             }
         end
     },
 
-    activeFamDmg = { -- TODO
-        description = "+{{roll1}}% damage dealt per active familiar.",
+    activeFamDmg = {
+        description = "+{{roll1}}% damage dealt per active familiar, up to 40%",
         color = {177, 225, 129},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -264,28 +289,28 @@ PST.astralWepMods = {
             }
         end
     },
-    famKillDmg = { -- TODO
+    famKillDmg = {
         description = "+{{roll1}}% damage dealt for {{roll2}} seconds after a familiar kills an enemy.",
         color = {182, 255, 108},
         rollsFunc = function(wepTier, rollPerc)
             return {
-                roll1 = 7 + 3 * rollPerc[1] + wepTier * 2,
-                roll2 = 3 + 1 * rollPerc[2] + wepTier / 3
+                roll1 = 8 + 4 * rollPerc[1] + wepTier * 2,
+                roll2 = 3 + 4 * rollPerc[2] + wepTier / 3
             }
         end
     },
 
-    holyMantleDmg = { -- TODO
+    holyMantleDmg = {
         description = "+{{roll1}}% damage dealt while you have a holy mantle shield.",
         color = {223, 253, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
-                roll1 = 5 + 4 * rollPerc[1] + wepTier * 2
+                roll1 = 7 + 4 * rollPerc[1] + wepTier * 2
             }
         end
     },
 
-    eternalDmg = { -- TODO
+    eternalDmg = {
         description = "+{{roll1}}% damage dealt while you have an eternal heart.",
         color = {255, 255, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -295,17 +320,18 @@ PST.astralWepMods = {
         end
     },
 
-    activeDmg = { -- TODO
+    activeDmg = {
         description = "+{{roll1}}% damage dealt for {{roll2}} seconds after using an active item.",
         color = {0, 213, 192},
         rollsFunc = function(wepTier, rollPerc)
             return {
-                roll1 = 6 + 4 * rollPerc[1] + wepTier * 2
+                roll1 = 6 + 6 * rollPerc[1] + wepTier * 2,
+                roll2 = 4 + 3 * rollPerc[1] + wepTier / 3
             }
         end
     },
 
-    healthyMobDmg = { -- TODO
+    healthyMobDmg = {
         description = "+{{roll1}}% damage dealt to enemies above 90% HP.",
         color = {255, 0, 145},
         rollsFunc = function(wepTier, rollPerc)
@@ -314,7 +340,7 @@ PST.astralWepMods = {
             }
         end
     },
-    injuredMobDmg = { -- TODO
+    injuredMobDmg = {
         description = "+{{roll1}}% damage dealt to enemies below 15% HP.",
         color = {150, 0, 85},
         rollsFunc = function(wepTier, rollPerc)
@@ -324,12 +350,40 @@ PST.astralWepMods = {
         end
     },
 
-    creepDmg = { -- TODO
+    creepDmg = {
         description = "+{{roll1}}% damage dealt while standing on creep.",
         color = {150, 200, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
                 roll1 = 8 + 4 * rollPerc[1] + wepTier * 4
+            }
+        end
+    },
+    playerCreepDmg = {
+        description = "+{{roll1}}% damage dealt by player creep.",
+        color = {130, 150, 255},
+        rollsFunc = function(wepTier, rollPerc)
+            return {
+                roll1 = 9 + 8 * rollPerc[1] + wepTier * 3
+            }
+        end
+    },
+
+    laserDmg = {
+        description = "+{{roll1}}% damage dealt with lasers.",
+        color = {240, 140, 110},
+        rollsFunc = function(wepTier, rollPerc)
+            return {
+                roll1 = 7 + 5 * rollPerc[1] + wepTier * 2.5
+            }
+        end
+    },
+    explosionDmg = {
+        description = "+{{roll1}}% damage dealt with explosions.",
+        color = {111, 111, 111},
+        rollsFunc = function(wepTier, rollPerc)
+            return {
+                roll1 = 7 + 5 * rollPerc[1] + wepTier * 2.5
             }
         end
     },

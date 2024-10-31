@@ -279,6 +279,13 @@ PST.playerDamagingCreep = {
 	EffectVariant.PLAYER_CREEP_GREEN, EffectVariant.PLAYER_CREEP_HOLYWATER, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL,
 	EffectVariant.PLAYER_CREEP_LEMON_MISHAP, EffectVariant.PLAYER_CREEP_LEMON_PARTY, EffectVariant.PLAYER_CREEP_RED
 }
+PST.allCreep = {
+	EffectVariant.CREEP_BLACK, EffectVariant.CREEP_BROWN, EffectVariant.CREEP_GREEN, EffectVariant.CREEP_LIQUID_POOP, EffectVariant.CREEP_RED,
+	EffectVariant.CREEP_SLIPPERY_BROWN, EffectVariant.CREEP_SLIPPERY_BROWN_GROWING, EffectVariant.CREEP_STATIC, EffectVariant.CREEP_WHITE,
+	EffectVariant.CREEP_YELLOW, EffectVariant.PLAYER_CREEP_BLACK, EffectVariant.PLAYER_CREEP_BLACK, EffectVariant.PLAYER_CREEP_BLACKPOWDER,
+	EffectVariant.PLAYER_CREEP_GREEN, EffectVariant.PLAYER_CREEP_HOLYWATER, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL, EffectVariant.PLAYER_CREEP_LEMON_MISHAP,
+	EffectVariant.PLAYER_CREEP_LEMON_PARTY, EffectVariant.PLAYER_CREEP_PUDDLE_MILK, EffectVariant.PLAYER_CREEP_RED, EffectVariant.PLAYER_CREEP_WHITE
+}
 PST.craftBagPickups = {
 	[BagOfCraftingPickup.BOC_RED_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF},
 	[BagOfCraftingPickup.BOC_SOUL_HEART] = {PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL},
@@ -1442,6 +1449,7 @@ function PST:resetMods()
 		astralwep_estocImpBonus = 0,
 		astralwep_quickbladeImpStacks = nil,
 		astralwep_tridentImpBonus = 0,
+		astralwep_coinPermDmgBuff = 0,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
@@ -1535,8 +1543,25 @@ function PST:resetMods()
 			position = Vector.Zero
 		},
 
+		consecutiveFire = 0,
+
 		astralwep_scytheCD = 0,
 		astralwep_greataxeBuffTimer = 0,
+		astralwep_consecFireBuffTimer = 0,
+		astralwep_baseDmg2Disable = 0,
+		astralwep_redHealTimer = 0,
+		astralwep_redHealBuff = 0,
+		astralwep_soulHealTimer = 0,
+		astralwep_soulHealBuff = 0,
+		astralwep_blackHealTimer = 0,
+		astralwep_blackHealBuff = 0,
+		astralwep_purchaseTimer = 0,
+		astralwep_purchaseBuff = 0,
+		astralwep_coinTimer = 0,
+		astralwep_coinBuff = 0,
+		astralwep_onHitEnemyDmgTimer = 0,
+		astralwep_famKillTimer = 0,
+		astralwep_activeDmgTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

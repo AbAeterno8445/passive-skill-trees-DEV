@@ -265,6 +265,14 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod[2]
             end
         end
+
+        -- Astral weapon mod: + base damage, removed for X secs when you get hit
+        if PST.specialNodes.astralwep_baseDmg2Disable > 0 then
+            tmpTreeMod = PST:getSnapAstralWepMod("baseDmg2")
+            if tmpTreeMod then
+                dynamicMods.damage = dynamicMods.damage - tmpTreeMod[1]
+            end
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active

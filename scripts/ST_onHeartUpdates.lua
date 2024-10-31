@@ -149,6 +149,13 @@ function PST:onHeartUpdate(force)
                 tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
             end
 
+            -- Astral weapon mod: +% damage dealt for 5 seconds after healing red hearts, up to %
+            local tmpMod = PST:getSnapAstralWepMod("redHealDmg")
+            if tmpMod and player:GetHearts() > heartTracker.red[i] then
+                PST.specialNodes.astralwep_redHealBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_redHealBuff + tmpMod[1])
+                PST.specialNodes.astralwep_redHealTimer = 150
+            end
+
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_EVE) then
                 -- Eve, -8% all stats if you have 1 remaining red heart or less
@@ -192,6 +199,13 @@ function PST:onHeartUpdate(force)
                 end
             end
 
+            -- Astral weapon mod: +% damage dealt for 5 seconds after gaining black hearts, up to %
+            local tmpMod = PST:getSnapAstralWepMod("blackHealDmg")
+            if tmpMod and player:GetHearts() > heartTracker.black[i] then
+                PST.specialNodes.astralwep_blackHealBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_blackHealBuff + tmpMod[1])
+                PST.specialNodes.astralwep_blackHealTimer = 150
+            end
+
             heartTracker.black[i] = PST:GetBlackHeartCount(player)
             heartUpdated = true
         end
@@ -215,6 +229,13 @@ function PST:onHeartUpdate(force)
             -- Tainted Health node (T. Magdalene's tree)
             if PST:getTreeSnapshotMod("taintedHealth", false) then
                 player:AddCacheFlags(CacheFlag.CACHE_FIREDELAY, true)
+            end
+
+            -- Astral weapon mod: +% damage dealt for 5 seconds after gaining soul hearts, up to %
+            local tmpMod = PST:getSnapAstralWepMod("soulHealDmg")
+            if tmpMod and player:GetHearts() > heartTracker.soul[i] then
+                PST.specialNodes.astralwep_soulHealBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_soulHealBuff + tmpMod[1])
+                PST.specialNodes.astralwep_soulHealTimer = 150
             end
 
             -- Cosmic Realignment node

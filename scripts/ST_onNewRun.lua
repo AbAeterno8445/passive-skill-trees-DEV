@@ -393,6 +393,18 @@ function PST:onNewRun(isContinued)
             if tmpMod then
                 PST:addModifiers({ tears = tmpMod[1], shotSpeed = tmpMod[2] }, true)
             end
+
+            -- Astral weapon mod: + base damage
+            tmpMod = PST:getSnapAstralWepMod("baseDmg")
+            if tmpMod then
+                PST:addModifiers({ damage = tmpMod[1] }, true)
+            end
+
+            -- Astral weapon mod: + base damage (removed for X secs when you get hit)
+            tmpMod = PST:getSnapAstralWepMod("baseDmg2")
+            if tmpMod then
+                PST:addModifiers({ damage = tmpMod[1] }, true)
+            end
         end
     end
 

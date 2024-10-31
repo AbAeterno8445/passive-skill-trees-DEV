@@ -584,6 +584,12 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     if tmpMod > 0 and slot ~= -1 and player:GetActiveMaxCharge(slot) >= 2 then
         player:SetMinDamageCooldown(math.ceil(tmpMod * 30))
     end
+
+    -- Astral weapon mod: +% damage dealt for X seconds after using an active item
+    tmpMod = PST:getSnapAstralWepMod("activeDmg")
+    if tmpMod then
+        PST.specialNodes.astralwep_activeDmgTimer = math.ceil(tmpMod[2] * 30)
+    end
 end
 
 ---- CUSTOM ITEMS ----

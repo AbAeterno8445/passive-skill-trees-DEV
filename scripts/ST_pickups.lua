@@ -519,6 +519,22 @@ function PST:onPickup(pickup, collider, low, forced)
                     end
                 end
             end
+
+            -- Astral weapon mod: +% damage for X seconds when picking up any coin
+            local tmpMod = PST:getSnapAstralWepMod("coinPickupDmg")
+            if tmpMod then
+                PST.specialNodes.astralwep_coinBuff = math.min(tmpMod[3], PST.specialNodes.astralwep_coinBuff + tmpMod[1])
+                PST.specialNodes.astralwep_coinTimer = math.ceil(tmpMod[2] * 30)
+            end
+
+            -- Astral weapon mod: +% permanent damage after picking up any coin worth at least 5
+            tmpMod = PST:getSnapAstralWepMod("coinPermDmg")
+            if tmpMod and pickup:GetCoinValue() >= 5 then
+                local tmpAdd = math.min(tmpMod[1], tmpMod[2] - PST:getTreeSnapshotMod("astralwep_coinPermDmgBuff", 0))
+                if tmpAdd > 0 then
+                    PST:addModifiers({ damagePerc = tmpAdd, astralwep_coinPermDmgBuff = tmpAdd }, true)
+                end
+            end
         -- On pickup key
         elseif variant == PickupVariant.PICKUP_KEY then
             local keyChance = PST:getTreeSnapshotMod("keyDupe", 0)

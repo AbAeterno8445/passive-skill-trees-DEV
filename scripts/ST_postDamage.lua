@@ -174,6 +174,12 @@ function PST:postDamage(target, damage, flag, source)
                 if tmpMod > 0 and target.SpawnerType == 0 and isKillingHit and 100 * math.random() < tmpMod then
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                 end
+
+                -- Astral weapon mod: +% damage dealt for X seconds after a familiar kills an enemy
+                tmpMod = PST:getSnapAstralWepMod("famKillDmg")
+                if tmpMod then
+                    PST.specialNodes.astralwep_famKillTimer = math.ceil(tmpMod[2] * 30)
+                end
             -- Bomb hits enemy
             elseif source.Type == EntityType.ENTITY_BOMB then
                 -- Troll bomb hit

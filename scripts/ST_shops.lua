@@ -61,6 +61,13 @@ function PST:onShopPurchase(pickup, player, spent)
             end
         end
 
+        -- Astral weapon mod: +% damage dealt for X seconds after purchasing an item
+        tmpMod = PST:getSnapAstralWepMod("purchaseDmg")
+        if tmpMod then
+            PST.specialNodes.astralwep_purchaseBuff = math.min(tmpMod[3], PST.specialNodes.astralwep_purchaseBuff + tmpMod[1])
+            PST.specialNodes.astralwep_purchaseTimer = math.ceil(tmpMod[2] * 30)
+        end
+
         -- Expedition objective: purchase shop items
 		PST:expedAddProgInRun("purchases", 1)
     elseif spent < 0 then

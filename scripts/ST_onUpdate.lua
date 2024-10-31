@@ -2399,6 +2399,56 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Astral weapon mod: +% damage dealt after firing consecutively for 3 seconds
+	if PST.specialNodes.astralwep_consecFireBuffTimer > 0 then
+		PST.specialNodes.astralwep_consecFireBuffTimer = PST.specialNodes.astralwep_consecFireBuffTimer - 1
+	end
+
+	-- Astral weapon mod: + base damage, removed for X secs when you get hit
+	if PST.specialNodes.astralwep_baseDmg2Disable > 0 then
+		PST.specialNodes.astralwep_baseDmg2Disable = PST.specialNodes.astralwep_baseDmg2Disable - 1
+		if PST.specialNodes.astralwep_baseDmg2Disable == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
+	-- Astral weapon timer mods
+	local astralWepTimers = {"redHeal", "soulHeal", "blackHeal", "purchase", "coin"}
+	for _, tmpTimerName in ipairs(astralWepTimers) do
+		local timerName = "astralwep_" .. tmpTimerName .. "Timer"
+		local tgtTimer = PST.specialNodes[timerName]
+		if tgtTimer and tgtTimer > 0 then
+			PST.specialNodes[timerName] = PST.specialNodes[timerName] - 1
+			if PST.specialNodes[timerName] == 0 then
+				PST.specialNodes["astralwep_" .. tmpTimerName .. "Buff"] = 0
+			end
+		end
+	end
+
+	-- Astral weapon mod: enemies take % more damage for X seconds after you get hit
+	if PST.specialNodes.astralwep_onHitEnemyDmgTimer > 0 then
+		PST.specialNodes.astralwep_onHitEnemyDmgTimer = PST.specialNodes.astralwep_onHitEnemyDmgTimer - 1
+	end
+
+	-- Astral weapon mod: +% damage dealt for X seconds after a familiar kills an enemy
+	if PST.specialNodes.astralwep_famKillTimer > 0 then
+		PST.specialNodes.astralwep_famKillTimer = PST.specialNodes.astralwep_famKillTimer - 1
+	end
+
+	-- Astral weapon mod: +% damage dealt for X seconds after using an active item
+	if PST.specialNodes.astralwep_activeDmgTimer > 0 then
+		PST.specialNodes.astralwep_activeDmgTimer = PST.specialNodes.astralwep_activeDmgTimer - 1
+	end
+
+	-- Consecutive firing timer
+	local plInput = player:GetShootingInput()
+	local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
+	if isShooting then
+		PST.specialNodes.consecutiveFire = PST.specialNodes.consecutiveFire + 1
+	else
+		PST.specialNodes.consecutiveFire = 0
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

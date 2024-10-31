@@ -260,6 +260,10 @@ local function astralForgeScreenRender(self, tScreen)
                     self.weaponSprite.Color.GO = 0.4
                     self.weaponSprite.Color.BO = 0.4
                 end
+                -- Selected weapon
+                if self.selectedWeapon == tmpWeapon then
+                    self:DrawUIBox(wepX - 16, wepY - 16, 32, 32)
+                end
                 PST:renderAstralWepAt(tmpWeapon, self.weaponSprite, wepX, wepY)
 
                 -- Equipped
