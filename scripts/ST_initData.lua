@@ -1436,8 +1436,12 @@ function PST:resetMods()
 		expedSelNodeRow = -1,
 		expedSelNodeObjName = "",
 
-		-- Astral weapon helpers
+		-- Astral weapon helpers/effects
 		astralWepTierDrops = 1,
+
+		astralwep_estocImpBonus = 0,
+		astralwep_quickbladeImpStacks = nil,
+		astralwep_tridentImpBonus = 0,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
@@ -1530,6 +1534,9 @@ function PST:resetMods()
 			sprite = Sprite("gfx/effect_siren_ring.anm2", true),
 			position = Vector.Zero
 		},
+
+		astralwep_scytheCD = 0,
+		astralwep_greataxeBuffTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

@@ -27,6 +27,7 @@ function PST:onNewRoom()
 	PST.specialNodes.howToJumpPulseTimer = 0
 	PST.specialNodes.temporaryCoins = {}
 	PST.specialNodes.spiritCovenantTarget = nil
+	PST:clearAnimFXList()
 
 	local player = PST:getPlayer()
 	local room = Game():GetRoom()

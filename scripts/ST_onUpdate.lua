@@ -2374,6 +2374,31 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Astral weapon mod: quickblade implicit
+	tmpMod = PST:getTreeSnapshotMod("astralwep_quickbladeImpStacks", nil)
+	if tmpMod and #tmpMod > 0 then
+		for i=#tmpMod,1,-1 do
+			tmpMod[i] = tmpMod[i] - 1
+			if tmpMod[i] <= 0 then
+				table.remove(tmpMod, i)
+				PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+			end
+		end
+	end
+
+	-- Astral weapon mod: scythe implicit
+	if PST.specialNodes.astralwep_scytheCD > 0 then
+		PST.specialNodes.astralwep_scytheCD = PST.specialNodes.astralwep_scytheCD - 1
+	end
+
+	-- Astral weapon mod: greataxe implicit
+	if PST.specialNodes.astralwep_greataxeBuffTimer > 0 then
+		PST.specialNodes.astralwep_greataxeBuffTimer = PST.specialNodes.astralwep_greataxeBuffTimer - 1
+		if PST.specialNodes.astralwep_greataxeBuffTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

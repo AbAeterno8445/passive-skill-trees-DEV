@@ -725,8 +725,8 @@ PST.astralWepMods = {
 }
 
 PST.astralWepPrefix = "astralwep_"
-function PST:getSnapAstralWepMod(modName)
-    return PST:getTreeSnapshotMod(PST.astralWepPrefix .. modName, nil)
+function PST:getSnapAstralWepMod(modName, default)
+    return PST:getTreeSnapshotMod(PST.astralWepPrefix .. modName, default)
 end
 
 -- Astral weapon data (honing goes from 0-50 for implicit mod rolls)
@@ -739,9 +739,9 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 1,
             overlay = 0
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "longswordImp",
-            description = "{{roll1}}% damage dealt to enemies within 1.5 tiles.",
+            description = "+{{roll1}}% damage dealt to enemies within 1.5 tiles.",
             rollsFunc = function(honing)
                 return {
                     roll1 = 10 + math.floor(honing / 3)
@@ -801,7 +801,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 3,
             overlay = 1
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "estocImp",
             description = {
                 "Consecutive hits against enemies within 2 tiles of you grants +{{roll1}}% tears, up to {{roll2}}%.",
@@ -809,8 +809,8 @@ PST.astralWepData = {
             },
             rollsFunc = function(honing)
                 return {
-                    roll1 = 1 + PST:roundFloat(honing / 50, -2),
-                    roll2 = 10 + math.floor(honing / 5)
+                    roll1 = 3 + PST:roundFloat(5 * (honing / 50), -2),
+                    roll2 = 20 + math.floor(honing / 5)
                 }
             end
         },
@@ -839,7 +839,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 5,
             overlay = 2
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "daggerImp",
             description = {
                 "{{roll1}}% chance for hits to deal {{roll2}}% more damage.",
@@ -877,18 +877,18 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 7,
             overlay = 3
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "quickbladeImp",
             description = {
-                "{{roll1}} tears for {{roll2}} second(s) when hitting a target, up to {{roll3}}. Stacks.",
+                "+{{roll1}} tears for {{roll2}} second(s) when hitting an enemy, which stacks up to {{roll3}}.",
                 "Double the duration if hitting targets within 1.5 tiles.",
                 "Each stack has its own duration."
             },
             rollsFunc = function(honing)
                 return {
-                    roll1 = 0.01 + PST:roundFloat(0.03 * (honing / 50), -2),
-                    roll2 = 0.5 + PST:roundFloat(honing / 50, -2),
-                    roll3 = 0.4 + PST:roundFloat(0.4 * (honing / 50), -2)
+                    roll1 = 0.1 + PST:roundFloat(0.14 * (honing / 50), -2),
+                    roll2 = 1 + PST:roundFloat(honing / 50, -2),
+                    roll3 = 2 + PST:roundFloat(2 * (honing / 50), -2)
                 }
             end
         },
@@ -917,7 +917,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 9,
             overlay = 4
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "spearImp",
             description = {
                 "+{{roll1}}% damage dealt to enemies between 1.5 and 2.5 tiles away from you.",
@@ -925,8 +925,8 @@ PST.astralWepData = {
             },
             rollsFunc = function(honing)
                 return {
-                    roll1 = 9 + PST:roundFloat(9 * (honing / 50), -2),
-                    roll2 = 12 - PST:roundFloat(7 * (honing / 50), -2)
+                    roll1 = 14 + PST:roundFloat(11 * (honing / 50), -2),
+                    roll2 = 15 - PST:roundFloat(8 * (honing / 50), -2)
                 }
             end
         },
@@ -969,7 +969,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 11,
             overlay = 5
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "tridentImp",
             description = {
                 "Consecutive hits against enemies beyond 1.5 tiles of you grant +{{roll1}}% damage and tears, up to {{roll2}}%.",
@@ -1021,15 +1021,15 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 13,
             overlay = 6
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "scytheImp",
             description = {
-                "Hitting an enemy causes a circular slash that hits nearby enemies for {{roll1}}% of the hit's damage.",
+                "Hitting an enemy triggers a circular slash that hits nearby enemies for {{roll1}}% of the hit's damage.",
                 "This effect has a {{roll2}} second cooldown."
             },
             rollsFunc = function(honing)
                 return {
-                    roll1 = 40 + PST:roundFloat(40 * (honing / 50), -2),
+                    roll1 = 70 + PST:roundFloat(50 * (honing / 50), -2),
                     roll2 = 2.5 - PST:roundFloat(1.75 * (honing / 50), -2)
                 }
             end
@@ -1066,7 +1066,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 15,
             overlay = 7
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "axeImp",
             description = {
                 "{{roll1}}% chance to cause bleeding for 3 seconds when hitting enemies.",
@@ -1075,7 +1075,7 @@ PST.astralWepData = {
             rollsFunc = function(honing)
                 return {
                     roll1 = 6 + PST:roundFloat(9 * (honing / 50), -2),
-                    roll2 = 7 + PST:roundFloat(3 * (honing / 50), -2)
+                    roll2 = 10 + PST:roundFloat(6 * (honing / 50), -2)
                 }
             end
         },
@@ -1104,18 +1104,18 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 17,
             overlay = 8
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "greataxeImp",
             description = {
-                "Every {{roll1}}th hit against enemies causes bleeding for 4 seconds.",
+                "Every {{roll1}} hits against each enemy causes them to bleed for 4 seconds.",
                 "+{{roll2}}% damage for 2 seconds after hitting a bleeding enemy.",
                 "{{roll3}}% tears."
             },
             rollsFunc = function(honing)
                 return {
                     roll1 = 5 - math.floor(honing / 20),
-                    roll2 = 8 + PST:roundFloat(5 * (honing / 50), -2),
-                    roll3 = -12 + PST:roundFloat(6 * (honing / 50), -2)
+                    roll2 = 12 + PST:roundFloat(10 * (honing / 50), -2),
+                    roll3 = -8 + PST:roundFloat(4 * (honing / 50), -2)
                 }
             end
         },
@@ -1144,16 +1144,16 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 19,
             overlay = 9
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "shortbowImp",
             description = {
                 "+{{roll1}} shot speed.",
-                "{{roll2}}% of your shot speed above 1 becomes a tears multiplier, up to 40%."
+                "{{roll2}}% of your shot speed above 1 becomes a tears multiplier, up to +80%."
             },
             rollsFunc = function(honing)
                 return {
-                    roll1 = 0.04 + PST:roundFloat(0.06 * (honing / 50), -2),
-                    roll2 = 25 + honing
+                    roll1 = 0.07 + PST:roundFloat(0.05 * (honing / 50), -2),
+                    roll2 = 35 + honing
                 }
             end
         },
@@ -1182,7 +1182,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 21,
             overlay = 10
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "bowImp",
             description = {
                 "+{{roll1}} shot speed.",
@@ -1190,8 +1190,8 @@ PST.astralWepData = {
             },
             rollsFunc = function(honing)
                 return {
-                    roll1 = 0.02 + PST:roundFloat(0.04 * (honing / 50), -2),
-                    roll2 = 12 + PST:roundFloat(13 * (honing / 50), -2)
+                    roll1 = 0.04 + PST:roundFloat(0.04 * (honing / 50), -2),
+                    roll2 = 15 + PST:roundFloat(10 * (honing / 50), -2)
                 }
             end
         },
@@ -1227,7 +1227,7 @@ PST.astralWepData = {
             [PSTAstralWepRarity.MAGIC] = 23,
             overlay = 11
         },
-        implicitMod = { -- TODO
+        implicitMod = {
             name = "crossbowImp",
             description = {
                 "{{roll1}} tears.",
@@ -1237,7 +1237,7 @@ PST.astralWepData = {
             rollsFunc = function(honing)
                 return {
                     roll1 = -0.15 + PST:roundFloat(0.1 * (honing / 50), -2),
-                    roll2 = 0.07 + PST:roundFloat(0.7 * (honing / 50), -2),
+                    roll2 = 0.08 + PST:roundFloat(0.8 * (honing / 50), -2),
                     roll3 = 30 + PST:roundFloat(20 * (honing / 50), -2)
                 }
             end

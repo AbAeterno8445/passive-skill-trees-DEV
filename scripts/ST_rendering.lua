@@ -84,6 +84,27 @@ xpbarTempSprite:Play("BarTemp", true)
 local chroniclerUISprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
 chroniclerUISprite:Play("Chronicler UI", true)
 
+local animFXList = {}
+-- Spawn an animated effect using the given anm2 path. Returns the new sprite object in case further manipulation is needed
+---@param FXSpritePath string
+---@param spriteAnim string
+---@param position Vector
+---@param frameFuncs? table -- e.g. {[5] = function() print("Frame 5 reached") end}
+function PST:createAnimFXAt(FXSpritePath, spriteAnim, position, frameFuncs)
+	local newSprite = Sprite(FXSpritePath, true)
+	newSprite:Play(spriteAnim, true)
+	table.insert(animFXList, {
+		sprite = newSprite,
+		pos = position,
+		frameFuncs = frameFuncs
+	})
+	return newSprite
+end
+
+function PST:clearAnimFXList()
+	animFXList = {}
+end
+
 -- Rendering function
 function PST:Render()
 	local player = PST:getPlayer()
@@ -289,8 +310,8 @@ function PST:Render()
 		end
 	end
 
-	-- Manage floating texts
 	if not Game():IsPaused() then
+		-- Manage floating texts
 		if floatTextDelay > 0 then
 			floatTextDelay = floatTextDelay - 1
 		elseif floatTextDelay == 0 and #floatTextQueue > 0 then
@@ -375,6 +396,27 @@ function PST:Render()
 				tmpIcon.step = tmpIcon.step + 1
 				if tmpIcon.step >= tmpIcon.totalSteps then
 					table.remove(floatingIcons, i)
+				end
+			end
+		end
+
+		-- Special anim FX
+		if #animFXList > 0 then
+			for i = #animFXList, 1, -1 do
+				local tmpFX = animFXList[i]
+				local worldPos = room:WorldToScreenPosition(tmpFX.pos)
+
+				if tmpFX.frameFuncs then
+					for frame, func in pairs(tmpFX.frameFuncs) do
+						if tmpFX.sprite:GetFrame() == frame then func() end
+					end
+				end
+
+				tmpFX.sprite:Render(worldPos)
+				if isEvenFrame then tmpFX.sprite:Update() end
+
+				if tmpFX.sprite:IsFinished() then
+					table.remove(animFXList, i)
 				end
 			end
 		end

@@ -797,6 +797,10 @@ function PST:inMineshaftPuzzle()
 	return level:GetDimension() == Dimension.MINESHAFT and (level:GetStage() == LevelStage.STAGE2_1 or level:GetStage() == LevelStage.STAGE2_2)
 end
 
+function PST:getTilesDist(tiles)
+	return 40 + math.ceil(40 * tiles)
+end
+
 -- Brian Kernighan's algorithm
 function PST:countSetBits(n)
 	if (n == 0) then return 0

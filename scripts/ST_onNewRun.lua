@@ -369,6 +369,30 @@ function PST:onNewRun(isContinued)
                     end
                 end
             end
+
+            -- Astral weapon mod: greataxe implicit
+            tmpMod = PST:getSnapAstralWepMod("greataxeImp")
+            if tmpMod then
+                PST:addModifiers({ tearsPerc = tmpMod[3] }, true)
+            end
+
+            -- Astral weapon mod: shortbow implicit
+            tmpMod = PST:getSnapAstralWepMod("shortbowImp")
+            if tmpMod then
+                PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+            end
+
+            -- Astral weapon mod: bow implicit
+            tmpMod = PST:getSnapAstralWepMod("bowImp")
+            if tmpMod then
+                PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+            end
+
+            -- Astral weapon mod: crossbow implicit
+            tmpMod = PST:getSnapAstralWepMod("crossbowImp")
+            if tmpMod then
+                PST:addModifiers({ tears = tmpMod[1], shotSpeed = tmpMod[2] }, true)
+            end
         end
     end
 

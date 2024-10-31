@@ -718,6 +718,142 @@ function PST:onDamage(target, damage, flag, source)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
                 target:AddFreeze(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonParaLen", 0) * 30))
             end
+
+            -- Player/familiar hit
+            if source and source.Entity and
+            (source.Entity:ToPlayer() or (source.Entity.SpawnerEntity and source.Entity.SpawnerEntity:ToPlayer()) or (source.Entity.Parent and source.Entity.Parent:ToPlayer()) or
+            source.Entity:ToFamiliar() or (source.Entity.SpawnerEntity and source.Entity.SpawnerEntity:ToFamiliar()) or (source.Entity.Parent and source.Entity.Parent:ToFamiliar())) then
+                -- Astral weapon mod: longsword implicit
+                tmpMod = PST:getSnapAstralWepMod("longswordImp")
+                if tmpMod and PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                    dmgMult = dmgMult + tmpMod[1] / 100
+                end
+
+                -- Astral weapon mod: estoc implicit
+                tmpMod = PST:getSnapAstralWepMod("estocImp")
+                if tmpMod then
+                    local tmpBuff = PST:getTreeSnapshotMod("astralwep_estocImpBonus", 0)
+                    if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(2) then
+                        if tmpBuff < tmpMod[2] then
+                            local tmpAdd = math.min(tmpMod[1], tmpMod[2] - tmpBuff)
+                            PST:addModifiers({ tearsPerc = tmpAdd, astralwep_estocImpBonus = tmpAdd }, true)
+                        end
+                    else
+                        PST:addModifiers({ tearsPerc = -tmpBuff, astralwep_estocImpBonus = { value = 0, set = true } }, true)
+                    end
+                end
+
+                -- Astral weapon mod: dagger implicit
+                tmpMod = PST:getSnapAstralWepMod("daggerImp")
+                if tmpMod then
+                    local tmpChance = tmpMod[1]
+                    if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                        tmpChance = tmpChance * 2
+                    end
+                    if 100 * math.random() < tmpChance then
+                        dmgMult = dmgMult + tmpMod[2] / 100
+                    end
+                end
+
+                -- Astral weapon mod: quickblade implicit
+                tmpMod = PST:getSnapAstralWepMod("quickbladeImp")
+                if tmpMod then
+                    if not PST:getTreeSnapshotMod("astralwep_quickbladeImpStacks", nil) then
+                        PST.modData.treeModSnapshot["astralwep_quickbladeImpStacks"] = {}
+                    end
+                    local stackList = PST.modData.treeModSnapshot["astralwep_quickbladeImpStacks"]
+                    if #stackList < 15 then
+                        local tmpDuration = tmpMod[2]
+                        if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                            tmpDuration = tmpDuration * 2
+                        end
+                        table.insert(stackList, math.ceil(tmpDuration * 30))
+                        PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+                    end
+                end
+
+                -- Astral weapon mod: spear implicit
+                tmpMod = PST:getSnapAstralWepMod("spearImp")
+                if tmpMod then
+                    local dist = PST:getPlayer().Position:Distance(target.Position)
+                    if dist > PST:getTilesDist(1.5) and dist <= PST:getTilesDist(2.5) then
+                        dmgMult = dmgMult + tmpMod[1] / 100
+                    elseif dist <= PST:getTilesDist(1.5) then
+                        dmgMult = dmgMult - tmpMod[2] / 100
+                    end
+                end
+
+                -- Astral weapon mod: trident implicit
+                tmpMod = PST:getSnapAstralWepMod("tridentImp")
+                if tmpMod then
+                    local tmpBuff = PST:getTreeSnapshotMod("astralwep_tridentImpBonus", 0)
+                    if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(2) then
+                        if tmpBuff < tmpMod[2] then
+                            local tmpAdd = math.min(tmpMod[1], tmpMod[2] - tmpBuff)
+                            PST:addModifiers({ damagePerc = tmpAdd, tearsPerc = tmpAdd, astralwep_tridentImpBonus = tmpAdd }, true)
+                        end
+                    else
+                        PST:addModifiers({ damagePerc = -tmpBuff, tearsPerc = -tmpBuff, astralwep_tridentImpBonus = { value = 0, set = true } }, true)
+                    end
+                end
+
+                -- Astral weapon mod: scythe implicit
+                tmpMod = PST:getSnapAstralWepMod("scytheImp")
+                if tmpMod then
+                    if PST.specialNodes.astralwep_scytheCD == 0 then
+                        PST:createAnimFXAt("gfx/effect_wepslash.anm2", "Spin", target.Position, {
+                            [3] = function()
+                                local nearbyEnemies = Isaac.FindInRadius(target.Position, 120, EntityPartition.ENEMY)
+                                for _, tmpEnemy in ipairs(nearbyEnemies) do
+                                    if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                        tmpEnemy:TakeDamage(damage * (tmpMod[1] / 100), 0, EntityRef(PST:getPlayer()), 0)
+                                    end
+                                end
+                            end
+                        })
+                        SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.7, 2, false, 0.9 + 0.2 * math.random())
+                        PST.specialNodes.astralwep_scytheCD = math.ceil(tmpMod[2] * 30)
+                    end
+                end
+
+                -- Astral weapon mod: axe implicit
+                tmpMod = PST:getSnapAstralWepMod("axeImp")
+                if tmpMod then
+                    if target:GetBleedingCountdown() > 0 then
+                        dmgMult = dmgMult + tmpMod[2] / 100
+                    end
+                    if 100 * math.random() < tmpMod[1] then
+                        target:AddBleeding(EntityRef(PST:getPlayer()), 90)
+                    end
+                end
+
+                -- Astral weapon mod: greataxe implicit
+                tmpMod = PST:getSnapAstralWepMod("greataxeImp")
+                if tmpMod then
+                    if target:GetBleedingCountdown() > 0 then
+                        PST.specialNodes.astralwep_greataxeBuffTimer = 60
+                        PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                    end
+
+                    -- Apply bleeding every X hits
+                    if not target:GetData().PST_greataxeHits then
+                        target:GetData().PST_greataxeHits = 0
+                    end
+                    target:GetData().PST_greataxeHits = target:GetData().PST_greataxeHits + 1
+                    if target:GetData().PST_greataxeHits >= tmpMod[1] then
+                        target:AddBleeding(EntityRef(PST:getPlayer()), 120)
+                        target:GetData().PST_greataxeHits = 0
+                    end
+                end
+
+                -- Astral weapon mod: bow implicit
+                tmpMod = PST:getSnapAstralWepMod("bowImp")
+                if tmpMod then
+                    local dist = PST:getPlayer().Position:Distance(target.Position)
+                    local maxDist = 250
+                    dmgMult = dmgMult + tmpMod[2] * math.min(1, dist / maxDist)
+                end
+            end
         end
 
         -- Check if a familiar got hit

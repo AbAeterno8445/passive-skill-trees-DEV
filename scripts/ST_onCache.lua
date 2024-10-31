@@ -257,6 +257,14 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod ~= 0 and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == 0 and player:GetActiveItem(ActiveSlot.SLOT_SECONDARY) == 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod
         end
+
+        -- Astral weapon mod: greataxe implicit
+        if PST.specialNodes.astralwep_greataxeBuffTimer > 0 then
+            tmpTreeMod = PST:getSnapAstralWepMod("greataxeImp")
+            if tmpTreeMod then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod[2]
+            end
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -446,6 +454,19 @@ function PST:onCache(player, cacheFlag)
         tmpTreeMod = PST:getTreeSnapshotMod("boonEmptinessTears", 0)
         if tmpTreeMod ~= 0 and player:GetTrinket(0) == 0 and player:GetTrinket(1) == 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
+        end
+
+        -- Astral weapon mod: quickblade implicit
+        tmpTreeMod = PST:getTreeSnapshotMod("astralwep_quickbladeImpStacks", nil)
+        if tmpTreeMod then
+            local wepRolls = PST:getSnapAstralWepMod("quickbladeImp")
+            if wepRolls then
+                local tmpTotal = 0
+                for _ in ipairs(tmpTreeMod) do
+                    tmpTotal = tmpTotal + wepRolls[1]
+                end
+                dynamicMods.tears = dynamicMods.tears + math.min(wepRolls[3], tmpTotal)
+            end
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
@@ -821,6 +842,19 @@ function PST:onCache(player, cacheFlag)
         if isKeeper and not cosmicRCache.TForgottenTracker.keeperCoin then
             dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
         end
+    end
+
+    -- Astral weapon mod: shortbow implicit
+    tmpTreeMod = PST:getSnapAstralWepMod("shortbowImp")
+    if tmpTreeMod then
+        local tmpShotSpd = player.ShotSpeed - 1
+        dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.max(0, math.min(80, tmpShotSpd * tmpTreeMod[2]))
+    end
+
+    -- Astral weapon mod: crossbow implicit
+    tmpTreeMod = PST:getSnapAstralWepMod("crossbowImp")
+    if tmpTreeMod then
+        dynamicMods.damagePerc = dynamicMods.damagePerc + math.max(0, math.min(tmpTreeMod[3], (player.ShotSpeed - 1) * 100))
     end
 
     -- Expedition curse: inverse fortune

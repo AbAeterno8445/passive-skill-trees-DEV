@@ -900,6 +900,7 @@ PST.obolEvents = {
             amt = math.ceil(amt * (1 + abundantObols / 100))
             return amt
         end
+        return 0
     end,
     -- On boss rush clear
     bossRush = function(depth)
