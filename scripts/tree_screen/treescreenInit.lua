@@ -21,6 +21,7 @@ PST.treeScreen = {
     -- Sprites
     treeBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true),
     descBGSprite = Sprite("gfx/ui/skilltrees/tree_bg.anm2", true),
+    UILinkSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_node_link.anm2", true),
     cursorSprite = Sprite("gfx/ui/cursor.anm2", true),
     cursorHighlight = false,
 
@@ -79,6 +80,7 @@ PST.treeScreen.treeBGSprite:Play("Default", true)
 PST.treeScreen.descBGSprite:Play("Pixel", true)
 PST.treeScreen.cursorSprite.Color.A = 0.7
 PST.treeScreen.cursorSprite:Play("Idle", true)
+PST.treeScreen.UILinkSprite:Play("DescBoxUI", true)
 
 -- Tab-able nodes
 local tabNodes = {

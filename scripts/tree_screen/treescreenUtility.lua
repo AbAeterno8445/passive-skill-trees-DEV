@@ -92,7 +92,34 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
     self.descBGSprite.Scale.X = descW
     self.descBGSprite.Scale.Y = descH
     self.descBGSprite.Color.A = bgAlpha or 0.9
-    self.descBGSprite:Render(Vector(drawX - 2, drawY - 2))
+    local bgX, bgY = drawX - 2, drawY - 2
+    self.descBGSprite:Render(Vector(bgX, bgY))
+
+    -- Border beams - Top
+    local linkBeam = Beam(self.UILinkSprite, 0, false, false)
+    local startPos = Vector(bgX, bgY)
+    local endPos = Vector(bgX + descW, bgY)
+    linkBeam:Add(startPos, 0)
+    linkBeam:Add(endPos, 129)
+    linkBeam:Render()
+    -- Left beam
+    startPos = Vector(bgX, bgY)
+    endPos = Vector(bgX, bgY + descH)
+    linkBeam:Add(startPos, 0)
+    linkBeam:Add(endPos, 129)
+    linkBeam:Render()
+    -- Right beam
+    startPos = Vector(bgX + descW, bgY + descH)
+    endPos = Vector(bgX + descW, bgY)
+    linkBeam:Add(startPos, 0)
+    linkBeam:Add(endPos, 129)
+    linkBeam:Render()
+    -- Bottom beam
+    startPos = Vector(bgX + descW, bgY + descH)
+    endPos = Vector(bgX, bgY + descH)
+    linkBeam:Add(startPos, 0)
+    linkBeam:Add(endPos, 129)
+    linkBeam:Render()
 
     tmpFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, PST.kcolors.WHITE_FADED1)
     for i = 1, #description do
