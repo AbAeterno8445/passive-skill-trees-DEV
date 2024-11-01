@@ -1237,6 +1237,24 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Sidereal caches, remove opened
+    if PST:getTreeSnapshotMod("isExpedRun", false) then
+        local tmpCaches = Isaac.FindByType(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 1)
+        for _, tmpCache in ipairs(tmpCaches) do
+            tmpCache:Remove()
+        end
+    end
+
+	-- Sidereal Cache regular chest replacement proc reset
+	if PST:getTreeSnapshotMod("sideCacheRegChest", 0) > 0 then
+		PST:addModifiers({ sideCacheRegChest = { value = 0, set = true } }, true)
+	end
+
+	-- Sidereal Cache replication proc reset
+	if PST:getTreeSnapshotMod("sideCacheReplicaProc", false) then
+		PST:addModifiers({ sideCacheReplicaProc = false }, true)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

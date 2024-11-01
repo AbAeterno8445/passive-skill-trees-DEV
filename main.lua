@@ -235,13 +235,13 @@ function PST:processLoadedData(loadedData)
 end
 function PST:load()
 	local modDataSave = PST.saveManager.GetPersistentSave()
-	if modDataSave.modData then
+	if modDataSave and modDataSave.modData then
 		PST:processLoadedData(modDataSave.modData)
 		PST:updateNodes()
 	end
 
 	local modConfigSave = PST.saveManager.GetSettingsSave()
-	if modConfigSave.config then
+	if modConfigSave and modConfigSave.config then
 		-- Load new config options
 		for k, v in pairs(PST.config) do
 			if modConfigSave.config[k] == nil then

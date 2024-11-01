@@ -159,7 +159,7 @@ function PST:generateAstralWep(wepTier, factorMods)
     return PST:createAstralWep(wepType, wepRarity, wepTier)
 end
 
-function PST:dropRandAstralWepAt(position, wepTier, factorMods)
+function PST:dropRandAstralWepAt(position, wepTier, factorMods, velocity)
     local newWep = PST:generateAstralWep(wepTier, factorMods)
     local wepData = PST.astralWepData[newWep.type]
 
@@ -176,8 +176,7 @@ function PST:dropRandAstralWepAt(position, wepTier, factorMods)
 
     local tmpTrinketID = Isaac.GetTrinketIdByName(tmpTrinketName)
     if tmpTrinketID ~= -1 then
-        local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(position, 40)
-        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpTrinketID, tmpPos, Vector.Zero, nil)
+        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpTrinketID, position, velocity or Vector.Zero, nil)
     end
 end
 
@@ -247,9 +246,13 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
                 table.insert(tmpColors, PST:RGBColor(table.unpack(tmpModData.color)))
             end
         end
+        if scale then
+            wepSprite.Scale = Vector(scale, scale)
+        end
         wepSprite.Color = PST:mixColors(tmpColors[1], tmpColors[2])
         wepSprite:Render(Vector(x, y))
         wepSprite.Color = Color()
+        wepSprite.Scale = Vector(oldScaleX, oldScaleY)
     end
 end
 

@@ -36,6 +36,55 @@ function PST:prePickup(pickup, collider, low)
     local subtype = pickup.SubType
 
     if player ~= nil then
+        -- Sidereal Cache opening
+        local canOpenLock = player:GetNumKeys() > 0 or player:HasGoldenKey()
+        if variant == Isaac.GetEntityVariantByName("Sidereal Cache") and canOpenLock and pickup.SubType ~= 1 and
+        pickup:GetSprite():GetAnimation() == "Idle" then
+            local saveKey = false
+            local tmpMod = PST:getTreeSnapshotMod("sideCacheNoKey", 0)
+            saveKey = tmpMod > 0 and 100 * math.random() < tmpMod
+            if not saveKey and not player:HasGoldenKey() then
+                player:AddKeys(-1)
+            end
+            pickup:GetSprite():Play("Open", true)
+            pickup.SubType = 1
+            SFXManager():Play(Isaac.GetSoundIdByName("unlock cosmic"), 1, 2, false, 0.9 + 0.2 * math.random())
+
+            if PST:getTreeSnapshotMod("isExpedRun", false) then
+                local depth = PST:getTreeSnapshotMod("expedDepth", 1)
+                local obolsAmt = PST.obolEvents.siderealCache(depth)
+                PST:expedDropObolsAt(pickup.Position, obolsAmt)
+
+                -- Expedition objective: open any chest
+			    PST:expedAddProgInRun("chests", 1)
+            end
+
+            -- Chance for Sidereal Caches to drop 1-2 sacks
+            tmpMod = PST:getTreeSnapshotMod("sideCacheSacks", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local maxSacks = math.random(1, 2)
+                for _=1,maxSacks do
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_GRAB_BAG, 0, pickup.Position, RandomVector() * 3 * math.random(), nil)
+                end
+            end
+
+            -- Chance for Sidereal Caches to drop an additional cache, once per room
+            tmpMod = PST:getTreeSnapshotMod("sideCacheReplica", 0)
+            if tmpMod > 0 and not PST:getTreeSnapshotMod("sideCacheReplicaProc", false) and 100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, pickup.Position, Vector.Zero, nil)
+                PST:addModifiers({ sideCacheReplicaProc = true }, true)
+            end
+
+            -- Chance for Sidereal Caches to drop a random Astral Weapon - above 100% roll multiple times
+            tmpMod = PST:getTreeSnapshotMod("sideCacheAstralWep", 0)
+            while tmpMod > 0 do
+                if 100 * math.random() < tmpMod then
+                    PST:dropRandAstralWepAt(pickup.Position, PST:getTreeSnapshotMod("astralWepTierDrops", 1), true, RandomVector() * 3 * math.random())
+                end
+                tmpMod = tmpMod - 100
+            end
+        end
+
         -- Collectibles
         if variant == PickupVariant.PICKUP_COLLECTIBLE and not player:IsHoldingItem() then
             local removeOtherRoomItems = false
@@ -840,6 +889,21 @@ function PST:onPickupInit(pickup, firstSpawn)
             end
             pickupGone = true
         end
+    end
+
+    -- Sidereal Cache spawn SFX
+    if variant == Isaac.GetEntityVariantByName("Sidereal Cache") and pickup:GetSprite():GetAnimation() == "Appear" then
+        SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
+    end
+
+    -- Chance to replace regular chest with Sidereal Cache, up to twice per room
+    local tmpMod = PST:getTreeSnapshotMod("sideCacheRegChest", 0) + PST:getTreeSnapshotMod("sideCacheFloorChanceTotal", 0)
+    if tmpMod > 0 and variant == PickupVariant.PICKUP_CHEST and subtype == ChestSubType.CHEST_CLOSED and firstSpawn and
+    PST:getTreeSnapshotMod("sideCacheRegChestProcs", 0) < 2 and 100 * math.random() < tmpMod then
+        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+        pickup:Morph(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0)
+        SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
+        PST:addModifiers({ sideCacheRegChest = 1 }, true)
     end
 
     -- Trinkets

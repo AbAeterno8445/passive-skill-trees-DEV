@@ -1443,6 +1443,19 @@ function PST:resetMods()
 		expedSelNodeRow = -1,
 		expedSelNodeObjName = "",
 
+		-- Sidereal Caches
+		sideCacheChallenge = 0,
+		sideCacheBoss = 0,
+		sideCacheRegChest = 0,
+		sideCacheRegChestProcs = 0,
+		sideCacheFloorChance = 0,
+		sideCacheFloorChanceTotal = 0,
+		sideCacheNoKey = 0,
+		sideCacheReplica = 0,
+		sideCacheReplicaProc = false,
+		sideCacheSacks = 0,
+		sideCacheAstralWep = 0,
+
 		-- Astral weapon helpers/effects
 		astralWepTierDrops = 1,
 

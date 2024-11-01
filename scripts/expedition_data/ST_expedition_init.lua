@@ -6,7 +6,7 @@ PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500, 1000}
 
 PST.siderealVicinityCost = 5
 PST.siderealRegionCost = 50
-PST.siderealExpanseCost = 100
+PST.siderealExpanseCost = 200
 
 ---@enum PSTExpNodeRewardType
 PSTExpNodeRewardType = {
@@ -901,6 +901,12 @@ PST.obolEvents = {
             return amt
         end
         return 0
+    end,
+    -- Sidereal Cache obols
+    siderealCache = function(depth)
+        local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
+        local amt = math.ceil((4 + math.random(0, 3) + depth * (1 + 0.25 * math.random())) * (1 + abundantObols / 100))
+        return amt
     end,
     -- On boss rush clear
     bossRush = function(depth)

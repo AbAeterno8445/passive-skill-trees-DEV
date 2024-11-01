@@ -729,6 +729,12 @@ function PST:onNewLevel()
         player:AddCoins(-tmpMod)
     end
 
+    -- Sidereal Cache floor chance boost
+    tmpMod = PST:getTreeSnapshotMod("sideCacheFloorChance", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ sideCacheFloorChanceTotal = tmpMod }, true)
+    end
+
     PST:save()
 end
 

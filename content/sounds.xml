@@ -2,4 +2,8 @@
 	<sound name="siren note">
 		<sample weight="1" path="Player/siren note.wav"/>
 	</sound>
+
+	<sound name="unlock cosmic">
+		<sample weight="1" path="feedback/unlock cosmic.wav"/>
+	</sound>
 </sounds>
