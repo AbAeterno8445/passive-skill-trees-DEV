@@ -21,6 +21,8 @@ PSTAstralWepRarity = {
     ANCIENT = 2
 }
 
+PST.astralWepBossBaseRate = 15
+
 ---@class PSTAstralWepModEntry
 ---@field name string
 ---@field rolls table

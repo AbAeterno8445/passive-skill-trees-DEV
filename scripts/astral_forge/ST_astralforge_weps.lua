@@ -21,11 +21,15 @@ function PST:astralWepPickRandType(factorMods)
     for _, tmpType in pairs(PSTAstralWepType) do
         typeWeights[tmpType] = 100
         if factorMods then
+            -- Mod: Specific weapon type chances
             local tmpMod = PST:getTreeSnapshotMod("astralWepRate" .. PST.astralWepData[tmpType].name, 0)
-            typeWeights[tmpType] = typeWeights[tmpType] + tmpMod
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                return tmpType
+            end
         end
         totalWeight = totalWeight + typeWeights[tmpType]
     end
+    PST:shuffleList(typeWeights)
 
     local randWeight = math.random(totalWeight)
     for tmpType, typeWeight in pairs(typeWeights) do
@@ -144,7 +148,7 @@ function PST:generateAstralWep(wepTier, factorMods)
     local wepRarity = PSTAstralWepRarity.NORMAL
 
     -- Roll for ancient/magic weapon
-    local magicChance = 0.12
+    local magicChance = 0.2
     local ancientChance = 0.01
     if factorMods then
         magicChance = magicChance + PST:getTreeSnapshotMod("astralWepMagicRate", 0) / 100

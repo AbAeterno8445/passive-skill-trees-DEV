@@ -28,8 +28,10 @@ function PST.treeScreen:Inputs()
             menuScreensModule:CloseMenu()
         elseif self.currentTree == "sidereal" then
             self.currentTree = "starTree"
+            self:CenterCamera()
         elseif self.currentTree == "starTree" then
             self.currentTree = "global"
+            self:CenterCamera()
         else
             PST:closeTreeMenu()
         end

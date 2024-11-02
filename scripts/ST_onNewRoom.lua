@@ -1255,6 +1255,11 @@ function PST:onNewRoom()
 		PST:addModifiers({ sideCacheReplicaProc = false }, true)
 	end
 
+	-- Astral Weapons: boss room drops (reset)
+	if PST:getTreeSnapshotMod("astralWepBossRoomDrops", 0) > 0 then
+		PST:addModifiers({ astralWepBossRoomDrops = { value = 0, set = true } }, true)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

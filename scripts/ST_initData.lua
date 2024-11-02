@@ -1459,6 +1459,9 @@ function PST:resetMods()
 		-- Astral weapon helpers/effects
 		astralWepTierDrops = 1,
 
+		astralWepBossRate = 0,
+		astralWepBossRoomDrops = 0,
+
 		astralwep_estocImpBonus = 0,
 		astralwep_quickbladeImpStacks = nil,
 		astralwep_tridentImpBonus = 0,

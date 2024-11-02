@@ -160,6 +160,16 @@ function PST:onDeath(entity)
                         end
                     end
                 end
+
+                -- Chance for bosses to drop Astral Weapons on death, up to 4 per room
+                local tmpMod = PST:getTreeSnapshotMod("astralWepBossRate", 0) + PST.astralWepBossBaseRate
+                while tmpMod > 0 and PST:getTreeSnapshotMod("astralWepBossRoomDrops", 0) < 4 do
+                    if 100 * math.random() < tmpMod then
+                        PST:dropRandAstralWepAt(entity.Position, PST:getTreeSnapshotMod("astralWepTierDrops", 1), true, RandomVector() * 3 * math.random())
+                        PST:addModifiers({ astralWepBossRoomDrops = 1 }, true)
+                    end
+                    tmpMod = tmpMod - 100
+                end
             end
 
             -- Chance for champions to drop a random starcursed jewel
