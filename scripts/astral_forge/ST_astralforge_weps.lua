@@ -164,6 +164,8 @@ function PST:generateAstralWep(wepTier, factorMods)
 end
 
 function PST:dropRandAstralWepAt(position, wepTier, factorMods, velocity)
+    if not PST.config.astralWepDrops then return end
+
     local newWep = PST:generateAstralWep(wepTier, factorMods)
     local wepData = PST.astralWepData[newWep.type]
 

@@ -32,6 +32,9 @@ PST.config = {
     -- Expedition progress text thresholds
     expedProgTextThreshold = 4,
 
+    -- Toggle Astral Weapon drops
+    astralWepDrops = true,
+
     -- Tainted Siren: use a singing sound for Manifest Melody instead of the default sound
     tSirenSing = false,
 
@@ -451,6 +454,27 @@ function PST:initModConfigMenu()
                 print(PST.config.expedProgTextThreshold)
             end,
             Info = {"Expedition objective progress threshold to display floating text", "e.g. at 25%, show a floating text every 25% of progress made"}
+        }
+    )
+
+    -- Astral weapons drop toggle setting
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "astralWepDrops")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "astralWepDrops",
+            CurrentSetting = function()
+                return PST.config.astralWepDrops
+            end,
+            Display = function()
+                return "Disable Astral Weapon drops: " .. PST.config.astralWepDrops and "on" or "off"
+            end,
+            OnChange = function(b)
+                PST.config.astralWepDrops = b
+            end,
+            Info = {"Toggle Astral Weapons from dropping (expedition runs)"}
         }
     )
 
