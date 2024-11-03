@@ -218,6 +218,20 @@ function PST:astralWepTrinketPickup(trinketName)
 
     if wepType then
         local newWep = PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
+
+        -- Mod: pre-honed astral weapon drops
+        if Isaac.IsInGame() then
+            local tmpMod = PST:getTreeSnapshotMod("preHonedWeps", 0)
+            if tmpMod > 0 then
+                for _=1,tmpMod do
+                    if math.random() < 0.1 then
+                        local res = PST:astralWepForgeHone(newWep)
+                        if not res then break end
+                    end
+                end
+            end
+        end
+
         table.insert(PST.modData.astralWepInventory, newWep)
     end
 end

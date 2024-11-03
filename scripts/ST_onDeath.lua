@@ -106,9 +106,13 @@ function PST:onDeath(entity)
         if PST:isRunSidereal() then
             -- Final boss kill
             if isFinalBoss then
+                local tmpAmt = 1
+                if 100 * math.random() < PST:getTreeSnapshotMod("bossExtraAncientStardust", 0) then
+                    tmpAmt = tmpAmt + 1
+                end
                 -- Ancient Stardust
-                PST.modData.ancientStardust = PST.modData.ancientStardust + 1
-                PST:createFloatTextFX("+1 Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
+                PST.modData.ancientStardust = PST.modData.ancientStardust + tmpAmt
+                PST:createFloatTextFX("+" .. tostring(tmpAmt) .. " Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
                 SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.25, 2, false, 1.5)
             end
         end
@@ -156,7 +160,7 @@ function PST:onDeath(entity)
                         if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
 
                         -- Chance for Sparkling Stardust
-                        local sparkStardustChance = 30 + PST:getLevel():GetStage() * 3
+                        local sparkStardustChance = 30 + PST:getLevel():GetStage() * 3 + PST:getTreeSnapshotMod("bossSparkStardust", 0)
                         if 100 * math.random() < sparkStardustChance then
                             PST.modData.sparkStardust = PST.modData.sparkStardust + 1
                             PST:createFloatTextFX("+1 Sparkling Stardust", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.13, 120, true)

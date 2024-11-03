@@ -5,7 +5,7 @@ PST.isNewVersion = false -- Gets set to true when the mod updates, then remains 
 PST.modData = {}
 PST.saveSlot = 1
 PST.selectedMenuChar = -1
-PST.startXPRequired = 34
+PST.startXPRequired = 42
 PST.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
@@ -1465,6 +1465,9 @@ function PST:resetMods()
 
 		astralWepBossRate = 0,
 		astralWepBossRoomDrops = 0,
+		bossSparkStardust = 0,
+		bossExtraAncientStardust = 0,
+		preHonedWeps = 0,
 
 		astralwep_estocImpBonus = 0,
 		astralwep_quickbladeImpStacks = nil,
