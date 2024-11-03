@@ -146,13 +146,11 @@ function PST:onDeath(entity)
                     -- Proc up to 5 times within this room
                     if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
                         -- Obols on boss kill
-                        if PST:getTreeSnapshotMod("isExpedRun", false) then
-                            local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
-                            if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
-                        end
+                        local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
+                        if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
 
                         -- Chance for Sparkling Stardust
-                        local sparkStardustChance = 0.3 + PST:getLevel():GetStage() * 0.03
+                        local sparkStardustChance = 30 + PST:getLevel():GetStage() * 3
                         if 100 * math.random() < sparkStardustChance then
                             PST.modData.sparkStardust = PST.modData.sparkStardust + 1
                             PST:createFloatTextFX("+1 Sparkling Stardust", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.13, 120, true)
