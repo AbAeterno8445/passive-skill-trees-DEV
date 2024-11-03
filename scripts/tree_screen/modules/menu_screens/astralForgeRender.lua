@@ -184,6 +184,40 @@ local function astralForgeScreenRender(self, tScreen)
         matsY = matsY + 17
     end
 
+    -- Equipped weapon UI box
+    local eqWepX = startX + 176
+    local eqWepY = startY - 60
+    self:DrawUIBox(eqWepX, eqWepY, 170, 54)
+    tmpTitle = "Equipped Weapon (" .. PST:getCurrentCharName() .. ")"
+    PST.miniFont:DrawString(tmpTitle, eqWepX + 3, eqWepY, PST.kcolors.FORGE_ORANGE)
+
+    eqWepX = eqWepX + 19
+    eqWepY = eqWepY + 33
+    self.forgeUISprite:SetFrame("UI", 0)
+    self.forgeUISprite.Color.RO = 0.25
+    self.forgeUISprite.Color.BO = 0.25
+    self.forgeUISprite:Render(Vector(eqWepX, eqWepY))
+    self.forgeUISprite.Color.RO = 0
+    self.forgeUISprite.Color.BO = 0
+
+    local eqWeapon = PST:getEquippedAstralWep()
+    if eqWeapon then
+        PST:renderAstralWepAt(eqWeapon, self.weaponSprite, eqWepX, eqWepY)
+
+        if self.camCenterX >= eqWepX - 14 and self.camCenterX <= eqWepX + 14 and
+        self.camCenterY >= eqWepY - 14 and self.camCenterY <= eqWepY + 14 then
+            self.hoveredWeapon = eqWeapon
+        end
+
+        eqWepX = eqWepX + 18
+        eqWepY = eqWepY - 18
+        PST.luaminiFont:DrawString("Hover for more info.", eqWepX, eqWepY, PST.kcolors.WHITE)
+        eqWepY = eqWepY + 10
+        PST.luaminiFont:DrawString("Allocate to select.", eqWepX, eqWepY, PST.kcolors.WHITE)
+        eqWepY = eqWepY + 10
+        PST.luaminiFont:DrawString("Shift + Allocate to unequip.", eqWepX, eqWepY, PST.kcolors.WHITE)
+    end
+
     -- Inventory filter buttons
     for i, tmpFilter in ipairs(invFilters) do
         local filterX = tmpX + 3 + 18 * ((i - 1) % 9)
