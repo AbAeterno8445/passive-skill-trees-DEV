@@ -162,13 +162,27 @@ function PST:onDeath(entity)
                 end
 
                 -- Chance for bosses to drop Astral Weapons on death, up to 4 per room
-                local tmpMod = PST:getTreeSnapshotMod("astralWepBossRate", 0) + PST.astralWepBossBaseRate
+                local tmpMod = PST:getTreeSnapshotMod("astralWepBossRate", 0) + PST.astralWepBossBaseRate * math.min(1, PST:getLevel():GetStage() / 8)
+                -- Reduce chance for multi-segment bosses
+                if PST:arrHasValue(PST.segmentBosses, entity.Type) then
+                    tmpMod = tmpMod / 4
+                end
+                -- Reduce chance for deadly sin minibosses
+                if PST:arrHasValue(PST.deadlySinBosses, entity.Type) then
+                    tmpMod = tmpMod / 4
+                end
                 while tmpMod > 0 and PST:getTreeSnapshotMod("astralWepBossRoomDrops", 0) < 4 do
                     if 100 * math.random() < tmpMod then
                         PST:dropRandAstralWepAt(entity.Position, PST:getTreeSnapshotMod("astralWepTierDrops", 1), true, RandomVector() * 3 * math.random())
                         PST:addModifiers({ astralWepBossRoomDrops = 1 }, true)
                     end
                     tmpMod = tmpMod - 100
+                end
+
+                -- Ancient weapon mod: Beastbane
+                tmpMod = PST:getSnapAstralWepMod("beastbane")
+                if tmpMod and PST:getTreeSnapshotMod("ancwep_beastbaneFloors", 0) == 0 then
+                    PST:addModifiers({ damagePerc = tmpMod[2], ancwep_beastbaneFloors = 2 }, true)
                 end
             end
 
@@ -178,6 +192,7 @@ function PST:onDeath(entity)
                 PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill(levelStage).ancient)
             end
         end
+
         -- Starcursed mod: spawn X static hovering tears for Y seconds on death
         local tmpMod = PST:SC_getSnapshotMod("hoveringTearsOnDeath", {0, 0})
         if tmpMod[1] > 0 and tmpMod[2] > 0 then
@@ -469,6 +484,34 @@ function PST:onDeath(entity)
 
             if luckBonus > 0 then
                 PST:addModifiers({ luck = luckBonus }, true)
+            end
+        end
+
+        -- Killed bleeding enemy
+        if entity:GetBleedingCountdown() > 0 then
+            -- Ancient weapon mod: Redbeak
+            tmpMod = PST:getSnapAstralWepMod("redbeak")
+            if tmpMod and PST:getPlayer():GetHearts() > 0 and PST:getPlayer():GetHearts() / PST:getPlayer():GetEffectiveMaxHearts() <= 0.5 and
+            100 * math.random() < tmpMod[3] then
+                local tmpHeart = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF, entity.Position, RandomVector() * 3, nil)
+                tmpHeart:ToPickup().Timeout = 60
+            end
+        end
+
+        -- Killed paralyzed enemy
+        if entity:GetFreezeCountdown() > 0 then
+            -- Ancient weapon mod: Viper Stinger
+            tmpMod = PST:getSnapAstralWepMod("viperStinger")
+            if tmpMod then
+                PST:createAnimFXAt("gfx/1000.034_fart.anm2", "Explode", entity.Position)
+                SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.6, 2, false, 1.5)
+
+                local tmpDmg = PST:getPlayer().Damage * (tmpMod[2] / 100)
+                local nearbyEnem = Isaac.FindInRadius(entity.Position, 100, EntityPartition.ENEMY)
+                for _, tmpEnemy in ipairs(nearbyEnem) do
+                    tmpEnemy:TakeDamage(tmpDmg, 0, EntityRef(PST:getPlayer()), 0)
+                    tmpEnemy:AddPoison(EntityRef(PST:getPlayer()), 120, PST:getPlayer().Damage)
+                end
             end
         end
 

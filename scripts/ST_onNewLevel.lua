@@ -735,6 +735,43 @@ function PST:onNewLevel()
         PST:addModifiers({ sideCacheFloorChanceTotal = tmpMod }, true)
     end
 
+    -- Ancient weapon mod: Auric Persecutor
+    tmpMod = PST:getTreeSnapshotMod("ancwep_auricPersecutorBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod, ancwep_auricPersecutorBuff = { value = 0, set = true } }, true)
+    end
+
+    -- Ancient weapon mod: The Scrambler
+    tmpMod = PST:getSnapAstralWepMod("scrambler")
+    if tmpMod then
+        PST:addModifiers({ ancwep_scramblerChance = 1 }, true)
+    end
+
+    -- Ancient weapon mod: Crimson Altruist
+    tmpMod = PST:getTreeSnapshotMod("ancwep_altruistDmg", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod / 2, ancwep_altruistDmg = -tmpMod / 2 }, true)
+    end
+    tmpMod = PST:getTreeSnapshotMod("ancwep_altruistTears", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ tears = -tmpMod / 2, ancwep_altruistTears = -tmpMod / 2 }, true)
+    end
+
+    -- Ancient weapon mod: Beastbane
+    if PST:getTreeSnapshotMod("ancwep_beastbaneFloors", 0) > 0 then
+        PST:addModifiers({ ancwep_beastbaneFloors = -1 }, true)
+    end
+
+    -- Ancient weapon mod: Tale Ender
+    if PST:getTreeSnapshotMod("ancwep_taleEnderProcs", 0) > 0 then
+        PST:addModifiers({ ancwep_taleEnderProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Ancient weapon mod: Berserker's Wrath
+    if PST:getTreeSnapshotMod("ancwep_berserkerWrathProc", false) then
+        PST:addModifiers({ ancwep_berserkerWrathProc = false }, true)
+    end
+
     PST:save()
 end
 

@@ -143,6 +143,12 @@ function PST:onUpdate()
 			PST:addModifiers({ allstatsPerc = -tmpDebuff, SC_crimsonWarpDebuff = tmpDebuff }, true)
 		end
 
+		-- Expedition run first popup
+		if PST:isFirstOrigStage() and PST:getTreeSnapshotMod("isExpedRun", false) then
+			local depth = PST:getTreeSnapshotMod("expedDepth", 1)
+			PST:createFloatTextFX("Beginning Expedition Run: Depth " .. tostring(depth), player.Position - Vector(0, 10), Color(0, 0.57, 1, 1), 0.13, 300, false)
+		end
+
 		-- Mod: chance to reveal the arcade room's location if it is present
 		local tmpMod = PST:getTreeSnapshotMod("arcadeReveal", 0)
 		if tmpMod > 0 and 100 * math.random() < tmpMod then
@@ -1296,6 +1302,10 @@ function PST:onUpdate()
 				end
 			end
 		end
+		-- Ancient weapon mod: Auric persecutor
+		if PST:getSnapAstralWepMod("auricPersecutor") then
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+		end
 		updateTrackers.coinTracker = player:GetNumCoins()
 	end
 
@@ -2440,6 +2450,20 @@ function PST:onUpdate()
 		PST.specialNodes.astralwep_activeDmgTimer = PST.specialNodes.astralwep_activeDmgTimer - 1
 	end
 
+	-- Ancient weapon mod: Grey Wind
+	if PST.specialNodes.ancwep_greyWindCD > 0 then
+		PST.specialNodes.ancwep_greyWindCD = PST.specialNodes.ancwep_greyWindCD - 1
+	end
+
+	-- Ancient weapon mod: Maxwell's Thermic Engine
+	if PST.specialNodes.ancwep_maxwellBuffTimer > 0 then
+		PST.specialNodes.ancwep_maxwellBuffTimer = PST.specialNodes.ancwep_maxwellBuffTimer - 1
+		if PST.specialNodes.ancwep_maxwellBuffTimer == 0 then
+			PST.specialNodes.ancwep_maxwellBuff = 0
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
 	-- Consecutive firing timer
 	local plInput = player:GetShootingInput()
 	local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
@@ -2447,6 +2471,187 @@ function PST:onUpdate()
 		PST.specialNodes.consecutiveFire = PST.specialNodes.consecutiveFire + 1
 	else
 		PST.specialNodes.consecutiveFire = 0
+	end
+
+	-- Ancient weapon mod: Arcing Needle
+	tmpMod = PST:getSnapAstralWepMod("arcingNeedle")
+	if tmpMod and PST.specialNodes.consecutiveFire > 0 and (PST.specialNodes.consecutiveFire % 15) == 0 and not player:HasCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER) and
+	PST.specialNodes.ancwep_arcingNeedleTimer == 0 then
+		if 100 * math.random() < tmpMod[1] + math.floor(PST.specialNodes.consecutiveFire / 15)  then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER)
+			PST:addModifiers({ ancwep_arcingNeedleProc = true }, true)
+			PST.specialNodes.ancwep_arcingNeedleTimer = math.ceil(tmpMod[2] * 30)
+		end
+	elseif PST:getTreeSnapshotMod("ancwep_arcingNeedleProc", false) then
+		if PST.specialNodes.ancwep_arcingNeedleTimer > 0 then
+			PST.specialNodes.ancwep_arcingNeedleTimer = PST.specialNodes.ancwep_arcingNeedleTimer - 1
+		else
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER, -1)
+			if not player:HasCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER) then
+				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER))
+			end
+			PST:addModifiers({ ancwep_arcingNeedleProc = false }, true)
+		end
+	end
+
+	-- Ancient weapon mod: Nimble Twins
+	if PST.specialNodes.ancwep_nimbleTwinsCD > 0 then
+		PST.specialNodes.ancwep_nimbleTwinsCD = PST.specialNodes.ancwep_nimbleTwinsCD - 1
+	end
+	if PST.specialNodes.ancwep_nimbleBlueTimer > 0 then
+		PST.specialNodes.ancwep_nimbleBlueTimer = PST.specialNodes.ancwep_nimbleBlueTimer - 1
+		if PST.specialNodes.ancwep_nimbleBlueTimer == 0 then
+			PST.specialNodes.ancwep_nimbleBlueBuff = 0
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+	if PST.specialNodes.ancwep_nimbleRedTimer > 0 then
+		PST.specialNodes.ancwep_nimbleRedTimer = PST.specialNodes.ancwep_nimbleRedTimer - 1
+		if PST.specialNodes.ancwep_nimbleRedTimer == 0 then
+			PST.specialNodes.ancwep_nimbleRedBuff = 0
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
+	-- Ancient weapon mod: Gravitas
+	if PST.specialNodes.ancwep_gravitasCD > 0 then
+		PST.specialNodes.ancwep_gravitasCD = PST.specialNodes.ancwep_gravitasCD - 1
+	end
+
+	-- Ancient weapon mod: Lost Coral Trident
+	if PST:getSnapAstralWepMod("lostCoralTrident") and not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS)
+	end
+
+	-- Ancient weapon mod: Verdant Green
+	if PST.specialNodes.ancwep_verdantCD > 0 then
+		PST.specialNodes.ancwep_verdantCD = PST.specialNodes.ancwep_verdantCD - 1
+	end
+
+	-- Ancient weapon mod: Oceanic Might
+	if PST:getSnapAstralWepMod("oceanicMight") and not player:HasCollectible(CollectibleType.COLLECTIBLE_AQUARIUS) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS)
+	end
+	if PST.specialNodes.ancwep_oceanicMightCD > 0 then
+		PST.specialNodes.ancwep_oceanicMightCD = PST.specialNodes.ancwep_oceanicMightCD - 1
+	end
+
+	-- Ancient weapon mod: Ancient Runic Chopper
+	if PST.specialNodes.ancwep_runicChopperTimer > 0 then
+		PST.specialNodes.ancwep_runicChopperTimer = PST.specialNodes.ancwep_runicChopperTimer - 1
+		if PST.specialNodes.ancwep_runicChopperTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+
+	-- Ancient weapon mod: Frozen Terror
+	if PST.specialNodes.ancwep_frozenTerrorCD > 0 then
+		PST.specialNodes.ancwep_frozenTerrorCD = PST.specialNodes.ancwep_frozenTerrorCD - 1
+	end
+
+	-- Ancient weapon mod: Storm's Advance
+	if PST:getSnapAstralWepMod("stormAdvance") and not player:HasCollectible(CollectibleType.COLLECTIBLE_120_VOLT) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT)
+	end
+	if PST.specialNodes.ancwep_stormAdvanceCD > 0 then
+		PST.specialNodes.ancwep_stormAdvanceCD = PST.specialNodes.ancwep_stormAdvanceCD - 1
+	end
+
+	-- Ancient weapon mod: Quill Rain
+	if PST:getSnapAstralWepMod("quillRain") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
+	end
+
+	-- Ancient weapon mod: Gilded Seeker
+	if PST:getSnapAstralWepMod("gildedSeeker") and not player:HasCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
+	end
+
+	-- Ancient weapon mod: Twisted Oakstring
+	if PST.specialNodes.ancwep_oakstringCD > 0 then
+		PST.specialNodes.ancwep_oakstringCD = PST.specialNodes.ancwep_oakstringCD - 1
+	end
+
+	-- Ancient weapon mod: Brute's Onslaught
+	if PST.specialNodes.ancwep_bruteOnslaughtBuffTimer > 0 then
+		PST.specialNodes.ancwep_bruteOnslaughtBuffTimer = PST.specialNodes.ancwep_bruteOnslaughtBuffTimer - 1
+		if PST.specialNodes.ancwep_bruteOnslaughtBuffTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+
+	-- Ancient weapon mod: Volatile Arbalest
+	if PST.specialNodes.ancwep_volatileArbalestCD > 0 then
+		PST.specialNodes.ancwep_volatileArbalestCD = PST.specialNodes.ancwep_volatileArbalestCD - 1
+	end
+
+	-- Ancient weapon mod: Avelyn
+	tmpMod = PST:getSnapAstralWepMod("avelyn")
+	if tmpMod and PST.specialNodes.consecutiveFire > 0 and (PST.specialNodes.consecutiveFire % math.floor(tmpMod[1] * 30)) == 0 then
+		local nearbyEnem = Isaac.FindInRadius(player.Position, 300, EntityPartition.ENEMY)
+		if #nearbyEnem > 0 then
+			local dist = 9999
+			local closest = nil
+			for _, tmpEnemy in ipairs(nearbyEnem) do
+				if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+					local tmpDist = player.Position:Distance(tmpEnemy.Position)
+					if tmpDist < dist then
+						closest = tmpEnemy
+						dist = tmpDist
+					end
+				end
+			end
+			if closest then
+				for i=0,2 do
+					local tmpVel = (closest.Position - PST:getPlayer().Position):Normalized() * (8 + i * 3)
+					local tmpTear = player:FireTear(player.Position, tmpVel, false, true, false, player)
+                    tmpTear:ToTear().Height = PST:getPlayer().TearHeight
+                    tmpTear:ToTear().FallingSpeed = 0.5 + i * 0.2
+                    tmpTear.CollisionDamage = PST:getPlayer().Damage * (tmpMod[2] / 100)
+				end
+				SFXManager():Play(SoundEffect.SOUND_STATIC, 0.6, 2, false, 2)
+			end
+		end
+	end
+
+	-- Ancient weapon mod: Precise Seeker
+	if (Game():GetFrameCount() % 30) == 0 and PST:getSnapAstralWepMod("preciseSeeker") and room:GetAliveEnemiesCount() > 0 and
+	not PST.specialNodes.ancwep_preciseSeekerMarked then
+		local validEnemies = {}
+		local validBosses = {}
+		for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+			local tmpNPC = tmpEntity:ToNPC()
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+				if tmpNPC:IsBoss() then
+					table.insert(validBosses, tmpNPC)
+				else
+					table.insert(validEnemies, tmpNPC)
+				end
+			end
+		end
+		if #validBosses > 0 then
+			PST.specialNodes.ancwep_preciseSeekerMarked = validBosses[math.random(#validBosses)]
+		elseif #validEnemies > 0 then
+			PST.specialNodes.ancwep_preciseSeekerMarked = validEnemies[math.random(#validEnemies)]
+		end
+	end
+	local tmpMarked = PST.specialNodes.ancwep_preciseSeekerMarked
+	if tmpMarked then
+		tmpMod = PST:getSnapAstralWepMod("preciseSeeker")
+		if tmpMod and tmpMarked:Exists() then
+			PST.specialNodes.ancwep_preciseSeekerTimer = PST.specialNodes.ancwep_preciseSeekerTimer + 1
+			if PST.specialNodes.ancwep_preciseSeekerTimer >= math.ceil(tmpMod[1] * 30) then
+				local tmpVel = (tmpMarked.Position - PST:getPlayer().Position):Normalized() * 15
+				local tmpTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLOOD, 0, player.Position, tmpVel, player)
+				tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL)
+				tmpTear:ToTear().Height = PST:getPlayer().TearHeight
+				tmpTear:ToTear().FallingSpeed = 0.05
+				tmpTear.CollisionDamage = math.min(60, PST:getPlayer().Damage * (tmpMod[2] / 100))
+				PST.specialNodes.ancwep_preciseSeekerTimer = 0
+			end
+		elseif not tmpMarked:Exists() then
+			PST.specialNodes.ancwep_preciseSeekerMarked = nil
+		end
 	end
 
 	-- Room clear update check

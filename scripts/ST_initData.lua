@@ -191,6 +191,9 @@ PST.deadlySinBosses = {
 	EntityType.ENTITY_PRIDE, EntityType.ENTITY_LUST, EntityType.ENTITY_GREED,
 	EntityType.ENTITY_SLOTH
 }
+PST.segmentBosses = {
+	EntityType.ENTITY_ENVY, EntityType.ENTITY_LARRYJR, EntityType.ENTITY_PIN
+}
 PST.bookItems = {
 	CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK, CollectibleType.COLLECTIBLE_BIBLE,
 	CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL, CollectibleType.COLLECTIBLE_BOOK_OF_REVELATIONS,
@@ -277,7 +280,8 @@ PST.blueGambitCards = {
 }
 PST.playerDamagingCreep = {
 	EffectVariant.PLAYER_CREEP_GREEN, EffectVariant.PLAYER_CREEP_HOLYWATER, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL,
-	EffectVariant.PLAYER_CREEP_LEMON_MISHAP, EffectVariant.PLAYER_CREEP_LEMON_PARTY, EffectVariant.PLAYER_CREEP_RED
+	EffectVariant.PLAYER_CREEP_LEMON_MISHAP, EffectVariant.PLAYER_CREEP_LEMON_PARTY, EffectVariant.PLAYER_CREEP_RED,
+	33 -- Aquarius creep
 }
 PST.allCreep = {
 	EffectVariant.CREEP_BLACK, EffectVariant.CREEP_BROWN, EffectVariant.CREEP_GREEN, EffectVariant.CREEP_LIQUID_POOP, EffectVariant.CREEP_RED,
@@ -1466,6 +1470,23 @@ function PST:resetMods()
 		astralwep_quickbladeImpStacks = nil,
 		astralwep_tridentImpBonus = 0,
 		astralwep_coinPermDmgBuff = 0,
+
+		ancwep_swordOfSongBuff = 0,
+		ancwep_arcingNeedleProc = false,
+		ancwep_auricPersecutorBuff = 0,
+		ancwep_scramblerChance = 0,
+		ancwep_altruistDmg = 0,
+		ancwep_altruistTears = 0,
+		ancwep_altruistUses = 0,
+		ancwep_beastbaneFloors = 0,
+		ancwep_gravitasSpoon = false,
+		ancwep_consecratorDmg = 0,
+		ancwep_consecratorTears = 0,
+		ancwep_taleEnderProcs = 0,
+		ancwep_starsteelAxeBuff = 0,
+		ancwep_runicChopperBuff = 0,
+		ancwep_berserkerWrathProc = false,
+		ancwep_gildedSeekerBuff = 0,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
@@ -1579,6 +1600,32 @@ function PST:resetMods()
 		astralwep_famKillTimer = 0,
 		astralwep_activeDmgTimer = 0,
 
+		ancwep_greyWindCD = 0,
+		ancwep_maxwellBuff = 0,
+		ancwep_maxwellBuffTimer = 0,
+		ancwep_arcingNeedleTimer = 0,
+		ancwep_nimbleTwinsCD = 0,
+		ancwep_nimbleBlueBuff = 0,
+		ancwep_nimbleBlueTimer = 0,
+		ancwep_nimbleRedBuff = 0,
+		ancwep_nimbleRedTimer = 0,
+		ancwep_gravitasCD = 0,
+		ancwep_verdantCD = 0,
+		ancwep_oceanicMightCD = 0,
+		ancwep_taleEnderProc = false,
+		ancwep_runicChopperTimer = 0,
+		ancwep_frozenTerrorCD = 0,
+		ancwep_stormAdvanceHits = 0,
+		ancwep_stormAdvanceCD = 0,
+		ancwep_oakstringCD = 0,
+		ancwep_bruteOnslaughtHits = 0,
+		ancwep_bruteOnslaughtBuffTimer = 0,
+		ancwep_volatileArbalestCD = 0,
+		ancwep_preciseSeekerSprite = Sprite("gfx/precise_seeker_mark.anm2", true),
+		---@type Entity|nil
+		ancwep_preciseSeekerMarked = nil,
+		ancwep_preciseSeekerTimer = 0,
+
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,
 		SC_circadianExplImmune = 0,
@@ -1630,6 +1677,8 @@ function PST:resetMods()
 	PST.specialNodes.shadowmeldExplosionFX.sprite.Scale = Vector(0.8, 0.8)
 	PST.specialNodes.shadowmeldExplosionFX.sprite.Color = Color(0.1, 0.1, 0.1, 1)
 	PST.specialNodes.shadowmeldExplosionFX.sprite.PlaybackSpeed = 1.4
+
+	PST.specialNodes.ancwep_preciseSeekerSprite:Play("Default", true)
 
 	PST.specialFX.shadowmeldStartFX.Scale = Vector(0.8, 0.8)
 	PST.specialFX.shadowmeldStartFX.PlaybackSpeed = 0.8

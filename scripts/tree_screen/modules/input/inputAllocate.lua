@@ -19,7 +19,7 @@ function PST.treeScreen:InputAllocate()
             self.treeHasChanges = true
             if PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, true) then
                 if not PST.debugOptions.infSP then
-                    if self.currentTree == "global" or self.currentTree == "starTree" then
+                    if PST:arrHasValue(self.globalTrees, self.currentTree) then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
                     elseif PST.modData.charData[self.currentTree] then
                         PST.modData.charData[self.currentTree].skillPoints = PST.modData.charData[self.currentTree].skillPoints - 1

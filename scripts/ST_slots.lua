@@ -57,6 +57,20 @@ function PST:onSlotUpdate(slot)
                 local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, slot.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1)
                 tmpHeart:ToPickup().Timeout = 60 + math.floor(PST:getTreeSnapshotMod("temporaryHeartTime", 0) * 30)
             end
+
+            -- Ancient weapon mod: Crimson Altruist
+            tmpTreeMod = PST:getSnapAstralWepMod("crimsonAltruist")
+            if tmpTreeMod then
+                local tmpAdd = math.min(tmpTreeMod[1], 100 - PST:getTreeSnapshotMod("ancwep_altruistDmg", 0))
+                if tmpAdd > 0 then
+                    PST:addModifiers({ damagePerc = tmpAdd, ancwep_altruistDmg = tmpAdd }, true)
+                end
+
+                PST:addModifiers({ ancwep_altruistUses = 1 }, true)
+                if PST:getTreeSnapshotMod("ancwep_altruistUses", 0) >= tmpTreeMod[3] then
+                    PST:addModifiers({ tears = tmpTreeMod[2], ancwep_altruistUses = { value = 0, set = true } }, true)
+                end
+            end
         -- Crane game
         elseif slot.Variant == SlotVariant.CRANE_GAME and spentCoins then
             -- Impromptu Gambler node (Cain's tree)

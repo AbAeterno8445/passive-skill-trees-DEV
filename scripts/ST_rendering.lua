@@ -311,6 +311,18 @@ function PST:Render()
 	end
 
 	if not Game():IsPaused() then
+		-- Ancient weapon mod: Precise Seeker (marked enemy effect)
+		local tmpEnemy = PST.specialNodes.ancwep_preciseSeekerMarked
+		if tmpEnemy then
+			PST.specialNodes.ancwep_preciseSeekerSprite:Render(Isaac.WorldToScreen(tmpEnemy.Position))
+			if isEvenFrame then
+				PST.specialNodes.ancwep_preciseSeekerSprite:Update()
+				if PST.specialNodes.ancwep_preciseSeekerSprite:IsFinished() then
+					PST.specialNodes.ancwep_preciseSeekerSprite:Play("Default", true)
+				end
+			end
+		end
+
 		-- Manage floating texts
 		if floatTextDelay > 0 then
 			floatTextDelay = floatTextDelay - 1
@@ -406,14 +418,19 @@ function PST:Render()
 				local tmpFX = animFXList[i]
 				local worldPos = room:WorldToScreenPosition(tmpFX.pos)
 
-				if tmpFX.frameFuncs then
-					for frame, func in pairs(tmpFX.frameFuncs) do
-						if tmpFX.sprite:GetFrame() == frame then func() end
+				tmpFX.sprite:Render(worldPos)
+				-- Sprite update + associated frame funcs
+				if isEvenFrame then
+					tmpFX.sprite:Update()
+
+					if tmpFX.frameFuncs then
+						for frame, func in pairs(tmpFX.frameFuncs) do
+							if tmpFX.sprite:GetFrame() == frame then
+								func()
+							end
+						end
 					end
 				end
-
-				tmpFX.sprite:Render(worldPos)
-				if isEvenFrame then tmpFX.sprite:Update() end
 
 				if tmpFX.sprite:IsFinished() then
 					table.remove(animFXList, i)

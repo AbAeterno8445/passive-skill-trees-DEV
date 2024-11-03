@@ -14,7 +14,7 @@ function PST:postDamage(target, damage, flag, source)
             targetPlayer:SetMinDamageCooldown(math.ceil(targetPlayer:GetDamageCooldown() * 2.5))
         end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
-        local isKillingHit = target.HitPoints <= damage
+        local isKillingHit = target:HasMortalDamage()
 
         -- Starcursed modifiers
         if target:IsActiveEnemy(false) then
@@ -70,7 +70,7 @@ function PST:postDamage(target, damage, flag, source)
             end
         end
 
-        if source and source.Entity then
+        if source and source.Entity and target.Type ~= EntityType.ENTITY_FIREPLACE then
             local srcPlayer = source.Entity:ToPlayer()
 
             -- Check if a familiar hit/killed enemy
@@ -386,22 +386,409 @@ function PST:postDamage(target, damage, flag, source)
                 PST.specialNodes.gelloPulseDmgFlag = false
             end
 
-            -- Boon: chance on hit to execute enemies affected by any status effect, halve boss status effect CD
-            if (srcPlayer or tmpFamiliar) and not isKillingHit and target:IsActiveEnemy(false) then
-                if target:GetBossStatusEffectCooldown() > 0 then
-                    target:SetBossStatusEffectCooldown(math.floor(target:GetBossStatusEffectCooldown() / 2))
-                end
-                if target:GetBaitedCountdown() > 0 or target:GetBleedingCountdown() > 0 or target:GetBurnCountdown() > 0 or
-                target:GetCharmedCountdown() > 0 or target:GetSlowingCountdown() > 0 or target:GetFearCountdown() > 0 or
-                target:GetShrinkCountdown() > 0 or target:GetFreezeCountdown() > 0 or
-                (target:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
-                    local tmpMod = PST:getTreeSnapshotMod("boonMercyChance", 0)
-                    local hpPerc = target.HitPoints / target.MaxHitPoints
-                    if tmpMod > 0 and hpPerc <= PST:getTreeSnapshotMod("boonMercyHP", 0) / 100 and 100 * math.random() < tmpMod then
-                        SFXManager():Play(SoundEffect.SOUND_KNIFE_PULL, 0.8)
-                        target:TakeDamage(target.MaxHitPoints, 0, EntityRef(srcPlayer or tmpFamiliar), 0)
+            -- Player/Familiar hit
+            if srcPlayer or tmpFamiliar then
+                -- Boon: chance on hit to execute enemies affected by any status effect, halve boss status effect CD
+                if not isKillingHit and target:IsActiveEnemy(false) then
+                    if target:GetBossStatusEffectCooldown() > 0 then
+                        target:SetBossStatusEffectCooldown(math.floor(target:GetBossStatusEffectCooldown() / 2))
+                    end
+                    if target:GetBaitedCountdown() > 0 or target:GetBleedingCountdown() > 0 or target:GetBurnCountdown() > 0 or
+                    target:GetCharmedCountdown() > 0 or target:GetSlowingCountdown() > 0 or target:GetFearCountdown() > 0 or
+                    target:GetShrinkCountdown() > 0 or target:GetFreezeCountdown() > 0 or
+                    (target:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
+                        local tmpMod = PST:getTreeSnapshotMod("boonMercyChance", 0)
+                        local hpPerc = target.HitPoints / target.MaxHitPoints
+                        if tmpMod > 0 and hpPerc <= PST:getTreeSnapshotMod("boonMercyHP", 0) / 100 and 100 * math.random() < tmpMod then
+                            SFXManager():Play(SoundEffect.SOUND_KNIFE_PULL, 0.8)
+                            target:TakeDamage(target.MaxHitPoints, 0, EntityRef(srcPlayer or tmpFamiliar), 0)
+                        end
                     end
                 end
+
+                -- Ancient weapon mod: Grey Wind
+                tmpMod = PST:getSnapAstralWepMod("greyWind")
+                if tmpMod and PST.specialNodes.ancwep_greyWindCD == 0 and 100 * math.random() < tmpMod[1] then
+                    local nearbyEnem = Isaac.FindInRadius(target.Position, 100, EntityPartition.ENEMY)
+                    if #nearbyEnem > 0 then
+                        for _, tmpEnemy in ipairs(nearbyEnem) do
+                            if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                local function PST_tmpDmgTick(dmg)
+                                    return function()
+                                        local tmpDamage = dmg
+                                        if #nearbyEnem <= 3 then
+                                            tmpDamage = tmpDamage * 1.5
+                                            tmpEnemy:AddBleeding(EntityRef(srcPlayer or tmpFamiliar), 90)
+                                        end
+                                        tmpEnemy:TakeDamage(tmpDamage, 0, EntityRef(srcPlayer or tmpFamiliar), 0)
+                                    end
+                                end
+                                PST:createAnimFXAt("gfx/1000.176_cleaver slash.anm2", "Slash", tmpEnemy.Position - Vector(0, 12), {
+                                    [3] = PST_tmpDmgTick(damage * (tmpMod[2] / 100))
+                                })
+                            end
+                        end
+                        SFXManager():Play(SoundEffect.SOUND_KNIFE_PULL, 0.7, 5)
+                        if #nearbyEnem > 3 then
+                            PST.specialNodes.ancwep_greyWindCD = 60
+                        else
+                            PST.specialNodes.ancwep_greyWindCD = 150
+                        end
+                    end
+                end
+
+                -- Ancient weapon mod: Executioner
+                tmpMod = PST:getSnapAstralWepMod("executioner")
+                if tmpMod and not isKillingHit then
+                    local targetHP = (target.HitPoints - damage) / target.MaxHitPoints
+                    if targetHP <= tmpMod[3] / 100 and 100 * math.random() < tmpMod[2] then
+                        target:TakeDamage(target.MaxHitPoints, 0, EntityRef(srcPlayer or tmpFamiliar), 0)
+                        SFXManager():Play(SoundEffect.SOUND_KNIFE_PULL, 0.8, 2, false, 0.8)
+                    end
+                end
+
+                -- Ancient weapon mod: Sword of Song
+                tmpMod = PST:getSnapAstralWepMod("swordOfSong")
+                if tmpMod then
+                    -- Charming pulse
+                    if 100 * math.random() < tmpMod[1] then
+                        local pulseSprite = PST:createAnimFXAt("gfx/1000.164_siren ring.anm2", "Idle", target.Position)
+                        pulseSprite.Color = Color(1, 1, 1, 1, 0, 0, 0.5)
+                        pulseSprite.PlaybackSpeed = 1.5
+                        pulseSprite.Scale = Vector(0.8, 0.8)
+                        SFXManager():Play(SoundEffect.SOUND_ANGEL_BEAM, 0.5, 2, false, 1.5 + 0.2 * math.random())
+
+                        local nearbyEnem = Isaac.FindInRadius(target.Position, 120, EntityPartition.ENEMY)
+                        for _, tmpEnemy in ipairs(nearbyEnem) do
+                            if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                tmpEnemy:AddCharmed(EntityRef(srcPlayer or tmpFamiliar), 120)
+                            end
+                        end
+                    end
+                    -- Damage buff + Isaac Tears proc
+                    if (target:GetEntityFlags() & EntityFlag.FLAG_CHARM) > 0 and PST:getTreeSnapshotMod("ancwep_swordOfSongBuff", 0) < tmpMod[2] then
+                        PST:addModifiers({ ancwep_swordOfSongBuff = 1, damagePerc = 1 }, true)
+                        local tmpBuff = PST:getTreeSnapshotMod("ancwep_swordOfSongBuff", 0)
+                        if tmpBuff >= tmpMod[2] then
+                            local tmpPlayer = srcPlayer or PST:getPlayer()
+                            tmpPlayer:UseActiveItem(CollectibleType.COLLECTIBLE_ISAACS_TEARS, UseFlag.USE_NOANIM)
+                            PST:addModifiers({ damagePerc = -tmpBuff, ancwep_swordOfSongBuff = { value = 0, set = true } }, true)
+                        end
+                    end
+                end
+
+                -- Ancient weapon mod: Maxwell's Thermic Engine
+                tmpMod = PST:getSnapAstralWepMod("maxwellEngine")
+                if tmpMod then
+                    if PST.specialNodes.ancwep_maxwellBuff < tmpMod[1] then
+                        PST.specialNodes.ancwep_maxwellBuff = math.min(tmpMod[1], PST.specialNodes.ancwep_maxwellBuff + 0.5)
+                        if PST.specialNodes.ancwep_maxwellBuff >= tmpMod[1] then
+                            local tmpSprite = Sprite("gfx/ui/skilltrees/nodes/astral_weapons.anm2", true)
+                            tmpSprite:SetFrame("Ancients", 34)
+                            PST:createFloatIconFX(tmpSprite, Vector.Zero, 0.3, 80, true)
+                            SFXManager():Play(SoundEffect.SOUND_FIREDEATH_HISS, 0.6, 2, false, 1.3)
+                        end
+                        PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                    else
+                        if 100 * math.random() < tmpMod[2] then
+                            if math.random() < 0.5 and target:GetSlowingCountdown() == 0 then
+                                target:AddBurn(EntityRef(srcPlayer or tmpFamiliar), 90, damage)
+                            elseif target:GetBurnCountdown() == 0 then
+                                target:AddSlowing(EntityRef(srcPlayer or tmpFamiliar), 90, 0.8, Color(0.65, 0.65, 0.9, 1))
+                            end
+                        end
+                        if isKillingHit and 100 * math.random() < 15 then
+                            if target:GetSlowingCountdown() > 0 then
+                                target:AddIce(EntityRef(srcPlayer or tmpFamiliar), 90)
+                            elseif target:GetBurnCountdown() > 0 then
+                                Isaac.Explode(target.Position, PST:getPlayer(), 30)
+                            end
+                        end
+                    end
+                    PST.specialNodes.ancwep_maxwellBuffTimer = 90
+                end
+
+                -- Ancient weapon mod: Nimble Twins
+                tmpMod = PST:getSnapAstralWepMod("nimbleTwins")
+                if tmpMod and source.Entity and PST.specialNodes.ancwep_nimbleTwinsCD == 0 then
+                    local tearSrcPlayer = PST:getPlayer()
+                    -- Slow red tear
+                    local tmpVel = (target.Position - tearSrcPlayer.Position):Normalized() * 7
+                    local redTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLOOD, tearSrcPlayer.Position, tmpVel, source.Entity, 0, Random() + 1)
+					redTear:ToTear().Height = tearSrcPlayer.TearHeight
+					redTear:ToTear().FallingSpeed = -tearSrcPlayer.TearFallingSpeed * 2
+                    redTear.CollisionDamage = tearSrcPlayer.Damage * (tmpMod[2] / 100)
+                    redTear.Color = PST:RGBColor(225, 85, 85)
+                    redTear:GetData().PST_nimbleTwinsRed = true
+
+                    -- Fast blue tear
+                    tmpVel = (target.Position - tearSrcPlayer.Position):Normalized() * 15
+                    local blueTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, tearSrcPlayer.Position, tmpVel, source.Entity, 0, Random() + 1)
+					blueTear:ToTear().Height = tearSrcPlayer.TearHeight
+					blueTear:ToTear().FallingSpeed = -tearSrcPlayer.TearFallingSpeed * 2
+                    blueTear.CollisionDamage = tearSrcPlayer.Damage * (tmpMod[2] / 100)
+                    blueTear.Color = PST:RGBColor(85, 85, 255)
+                    blueTear:GetData().PST_nimbleTwinsBlue = true
+
+                    PST.specialNodes.ancwep_nimbleTwinsCD = 8
+                end
+
+                -- Ancient weapon mod: Gravitas
+                tmpMod = PST:getSnapAstralWepMod("gravitas")
+                if tmpMod and PST.specialNodes.ancwep_gravitasCD == 0 then
+                    local tearSrcPlayer = PST:getPlayer()
+                    local dist = tearSrcPlayer.Position:Distance(target.Position)
+                    if dist > PST:getTilesDist(2) and 100 * math.random() < tmpMod[1] then
+                        for i=1,3 do
+                            local tmpVel = (target.Position - tearSrcPlayer.Position):Normalized() * (6 + i * 2)
+                            local tmpTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, tearSrcPlayer.Position, tmpVel, source.Entity, 0, Random() + 1)
+                            tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING)
+                            tmpTear:ToTear().Height = tearSrcPlayer.TearHeight
+                            tmpTear:ToTear().FallingSpeed = -tearSrcPlayer.TearFallingSpeed * 2
+                            tmpTear.CollisionDamage = tearSrcPlayer.Damage * (tmpMod[2] / 100)
+                            tmpTear.Color = PST:RGBColor(165, 45, 220)
+                            tmpTear:GetData().PST_gravitasTear = true
+                        end
+                        PST.specialNodes.ancwep_gravitasCD = 15
+                    end
+                end
+
+                -- Ancient weapon mod: Boreal Frostspear
+                tmpMod = PST:getSnapAstralWepMod("borealSpear")
+                if tmpMod then
+                    if target:GetSlowingCountdown() > 0 and PST:getPlayer().Position:Distance(target.Position) >= PST:getTilesDist(tmpMod[2]) then
+                        if not target:GetData().PST_borealSpearHits then target:GetData().PST_borealSpearHits = 0 end
+                        target:GetData().PST_borealSpearHits = target:GetData().PST_borealSpearHits + 1
+                    end
+                    if 100 * math.random() < tmpMod[1] then
+                        target:AddSlowing(EntityRef(PST:getPlayer()), 90, 0.8, Color(0.6, 0.6, 0.9, 1))
+                    end
+                    if target:GetData().PST_borealSpearHits and 100 * math.random() < target:GetData().PST_borealSpearHits then
+                        target:AddIce(EntityRef(PST:getPlayer()), 90)
+                    end
+                end
+
+                -- Ancient weapon mod: Viper Stinger
+                tmpMod = PST:getSnapAstralWepMod("viperStinger")
+                if tmpMod then
+                    local tmpChance = tmpMod[1]
+                    local isPoisoned = (target:GetEntityFlags() & EntityFlag.FLAG_POISON) > 0
+                    if isPoisoned then tmpChance = tmpChance * 2 end
+                    if 100 * math.random() < tmpChance then
+                        local tmpDur = 60
+                        if isPoisoned then tmpDur = tmpDur * 2 end
+                        target:AddFreeze(EntityRef(PST:getPlayer()), tmpDur)
+                    end
+                end
+
+                -- Ancient weapon mod: Verdant Green
+                tmpMod = PST:getSnapAstralWepMod("verdantGreen")
+                if tmpMod and PST.specialNodes.ancwep_verdantCD == 0 and (flag & DamageFlag.DAMAGE_POISON_BURN) == 0 then
+                    local tmpChance = tmpMod[1] + math.min(5, 30 / PST:getPlayer().MaxFireDelay)
+                    if 100 * math.random() < tmpChance then
+                        local function PST_verdantGreenTick(pos, modRolls)
+                            return function()
+                                local nearbyEnem = Isaac.FindInRadius(pos, 100, EntityPartition.ENEMY)
+                                for _, tmpEnemy in ipairs(nearbyEnem) do
+                                    if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                        local dmg = PST:getPlayer().Damage * (modRolls[2] / 100)
+                                        if (tmpEnemy:GetEntityFlags() & EntityFlag.FLAG_POISON) == 0 then
+                                            tmpEnemy:AddPoison(EntityRef(PST:getPlayer()), 120, dmg)
+                                        else
+                                            tmpEnemy:TakeDamage(dmg, DamageFlag.DAMAGE_POISON_BURN, EntityRef(PST:getPlayer()), 0)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                        local function PST_verdantLastTick(pos)
+                            return function()
+                                PST:createAnimFXAt("gfx/1000.106_fartring.anm2", "Dissappear", pos)
+                            end
+                        end
+                        -- Poison/damage ticks for poison cloud
+                        local cloudTickFuncs = {}
+                        for i=5,30,5 do
+                            cloudTickFuncs[i] = PST_verdantGreenTick(target.Position, tmpMod)
+                        end
+                        -- Disappear anim
+                        cloudTickFuncs[34] = PST_verdantLastTick(target.Position)
+                        PST:createAnimFXAt("gfx/1000.106_fartring.anm2", "Appear", target.Position, cloudTickFuncs)
+                        SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.8, 2, false, 1.4 + 0.2 * math.random())
+                        PST.specialNodes.ancwep_verdantCD = 8
+                    end
+                end
+
+                -- Ancient weapon mod: Oceanic Might
+                tmpMod = PST:getSnapAstralWepMod("oceanicMight")
+                local tmpChance = 10
+                if target:IsFlying() then
+                    tmpChance = 40
+                end
+                if tmpMod and (flag & DamageFlag.DAMAGE_EXPLOSION) == 0 and PST.specialNodes.ancwep_oceanicMightCD == 0 and
+                100 * math.random() < tmpChance then
+                    local nearbyEffects = Isaac.FindInRadius(target.Position, 60 + target.Size * 2)
+                    local creepNearby = false
+                    for _, tmpEffect in ipairs(nearbyEffects) do
+                        if tmpEffect.Type == EntityType.ENTITY_EFFECT and PST:arrHasValue(PST.playerDamagingCreep, tmpEffect.Variant) then
+                            creepNearby = true
+                            break
+                        end
+                    end
+                    if creepNearby then
+                        PST:createAnimFXAt("gfx/1000.001b_water explosion.anm2", "Explosion", target.Position)
+                        SFXManager():Play(SoundEffect.SOUND_BOSS2INTRO_WATER_EXPLOSION, 0.8)
+                        local nearbyEnem = Isaac.FindInRadius(target.Position, 80, EntityPartition.ENEMY)
+                        for _, tmpEnemy in ipairs(nearbyEnem) do
+                            if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                tmpEnemy:TakeDamage(25, DamageFlag.DAMAGE_EXPLOSION, EntityRef(PST:getPlayer()), 0)
+                            end
+                        end
+                        PST.specialNodes.ancwep_oceanicMightCD = 75
+                    end
+                end
+
+                -- Ancient weapon mod: Tale Ender
+                tmpMod = PST:getSnapAstralWepMod("taleEnder")
+                if tmpMod then
+                    if not PST.specialNodes.ancwep_taleEnderProc and not target:IsBoss() then
+                        tmpChance = tmpMod[2] / (2 ^ PST:getTreeSnapshotMod("ancwep_taleEnderProcs", 0))
+                        if 100 * math.random() < tmpChance then
+                            PST:addModifiers({ ancwep_taleEnderProcs = 1 }, true)
+                            PST:createAnimFXAt("gfx/1000.176_cleaver slash.anm2", "Slash", target.Position - Vector(0, 4), {
+                                [3] = function()
+                                    if target then
+                                        target:TakeDamage(target.MaxHitPoints, 0, EntityRef(PST:getPlayer()), 0)
+                                    end
+                                end
+                            })
+                            SFXManager():Play(SoundEffect.SOUND_SIREN_SING_STAB, 0.8)
+                        end
+                        PST.specialNodes.ancwep_taleEnderProc = true
+                    end
+                end
+
+                -- Ancient weapon mod: Starsteel Broadaxe
+                tmpMod = PST:getSnapAstralWepMod("starsteelBroadaxe")
+                if tmpMod then
+                    if target:GetBleedingCountdown() > 0 then
+                        local tmpAdd = math.min(2, tmpMod[1] - PST:getTreeSnapshotMod("ancwep_starsteelAxeBuff", 0))
+                        if tmpAdd > 0 then
+                            PST:addModifiers({ tearsPerc = tmpAdd, ancwep_starsteelAxeBuff = tmpAdd }, true)
+                        end
+                    end
+                    if target:IsBoss() then
+                        local tmpCD = target:GetBossStatusEffectCooldown()
+                        if tmpCD > 0 then target:SetBossStatusEffectCooldown(tmpCD - 15) end
+                    end
+                end
+
+                -- Ancient weapon mod: Frozen Terror
+                tmpMod = PST:getSnapAstralWepMod("frozenTerror")
+                if tmpMod then
+                    -- Slash nearby slowed enemies
+                    local dist = PST:getPlayer().Position:Distance(target.Position)
+                    if target:GetSlowingCountdown() > 0 and dist <= PST:getTilesDist(tmpMod[2]) and PST.specialNodes.ancwep_frozenTerrorCD == 0 then
+                        local function PST_tmpDmgTick(dmg)
+                            return function()
+                                local nearbyEnemies = Isaac.FindInRadius(target.Position, 100, EntityPartition.ENEMY)
+                                for _, tmpEnemy in ipairs(nearbyEnemies) do
+                                    if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                        tmpEnemy:TakeDamage(dmg, 0, EntityRef(srcPlayer), 0)
+                                        if tmpEnemy:GetSlowingCountdown() > 0 then
+                                            tmpEnemy:AddIce(EntityRef(PST:getPlayer()), 60)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                        PST:createAnimFXAt("gfx/effect_wepslash.anm2", "Spin", PST:getPlayer().Position, {
+                            [3] = PST_tmpDmgTick(damage * (tmpMod[3] / 100))
+                        })
+                        SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.7, 2, false, 0.75 + 0.2 * math.random())
+                        PST.specialNodes.ancwep_frozenTerrorCD = 45
+                    end
+                    -- Slow bleeding enemies
+                    if target:GetBleedingCountdown() > 0 and 100 * math.random() < tmpMod[1] then
+                        target:AddSlowing(EntityRef(PST:getPlayer()), 90, 0.8, Color(0.6, 0.6, 0.9, 1))
+                    end
+                end
+
+                -- Ancient weapon mod: Storm's Advance
+                tmpMod = PST:getSnapAstralWepMod("stormAdvance")
+                if tmpMod and PST.specialNodes.ancwep_stormAdvanceCD == 0 then
+                    PST.specialNodes.ancwep_stormAdvanceHits = PST.specialNodes.ancwep_stormAdvanceHits + 1
+                    if PST.specialNodes.ancwep_stormAdvanceHits >= tmpMod[1] then
+                        for i=-2,2 do
+                            local tmpVel = (target.Position - PST:getPlayer().Position):Normalized():Rotated(24 * i) * 10
+                            local tmpTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, PST:getPlayer().Position, tmpVel, source.Entity, 0, Random() + 1)
+                            tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_JACOBS)
+                            tmpTear:ToTear().Height = PST:getPlayer().TearHeight
+                            tmpTear:ToTear().FallingSpeed = -PST:getPlayer().TearFallingSpeed * 2
+                            tmpTear.CollisionDamage = PST:getPlayer().Damage * (tmpMod[2] / 100)
+                            tmpTear.Color = PST:RGBColor(50, 180, 220)
+                        end
+                        PST.specialNodes.ancwep_stormAdvanceHits = 0
+                        PST.specialNodes.ancwep_stormAdvanceCD = 60
+                    end
+                end
+
+                -- Ancient weapon mod: Twisted Oakstring
+                tmpMod = PST:getSnapAstralWepMod("twistedOakstring")
+                if tmpMod and PST:getPlayer().Position:Distance(target.Position) > PST:getTilesDist(tmpMod[1]) and
+                PST.specialNodes.ancwep_oakstringCD == 0 then
+                    local tmpVel = (target.Position - PST:getPlayer().Position):Normalized() * 10
+                    local tmpTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER, target.Position + tmpVel * 1.75, tmpVel, source.Entity, 0, Random() + 1)
+                    tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING | TearFlags.TEAR_FEAR | TearFlags.TEAR_SPECTRAL)
+                    tmpTear:ToTear().Height = PST:getPlayer().TearHeight
+                    tmpTear:ToTear().FallingSpeed = 0.5
+                    tmpTear.CollisionDamage = PST:getPlayer().Damage * (tmpMod[2] / 100)
+                    tmpTear.Color = PST:RGBColor(180, 50, 220)
+                    PST.specialNodes.ancwep_oakstringCD = 15
+                end
+
+                -- Ancient weapon mod: Volatile Arbalest
+                tmpMod = PST:getSnapAstralWepMod("volatileArbalest")
+                if tmpMod and PST:getPlayer().Position:Distance(target.Position) > PST:getTilesDist(2.5) and (flag & DamageFlag.DAMAGE_EXPLOSION) == 0 and
+                PST.specialNodes.ancwep_volatileArbalestCD == 0 and 100 * math.random() < tmpMod[1] then
+                    local tmpExplosionSpr = PST:createAnimFXAt("gfx/1000.001_bomb explosion.anm2", "Explosion", target.Position)
+                    tmpExplosionSpr.Scale = Vector(0.6, 0.6)
+                    SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 1, 2, false, 1 + 0.25 * math.random())
+
+                    local nearbyEnem = Isaac.FindInRadius(target.Position, 80, EntityPartition.ENEMY)
+                    local tmpDmg = PST:getPlayer().Damage * (tmpMod[2] / 100)
+                    for _, tmpEnemy in ipairs(nearbyEnem) do
+                        if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                            tmpEnemy:TakeDamage(tmpDmg, DamageFlag.DAMAGE_EXPLOSION, EntityRef(PST:getPlayer()), 0)
+                        end
+                    end
+                    PST.specialNodes.ancwep_volatileArbalestCD = 30
+                end
+            end
+
+            -- Ancient weapon mod: Nimble Twins (special tear hits)
+            tmpMod = PST:getSnapAstralWepMod("nimbleTwins")
+            if tmpMod then
+                if source.Entity:GetData().PST_nimbleTwinsRed then
+                    PST.specialNodes.ancwep_nimbleRedBuff = math.min(tmpMod[3], PST.specialNodes.ancwep_nimbleRedBuff + 3)
+                    if PST.specialNodes.ancwep_nimbleRedTimer == 0 then
+                        PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                    end
+                    PST.specialNodes.ancwep_nimbleRedTimer = 60
+                elseif source.Entity:GetData().PST_nimbleTwinsBlue then
+                    PST.specialNodes.ancwep_nimbleBlueBuff = math.min(tmpMod[3], PST.specialNodes.ancwep_nimbleBlueBuff + 3)
+                    if PST.specialNodes.ancwep_nimbleBlueTimer == 0 then
+                        PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+                    end
+                    PST.specialNodes.ancwep_nimbleBlueTimer = 60
+                end
+            end
+
+            -- Ancient weapon mod: Gravitas (tear hit)
+            if source.Entity:GetData().PST_gravitasTear and not PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER) and
+            100 * math.random() < 3 then
+                PST:getPlayer():AddCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER)
+                PST:addModifiers({ ancwep_gravitasSpoon = true }, true)
             end
 
             -- Cosmic Realignment node

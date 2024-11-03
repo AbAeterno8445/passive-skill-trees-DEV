@@ -240,6 +240,16 @@ function PST:onRoomClear(level, room)
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 					Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
 				end
+
+				-- Ancient weapon mod: Consecrator
+				tmpMod = PST:getTreeSnapshotMod("ancwep_consecratorDmg", 0)
+				if tmpMod > 0 then
+					PST:addModifiers({ damagePerc = -tmpMod / 2, ancwep_consecratorDmg = -tmpMod / 2 }, true)
+				end
+				tmpMod = PST:getTreeSnapshotMod("ancwep_consecratorTears", 0)
+				if tmpMod > 0 then
+					PST:addModifiers({ tearsPerc = -tmpMod / 2, ancwep_consecratorTears = -tmpMod / 2 }, true)
+				end
 			end
 
 			-- Starcursed jewel drop
@@ -585,6 +595,12 @@ function PST:onRoomClear(level, room)
 					player:TakeDamage(1, DamageFlag.DAMAGE_NOKILL, EntityRef(player), 0)
 					PST:addModifiers({ cursePunishmentCount = { value = 0, set = true } }, true)
 				end
+			end
+
+			-- Ancient weapon mod: Gilded Seeker
+			tmpMod = PST:getTreeSnapshotMod("ancwep_gildedSeekerBuff", 0)
+			if tmpMod > 0 then
+				PST:addModifiers({ damagePerc = -tmpMod / 2, ancwep_gildedSeekerBuff = -tmpMod / 2 }, true)
 			end
 		end
 

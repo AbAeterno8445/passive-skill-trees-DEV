@@ -6,6 +6,9 @@
 ---@param slot ActiveSlot
 ---@param customVarData any
 function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
+    local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
+    local isNormalCharge = itemCfg and itemCfg.ChargeType == 0
+
     -- Mod: % chance to remove Birthright when using any active item (Serendipitous Soul - T. Eden's tree)
     if PST:getTreeSnapshotMod("serendipitousSoul", false) and itemType ~= CollectibleType.COLLECTIBLE_EDENS_SOUL then
         local tmpMod = PST:getTreeSnapshotMod("birthrightActiveRemoveChance", 0)
@@ -575,13 +578,13 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     end
 
     -- Expedition objective: use active item with at least 3 charges
-    if slot ~= -1 and player:GetActiveMaxCharge(slot) >= 3 then
+    if slot ~= -1 and player:GetActiveMaxCharge(slot) >= 3 and isNormalCharge then
 	    PST:expedAddProgInRun("activeItems", 1)
     end
 
     -- Boon: when using active with at least 2 charges, become invulnerable for X seconds
     tmpMod = PST:getTreeSnapshotMod("boonActivity", 0)
-    if tmpMod > 0 and slot ~= -1 and player:GetActiveMaxCharge(slot) >= 2 then
+    if tmpMod > 0 and slot ~= -1 and player:GetActiveMaxCharge(slot) >= 2 and isNormalCharge then
         player:SetMinDamageCooldown(math.ceil(tmpMod * 30))
     end
 
@@ -589,6 +592,17 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     tmpMod = PST:getSnapAstralWepMod("activeDmg")
     if tmpMod then
         PST.specialNodes.astralwep_activeDmgTimer = math.ceil(tmpMod[2] * 30)
+    end
+
+    -- Ancient weapon mod: Brute's Onslaught
+    tmpMod = PST:getSnapAstralWepMod("bruteOnslaught")
+    if tmpMod and player:GetActiveMaxCharge(slot) > 0 and isNormalCharge then
+        local charges = player:GetActiveMaxCharge(slot)
+        PST.specialNodes.ancwep_bruteOnslaughtHits = PST.specialNodes.ancwep_bruteOnslaughtHits + 5 * charges
+        if PST.specialNodes.ancwep_bruteOnslaughtBuffTimer == 0 then
+            PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+        end
+        PST.specialNodes.ancwep_bruteOnslaughtBuffTimer = 150
     end
 end
 

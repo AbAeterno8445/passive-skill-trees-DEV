@@ -27,6 +27,8 @@ function PST:onNewRoom()
 	PST.specialNodes.howToJumpPulseTimer = 0
 	PST.specialNodes.temporaryCoins = {}
 	PST.specialNodes.spiritCovenantTarget = nil
+	PST.specialNodes.ancwep_taleEnderProc = false
+	PST.specialNodes.ancwep_preciseSeekerMarked = nil
 	PST:clearAnimFXList()
 
 	local player = PST:getPlayer()
@@ -1172,6 +1174,22 @@ function PST:onNewRoom()
 					}, true)
 				end
 			end
+
+			-- Ancient weapon mod: Consecrator
+			tmpMod = PST:getSnapAstralWepMod("consecrator")
+			if tmpMod then
+				if roomType == RoomType.ROOM_DEVIL then
+					tmpAdd = math.min(tmpMod[1], tmpMod[2] - PST:getTreeSnapshotMod("ancwep_consecratorDmg", 0))
+					if tmpAdd > 0 then
+						PST:addModifiers({ damagePerc = tmpAdd, ancwep_consecratorDmg = tmpAdd }, true)
+					end
+
+					tmpAdd = math.min(tmpMod[1], tmpMod[2] - PST:getTreeSnapshotMod("ancwep_consecratorTears", 0))
+					if tmpAdd > 0 then
+						PST:addModifiers({ tearsPerc = tmpAdd, ancwep_consecratorTears = tmpAdd }, true)
+					end
+				end
+			end
 		-- Treasure room
 		elseif roomType == RoomType.ROOM_TREASURE then
 			-- Boon: unexpected gift
@@ -1259,6 +1277,28 @@ function PST:onNewRoom()
 	if PST:getTreeSnapshotMod("astralWepBossRoomDrops", 0) > 0 then
 		PST:addModifiers({ astralWepBossRoomDrops = { value = 0, set = true } }, true)
 	end
+
+	-- Ancient weapon mod: Gravitas
+	if PST:getTreeSnapshotMod("ancwep_gravitasSpoon", false) then
+		player:RemoveCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER)
+		PST:addModifiers({ ancwep_gravitasSpoon = false }, true)
+	end
+
+	-- Ancient weapon mod: Starsteel Broadaxe
+	if PST:getTreeSnapshotMod("ancwep_starsteelAxeBuff", 0) > 0 then
+		PST:addModifiers({ ancwep_starsteelAxeBuff = { value = 0, set = true } }, true)
+	end
+
+    -- Ancient weapon mod: Berserker's Wrath
+    if PST:getSnapAstralWepMod("berserkerWrath") then
+		if room:GetAliveEnemiesCount() > 0 and not PST:getTreeSnapshotMod("ancwep_berserkerWrathProc", false) then
+        	player:UseActiveItem(CollectibleType.COLLECTIBLE_BERSERK, UseFlag.USE_NOANIM)
+			PST:addModifiers({ ancwep_berserkerWrathProc = true }, true)
+		end
+		if roomType == RoomType.ROOM_BOSS then
+			player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+		end
+    end
 
 	if PST.savePending then
 		PST:save()

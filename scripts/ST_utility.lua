@@ -573,7 +573,6 @@ function PST:switchPurityState(newState)
 		local itemCfg = tmpCostume:GetItemConfig()
 		if itemCfg and itemCfg:IsNull() and itemCfg.ID == NullItemID.ID_PURITY_GLOW then
 			tmpCostume:GetSprite():ReplaceSpritesheet(0, "gfx/characters/costumes/PurityGlow_" .. purityPathColors[newState] .. ".png", true)
-			foundCostume = true
 		end
 	end
 	PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SPEED | CacheFlag.CACHE_RANGE)

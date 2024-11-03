@@ -273,6 +273,16 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.damage = dynamicMods.damage - tmpTreeMod[1]
             end
         end
+
+        -- Ancient weapon mod: Maxwell's Thermic Engine
+        if PST.specialNodes.ancwep_maxwellBuffTimer > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + PST.specialNodes.ancwep_maxwellBuff
+        end
+
+        -- Ancient weapon mod: Nimble Twins
+        if PST.specialNodes.ancwep_nimbleRedTimer > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + PST.specialNodes.ancwep_nimbleRedBuff
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -475,6 +485,23 @@ function PST:onCache(player, cacheFlag)
                 end
                 dynamicMods.tears = dynamicMods.tears + math.min(wepRolls[3], tmpTotal)
             end
+        end
+
+        -- Ancient weapon mod: Nimble Twins
+        if PST.specialNodes.ancwep_nimbleBlueTimer > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + PST.specialNodes.ancwep_nimbleBlueBuff
+        end
+
+        -- Ancient weapon mod: Ancient Runic Chopper
+        tmpTreeMod = PST:getSnapAstralWepMod("ancientRunicChopper")
+        if tmpTreeMod and PST.specialNodes.ancwep_runicChopperTimer > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod[3]
+        end
+
+        -- Ancient weapon mod: Brute's Onslaught
+        tmpTreeMod = PST:getSnapAstralWepMod("bruteOnslaught")
+        if tmpTreeMod and PST.specialNodes.ancwep_bruteOnslaughtBuffTimer > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod[2]
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
@@ -863,6 +890,18 @@ function PST:onCache(player, cacheFlag)
     tmpTreeMod = PST:getSnapAstralWepMod("crossbowImp")
     if tmpTreeMod then
         dynamicMods.damagePerc = dynamicMods.damagePerc + math.max(0, math.min(tmpTreeMod[3], (player.ShotSpeed - 1) * 100))
+    end
+
+    -- Ancient weapon mod: Auric Persecutor
+    tmpTreeMod = PST:getSnapAstralWepMod("auricPersecutor")
+    if tmpTreeMod then
+        dynamicMods.tearsPerc = math.min(tmpTreeMod[1], player:GetNumCoins() / 2)
+    end
+
+    -- Ancient weapon mod: Gravitas
+    tmpTreeMod = PST:getSnapAstralWepMod("gravitas")
+    if tmpTreeMod and player:HasCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER) then
+        dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpTreeMod[3]
     end
 
     -- Expedition curse: inverse fortune

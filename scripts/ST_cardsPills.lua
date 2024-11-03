@@ -346,6 +346,26 @@ function PST:onUseCard(card, player, useFlags)
             player:AddActiveCharge(tmpMod, i, true, false, false)
         end
     end
+
+    -- Astral weapon mod: Ancient Runic Chopper
+    tmpMod = PST:getSnapAstralWepMod("ancientRunicChopper")
+    if tmpMod then
+        local tmpDmg = 0
+        if PST:arrHasValue(PST.allRunes, card) then
+            tmpDmg = tmpMod[1]
+        elseif card == Card.RUNE_SHARD then
+            tmpDmg = tmpMod[1] / 2
+        end
+        if tmpDmg > 0 then
+            tmpDmg = math.min(tmpDmg, tmpMod[2] - PST:getTreeSnapshotMod("ancwep_runicChopperBuff", 0))
+            PST:addModifiers({ damagePerc = tmpDmg, ancwep_runicChopperBuff = tmpDmg }, true)
+
+            if PST.specialNodes.ancwep_runicChopperTimer == 0 then
+                PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+            end
+            PST.specialNodes.ancwep_runicChopperTimer = 300
+        end
+    end
 end
 
 function PST:blueGambitPillSwap(oldColor, oldEffect, newColor)

@@ -285,6 +285,12 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         PST:addModifiers({ grandConsonanceDmg = 1 }, true)
     end
 
+    -- Ancient weapon mod: Arcing Needle
+    tmpMod = PST:getSnapAstralWepMod("arcingNeedle")
+    if tmpMod and firstTime and itemType == CollectibleType.COLLECTIBLE_JACOBS_LADDER then
+        PST:addModifiers({ tearsPerc = 15 }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then

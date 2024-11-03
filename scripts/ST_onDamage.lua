@@ -520,7 +520,18 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
-        local tmpPlayer = PST:getPlayer()
+        local srcPlayer
+        if source and source.Entity then
+            if source.Type == EntityType.ENTITY_PLAYER then
+                srcPlayer = source.Entity:ToPlayer()
+            elseif source.Entity.SpawnerEntity and source.Entity.SpawnerEntity == EntityType.ENTITY_PLAYER then
+                srcPlayer = source.Entity.SpawnerEntity:ToPlayer()
+            elseif source.Entity.Parent and source.Entity.Parent == EntityType.ENTITY_PLAYER then
+                srcPlayer = source.Entity.Parent:ToPlayer()
+            end
+        end
+        if not srcPlayer then srcPlayer = PST:getPlayer() end
+
         local dmgMult = 1
         local dmgExtra = 0
 
@@ -563,11 +574,11 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Ancient starcursed jewel: Gaze Averter
             if PST:SC_getSnapshotMod("gazeAverter", false) then
-                local dir = tmpPlayer:GetHeadDirection()
-                if dir == Direction.LEFT and target.Position.X < tmpPlayer.Position.X or
-                dir == Direction.RIGHT and target.Position.X > tmpPlayer.Position.X or
-                dir == Direction.UP and target.Position.Y < tmpPlayer.Position.Y or
-                dir == Direction.DOWN and target.Position.Y > tmpPlayer.Position.Y then
+                local dir = srcPlayer:GetHeadDirection()
+                if dir == Direction.LEFT and target.Position.X < srcPlayer.Position.X or
+                dir == Direction.RIGHT and target.Position.X > srcPlayer.Position.X or
+                dir == Direction.UP and target.Position.Y < srcPlayer.Position.Y or
+                dir == Direction.DOWN and target.Position.Y > srcPlayer.Position.Y then
                     dmgMult = dmgMult - 0.75
                 end
             end
@@ -587,15 +598,15 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Harmonized Specters node (T. Forgotten's tree)
             if PST:getTreeSnapshotMod("harmonizedSpecters", false) then
-                local tmpTwin = tmpPlayer:GetOtherTwin()
+                local tmpTwin = srcPlayer:GetOtherTwin()
                 if tmpTwin then
                     local tmpFulfilled = false
-                    local inGround = 1 - math.max(math.abs(tmpPlayer.Velocity.X), math.abs(tmpPlayer.Velocity.Y)) > 0.9
+                    local inGround = 1 - math.max(math.abs(srcPlayer.Velocity.X), math.abs(srcPlayer.Velocity.Y)) > 0.9
                     if target.Position:Distance(tmpTwin.Position) <= 110 then
                         dmgMult = dmgMult + 0.12
                         tmpFulfilled = true
                     end
-                    if tmpPlayer.Position:Distance(tmpTwin.Position) > 10 and inGround then
+                    if srcPlayer.Position:Distance(tmpTwin.Position) > 10 and inGround then
                         dmgMult = dmgMult + 0.12
                         tmpFulfilled = true
                     end
@@ -713,25 +724,25 @@ function PST:onDamage(target, damage, flag, source)
             -- Boon: chance to slow enemy on hit
             tmpMod = PST:getTreeSnapshotMod("boonLethargyChance", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
-                target:AddSlowing(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonLethargyLen", 0) * 30), 0.8, Color(0.8, 0.8, 0.8, 1))
+                target:AddSlowing(EntityRef(srcPlayer), math.ceil(PST:getTreeSnapshotMod("boonLethargyLen", 0) * 30), 0.8, Color(0.8, 0.8, 0.8, 1))
             end
 
             -- Boon: chance to fear enemy on hit
             tmpMod = PST:getTreeSnapshotMod("boonHorrorChance", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
-                target:AddFear(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonHorrorLen", 0) * 30))
+                target:AddFear(EntityRef(srcPlayer), math.ceil(PST:getTreeSnapshotMod("boonHorrorLen", 0) * 30))
             end
 
             -- Boon: chance to charm enemy on hit
             tmpMod = PST:getTreeSnapshotMod("boonHypnoChance", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
-                target:AddCharmed(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonHypnoLen", 0) * 30))
+                target:AddCharmed(EntityRef(srcPlayer), math.ceil(PST:getTreeSnapshotMod("boonHypnoLen", 0) * 30))
             end
 
             -- Boon: chance to paralyze enemy on hit
             tmpMod = PST:getTreeSnapshotMod("boonParaChance", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
-                target:AddFreeze(EntityRef(PST:getPlayer()), math.ceil(PST:getTreeSnapshotMod("boonParaLen", 0) * 30))
+                target:AddFreeze(EntityRef(srcPlayer), math.ceil(PST:getTreeSnapshotMod("boonParaLen", 0) * 30))
             end
 
             -- Player/familiar hit
@@ -740,7 +751,7 @@ function PST:onDamage(target, damage, flag, source)
             source.Entity:ToFamiliar() or (source.Entity.SpawnerEntity and source.Entity.SpawnerEntity:ToFamiliar()) or (source.Entity.Parent and source.Entity.Parent:ToFamiliar())) then
                 -- Astral weapon mod: longsword implicit
                 tmpMod = PST:getSnapAstralWepMod("longswordImp")
-                if tmpMod and PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                if tmpMod and srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
                     dmgMult = dmgMult + tmpMod[1] / 100
                 end
 
@@ -748,7 +759,7 @@ function PST:onDamage(target, damage, flag, source)
                 tmpMod = PST:getSnapAstralWepMod("estocImp")
                 if tmpMod then
                     local tmpBuff = PST:getTreeSnapshotMod("astralwep_estocImpBonus", 0)
-                    if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(2) then
+                    if srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(2) then
                         if tmpBuff < tmpMod[2] then
                             local tmpAdd = math.min(tmpMod[1], tmpMod[2] - tmpBuff)
                             PST:addModifiers({ tearsPerc = tmpAdd, astralwep_estocImpBonus = tmpAdd }, true)
@@ -762,7 +773,7 @@ function PST:onDamage(target, damage, flag, source)
                 tmpMod = PST:getSnapAstralWepMod("daggerImp")
                 if tmpMod then
                     local tmpChance = tmpMod[1]
-                    if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                    if srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
                         tmpChance = tmpChance * 2
                     end
                     if 100 * math.random() < tmpChance then
@@ -779,7 +790,7 @@ function PST:onDamage(target, damage, flag, source)
                     local stackList = PST.modData.treeModSnapshot["astralwep_quickbladeImpStacks"]
                     if #stackList < 15 then
                         local tmpDuration = tmpMod[2]
-                        if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                        if srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
                             tmpDuration = tmpDuration * 2
                         end
                         table.insert(stackList, math.ceil(tmpDuration * 30))
@@ -790,7 +801,7 @@ function PST:onDamage(target, damage, flag, source)
                 -- Astral weapon mod: spear implicit
                 tmpMod = PST:getSnapAstralWepMod("spearImp")
                 if tmpMod then
-                    local dist = PST:getPlayer().Position:Distance(target.Position)
+                    local dist = srcPlayer.Position:Distance(target.Position)
                     if dist > PST:getTilesDist(1.5) and dist <= PST:getTilesDist(2.5) then
                         dmgMult = dmgMult + tmpMod[1] / 100
                     elseif dist <= PST:getTilesDist(1.5) then
@@ -802,7 +813,7 @@ function PST:onDamage(target, damage, flag, source)
                 tmpMod = PST:getSnapAstralWepMod("tridentImp")
                 if tmpMod then
                     local tmpBuff = PST:getTreeSnapshotMod("astralwep_tridentImpBonus", 0)
-                    if PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(2) then
+                    if srcPlayer.Position:Distance(target.Position) > PST:getTilesDist(2) then
                         if tmpBuff < tmpMod[2] then
                             local tmpAdd = math.min(tmpMod[1], tmpMod[2] - tmpBuff)
                             PST:addModifiers({ damagePerc = tmpAdd, tearsPerc = tmpAdd, astralwep_tridentImpBonus = tmpAdd }, true)
@@ -816,15 +827,35 @@ function PST:onDamage(target, damage, flag, source)
                 tmpMod = PST:getSnapAstralWepMod("scytheImp")
                 if tmpMod then
                     if PST.specialNodes.astralwep_scytheCD == 0 then
-                        PST:createAnimFXAt("gfx/effect_wepslash.anm2", "Spin", target.Position, {
-                            [3] = function()
+                        local function PST_tmpDmgTick(dmg)
+                            return function()
                                 local nearbyEnemies = Isaac.FindInRadius(target.Position, 120, EntityPartition.ENEMY)
+                                local applyFear = false
                                 for _, tmpEnemy in ipairs(nearbyEnemies) do
                                     if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
-                                        tmpEnemy:TakeDamage(damage * (tmpMod[1] / 100), 0, EntityRef(PST:getPlayer()), 0)
+                                        tmpEnemy:TakeDamage(dmg, 0, EntityRef(srcPlayer), 0)
+                                        if tmpEnemy:HasMortalDamage() or tmpEnemy:IsBoss() then
+                                            applyFear = true
+                                        end
+                                    end
+                                end
+                                if PST:getSnapAstralWepMod("mobripper") and applyFear then
+                                    for _, tmpEnemy in ipairs(nearbyEnemies) do
+                                        if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly and
+                                        (not tmpEnemy:IsBoss() or (tmpEnemy:IsBoss() and math.random() < 0.2)) then
+                                            tmpEnemy:AddFear(EntityRef(PST:getPlayer()), 90)
+                                        end
                                     end
                                 end
                             end
+                        end
+                        local scytheDmg = damage * (tmpMod[1] / 100)
+                        local mobripper = PST:getSnapAstralWepMod("mobripper")
+                        if mobripper then
+                            scytheDmg = damage * (mobripper[1] / 100)
+                        end
+                        local slashSpr = PST:createAnimFXAt("gfx/effect_wepslash.anm2", "Spin", target.Position, {
+                            [3] = PST_tmpDmgTick(scytheDmg)
                         })
                         SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.7, 2, false, 0.9 + 0.2 * math.random())
                         PST.specialNodes.astralwep_scytheCD = math.ceil(tmpMod[2] * 30)
@@ -838,7 +869,7 @@ function PST:onDamage(target, damage, flag, source)
                         dmgMult = dmgMult + tmpMod[2] / 100
                     end
                     if 100 * math.random() < tmpMod[1] then
-                        target:AddBleeding(EntityRef(PST:getPlayer()), 90)
+                        target:AddBleeding(EntityRef(srcPlayer), 90)
                     end
                 end
 
@@ -856,7 +887,7 @@ function PST:onDamage(target, damage, flag, source)
                     end
                     target:GetData().PST_greataxeHits = target:GetData().PST_greataxeHits + 1
                     if target:GetData().PST_greataxeHits >= tmpMod[1] then
-                        target:AddBleeding(EntityRef(PST:getPlayer()), 120)
+                        target:AddBleeding(EntityRef(srcPlayer), 120)
                         target:GetData().PST_greataxeHits = 0
                     end
                 end
@@ -864,9 +895,90 @@ function PST:onDamage(target, damage, flag, source)
                 -- Astral weapon mod: bow implicit
                 tmpMod = PST:getSnapAstralWepMod("bowImp")
                 if tmpMod then
-                    local dist = PST:getPlayer().Position:Distance(target.Position)
+                    local dist = srcPlayer.Position:Distance(target.Position)
                     local maxDist = 250
-                    dmgMult = dmgMult + tmpMod[2] * math.min(1, dist / maxDist)
+                    dmgMult = dmgMult + (tmpMod[2] * math.min(1, dist / maxDist)) / 100
+                end
+
+                -- Ancient weapon mod: Redbeak
+                tmpMod = PST:getSnapAstralWepMod("redbeak")
+                if tmpMod then
+                    if srcPlayer:GetHearts() > 0 and srcPlayer:GetHearts() / srcPlayer:GetEffectiveMaxHearts() <= 0.5 then
+                        dmgMult = dmgMult + tmpMod[1] / 100
+
+                        if 100 * math.random() < tmpMod[2] then
+                            target:AddBleeding(EntityRef(srcPlayer), 120)
+                        end
+                    end
+                end
+
+                -- Ancient weapon mod: The Scrambler
+                tmpMod = PST:getSnapAstralWepMod("scrambler")
+                if tmpMod then
+                    if (target:GetEntityFlags() & EntityFlag.FLAG_CONFUSION) > 0 then
+                        dmgMult = dmgMult + tmpMod[1] / 100
+                        if 100 * math.random() < tmpMod[2] then
+                            target:SetConfusionCountdown(0)
+                        end
+                    end
+
+                    local tmpPlayer = srcPlayer or PST:getPlayer()
+                    local tmpChance = 3 + PST:getTreeSnapshotMod("ancwep_scramblerChance", 0)
+                    if tmpPlayer.Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                        tmpChance = tmpChance * 3
+                    end
+                    if 100 * math.random() < tmpChance then
+                        target:AddConfusion(EntityRef(tmpPlayer), 120, false)
+                    end
+                end
+
+                -- Ancient weapon mod: Adrift Blade
+                tmpMod = PST:getSnapAstralWepMod("adriftBlade")
+                if tmpMod and 100 * math.random() < tmpMod[1] then
+                    local randRoll = math.random(tmpMod[2], tmpMod[3])
+                    dmgMult = dmgMult + (randRoll / 100 - 1)
+                end
+
+                -- Ancient weapon mod: Beastbane
+                tmpMod = PST:getSnapAstralWepMod("beastbane")
+                if tmpMod and target:IsBoss() then
+                    dmgMult = dmgMult + tmpMod[1] / 100
+                end
+
+                -- Ancient weapon mod: Tale Ender
+                tmpMod = PST:getSnapAstralWepMod("taleEnder")
+                if tmpMod and target.HitPoints >= target.MaxHitPoints * 0.99 then
+                    dmgMult = dmgMult + tmpMod[1] / 100
+                end
+
+                -- Ancient weapon mod: Crimson Reaper
+                tmpMod = PST:getSnapAstralWepMod("crimsonReaper")
+                if tmpMod then
+                    if target:GetBleedingCountdown() > 0 then
+                        local targetHP = target.HitPoints / target.MaxHitPoints
+                        local bleedDmgMult = math.max(0, tmpMod[2] / 100 - targetHP)
+                        dmgMult = dmgMult + bleedDmgMult
+                    end
+                    if target.HitPoints >= target.MaxHitPoints * 0.99 then
+                        local tmpDur = math.ceil(tmpMod[1] * 30)
+                        if target:IsBoss() then
+                            tmpDur = tmpDur * 2
+                        end
+                        target:AddBleeding(EntityRef(PST:getPlayer()), tmpDur)
+                    end
+                end
+
+                -- Ancient weapon mod: Quill Rain
+                tmpMod = PST:getSnapAstralWepMod("quillRain")
+                if tmpMod and srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(tmpMod[1]) then
+                    dmgMult = dmgMult - (tmpMod[2] / 100)
+                end
+
+                -- Ancient weapon mod: Brute's Onslaught
+                tmpMod = PST:getSnapAstralWepMod("bruteOnslaught")
+                if tmpMod and PST.specialNodes.ancwep_bruteOnslaughtHits > 0 then
+                    dmgMult = dmgMult + (tmpMod[1] / 100)
+                    PST.specialNodes.ancwep_bruteOnslaughtHits = PST.specialNodes.ancwep_bruteOnslaughtHits - 1
                 end
             end
 
@@ -938,13 +1050,13 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Astral weapon mod: +% damage dealt to enemies beyond 2 tiles of you
             tmpMod = PST:getSnapAstralWepMod("farEnemyDmg")
-            if tmpMod and PST:getPlayer().Position:Distance(target.Position) > PST:getTilesDist(2) then
+            if tmpMod and srcPlayer.Position:Distance(target.Position) > PST:getTilesDist(2) then
                 dmgMult = dmgMult + tmpMod[1] / 100
             end
 
             -- Astral weapon mod: +% damage dealt to enemies within 2 tiles of you
             tmpMod = PST:getSnapAstralWepMod("closeEnemyDmg")
-            if tmpMod and PST:getPlayer().Position:Distance(target.Position) <= PST:getTilesDist(2) then
+            if tmpMod and srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(2) then
                 dmgMult = dmgMult + tmpMod[1] / 100
             end
 
@@ -986,7 +1098,7 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Astral weapon mod: +% damage dealt to flying if you're on ground, & vice versa
             tmpMod = PST:getSnapAstralWepMod("flyGroundDmg")
-            if tmpMod and ((PST:getPlayer():IsFlying() and not target:IsFlying()) or (not PST:getPlayer():IsFlying() and target:IsFlying())) then
+            if tmpMod and ((srcPlayer:IsFlying() and not target:IsFlying()) or (not srcPlayer:IsFlying() and target:IsFlying())) then
                 dmgMult = dmgMult + tmpMod[1] / 100
             end
 
@@ -1008,7 +1120,7 @@ function PST:onDamage(target, damage, flag, source)
             -- Astral weapon mod: +% damage dealt while you have a holy mantle shield
             tmpMod = PST:getSnapAstralWepMod("holyMantleDmg")
             if tmpMod then
-                local plEffects = PST:getPlayer():GetEffects()
+                local plEffects = srcPlayer:GetEffects()
                 if plEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) or plEffects:HasTrinketEffect(TrinketType.TRINKET_WOODEN_CROSS) then
                     dmgMult = dmgMult + tmpMod[1] / 100
                 end
@@ -1016,7 +1128,7 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Astral weapon mod: +% damage dealt while you have an eternal heart
             tmpMod = PST:getSnapAstralWepMod("eternalDmg")
-            if tmpMod and PST:getPlayer():GetEternalHearts() > 0 then
+            if tmpMod and srcPlayer:GetEternalHearts() > 0 then
                 dmgMult = dmgMult + tmpMod[1] / 100
             end
 
@@ -1044,17 +1156,11 @@ function PST:onDamage(target, damage, flag, source)
             if tmpMod then
                 local effectList = Isaac.FindByType(EntityType.ENTITY_EFFECT)
                 for _, tmpEffect in ipairs(effectList) do
-                    if PST:arrHasValue(PST.allCreep, tmpEffect.Variant) and PST:getPlayer().Position:Distance(tmpEffect.Position) <= 50 then
+                    if PST:arrHasValue(PST.allCreep, tmpEffect.Variant) and srcPlayer.Position:Distance(tmpEffect.Position) <= 50 then
                         dmgMult = dmgMult + tmpMod[1] / 100
                         break
                     end
                 end
-            end
-
-            -- Astral weapon mod: +% damage dealt by player creep
-            tmpMod = PST:getSnapAstralWepMod("playerCreepDmg")
-            if tmpMod and source.Type == EntityType.ENTITY_EFFECT and PST:arrHasValue(PST.playerDamagingCreep, source.Variant) then
-                dmgMult = dmgMult + tmpMod[1] / 100
             end
 
             -- Astral weapon mod: +% damage dealt with lasers
@@ -1066,6 +1172,12 @@ function PST:onDamage(target, damage, flag, source)
             -- Astral weapon mod: +% damage dealt with explosions
             tmpMod = PST:getSnapAstralWepMod("explosionDmg")
             if tmpMod and (flag & DamageFlag.DAMAGE_EXPLOSION) then
+                dmgMult = dmgMult + tmpMod[1] / 100
+            end
+
+            -- Astral weapon mod: +% damage dealt while half or more of your red heart containers are empty
+            tmpMod = PST:getSnapAstralWepMod("injuredDmg")
+            if tmpMod and srcPlayer:GetHearts() > 0 and srcPlayer:GetHearts() / srcPlayer:GetEffectiveMaxHearts() <= 0.5 then
                 dmgMult = dmgMult + tmpMod[1] / 100
             end
         end
@@ -1101,11 +1213,11 @@ function PST:onDamage(target, damage, flag, source)
                 -- Mod: % chance for wisps to fire a homing tear away from you when hit
                 local tmpMod = PST:getTreeSnapshotMod("wispHomingTearRetal", 0)
                 if tmpMod > 0 and 100 * math.random() < tmpMod then
-                    local tmpVel = (tmpFamiliar.Position - PST:getPlayer().Position):Normalized() * 7
+                    local tmpVel = (tmpFamiliar.Position - srcPlayer.Position):Normalized() * 7
                     local newTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLOOD, tmpFamiliar.Position, tmpVel, tmpFamiliar, 0, Random() + 1)
                     newTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
-					newTear:ToTear().Height = PST:getPlayer().TearHeight
-					newTear:ToTear().FallingSpeed = -PST:getPlayer().TearFallingSpeed * 2
+					newTear:ToTear().Height = srcPlayer.TearHeight
+					newTear:ToTear().FallingSpeed = -srcPlayer.TearFallingSpeed * 2
                     newTear.CollisionDamage = 4
                     newTear.Color = PST:RGBColor(120, 30, 182)
                 end
@@ -1121,7 +1233,7 @@ function PST:onDamage(target, damage, flag, source)
                     for _, tmpEntity in ipairs(Isaac.FindInRadius(tmpFamiliar.Position, 70)) do
                         local tmpNPC = tmpEntity:ToNPC()
                         if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
-                            local dmgBonus = PST:getPlayer().Damage * PST:getTreeSnapshotMod("clotPulseDmgInherit", 0) / 100
+                            local dmgBonus = srcPlayer.Damage * PST:getTreeSnapshotMod("clotPulseDmgInherit", 0) / 100
                             tmpNPC:TakeDamage(3 + dmgBonus, 0, EntityRef(tmpNPC), 0)
                         end
                     end
@@ -1535,19 +1647,19 @@ function PST:onDamage(target, damage, flag, source)
                         end
 
                         -- Mod: chance for Book of Belial to gain a charge when hitting a boss
-                        local tmpSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
+                        local tmpSlot = srcPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
                         if tmpSlot ~= -1 then
                             if PST:getTreeSnapshotMod("belialChargesGained", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("belialBossHitCharge", 0) then
                                 PST:addModifiers({ belialChargesGained = 1 }, true)
-                                tmpPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
+                                srcPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
                             end
                         end
 
                         -- Mod: chance for Flip to gain a charge when hitting a boss
-                        tmpSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_FLIP)
+                        tmpSlot = srcPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_FLIP)
                         if tmpSlot ~= -1 then
                             if 100 * math.random() < PST:getTreeSnapshotMod("flipBossHitCharge", 0) then
-                                tmpPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
+                                srcPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
                             end
                         end
 
@@ -1631,6 +1743,18 @@ function PST:onDamage(target, damage, flag, source)
                         local tmpMod = PST:getTreeSnapshotMod("creepDamage", 0)
                         if tmpMod > 0 then
                             dmgMult = dmgMult + tmpMod / 100
+                        end
+
+                        -- Astral weapon mod: +% damage dealt by player creep
+                        tmpMod = PST:getSnapAstralWepMod("playerCreepDmg")
+                        if tmpMod then
+                            dmgMult = dmgMult + tmpMod[1] / 100
+                        end
+
+                        -- Ancient weapon mod: Oceanic Might
+                        tmpMod = PST:getSnapAstralWepMod("oceanicMight")
+                        if tmpMod then
+                            dmgMult = dmgMult + tmpMod[1] / 100
                         end
                     end
 
@@ -1736,8 +1860,8 @@ function PST:onDamage(target, damage, flag, source)
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_AZAZEL_B) then
             -- Tainted Azazel, -40% damage dealt to enemies far away from you, based on your range stat
-            local dist = PST:distBetweenPoints(tmpPlayer.Position, target.Position)
-            if dist > tmpPlayer.TearRange * 0.4 then
+            local dist = PST:distBetweenPoints(srcPlayer.Position, target.Position)
+            if dist > srcPlayer.TearRange * 0.4 then
                 dmgMult = dmgMult - 0.4
             end
         end

@@ -276,6 +276,7 @@ function PST:equipAstralWep(weapon)
     else
         weapon.equipped = nil
     end
+    PST:save()
 end
 
 -- Determine how many forging materials a weapon is worth

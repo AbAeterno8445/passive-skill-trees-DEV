@@ -390,45 +390,57 @@ PST.astralWepMods = {
         end
     },
 
+    injuredDmg = {
+        description = "+{{roll1}}% damage dealt while half or more of your total red heart containers are empty.",
+        color = {235, 140, 140},
+        rollsFunc = function(wepTier, rollPerc)
+            return {
+                roll1 = 10 + 7 * rollPerc[1] + wepTier * 2
+            }
+        end
+    },
+
     ---- ANCIENT MODS ----
     -- Ancient Longswords
-    greyWind = { -- TODO
+    greyWind = {
         description = {
             "{{roll1}}% chance on hit to slash all enemies within 2 tiles of the target, dealing {{roll2}}%",
-            "of the hit's damage. This effect has a 1 second cooldown.",
-            "If the slashes target less than 3 enemies, they deal double damage and cause bleeding for 4 seconds."
+            "of the hit's damage. This effect has a 2 second cooldown.",
+            "If the slashes target 3 or less enemies, they deal 50% more damage, cause bleeding for 3 seconds,",
+            "and the cooldown for that trigger is increased to 5 seconds.",
+            "-0.6 base damage."
         },
         ancient = true,
         minRolls = {7, 120},
         maxRolls = {12, 160},
         upgIncrements = {0.5, 4}
     },
-    executioner = { -- TODO
+    executioner = {
         description = {
             "+{{roll1}}% damage.",
             "{{roll2}}% chance on hit to instantly kill enemies that are left with {{roll3}}% or less HP."
         },
         ancient = true,
-        minRolls = {5, 25, 7},
-        maxRolls = {8, 35, 10},
-        upgIncrements = {0.4, 1, 0.2}
+        minRolls = {5, 25, 12},
+        maxRolls = {8, 35, 16},
+        upgIncrements = {0.4, 1, 0.25}
     },
-    swordOfSong = { -- TODO
+    swordOfSong = {
         description = {
-            "{{roll1}}% chance on hit to cause an area pulse at the hit's location that charms nearby enemies for 3 seconds.",
+            "{{roll1}}% chance on hit to cause an area pulse at the hit's location that charms nearby enemies for 4 seconds.",
             "+1% damage whenever you kill a charmed monster.",
-            "Every {{roll2}} charmed monsters you kill, reset the damage bonus and trigger Isaac's Tears' item effect."
+            "Every {{roll2}} hits against charmed monsters, reset the damage bonus and trigger Isaac's Tears' item effect."
         },
         ancient = true,
-        minRolls = {5, 20},
-        maxRolls = {8, 10},
+        minRolls = {5, 16},
+        maxRolls = {8, 8},
         upgIncrements = {0.2, -1}
     },
-    redbeak = { -- TODO
+    redbeak = {
         description = {
             "If half or more of your total red heart containers are empty:",
             "    +{{roll1}}% damage dealt.",
-            "    {{roll2}}% chance for hits to inflict bleed on enemies.",
+            "    {{roll2}}% chance for hits to inflict bleed on enemies for 4 seconds.",
             "    {{roll3}}% chance for bleeding enemies to drop a 1/2 red heart on kill, which vanishes after 2 seconds."
         },
         ancient = true,
@@ -436,12 +448,12 @@ PST.astralWepMods = {
         maxRolls = {20, 15, 8},
         upgIncrements = {0.5, 0.5, 0.2}
     },
-    maxwellEngine = { -- TODO
+    maxwellEngine = {
         description = {
             "+0.5% damage for 3 seconds when hitting an enemy, which stacks up to {{roll1}}%.",
             "While the buff is maxed:",
             "    {{roll2}}% chance for hits to cause burning or slow for 3 seconds on hit.",
-            "    15% chance for burning enemies to explode on death, dealing damage to nearby enemies but not you.",
+            "    15% chance for burning enemies to explode on death, dealing 30 damage to nearby enemies.",
             "    15% chance for slowed enemies to freeze on death."
         },
         ancient = true,
@@ -450,10 +462,10 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 1}
     },
     -- Ancient Estocs
-    arcingNeedle = { -- TODO
+    arcingNeedle = {
         description = {
             "Every 0.5 seconds spent firing, {{roll1}}% chance to gain Jacob's Ladder as an innate effect for {{roll2}} seconds.",
-            "Chance goes up in 2% increments as you keep firing, and resets once you stop firing.",
+            "Chance goes up in 1% increments as you keep firing, and resets once you stop firing.",
             "Obtaining Jacob's Ladder naturally grants you +15% tears."
         },
         ancient = true,
@@ -461,20 +473,21 @@ PST.astralWepMods = {
         maxRolls = {6, 4},
         upgIncrements = {0.25, 0.1}
     },
-    auricPersecutor = { -- TODO
+    auricPersecutor = {
         description = {
             "Half of your coin count now acts as a tears multiplier, up to {{roll1}}%.",
             "+{{roll2}}% damage for the current floor when picking up a coin worth at least 5, up to {{roll3}}%."
         },
         ancient = true,
-        minRolls = {25, 3, 15},
-        maxRolls = {40, 6, 24},
-        upgIncrements = {1, 0.2, 0.5}
+        minRolls = {20, 7, 21},
+        maxRolls = {35, 15, 40},
+        upgIncrements = {1, 0.5, 1}
     },
     -- Ancient Daggers
-    scrambler = { -- TODO
+    scrambler = {
         description = {
-            "3% chance on hit to confuse enemies. Double the chance against targets within 1.5 tiles.",
+            "3% chance on hit to confuse enemies for 4 seconds. Triple the chance against targets within 1.5 tiles.",
+            "Increase this chance by 1% when entering a new floor.",
             "Deal {{roll1}}% more damage against confused enemies.",
             "Hitting confused enemies has a {{roll2}}% chance to remove their confusion."
         },
@@ -483,7 +496,7 @@ PST.astralWepMods = {
         maxRolls = {40, 20},
         upgIncrements = {1, -2}
     },
-    adriftBlade = { -- TODO
+    adriftBlade = {
         description = "{{roll1}}% chance on hit to deal between {{roll2}}% and {{roll3}}% of the original damage.",
         ancient = true,
         minRolls = {25, 40, 200},
@@ -491,11 +504,11 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 1, 5}
     },
     -- Ancient Quickblades
-    nimbleTwins = { -- TODO
+    nimbleTwins = {
         description = {
             "+{{roll1}}% tears.",
             "When hitting an enemy, additionally fire a slow-moving red tear and a quick blue tear towards them.",
-            "These tears have {{roll2}}% of your damage and range.",
+            "These tears deal {{roll2}}% of your damage.",
             "Gain +3% damage for 2 seconds when hitting enemies with the red tear, which stacks up to {{roll3}}%.",
             "Gain +3% tears for 2 seconds when hitting enemies with the blue tear, which stacks up to {{roll3}}%."
         },
@@ -504,19 +517,19 @@ PST.astralWepMods = {
         maxRolls = {12, 50, 21},
         upgIncrements = {0.5, 3, 0.5}
     },
-    crimsonAltruist = { -- TODO
+    crimsonAltruist = {
         description = {
             "+{{roll1}}% damage when using a blood donation machine, up to 100%.",
-            "+{{roll2}} tears when a blood donation machine explodes on use.",
+            "+{{roll2}} tears every {{roll3}} blood donation machine uses.",
             "Halve the active bonuses when entering a new floor."
         },
         ancient = true,
-        minRolls = {2, 0.2},
-        maxRolls = {6, 0.4},
-        upgIncrements = {0.25, 0.02}
+        minRolls = {2, 0.2, 16},
+        maxRolls = {6, 0.4, 9},
+        upgIncrements = {0.25, 0.02, -1}
     },
     -- Ancient Spears
-    beastbane = { -- TODO
+    beastbane = {
         description = {
             "+{{roll1}}% damage dealt to bosses.",
             "Defeating a boss grants you a permanent +{{roll2}}% damage, once every 2 floors."
@@ -526,44 +539,44 @@ PST.astralWepMods = {
         maxRolls = {18, 6},
         upgIncrements = {0.5, 0.1}
     },
-    gravitas = { -- TODO
+    gravitas = {
         description = {
-            "When hitting enemies within 1.5 and 2.5 tiles away from you, {{roll1}}% chance to additionally fire",
+            "When hitting enemies beyond 2 tiles from you, {{roll1}}% chance to additionally fire",
             "3 homing tears dealing {{roll2}}% of your damage. 0.5 seconds cooldown.",
-            "When hitting enemies with the homing tears, 1% chance to gain Spoon Bender for the current room.",
+            "When hitting enemies with the homing tears, 3% chance to gain Spoon Bender for the current room.",
             "-{{roll3}}% tears while you have Spoon Bender."
         },
         ancient = true,
-        minRolls = {6, 30, 12},
-        maxRolls = {10, 50, 6},
+        minRolls = {7, 30, 12},
+        maxRolls = {12, 50, 6},
         upgIncrements = {0.25, 2, -0.5}
     },
-    borealSpear = { -- TODO
+    borealSpear = {
         description = {
-            "{{roll1}}% chance on hit to slow enemies for 2 seconds.",
+            "{{roll1}}% chance on hit to slow enemies for 3 seconds.",
             "When you hit a slowed enemy beyond {{roll2}} tiles of you, +1% chance to freeze that enemy.",
             "Hitting enemies repeatedly increases the chance to freeze them, with the freeze chance being",
             "individual to each enemy."
         },
         ancient = true,
-        minRolls = {6, 3},
-        maxRolls = {9, 1.5},
+        minRolls = {7, 3},
+        maxRolls = {10, 1.5},
         upgIncrements = {0.2, -0.1}
     },
-    viperStinger = { -- TODO
+    viperStinger = {
         description = {
             "{{roll1}}% chance to paralyze enemies on hit for 2 seconds.",
-            "Double this chance against poisoned enemies.",
-            "Killing a paralyzed enemy releases a toxic cloud, poisoning and dealing {{roll2}}% of your damage",
-            "to nearby enemies."
+            "Double the chance and duration against poisoned enemies.",
+            "Killing a paralyzed enemy releases a toxic cloud, poisoning for 4 seconds and dealing {{roll2}}%",
+            "of your damage to nearby enemies.",
         },
         ancient = true,
-        minRolls = {3, 80},
-        maxRolls = {5, 150},
+        minRolls = {9, 80},
+        maxRolls = {15, 150},
         upgIncrements = {0.1, 4}
     },
     -- Ancient Tridents
-    consecrator = { -- TODO
+    consecrator = {
         description = {
             "Gain +{{roll1}}% damage when entering a devil room, up to {{roll2}}%.",
             "Gain +{{roll1}}% tears when entering an angel room, up to {{roll2}}%.",
@@ -571,23 +584,23 @@ PST.astralWepMods = {
             "+{{roll3}}% chance for angel/devil rooms to show up."
         },
         ancient = true,
-        minRolls = {6, 30, 5},
-        maxRolls = {10, 40, 10},
+        minRolls = {9, 30, 5},
+        maxRolls = {15, 40, 10},
         upgIncrements = {0.25, 1, 0.25}
     },
-    verdantGreen = { -- TODO
+    verdantGreen = {
         description = {
             "{{roll1}}% chance on hit to create a poison cloud.",
-            "Poison clouds periodically poison enemies within it. Poisoned enemies instead take {{roll2}}%",
-            "of your damage.",
-            "Up to 3 poison clouds can be active in the room simultaneously."
+            "This chance receives a flat increase from your tears stat, up to +5%.",
+            "Poison clouds periodically poison enemies within it for 4 seconds. Poisoned enemies instead take {{roll2}}%",
+            "of your damage."
         },
         ancient = true,
         minRolls = {6, 25},
         maxRolls = {9, 40},
         upgIncrements = {0.2, 1}
     },
-    lostCoralTrident = { -- TODO
+    lostCoralTrident = {
         description = {
             "Start with innate Neptunus.",
             "-{{roll1}}% damage."
@@ -597,11 +610,13 @@ PST.astralWepMods = {
         maxRolls = {12},
         upgIncrements = {-0.8}
     },
-    oceanicMight = { -- TODO
+    oceanicMight = {
         description = {
             "Start with innate Aquarius.",
-            "Creeps of any type deal {{roll1}}% more damage to enemies.",
-            "+{{roll2}}% speed while standing on creep."
+            "Player creep deals {{roll1}}% more damage to enemies.",
+            "Hitting enemies standing on creep created by you has a 10% chance to trigger a water explosion, dealing",
+            "25 damage to nearby enemies. 2.5 second cooldown.",
+            "Explosion trigger chance becomes 40% against flying enemies."
         },
         ancient = true,
         minRolls = {30, 5},
@@ -609,7 +624,7 @@ PST.astralWepMods = {
         upgIncrements = {1, 0.25}
     },
     -- Ancient Scythes
-    taleEnder = { -- TODO
+    taleEnder = {
         description = {
             "+{{roll1}}% damage dealt to full health enemies.",
             "{{roll2}}% chance to instantly kill the first non-boss enemy you hit in each room.",
@@ -620,18 +635,18 @@ PST.astralWepMods = {
         maxRolls = {120, 100},
         upgIncrements = {3, 2}
     },
-    crimsonReaper = { -- TODO
+    crimsonReaper = {
         description = {
             "When hitting a full health enemy, apply bleed to them for {{roll1}} seconds.",
             "Double this duration against bosses.",
-            "Bleeding enemies below {{roll1}}% HP take increased damage based on their missing HP below {{roll2}}%."
+            "Bleeding enemies below {{roll2}}% HP take increased damage based on their missing HP below {{roll2}}%."
         },
         ancient = true,
         minRolls = {4, 20},
         maxRolls = {6, 50},
         upgIncrements = {0.2, 2}
     },
-    mobripper = { -- TODO
+    mobripper = {
         description = {
             "Circular slashes from the implicit modifier now deal {{roll1}}% of the hit's damage instead.",
             "If the circular slash kills any enemy or hits a boss, fear all enemies hit by it for 3 seconds.",
@@ -643,7 +658,7 @@ PST.astralWepMods = {
         upgIncrements = {8, -1}
     },
     -- Ancient Axes
-    starsteelBroadaxe = { -- TODO
+    starsteelBroadaxe = {
         description = {
             "+2% tears for the current room when hitting bleeding enemies, up to {{roll1}}%.",
             "Hitting a boss reduces their status effect cooldown by 0.5 seconds."
@@ -653,130 +668,127 @@ PST.astralWepMods = {
         maxRolls = {40},
         upgIncrements = {1}
     },
-    ancientRunicChopper = { -- TODO
+    ancientRunicChopper = {
         description = {
-            "+{{roll1}}% permanent damage whenever you use a rune, up to {{roll2}}%.",
-            "+{{roll3}}% tears for 10 seconds whenever you use a rune.",
-            "Receive half of these boosts when using rune shards."
+            "+{{roll1}}% permanent damage whenever you use a full rune, up to {{roll2}}%.",
+            "+{{roll3}}% tears for 10 seconds whenever you use a rune or rune shard."
         },
         ancient = true,
-        minRolls = {3, 24, 8},
-        maxRolls = {5, 36, 12},
-        upgIncrements = {0.1, 0.8, 0.2}
+        minRolls = {3, 24, 12},
+        maxRolls = {5, 36, 18},
+        upgIncrements = {0.1, 0.8, 0.4}
     },
     -- Ancient Greataxes
-    berserkerWrath = { -- TODO
+    berserkerWrath = {
         description = {
-            "Gain Berserk! as an innate effect when entering a floor, if you don't have it.",
-            "Remove Berserk! once it triggers.",
-            "+{{roll1}} seconds to Berserk!'s duration.",
-            "+{{roll2}}% damage during berserk."
-        },
-        ancient = true,
-        minRolls = {3, 8},
-        maxRolls = {5, 15},
-        upgIncrements = {0.1, 0.5}
-    },
-    frozenTerror = { -- TODO
-        description = {
-            "When hitting bleeding enemies, {{roll1}}% chance to slow them for 2 seconds.",
-            "When hitting slowed enemies within {{roll2}} tile(s) of you, perform a circular slash around you",
-            "that can freeze slowed enemies. 1 second cooldown.",
-            "Slash deals {{roll3}}% of your damage."
-        },
-        ancient = true,
-        minRolls = {15, 1, 80},
-        maxRolls = {25, 2, 160},
-        upgIncrements = {1, 0.1, 4}
-    },
-    -- Ancient Shortbows
-    stormAdvance = { -- TODO
-        description = {
-            "When hitting enemies beyond 2.5 tiles of you, create a storm cloud at their position that",
-            "lasts 8 seconds. {{roll1}} second cooldown.",
-            "Storm clouds periodically zap enemies near it for {{roll2}} damage.",
-            "Gain +{{roll3}}% tears and electrified tears when inside a storm cloud."
-        },
-        ancient = true,
-        minRolls = {6, 5, 7},
-        maxRolls = {3, 8, 10},
-        upgIncrements = {-0.2, 0.2, 0.2}
-    },
-    quillRain = { -- TODO
-        description = {
-            "Start with innate Soy Milk.",
-            "Deal half as much damage to enemies within {{roll1}} tiles of you.",
-            "Turns the implicit shot speed to tear multiplier into a damage multiplier."
+            "Trigger Berserk! when first entering a room with monsters, once per floor.",
+            "Entering the boss room causes Berserk! to stop.",
+            "+{{roll1}} seconds to Berserk!'s duration."
         },
         ancient = true,
         minRolls = {3},
-        maxRolls = {1.5},
-        upgIncrements = {-0.1}
+        maxRolls = {5},
+        upgIncrements = {0.1, 0.5, 1}
     },
-    -- Ancient Bows
-    gildedSeeker = { -- TODO
+    frozenTerror = {
         description = {
-            "Gain +1% damage when collecting any coin, up to {{roll1}}%.",
-            "Halve your current bonus when clearing a room.",
-            "{{roll2}}% chance for fired tears to be coin tears."
+            "When hitting bleeding enemies, {{roll1}}% chance to slow them for 3 seconds.",
+            "When hitting slowed enemies within {{roll2}} tile(s) of you, perform a circular slash",
+            "around you that can freeze slowed enemies. 1.5 second cooldown.",
+            "Slash deals {{roll3}}% of your damage."
         },
         ancient = true,
-        minRolls = {40, 5},
-        maxRolls = {60, 15},
-        upgIncrements = {1, 0.5}
+        minRolls = {15, 1.5, 80},
+        maxRolls = {25, 2.5, 160},
+        upgIncrements = {1, 0.1, 4}
     },
-    twistedOakstring = { -- TODO
+    -- Ancient Shortbows
+    stormAdvance = {
         description = {
-            "When hitting enemies beyond {{roll1}} tiles of you, create an additional homing and",
-            "fearing tear at their position.",
+            "Start with innate 120 Volt.",
+            "Every {{roll1}} hits against enemies, launch a fan of electrified tears towards the last target hit.",
+            "These tears deal {{roll2}}% of your damage.",
+            "Effect has a 2 second cooldown."
+        },
+        ancient = true,
+        minRolls = {10, 40},
+        maxRolls = {6, 100},
+        upgIncrements = {-0.25, 4}
+    },
+    quillRain = {
+        description = {
+            "Start with innate Soy Milk.",
+            "-{{roll2}}% damage dealt to enemies within {{roll1}} tiles of you."
+        },
+        ancient = true,
+        minRolls = {2.5, 40},
+        maxRolls = {1.5, 10},
+        upgIncrements = {-0.1, -2}
+    },
+    -- Ancient Bows
+    gildedSeeker = {
+        description = {
+            "Start with innate Head of the Keeper.",
+            "+1% damage when collecting any coin while there are monsters in the room, up to {{roll1}}%.",
+            "Halve your current bonus when clearing a room.",
+        },
+        ancient = true,
+        minRolls = {25, 25},
+        maxRolls = {40, 40},
+        upgIncrements = {1, 1}
+    },
+    twistedOakstring = {
+        description = {
+            "When hitting enemies beyond {{roll1}} tiles of you, create an additional homing, spectral and",
+            "fearing tear at their position. 0.5 second cooldown.",
             "This tear deals {{roll2}}% of the hit's damage."
         },
         ancient = true,
-        minRolls = {3, 80},
+        minRolls = {2.5, 80},
         maxRolls = {1.5, 140},
         upgIncrements = {-0.1, 4}
     },
-    bruteOnslaught = { -- TODO
+    bruteOnslaught = {
         description = {
-            "When using an active item, for each charge used, boost the next 3 hits' damage by {{roll1}}%.",
+            "When using an active item, for each charge used, boost the next 5 hits' damage by {{roll1}}%.",
             "+{{roll2}}% tears for 5 seconds after using an active item."
         },
         ancient = true,
-        minRolls = {20, 7},
-        maxRolls = {40, 12},
-        upgIncrements = {2, 0.2}
+        minRolls = {20, 10},
+        maxRolls = {40, 16},
+        upgIncrements = {2, 0.4}
     },
     -- Ancient Crossbows
-    volatileArbalest = { -- TODO
+    volatileArbalest = {
         description = {
             "{{roll1}}% chance to cause a small explosion when hitting enemies beyond 2.5 tiles of you,",
-            "dealing {{roll2}}% of your damage. 2 seconds cooldown."
+            "dealing {{roll2}}% of your damage. 1 second cooldown."
         },
         ancient = true,
-        minRolls = {6, 250},
+        minRolls = {7, 250},
         maxRolls = {10, 400},
-        upgIncrements = {0.25, 10}
+        upgIncrements = {0.2, 10}
     },
-    avelyn = { -- TODO
+    avelyn = {
         description = {
             "Every {{roll1}} total seconds spent firing, shoot 3 tears towards a nearby enemy, each dealing {{roll2}}%",
             "of your damage."
         },
         ancient = true,
-        minRolls = {4, 33},
-        maxRolls = {2.5, 50},
+        minRolls = {4, 40},
+        maxRolls = {2.5, 75},
         upgIncrements = {-0.1, 1}
     },
-    preciseSeeker = { -- TODO
+    preciseSeeker = {
         description = {
-            "When entering a room, mark a random enemy. Prioritizes bosses.",
+            "Every second, mark a random enemy if available, prioritizing bosses.",
             "Every {{roll1}} seconds, fire a very quick piercing and spectral tear towards the marked enemy.",
-            "Fired tear deals {{roll2}}% of your damage, up to 80."
+            "Fired tear deals {{roll2}}% of your damage, up to 60."
         },
         ancient = true,
-        minRolls = {6, 200},
-        maxRolls = {4, 400},
-        upgIncrements = {-0.1, 10}
+        minRolls = {5, 200},
+        maxRolls = {2.5, 400},
+        upgIncrements = {-0.25, 10}
     }
 }
 
@@ -876,7 +888,7 @@ PST.astralWepData = {
                 name = "Arcing Needle",
                 spriteFrame = 4,
                 weight = 100,
-                ancientMods = {"ancientNeedle"}
+                ancientMods = {"arcingNeedle"}
             },
             -- Auric Persecutor
             {
@@ -1287,13 +1299,13 @@ PST.astralWepData = {
             name = "crossbowImp",
             description = {
                 "{{roll1}} tears.",
-                "{{roll2}} shot speed.",
+                "+{{roll2}} shot speed.",
                 "Your total shot speed becomes a damage multiplier, up to {{roll3}}%."
             },
             rollsFunc = function(honing)
                 return {
                     roll1 = -0.15 + PST:roundFloat(0.1 * (honing / 50), -2),
-                    roll2 = 0.08 + PST:roundFloat(0.8 * (honing / 50), -2),
+                    roll2 = 0.08 + PST:roundFloat(0.42 * (honing / 50), -2),
                     roll3 = 30 + PST:roundFloat(20 * (honing / 50), -2)
                 }
             end

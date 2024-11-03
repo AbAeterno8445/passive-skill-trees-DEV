@@ -186,8 +186,8 @@ local function astralForgeScreenRender(self, tScreen)
 
     -- Inventory filter buttons
     for i, tmpFilter in ipairs(invFilters) do
-        local filterX = tmpX + 3 + 18 * ((i - 1) % 8)
-        local filterY = tmpY + 18 * math.floor((i - 1) / 8)
+        local filterX = tmpX + 3 + 18 * ((i - 1) % 9)
+        local filterY = tmpY + 18 * math.floor((i - 1) / 9)
 
         if tmpFilter.weaponType ~= nil and PST:arrHasValue(self.appliedFilters.weaponType, tmpFilter.weaponType) or
         tmpFilter.weaponRarity ~= nil and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpFilter.weaponRarity) then
@@ -362,7 +362,7 @@ local function astralForgeScreenRender(self, tScreen)
     else
         -- Hovered
         if self.camCenterX >= tmpX - 20 and self.camCenterX <= tmpX + 20 and
-        self.camCenterY >= tmpY - 12 and self.camCenterY <= tmpY + 12 then
+        self.camCenterY >= tmpY and self.camCenterY <= tmpY + 24 then
             self.hoveredPageButton = "prev"
             tmpColor = PST.kcolors.TEAL1
         end
@@ -377,7 +377,7 @@ local function astralForgeScreenRender(self, tScreen)
     else
         -- Hovered
         if self.camCenterX >= tmpX - 20 and self.camCenterX <= tmpX + 20 and
-        self.camCenterY >= tmpY - 12 and self.camCenterY <= tmpY + 12 then
+        self.camCenterY >= tmpY and self.camCenterY <= tmpY + 24 then
             self.hoveredPageButton = "next"
             tmpColor = PST.kcolors.TEAL1
         end

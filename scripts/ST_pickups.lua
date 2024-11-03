@@ -584,6 +584,21 @@ function PST:onPickup(pickup, collider, low, forced)
                     PST:addModifiers({ damagePerc = tmpAdd, astralwep_coinPermDmgBuff = tmpAdd }, true)
                 end
             end
+
+            -- Ancient weapon mod: Auric Persecutor
+            tmpMod = PST:getSnapAstralWepMod("auricPersecutor")
+            if tmpMod and pickup:GetCoinValue() >= 5 then
+                local tmpAdd = math.min(tmpMod[2], tmpMod[3] - PST:getTreeSnapshotMod("ancwep_auricPersecutorBuff", 0))
+                if tmpAdd > 0 then
+                    PST:addModifiers({ damagePerc = tmpAdd, ancwep_auricPersecutorBuff = tmpAdd }, true)
+                end
+            end
+
+            -- Ancient weapon mod: Gilded Seeker
+            tmpMod = PST:getSnapAstralWepMod("gildedSeeker")
+            if tmpMod and PST:getRoom():GetAliveEnemiesCount() > 0 and PST:getTreeSnapshotMod("ancwep_gildedSeekerBuff", 0) < tmpMod[1] then
+                PST:addModifiers({ damagePerc = 1, ancwep_gildedSeekerBuff = 1 }, true)
+            end
         -- On pickup key
         elseif variant == PickupVariant.PICKUP_KEY then
             local keyChance = PST:getTreeSnapshotMod("keyDupe", 0)
