@@ -13,7 +13,7 @@ function PST:onNewRun(isContinued)
     PST:resetMods()
     local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and Isaac.GetChallenge() == 0) or PST.config.treeOnChallenges)
     if treeActive then
-        local globalTrees = {"global", "starTree", "sidereal"}
+        local globalTrees = {"global", "starTree"}
         -- Get snapshot of tree modifiers
         for _, tmpTree in ipairs(globalTrees) do
             for nodeID, node in pairs(PST.trees[tmpTree]) do
@@ -332,6 +332,16 @@ function PST:onNewRun(isContinued)
                     end
                     failsafe = failsafe + 1
                 end
+            end
+        end
+    end
+
+    -- Apply Sidereal tree nodes
+    if PST:isRunSidereal() then
+        -- Get snapshot of tree modifiers
+        for nodeID, node in pairs(PST.trees["sidereal"]) do
+            if PST:isNodeAllocated("sidereal", nodeID) then
+                PST:addModifiers(node.modifiers)
             end
         end
     end

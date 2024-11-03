@@ -243,6 +243,8 @@ function PST:addModifiers(modList, addToSnapshot)
 end
 
 local siderealTravelNodes = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
+-- Nodes with names included here can't be respecced
+local respecBans = {"Sidereal Universalization"}
 
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
 function PST:isNodeAllocatable(tree, nodeID, allocation)
@@ -295,6 +297,10 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         -- Deallocation (e.g. respec)
         if not PST:isNodeAllocated(tree, nodeID) or
         (PST.modData.respecPoints <= 0 and not infRespec) then
+            return false
+        end
+
+        if PST:arrHasValue(respecBans, nodeData.name) and not infRespec then
             return false
         end
 

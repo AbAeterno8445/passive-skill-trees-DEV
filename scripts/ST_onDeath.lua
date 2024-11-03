@@ -93,17 +93,23 @@ function PST:onDeath(entity)
             if isFinalBoss then
                 -- Expedition objective: defeat any final boss (add Isaac boss type check for blue baby boss on chest)
                 PST:expedAddProgInRun("finalBoss", 1)
-
-                -- Ancient Stardust
-                PST.modData.ancientStardust = PST.modData.ancientStardust + 1
-                PST:createFloatTextFX("+1 Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
-                SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.25, 2, false, 1.5)
             end
 
             -- Expedition objective: defeat Delirium or The Beast without taking damage more than once
             if (entity:GetType() == EntityType.ENTITY_DELIRIUM or entity:GetType() == EntityType.ENTITY_BEAST) and
             PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
                 PST:expedAddProgInRun("beastDeliNoDmg", 1)
+            end
+        end
+
+        -- Expedition/sidereal univ
+        if PST:isRunSidereal() then
+            -- Final boss kill
+            if isFinalBoss then
+                -- Ancient Stardust
+                PST.modData.ancientStardust = PST.modData.ancientStardust + 1
+                PST:createFloatTextFX("+1 Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
+                SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.25, 2, false, 1.5)
             end
         end
 

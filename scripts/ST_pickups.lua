@@ -50,13 +50,15 @@ function PST:prePickup(pickup, collider, low)
             pickup.SubType = 1
             SFXManager():Play(Isaac.GetSoundIdByName("unlock cosmic"), 1, 2, false, 0.9 + 0.2 * math.random())
 
-            if PST:getTreeSnapshotMod("isExpedRun", false) then
+            if PST:isRunSidereal() then
                 local depth = PST:getTreeSnapshotMod("expedDepth", 1)
                 local obolsAmt = PST.obolEvents.siderealCache(depth)
                 PST:expedDropObolsAt(pickup.Position, obolsAmt)
 
-                -- Expedition objective: open any chest
-			    PST:expedAddProgInRun("chests", 1)
+                if PST:getTreeSnapshotMod("isExpedRun", false) then
+                    -- Expedition objective: open any chest
+                    PST:expedAddProgInRun("chests", 1)
+                end
             end
 
             -- Chance for Sidereal Caches to drop 1-2 sacks

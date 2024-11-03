@@ -544,6 +544,11 @@ function PST:isSoulOfTheSirenUnlocked()
 	Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.HUSH) > 0
 end
 
+-- Returns true if either the run is an expedition run or the Sidereal Universalization node is allocated
+function PST:isRunSidereal()
+	return PST:getTreeSnapshotMod("isExpedRun", false) or PST:getTreeSnapshotMod("siderealUniv", false)
+end
+
 ---@param itemPool ItemPoolType
 ---@param item CollectibleType
 function PST:poolHasCollectible(itemPool, item)
