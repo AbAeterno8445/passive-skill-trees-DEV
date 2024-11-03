@@ -59,25 +59,43 @@ function PST.treeScreen:InputAllocate()
                         menuX = self.hoveredNode.pos.X * 38,
                         menuY = self.hoveredNode.pos.Y * 38
                     })
+
                 -- Star Tree node, switch to star tree view
                 elseif self.hoveredNode.name == "Star Tree" and self.currentTree ~= "starTree" then
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     self.currentTree = "starTree"
                     self:CenterCamera()
+
                 -- Arcane Astrolabe node, open Astral Expedition menu
                 elseif self.hoveredNode.name == "Arcane Astrolabe" then
                     self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.EXPEDITION)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
                 -- Sidereal Tree node, switch to sidereal tree
                 elseif self.hoveredNode.name == "Sidereal Tree" and self.currentTree ~= "sidereal" then
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     self.currentTree = "sidereal"
                     PST:updateNodes("sidereal")
                     self:CenterCamera()
+
                 -- Astral Forge node, switch to Astral Forge menu
                 elseif self.hoveredNode.name == "Astral Forge" then
                     self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.ASTRAL_FORGE)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
+                -- Obol Exchange node, convert global SP into arcane obols
+                elseif self.hoveredNode.name == "Obol Exchange" then
+                    if PST.modData.skillPoints > 0 then
+                        local charData = PST:getCurrentCharData()
+                        if charData then
+                            PST.modData.skillPoints = PST.modData.skillPoints - 1
+                            charData.arcaneObols = charData.arcaneObols + 10
+                            self.treeHasChanges = true
+                            SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.35, 2, false, 0.8)
+                        end
+                    else
+                        SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                    end
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do

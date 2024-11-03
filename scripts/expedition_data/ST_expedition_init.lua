@@ -6,7 +6,7 @@ PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500, 1000}
 
 PST.siderealVicinityCost = 5
 PST.siderealRegionCost = 50
-PST.siderealExpanseCost = 200
+PST.siderealExpanseCost = 150
 
 ---@enum PSTExpNodeRewardType
 PSTExpNodeRewardType = {
