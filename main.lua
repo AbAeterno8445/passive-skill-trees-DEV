@@ -56,6 +56,7 @@ PST.debugOptions = {
 	drawNodeIDs = false, -- Draw node IDs on the tree screen
 	printModsOnStart = false, -- Print modifiers applied to the snapshot on run start,
 	freeForging = false, -- Astral Forge actions become free
+	freeBazaar = false, -- Timeless Bazaar items and refreshing become free
 }
 
 local localDebugMode = false
@@ -66,6 +67,7 @@ function PST:toggleDebugMode()
 	PST.debugOptions.allAvailable = localDebugMode
 	PST.debugOptions.cosmicRUnlocked = localDebugMode
 	PST.debugOptions.freeForging = localDebugMode
+	PST.debugOptions.freeBazaar = localDebugMode
 	print("Passive Skill Trees: debug mode now", localDebugMode and "on" or "off")
 end
 
@@ -329,6 +331,7 @@ include("scripts.ST_completionEvents")
 include("scripts.ST_cosmicRData")
 include("scripts.expedition_data.ST_expedition")
 include("scripts.astral_forge.ST_astralforge_weps")
+include("scripts.ST_timelessBazaar")
 include("scripts.tree_data.nodes")
 include("scripts.tree_screen.treescreenInit")
 include("scripts.ST_onNewRoom")

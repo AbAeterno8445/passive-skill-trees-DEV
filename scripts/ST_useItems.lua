@@ -345,7 +345,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         -- Emptying Hold i.e. triggering poop usage
         if poopHeld == 0 then
             -- Mod: chance to trigger Brown Nugget's effect when using Hold
-            tmpMod = PST:getTreeMod("holdBrownNugget", 0)
+            tmpMod = PST:getTreeSnapshotMod("holdBrownNugget", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("holdBrownNuggetProcs", 0) < 5 and 100 * math.random() < tmpMod then
                 player:UseActiveItem(CollectibleType.COLLECTIBLE_BROWN_NUGGET, UseFlag.USE_NOANIM)
                 PST:addModifiers({ holdBrownNuggetProcs = 1 }, true)

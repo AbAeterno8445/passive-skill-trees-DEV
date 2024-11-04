@@ -1460,6 +1460,9 @@ function PST:resetMods()
 		sideCacheSacks = 0,
 		sideCacheAstralWep = 0,
 
+		-- Timeless Bazaar
+		bazaarLoseRefresh = 0,
+
 		-- Astral weapon helpers/effects
 		astralWepTierDrops = 1,
 

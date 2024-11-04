@@ -278,6 +278,25 @@ function PST:getTreeSnapshotMod(modName, default)
     return PST.modData.treeModSnapshot[modName]
 end
 
+-- Get a list of total modifiers formed from the currently allocated nodes in the given tree (currently only for non-character trees)
+function PST:getAllTreeMods(tree)
+	local tmpMods = {}
+	if PST.trees[tree] then
+		for nodeID, node in pairs(PST.trees[tree]) do
+			if PST:isNodeAllocated(tree, nodeID) then
+				for modName, val in pairs(node.modifiers) do
+					if tmpMods[modName] ~= nil and type(tmpMods[modName]) == "number" and type(val) == "number" then
+						tmpMods[modName] = tmpMods[modName] + val
+					else
+						tmpMods[modName] = val
+					end
+				end
+			end
+		end
+	end
+	return tmpMods
+end
+
 -- Return whether the given PlayerType character has been picked in the Cosmic Realignment node.
 -- Also returns false if the player is currently playing as the given character.
 ---@param character PlayerType

@@ -59,6 +59,17 @@ local targetScreens = {
         switchFunc = function(tScreen)
             tScreen.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.ASTRAL_FORGE)
         end
+    },
+    {
+        name = "Timeless Bazaar",
+        nodeFrame = 792,
+        enabledFunc = function()
+            return PST:isNodeNameAllocated("sidereal", "Timeless Bazaar")
+        end,
+        ---@param tScreen PST.treeScreen
+        switchFunc = function(tScreen)
+            tScreen.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.BAZAAR)
+        end
     }
 }
 
@@ -116,6 +127,7 @@ function menuTabberScreen:Render(tScreen)
     tmpDrawY = tmpDrawY + 15
 
     -- Draw target screen selections
+    local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
     local tmpDrawn = 0
     for i, tmpTarget in ipairs(targetScreens) do
         local nodeY = tmpDrawY + 15 + tmpDrawn * 36
@@ -123,7 +135,6 @@ function menuTabberScreen:Render(tScreen)
         local isEnabled = tmpTarget:enabledFunc()
 
         -- Draw node
-        local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
         local oldAlpha = nodeSprite.Color.A
         local oldScaleX, oldScaleY = nodeSprite.Scale.X, nodeSprite.Scale.Y
         if not isEnabled then

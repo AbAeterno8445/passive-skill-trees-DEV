@@ -8,6 +8,7 @@ PSTTreeScreenMenu = {
     HELP = "helpmenu",
     EXPEDITION = "expeditionMenu",
     ASTRAL_FORGE = "astralForge",
+    BAZAAR = "bazaar",
     MENU_TABBER = "menuTabber"
 }
 
@@ -21,6 +22,7 @@ local menuScreensModule = {
         [PSTTreeScreenMenu.HELP] = include("scripts.tree_screen.modules.menu_screens.helpScreen"),
         [PSTTreeScreenMenu.EXPEDITION] = include("scripts.tree_screen.modules.menu_screens.expeditionScreen"),
         [PSTTreeScreenMenu.ASTRAL_FORGE] = include("scripts.tree_screen.modules.menu_screens.astralForgeScreen"),
+        [PSTTreeScreenMenu.BAZAAR] = include("scripts.tree_screen.modules.menu_screens.timelessBazaarScreen"),
         [PSTTreeScreenMenu.MENU_TABBER] = include("scripts.tree_screen.modules.menu_screens.menuTabberScreen")
     }
 }

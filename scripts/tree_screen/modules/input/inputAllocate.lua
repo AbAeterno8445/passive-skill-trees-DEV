@@ -96,6 +96,11 @@ function PST.treeScreen:InputAllocate()
                     else
                         SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
                     end
+
+                -- Timeless Bazaar node, switch to bazaar menu
+                elseif self.hoveredNode.name == "Timeless Bazaar" then
+                    self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.BAZAAR)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do

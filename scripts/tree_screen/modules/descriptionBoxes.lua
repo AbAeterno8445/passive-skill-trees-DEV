@@ -121,6 +121,29 @@ local descriptionBoxesModule = {
                 end
             end
             return { name = descName, description = tmpDescription }
+        end,
+
+        -- Timeless Bazaar & purchased items
+        ["Timeless Bazaar"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            if isAllocated then
+                local charData = PST:getCurrentCharData()
+                if charData and charData.bazaarPurchased and #charData.bazaarPurchased > 0 then
+                    local newDesc = {table.unpack(tmpDescription)}
+                    table.insert(newDesc, 2, {"Purchased items:", PST.kcolors.LEVEL_PURPLE})
+                    local gameCfg = Isaac.GetItemConfig()
+                    for _, tmpItem in ipairs(charData.bazaarPurchased) do
+                        local itemCfg = gameCfg:GetCollectible(tmpItem)
+                        if itemCfg then
+                            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+                            if itemName ~= "StringTable::InvalidKey" then
+                                table.insert(newDesc, 3, {"    " .. itemName, PST.kcolors.LEVEL_PURPLE})
+                            end
+                        end
+                    end
+                    return { name = descName, description = newDesc }
+                end
+            end
+            return { name = descName, description = tmpDescription }
         end
     }
 }

@@ -20,6 +20,12 @@ function PST:astralWepPickRandType(factorMods)
     local totalWeight = 0
     for _, tmpType in pairs(PSTAstralWepType) do
         typeWeights[tmpType] = 100
+        totalWeight = totalWeight + typeWeights[tmpType]
+    end
+    PST:shuffleList(typeWeights)
+
+    local randWeight = math.random(totalWeight)
+    for tmpType, typeWeight in pairs(typeWeights) do
         if factorMods then
             -- Mod: Specific weapon type chances
             local tmpMod = PST:getTreeSnapshotMod("astralWepRate" .. PST.astralWepData[tmpType].name, 0)
@@ -27,12 +33,7 @@ function PST:astralWepPickRandType(factorMods)
                 return tmpType
             end
         end
-        totalWeight = totalWeight + typeWeights[tmpType]
-    end
-    PST:shuffleList(typeWeights)
 
-    local randWeight = math.random(totalWeight)
-    for tmpType, typeWeight in pairs(typeWeights) do
         randWeight = randWeight - typeWeight
         if randWeight <= 0 then
             return tmpType

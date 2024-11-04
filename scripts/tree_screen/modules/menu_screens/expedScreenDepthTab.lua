@@ -48,6 +48,7 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
             PST.cosmicRData.charSprite:Render(Vector(drawX + 3, drawY + 3))
         end
 
+        -- 'Snaking' bubbles
         if not flip then
             if flipC == bubbleCols - 1 then
                 flip = true

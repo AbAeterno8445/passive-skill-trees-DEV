@@ -5,6 +5,14 @@ function PST:onRunOver(isGameOver)
         if relearningMod then
             PST.modData.respecPoints = PST.modData.respecPoints + 10 + 2 * PST:getTreeSnapshotMod("relearningFloors", 1)
         end
+
+        -- Timeless Bazaar, refresh
+        local charData = PST:getCurrentCharData()
+        if charData and charData.bazaarSelection ~= nil then
+            charData.bazaarPurchased = {}
+            charData.bazaarDone = nil
+            PST:bazaarGenSelection()
+        end
     else
         -- Astral Expeditions, subtract attempts on run loss
         if PST:getTreeSnapshotMod("isExpedRun", false) then
@@ -24,6 +32,18 @@ function PST:onRunOver(isGameOver)
                 if noAttemptStage == 0 or PST:getLevel():GetStage() < noAttemptStage then
                     PST:expedLoseAttempt(depth)
                 end
+            end
+        end
+
+        -- Timeless Bazaar, refresh after losing 2x past floor 7
+        local charData = PST:getCurrentCharData()
+        if charData and charData.bazaarSelection ~= nil and PST:getLevel():GetStage() > 7 then
+            PST:addModifiers({ bazaarLoseRefresh = 1 }, true)
+            if PST:getTreeSnapshotMod("bazaarLoseRefresh", 0) >= 2 then
+                charData.bazaarPurchased = {}
+                charData.bazaarDone = nil
+                PST:bazaarGenSelection()
+                PST:addModifiers({ bazaarLoseRefresh = { value = 0, set = true } }, true)
             end
         end
     end

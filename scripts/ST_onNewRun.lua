@@ -337,141 +337,154 @@ function PST:onNewRun(isContinued)
     end
 
     -- Apply Sidereal tree nodes
-    if PST:isRunSidereal() then
+    if treeActive and PST:isRunSidereal() then
         -- Get snapshot of tree modifiers
         for nodeID, node in pairs(PST.trees["sidereal"]) do
             if PST:isNodeAllocated("sidereal", nodeID) then
                 PST:addModifiers(node.modifiers)
             end
         end
-    end
 
-    -- Astral Forge - equipped weapon mods
-    if treeActive and isExpedRun and PST:isNodeNameAllocated("sidereal", "Astral Forge") then
-        local eqWeapon = PST:getEquippedAstralWep()
-        if eqWeapon then
-            local wepTypeData = PST.astralWepData[eqWeapon.type]
+        -- Astral Forge - equipped weapon mods
+        if PST:isNodeNameAllocated("sidereal", "Astral Forge") then
+            local eqWeapon = PST:getEquippedAstralWep()
+            if eqWeapon then
+                local wepTypeData = PST.astralWepData[eqWeapon.type]
 
-            -- Weapon implicit mod
-            if eqWeapon.implicitMod then
-                local tmpModName = PST.astralWepPrefix .. wepTypeData.implicitMod.name
-                PST.modData.treeModSnapshot[tmpModName] = eqWeapon.implicitMod
-            end
+                -- Weapon implicit mod
+                if eqWeapon.implicitMod then
+                    local tmpModName = PST.astralWepPrefix .. wepTypeData.implicitMod.name
+                    PST.modData.treeModSnapshot[tmpModName] = eqWeapon.implicitMod
+                end
 
-            -- Weapon modifiers
-            if eqWeapon.mods then
-                for _, tmpMod in ipairs(eqWeapon.mods) do
-                    local tmpModName = PST.astralWepPrefix .. tmpMod.name
-                    PST.modData.treeModSnapshot[tmpModName] = tmpMod.rolls or true
+                -- Weapon modifiers
+                if eqWeapon.mods then
+                    for _, tmpMod in ipairs(eqWeapon.mods) do
+                        local tmpModName = PST.astralWepPrefix .. tmpMod.name
+                        PST.modData.treeModSnapshot[tmpModName] = tmpMod.rolls or true
 
-                    -- Ancient mod rolls
-                    local tmpModData = PST.astralWepMods[tmpMod.name]
-                    if tmpModData.ancient then
-                        local ancRolls = {}
-                        for i, tmpMinRoll in ipairs(tmpModData.minRolls) do
-                            local newRoll = tmpMinRoll
-                            if eqWeapon.ancientUpg then
-                                newRoll = newRoll + tmpModData.upgIncrements[i] * eqWeapon.ancientUpg
+                        -- Ancient mod rolls
+                        local tmpModData = PST.astralWepMods[tmpMod.name]
+                        if tmpModData.ancient then
+                            local ancRolls = {}
+                            for i, tmpMinRoll in ipairs(tmpModData.minRolls) do
+                                local newRoll = tmpMinRoll
+                                if eqWeapon.ancientUpg then
+                                    newRoll = newRoll + tmpModData.upgIncrements[i] * eqWeapon.ancientUpg
+                                end
+                                table.insert(ancRolls, newRoll)
                             end
-                            table.insert(ancRolls, newRoll)
+                            PST.modData.treeModSnapshot[tmpModName] = ancRolls
                         end
-                        PST.modData.treeModSnapshot[tmpModName] = ancRolls
                     end
                 end
-            end
 
-            -- Astral weapon mod: greataxe implicit
-            tmpMod = PST:getSnapAstralWepMod("greataxeImp")
-            if tmpMod then
-                PST:addModifiers({ tearsPerc = tmpMod[3] }, true)
-            end
+                -- Astral weapon mod: greataxe implicit
+                tmpMod = PST:getSnapAstralWepMod("greataxeImp")
+                if tmpMod then
+                    PST:addModifiers({ tearsPerc = tmpMod[3] }, true)
+                end
 
-            -- Astral weapon mod: shortbow implicit
-            tmpMod = PST:getSnapAstralWepMod("shortbowImp")
-            if tmpMod then
-                PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
-            end
+                -- Astral weapon mod: shortbow implicit
+                tmpMod = PST:getSnapAstralWepMod("shortbowImp")
+                if tmpMod then
+                    PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+                end
 
-            -- Astral weapon mod: bow implicit
-            tmpMod = PST:getSnapAstralWepMod("bowImp")
-            if tmpMod then
-                PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
-            end
+                -- Astral weapon mod: bow implicit
+                tmpMod = PST:getSnapAstralWepMod("bowImp")
+                if tmpMod then
+                    PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+                end
 
-            -- Astral weapon mod: crossbow implicit
-            tmpMod = PST:getSnapAstralWepMod("crossbowImp")
-            if tmpMod then
-                PST:addModifiers({ tears = tmpMod[1], shotSpeed = tmpMod[2] }, true)
-            end
+                -- Astral weapon mod: crossbow implicit
+                tmpMod = PST:getSnapAstralWepMod("crossbowImp")
+                if tmpMod then
+                    PST:addModifiers({ tears = tmpMod[1], shotSpeed = tmpMod[2] }, true)
+                end
 
-            -- Astral weapon mod: + base damage
-            tmpMod = PST:getSnapAstralWepMod("baseDmg")
-            if tmpMod then
-                PST:addModifiers({ damage = tmpMod[1] }, true)
-            end
+                -- Astral weapon mod: + base damage
+                tmpMod = PST:getSnapAstralWepMod("baseDmg")
+                if tmpMod then
+                    PST:addModifiers({ damage = tmpMod[1] }, true)
+                end
 
-            -- Astral weapon mod: + base damage (removed for X secs when you get hit)
-            tmpMod = PST:getSnapAstralWepMod("baseDmg2")
-            if tmpMod then
-                PST:addModifiers({ damage = tmpMod[1] }, true)
-            end
+                -- Astral weapon mod: + base damage (removed for X secs when you get hit)
+                tmpMod = PST:getSnapAstralWepMod("baseDmg2")
+                if tmpMod then
+                    PST:addModifiers({ damage = tmpMod[1] }, true)
+                end
 
-            -- Ancient weapon mod: Grey Wind
-            tmpMod = PST:getSnapAstralWepMod("greyWind")
-            if tmpMod then
-                PST:addModifiers({ damage = -0.6 }, true)
-            end
+                -- Ancient weapon mod: Grey Wind
+                tmpMod = PST:getSnapAstralWepMod("greyWind")
+                if tmpMod then
+                    PST:addModifiers({ damage = -0.6 }, true)
+                end
 
-            -- Ancient weapon mod: Executioner
-            tmpMod = PST:getSnapAstralWepMod("executioner")
-            if tmpMod then
-                PST:addModifiers({ damagePerc = tmpMod[1] }, true)
-            end
+                -- Ancient weapon mod: Executioner
+                tmpMod = PST:getSnapAstralWepMod("executioner")
+                if tmpMod then
+                    PST:addModifiers({ damagePerc = tmpMod[1] }, true)
+                end
 
-            -- Ancient weapon mod: Nimble Twins
-            tmpMod = PST:getSnapAstralWepMod("nimbleTwins")
-            if tmpMod then
-                PST:addModifiers({ tearsPerc = tmpMod[1] }, true)
-            end
+                -- Ancient weapon mod: Nimble Twins
+                tmpMod = PST:getSnapAstralWepMod("nimbleTwins")
+                if tmpMod then
+                    PST:addModifiers({ tearsPerc = tmpMod[1] }, true)
+                end
 
-            -- Ancient weapon mod: Lost Coral Trident
-            tmpMod = PST:getSnapAstralWepMod("lostCoralTrident")
-            if tmpMod then
-                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS)
-                PST:addModifiers({ damagePerc = -tmpMod[1] }, true)
-            end
+                -- Ancient weapon mod: Lost Coral Trident
+                tmpMod = PST:getSnapAstralWepMod("lostCoralTrident")
+                if tmpMod then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS)
+                    PST:addModifiers({ damagePerc = -tmpMod[1] }, true)
+                end
 
-            -- Ancient weapon mod: Oceanic Might
-            if PST:getSnapAstralWepMod("oceanicMight") then
-                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS)
-            end
+                -- Ancient weapon mod: Oceanic Might
+                if PST:getSnapAstralWepMod("oceanicMight") then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS)
+                end
 
-            -- Ancient weapon mod: Mobripper
-            tmpMod = PST:getSnapAstralWepMod("mobripper")
-            if tmpMod then
-                PST:addModifiers({ damagePerc = -tmpMod[2] }, true)
-            end
+                -- Ancient weapon mod: Mobripper
+                tmpMod = PST:getSnapAstralWepMod("mobripper")
+                if tmpMod then
+                    PST:addModifiers({ damagePerc = -tmpMod[2] }, true)
+                end
 
-            -- Ancient weapon mod: Berserker's Wrath
-            tmpMod = PST:getSnapAstralWepMod("berserkerWrath")
-            if tmpMod then
-                PST:addModifiers({ berserkDuration = tmpMod[1] }, true)
-            end
+                -- Ancient weapon mod: Berserker's Wrath
+                tmpMod = PST:getSnapAstralWepMod("berserkerWrath")
+                if tmpMod then
+                    PST:addModifiers({ berserkDuration = tmpMod[1] }, true)
+                end
 
-            -- Ancient weapon mod: Storm's Advance
-            if PST:getSnapAstralWepMod("stormAdvance") then
-                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT)
-            end
+                -- Ancient weapon mod: Storm's Advance
+                if PST:getSnapAstralWepMod("stormAdvance") then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT)
+                end
 
-            -- Ancient weapon mod: Quill Rain
-            if PST:getSnapAstralWepMod("quillRain") then
-                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
-            end
+                -- Ancient weapon mod: Quill Rain
+                if PST:getSnapAstralWepMod("quillRain") then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
+                end
 
-            -- Ancient weapon mod: Gilded Seeker
-            tmpMod = PST:getSnapAstralWepMod("gildedSeeker")
-            if tmpMod then
-                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
+                -- Ancient weapon mod: Gilded Seeker
+                tmpMod = PST:getSnapAstralWepMod("gildedSeeker")
+                if tmpMod then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
+                end
+            end
+        end
+
+        -- Timeless Bazaar
+        local charData = PST:getCurrentCharData()
+        if PST:isNodeNameAllocated("sidereal", "Timeless Bazaar") and charData then
+            -- Add purchased items
+            if charData.bazaarPurchased then
+                for _, tmpItem in ipairs(charData.bazaarPurchased) do
+                    itemPool:RemoveCollectible(tmpItem)
+                    player:AddCollectible(tmpItem)
+                end
+                charData.bazaarPurchased = {}
             end
         end
     end
