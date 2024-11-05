@@ -578,6 +578,9 @@ function PST:resetMods()
 		bossRedChest = 0,
 		bossStoneChest = 0,
 		trollDisarmGiga = 0,
+		donoMachineStatBoost = 0,
+		donoMachineStatBoostUses = 0,
+		donoMachineStatBoostProcs = 0,
 
 		roomBossKills = 0,
 

@@ -114,6 +114,20 @@ function PST:onSlotUpdate(slot)
                 end
             end
 
+            -- Mod: +% to a random stat every 5 coins given to the donation machine, up to 5 times per floor
+            local tmpMod = PST:getTreeSnapshotMod("donoMachineStatBoost", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("donoMachineStatBoostProcs", 0) < 5 then
+                PST:addModifiers({ donoMachineStatBoostUses = 1 }, true)
+                if PST:getTreeSnapshotMod("donoMachineStatBoostUses", 0) >= 5 then
+                    local randStat = PST:getRandomStat() .. "Perc"
+                    PST:addModifiers({
+                        [randStat] = tmpMod,
+                        donoMachineStatBoostProcs = 1,
+                        donoMachineStatBoostUses = { value = 0, set = true }
+                    }, true)
+                end
+            end
+
             -- Expedition objective: donate to the shop/greed donation machine
             PST:expedAddProgInRun("shopDonation", lastResources.coins - player:GetNumCoins())
 

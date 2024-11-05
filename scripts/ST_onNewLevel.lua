@@ -777,6 +777,11 @@ function PST:onNewLevel()
         PST:addModifiers({ championChestDrops = { value = 0, set = true } }, true)
     end
 
+    -- Mod: +% to a random stat every 5 coins given to the donation machine, up to 5 times per floor (reset)
+    if PST:getTreeSnapshotMod("donoMachineStatBoostProcs", 0) > 0 then
+        PST:addModifiers({ donoMachineStatBoostProcs = { value = 0, set = true } }, true)
+    end
+
     PST:save()
 end
 
