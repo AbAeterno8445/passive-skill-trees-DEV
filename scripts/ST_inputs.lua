@@ -1,26 +1,32 @@
 function PST:onInput(entity, inputHook, buttonAction)
-	if not entity then return end
-
     local cancelInput = false
 
-	local player = entity:ToPlayer()
-	if player then
-        -- Statue Pilgrimage node (Jacob & Esau's tree)
-        if PST:getTreeSnapshotMod("statuePilgrimage", false) then
-            -- Cancel Esau shooting inputs while he's transformed with Gnawed Leaf
-            if player:GetPlayerType() == PlayerType.PLAYER_ESAU and PST.specialNodes.esauIsStatue then
-                if buttonAction == ButtonAction.ACTION_SHOOTUP or buttonAction == ButtonAction.ACTION_SHOOTDOWN or
-                buttonAction == ButtonAction.ACTION_SHOOTLEFT or buttonAction == ButtonAction.ACTION_SHOOTRIGHT then
-                    cancelInput = true
+    -- Cancel restart input on tree screen while in-game
+    if Isaac.IsInGame() and buttonAction == ButtonAction.ACTION_RESTART and PST.treeScreen.open then
+        cancelInput = true
+    end
+
+    -- Entity-dependant
+    if entity then
+        local player = entity:ToPlayer()
+        if player then
+            -- Statue Pilgrimage node (Jacob & Esau's tree)
+            if PST:getTreeSnapshotMod("statuePilgrimage", false) then
+                -- Cancel Esau shooting inputs while he's transformed with Gnawed Leaf
+                if player:GetPlayerType() == PlayerType.PLAYER_ESAU and PST.specialNodes.esauIsStatue then
+                    if buttonAction == ButtonAction.ACTION_SHOOTUP or buttonAction == ButtonAction.ACTION_SHOOTDOWN or
+                    buttonAction == ButtonAction.ACTION_SHOOTLEFT or buttonAction == ButtonAction.ACTION_SHOOTRIGHT then
+                        cancelInput = true
+                    end
                 end
             end
-        end
 
-        -- Shadowmeld item - Disable inputs during transition
-        if PST.specialFX.shadowmeldTransition then
-            cancelInput = true
+            -- Shadowmeld item - Disable inputs during transition
+            if PST.specialFX.shadowmeldTransition then
+                cancelInput = true
+            end
         end
-	end
+    end
 
     if cancelInput then
         if inputHook == InputHook.IS_ACTION_PRESSED or inputHook == InputHook.IS_ACTION_TRIGGERED then
