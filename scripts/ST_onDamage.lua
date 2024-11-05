@@ -496,6 +496,11 @@ function PST:onDamage(target, damage, flag, source)
                     PST.specialNodes.astralwep_onHitEnemyDmgTimer = math.ceil(tmpMod[2] * 30)
                 end
 
+                -- Beast-hunter's Rush node
+                if PST:getTreeSnapshotMod("beasthunterRush", false) then
+                    Game().BossRushParTime = Game().BossRushParTime + 90
+                end
+
                 -- Chance for normal monsters to deal an extra 1/2 heart damage
                 tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then

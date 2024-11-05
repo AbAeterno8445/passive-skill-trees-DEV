@@ -96,6 +96,24 @@ function PST:onSlotUpdate(slot)
             end
         -- Shop donation machine
         elseif slot.Variant == SlotVariant.DONATION_MACHINE and spentCoins then
+            -- Generosity In Steps node
+            if PST:getTreeSnapshotMod("generosityInSteps", false) then
+                PST:addModifiers({ generosityInStepsCount = 1 }, true)
+                if PST:getTreeSnapshotMod("generosityInStepsCount", 0) >= 10 then
+                    Game():SetStateFlag(GameStateFlag.STATE_DONATION_SLOT_JAMMED, true)
+
+                    local donoSlots = Isaac.FindByType(EntityType.ENTITY_SLOT, SlotVariant.DONATION_MACHINE)
+                    for _, tmpSlot in ipairs(donoSlots) do
+                        local newSlot = Isaac.Spawn(EntityType.ENTITY_SLOT, SlotVariant.DONATION_MACHINE, 0, tmpSlot.Position, Vector.Zero, nil)
+                        newSlot:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+                        newSlot.TargetPosition = tmpSlot.TargetPosition
+                        tmpSlot:Remove()
+                    end
+                    PST:addModifiers({ generosityInStepsCount = { value = 0, set = true } }, true)
+                    SFXManager():Play(SoundEffect.SOUND_COIN_SLOT)
+                end
+            end
+
             -- Expedition objective: donate to the shop/greed donation machine
             PST:expedAddProgInRun("shopDonation", lastResources.coins - player:GetNumCoins())
 

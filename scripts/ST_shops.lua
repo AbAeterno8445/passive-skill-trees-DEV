@@ -68,6 +68,16 @@ function PST:onShopPurchase(pickup, player, spent)
             PST.specialNodes.astralwep_purchaseTimer = math.ceil(tmpMod[2] * 30)
         end
 
+        -- Generosity In Steps node
+        -- Mod: % chance to restore the donation machine when purchasing an item
+        if Game():GetStateFlag(GameStateFlag.STATE_DONATION_SLOT_JAMMED) then
+            tmpMod = PST:getTreeSnapshotMod("donoPurchaseRestore", 0)
+            local priceAmt = 15 - PST:getTreeSnapshotMod("donoPurchaseThresh", 0)
+            if (tmpMod > 0 and spent >= priceAmt and 100 * math.random() < tmpMod) or PST:getTreeSnapshotMod("generosityInSteps", false) then
+                PST:restoreDonoMachine()
+            end
+        end
+
         -- Expedition objective: purchase shop items
 		PST:expedAddProgInRun("purchases", 1)
     elseif spent < 0 then

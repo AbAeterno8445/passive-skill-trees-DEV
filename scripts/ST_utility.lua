@@ -606,6 +606,25 @@ function PST:inRedRoom()
 	return (PST:getLevel():GetCurrentRoomDesc().Flags & (1 << 10)) > 0
 end
 
+function PST:restoreDonoMachine()
+	Game():SetStateFlag(GameStateFlag.STATE_DONATION_SLOT_JAMMED, false)
+
+	local donoSlots = Isaac.FindByType(EntityType.ENTITY_SLOT, SlotVariant.DONATION_MACHINE)
+	for _, tmpSlot in ipairs(donoSlots) do
+		local newSlot = Isaac.Spawn(EntityType.ENTITY_SLOT, SlotVariant.DONATION_MACHINE, 0, tmpSlot.Position, Vector.Zero, nil)
+		newSlot:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+		newSlot.TargetPosition = tmpSlot.TargetPosition
+		tmpSlot:Remove()
+
+		PST:createFloatTextFX("Donation Machine Restored!", tmpSlot.Position, Color(0.6, 1, 0.6, 1), 0.13, 100, false)
+		Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpSlot.Position, Vector.Zero, nil, 0, Random() + 1)
+		SFXManager():Play(SoundEffect.SOUND_SLOTSPAWN)
+	end
+	if PST:getTreeSnapshotMod("generosityInSteps", false) then
+		PST:addModifiers({ generosityInStepsCount = { value = 0, set = true } }, true)
+	end
+end
+
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
 ---@param player EntityPlayer

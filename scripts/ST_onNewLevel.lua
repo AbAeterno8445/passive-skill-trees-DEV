@@ -772,6 +772,11 @@ function PST:onNewLevel()
         PST:addModifiers({ ancwep_berserkerWrathProc = false }, true)
     end
 
+    -- Mod: % chance for champion monsters to drop a chest on death (reset)
+    if PST:getTreeSnapshotMod("championChestDrops", 0) > 0 then
+        PST:addModifiers({ championChestDrops = { value = 0, set = true } }, true)
+    end
+
     PST:save()
 end
 

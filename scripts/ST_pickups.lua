@@ -1075,6 +1075,24 @@ function PST:onPickupInit(pickup, firstSpawn)
                 PST:addModifiers({ goldenKeyConvertProc = true }, true)
                 pickupGone = true
             end
+
+            if not pickupGone and firstSpawn and not isShop then
+                -- Mod: chance to replace keys with charged keys if you have any uncharged active item
+                tmpMod = PST:getTreeSnapshotMod("chargedKeyConv", 0)
+                if tmpMod > 0 then
+                    local tmpUncharged = false
+                    for i=0,3 do
+                        local tmpCharge = PST:getPlayer():GetActiveMaxCharge(i)
+                        if tmpCharge > 0 and PST:getPlayer():GetActiveCharge(i) < tmpCharge then
+                            tmpUncharged = true
+                            break
+                        end
+                    end
+                    if tmpUncharged and 100 * math.random() < tmpMod then
+                        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, KeySubType.KEY_CHARGED, true)
+                    end
+                end
+            end
         end
 
         -- Sinistral Runemaster node (T. Isaac's tree) - Jera effect
@@ -1166,6 +1184,13 @@ function PST:onPickupInit(pickup, firstSpawn)
                         end
                     end
                 end
+            end
+
+            -- Mod: % chance to replace spiked and mimic chests with regular chests
+            tmpMod = PST:getTreeSnapshotMod("spikedChestReplace", 0)
+            if firstSpawn and tmpMod > 0 and (variant == PickupVariant.PICKUP_SPIKEDCHEST or variant == PickupVariant.PICKUP_MIMICCHEST) and
+            100 * math.random() < tmpMod then
+                pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, subtype)
             end
 
             -- Cosmic Realignment node

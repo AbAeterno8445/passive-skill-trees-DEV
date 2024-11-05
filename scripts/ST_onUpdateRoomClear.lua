@@ -250,6 +250,31 @@ function PST:onRoomClear(level, room)
 				if tmpMod > 0 then
 					PST:addModifiers({ tearsPerc = -tmpMod / 2, ancwep_consecratorTears = -tmpMod / 2 }, true)
 				end
+
+				-- Mod: % chance to spawn a locked chest after clearing the boss room
+				local bossChest = false
+				tmpMod = PST:getTreeSnapshotMod("bossLockedChest", 0)
+				if tmpMod > 0 and 100 * math.random() < tmpMod then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, ChestSubType.CHEST_CLOSED, tmpPos, Vector.Zero, nil)
+					bossChest = true
+				end
+
+				-- Mod: % chance to spawn a red chest after clearing the boss room
+				tmpMod = PST:getTreeSnapshotMod("bossRedChest", 0)
+				if not bossChest and tmpMod > 0 and 100 * math.random() < tmpMod then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_REDCHEST, ChestSubType.CHEST_CLOSED, tmpPos, Vector.Zero, nil)
+					bossChest = true
+				end
+
+				-- Mod: % chance to spawn a stone chest after clearing the boss room
+				tmpMod = PST:getTreeSnapshotMod("bossStoneChest", 0)
+				if not bossChest and tmpMod > 0 and 100 * math.random() < tmpMod then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMBCHEST, ChestSubType.CHEST_CLOSED, tmpPos, Vector.Zero, nil)
+					bossChest = true
+				end
 			end
 
 			-- Starcursed jewel drop
@@ -553,6 +578,13 @@ function PST:onRoomClear(level, room)
 					end
 				end
 				PST:addModifiers({ reaperWraithsSpawned = true }, true)
+			end
+
+			-- Mod: % chance to drop an additional throwable bomb when clearing a room
+			tmpMod = PST:getTreeSnapshotMod("clearThrowableBomb", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, tmpPos, Vector.Zero, nil)
 			end
 
 			-- Cosmic Realignment node

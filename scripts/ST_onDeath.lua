@@ -63,6 +63,12 @@ function PST:onDeath(entity)
             else
                 mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
             end
+
+            local tmpNPC = entity:ToNPC()
+            if tmpNPC and tmpNPC:IsChampion() then
+                mult = mult + PST:getTreeSnapshotMod("championXP", 0) / 100
+            end
+
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
@@ -141,6 +147,19 @@ function PST:onDeath(entity)
                         PST:addModifiers({ damagePerc = tmpAdd, boonChampSlayBuff = tmpAdd }, true)
                     end
                 end
+
+                -- Mod: % chance for champion monsters to drop a regular chest on death
+                tmpMod = PST:getTreeSnapshotMod("championChest", 0)
+                local maxChests = 1 + PST:getTreeSnapshotMod("championMaxChests", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("championChestDrops", 0) < maxChests then
+                    local chestType = PickupVariant.PICKUP_CHEST
+                    -- Mod: % chance for the regular chest dropped by champions to be a stone chest instead
+                    if 100 * math.random() < PST:getTreeSnapshotMod("championStoneChest", 0) then
+                        chestType = PickupVariant.PICKUP_BOMBCHEST
+                    end
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, chestType, ChestSubType.CHEST_CLOSED, entity.Position, Vector.Zero, nil)
+                    PST:addModifiers({ championChestDrops = 1 }, true)
+                end
             end
 
             -- Boss kill
@@ -191,6 +210,23 @@ function PST:onDeath(entity)
                 tmpMod = PST:getSnapAstralWepMod("beastbane")
                 if tmpMod and PST:getTreeSnapshotMod("ancwep_beastbaneFloors", 0) == 0 then
                     PST:addModifiers({ damagePerc = tmpMod[2], ancwep_beastbaneFloors = 2 }, true)
+                end
+
+                -- Mod: % chance for deadly sin minibosses to drop a key on death (double chance for super)
+                tmpMod = PST:getTreeSnapshotMod("deadlySinKey", 0)
+                if entity.SubType == 1 then
+                    tmpMod = tmpMod * 2
+                end
+                if tmpMod > 0 and PST:arrHasValue(PST.deadlySinBosses, entity.Type) and 100 * math.random() < tmpMod then
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, KeySubType.KEY_NORMAL, entity.Position, RandomVector() * 3, nil)
+                end
+                -- Mod: % chance for deadly sin minibosses to drop a lil battery on death (double chance for super)
+                tmpMod = PST:getTreeSnapshotMod("deadlySinBattery", 0)
+                if entity.SubType == 1 then
+                    tmpMod = tmpMod * 2
+                end
+                if tmpMod > 0 and PST:arrHasValue(PST.deadlySinBosses, entity.Type) and 100 * math.random() < tmpMod then
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_NORMAL, entity.Position, RandomVector() * 3, nil)
                 end
             end
 

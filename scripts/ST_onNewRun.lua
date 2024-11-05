@@ -791,6 +791,22 @@ function PST:onNewRun(isContinued)
         player:AddSmeltedTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY)
     end
 
+    -- Mod: +seconds to the boss rush door timer
+    tmpMod = PST:getTreeSnapshotMod("bossRushTimer", 0)
+    -- Beast-hunter's Rush node
+    if PST:getTreeSnapshotMod("beasthunterRush", false) then
+        tmpMod = tmpMod * 3
+    end
+    if tmpMod > 0 then
+        Game().BossRushParTime = Game().BossRushParTime - math.ceil(tmpMod * 30)
+    end
+
+    -- Mod: +seconds to the hush door timer
+    tmpMod = PST:getTreeSnapshotMod("hushTimer", 0)
+    if tmpMod > 0 then
+        Game().BlueWombParTime = Game().BlueWombParTime - math.ceil(tmpMod * 30)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

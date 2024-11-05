@@ -402,7 +402,13 @@ function PST:onBombInit(bomb)
                 tmpMod = tmpMod / 4
             end
             if (bomb.Variant == BombVariant.BOMB_TROLL or bomb.Variant == BombVariant.BOMB_SUPERTROLL) and 100 * math.random() < tmpMod then
-                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, bomb.Position, Vector.Zero, nil, BombSubType.BOMB_NORMAL, Random() + 1)
+                local tmpBomb = BombSubType.BOMB_NORMAL
+                -- Mod: when disarming a troll bomb, % chance for the resulting bomb to be a giga bomb
+                local tmpMod = PST:getTreeSnapshotMod("trollDisarmGiga", 0)
+                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                    tmpBomb = BombSubType.BOMB_GIGA
+                end
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, bomb.Position, Vector.Zero, nil, tmpBomb, Random() + 1)
                 PST:createFloatTextFX("Troll bomb disarmed", bomb.Position, Color(), 0.12, 70, false)
                 bomb:Remove()
             end

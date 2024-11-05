@@ -637,6 +637,13 @@ function PST:onUpdate()
 		-- Ancient starcursed jewel: Cause Converter
 		PST_causeConvBossSpawn()
 
+		-- Mod: % chance to restore the donation machine when first entering a shop, if it's jammed
+		tmpMod = PST:getTreeSnapshotMod("donoEntranceRestore", 0)
+		if tmpMod > 0 and room:GetType() == RoomType.ROOM_SHOP and room:IsFirstVisit() and Game():GetStateFlag(GameStateFlag.STATE_DONATION_SLOT_JAMMED) and
+		100 * math.random() < tmpMod then
+			PST:restoreDonoMachine()
+		end
+
 		-- Cosmic Realignment node
 		if PST:cosmicRCharPicked(PlayerType.PLAYER_MAGDALENE_B) then
 			-- Tainted Magdalene, if room has monsters and you have more than 2 red hearts, take 1/2 heart damage
