@@ -522,7 +522,7 @@ PST.expeditionCurses = {
     },
     { -- 23
         name = "the Heartbroken",
-        description = "Start with an additional {{curseHeartbroken}} broken heart(s).",
+        description = "Start with {{curseHeartbroken}} additional broken heart(s).",
         spriteFrame = 22,
         modsFunc = function(depth)
             local broken = 1
@@ -539,6 +539,20 @@ PST.expeditionCurses = {
             return { xpgain = -math.min(60, 40 + math.floor(depth / 2)) }
         end,
         minDepth = 5
+    },
+    { -- 25
+        name = "Urgency",
+        description = {
+            "{{bossRushTimer}} minutes to the Boss Rush door timer.",
+            "{{hushTimer}} minutes to Hush's door timer."
+        },
+        spriteFrame = 24,
+        modsFunc = function(depth)
+            local mins = 2
+            if depth >= 10 then mins = 3 end
+            if depth >= 20 then mins = 4 end
+            return { bossRushTimer = -mins, hushTimer = -mins }
+        end
     }
 }
 
