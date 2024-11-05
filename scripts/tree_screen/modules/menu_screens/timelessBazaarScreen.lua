@@ -39,6 +39,7 @@ function timelessBazaarScreen:OnOpen()
     end
 
     self.siderealMods = PST:getAllTreeMods("sidereal")
+    PST.treeScreen.treeHasChanges = true
 end
 
 function timelessBazaarScreen:OnInput()
@@ -296,6 +297,9 @@ function timelessBazaarScreen:Render(tScreen)
                 self.itemSprite.Color.GO = 0
                 self.itemSprite.Color.BO = 0
 
+                self.bazaarUISprite:SetFrame("Quality", itemCfg.Quality)
+                self.bazaarUISprite:Render(Vector(itemX, itemY - 5))
+
                 if self.selectedItem == i then
                     selDrawX, selDrawY = itemX, itemY
                 end
@@ -328,6 +332,9 @@ function timelessBazaarScreen:Render(tScreen)
                 local itemY = drawY + 26
                 self.itemSprite:ReplaceSpritesheet(1, itemCfg.GfxFileName, true)
                 self.itemSprite:Render(Vector(itemX, itemY))
+
+                self.bazaarUISprite:SetFrame("Quality", itemCfg.Quality)
+                self.bazaarUISprite:Render(Vector(itemX, itemY - 5))
             end
         end
     end

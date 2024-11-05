@@ -23,7 +23,7 @@ function PST:bazaarCanAffordCost(targetCost)
         return false
     end
     -- Respecs
-    if PST.modData.respecPoints < tmpCost.respecs then return false end
+    if tmpCost.respecs and PST.modData.respecPoints < tmpCost.respecs then return false end
 
     return true
 end
