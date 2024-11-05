@@ -277,6 +277,17 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Consuming Void node (T. Isaac's tree)
+		if PST:getTreeSnapshotMod("consumingVoid", false) then
+			if PST:isTIsaacInvFull() and not player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) then
+				local tmpPos = Isaac.GetFreeNearPosition(PST:getRoom():GetCenterPos(), 40)
+				local voidItem = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_VOID, tmpPos, Vector.Zero, nil)
+				---@diagnostic disable-next-line: undefined-field
+				voidItem:ToPickup():RemoveCollectibleCycle()
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+			end
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -417,25 +428,6 @@ function PST:onUpdate()
 				local stoneType = PST:getMatchingSoulstone(tmpPlayerType)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, stoneType, Random() + 1)
 				PST:addModifiers({ coalescingSoulProcs = -1 }, true)
-			end
-
-			-- Consuming Void node (T. Isaac's tree)
-			if PST:getTreeSnapshotMod("consumingVoid", false) then
-				if PST:getTreeSnapshotMod("consumingVoidConsumed", 0) < 2 and not level:IsAscent() and PST:isTIsaacInvFull() then
-					player:RemoveCollectible(CollectibleType.COLLECTIBLE_VOID)
-					local tmpCollectibles = {}
-					for tmpItem, tmpItemNum in pairs(player:GetCollectiblesList()) do
-						if tmpItemNum > 0 and not PST:arrHasValue(PST.progressionItems, tmpItem) then
-							table.insert(tmpCollectibles, tmpItem)
-						end
-					end
-					if #tmpCollectibles > 0 then
-						player:RemoveCollectible(tmpCollectibles[math.random(#tmpCollectibles)])
-					end
-					PST:createFloatTextFX("The void consumes...", Vector.Zero, Color(0.5, 0.1, 0.8, 1), 0.12, 90, true)
-					SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 1, 2, false, 0.8)
-				end
-				PST:addModifiers({ consumingVoidConsumed = { value = 0, set = true } }, true)
 			end
 
 			-- Ephemeral Bond node (T. Lazarus' tree)

@@ -904,6 +904,12 @@ function PST:onCache(player, cacheFlag)
         dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpTreeMod[3]
     end
 
+    -- Consuming Void node (T. Isaac's tree)
+    tmpTreeMod = PST:getTreeSnapshotMod("consumingVoidBuff", 0)
+    if tmpTreeMod > 0 then
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpTreeMod
+    end
+
     -- Expedition curse: inverse fortune
     tmpTreeMod = PST:getTreeSnapshotMod("curseInvFortune", 0)
     if tmpTreeMod > 0 and player.Luck > 0 then

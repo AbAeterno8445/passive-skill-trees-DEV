@@ -326,11 +326,6 @@ function PST:onNewLevel()
         PST:addModifiers({ speedPerc = -tmpMod, runicSpeedBuff = { value = 0, set = true } }, true)
     end
 
-    -- Consuming Void node (T. Isaac's tree)
-    if PST:getTreeSnapshotMod("consumingVoidSpawned", false) then
-        PST:addModifiers({ consumingVoidSpawned = false }, true)
-    end
-
     -- Sinistral Runemaster: Ehwaz proc
     if PST:getTreeSnapshotMod("ehwazAllstatsProc", false) then
         PST:addModifiers({ allstatsPerc = 3 }, true)

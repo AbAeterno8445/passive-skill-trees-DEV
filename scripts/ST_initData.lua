@@ -933,8 +933,7 @@ function PST:resetMods()
 		---- T. Isaac ----
 		vacuophobia = false,
 		consumingVoid = false,
-		consumingVoidSpawned = false,
-		consumingVoidConsumed = 0,
+		consumingVoidBuff = 0,
 		fracturedRemains = false,
 		obtainedItemDamage = 0,
 		obtainedItemTears = 0,

@@ -634,6 +634,13 @@ function PST:onRoomClear(level, room)
 			if tmpMod > 0 then
 				PST:addModifiers({ damagePerc = -tmpMod / 2, ancwep_gildedSeekerBuff = -tmpMod / 2 }, true)
 			end
+
+			-- Consuming Void node (T. Isaac node)
+			tmpMod = PST:getTreeSnapshotMod("consumingVoidBuff", false)
+            if tmpMod > 0 then
+                PST:addModifiers({ consumingVoidBuff = -tmpMod / 2 }, true)
+                PST:updateCacheDelayed(PST.allstatsCache)
+            end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)

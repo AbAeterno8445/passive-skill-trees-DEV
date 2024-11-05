@@ -233,6 +233,11 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 tmpEnemies[math.random(#tmpEnemies)]:Die()
             end
         end
+
+        -- Consuming Void node (T. Isaac's tree)
+        if PST:getTreeSnapshotMod("consumingVoid", false) then
+            player:RemoveCollectible(CollectibleType.COLLECTIBLE_VOID)
+        end
     -- Siren's Song
     elseif itemType == Isaac.GetItemIdByName("Siren Song") then
         -- Dark Songstress node (Siren's tree)

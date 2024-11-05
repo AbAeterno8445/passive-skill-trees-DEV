@@ -212,17 +212,6 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         end
     end
 
-    -- Consuming Void node (T. Isaac's tree)
-    if PST:getTreeSnapshotMod("consumingVoid", false) and charge == 0 then
-        if PST:isTIsaacInvFull() and not player:HasCollectible(CollectibleType.COLLECTIBLE_VOID) and not PST:getTreeSnapshotMod("consumingVoidSpawned", false) then
-            local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
-            local voidItem = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_VOID, Random() + 1)
-            ---@diagnostic disable-next-line: undefined-field
-            voidItem:ToPickup():RemoveCollectibleCycle()
-            PST:addModifiers({ consumingVoidSpawned = true }, true)
-        end
-    end
-
     -- Vacuophobia node (T. Isaac's tree)
     if PST:getTreeSnapshotMod("vacuophobia", false) then
         PST:updateCacheDelayed()

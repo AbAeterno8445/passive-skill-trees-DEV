@@ -620,8 +620,8 @@ function PST:onPickup(pickup, collider, low, forced)
             -- Black heart pickup
             if subtype == HeartSubType.HEART_BLACK then
                 -- Sacrifice Darkness node (Judas' tree)
-                if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
-                    player:TakeDamage(2, 0, EntityRef(player), 0)
+                if PST:getTreeSnapshotMod("sacrificeDarkness", false) and PST:getLevel():GetDimension() ~= Dimension.MIRROR then
+                    player:TakeDamage(2, DamageFlag.DAMAGE_NOKILL, EntityRef(player), 0)
                     player:ResetDamageCooldown()
                     player:AddSoulHearts(2)
                     if PST:getTreeSnapshotMod("blackHeartSacrifices", 0) < 6 then
@@ -1392,7 +1392,8 @@ function PST:onPickupVoided(pickup, isBlackRune)
         else
             -- Consuming Void node (T. Isaac node)
             if PST:getTreeSnapshotMod("consumingVoid", false) then
-                PST:addModifiers({ consumingVoidConsumed = 1 }, true)
+                PST:addModifiers({ consumingVoidBuff = { value = 20, set = true } }, true)
+                PST:updateCacheDelayed(PST.allstatsCache)
             end
 
             -- Mod: +luck when consuming an item with Void
