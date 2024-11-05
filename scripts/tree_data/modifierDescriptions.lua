@@ -149,6 +149,14 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "condStats", sort = 16
     },
+    donoMachineStatBoost = {
+        str = {
+            "%s%.2f%% to a random stat every 5 coins given to the Donation machine, up to 5 times",
+            "per floor"
+        },
+        addPlus = true,
+        category = "condStats", sort = 17
+    },
     --#endregion
 
     --#region XP CATEGORY --
@@ -221,6 +229,11 @@ PST.treeModDescriptions = {
             "gain 2 respec points per completed floor in that run"
         },
         category = "xp", sort = 151
+    },
+    championXP = {
+        str = "%s%d%% champion monster XP on death",
+        addPlus = true,
+        category = "xp", sort = 152
     },
     --#endregion
 
@@ -334,6 +347,119 @@ PST.treeModDescriptions = {
     trollBombDisarm = {
         str = "%.2f%% chance to turn troll and super troll bombs into regular bomb pickups",
         category = "extra", sort = 1112
+    },
+    trollDisarmGiga = {
+        str = "When disarming a troll bomb, %d%% chance for the resulting bomb pickup to be a giga bomb",
+        category = "extra", sort = 1113
+    },
+    championChest = {
+        str = "%d%% chance for champion monsters to drop a regular chest on death, up to 1 per floor",
+        category = "extra", sort = 1114
+    },
+    championStoneChest = {
+        str = "When a champion drops a regular chest, %d%% chance for it to be a stone chest instead",
+        category = "extra", sort = 1115
+    },
+    championMaxChests = {
+        str = "%s%d max chests dropped by champions per floor",
+        addPlus = true,
+        category = "extra", sort = 1116
+    },
+    spikedChestReplace = {
+        str = "%d%% chance to replace spiked and mimic chests with regular chests",
+        category = "extra", sort = 1117
+    },
+    chargedKeyConv = {
+        str = {
+            "%.2f%% chance to convert dropped keys into charged keys if you have any active item that's",
+            "not fully charged"
+        },
+        category = "extra", sort = 1118
+    },
+    clearThrowableBomb = {
+        str = "%.2f%% chance to additionally drop a throwable bomb when clearing a room",
+        category = "extra", sort = 1119
+    },
+    deadlySinKey = {
+        str = {
+            "%d%% chance for Deadly Sin minibosses to drop a key on death",
+            "    Double the chance for Super Deadly Sin versions"
+        },
+        category = "extra", sort = 1120
+    },
+    deadlySinBattery = {
+        str = {
+            "%d%% chance for Deadly Sin minibosses to drop a lil battery on death",
+            "    Double the chance for Super Deadly Sin versions"
+        },
+        category = "extra", sort = 1121
+    },
+    donoEntranceRestore = {
+        str = "When first entering a shop room, %d%% chance to restore the Donation Machine if it's jammed",
+        category = "extra", sort = 1122
+    },
+    donoPurchaseRestore = {
+        str = {
+            "In shop rooms, %d%% chance to restore the Donation Machine after purchasing any item worth",
+            "at least 15 coins, if it's jammed"
+        },
+        category = "extra", sort = 1123
+    },
+    donoPurchaseThresh = {
+        str = "-%d coin price threshold for Donation Machine restoration on purchase",
+        category = "extra", sort = 1124
+    },
+    generosityInSteps = {
+        str = {
+            "Generosity In Steps:",
+            "    Donation Machine always jams after donating 10 coins",
+            "    Purchasing any shop item restores a jammed Donation Machine"
+        },
+        category = "extra", sort = 1125
+    },
+    bossRushTimer = {
+        str = "%s%d seconds to the Boss Rush door's timer",
+        addPlus = true,
+        category = "extra", sort = 1126
+    },
+    beasthunterRush = {
+        str = {
+            "Beast-hunter's Rush:",
+            "    Triple the additional seconds given for the Boss Rush door to open",
+            "    -3 seconds to the total time limit for the Boss Rush door to open whenever you get hit"
+        },
+        category = "extra", sort = 1127
+    },
+    hushTimer = {
+        str = "%s%d seconds to Hush's door timer",
+        addPlus = true,
+        category = "extra", sort = 1128
+    },
+    bossLockedChest = {
+        str = {
+            "%d%% chance to spawn a locked chest after clearing the boss room",
+            "    Only 1 chest may spawn from effects of this type, once per floor"
+        },
+        category = "extra", sort = 1129
+    },
+    bossRedChest = {
+        str = {
+            "%d%% chance to spawn a red chest after clearing the boss room",
+            "    Only 1 chest may spawn from effects of this type, once per floor"
+        },
+        category = "extra", sort = 1130
+    },
+    bossStoneChest = {
+        str = {
+            "%d%% chance to spawn a stone chest after clearing the boss room",
+            "    Only 1 chest may spawn from effects of this type, once per floor"
+        },
+        category = "extra", sort = 1131
+    },
+    bossRushWaves = {
+        str = "%s%d boss rush waves",
+        addPlus = true,
+        category = "extra", sort = 1132
     },
 
     coalescingSoulChance = {
@@ -1529,10 +1655,10 @@ PST.treeModDescriptions = {
     consumingVoid = {
         str = {
             "Consuming Void:",
-            "    Once you fill your inventory, spawn a Void item pedestal",
-            "    When entering a floor, if your inventory is full and you haven't consumed at least 2 items with Void",
-            "    in the previous floor, lose a random item and Void",
-            "    During the Ascent, lose no items from this effect"
+            "    When entering a floor, if your inventory is full, spawn Void",
+            "    Void now gets consumed on use",
+            "    +20%% all stats when consuming an item with void",
+            "    Halve the current stats bonus from this effect when clearing a room"
         },
         category = "charTree", sort = 3001
     },
@@ -1858,12 +1984,18 @@ PST.treeModDescriptions = {
     darkExpertise = {
         str = {
             "Dark Expertise:",
-            "    Trigger How To Jump's effect when using Dark Arts",
-            "    +4 seconds to Dark Arts' cooldown",
             "    Reduce Dark Arts' cooldown by 0.5 seconds per non-boss enemy hit with it",
-            "    Reduce Dark Arts' cooldown by 2 seconds if it hits a boss"
+            "    Reduce Dark Arts' cooldown by 1 second per boss enemy hit with it",
         },
         category = "charTree", sort = 3150
+    },
+    agileExpertise = {
+        str = {
+            "Agile Expertise:",
+            "    Trigger How To Jump's effect when using Dark Arts",
+            "    Reduce Dark Arts' cooldown by 1 second per boss enemy hit with it",
+        },
+        category = "charTree", sort = 3151
     },
     stealthTactics = {
         str = {
@@ -1872,7 +2004,7 @@ PST.treeModDescriptions = {
             "    Speed cannot exceed 1.2 while Dark Arts is active",
             "    -60%% damage with sources that aren't Dark Arts"
         },
-        category = "charTree", sort = 3151
+        category = "charTree", sort = 3152
     },
     lightlessBounty = {
         str = {
@@ -1881,7 +2013,7 @@ PST.treeModDescriptions = {
             "    you have less than 4 black hearts",
             "    Killing an enemy with Dark Arts grants +0.03 luck, up to +1 per floor"
         },
-        category = "charTree", sort = 3152
+        category = "charTree", sort = 3153
     },
     annihilation = {
         str = {
@@ -1892,7 +2024,7 @@ PST.treeModDescriptions = {
             "    25%% chance to take an additional 1/2 heart damage from bosses if you have 3 or",
             "    more black hearts"
         },
-        category = "charTree", sort = 3153
+        category = "charTree", sort = 3154
     },
     anarchy = {
         str = {
@@ -1901,7 +2033,7 @@ PST.treeModDescriptions = {
             "    Enemies take 75%% reduced damage from troll bombs",
             "    Enemies killed by bombs reduce Dark Arts' cooldown by 0.5 seconds"
         },
-        category = "charTree", sort = 3154
+        category = "charTree", sort = 3155
     },
     howToJumpPulse = {
         str = {
