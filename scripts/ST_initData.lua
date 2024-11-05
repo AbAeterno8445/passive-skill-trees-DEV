@@ -995,6 +995,7 @@ function PST:resetMods()
 		additionalPedestalPickup = 0,
 		---- T. Judas ----
 		darkExpertise = false,
+		agileExpertise = false,
 		stealthTactics = false,
 		lightlessBounty = false,
 		lightlessBountyLuck = 0,

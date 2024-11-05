@@ -3,6 +3,15 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.0",
+        "XP gain in challenges is now tied to the \"Apply tree in challenges\" option.",
+        "Judas' \"Sacrifice Darkness\" can no longer trigger in the mirror dimension, and the self damage should",
+        "no longer kill you at any point.",
+        "Reworked T. Isaac's \"Consuming Void\" large node.",
+        "Split T. Judas' \"Dark Expertise\" node into two large nodes, making the How to Jump effect optional. You",
+        "might need to re-allocate these.",
+        "",
+
         "v0.3.24",
         "- Added option to lower the drawn XP bar scale/size.",
         "- Added option to disable Starcursed Jewel drops. You can disable all drops, or just jewels for which your",

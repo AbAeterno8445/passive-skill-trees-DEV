@@ -308,8 +308,8 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         PST.specialNodes.craftBagSnapshot = player:GetBagOfCraftingContent()
     -- Dark Arts
     elseif itemType == CollectibleType.COLLECTIBLE_DARK_ARTS then
-        -- Dark Expertise node (T. Judas' tree)
-        if PST:getTreeSnapshotMod("darkExpertise", false) then
+        -- Agile Expertise node (T. Judas' tree)
+        if PST:getTreeSnapshotMod("agileExpertise", false) then
             Isaac.GetPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_HOW_TO_JUMP)
         end
 

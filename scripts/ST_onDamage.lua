@@ -1533,6 +1533,7 @@ function PST:onDamage(target, damage, flag, source)
                                 dmgMult = dmgMult + tmpMod / 100
                             end
 
+                            local bossProc = false
                             -- Dark Expertise node (T. Judas' tree)
                             if PST:getTreeSnapshotMod("darkExpertise", false) then
                                 local tmpSlot = srcPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_DARK_ARTS)
@@ -1540,11 +1541,24 @@ function PST:onDamage(target, damage, flag, source)
                                     if not target:IsBoss() then
                                         srcPlayer:SetActiveCharge(srcPlayer:GetActiveCharge(tmpSlot) + 15, tmpSlot)
                                     elseif not PST.specialNodes.darkArtsBossHitProc then
-                                        srcPlayer:SetActiveCharge(srcPlayer:GetActiveCharge(tmpSlot) + 60, tmpSlot)
-                                        PST.specialNodes.darkArtsBossHitProc = true
+                                        srcPlayer:SetActiveCharge(srcPlayer:GetActiveCharge(tmpSlot) + 30, tmpSlot)
+                                        bossProc = true
                                     end
                                 end
                             end
+
+                            -- Agile Expertise node (T. Judas' tree)
+                            if PST:getTreeSnapshotMod("agileExpertise", false) then
+                                local tmpSlot = srcPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_DARK_ARTS)
+                                if tmpSlot ~= -1 then
+                                    if target:IsBoss() then
+                                        srcPlayer:SetActiveCharge(srcPlayer:GetActiveCharge(tmpSlot) + 30, tmpSlot)
+                                        bossProc = true
+                                    end
+                                end
+                            end
+                            
+                            if bossProc then PST.specialNodes.darkArtsBossHitProc = true end
 
                             -- Annihilation node (T. Judas' tree)
                             if PST:getTreeSnapshotMod("annihilation", false) and target:IsBoss() and PST.specialNodes.annihilationProcs < 2 and
