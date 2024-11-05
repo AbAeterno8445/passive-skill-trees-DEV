@@ -1486,6 +1486,7 @@ function PST:resetMods()
 		sideCacheReplicaProc = false,
 		sideCacheSacks = 0,
 		sideCacheAstralWep = 0,
+		sideCacheJewel = 0,
 
 		-- Timeless Bazaar
 		bazaarLoseRefresh = 0,

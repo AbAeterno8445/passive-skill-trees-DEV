@@ -85,6 +85,12 @@ function PST:prePickup(pickup, collider, low)
                 end
                 tmpMod = tmpMod - 100
             end
+
+            -- Chance for Sidereal Caches to drop a Starcursed Jewel
+            tmpMod = PST:getTreeSnapshotMod("sideCacheJewel", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                PST:SC_dropRandomJewelAt(pickup.Position, PST.SCDropRates.curseRoom(PST:getLevel():GetStage()).ancient, RandomVector() * 3 * math.random())
+            end
         end
 
         -- Collectibles

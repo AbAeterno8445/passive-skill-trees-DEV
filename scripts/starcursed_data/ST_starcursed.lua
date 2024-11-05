@@ -44,7 +44,7 @@ function PST:SC_getRandomJewelType()
     return nonAncient[math.random(#nonAncient)]
 end
 
-function PST:SC_dropRandomJewelAt(position, ancientChance)
+function PST:SC_dropRandomJewelAt(position, ancientChance, velocity)
     if not PST:getTreeSnapshotMod("enableSCJewels", false) or PST.config.starJewelDrops == 2 then return end
 
     local ancientChanceModded = ancientChance + PST:getTreeSnapshotMod("SC_SMAncientChance", 0)
@@ -64,7 +64,7 @@ function PST:SC_dropRandomJewelAt(position, ancientChance)
         end
 
         local tmpPos = Isaac.GetFreeNearPosition(position, 40)
-        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, newJewelTrinket, Random() + 1)
+        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, velocity or Vector.Zero, nil, newJewelTrinket, Random() + 1)
     end
 end
 
