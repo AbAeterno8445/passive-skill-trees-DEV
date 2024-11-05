@@ -942,8 +942,23 @@ function PST:onPickupInit(pickup, firstSpawn)
         end
     -- Cards
     elseif variant == PickupVariant.PICKUP_TAROTCARD then
+        -- Re-roll Soul of the Siren drop if not unlocked
+        local sirenSoulID = Isaac.GetCardIdByName("SoulOfTheSiren")
+        if sirenSoulID ~= -1 and pickup.SubType == sirenSoulID and not PST:isSoulOfTheSirenUnlocked() then
+            local newCard = Game():GetItemPool():GetCard(Random() + 1, false, true, true)
+            local failsafe = 0
+            while newCard == sirenSoulID and failsafe < 300 do
+                newCard = Game():GetItemPool():GetCard(Random() + 1, false, true, true)
+                failsafe = failsafe + 1
+            end
+            if failsafe >= 300 then
+                newCard = Card.RUNE_SHARD
+            end
+            pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newCard, true, true, true)
+        end
+
         -- Blue Gambit node (Blue Baby's tree)
-        if PST:getTreeSnapshotMod("blueGambit", false) and not PST:getTreeSnapshotMod("blueGambitCardProc", false) then
+        if PST:getTreeSnapshotMod("blueGambit", false) and not PST:getTreeSnapshotMod("blueGambitCardProc", false) and PST:arrHasValue(PST.blueGambitCards, pickup.SubType) then
             PST:addModifiers({ blueGambitCardProc = true }, true)
             pickup:Remove()
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, pickup.Position, pickup.Velocity, nil, Card.CARD_HIEROPHANT, Random() + 1)
@@ -958,7 +973,7 @@ function PST:onPickupInit(pickup, firstSpawn)
         end
     else
         -- Starcursed mod: coin, key and bomb scarcity
-        local tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
+        tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
         -- Expedition implicit: pickup scarcity
         tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
 

@@ -6,18 +6,6 @@ function PST:onGetCard(RNG, card)
         PST:addModifiers({ blueGambitCardProc = true }, true)
         return Card.CARD_HIEROPHANT
     end
-
-    -- Re-roll Soul of the Siren drop if not unlocked
-    local sirenSoulID = Isaac.GetCardIdByName("SoulOfTheSiren")
-    if sirenSoulID ~= -1 and card == sirenSoulID and not PST:isSoulOfTheSirenUnlocked() then
-        local newCard = Game():GetItemPool():GetCard(RNG:Next(), false, true, true)
-        local failsafe = 0
-        while newCard == sirenSoulID and failsafe < 200 do
-            newCard = Game():GetItemPool():GetCard(RNG:Next(), false, true, true)
-            failsafe = failsafe + 1
-        end
-        if failsafe < 200 then return newCard end
-    end
 end
 
 function PST:preUseCard(card, player, useFlag)

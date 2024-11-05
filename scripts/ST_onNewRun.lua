@@ -51,7 +51,11 @@ function PST:onNewRun(isContinued)
 
     PST.floorFirstUpdate = true
 
-    PST.modData.treeModSnapshot = PST:copyTable(PST.treeMods)
+    if treeActive then
+        PST.modData.treeModSnapshot = PST:copyTable(PST.treeMods)
+    else
+        PST.modData.treeModSnapshot = {}
+    end
 
     -- Remove defaults
     for k, v in pairs(PST.modData.treeModSnapshot) do
