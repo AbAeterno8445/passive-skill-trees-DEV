@@ -807,6 +807,12 @@ function PST:onNewRun(isContinued)
         Game().BlueWombParTime = Game().BlueWombParTime - math.ceil(tmpMod * 30)
     end
 
+    -- Mod: +- boss rush waves
+    tmpMod = PST:getTreeSnapshotMod("bossRushWaves", 0)
+    if tmpMod ~= 0 then
+        Ambush.SetMaxBossrushWaves(Ambush.GetMaxBossrushWaves() + tmpMod)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

@@ -581,6 +581,7 @@ function PST:resetMods()
 		donoMachineStatBoost = 0,
 		donoMachineStatBoostUses = 0,
 		donoMachineStatBoostProcs = 0,
+		bossRushWaves = 0,
 
 		roomBossKills = 0,
 
