@@ -584,8 +584,13 @@ function SaveManager.Load(isLuamod)
 	local saveData = SaveManager.Utility.PatchSaveFile({}, SaveManager.DEFAULT_SAVE)
 
 	if modReference:HasData() then
-		local data = json.decode(modReference:LoadData())
-		saveData = SaveManager.Utility.PatchSaveFile(data, SaveManager.DEFAULT_SAVE)
+		local function PST_tmpLoadData()
+			local data = json.decode(modReference:LoadData())
+			saveData = SaveManager.Utility.PatchSaveFile(data, SaveManager.DEFAULT_SAVE)
+		end
+		if not pcall(PST_tmpLoadData) then
+			print("[PST] ERROR while loading savefile, corrupted data?")
+		end
 	end
 
 	local newSaveData = SaveManager.Utility.RunCallback(SaveManager.Utility.CustomCallback.PRE_DATA_LOAD, saveData,
