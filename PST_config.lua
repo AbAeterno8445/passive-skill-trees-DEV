@@ -469,7 +469,7 @@ function PST:initModConfigMenu()
                 return PST.config.astralWepDrops
             end,
             Display = function()
-                return "Disable Astral Weapon drops: " .. PST.config.astralWepDrops and "on" or "off"
+                return "Astral Weapon drops: " .. (PST.config.astralWepDrops and "on" or "off")
             end,
             OnChange = function(b)
                 PST.config.astralWepDrops = b
