@@ -1601,9 +1601,9 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2851
     },
-    overwhelmingSong = {
+    overwhelmingVoice = {
         str = {
-            "Overwhelming Song:",
+            "Overwhelming Voice:",
             "    Siren's Song turns friendly monsters back into hostile enemies on use",
             "    +5%% damage for the current room per monster turned this way, up to 20%%",
             "    Siren's Song deals 6 damage to charmed monsters, which increases each floor"

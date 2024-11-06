@@ -509,7 +509,7 @@ function PST:onNewRoom()
 		PST:addModifiers({ allstatsPerc = -4, songOfAweActive = false }, true)
 	end
 
-	-- Overwhelming Song node (Siren's tree)
+	-- Overwhelming Voice node (Siren's tree)
 	tmpTreeMod = PST:getTreeSnapshotMod("overwhelmingVoiceBuff", 0)
 	if tmpTreeMod > 0 then
 		PST:addModifiers({ damagePerc = -tmpTreeMod, overwhelmingVoiceBuff = { value = 0, set = true } }, true)
