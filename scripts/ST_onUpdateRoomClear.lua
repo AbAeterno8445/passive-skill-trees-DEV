@@ -636,7 +636,7 @@ function PST:onRoomClear(level, room)
 			end
 
 			-- Consuming Void node (T. Isaac node)
-			tmpMod = PST:getTreeSnapshotMod("consumingVoidBuff", false)
+			tmpMod = PST:getTreeSnapshotMod("consumingVoidBuff", 0)
             if tmpMod > 0 then
                 PST:addModifiers({ consumingVoidBuff = -tmpMod / 2 }, true)
                 PST:updateCacheDelayed(PST.allstatsCache)
