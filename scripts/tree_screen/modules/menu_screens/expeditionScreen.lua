@@ -500,6 +500,8 @@ function expeditionScreen:Render(tScreen)
 
         PST.miniFont:DrawString(tmpTab, drawX, 2, tmpColor, tabW, true)
     end
+    local tmpStr = "Press TAB or 1 2 3 nums to switch tabs"
+    PST.miniFont:DrawStringScaled(tmpStr, tScreen.screenW / 2 - PST.luaminiFont:GetStringWidth(tmpStr) / 4, tabH, 0.5, 0.5, PST.kcolors.WHITE)
 
     local currentChar = PST:getCurrentCharData()
 
