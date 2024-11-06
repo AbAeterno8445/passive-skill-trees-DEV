@@ -37,7 +37,7 @@
 ##
 
 - **Arcane Obols**
-  - Arcane Obols are a new currency you can find as a frequent node reward in expeditions, or sometimes within expedition runs themselves after completing certain events: killing champions or bosses, clearing challenge rooms, fully helping a beggar (teleports away), opening non-regular chests and completing the boss rush.
+  - Arcane Obols are a new currency you can find as a frequent node reward in expeditions, or sometimes within expedition runs themselves after completing certain events: killing champions or bosses; clearing challenge rooms; fully helping a beggar (teleports away); opening non-regular chests; completing the boss rush.
   - Obols within a run take the form of purple coin pickups. Walking over them picks them up for the current character.
   - Each character has their own obol counter.
 
@@ -50,7 +50,8 @@
 - Each character has their own Sidereal Tree progression.
 - Most if not all nodes in this tree require spending both global skill points and Arcane Obols (earned from expeditions) to allocate.
 - Many of the nodes here are 'travel' nodes, which only cost obols to allocate and not global SP. These allow you to path towards the tree's different features.
-- The Sidereal Tree contains groups of nodes that unlock new features and activities within runs.
+- The Sidereal Tree contains groups of nodes that unlock new features and activities within runs for the associated character.
+- Respeccing nodes that cost obols will **not** refund the obol cost, only the global SP (if spent).
 
 #
 
@@ -82,4 +83,5 @@
 
 ### **New feature: Menu Tabber**
 
-- You may have noticed a trend where new menus or trees are accessed by pressing Allocate on their respective nodes. Pressing TAB now opens a small selection menu that allows you to quickly go to a particular tree or menu if you have unlocked it.
+- You may have noticed a trend where new menus or trees are accessed by pressing Allocate on their respective nodes. Pressing TAB (or Restart on controller) now opens a small selection menu that allows you to quickly go to a particular tree or menu if you have unlocked it.
+- Bear in mind you first need to unlock the associated nodes, and some of them may be per-character.

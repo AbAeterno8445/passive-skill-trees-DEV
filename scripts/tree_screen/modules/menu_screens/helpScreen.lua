@@ -18,7 +18,12 @@ local helpScreen = {
         "2.1", "2.2",
         "3.1", "3.2",
         "4.1", "4.2", "4.3",
-        "5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7"
+        "5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7",
+        "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7",
+        "7.1", "7.2",
+        "8.1", "8.2", "8.3", "8.4", "8.5", "8.6",
+        "9.1", "9.2",
+        "10.1"
     },
     helpButtons = {
         {
@@ -50,6 +55,36 @@ local helpScreen = {
             number = 5,
             iconID = 4,
             targetPage = "5.1"
+        },
+        {
+            title = "Expeditions",
+            number = 6,
+            iconID = 5,
+            targetPage = "6.1"
+        },
+        {
+            title = "Sidereal Tree",
+            number = 7,
+            iconID = 6,
+            targetPage = "7.1"
+        },
+        {
+            title = "Astral Forge",
+            number = 8,
+            iconID = 7,
+            targetPage = "8.1"
+        },
+        {
+            title = "Timeless Bazaar",
+            number = 9,
+            iconID = 8,
+            targetPage = "9.1"
+        },
+        {
+            title = "Menu Tabber",
+            number = 10,
+            iconID = 9,
+            targetPage = "10.1"
         }
     }
 }
@@ -83,6 +118,14 @@ function helpScreen:SwitchPage(targetPage)
             self:SwitchPage(0)
         end
     end
+    -- Update selected button
+    for _, tmpButton in ipairs(self.helpButtons) do
+        local currentPage = self.pages[self.currentPage]
+        if currentPage and currentPage == tmpButton.targetPage then
+            self.selectedButton = tmpButton.number
+            break
+        end
+    end
 end
 
 function helpScreen:OnOpen()
@@ -106,12 +149,16 @@ function helpScreen:OnInput()
         -- Menu buttons selection
         if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT) then
             self.selectedButton = self.selectedButton - 1
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.6, 2, false, 1.3)
         elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT) then
             self.selectedButton = self.selectedButton + 1
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.6, 2, false, 1.3)
         elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_UP) then
             self.selectedButton = self.selectedButton - helpButtonCols
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.6, 2, false, 1.3)
         elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN) then
             self.selectedButton = self.selectedButton + helpButtonCols
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.6, 2, false, 1.3)
         end
         self.selectedButton = math.max(1, math.min(#self.helpButtons, self.selectedButton))
 
@@ -162,7 +209,8 @@ function helpScreen:Render(tScreen)
             local buttonX = renderPos.X + (16 + ((i - 1) % helpButtonCols) * (456 / helpButtonCols)) * screenScale
             local buttonY = renderPos.Y + (62 + math.floor((i - 1) / helpButtonCols) * 80) * screenScale
             local buttonFrame = 0
-            if self.selectedButton == i then buttonFrame = 1 end
+            local isSelected = self.selectedButton == i
+            if isSelected then buttonFrame = 1 end
             self.helpButtonSprite:SetFrame("Default", buttonFrame)
             self.helpButtonSprite:Render(Vector(buttonX, buttonY))
 
@@ -173,15 +221,19 @@ function helpScreen:Render(tScreen)
             end
 
             -- Draw help category number
+            local tmpColor = PST.kcolors.WHITE
+            if isSelected then
+                tmpColor = PST.kcolors.BLUE1
+            end
             local textScale = Vector(screenScale, screenScale)
             local numPosX = buttonX + (19 - PST.luaminiFont:GetStringWidth(tostring(tmpButton.number)) / 2) * screenScale
             local numPosY = buttonY + 33 * screenScale
-            PST.luaminiFont:DrawStringScaled(tostring(tmpButton.number), numPosX, numPosY, textScale.X, textScale.Y, PST.kcolors.WHITE)
+            PST.luaminiFont:DrawStringScaled(tostring(tmpButton.number), numPosX, numPosY, textScale.X, textScale.Y, tmpColor)
 
             -- Draw title
             local titlePosX = buttonX + (19 - PST.miniFont:GetStringWidth(tmpButton.title) / 2) * screenScale
             local titlePosY = buttonY + 50 * screenScale
-            PST.miniFont:DrawStringScaled(tmpButton.title, titlePosX, titlePosY, textScale.X, textScale.Y, PST.kcolors.WHITE)
+            PST.miniFont:DrawStringScaled(tmpButton.title, titlePosX, titlePosY, textScale.X, textScale.Y, tmpColor)
         end
     else
         -- Decor icons for pages
