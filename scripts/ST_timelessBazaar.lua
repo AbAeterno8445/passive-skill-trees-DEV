@@ -120,6 +120,9 @@ function PST:bazaarGenSelection()
 
         for _=1,maxItems do
             local tmpItemQual = 0
+            if math.random() < 0.2 then
+                tmpItemQual = 1
+            end
             -- Mod: % chance to upgrade quality
             for i=0,2 do
                 tmpMod = siderealMods["bazaarQual" .. tostring(i + 1)]
@@ -129,6 +132,9 @@ function PST:bazaarGenSelection()
             end
 
             local tmpItemPool = ItemPoolType.POOL_TREASURE
+            if math.random() < 0.5 then
+                tmpItemPool = ItemPoolType.POOL_SHOP
+            end
             -- Mod: % chance for offered items to be from the Devil pool
             tmpMod = siderealMods["bazaarDevil"]
             if tmpMod and 100 * math.random() < tmpMod then

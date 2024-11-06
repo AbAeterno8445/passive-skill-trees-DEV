@@ -189,21 +189,23 @@ function PST:onDeath(entity)
                 end
 
                 -- Chance for bosses to drop Astral Weapons on death, up to 4 per room
-                local tmpMod = PST:getTreeSnapshotMod("astralWepBossRate", 0) + PST.astralWepBossBaseRate * math.min(1, PST:getLevel():GetStage() / 8)
-                -- Reduce chance for multi-segment bosses
-                if PST:arrHasValue(PST.segmentBosses, entity.Type) then
-                    tmpMod = tmpMod / 4
-                end
-                -- Reduce chance for deadly sin minibosses
-                if PST:arrHasValue(PST.deadlySinBosses, entity.Type) then
-                    tmpMod = tmpMod / 4
-                end
-                while tmpMod > 0 and PST:getTreeSnapshotMod("astralWepBossRoomDrops", 0) < 4 do
-                    if 100 * math.random() < tmpMod then
-                        PST:dropRandAstralWepAt(entity.Position, PST:getTreeSnapshotMod("astralWepTierDrops", 1), true, RandomVector() * 3 * math.random())
-                        PST:addModifiers({ astralWepBossRoomDrops = 1 }, true)
+                if PST:isNodeNameAllocated("sidereal", "Astral Forge") then
+                    local tmpMod = PST:getTreeSnapshotMod("astralWepBossRate", 0) + PST.astralWepBossBaseRate * math.min(1, PST:getLevel():GetStage() / 8)
+                    -- Reduce chance for multi-segment bosses
+                    if PST:arrHasValue(PST.segmentBosses, entity.Type) then
+                        tmpMod = tmpMod / 4
                     end
-                    tmpMod = tmpMod - 100
+                    -- Reduce chance for deadly sin minibosses
+                    if PST:arrHasValue(PST.deadlySinBosses, entity.Type) then
+                        tmpMod = tmpMod / 4
+                    end
+                    while tmpMod > 0 and PST:getTreeSnapshotMod("astralWepBossRoomDrops", 0) < 4 do
+                        if 100 * math.random() < tmpMod then
+                            PST:dropRandAstralWepAt(entity.Position, PST:getTreeSnapshotMod("astralWepTierDrops", 1), true, RandomVector() * 3 * math.random())
+                            PST:addModifiers({ astralWepBossRoomDrops = 1 }, true)
+                        end
+                        tmpMod = tmpMod - 100
+                    end
                 end
 
                 -- Ancient weapon mod: Beastbane

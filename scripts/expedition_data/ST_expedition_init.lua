@@ -1,6 +1,6 @@
 ---@type PSTExpedition[]
 PST.expeditionsData = {}
-PST.expedMinLevel = 70
+PST.expedMinLevel = 60
 
 PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500, 1000}
 
