@@ -203,7 +203,14 @@ function descriptionBoxesModule:Render(tScreen)
                 if PST.modData.expeditionDepth > expReq then
                     tmpColor = PST.kcolors.GREEN1
                 end
-                table.insert(tmpDescription, {"Requires completing expedition depth " .. tostring(expReq), tmpColor})
+                table.insert(tmpDescription, {"Requires completing expedition depth " .. tostring(expReq) .. ".", tmpColor})
+            end
+
+            -- Character level requirement
+            local currentChar = PST:getCurrentCharData()
+            local charlvlReq = hoveredNode.reqs.charLevel
+            if charlvlReq and currentChar and currentChar.level < charlvlReq then
+                table.insert(tmpDescription, {"Requires the current character (" .. PST:getCurrentCharName() .. ") to reach level " .. tostring(charlvlReq) .. "."})
             end
         end
 

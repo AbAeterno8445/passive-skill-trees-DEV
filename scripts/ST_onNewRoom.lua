@@ -1062,7 +1062,7 @@ function PST:onNewRoom()
 		end
 
 		-- Blessed Pennies node (T. Keeper's tree)
-		if PST:getTreeSnapshotMod("blessedPennies", false) and roomType == RoomType.ROOM_SHOP and 100 * math.random() < 100 then
+		if PST:getTreeSnapshotMod("blessedPennies", false) and roomType == RoomType.ROOM_SHOP and 100 * math.random() < 25 then
 			local tmpPennyType = PST.pennyTrinkets[math.random(#PST.pennyTrinkets)]
 			local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 60)
 			local newTrinket = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, tmpPos, Vector.Zero, nil, tmpPennyType, Random() + 1)
