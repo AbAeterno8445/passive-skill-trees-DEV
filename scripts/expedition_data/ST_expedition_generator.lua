@@ -66,10 +66,10 @@ function PST:generateExpedition(depth, seed)
 
     -- Reward type weights (starting value, addition per advanced column, min or max value)
     local rewardWeights = {
-        [PSTExpNodeRewardType.OBOLS] = { val = 500, add = -40, min = 200 },
+        [PSTExpNodeRewardType.OBOLS] = { val = 400, add = -25, min = 200 },
         [PSTExpNodeRewardType.EXP] = { val = 100, add = -1, min = 60 },
-        [PSTExpNodeRewardType.ITEM] = { val = 50, add = 0.1, max = 80 },
-        [PSTExpNodeRewardType.BOON] = { val = 20, add = 0.2, max = 35 },
+        [PSTExpNodeRewardType.ITEM] = { val = 8, add = 0.1, max = 15, minDepth = 3 },
+        [PSTExpNodeRewardType.BOON] = { val = 30, add = 0.2, max = 40 },
         [PSTExpNodeRewardType.ATTEMPTS] = { val = 15, add = 0, max = 15}
     }
     local rewardWeightVals = {
@@ -84,7 +84,7 @@ function PST:generateExpedition(depth, seed)
     local curseChance = 0.1
 
     -- Boon upgrade node chance & total maximum
-    local boonUpgradeChance = 0.04
+    local boonUpgradeChance = 0.05
     local boonUpgrades = 2
 
     -- Create layout of columns & nodes
@@ -134,8 +134,8 @@ function PST:generateExpedition(depth, seed)
                     if colCurses > 0 and expRNG:RandomFloat() < curseChance then
                         newNode.nodeType = PSTExpNodeType.CURSED
                         colCurses = colCurses - 1
-                    -- Chance for boon upgrade nodes
-                    elseif boonUpgrades > 0 and expRNG:RandomFloat() < boonUpgradeChance then
+                    -- Depth 4+, Chance for boon upgrade nodes
+                    elseif boonUpgrades > 0 and depth >= 4 and expRNG:RandomFloat() < boonUpgradeChance then
                         newNode.nodeType = PSTExpNodeType.BOONUPGRADE
                         boonUpgrades = boonUpgrades - 1
                     end
@@ -186,15 +186,19 @@ function PST:generateExpedition(depth, seed)
             -- Assign reward type
             local totalWeight = 0
             for _, tmpWeight in pairs(rewardWeights) do
-                totalWeight = totalWeight + tmpWeight.val
+                if not tmpWeight.minDepth or (tmpWeight.minDepth and depth >= tmpWeight.minDepth) then
+                    totalWeight = totalWeight + tmpWeight.val
+                end
             end
             local randWeight = expRNG:RandomInt(math.floor(totalWeight))
             for _, rewardType in ipairs(rewardWeightVals) do
                 local tmpWeight = rewardWeights[rewardType]
-                randWeight = randWeight - tmpWeight.val
-                if randWeight <= 0 then
-                    newNode.rewardType = rewardType
-                    break
+                if not tmpWeight.minDepth or (tmpWeight.minDepth and depth >= tmpWeight.minDepth) then
+                    randWeight = randWeight - tmpWeight.val
+                    if randWeight <= 0 then
+                        newNode.rewardType = rewardType
+                        break
+                    end
                 end
             end
 

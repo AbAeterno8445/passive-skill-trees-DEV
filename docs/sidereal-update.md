@@ -18,6 +18,7 @@
   - Expeditions end with a final node that has a more difficult objective, such as defeating final bosses.
   - Completing the final node resets the expedition, allowing you to start a fresh one.
   - Expeditions have an 'attempts' counter. Dying within an expedition run subtracts an attempt, and losing them all will restart the current expedition without re-rolling it, meaning you'll have to path through completed objectives again, without additional rewards, until you reach the last point you were in.
+  - Within the expedition menu, you can press Q (or Menu Tab on controller) to toggle expedition runs in case you want to play a normal run.
 
 ##
 
