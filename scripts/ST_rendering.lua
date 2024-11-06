@@ -84,6 +84,9 @@ xpbarTempSprite:Play("BarTemp", true)
 local chroniclerUISprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
 chroniclerUISprite:Play("Chronicler UI", true)
 
+local expedUISprite = Sprite("gfx/ui/skilltrees/nodes/expedition_nodes.anm2", true)
+expedUISprite:SetFrame("UI", 0)
+
 local animFXList = {}
 -- Spawn an animated effect using the given anm2 path. Returns the new sprite object in case further manipulation is needed
 ---@param FXSpritePath string
@@ -160,8 +163,18 @@ function PST:Render()
 		end
 	end
 
-	-- Ancient starcursed jewel: Chronicler Stone UI
 	if hudVisible then
+		-- Expedition run UI icon
+		if PST:getTreeSnapshotMod("isExpedRun", false) then
+			if PST:isKeybindActive(PSTKeybind.TREE_TAB, true) and expedUISprite.Color.A < 1 then
+				expedUISprite.Color.A = expedUISprite.Color.A + 0.05
+			elseif expedUISprite.Color.A > 0.25 then
+				expedUISprite.Color.A = expedUISprite.Color.A - 0.05
+			end
+			expedUISprite:Render(Vector(8, 8))
+		end
+
+		-- Ancient starcursed jewel: Chronicler Stone UI
 		if PST:SC_getSnapshotMod("chroniclerStone", false) then
 			local remaining = math.max(0, PST:getTreeSnapshotMod("SC_chroniclerRooms", 0))
 			local tmpColor = PST.kcolors.RED2
