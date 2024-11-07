@@ -15,7 +15,10 @@ function PST:onRoomClear(level, room)
 		-- Challenge rooms
 		if room:GetType() == RoomType.ROOM_CHALLENGE then
 			-- Final round clear
-			if Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2) then
+			if not PST:getTreeSnapshotMod("challRoomClear", false) and
+			(Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2)) then
+				PST:addModifiers({ challRoomClear = true }, true)
+
 				-- Challenge room XP reward
 				local challengeXP = PST:getTreeSnapshotMod("challengeXP", 0)
 				local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false)

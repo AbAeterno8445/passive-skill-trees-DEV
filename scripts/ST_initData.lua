@@ -507,6 +507,7 @@ function PST:resetMods()
 
 		roomKills = 0,
 		floorClears = 0,
+		challRoomClear = false,
 
 		luckyPennyChance = 0,
 		cardFloorLuck = 0,

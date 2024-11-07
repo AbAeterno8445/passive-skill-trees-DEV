@@ -1300,6 +1300,11 @@ function PST:onNewRoom()
 		end
     end
 
+	-- Challenge room clear proc
+	if PST:getTreeSnapshotMod("challRoomClear", false) and roomType ~= RoomType.ROOM_CHALLENGE then
+		PST:addModifiers({ challRoomClear = false }, true)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false
