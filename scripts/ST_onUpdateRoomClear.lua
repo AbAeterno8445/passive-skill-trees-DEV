@@ -44,22 +44,22 @@ function PST:onRoomClear(level, room)
 					end
 					PST:addModifiers({ SC_challClear = true }, true)
 				end
-			end
 
-			-- Expedition objective: clear challenge rooms
-			PST:expedAddProgInRun("challengeRooms", 1)
+				-- Expedition objective: clear challenge rooms
+				PST:expedAddProgInRun("challengeRooms", 1)
+	
+				-- Obols on challenge room clear
+				if PST:getTreeSnapshotMod("isExpedRun", false) then
+					local tmpObols = PST.obolEvents.challClear(PST:getTreeSnapshotMod("expedDepth", 1))
+					if tmpObols > 0 then PST:expedDropObolsAt(room:GetCenterPos(), tmpObols) end
+				end
 
-			-- Obols on challenge room clear
-			if PST:getTreeSnapshotMod("isExpedRun", false) then
-				local tmpObols = PST.obolEvents.challClear(PST:getTreeSnapshotMod("expedDepth", 1))
-				if tmpObols > 0 then PST:expedDropObolsAt(room:GetCenterPos(), tmpObols) end
-			end
-
-			-- Sidereal Caches on challenge room clear
-			local tmpMod = PST:getTreeSnapshotMod("sideCacheChallenge", 0) + PST:getTreeSnapshotMod("sideCacheFloorChanceTotal", 0)
-			if tmpMod > 0 and 100 * math.random() < tmpMod then
-				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-				Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
+				-- Sidereal Caches on challenge room clear
+				local tmpMod = PST:getTreeSnapshotMod("sideCacheChallenge", 0) + PST:getTreeSnapshotMod("sideCacheFloorChanceTotal", 0)
+				if tmpMod > 0 and 100 * math.random() < tmpMod then
+					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+					Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
+				end
 			end
 		-- Boss rooms
 		elseif room:GetType() == RoomType.ROOM_BOSS then
