@@ -1,14 +1,10 @@
 ## **Version 0.4.0 - Sidereal Update**
 
-#
-
 ### **New feature: Astral Expeditions**
 
 - **Arcane Astrolabe**
   - New "Arcane Astrolabe" node in the Star Tree, allocatable at any point.
   - Once acquired, pressing Allocate on it opens the Astral Expedition menu.
-
-##
 
 - **Expeditions**
   - Astral Expeditions present a graph of nodes you can progress through from left to right. If you're familiar with Path of Exile's "Forbidden Sanctum" mechanic, these would be comparable to that feature.
@@ -20,22 +16,16 @@
   - Expeditions have an 'attempts' counter. Dying within an expedition run subtracts an attempt, and losing them all will restart the current expedition without re-rolling it, meaning you'll have to path through completed objectives again, without additional rewards, until you reach the last point you were in.
   - Within the expedition menu, you can press Q (or Menu Tab on controller) to toggle expedition runs in case you want to play a normal run.
 
-##
-
 - **Depth Levels**
   - You start at expedition depth 1. Completing an expedition's final node unlocks the next depth level. Depth levels can keep increasing infinitely.
   - Starting from depth 2, expeditions gain implicit modifiers that are applied to the runs, such as more monster HP, speed, pickup scarcity, broken hearts, etc., making them more and more difficult as you advance.
   - Higher depths also affect node objectives' difficulty, rewards, curses and expedition length (total amount of node 'columns').
   - Expedition runs require some total starmight from your Star Tree to begin appropriately. Higher depth levels require more total starmight.
 
-##
-
 - **Boons and Curses**
   - Nodes can include Boons (as a reward) or Curses (can be present anywhere). Boons provide boosts that apply to the rest of the expedition's nodes, while curses provide debuffs or monster buffs, making runs tougher.
   - Boons and Curses are unique, meaning each one can't show up more than once within the same expedition.
   - In depths 4+, a new type of node can show up, which grants you 1 **boon upgrade point**. This allows you to upgrade any of the boons you've obtained for that expedition, boosting its effects (once per boon).
-
-##
 
 - **Arcane Obols**
   - Arcane Obols are a new currency you can find as a frequent node reward in expeditions, or sometimes within expedition runs themselves after completing certain events: killing champions or bosses; clearing challenge rooms; fully helping a beggar (teleports away); opening non-regular chests; completing the boss rush.
