@@ -192,6 +192,32 @@ function PST:treePauseRender()
     end
 end
 
+-- Post pause menu render
+function PST:postPauseRender()
+    -- Expedition objective display
+    if Isaac.IsInGame() and PST.config.drawPauseText and PST:getTreeSnapshotMod("isExpedRun", false) and not PST:isKeybindActive(PSTKeybind.TREE_TAB, true) then
+        local depth = PST:getTreeSnapshotMod("expedDepth", 1)
+        local expData = PST.expeditionsData[depth]
+        if expData and expData.selectedNode then
+            local tmpNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+            if tmpNode then
+                local tmpScale = 0.5
+                local tmpY = 6
+                for _, tmpLine in ipairs(PST:getExpNodeObjectiveDesc(tmpNode, expData)) do
+                    local tmpStr = tmpLine[1]
+                    if tmpStr == "Objective:" then
+                        tmpStr = "Expedition Objective:"
+                    end
+                    local tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
+                    PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpLine[2])
+                    tmpY = tmpY + 14 * tmpScale
+                end
+            end
+        end
+    end
+end
+
 PST:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, PST.treeScreenMenuRender)
 PST:AddCallback(ModCallbacks.MC_POST_RENDER, PST.treeScreenMenuRender)
 PST:AddCallback(ModCallbacks.MC_PRE_PAUSE_SCREEN_RENDER, PST.treePauseRender)
+PST:AddCallback(ModCallbacks.MC_POST_PAUSE_SCREEN_RENDER, PST.postPauseRender)
