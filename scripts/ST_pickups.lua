@@ -1237,15 +1237,9 @@ end
 ---@param pickup EntityPickup
 function PST:onPickupUpdate(pickup)
     -- Init pickup
-    if not pickup:GetData().PST_init then
-        local room = PST:getRoom()
-        if room:GetFrameCount() >= 0 or room:IsFirstVisit() then
-            PST:onPickupInit(pickup, true)
-            pickup:GetData().PST_init = true
-        elseif pickup.FrameCount == 1 then
-            PST:onPickupInit(pickup, false)
-            pickup:GetData().PST_init = true
-        end
+    if pickup.FrameCount == 1 then
+        PST:onPickupInit(pickup, not pickup:GetData().PST_init)
+        pickup:GetData().PST_init = true
     end
 
     if pickup.Timeout > 0 then

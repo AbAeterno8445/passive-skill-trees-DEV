@@ -1305,6 +1305,13 @@ function PST:onNewRoom()
 		PST:addModifiers({ challRoomClear = false }, true)
 	end
 
+	-- Mark existing pickups as initialized
+	if not room:IsFirstVisit() then
+		for _, tmpPickup in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP)) do
+			tmpPickup:GetData().PST_init = true
+		end
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false
