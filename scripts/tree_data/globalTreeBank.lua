@@ -243,7 +243,7 @@ PST.SkillTreesAPI.AddCharacterTree("global", false, [[
 "488": "{\"pos\":[5,-5],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[487]}",
 "489": "{\"pos\":[3,-5],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[487,490]}",
 "490": "{\"pos\":[2,-6],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[489,491]}",
-"491": "{\"pos\":[1,-7],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[490,494,492,493]}",
+"491": "{\"pos\":[1,-7],\"type\":1,\"size\":\"Med\",\"name\":\"XP gain\",\"description\":[\"+4% XP gain\"],\"modifiers\":{\"xpgain\":4},\"adjacent\":[490,494,492,493,967]}",
 "492": "{\"pos\":[0,-8],\"type\":2,\"size\":\"Small\",\"name\":\"Secret XP\",\"description\":[\"Gain 30 XP upon first entering a secret or\",\"super secret room.\"],\"modifiers\":{\"secretXP\":30},\"adjacent\":[491]}",
 "493": "{\"pos\":[0,-7],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 10 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":10},\"adjacent\":[491]}",
 "494": "{\"pos\":[1,-8],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[491,495]}",
@@ -594,6 +594,21 @@ PST.SkillTreesAPI.AddCharacterTree("global", false, [[
 "963": "{\"pos\":[20,-21],\"type\":835,\"size\":\"Small\",\"name\":\"Less Boss Rush Waves\",\"description\":[\"-1 boss rush waves.\"],\"modifiers\":{\"bossRushWaves\":-1},\"adjacent\":[962]}",
 "964": "{\"pos\":[22,-17],\"type\":834,\"size\":\"Small\",\"name\":\"More Boss Rush Waves\",\"description\":[\"+1 boss rush waves.\"],\"modifiers\":{\"bossRushWaves\":1},\"adjacent\":[855,965]}",
 "965": "{\"pos\":[23,-17],\"type\":834,\"size\":\"Small\",\"name\":\"More Boss Rush Waves\",\"description\":[\"+1 boss rush waves.\"],\"modifiers\":{\"bossRushWaves\":1},\"adjacent\":[964,966]}",
-"966": "{\"pos\":[24,-17],\"type\":834,\"size\":\"Small\",\"name\":\"More Boss Rush Waves\",\"description\":[\"+1 boss rush waves.\"],\"modifiers\":{\"bossRushWaves\":1},\"adjacent\":[965]}"
+"966": "{\"pos\":[24,-17],\"type\":834,\"size\":\"Small\",\"name\":\"More Boss Rush Waves\",\"description\":[\"+1 boss rush waves.\"],\"modifiers\":{\"bossRushWaves\":1},\"adjacent\":[965]}",
+"967": "{\"pos\":[2,-8],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[491,968]}",
+"968": "{\"pos\":[3,-9],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[967,969]}",
+"969": "{\"pos\":[4,-10],\"type\":0,\"size\":\"Small\",\"name\":\"XP gain\",\"description\":[\"+1% XP gain\"],\"modifiers\":{\"xpgain\":1},\"adjacent\":[968,970,990,994,997]}",
+"970": "{\"pos\":[3,-11],\"type\":836,\"size\":\"Small\",\"name\":\"Beggar Help XP\",\"description\":[\"Gain +15 xp when fully helping any beggar (teleports away).\"],\"modifiers\":{\"beggarHelpXP\":15},\"adjacent\":[969,971],\"reqs\":{}}",
+"971": "{\"pos\":[2,-12],\"type\":836,\"size\":\"Small\",\"name\":\"Beggar Help XP\",\"description\":[\"Gain +15 xp when fully helping any beggar (teleports away).\"],\"modifiers\":{\"beggarHelpXP\":15},\"adjacent\":[970,973],\"reqs\":{}}",
+"973": "{\"pos\":[1,-13],\"type\":836,\"size\":\"Small\",\"name\":\"Beggar Help XP\",\"description\":[\"Gain +15 xp when fully helping any beggar (teleports away).\"],\"modifiers\":{\"beggarHelpXP\":15},\"adjacent\":[971],\"reqs\":{}}",
+"990": "{\"pos\":[5,-11],\"type\":838,\"size\":\"Small\",\"name\":\"Slot Machine XP\",\"description\":[\"Gain +1 xp when spending coins on slot machines, up to 50 times per floor.\"],\"modifiers\":{\"slotMachineXP\":1},\"adjacent\":[969,991],\"reqs\":{}}",
+"991": "{\"pos\":[6,-12],\"type\":838,\"size\":\"Small\",\"name\":\"Slot Machine XP\",\"description\":[\"Gain +1 xp when spending coins on slot machines, up to 50 times per floor.\"],\"modifiers\":{\"slotMachineXP\":1},\"adjacent\":[990,992],\"reqs\":{}}",
+"992": "{\"pos\":[7,-13],\"type\":838,\"size\":\"Small\",\"name\":\"Slot Machine XP\",\"description\":[\"Gain +1 xp when spending coins on slot machines, up to 50 times per floor.\"],\"modifiers\":{\"slotMachineXP\":1},\"adjacent\":[991],\"reqs\":{}}",
+"994": "{\"pos\":[6,-10],\"type\":839,\"size\":\"Small\",\"name\":\"Fortune Machine XP\",\"description\":[\"Gain between 0 and 4 xp when spending coins on fortune machines, up to 50 times per floor.\"],\"modifiers\":{\"fortuneMachineXPmax\":4},\"adjacent\":[995,969],\"reqs\":{}}",
+"995": "{\"pos\":[7,-10],\"type\":839,\"size\":\"Small\",\"name\":\"Fortune Machine XP\",\"description\":[\"Gain between 0 and 4 xp when spending coins on fortune machines, up to 50 times per floor.\"],\"modifiers\":{\"fortuneMachineXPmax\":4},\"adjacent\":[994,1000],\"reqs\":{}}",
+"997": "{\"pos\":[4,-12],\"type\":837,\"size\":\"Small\",\"name\":\"Shell Game XP\",\"description\":[\"Gain +2 xp when spending coins on shell games, up to 50 times per floor.\"],\"modifiers\":{\"shellGameXP\":2},\"adjacent\":[998,969],\"reqs\":{}}",
+"998": "{\"pos\":[4,-13],\"type\":837,\"size\":\"Small\",\"name\":\"Shell Game XP\",\"description\":[\"Gain +2 xp when spending coins on shell games, up to 50 times per floor.\"],\"modifiers\":{\"shellGameXP\":2},\"adjacent\":[997,999],\"reqs\":{}}",
+"999": "{\"pos\":[4,-14],\"type\":837,\"size\":\"Small\",\"name\":\"Shell Game XP\",\"description\":[\"Gain +2 xp when spending coins on shell games, up to 50 times per floor.\"],\"modifiers\":{\"shellGameXP\":2},\"adjacent\":[998],\"reqs\":{}}",
+"1000": "{\"pos\":[8,-10],\"type\":839,\"size\":\"Small\",\"name\":\"Fortune Machine XP\",\"description\":[\"Gain between 0 and 4 xp when spending coins on fortune machines, up to 50 times per floor.\"],\"modifiers\":{\"fortuneMachineXPmax\":4},\"adjacent\":[995],\"reqs\":{}}"
 }
 ]])

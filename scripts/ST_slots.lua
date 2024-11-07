@@ -135,6 +135,32 @@ function PST:onSlotUpdate(slot)
         elseif slot.Variant == SlotVariant.GREED_DONATION_MACHINE and spentCoins then
             -- Expedition objective: donate to the shop/greed donation machine
             PST:expedAddProgInRun("shopDonation", lastResources.coins - player:GetNumCoins())
+
+        -- Slot machine
+        elseif slot.Variant == SlotVariant.SLOT_MACHINE and spentCoins then
+            -- Mod: +xp when spending coins on slot machines in the floor
+            local tmpMod = PST:getTreeSnapshotMod("slotMachineXP", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("slotMachineFloorUses", 0) < 50 then
+                PST:addTempXP(tmpMod, true, false)
+                PST:addModifiers({ slotMachineFloorUses = 1 }, true)
+            end
+        -- Fortune machine
+        elseif slot.Variant == SlotVariant.FORTUNE_TELLING_MACHINE and spentCoins then
+            -- Mod: +xp when spending coins on fortune machines in the floor
+            local tmpMod = PST:getTreeSnapshotMod("fortuneMachineXPmax", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("fortuneMachineFloorUses", 0) < 50 then
+                local tmpXP = math.random(0, tmpMod)
+                PST:addTempXP(tmpXP, true, false)
+                PST:addModifiers({ fortuneMachineFloorUses = 1 }, true)
+            end
+        -- Shell games
+        elseif slot.Variant == SlotVariant.SHELL_GAME and spentCoins then
+            -- Mod: +xp when spending coins on shell games in the floor
+            local tmpMod = PST:getTreeSnapshotMod("shellGameXP", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("shellGameFloorUses", 0) < 50 then
+                PST:addTempXP(tmpMod, true, false)
+                PST:addModifiers({ shellGameFloorUses = 1 }, true)
+            end
         else
             -- Spent something helping a beggar
             if isBeggar and (spentCoins or spentHearts or spentKeys or spentBombs) then
@@ -191,6 +217,12 @@ function PST:onSlotUpdate(slot)
         if PST:getTreeSnapshotMod("isExpedRun", false) then
             local tmpObols = PST.obolEvents.beggarHelp(PST:getTreeSnapshotMod("expedDepth", 1))
             if tmpObols > 0 then PST:expedDropObolsAt(slot.Position, tmpObols) end
+        end
+
+        -- Mod: +xp when fully helping beggar
+        local tmpMod = PST:getTreeSnapshotMod("beggarHelpXP", 0)
+        if tmpMod > 0 then
+            PST:addTempXP(tmpMod, true, true)
         end
     end
 

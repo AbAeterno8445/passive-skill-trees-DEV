@@ -777,6 +777,21 @@ function PST:onNewLevel()
         PST:addModifiers({ donoMachineStatBoostProcs = { value = 0, set = true } }, true)
     end
 
+    -- Mod: floor slot machine uses (reset)
+    if PST:getTreeSnapshotMod("slotMachineFloorUses", 0) > 0 then
+        PST:addModifiers({ slotMachineFloorUses = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: floor fortune machine uses (reset)
+    if PST:getTreeSnapshotMod("fortuneMachineFloorUses", 0) > 0 then
+        PST:addModifiers({ fortuneMachineFloorUses = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: floor shell game uses (reset)
+    if PST:getTreeSnapshotMod("shellGameFloorUses", 0) > 0 then
+        PST:addModifiers({ shellGameFloorUses = { value = 0, set = true } }, true)
+    end
+
     PST:save()
 end
 

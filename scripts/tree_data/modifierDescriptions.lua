@@ -214,6 +214,30 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "xp", sort = 106
     },
+    championXP = {
+        str = "%s%d%% champion monster XP on death",
+        addPlus = true,
+        category = "xp", sort = 107
+    },
+    beggarHelpXP = {
+        str = "Gain %s%d xp when fully helping any beggar (teleports away)",
+        addPlus = true,
+        category = "xp", sort = 108
+    },
+    shellGameXP = {
+        str = "Gain %s%d xp when spending coins on shell games, up to 50 times per floor",
+        addPlus = true,
+        category = "xp", sort = 109
+    },
+    slotMachineXP = {
+        str = "Gain %s%d xp when spending coins on slot machines, up to 50 times per floor",
+        addPlus = true,
+        category = "xp", sort = 110
+    },
+    fortuneMachineXPmax = {
+        str = "Gain between 0 and %d xp when spending coins on fortune machines, up to 50 times per floor",
+        category = "xp", sort = 111
+    },
 
     respecChance = {
         str = {
@@ -229,11 +253,6 @@ PST.treeModDescriptions = {
             "gain 2 respec points per completed floor in that run"
         },
         category = "xp", sort = 151
-    },
-    championXP = {
-        str = "%s%d%% champion monster XP on death",
-        addPlus = true,
-        category = "xp", sort = 152
     },
     --#endregion
 

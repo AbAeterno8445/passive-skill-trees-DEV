@@ -582,6 +582,13 @@ function PST:resetMods()
 		donoMachineStatBoostUses = 0,
 		donoMachineStatBoostProcs = 0,
 		bossRushWaves = 0,
+		beggarHelpXP = 0,
+		shellGameXP = 0,
+		shellGameFloorUses = 0,
+		slotMachineXP = 0,
+		slotMachineFloorUses = 0,
+		fortuneMachineXPmax = 0,
+		fortuneMachineFloorUses = 0,
 
 		roomBossKills = 0,
 
