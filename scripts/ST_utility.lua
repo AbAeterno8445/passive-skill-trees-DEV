@@ -1,5 +1,3 @@
-local sfx = SFXManager()
-
 function PST:getPlayer()
 	local player = PST.player
 	if not player then
@@ -217,7 +215,7 @@ function PST:addXP(xpParam, showText, overflow)
 		if charData.xp >= charData.xpRequired then
 			local currentChar = PST:getCurrentCharName()
 			if currentChar then
-				sfx:Play(SoundEffect.SOUND_CHOIR_UNLOCK)
+				SFXManager():Play(SoundEffect.SOUND_POWERUP2)
 				charData.level = charData.level + 1
 				charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
 
@@ -243,7 +241,7 @@ function PST:addXP(xpParam, showText, overflow)
 
 		-- Global level up
 		if PST.modData.xp >= PST.modData.xpRequired then
-			sfx:Play(SoundEffect.SOUND_1UP, 0.9)
+			SFXManager():Play(SoundEffect.SOUND_1UP, 0.9)
 			PST.modData.level = PST.modData.level + 1
 			PST.modData.skillPoints = PST.modData.skillPoints + 1
 

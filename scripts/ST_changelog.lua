@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Introduced two new main features found within the Star Tree: the Arcane Astrolabe and the Sidereal Tree.",
         "You can find more info about these in the tree's help panels or in the mod's workshop description.",
         "- Added multiple new node types to the global tree.",
+        "- Changed character level up sound to avoid confusion with angel rooms.",
         "- XP gain in challenges is now tied to the \"Apply tree in challenges\" option.",
         "- Judas' \"Sacrifice Darkness\" can no longer trigger in the mirror dimension, and the self damage should",
         "- no longer be able to kill you at any point.",
