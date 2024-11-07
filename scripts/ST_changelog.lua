@@ -14,6 +14,7 @@ function PST:getChangelogList()
         "- Reworked T. Isaac's \"Consuming Void\" large node.",
         "- Split T. Judas' \"Dark Expertise\" node into two large nodes, making the How to Jump effect optional. You",
         "might need to re-allocate these.",
+        "- T. Siren's \"Acrid Gaze\" pulse now fires slightly in front of you, instead of right at your position.",
         "- Fixed T. Keeper's \"Blessed Pennies\" effect being guaranteed unconditionally when entering a shop.",
         "",
 
