@@ -112,14 +112,16 @@ function PST:onDeath(entity)
         if PST:isRunSidereal() then
             -- Final boss kill
             if isFinalBoss then
-                local tmpAmt = 1
-                if 100 * math.random() < PST:getTreeSnapshotMod("bossExtraAncientStardust", 0) then
-                    tmpAmt = tmpAmt + 1
+                -- Ancient Stardust drop
+                if PST:isNodeNameAllocated("sidereal", "Astral Forge") then
+                    local tmpAmt = 1
+                    if 100 * math.random() < PST:getTreeSnapshotMod("bossExtraAncientStardust", 0) then
+                        tmpAmt = tmpAmt + 1
+                    end
+                    PST.modData.ancientStardust = PST.modData.ancientStardust + tmpAmt
+                    PST:createFloatTextFX("+" .. tostring(tmpAmt) .. " Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
+                    SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.25, 2, false, 1.5)
                 end
-                -- Ancient Stardust
-                PST.modData.ancientStardust = PST.modData.ancientStardust + tmpAmt
-                PST:createFloatTextFX("+" .. tostring(tmpAmt) .. " Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
-                SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.25, 2, false, 1.5)
             end
         end
 
@@ -177,13 +179,25 @@ function PST:onDeath(entity)
                         -- Obols on boss kill
                         local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
                         if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
+                    end
+                end
 
+                -- Sidereal run
+                if PST:isRunSidereal() then
+                    -- Proc up to 5 times within this room
+                    if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
                         -- Chance for Sparkling Stardust
-                        local sparkStardustChance = 30 + PST:getLevel():GetStage() * 3 + PST:getTreeSnapshotMod("bossSparkStardust", 0)
-                        if 100 * math.random() < sparkStardustChance then
-                            PST.modData.sparkStardust = PST.modData.sparkStardust + 1
-                            PST:createFloatTextFX("+1 Sparkling Stardust", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.13, 120, true)
-                            SFXManager():Play(SoundEffect.SOUND_POWERUP3, 0.25, 2, false, 1.5)
+                        if PST:isNodeNameAllocated("sidereal", "Astral Forge") then
+                            local sparkStardustChance = 30 + PST:getLevel():GetStage() * 3 + PST:getTreeSnapshotMod("bossSparkStardust", 0)
+                            -- Reduce chance for multi-segment bosses
+                            if PST:arrHasValue(PST.segmentBosses, entity.Type) then
+                                sparkStardustChance = sparkStardustChance / 10
+                            end
+                            if 100 * math.random() < sparkStardustChance then
+                                PST.modData.sparkStardust = PST.modData.sparkStardust + 1
+                                PST:createFloatTextFX("+1 Sparkling Stardust", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.13, 120, true)
+                                SFXManager():Play(SoundEffect.SOUND_POWERUP3, 0.25, 2, false, 1.5)
+                            end
                         end
                     end
                 end
