@@ -16,6 +16,7 @@ function PST:getChangelogList()
         "might need to re-allocate these.",
         "- T. Siren's \"Acrid Gaze\" pulse now fires slightly in front of you, instead of right at your position.",
         "- Fixed T. Keeper's \"Blessed Pennies\" effect being guaranteed unconditionally when entering a shop.",
+        "- Fixed Embered Azurite (ancient jewel) not applying its debuff after leaving a run.",
         "",
 
         "v0.3.24",
