@@ -63,10 +63,15 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
                     end
 
                     PST:SC_setSpriteToJewel(jewelSprite, jewelData)
+                    local oldScaleX, oldScaleY = jewelSprite.Scale.X, jewelSprite.Scale.Y
+                    jewelSprite.Scale.X = 1
+                    jewelSprite.Scale.Y = 1
                     jewelSprite:Render(Vector(
                         jewelX - tScreen.treeCamera.X - tScreen.camZoomOffset.X,
                         jewelY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
                     ))
+                    jewelSprite.Scale.X = oldScaleX
+                    jewelSprite.Scale.Y = oldScaleY
 
                     if jewelData.unidentified then
                         jewelSprite:Play("Unidentified", true)
