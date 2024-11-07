@@ -238,6 +238,11 @@ PST.treeModDescriptions = {
         str = "Gain between 0 and %d xp when spending coins on fortune machines, up to 50 times per floor",
         category = "xp", sort = 111
     },
+    flawlessXP = {
+        str = "%s%d%% xp gain while you haven't taken damage in the current floor",
+        addPlus = true,
+        category = "xp", sort = 112
+    },
 
     respecChance = {
         str = {

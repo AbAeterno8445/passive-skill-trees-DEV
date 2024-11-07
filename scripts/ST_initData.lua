@@ -589,6 +589,7 @@ function PST:resetMods()
 		slotMachineFloorUses = 0,
 		fortuneMachineXPmax = 0,
 		fortuneMachineFloorUses = 0,
+		flawlessXP = 0,
 
 		roomBossKills = 0,
 

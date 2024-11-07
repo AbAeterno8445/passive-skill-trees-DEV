@@ -172,9 +172,13 @@ function PST:addTempXP(xp, showText, noMult)
 		xpMult = xpMult - 0.4
 	end
 
-	if noMult then
-		xpMult = 1
+	-- Mod: +% xp gain while you haven't taken damage in the current floor
+	local tmpMod = PST:getTreeSnapshotMod("flawlessXP", 0)
+	if tmpMod > 0 and PST:getTreeSnapshotMod("floorHitsReceived", 0) == 0 then
+		xpMult = xpMult + tmpMod / 100
 	end
+
+	if noMult then xpMult = 1 end
 
 	-- Victory lap XP penalty
 	local victoryLap = Game():GetVictoryLap()
