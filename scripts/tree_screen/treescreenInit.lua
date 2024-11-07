@@ -203,7 +203,11 @@ function PST:postPauseRender()
             if tmpNode then
                 local tmpScale = 0.5
                 local tmpY = 6
-                for _, tmpLine in ipairs(PST:getExpNodeObjectiveDesc(tmpNode, expData)) do
+                local tmpDesc = {table.unpack(PST:getExpNodeObjectiveDesc(tmpNode, expData))}
+                if not PST:expedCanProgress(depth) then
+                    table.insert(tmpDesc, {"(Can't progress in this run - must start a new one)", PST.kcolors.RED1})
+                end
+                for _, tmpLine in ipairs(tmpDesc) do
                     local tmpStr = tmpLine[1]
                     if tmpStr == "Objective:" then
                         tmpStr = "Expedition Objective:"

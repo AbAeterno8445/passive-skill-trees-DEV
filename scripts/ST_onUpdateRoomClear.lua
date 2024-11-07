@@ -47,7 +47,7 @@ function PST:onRoomClear(level, room)
 
 				-- Expedition objective: clear challenge rooms
 				PST:expedAddProgInRun("challengeRooms", 1)
-	
+
 				-- Obols on challenge room clear
 				if PST:getTreeSnapshotMod("isExpedRun", false) then
 					local tmpObols = PST.obolEvents.challClear(PST:getTreeSnapshotMod("expedDepth", 1))
