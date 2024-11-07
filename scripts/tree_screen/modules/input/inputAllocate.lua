@@ -1,3 +1,6 @@
+-- Nodes that cost no global SP
+local nodeSPExceptions = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
+
 function PST.treeScreen:InputAllocate()
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
@@ -18,7 +21,7 @@ function PST.treeScreen:InputAllocate()
             -- Hovered node
             self.treeHasChanges = true
             if PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, true) then
-                if not PST.debugOptions.infSP then
+                if not PST.debugOptions.infSP and not PST:arrHasValue(nodeSPExceptions, self.hoveredNode.name) then
                     if PST:arrHasValue(self.globalTrees, self.currentTree) then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
                     elseif PST.modData.charData[self.currentTree] then
