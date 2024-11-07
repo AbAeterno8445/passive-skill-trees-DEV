@@ -153,6 +153,12 @@ function PST:gridEntityRockUpdate(entityParam)
 
                     -- Expedition objective: destroy tinted rocks
 			        PST:expedAddProgInRun("tintedRocks", 1)
+
+                    -- Obols from tinted rocks
+                    if PST:getTreeSnapshotMod("isExpedRun", false) then
+                        local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1), 0.15)
+                        if tmpObols > 0 then PST:expedDropObolsAt(entityParam.Position, tmpObols) end
+                    end
                 end
             end
         end
