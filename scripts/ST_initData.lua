@@ -5,7 +5,7 @@ PST.isNewVersion = false -- Gets set to true when the mod updates, then remains 
 PST.modData = {}
 PST.saveSlot = 1
 PST.selectedMenuChar = -1
-PST.startXPRequired = 42
+PST.startXPRequired = 40
 PST.charNames = {
 	"Isaac", "Magdalene", "Cain", "Judas", "???", "Eve",
 	"Samson", "Azazel", "Lazarus", "Eden", "The Lost", "Lazarus",
