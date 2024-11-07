@@ -2348,12 +2348,13 @@ function PST:onUpdate()
 				PST.specialNodes.acridGazeTimer = PST.specialNodes.acridGazeTimer - 1
 				if PST.specialNodes.acridGazeTimer == 0 then
 					local tmpScale = 1.5 + tmpMod / 100
-					local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
+					local tmpPos = player.Position + plInput * 50
+					local pulseEffect = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, tmpPos, Vector.Zero, nil, 0, Random() + 1)
                     pulseEffect:GetSprite().Scale = Vector(tmpScale, tmpScale)
                     pulseEffect.Color = PST:RGBColor(48, 25, 52)
                     SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.5, 2, false, 1.4)
 
-                    for _, tmpEntity in ipairs(Isaac.FindInRadius(player.Position, 30 * tmpScale, EntityPartition.ENEMY)) do
+                    for _, tmpEntity in ipairs(Isaac.FindInRadius(tmpPos, 30 * tmpScale, EntityPartition.ENEMY)) do
                         local tmpNPC = tmpEntity:ToNPC()
                         if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
                             local tmpDmg = math.min(10, player.Luck * 1.2)
