@@ -252,10 +252,14 @@ local function astralForgeScreenRender(self, tScreen)
     self.deconHovered = self.camCenterX >= deconX - 16 and self.camCenterX <= deconX + 16 and
                         self.camCenterY >= deconY - 16 and self.camCenterY <= deconY + 16
     if self.deconMode then
-        tScreen.modules.nodeDrawingModule.nodesExtraSprite.Scale = Vector.One
-        tScreen.modules.nodeDrawingModule.nodesExtraSprite.Color = Color(1, 1, 1, 1)
-        tScreen.modules.nodeDrawingModule.nodesExtraSprite:SetFrame("Allocated Small", 0)
-        tScreen.modules.nodeDrawingModule.nodesExtraSprite:Render(Vector(deconX, deconY))
+        local tmpSprite = tScreen.modules.nodeDrawingModule.nodesExtraSprite
+        local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
+        tmpSprite.Scale = Vector.One
+        tmpSprite.Color = Color(1, 1, 1, 1)
+        tmpSprite:SetFrame("Allocated Small", 0)
+        tmpSprite:Render(Vector(deconX, deconY))
+        tmpSprite.Scale.X = oldScaleX
+        tmpSprite.Scale.Y = oldScaleY
     end
 
     tmpY = tmpY + math.ceil(#invFilters / 8) * 18 + 3
@@ -366,10 +370,14 @@ local function astralForgeScreenRender(self, tScreen)
                 self.forgeUISprite.Color.BO = 0
 
                 if tmpButton.targetAction == "imprinting" and self.imprintMode then
-                    tScreen.modules.nodeDrawingModule.nodesExtraSprite.Scale = Vector.One
-                    tScreen.modules.nodeDrawingModule.nodesExtraSprite.Color = Color(1, 1, 1, 1)
-                    tScreen.modules.nodeDrawingModule.nodesExtraSprite:SetFrame("Allocated Small", 0)
-                    tScreen.modules.nodeDrawingModule.nodesExtraSprite:Render(Vector(tmpButtonX, selWepY))
+                    local tmpSprite = tScreen.modules.nodeDrawingModule.nodesExtraSprite
+                    local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
+                    tmpSprite.Scale = Vector.One
+                    tmpSprite.Color = Color(1, 1, 1, 1)
+                    tmpSprite:SetFrame("Allocated Small", 0)
+                    tmpSprite:Render(Vector(tmpButtonX, selWepY))
+                    tmpSprite.Scale.X = oldScaleX
+                    tmpSprite.Scale.Y = oldScaleY
                 end
 
                 drawnButtons = drawnButtons + 1
