@@ -110,11 +110,11 @@ function PST.treeScreen:Render()
 
         -- Help toggle indicator
         local tmpStr = "H / Select: toggle help  |  Tab: Menu quick select"
-        PST.miniFont:DrawString(tmpStr, 16, self.screenH - 24, PST.kcolors.WHITE)
+        PST.miniFont:DrawString(tmpStr, 12, self.screenH - 30, PST.kcolors.WHITE)
 
         -- In-run warning
         if Isaac.IsInGame() then
-            PST.miniFont:DrawString("(IN RUN - Changes to the tree will be reflected on the next run you start)", 32 + string.len(tmpStr) * 4, self.screenH - 24, PST.kcolors.RED1)
+            PST.miniFont:DrawString("(IN RUN - Changes to the tree will be reflected on the next run you start)", 12, self.screenH - 16, PST.kcolors.RED1)
         end
 
         -- Sidereal tree extra
