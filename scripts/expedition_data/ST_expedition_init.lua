@@ -680,9 +680,10 @@ PST.expeditionObjectives = {
     bossRoomsNoDmg = {
         description = "Clear {{progress}} boss rooms without taking damage.",
         reqFunc = function(depth, column)
-            local req = 4 + math.floor(depth / 2) + math.floor(column / 3)
+            local req = 3 + math.floor(depth / 2) + math.floor(column / 3)
             return req
-        end
+        end,
+        minDepth = 5
     },
     cardsPillsRunes = {
         description = "Use {{progress}} cards, pills or runes.",
