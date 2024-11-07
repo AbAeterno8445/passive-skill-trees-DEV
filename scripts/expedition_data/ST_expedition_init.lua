@@ -854,12 +854,12 @@ PST.expedDescriptions = {
     expedImp_mobDmgRed = "+%d%% monster damage reduction."
 }
 
-local obolStageFactor = 0.005
+local obolStageFactor = 0.002
 -- Obol-rewarding event quantities
 PST.obolEvents = {
     -- On champion mob kill
     championKill = function(depth, chanceMod)
-        local chance = 0.08 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
+        local chance = 0.07 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
@@ -871,7 +871,7 @@ PST.obolEvents = {
     end,
     -- On boss kill
     bossKill = function(depth, chanceMod)
-        local chance = 0.2 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
+        local chance = 0.17 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
@@ -907,7 +907,7 @@ PST.obolEvents = {
     end,
     -- On opening non-normal chests
     chests = function(depth, chanceMod)
-        local chance = 0.15 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
+        local chance = 0.14 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then

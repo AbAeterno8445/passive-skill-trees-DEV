@@ -204,7 +204,7 @@ function PST:onDeath(entity)
 
                 -- Chance for bosses to drop Astral Weapons on death, up to 4 per room
                 if PST:isNodeNameAllocated("sidereal", "Astral Forge") then
-                    local tmpMod = PST:getTreeSnapshotMod("astralWepBossRate", 0) + PST.astralWepBossBaseRate * math.min(1, PST:getLevel():GetStage() / 8)
+                    local tmpMod = PST:getTreeSnapshotMod("astralWepBossRate", 0) + PST.astralWepBossBaseRate * math.min(1, PST:getLevel():GetStage() / 9)
                     -- Reduce chance for multi-segment bosses
                     if PST:arrHasValue(PST.segmentBosses, entity.Type) then
                         tmpMod = tmpMod / 4

@@ -344,7 +344,7 @@ function PST:generateExpedition(depth, seed)
     local expImplicits = PST:getExpeditionImplicits(depth)
     -- Expedition starting attempts
     local lessAttempts = expImplicits.lessAttempts or 0
-    local expAttempts = 8 - lessAttempts
+    local expAttempts = 12 - lessAttempts
 
     ---@type PSTExpedition
     return {
