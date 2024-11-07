@@ -640,7 +640,8 @@ PST.expeditionObjectives = {
         reqFunc = function(depth, column)
             local req = 10 + depth * 2 + column
             return req
-        end
+        end,
+        minDepth = 4,
     },
     chests = {
         description = "Open {{progress}} chests of any type.",
