@@ -589,7 +589,7 @@ PST.expeditionObjectives = {
     experience = {
         description = "Earn {{progress}} experience within runs.",
         reqFunc = function(depth, column)
-            local req = 500 + depth * 150 + column * 100
+            local req = 1500 + depth * 450 + column * 250
             return req
         end
     },
