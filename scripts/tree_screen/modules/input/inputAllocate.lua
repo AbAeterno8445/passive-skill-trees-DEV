@@ -100,6 +100,20 @@ function PST.treeScreen:InputAllocate()
                         SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
                     end
 
+                -- Character SP Conversion node, convert character SP into global SP
+                elseif self.hoveredNode.name == "Character SP Conversion" then
+                    local charData = PST:getCurrentCharData()
+                    if charData then
+                        if charData.skillPoints > 0 then
+                            charData.skillPoints = charData.skillPoints - 1
+                            PST.modData.skillPoints = PST.modData.skillPoints + 1
+                            self.treeHasChanges = true
+                            SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.35, 2, false, 0.8)
+                        else
+                            SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                        end
+                    end
+
                 -- Timeless Bazaar node, switch to bazaar menu
                 elseif self.hoveredNode.name == "Timeless Bazaar" then
                     self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.BAZAAR)

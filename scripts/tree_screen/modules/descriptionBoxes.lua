@@ -144,6 +144,18 @@ local descriptionBoxesModule = {
                 end
             end
             return { name = descName, description = tmpDescription }
+        end,
+
+        -- Character SP Conversion extra info
+        ["Character SP Conversion"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local newDesc = {table.unpack(tmpDescription)}
+            local charData = PST:getCurrentCharData()
+            if charData then
+                local charName = PST:getCurrentCharName()
+                table.insert(newDesc, {"Current character: " .. charName, PST.kcolors.LEVEL_PURPLE})
+                table.insert(newDesc, {charName .. " skill points: " .. tostring(charData.skillPoints), PST.kcolors.LEVEL_PURPLE})
+            end
+            return { name = descName, description = newDesc }
         end
     }
 }

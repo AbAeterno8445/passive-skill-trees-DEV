@@ -859,7 +859,7 @@ PST.SCAncients = {
             "-8% all stats per difference between total collected blue and red passive items, up to -64%."
         },
         rewards = {
-            xpgain = 50,
+            xpgain = 20,
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
