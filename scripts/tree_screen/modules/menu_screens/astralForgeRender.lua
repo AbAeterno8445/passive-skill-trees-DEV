@@ -252,6 +252,8 @@ local function astralForgeScreenRender(self, tScreen)
     self.deconHovered = self.camCenterX >= deconX - 16 and self.camCenterX <= deconX + 16 and
                         self.camCenterY >= deconY - 16 and self.camCenterY <= deconY + 16
     if self.deconMode then
+        tScreen.modules.nodeDrawingModule.nodesExtraSprite.Scale = Vector.One
+        tScreen.modules.nodeDrawingModule.nodesExtraSprite.Color = Color(1, 1, 1, 1)
         tScreen.modules.nodeDrawingModule.nodesExtraSprite:SetFrame("Allocated Small", 0)
         tScreen.modules.nodeDrawingModule.nodesExtraSprite:Render(Vector(deconX, deconY))
     end
@@ -364,6 +366,8 @@ local function astralForgeScreenRender(self, tScreen)
                 self.forgeUISprite.Color.BO = 0
 
                 if tmpButton.targetAction == "imprinting" and self.imprintMode then
+                    tScreen.modules.nodeDrawingModule.nodesExtraSprite.Scale = Vector.One
+                    tScreen.modules.nodeDrawingModule.nodesExtraSprite.Color = Color(1, 1, 1, 1)
                     tScreen.modules.nodeDrawingModule.nodesExtraSprite:SetFrame("Allocated Small", 0)
                     tScreen.modules.nodeDrawingModule.nodesExtraSprite:Render(Vector(tmpButtonX, selWepY))
                 end
