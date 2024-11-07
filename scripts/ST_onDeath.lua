@@ -72,8 +72,8 @@ function PST:onDeath(entity)
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
-        local isFinalBoss = PST:arrHasValue(PST.finalBosses, entity:GetType()) and (entity:GetType() ~= EntityType.ENTITY_ISAAC or
-        (entity:GetType() == EntityType.ENTITY_ISAAC and entity.SubType == 1))
+        local isFinalBoss = PST:arrHasValue(PST.finalBosses, entity.Type) and (entity.Type ~= EntityType.ENTITY_ISAAC or
+        (entity.Type == EntityType.ENTITY_ISAAC and entity.Variant == 1))
 
         -- Expedition checks
         if PST:getTreeSnapshotMod("isExpedRun", false) then
@@ -85,12 +85,12 @@ function PST:onDeath(entity)
                 PST:expedAddProgInRun("hush", 1)
 
                 -- Expedition objective: defeat hush without getting hit more than twice
-                if not PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
+                if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
                     PST:expedAddProgInRun("hush", 1, "noDmgTwice")
                 end
 
                 -- Expedition objective: defeat hush without getting hit more than once
-                if not PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
+                if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
                     PST:expedAddProgInRun("hush", 1, "noDmgOnce")
                 end
             end

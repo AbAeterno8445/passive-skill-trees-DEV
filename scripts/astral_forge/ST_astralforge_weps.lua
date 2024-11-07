@@ -150,7 +150,7 @@ function PST:generateAstralWep(wepTier, factorMods)
 
     -- Roll for ancient/magic weapon
     local magicChance = 0.2
-    local ancientChance = 0.01
+    local ancientChance = 0.015
     if factorMods then
         magicChance = magicChance + PST:getTreeSnapshotMod("astralWepMagicRate", 0) / 100
         ancientChance = ancientChance + PST:getTreeSnapshotMod("astralWepAncientRate", 0) / 100
