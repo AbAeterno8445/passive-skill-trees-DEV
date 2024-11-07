@@ -141,7 +141,7 @@ function PST:onSlotUpdate(slot)
             -- Mod: +xp when spending coins on slot machines in the floor
             local tmpMod = PST:getTreeSnapshotMod("slotMachineXP", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("slotMachineFloorUses", 0) < 50 then
-                PST:addTempXP(tmpMod, true, false)
+                PST:addTempXP(tmpMod, true, true)
                 PST:addModifiers({ slotMachineFloorUses = 1 }, true)
             end
         -- Fortune machine
@@ -150,7 +150,7 @@ function PST:onSlotUpdate(slot)
             local tmpMod = PST:getTreeSnapshotMod("fortuneMachineXPmax", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("fortuneMachineFloorUses", 0) < 50 then
                 local tmpXP = math.random(0, tmpMod)
-                PST:addTempXP(tmpXP, true, false)
+                PST:addTempXP(tmpXP, true, true)
                 PST:addModifiers({ fortuneMachineFloorUses = 1 }, true)
             end
         -- Shell games
@@ -158,7 +158,7 @@ function PST:onSlotUpdate(slot)
             -- Mod: +xp when spending coins on shell games in the floor
             local tmpMod = PST:getTreeSnapshotMod("shellGameXP", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("shellGameFloorUses", 0) < 50 then
-                PST:addTempXP(tmpMod, true, false)
+                PST:addTempXP(tmpMod, true, true)
                 PST:addModifiers({ shellGameFloorUses = 1 }, true)
             end
         else
