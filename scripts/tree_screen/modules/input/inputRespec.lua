@@ -32,14 +32,16 @@ function PST.treeScreen:InputRespec()
                         PST.modData.cosmicRealignment = false
                         SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     else
-                        if not PST.debugOptions.infRespec then
-                            PST.modData.respecPoints = PST.modData.respecPoints - 1
-                        end
-                        if not PST.debugOptions.infSP then
-                            if PST:arrHasValue(self.globalTrees, self.currentTree) then
-                                PST.modData.skillPoints = PST.modData.skillPoints + 1
-                            elseif PST.modData.charData[self.currentTree] then
-                                PST.modData.charData[self.currentTree].skillPoints = PST.modData.charData[self.currentTree].skillPoints + 1
+                        if not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
+                            if not PST.debugOptions.infRespec then
+                                PST.modData.respecPoints = PST.modData.respecPoints - 1
+                            end
+                            if not PST.debugOptions.infSP then
+                                if PST:arrHasValue(self.globalTrees, self.currentTree) then
+                                    PST.modData.skillPoints = PST.modData.skillPoints + 1
+                                elseif PST.modData.charData[self.currentTree] then
+                                    PST.modData.charData[self.currentTree].skillPoints = PST.modData.charData[self.currentTree].skillPoints + 1
+                                end
                             end
                         end
                         PST:allocateNodeID(self.currentTree, self.hoveredNode.id, 0)

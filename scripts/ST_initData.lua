@@ -51,6 +51,9 @@ function PST:firstRenderInit()
 	end
 end
 
+-- Nodes that cost no global SP
+PST.nodeSPExceptions = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
+
 PST.finalBosses = {
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_ISAAC, EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN,
 	EntityType.ENTITY_BEAST, EntityType.ENTITY_MOTHER, EntityType.ENTITY_ULTRA_GREED
