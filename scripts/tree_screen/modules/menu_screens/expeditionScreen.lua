@@ -166,6 +166,7 @@ function expeditionScreen:OnInput()
                     -- Final node: center camera since expedition resets
                     if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
                         self:CenterCamera()
+                        SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
                     end
                     PST:completeExpedNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, true)
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
