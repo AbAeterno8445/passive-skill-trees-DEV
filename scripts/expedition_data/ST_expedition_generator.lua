@@ -214,6 +214,11 @@ function PST:generateExpedition(depth, seed)
             -- Assign reward data
             local rewardFunc = PST.expeditionRewardData[newNode.rewardType]
             if rewardFunc ~= nil then
+                local rewardCol = col
+                -- Make final nodes more rewarding
+                if newNode.nodeType == PSTExpNodeType.FINAL then
+                    rewardCol = rewardCol + 8 + (depth - 1) * 2
+                end
                 newNode.rewardData = rewardFunc(expRNG, depth, col)
             end
 

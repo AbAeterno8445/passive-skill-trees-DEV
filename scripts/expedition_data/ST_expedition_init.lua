@@ -828,7 +828,7 @@ PST.expeditionRewardData = {
     end,
     -- EXP
     [PSTExpNodeRewardType.EXP] = function(RNG, depth, column)
-        local baseAmt = math.floor(100 + 200 * RNG:RandomFloat())
+        local baseAmt = math.floor(200 + 200 * RNG:RandomFloat())
         return baseAmt + depth * 50 + column * 40
     end,
     -- Expedition attempts
