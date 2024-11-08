@@ -215,6 +215,9 @@ function PST:addXP(xpParam, showText, overflow)
 			PST:createFloatTextFX(xpStr, Vector.Zero, Color(0.58, 0, 0.83, 0.7), 0.14, 60, true)
 		end
 
+		-- Expedition objective: earn xp within run
+		PST:expedAddProgInRun("experience", math.ceil(xp))
+
 		-- Character level up
 		if charData.xp >= charData.xpRequired then
 			local currentChar = PST:getCurrentCharName()

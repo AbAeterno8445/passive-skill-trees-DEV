@@ -184,7 +184,7 @@ end
 
 -- In-run helper function to add progress to the given objective
 function PST:expedAddProgInRun(objName, prog)
-    if PST:getTreeSnapshotMod("isExpedRun", false) then
+    if Isaac.IsInGame() and PST:getTreeSnapshotMod("isExpedRun", false) then
         local expDepth = PST:getTreeSnapshotMod("expedDepth", 0)
         local expData = PST.expeditionsData[expDepth]
         if expData and PST:expedCanProgress(expDepth) then

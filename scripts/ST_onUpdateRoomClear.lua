@@ -676,9 +676,6 @@ function PST:onRoomClear(level, room)
 		if PST.modData.xpObtained > 0 then
 			PST:addXP(PST.modData.xpObtained, false)
 
-			-- Expedition objective: earn xp within run
-			PST:expedAddProgInRun("experience", math.ceil(PST.modData.xpObtained))
-
 			PST.modData.xpObtained = 0
 		end
 
