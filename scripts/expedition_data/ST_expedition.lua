@@ -71,6 +71,17 @@ function PST:expedAddCurse(depth, curseID)
     local tmpExpedition = PST.expeditionsData[depth]
     if tmpExpedition and curseID <= #PST.expeditionCurses and not PST:arrHasValue(tmpExpedition.curses, curseID) then
         table.insert(tmpExpedition.curses, curseID)
+
+        -- Dynamic Tree Mode - apply curse
+        if Isaac.IsInGame() and PST:getTreeSnapshotMod("isExpedRun") and PST:getTreeSnapshotMod("dynamicMode", false) then
+            local runDepth = PST:getTreeSnapshotMod("expedDepth", 1)
+            if runDepth == depth then
+                local curseData = PST.expeditionCurses[curseID]
+                if curseData and curseData.modsFunc then
+                    PST:addModifiers(curseData.modsFunc(runDepth), true)
+                end
+            end
+        end
     end
 end
 
@@ -79,6 +90,17 @@ function PST:expedRemoveCurse(depth, curseID)
     local tmpExpedition = PST.expeditionsData[depth]
     if tmpExpedition then
         PST:tableRemoveFirst(tmpExpedition.curses, curseID)
+
+        -- Dynamic Tree Mode - unapply curse
+        if Isaac.IsInGame() and PST:getTreeSnapshotMod("isExpedRun") and PST:getTreeSnapshotMod("dynamicMode", false) then
+            local runDepth = PST:getTreeSnapshotMod("expedDepth", 1)
+            if runDepth == depth then
+                local curseData = PST.expeditionCurses[curseID]
+                if curseData and curseData.modsFunc then
+                    PST:subtractModifiers(curseData.modsFunc(runDepth))
+                end
+            end
+        end
     end
 end
 
@@ -121,7 +143,7 @@ end
 -- Returns whether the current run can progress towards the current expedition's objective, based on selected node
 function PST:expedCanProgress(depth)
     -- Dynamic tree mode, always progress-able
-    if PST:getTreeSnapshotMod("dynamicMode", false) then
+    if PST:getTreeSnapshotMod("dynamicMode", false) and PST:getTreeSnapshotMod("isExpedRun", false) then
         return true
     end
 
