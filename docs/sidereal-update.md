@@ -58,6 +58,7 @@
   - Ancient weapons feature unique modifiers/gimmicks, akin to large nodes. Every weapon type has at least 1 Ancient associated to it.
 - The forge also includes a set of new resources you can obtain by **deconstructing** weapons or killing bosses.
 - These resources can be used to improve the weapon, such as upgrading the implicit modifier, adding or rerolling magic weapon modifiers, and more.
+- View weapon modifiers here: https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/dev/docs/astral-weapon-mods.md
 
 #
 
