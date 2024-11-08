@@ -76,3 +76,12 @@
 
 - You may have noticed a trend where new menus or trees are accessed by pressing Allocate on their respective nodes. Pressing TAB (or Restart on controller) now opens a small selection menu that allows you to quickly go to a particular tree or menu if you have unlocked it.
 - Bear in mind you first need to unlock the associated nodes, and some of them may be per-character.
+
+#
+
+### **New feature: Dynamic Tree Mode**
+
+- New "Dynamic Tree Mode" global node, next to the first "Leveling Of Isaac" node at the center.
+- If this node is allocated when a run begins, node allocations/respecs will be applied to that run in real time.
+- Applies only to node allocations/respecs, and does not apply to certain other features such as Starcursed Jewel changes or Astral Weapon equipping/unequipping.
+- It additionally allows progressing through multiple Astral Expedition objectives within the same run (i.e. by completing a node then selecting the next one, this allows progressing through the new node's objective right away in the same run). Bear in mind expedition curses will also apply in real time if you select them within a run.
