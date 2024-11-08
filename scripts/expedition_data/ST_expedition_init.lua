@@ -782,7 +782,7 @@ PST.expeditionObjectivesFinal = {
     floorNoDmgTwice = {
         description = "Clear {{progress}} floors without taking damage more than twice.",
         reqFunc = function(depth, column)
-            local req = 2 + math.floor(depth / 4)
+            local req = 2 + math.floor(depth / 6)
             return req
         end
     },
@@ -795,9 +795,10 @@ PST.expeditionObjectivesFinal = {
         end
     },
     bossesNoDmgC3 = {
-        description = "Clear {{progress}} boss rooms past Chapter 3 (Womb and beyond) without taking damage.",
+        description = "Clear {{progress}} boss room(s) past Chapter 3 (Womb and beyond) without taking damage.",
         reqFunc = function(depth, column)
-            local req = math.min(10, 2 + math.floor(depth / 5))
+            local req = math.min(10, 2 + math.floor(depth / 6))
+            if depth <= 2 then req = 1 end
             return req
         end
     },
