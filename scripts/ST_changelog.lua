@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.4.0",
         "- Introduced two new main features found within the Star Tree: the Arcane Astrolabe and the Sidereal Tree.",
         "You can find more info about these in the tree's help panels or in the mod's workshop description.",
+        "- New 'Dynamic Tree Mode' global node that allows applying the tree's node changes in real time to runs.",
         "- Added multiple new node types to the global tree.",
         "- Changed character level up sound to avoid confusion with angel rooms.",
         "- XP gain in challenges is now tied to the \"Apply tree in challenges\" option.",

@@ -211,7 +211,7 @@ function PST:onRoomClear(level, room)
 						PST:expedAddProgInRun("floorNoDmgTwice", 1)
 					-- Expedition objective: clear floors without taking damage more than once
 					elseif PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 1 then
-						PST:expedAddProgInRun("floorNoDmgTwice", 1, "noDmgOnce")
+						PST:expedAddProgInRun("floorNoDmgOnce", 1)
 					end
 				end
 

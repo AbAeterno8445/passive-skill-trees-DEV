@@ -233,11 +233,9 @@ function PST:onNewRun(isContinued)
     end
 
     -- Astral Expeditions
-    local isExpedRun = false
     if treeActive and PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth) then
         local expData = PST.expeditionsData[PST.modData.expedSelDepth]
         if expData and expData.selectedNode then
-            isExpedRun = true
             PST.modData.treeModSnapshot.isExpedRun = true
             PST.modData.treeModSnapshot.expedDepth = PST.modData.expedSelDepth
 

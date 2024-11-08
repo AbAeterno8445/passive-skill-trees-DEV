@@ -86,12 +86,12 @@ function PST:onDeath(entity)
 
                 -- Expedition objective: defeat hush without getting hit more than twice
                 if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
-                    PST:expedAddProgInRun("hush", 1, "noDmgTwice")
+                    PST:expedAddProgInRun("hushNoDmgTwice", 1)
                 end
 
                 -- Expedition objective: defeat hush without getting hit more than once
                 if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
-                    PST:expedAddProgInRun("hush", 1, "noDmgOnce")
+                    PST:expedAddProgInRun("hushNoDmgOnce", 1)
                 end
             end
 

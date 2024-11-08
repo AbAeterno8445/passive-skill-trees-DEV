@@ -120,6 +120,11 @@ end
 
 -- Returns whether the current run can progress towards the current expedition's objective, based on selected node
 function PST:expedCanProgress(depth)
+    -- Dynamic tree mode, always progress-able
+    if PST:getTreeSnapshotMod("dynamicMode", false) then
+        return true
+    end
+
     local tmpExpedition = PST.expeditionsData[depth]
     if tmpExpedition and PST:getTreeSnapshotMod("isExpedRun", false) and tmpExpedition.selectedNode then
         -- Check snapshot selected node matches current selected node
@@ -140,16 +145,14 @@ end
 ---@param depth number
 ---@param prog number
 ---@param objName? string -- If provided, will check whether this objective name matches the currently selected one in the expedition
----@param objVariant? string
-function PST:expedAddProgress(depth, prog, objName, objVariant)
+function PST:expedAddProgress(depth, prog, objName)
     local tmpExpedition = PST.expeditionsData[depth]
     if tmpExpedition and tmpExpedition.selectedNode then
         local tgtCol = tmpExpedition.nodes[tmpExpedition.selectedNode.col]
         if tgtCol then
             local tgtNode = tgtCol[tmpExpedition.selectedNode.row]
             if tgtNode and tmpExpedition.selectedNode.objProgress <= tgtNode.objective.req and
-            (not objName or (objName and tgtNode.objective.name == objName)) and
-            (not objVariant or (objVariant and tgtNode.objective.variant == objVariant)) then
+            (not objName or (objName and tgtNode.objective.name == objName)) then
                 local oldVal = tmpExpedition.selectedNode.objProgress
                 tmpExpedition.selectedNode.objProgress = math.min(tgtNode.objective.req, tmpExpedition.selectedNode.objProgress + prog)
 
@@ -180,16 +183,12 @@ function PST:expedAddProgress(depth, prog, objName, objVariant)
 end
 
 -- In-run helper function to add progress to the given objective
-function PST:expedAddProgInRun(objName, prog, objVariant)
+function PST:expedAddProgInRun(objName, prog)
     if PST:getTreeSnapshotMod("isExpedRun", false) then
         local expDepth = PST:getTreeSnapshotMod("expedDepth", 0)
         local expData = PST.expeditionsData[expDepth]
-        if expData then
-            local selNodeCol = PST:getTreeSnapshotMod("expedSelNodeCol", -1)
-            local selNodeRow = PST:getTreeSnapshotMod("expedSelNodeRow", -1)
-            if selNodeCol == expData.selectedNode.col and selNodeRow == expData.selectedNode.row then
-                PST:expedAddProgress(expDepth, prog, objName, objVariant)
-            end
+        if expData and PST:expedCanProgress(expDepth) then
+            PST:expedAddProgress(expDepth, prog, objName)
         end
     end
 end

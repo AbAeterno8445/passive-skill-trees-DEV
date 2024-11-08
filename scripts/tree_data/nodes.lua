@@ -242,6 +242,21 @@ function PST:addModifiers(modList, addToSnapshot)
     end
 end
 
+-- 'Subtract' a list of modifiers from the tree snapshot, adding or setting their reversed values
+function PST:subtractModifiers(modList)
+    local tmpMods = {}
+    for modName, modVal in pairs(modList) do
+        if type(modVal) == "boolean" then
+            tmpMods[modName] = not modVal
+        elseif type(modVal) == "number" then
+            tmpMods[modName] = -modVal
+        else
+            tmpMods[modName] = { value = modVal, set = true }
+        end
+    end
+    PST:addModifiers(tmpMods, true)
+end
+
 local siderealTravelNodes = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
 -- Nodes with names included here can't be respecced
 local respecBans = {"Sidereal Universalization"}
@@ -341,6 +356,19 @@ function PST:allocateNodeID(tree, nodeID, allocation)
     else
         PST.modData.treeNodes[tree][nodeID] = allocation
     end
+    -- Dynamic Tree Mode - update tree snapshot
+    if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) then
+        local tmpNode = PST.trees[tree][nodeID]
+        if tmpNode and tmpNode.modifiers and tmpNode.name ~= "Dynamic Tree Mode" then
+            local tmpMods = tmpNode.modifiers
+            if allocation == 0 then
+                PST:subtractModifiers(tmpMods)
+            else
+                PST:addModifiers(tmpMods, true)
+            end
+        end
+    end
+
     PST:updateNodes(tree, true)
 end
 

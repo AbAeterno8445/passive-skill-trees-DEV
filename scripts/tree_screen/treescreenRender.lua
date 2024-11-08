@@ -113,7 +113,7 @@ function PST.treeScreen:Render()
         PST.miniFont:DrawString(tmpStr, 12, self.screenH - 30, PST.kcolors.WHITE)
 
         -- In-run warning
-        if Isaac.IsInGame() then
+        if Isaac.IsInGame() and not PST:getTreeSnapshotMod("dynamicMode", false) then
             PST.miniFont:DrawString("(IN RUN - Changes to the tree will be reflected on the next run you start)", 12, self.screenH - 16, PST.kcolors.RED1)
         end
 

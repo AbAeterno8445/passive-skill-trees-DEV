@@ -460,6 +460,9 @@ end
 function PST:resetMods()
 	-- List of available tree modifiers
 	PST.treeMods = {
+		-- Makes changes to the tree apply in real time (node allocations & respecs)
+		dynamicMode = false,
+
 		allstats = 0, -- Flat addition to damage, luck, speed, tears, shot speed and range
 		damage = 0,
 		luck = 0,

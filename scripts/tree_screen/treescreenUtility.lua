@@ -194,6 +194,10 @@ end
 function PST:closeTreeMenu(mute, force)
     if PST.treeScreen.treeHasChanges then
         PST:save(true)
+        -- Dynamic Tree Mode, update player cache
+        if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) then
+            PST:updateCacheDelayed(PST.allstatsCache)
+        end
         PST.treeScreen.treeHasChanges = false
     end
 
