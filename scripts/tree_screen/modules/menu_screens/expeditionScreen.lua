@@ -169,6 +169,7 @@ function expeditionScreen:OnInput()
                     end
                     PST:completeExpedNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, true)
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
+                    PST.treeScreen.treeHasChanges = true
                 -- Attempt to select selectable node
                 elseif self.hoveredNode.selectable and (not expData.selectedNode or (expData.selectedNode and
                 (expData.selectedNode.col ~= self.hoveredNode.col or expData.selectedNode.row ~= self.hoveredNode.row)) and
@@ -199,6 +200,7 @@ function expeditionScreen:OnInput()
                         end
                     end
                     SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                    PST.treeScreen.treeHasChanges = true
                 end
             -- Hovered boon, attempt to upgrade
             elseif self.hoveredBoon then
@@ -208,6 +210,7 @@ function expeditionScreen:OnInput()
                     PST:expedAddBoon(self.currentDepth, self.hoveredBoon)
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
                     expData.boonUpgradePoints = expData.boonUpgradePoints - 1
+                    PST.treeScreen.treeHasChanges = true
                 end
             -- Hovered depth, attempt to switch to it
             elseif self.hoveredDepth then
@@ -219,6 +222,7 @@ function expeditionScreen:OnInput()
                         self.currentDepth = self.hoveredDepth
                         PST.modData.expedLastDepth = self.hoveredDepth
                         SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                        PST.treeScreen.treeHasChanges = true
                     else
                         SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
                     end
@@ -240,6 +244,7 @@ function expeditionScreen:OnInput()
                     currentChar.arcaneObols = currentChar.arcaneObols - obolCost
                     PST:resetExpedition(self.currentDepth)
                     SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
+                    PST.treeScreen.treeHasChanges = true
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
                 end
@@ -256,6 +261,7 @@ function expeditionScreen:OnInput()
     if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
         PST.modData.expedEnabled = not PST.modData.expedEnabled
         SFXManager():Play(SoundEffect.SOUND_BEEP)
+        PST.treeScreen.treeHasChanges = true
     end
 
     if Isaac.GetFrameCount() % 2 == 0 then
