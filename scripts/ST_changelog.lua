@@ -10,6 +10,7 @@ function PST:getChangelogList()
         "- Added multiple new node types to the global tree.",
         "- Changed character level up sound to avoid confusion with angel rooms.",
         "- XP gain in challenges is now tied to the \"Apply tree in challenges\" option.",
+        "- Adjusted trinket gilding global nodes. This effect now only rolls once per unique trinket type per run.",
         "- Judas' \"Sacrifice Darkness\" can no longer trigger in the mirror dimension, and the self damage should",
         "- no longer be able to kill you at any point.",
         "- Reworked T. Isaac's \"Consuming Void\" large node.",

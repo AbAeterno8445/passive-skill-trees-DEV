@@ -314,6 +314,8 @@ function PST:prePickup(pickup, collider, low)
                     if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
                         local tmpTrinketList = PST:getTreeSnapshotMod("gildedTrinkets", nil)
                         if tmpTrinketList and not PST:arrHasValue(tmpTrinketList, subtype) then
+                            table.insert(tmpTrinketList, subtype)
+
                             local tmpMod = PST:getTreeSnapshotMod("goldenTrinkets", 0)
                             if tmpMod > 0 and 100 * math.random() < tmpMod and (subtype & TrinketType.TRINKET_GOLDEN_FLAG) == 0 then
                                 pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, subtype | TrinketType.TRINKET_GOLDEN_FLAG)
@@ -323,7 +325,6 @@ function PST:prePickup(pickup, collider, low)
                                 SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.9)
                                 PST:createFloatTextFX("Trinket gilded!", Vector.Zero, Color(1, 1, 0.6, 1), 0.13, 100, true)
 
-                                table.insert(tmpTrinketList, subtype)
                                 return
                             end
                         end
