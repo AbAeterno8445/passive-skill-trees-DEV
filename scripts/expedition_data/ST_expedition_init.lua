@@ -750,7 +750,7 @@ PST.expeditionObjectivesFinal = {
     bossRush = {
         description = "Complete {{progress}} boss rush encounter(s).",
         reqFunc = function(depth, column)
-            local req = 1 + math.floor(depth / 15)
+            local req = 1 + math.floor(depth / 12)
             return req
         end
     },
@@ -782,7 +782,7 @@ PST.expeditionObjectivesFinal = {
     floorNoDmgTwice = {
         description = "Clear {{progress}} floors without taking damage more than twice.",
         reqFunc = function(depth, column)
-            local req = 4 + math.floor(depth / 3)
+            local req = 2 + math.floor(depth / 4)
             return req
         end
     },
@@ -790,14 +790,14 @@ PST.expeditionObjectivesFinal = {
         description = "Clear {{progress}} floors without taking damage more than once.",
         minDepth = 8,
         reqFunc = function(depth, column)
-            local req = 4 + math.floor(depth / 3)
+            local req = 2 + math.floor(depth / 6)
             return req
         end
     },
     bossesNoDmgC3 = {
         description = "Clear {{progress}} boss rooms past Chapter 3 (Womb and beyond) without taking damage.",
         reqFunc = function(depth, column)
-            local req = math.min(12, 3 + math.floor(depth / 6))
+            local req = math.min(10, 2 + math.floor(depth / 5))
             return req
         end
     },
@@ -811,7 +811,7 @@ PST.expeditionObjectivesFinal = {
     beastDeliNoDmg = {
         description = "Defeat The Beast or Delirium without taking damage more than once.",
         reqFunc = function() return 1 end,
-        minDepth = 12
+        minDepth = 14
     }
 }
 PST.expeditionObjectiveFinalList = {
