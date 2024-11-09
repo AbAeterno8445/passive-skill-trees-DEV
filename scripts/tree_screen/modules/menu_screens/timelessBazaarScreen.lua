@@ -271,7 +271,6 @@ function timelessBazaarScreen:Render(tScreen)
     self:DrawUIBox(tScreen.screenW / 2 - itemBoxW / 2, drawY, itemBoxW, itemBoxH)
 
     local charData = PST:getCurrentCharData()
-    local selDrawX, selDrawY = 0, 0
     if charData and charData.bazaarSelection then
         local gameCfg = Isaac.GetItemConfig()
         for i, tmpItem in ipairs(charData.bazaarSelection) do
@@ -299,10 +298,6 @@ function timelessBazaarScreen:Render(tScreen)
 
                 self.bazaarUISprite:SetFrame("Quality", itemCfg.Quality)
                 self.bazaarUISprite:Render(Vector(itemX, itemY - 5))
-
-                if self.selectedItem == i then
-                    selDrawX, selDrawY = itemX, itemY
-                end
             end
         end
     end
@@ -345,24 +340,27 @@ function timelessBazaarScreen:Render(tScreen)
         local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
         if itemCfg then
             local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-            if itemName ~= "StringTable::InvalidKey" then
-                local itemCost = PST:bazaarGetCost(itemCfg.Quality)
-                local costColor = PST.kcolors.LEVEL_PURPLE
-                if not PST:bazaarCanAffordCost(itemCfg.Quality) and not PST.debugOptions.freeBazaar then
-                    costColor = PST.kcolors.RED1
-                end
-                local itemDesc = { "Hold allocate for 1 second to purchase this item." }
-                -- Chance to keep other items
-                local tmpMod = self.siderealMods["bazaarSelKeep"]
-                if tmpMod and tmpMod > 0 then
-                    table.insert(itemDesc, tostring(tmpMod) .. "% chance to keep the other item options when purchasing.")
-                else
-                    table.insert(itemDesc, "Purchasing this item will remove the other options!")
-                end
-                -- Cost
-                table.insert(itemDesc, {"Cost: " .. tostring(itemCost.SP) .. " global SP, " .. tostring(itemCost.obols) .. " arcane obols.", costColor})
-                tScreen:DrawNodeBox(itemName, itemDesc, selDrawX + 7, selDrawY + 7, true)
+            if itemName == "StringTable::InvalidKey" then
+                itemName = itemCfg.Name
             end
+            local itemCost = PST:bazaarGetCost(itemCfg.Quality)
+            local costColor = PST.kcolors.LEVEL_PURPLE
+            if not PST:bazaarCanAffordCost(itemCfg.Quality) and not PST.debugOptions.freeBazaar then
+                costColor = PST.kcolors.RED1
+            end
+            local itemDesc = { "Hold allocate for 1 second to purchase this item." }
+            -- Chance to keep other items
+            local tmpMod = self.siderealMods["bazaarSelKeep"]
+            if tmpMod and tmpMod > 0 then
+                table.insert(itemDesc, tostring(tmpMod) .. "% chance to keep the other item options when purchasing.")
+            else
+                table.insert(itemDesc, "Purchasing this item will remove the other options!")
+            end
+            -- Cost
+            table.insert(itemDesc, {"Cost: " .. tostring(itemCost.SP) .. " global SP, " .. tostring(itemCost.obols) .. " arcane obols.", costColor})
+
+            -- Final item description box
+            tScreen:DrawNodeBox(itemName, itemDesc, startX + 7, 190, true, 1)
         end
     end
 end

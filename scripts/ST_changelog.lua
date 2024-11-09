@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.2",
+        "- Fixed Timeless Bazaar selected item description boxes. These now work for modded items and should no longer",
+        "be able to overflow the screen.",
+        "",
+
         "v0.4.1",
         "- Fixed champion chest drops being guaranteed with any champion kill.",
         "",
