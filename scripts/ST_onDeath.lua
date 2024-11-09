@@ -153,7 +153,7 @@ function PST:onDeath(entity)
                 -- Mod: % chance for champion monsters to drop a regular chest on death
                 tmpMod = PST:getTreeSnapshotMod("championChest", 0)
                 local maxChests = 1 + PST:getTreeSnapshotMod("championMaxChests", 0)
-                if tmpMod > 0 and PST:getTreeSnapshotMod("championChestDrops", 0) < maxChests then
+                if tmpMod > 0 and 100 * math.random() < tmpMod and PST:getTreeSnapshotMod("championChestDrops", 0) < maxChests then
                     local chestType = PickupVariant.PICKUP_CHEST
                     -- Mod: % chance for the regular chest dropped by champions to be a stone chest instead
                     if 100 * math.random() < PST:getTreeSnapshotMod("championStoneChest", 0) then
