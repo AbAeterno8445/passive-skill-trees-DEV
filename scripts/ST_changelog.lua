@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.1",
+        "- Fixed champion chest drops being guaranteed with any champion kill.",
+        "",
+
         "v0.4.0",
         "- Introduced two new main features found within the Star Tree: the Arcane Astrolabe and the Sidereal Tree.",
         "You can find more info about these in the tree's help panels or in the mod's workshop description.",
