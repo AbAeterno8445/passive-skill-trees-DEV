@@ -117,7 +117,7 @@ function PST:onRoomClear(level, room)
 			local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
 
 			-- Boss room
-			if isBossRoom then
+			if isBossRoom and PST:getTreeSnapshotMod("roomBossKills", 0) > 0 then
 				-- Respec chance
 				local respecChance = PST:getTreeSnapshotMod("respecChance", 15)
 				if not PST:getTreeSnapshotMod("relearning", false) then

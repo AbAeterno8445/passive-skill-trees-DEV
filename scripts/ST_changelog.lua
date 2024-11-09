@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.4.2",
         "- Fixed Timeless Bazaar selected item description boxes. These now work for modded items and should no longer",
         "be able to overflow the screen.",
+        "- Fixed boss room clear effects triggering again when re-entering and killing normal monsters in the room.",
         "",
 
         "v0.4.1",
