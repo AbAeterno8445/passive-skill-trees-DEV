@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.4.4",
         "- Slightly adjusted obol drop rates within runs. Boss obol drops now slightly decrease the chance for further boss",
         "obol drops within that run.",
+        "- Increased Sidereal Cache spawning nodes' chances.",
         "- The circular slash's damage from the Scythe weapon implicit mod is now capped at 4x your current damage stat.",
         "",
 
