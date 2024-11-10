@@ -6,6 +6,8 @@ function PST:getChangelogList()
         "v0.4.3",
         "- Changelog screen now allows panning horizontally, in case text overflows in certain screen sizes.",
         "- Nodes that require global SP to allocate now say so in their description while unallocated.",
+        "- Potential fix for modded active items not triggering the 'Use active items with at least 3 charges' expedition",
+        "objective.",
         "- Fixed boss rush completion rewards being able to trigger again when killing more monsters after clearing it.",
         "- Fixed inventory sub-menus (such as starcursed jewel inventories) staying open when switching tree screens.",
         "",
