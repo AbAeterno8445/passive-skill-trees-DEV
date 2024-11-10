@@ -196,7 +196,7 @@ function descriptionBoxesModule:Render(tScreen)
         end
 
         -- Special node requirements
-        if hoveredNode.reqs then
+        if hoveredNode.reqs and not isAllocated then
             tmpDescription = {table.unpack(tmpDescription)}
 
             -- Arcane obols requirement
@@ -224,6 +224,10 @@ function descriptionBoxesModule:Render(tScreen)
             if charlvlReq and currentChar and currentChar.level < charlvlReq then
                 table.insert(tmpDescription, {"Requires the current character (" .. PST:getCurrentCharName() .. ") to reach level " .. tostring(charlvlReq) .. "."})
             end
+        end
+        if not isAllocated and PST:arrHasValue(tScreen.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
+            tmpDescription = {table.unpack(tmpDescription)}
+            table.insert(tmpDescription, {"Requires 1 Global SP to allocate.", PST.kcolors.BLUE1})
         end
 
         tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description)
