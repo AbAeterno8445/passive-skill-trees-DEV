@@ -5,6 +5,9 @@ PST.config = {
     -- XP bar scale
     xpbarScale = 1,
 
+    -- XP bar style
+    xpbarStyle = 1,
+
     -- Draw floating texts during gameplay (e.g. xp gain, +1 respec, certain node effects, etc.)
     floatingTexts = true,
 
@@ -209,10 +212,10 @@ function PST:initModConfigMenu()
     end
 
     -- Draw XP bar setting
-    ModConfigMenu.RemoveSetting(PST.modName, "Main", "drawXPbar")
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "drawXPbar")
     ModConfigMenu.AddSetting(
         PST.modName,
-        "Main",
+        "XP",
         {
             Type = ModConfigMenu.OptionType.BOOLEAN,
             Attribute = "drawXPbar",
@@ -230,10 +233,10 @@ function PST:initModConfigMenu()
     )
     -- XP bar scale setting
     local xpbarScaleOptions = {1, 0.75, 0.5}
-    ModConfigMenu.RemoveSetting(PST.modName, "Main", "xpbarScale")
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpbarScale")
     ModConfigMenu.AddSetting(
         PST.modName,
-        "Main",
+        "XP",
         {
             Type = ModConfigMenu.OptionType.NUMBER,
             Attribute = "xpbarScale",
@@ -251,6 +254,30 @@ function PST:initModConfigMenu()
             Info = {"Drawn XP bar scale/size"}
         }
     )
+    -- XP bar style setting
+    local xpbarStyles = {"Regular", "1px Beams (bottom)", "1px Beams (top)"}
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpbarStyle")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "XP",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "xpbarStyle",
+            CurrentSetting = function()
+                return PST.config.xpbarStyle
+            end,
+            Minimum = 1,
+            Maximum = #xpbarStyles,
+            Display = function()
+                return "XP bar style: " .. xpbarStyles[PST.config.xpbarStyle]
+            end,
+            OnChange = function(n)
+                PST.config.xpbarStyle = n
+            end,
+            Info = {"Drawn XP bar style"}
+        }
+    )
+
     -- Draw floating texts setting
     ModConfigMenu.RemoveSetting(PST.modName, "Main", "floatingTexts")
     ModConfigMenu.AddSetting(
@@ -380,10 +407,10 @@ function PST:initModConfigMenu()
     for i=-9,20 do
         table.insert(xpMultOptions, 1 + i * 0.1)
     end
-    ModConfigMenu.RemoveSetting(PST.modName, "Main", "xpMult")
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpMult")
     ModConfigMenu.AddSetting(
         PST.modName,
-        "Main",
+        "XP",
         {
             Type = ModConfigMenu.OptionType.NUMBER,
             Attribute = "xpMult",

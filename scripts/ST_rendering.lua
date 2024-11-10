@@ -81,6 +81,9 @@ xpbarSprite:Play("BarEmpty", true)
 xpbarFullSprite:Play("BarFull", true)
 xpbarTempSprite:Play("BarTemp", true)
 
+local xpbeamSprite = Sprite("gfx/ui/skilltrees/xp_bar.anm2", true)
+xpbeamSprite.Color.A = 0.7
+
 local chroniclerUISprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
 chroniclerUISprite:Play("Chronicler UI", true)
 
@@ -128,38 +131,110 @@ function PST:Render()
 			local barPercGlobal = math.min(1, PST.modData.xp / math.max(1, PST.modData.xpRequired))
 			local barScale = Vector(screenRatioX, math.min(1, screenRatioY)) * tmpScale
 
-			xpbarTempSprite.Scale = barScale
-			xpbarFullSprite.Scale = barScale
-			xpbarSprite.Scale = barScale
-			xpbarSprite:Render(barPos)
+			if not PST.config.xpbarStyle or PST.config.xpbarStyle == 1 then
+				xpbarTempSprite.Scale = barScale
+				xpbarFullSprite.Scale = barScale
+				xpbarSprite.Scale = barScale
+				xpbarSprite:Render(barPos)
+			end
 
+			-- Temp xp
 			if PST.modData.xpObtained > 0 then
-				-- Character temp xp bar
-				local tempBarPercent = math.min(1, (charData.xp + PST.modData.xpObtained) / math.max(1, charData.xpRequired))
-				xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 8), Vector(barWidth, 16))
+				if not PST.config.xpbarStyle or PST.config.xpbarStyle == 1 then
+					-- Character temp xp bar
+					local tempBarPercent = math.min(1, (charData.xp + PST.modData.xpObtained) / math.max(1, charData.xpRequired))
+					xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 8), Vector(barWidth, 16))
 
-				-- Global temp xp bar
-				tempBarPercent = math.min(1, (PST.modData.xp + PST.modData.xpObtained) / math.max(1, PST.modData.xpRequired))
-				xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 16), Vector(barWidth, 8))
+					-- Global temp xp bar
+					tempBarPercent = math.min(1, (PST.modData.xp + PST.modData.xpObtained) / math.max(1, PST.modData.xpRequired))
+					xpbarTempSprite:Render(barPos, Vector(barWidth * tempBarPercent, 16), Vector(barWidth, 8))
+				elseif PST.config.xpbarStyle == 2 or PST.config.xpbarStyle == 3 then
+					-- Beam style
+					local beamY = Isaac.GetScreenHeight() - 2
+					if PST.config.xpbarStyle == 3 then
+						beamY = 2
+					end
+					-- Character temp xp bar
+					local tempBarPercent = math.min(1, (charData.xp + PST.modData.xpObtained) / math.max(1, charData.xpRequired))
+					xpbeamSprite:SetFrame("Beams", 2)
+					local linkBeam = Beam(xpbeamSprite, 1, false, false)
+					local startPos = Vector(0, beamY)
+					local endPos = Vector(Isaac.GetScreenWidth() * tempBarPercent, beamY)
+					linkBeam:Add(startPos, 0)
+					linkBeam:Add(endPos, 256)
+					linkBeam:Render()
+
+					beamY = Isaac.GetScreenHeight() - 1
+					if PST.config.xpbarStyle == 3 then
+						beamY = 1
+					end
+					-- Global temp xp bar
+					tempBarPercent = math.min(1, (PST.modData.xp + PST.modData.xpObtained) / math.max(1, PST.modData.xpRequired))
+					startPos = Vector(0, beamY)
+					endPos = Vector(Isaac.GetScreenWidth() * tempBarPercent, beamY)
+					linkBeam:Add(startPos, 0)
+					linkBeam:Add(endPos, 256)
+					linkBeam:Render()
+				end
 			end
 
 			-- Character xp
 			if charData.xp > 0 then
-				xpbarFullSprite:Render(barPos, Vector(barWidth * barPerc, 8), Vector(barWidth, 16))
+				if not PST.config.xpbarStyle or PST.config.xpbarStyle == 1 then
+					xpbarFullSprite:Render(barPos, Vector(barWidth * barPerc, 8), Vector(barWidth, 16))
+				elseif PST.config.xpbarStyle == 2 or PST.config.xpbarStyle == 3 then
+					local beamY = Isaac.GetScreenHeight() - 1
+					if PST.config.xpbarStyle == 3 then
+						beamY = 1
+					end
+					-- Beam style
+					xpbeamSprite:SetFrame("Beams", 1)
+					local linkBeam = Beam(xpbeamSprite, 1, false, false)
+					local startPos = Vector(0, beamY)
+					local endPos = Vector(Isaac.GetScreenWidth() * barPercGlobal, beamY)
+					linkBeam:Add(startPos, 0)
+					linkBeam:Add(endPos, 256)
+					linkBeam:Render()
+				end
 			end
 
 			-- Global xp
 			if PST.modData.xp > 0 then
-				xpbarFullSprite:Render(barPos, Vector(barWidth * barPercGlobal, 16), Vector(barWidth, 8))
+				if not PST.config.xpbarStyle or PST.config.xpbarStyle == 1 then
+					xpbarFullSprite:Render(barPos, Vector(barWidth * barPercGlobal, 16), Vector(barWidth, 8))
+				elseif PST.config.xpbarStyle == 2 or PST.config.xpbarStyle == 3 then
+					local beamY = Isaac.GetScreenHeight() - 2
+					if PST.config.xpbarStyle == 3 then
+						beamY = 2
+					end
+					-- Beam style
+					xpbeamSprite:SetFrame("Beams", 0)
+					local linkBeam = Beam(xpbeamSprite, 1, false, false)
+					local startPos = Vector(0, beamY)
+					local endPos = Vector(Isaac.GetScreenWidth() * barPerc, beamY)
+					linkBeam:Add(startPos, 0)
+					linkBeam:Add(endPos, 256)
+					linkBeam:Render()
+				end
 			end
 
-			-- Level text
-			local levelStr = "LV " .. charData.level
-			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 12 * tmpScale, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
+			if not PST.config.xpbarStyle or PST.config.xpbarStyle == 1 then
+				-- Level text
+				local levelStr = "LV " .. charData.level
+				luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 12 * tmpScale, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
 
-			-- Global level text
-			levelStr = "G.LV " .. PST.modData.level
-			luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 5 * tmpScale, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
+				-- Global level text
+				levelStr = "G.LV " .. PST.modData.level
+				luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 5 * tmpScale, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
+			elseif PST.config.xpbarStyle == 2 or PST.config.xpbarStyle == 3 then
+				-- Beam style texts
+				local tmpY = Isaac.GetScreenHeight() - 16 * tmpScale
+				local levelStr = "LV " .. charData.level
+				luaminiFont:DrawStringScaled(levelStr, 2, tmpY, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
+
+				levelStr = "G.LV " .. PST.modData.level
+				luaminiFont:DrawStringScaled(levelStr, Isaac.GetScreenWidth() - luaminiFont:GetStringWidth(levelStr) - 2, tmpY, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
+			end
 		end
 	end
 

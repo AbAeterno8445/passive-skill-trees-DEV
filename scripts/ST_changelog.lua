@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v0.4.3",
+        "- Added new '1px beam' drawing styles for the xp bar, and xp related options are now under their own category on",
+        "Mod Config Menu.",
         "- Changelog screen now allows panning horizontally, in case text overflows in certain screen sizes.",
         "- Nodes that require global SP to allocate now say so in their description while unallocated.",
         "- Potential fix for modded active items not triggering the 'Use active items with at least 3 charges' expedition",
