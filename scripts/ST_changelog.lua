@@ -7,6 +7,8 @@ function PST:getChangelogList()
         "- Fixed Timeless Bazaar selected item description boxes. These now work for modded items and should no longer",
         "be able to overflow the screen.",
         "- Fixed boss room clear effects triggering again when re-entering and killing normal monsters in the room.",
+        "- Fixed boss rush wave modifiers applying multiple times to the total wave count when starting multiple new runs",
+        "with them allocated.",
         "",
 
         "v0.4.1",

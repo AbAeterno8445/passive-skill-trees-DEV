@@ -796,7 +796,7 @@ function PST:onNewRun(isContinued)
     -- Mod: +- boss rush waves
     tmpMod = PST:getTreeSnapshotMod("bossRushWaves", 0)
     if tmpMod ~= 0 then
-        Ambush.SetMaxBossrushWaves(Ambush.GetMaxBossrushWaves() + tmpMod)
+        Ambush.SetMaxBossrushWaves(15 + tmpMod)
     end
 
     -- Update familiars
