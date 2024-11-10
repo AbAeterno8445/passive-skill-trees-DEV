@@ -211,73 +211,6 @@ function PST:initModConfigMenu()
         return default
     end
 
-    -- Draw XP bar setting
-    ModConfigMenu.RemoveSetting(PST.modName, "XP", "drawXPbar")
-    ModConfigMenu.AddSetting(
-        PST.modName,
-        "XP",
-        {
-            Type = ModConfigMenu.OptionType.BOOLEAN,
-            Attribute = "drawXPbar",
-            CurrentSetting = function()
-                return PST.config.drawXPbar
-            end,
-            Display = function()
-                return "Draw LVL and XP bar: " .. (PST.config.drawXPbar and "on" or "off")
-            end,
-            OnChange = function(b)
-                PST.config.drawXPbar = b
-            end,
-            Info = {"Draw level and XP bar at the bottom of the screen", "during gameplay"}
-        }
-    )
-    -- XP bar scale setting
-    local xpbarScaleOptions = {1, 0.75, 0.5}
-    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpbarScale")
-    ModConfigMenu.AddSetting(
-        PST.modName,
-        "XP",
-        {
-            Type = ModConfigMenu.OptionType.NUMBER,
-            Attribute = "xpbarScale",
-            CurrentSetting = function()
-                return getTableIndex(xpbarScaleOptions, PST.config.xpbarScale, 1)
-            end,
-            Minimum = 1,
-            Maximum = #xpbarScaleOptions,
-            Display = function()
-                return "XP bar scale: " .. tostring(PST.config.xpbarScale)
-            end,
-            OnChange = function(n)
-                PST.config.xpbarScale = xpbarScaleOptions[n]
-            end,
-            Info = {"Drawn XP bar scale/size"}
-        }
-    )
-    -- XP bar style setting
-    local xpbarStyles = {"Regular", "1px Beams (bottom)", "1px Beams (top)"}
-    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpbarStyle")
-    ModConfigMenu.AddSetting(
-        PST.modName,
-        "XP",
-        {
-            Type = ModConfigMenu.OptionType.NUMBER,
-            Attribute = "xpbarStyle",
-            CurrentSetting = function()
-                return PST.config.xpbarStyle
-            end,
-            Minimum = 1,
-            Maximum = #xpbarStyles,
-            Display = function()
-                return "XP bar style: " .. xpbarStyles[PST.config.xpbarStyle]
-            end,
-            OnChange = function(n)
-                PST.config.xpbarStyle = n
-            end,
-            Info = {"Drawn XP bar style"}
-        }
-    )
-
     -- Draw floating texts setting
     ModConfigMenu.RemoveSetting(PST.modName, "Main", "floatingTexts")
     ModConfigMenu.AddSetting(
@@ -402,33 +335,6 @@ function PST:initModConfigMenu()
         }
     )
 
-    -- XP multiplier setting
-    local xpMultOptions = {}
-    for i=-9,20 do
-        table.insert(xpMultOptions, 1 + i * 0.1)
-    end
-    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpMult")
-    ModConfigMenu.AddSetting(
-        PST.modName,
-        "XP",
-        {
-            Type = ModConfigMenu.OptionType.NUMBER,
-            Attribute = "xpMult",
-            CurrentSetting = function()
-                return getTableIndex(xpMultOptions, PST.config.xpMult, 9)
-            end,
-            Minimum = 1,
-            Maximum = #xpMultOptions,
-            Display = function()
-                return "XP Multiplier: " .. tostring(PST.config.xpMult)
-            end,
-            OnChange = function(n)
-                PST.config.xpMult = xpMultOptions[n]
-            end,
-            Info = {"XP Multiplier applied to most XP gains", "Default 1"}
-        }
-    )
-
     -- Starcursed jewel drop toggle setting
     local starJewelToggleStr = {"none", "inv full", "all"}
     ModConfigMenu.RemoveSetting(PST.modName, "Main", "starJewelDrops")
@@ -502,6 +408,100 @@ function PST:initModConfigMenu()
                 PST.config.astralWepDrops = b
             end,
             Info = {"Toggle Astral Weapons from dropping (expedition runs)"}
+        }
+    )
+
+    ---- XP SETTINGS ----
+    -- Draw XP bar setting
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "drawXPbar")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "XP",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "drawXPbar",
+            CurrentSetting = function()
+                return PST.config.drawXPbar
+            end,
+            Display = function()
+                return "Draw LVL and XP bar: " .. (PST.config.drawXPbar and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.drawXPbar = b
+            end,
+            Info = {"Draw level and XP bar at the bottom of the screen", "during gameplay"}
+        }
+    )
+    -- XP bar scale setting
+    local xpbarScaleOptions = {1, 0.75, 0.5}
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpbarScale")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "XP",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "xpbarScale",
+            CurrentSetting = function()
+                return getTableIndex(xpbarScaleOptions, PST.config.xpbarScale, 1)
+            end,
+            Minimum = 1,
+            Maximum = #xpbarScaleOptions,
+            Display = function()
+                return "XP bar scale: " .. tostring(PST.config.xpbarScale)
+            end,
+            OnChange = function(n)
+                PST.config.xpbarScale = xpbarScaleOptions[n]
+            end,
+            Info = {"Drawn XP bar scale/size"}
+        }
+    )
+    -- XP bar style setting
+    local xpbarStyles = {"Regular", "1px Beams (bottom)", "1px Beams (top)"}
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpbarStyle")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "XP",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "xpbarStyle",
+            CurrentSetting = function()
+                return PST.config.xpbarStyle
+            end,
+            Minimum = 1,
+            Maximum = #xpbarStyles,
+            Display = function()
+                return "XP bar style: " .. xpbarStyles[PST.config.xpbarStyle]
+            end,
+            OnChange = function(n)
+                PST.config.xpbarStyle = n
+            end,
+            Info = {"Drawn XP bar style"}
+        }
+    )
+    -- XP multiplier setting
+    local xpMultOptions = {}
+    for i=-9,20 do
+        table.insert(xpMultOptions, 1 + i * 0.1)
+    end
+    ModConfigMenu.RemoveSetting(PST.modName, "XP", "xpMult")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "XP",
+        {
+            Type = ModConfigMenu.OptionType.NUMBER,
+            Attribute = "xpMult",
+            CurrentSetting = function()
+                return getTableIndex(xpMultOptions, PST.config.xpMult, 9)
+            end,
+            Minimum = 1,
+            Maximum = #xpMultOptions,
+            Display = function()
+                return "XP Multiplier: " .. tostring(PST.config.xpMult)
+            end,
+            OnChange = function(n)
+                PST.config.xpMult = xpMultOptions[n]
+            end,
+            Info = {"XP Multiplier applied to most XP gains", "Default 1"}
         }
     )
 
