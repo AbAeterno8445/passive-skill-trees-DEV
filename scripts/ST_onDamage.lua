@@ -541,7 +541,7 @@ function PST:onDamage(target, damage, flag, source)
         local dmgExtra = 0
 
         -- Valid enemy
-        if target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
+        if target:IsVulnerableEnemy() and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
             -- Starcursed mod: Damage reduction
             local tmpMod = PST:SC_getSnapshotMod("mobDmgReduction", 0)
             dmgMult = dmgMult - tmpMod / 100
