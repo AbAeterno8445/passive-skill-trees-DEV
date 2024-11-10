@@ -84,7 +84,9 @@ function PST:onRoomClear(level, room)
 		-- Boss rush
 		elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
 			-- Boss rush clear
-			if Ambush.GetCurrentWave() == Ambush.GetMaxBossrushWaves() then
+			if Ambush.GetCurrentWave() == Ambush.GetMaxBossrushWaves() and not PST:getTreeSnapshotMod("bossRushClear", false) then
+				PST:addModifiers({ bossRushClear = true }, true)
+
 				-- Starcursed jewel drop
 				if not PST:getTreeSnapshotMod("SC_bossrushJewel", false) and 100 * math.random() < PST.SCDropRates.bossrush().regular then
 					local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)

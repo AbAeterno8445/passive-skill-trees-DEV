@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.3",
+        "- Fixed boss rush completion rewards being able to trigger again when killing more monsters after clearing it.",
+        "",
+
         "v0.4.2",
         "- Fixed Timeless Bazaar selected item description boxes. These now work for modded items and should no longer",
         "be able to overflow the screen.",

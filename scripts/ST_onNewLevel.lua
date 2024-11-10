@@ -792,6 +792,11 @@ function PST:onNewLevel()
         PST:addModifiers({ shellGameFloorUses = { value = 0, set = true } }, true)
     end
 
+    -- Reset boss rush proc
+    if PST:getTreeSnapshotMod("bossRushClear", false) then
+        PST:addModifiers({ bossRushClear = false }, true)
+    end
+
     PST:save()
 end
 
