@@ -195,7 +195,8 @@ PST.deadlySinBosses = {
 	EntityType.ENTITY_SLOTH
 }
 PST.segmentBosses = {
-	EntityType.ENTITY_ENVY, EntityType.ENTITY_LARRYJR, EntityType.ENTITY_PIN, EntityType.ENTITY_CHUB
+	EntityType.ENTITY_ENVY, EntityType.ENTITY_LARRYJR, EntityType.ENTITY_PIN, EntityType.ENTITY_CHUB,
+	EntityType.ENTITY_FISTULA_MEDIUM, EntityType.ENTITY_FISTULA_SMALL, EntityType.ENTITY_BLASTOCYST_MEDIUM, EntityType.ENTITY_BLASTOCYST_SMALL
 }
 PST.bookItems = {
 	CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK, CollectibleType.COLLECTIBLE_BIBLE,
