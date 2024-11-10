@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.3",
+        "- Changelog screen now allows panning horizontally, in case text overflows in certain screen sizes.",
         "- Fixed boss rush completion rewards being able to trigger again when killing more monsters after clearing it.",
         "",
 
