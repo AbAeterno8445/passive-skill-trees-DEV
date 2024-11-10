@@ -19,6 +19,10 @@ function starcursedInvSubmenu:OnOpen(openData)
     end
 end
 
+function starcursedInvSubmenu:OnClose()
+    self.jewelType = ""
+end
+
 ---@param tScreen PST.treeScreen
 function starcursedInvSubmenu:Render(tScreen, submenusModule)
     local tmpJewelType = self.jewelType

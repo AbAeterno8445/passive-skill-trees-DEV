@@ -1,5 +1,3 @@
-
-
 ---@class PST.treeScreen
 PST.treeScreen = {
     open = false,
@@ -98,6 +96,12 @@ for treeName, nodeNameList in pairs(tabNodes) do
             end
         end
     end
+end
+
+function PST.treeScreen:switchCurrentTree(newTree)
+    self.currentTree = newTree
+    self:CenterCamera()
+    self.modules.submenusModule:CloseSubmenu()
 end
 
 include("scripts.tree_screen.treescreenRender")

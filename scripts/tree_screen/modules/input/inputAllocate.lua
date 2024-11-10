@@ -63,8 +63,7 @@ function PST.treeScreen:InputAllocate()
                 -- Star Tree node, switch to star tree view
                 elseif self.hoveredNode.name == "Star Tree" and self.currentTree ~= "starTree" then
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
-                    self.currentTree = "starTree"
-                    self:CenterCamera()
+                    self:switchCurrentTree("starTree")
 
                 -- Arcane Astrolabe node, open Astral Expedition menu
                 elseif self.hoveredNode.name == "Arcane Astrolabe" then
@@ -74,9 +73,8 @@ function PST.treeScreen:InputAllocate()
                 -- Sidereal Tree node, switch to sidereal tree
                 elseif self.hoveredNode.name == "Sidereal Tree" and self.currentTree ~= "sidereal" then
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
-                    self.currentTree = "sidereal"
+                    self:switchCurrentTree("sidereal")
                     PST:updateNodes("sidereal")
-                    self:CenterCamera()
 
                 -- Astral Forge node, switch to Astral Forge menu
                 elseif self.hoveredNode.name == "Astral Forge" then

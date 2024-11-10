@@ -21,8 +21,7 @@ local targetScreens = {
         end,
         ---@param tScreen PST.treeScreen
         switchFunc = function(tScreen)
-            tScreen.currentTree = "starTree"
-            tScreen:CenterCamera()
+            tScreen:switchCurrentTree("starTree")
         end
     },
     {
@@ -44,9 +43,8 @@ local targetScreens = {
         end,
         ---@param tScreen PST.treeScreen
         switchFunc = function(tScreen)
-            tScreen.currentTree = "sidereal"
+            tScreen:switchCurrentTree("sidereal")
             PST:updateNodes("sidereal")
-            tScreen:CenterCamera()
         end
     },
     {
