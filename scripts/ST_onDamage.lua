@@ -854,7 +854,7 @@ function PST:onDamage(target, damage, flag, source)
                                 end
                             end
                         end
-                        local scytheDmg = damage * (tmpMod[1] / 100)
+                        local scytheDmg = math.min(PST:getPlayer().Damage * 4, damage * (tmpMod[1] / 100))
                         local mobripper = PST:getSnapAstralWepMod("mobripper")
                         if mobripper then
                             scytheDmg = damage * (mobripper[1] / 100)

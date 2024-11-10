@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.4",
+        "- Slightly adjusted obol drop rates within runs. Boss obol drops now slightly decrease the chance for further boss",
+        "obol drops within that run.",
+        "- The circular slash's damage from the Scythe weapon implicit mod is now capped at 4x your current damage stat.",
+        "",
+
         "v0.4.3",
         "- Added new '1px beam' drawing styles for the xp bar, and xp related options are now under their own category on",
         "Mod Config Menu.",
