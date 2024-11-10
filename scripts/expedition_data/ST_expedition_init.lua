@@ -874,10 +874,15 @@ PST.obolEvents = {
     -- On boss kill
     bossKill = function(depth, chanceMod)
         local chance = 0.17 + (chanceMod or 0) + (PST:getLevel():GetStage() - 1) * obolStageFactor
+        -- Depth chance increase
+        chance = chance + (depth - 1) * 0.005
+        -- Reduce chance by .5% per boss obol drop
+        chance = chance - 0.005 * PST:getTreeSnapshotMod("bossObolDrops", 0)
+
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
-            local amt = 2 + PST:getLevel():GetStage() * 2 + 3 * (depth - 1)
+            local amt = 2 + PST:getLevel():GetStage() + 3 * (depth - 1)
             amt = math.ceil(amt * (1 + abundantObols / 100))
             return amt
         end
@@ -889,7 +894,7 @@ PST.obolEvents = {
         local abundantObols = PST:getTreeSnapshotMod("boonAbundantObols", 0)
         if abundantObols > 0 then chance = chance * 2 end
         if math.random() < chance then
-            local amt = 5 + PST:getLevel():GetStage() * 3 + 3 * (depth - 1)
+            local amt = 5 + PST:getLevel():GetStage() * 2 + 3 * (depth - 1)
             amt = math.ceil(amt * (1 + abundantObols / 100))
             return amt
         end

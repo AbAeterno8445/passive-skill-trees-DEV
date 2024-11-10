@@ -1491,6 +1491,8 @@ function PST:resetMods()
 		expedSelNodeRow = -1,
 		expedSelNodeObjName = "",
 
+		bossObolDrops = 0,
+
 		-- Sidereal Caches
 		sideCacheChallenge = 0,
 		sideCacheBoss = 0,

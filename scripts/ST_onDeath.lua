@@ -166,7 +166,7 @@ function PST:onDeath(entity)
 
             -- Boss kill
             if entity:IsBoss() then
-                -- Boss kills in current room
+                -- Boss kill counters
                 PST:addModifiers({ roomBossKills = 1 }, true)
 
                 -- Expedition boss kill
@@ -178,7 +178,10 @@ function PST:onDeath(entity)
                     if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
                         -- Obols on boss kill
                         local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
-                        if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
+                        if tmpObols > 0 then
+                            PST:expedDropObolsAt(entity.Position, tmpObols)
+                            PST:addModifiers({ bossObolDrops = 1 }, true)
+                        end
                     end
                 end
 
