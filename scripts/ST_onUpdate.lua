@@ -2667,6 +2667,11 @@ function PST:onUpdate()
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA)
 	end
 
+	-- Ancient weapon mod: Glowing Sunblade
+	if PST:getSnapAstralWepMod("glowingSunblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOL) then
+		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL)
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

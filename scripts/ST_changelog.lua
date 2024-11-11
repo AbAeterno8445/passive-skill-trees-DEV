@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.8",
+        "- Added a new Ancient astral weapon: Glowing Sunblade (longsword).",
         "- Adjusted starmight requirement for expeditions, it now grows slower with depth and caps at 800.",
         "- Fixed Glowing Moonblade (ancient weapon) having no effects.",
         "",

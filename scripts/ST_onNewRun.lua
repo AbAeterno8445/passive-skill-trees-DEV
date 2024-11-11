@@ -477,6 +477,13 @@ function PST:onNewRun(isContinued)
                     player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA)
                     PST:addModifiers({ damagePerc = -tmpMod[1], tearsPerc = -tmpMod[1] }, true)
                 end
+
+                -- Ancient weapon mod: Glowing Sunblade
+                tmpMod = PST:getSnapAstralWepMod("glowingSunblade")
+                if tmpMod then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL)
+                    PST:addModifiers({ damagePerc = -tmpMod[1], tearsPerc = -tmpMod[1] }, true)
+                end
             end
         end
 

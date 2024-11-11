@@ -473,6 +473,18 @@ PST.astralWepMods = {
         maxRolls = {12, 22},
         upgIncrements = {0.5, 1}
     },
+    glowingSunblade = {
+        description = {
+            "Start with innate Sol.",
+            "-{{roll1}}% damage and tears.",
+            "When first entering the boss room, remove these reductions for the current floor.",
+            "When first entering the treasure room, gain +{{roll2}} speed for the current floor."
+        },
+        ancient = true,
+        minRolls = {16, 0.05},
+        maxRolls = {8, 0.1},
+        upgIncrements = {-0.5, 0.005}
+    },
     -- Ancient Estocs
     arcingNeedle = {
         description = {
@@ -870,6 +882,13 @@ PST.astralWepData = {
                 spriteFrame = 34,
                 weight = 100,
                 ancientMods = {"maxwellEngine"}
+            },
+            -- Glowing Sunblade
+            {
+                name = "Glowing Sunblade",
+                spriteFrame = 35,
+                weight = 100,
+                ancientMods = {"glowingSunblade"}
             }
         }
     },

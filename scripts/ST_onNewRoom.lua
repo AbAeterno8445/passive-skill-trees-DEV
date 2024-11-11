@@ -1248,6 +1248,30 @@ function PST:onNewRoom()
 					cosmicRCache.TIsaacProc = true
 				end
 			end
+
+			-- Ancient weapon mod: Glowing Sunblade
+			tmpMod = PST:getSnapAstralWepMod("glowingSunblade")
+			if tmpMod then
+				if not PST:getTreeSnapshotMod("ancwep_sunbladeSpeed", false) then
+					PST:addModifiers({
+						speed = tmpMod[2],
+						ancwep_sunbladeSpeed = true
+					}, true)
+				end
+			end
+		-- Boss rooms
+		elseif roomType == RoomType.ROOM_BOSS then
+			-- Ancient weapon mod: Glowing Sunblade
+			tmpMod = PST:getSnapAstralWepMod("glowingSunblade")
+			if tmpMod then
+				if not PST:getTreeSnapshotMod("ancwep_sunbladeProc", false) then
+					PST:addModifiers({
+						damagePerc = tmpMod[1],
+						tearsPerc = tmpMod[1],
+						ancwep_sunbladeProc = true
+					}, true)
+				end
+			end
 		-- Planetarium
 		elseif roomType == RoomType.ROOM_PLANETARIUM then
 			-- Mod: +% all stats when entering the planetarium for the first time in this run
