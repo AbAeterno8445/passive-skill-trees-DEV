@@ -4,7 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.6",
-        "- Added a hint to hovered weapons in the Astral Forge displaying the 'equip' keybind for weapons.",
+        "- Added a hint to hovered weapons in the Astral Forge displaying the 'equip' keybind, and updated controls help screen.",
         "",
 
         "v0.4.5",
