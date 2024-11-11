@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.6",
         "- Added a hint to hovered weapons in the Astral Forge displaying the 'equip' keybind, and updated controls help screen.",
+        "- Adjusted drop rate of magic and ancient astral weapons, generally making these more frequent finds.",
         "",
 
         "v0.4.5",
