@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.7",
+        "- Added tooltip to global nodes that don't support dynamic tree mode, as these can only be applied on run start.",
+        "- Fixed issue where Boss Rush and Blue Womb timer modifiers could be applied incorrectly.",
+        "",
+
         "v0.4.6",
         "- Added a hint to hovered weapons in the Astral Forge displaying the 'equip' keybind, and updated controls help screen.",
         "- Adjusted drop rate of magic and ancient astral weapons, generally making these more frequent finds.",

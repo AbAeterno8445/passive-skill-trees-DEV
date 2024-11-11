@@ -160,6 +160,11 @@ local descriptionBoxesModule = {
     }
 }
 
+local nonDynamicNodes = {
+    "Boss Rush Door Timer Increase", "Beast-hunter's Rush", "Hush Door Timer Increase", "More Boss Rush Waves",
+    "Less Boss Rush Waves"
+}
+
 ---@param tScreen PST.treeScreen
 function descriptionBoxesModule:Render(tScreen)
     local hoveredNode = tScreen.hoveredNode
@@ -228,6 +233,10 @@ function descriptionBoxesModule:Render(tScreen)
         if not isAllocated and PST:arrHasValue(tScreen.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
             tmpDescription = {table.unpack(tmpDescription)}
             table.insert(tmpDescription, {"Requires 1 Global SP to allocate.", PST.kcolors.BLUE1})
+        end
+        if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) and PST:arrHasValue(nonDynamicNodes, hoveredNode.name) then
+            tmpDescription = {table.unpack(tmpDescription)}
+            table.insert(tmpDescription, {"This node does not support Dynamic Tree Mode, and is only applied on run start.", PST.kcolors.RED2})
         end
 
         tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description)
