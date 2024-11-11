@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.8",
+        "- Adjusted starmight requirement for expeditions, it now grows slower with depth and caps at 800.",
+        "- Fixed Glowing Moonblade (ancient weapon) having no effects.",
+        "",
+
         "v0.4.7",
         "- Added tooltip to global nodes that don't support dynamic tree mode, as these can only be applied on run start.",
         "- Fixed issue where Boss Rush and Blue Womb timer modifiers could be applied incorrectly.",

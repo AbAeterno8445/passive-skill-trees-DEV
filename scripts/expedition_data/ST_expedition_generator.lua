@@ -14,7 +14,7 @@ function PST:getExpeditionImplicits(depth)
     local implicits = {}
 
     -- Starmight requirement
-    implicits.starmightReq = math.min(900, depth * 40)
+    implicits.starmightReq = math.min(800, depth * 30)
     -- Depths 2+ monster HP
     if depth >= 2 then
         implicits.expedImp_mobHP = 5 + depth * 3

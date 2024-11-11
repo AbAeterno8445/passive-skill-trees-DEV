@@ -448,6 +448,18 @@ PST.astralWepMods = {
         maxRolls = {20, 15, 8},
         upgIncrements = {0.5, 0.5, 0.2}
     },
+    glowingMoonblade = {
+        description = {
+            "Start with innate Luna.",
+            "-{{roll1}}% damage and tears.",
+            "When first entering a secret room, remove these reductions for the current floor.",
+            "Entering 2 secret rooms grants +{{roll2}} speed for the current floor, once per floor."
+        },
+        ancient = true,
+        minRolls = {18, 0.06},
+        maxRolls = {10, 0.12},
+        upgIncrements = {-0.5, 0.005}
+    },
     maxwellEngine = {
         description = {
             "+0.5% damage for 3 seconds when hitting an enemy, which stacks up to {{roll1}}%.",

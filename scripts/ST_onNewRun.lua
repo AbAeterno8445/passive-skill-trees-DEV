@@ -470,6 +470,13 @@ function PST:onNewRun(isContinued)
                 if tmpMod then
                     player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
                 end
+
+                -- Ancient weapon mod: Glowing Moonblade
+                tmpMod = PST:getSnapAstralWepMod("glowingMoonblade")
+                if tmpMod then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA)
+                    PST:addModifiers({ damagePerc = -tmpMod[1], tearsPerc = -tmpMod[1] }, true)
+                end
             end
         end
 

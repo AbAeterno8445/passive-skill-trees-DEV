@@ -1548,6 +1548,8 @@ function PST:resetMods()
 		ancwep_runicChopperBuff = 0,
 		ancwep_berserkerWrathProc = false,
 		ancwep_gildedSeekerBuff = 0,
+		ancwep_moonbladeProc = false,
+		ancwep_moonbladeSpeed = false,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)

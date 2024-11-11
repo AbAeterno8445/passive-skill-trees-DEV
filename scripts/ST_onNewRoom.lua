@@ -1137,6 +1137,23 @@ function PST:onNewRoom()
 				PST:addModifiers(tmpAdd, true)
 			end
 
+			-- Ancient weapon mod: Glowing Moonblade
+			tmpMod = PST:getSnapAstralWepMod("glowingMoonblade")
+			if tmpMod then
+				if not PST:getTreeSnapshotMod("ancwep_moonbladeProc", false) then
+					PST:addModifiers({
+						damagePerc = tmpMod[1],
+						tearsPerc = tmpMod[1],
+						ancwep_moonbladeProc = true
+					}, true)
+				elseif not PST:getTreeSnapshotMod("ancwep_moonbladeSpeed", false) then
+					PST:addModifiers({
+						speed = tmpMod[2],
+						ancwep_moonbladeSpeed = true
+					}, true)
+				end
+			end
+
 			-- Expedition objective: enter secret, super secret or ultra secret rooms
 			PST:expedAddProgInRun("secretRooms", 1)
 		-- Devil/Angel rooms

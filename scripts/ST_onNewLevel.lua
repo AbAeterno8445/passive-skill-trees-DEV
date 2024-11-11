@@ -800,6 +800,24 @@ function PST:onNewLevel()
         end
     end
 
+    -- Ancient weapon mod: Glowing Moonblade (reset)
+    tmpMod = PST:getSnapAstralWepMod("glowingMoonblade")
+    if tmpMod then
+        if PST:getTreeSnapshotMod("ancwep_moonbladeProc", false) then
+            PST:addModifiers({
+                damagePerc = -tmpMod[1],
+                tearsPerc = -tmpMod[1],
+                ancwep_moonbladeProc = false
+            }, true)
+        end
+        if PST:getTreeSnapshotMod("ancwep_moonbladeSpeed", false) then
+            PST:addModifiers({
+                speed = -tmpMod[2],
+                ancwep_moonbladeSpeed = false
+            }, true)
+        end
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)
