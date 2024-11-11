@@ -797,6 +797,9 @@ function PST:onNewLevel()
         PST:addModifiers({ bossRushClear = false }, true)
     end
 
+    -- Reset opened chests
+    PST.modData.treeModSnapshot.openedChests = {}
+
     PST:save()
 end
 

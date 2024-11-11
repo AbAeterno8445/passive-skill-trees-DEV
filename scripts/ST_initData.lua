@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.4.3"
+PST.modVersion = "v0.4.5"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -221,6 +221,11 @@ PST.regularChests = {
 }
 PST.lockedChests = {
 	PickupVariant.PICKUP_LOCKEDCHEST, PickupVariant.PICKUP_ETERNALCHEST, PickupVariant.PICKUP_MEGACHEST
+}
+PST.chestPedestals = {
+	PedestalType.CHEST, PedestalType.OLD_CHEST, PedestalType.RED_CHEST, PedestalType.MEGA_CHEST, PedestalType.STONE_CHEST,
+	PedestalType.GOLDEN_CHEST, PedestalType.SPIKED_CHEST, PedestalType.WOODEN_CHEST, PedestalType.ETERNAL_CHEST, PedestalType.GOLDEN_CHEST_COIN_SLOT,
+	PedestalType.OLD_CHEST_COIN_SLOT, PedestalType.MEGA_CHEST_COIN_SLOT, PedestalType.ETERNAL_CHEST_COIN_SLOT
 }
 PST.noChampionMobs = {
 	EntityType.ENTITY_ARMYFLY, EntityType.ENTITY_ATTACKFLY, EntityType.ENTITY_BEGOTTEN, EntityType.ENTITY_DIP,
@@ -599,6 +604,8 @@ function PST:resetMods()
 		fortuneMachineXPmax = 0,
 		fortuneMachineFloorUses = 0,
 		flawlessXP = 0,
+
+		openedChests = {},
 
 		roomBossKills = 0,
 

@@ -867,6 +867,35 @@ function PST:onPickup(pickup, collider, low, forced)
     end
 end
 
+--- @param pickup EntityPickup
+local function PST_expedOpenChest(pickup)
+    -- Expedition objective: open any chest
+    PST:expedAddProgInRun("chests", 1)
+
+    -- Locked chests
+    if pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST then
+        -- Expedition objective: open locked chests
+        PST:expedAddProgInRun("goldChests", 1)
+    -- Red chests
+    elseif pickup.Variant == PickupVariant.PICKUP_REDCHEST then
+        -- Expedition objective: open red chests
+        PST:expedAddProgInRun("redChests", 1)
+    -- Stone chests
+    elseif pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
+        -- Expedition objective: open stone/bomb chests
+        PST:expedAddProgInRun("stoneChests", 1)
+    end
+
+    -- Any special chest
+    if pickup.Variant ~= PickupVariant.PICKUP_CHEST or (pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and pickup:GetAlternatePedestal() ~= -1 and
+    pickup:GetAlternatePedestal() ~= PedestalType.CHEST) then
+        if PST:getTreeSnapshotMod("isExpedRun", false) then
+            local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1))
+            if tmpObols > 0 then PST:expedDropObolsAt(pickup.Position, tmpObols) end
+        end
+    end
+end
+
 ---@param pickup EntityPickup
 function PST:onPickupInit(pickup, firstSpawn)
     local room = PST:getRoom()
@@ -928,6 +957,18 @@ function PST:onPickupInit(pickup, firstSpawn)
         pickup:Morph(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0)
         SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
         PST:addModifiers({ sideCacheRegChest = 1 }, true)
+    end
+
+    -- Chest pedestal first spawn
+    local openedChests = PST:getTreeSnapshotMod("openedChests", nil)
+    if not openedChests then
+        PST.modData.treeModSnapshot.openedChests = {}
+        openedChests = PST.modData.treeModSnapshot.openedChests
+    end
+    if variant == PickupVariant.PICKUP_COLLECTIBLE and PST:arrHasValue(PST.chestPedestals, pickup:GetAlternatePedestal()) and
+    not PST:arrHasValue(openedChests, pickup.InitSeed) then
+        table.insert(openedChests, pickup.InitSeed)
+        PST_expedOpenChest(pickup)
     end
 
     -- Trinkets
@@ -1287,34 +1328,11 @@ function PST:onPickupUpdate(pickup)
         end
 
         -- Chests
-        if PST:arrHasValue(PST.regularChests, pickup.Variant) or PST:arrHasValue(PST.lockedChests, pickup.Variant) then
+        if PST:arrHasValue(PST.regularChests, pickup.Variant) or PST:arrHasValue(PST.lockedChests, pickup.Variant) or pickup.Variant == PickupVariant.PICKUP_BOMBCHEST  then
             local pickupSpr = pickup:GetSprite()
             -- Opened chest
             if pickupSpr:GetAnimation() == "Open" and pickupSpr:GetFrame() == 1 then
-                -- Expedition objective: open any chest
-			    PST:expedAddProgInRun("chests", 1)
-
-                -- Locked chests
-                if pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST then
-                    -- Expedition objective: open locked chests
-			        PST:expedAddProgInRun("goldChests", 1)
-                -- Red chests
-                elseif pickup.Variant == PickupVariant.PICKUP_REDCHEST then
-                    -- Expedition objective: open red chests
-			        PST:expedAddProgInRun("redChests", 1)
-                -- Stone chests
-                elseif pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
-                    -- Expedition objective: open stone/bomb chests
-			        PST:expedAddProgInRun("stoneChests", 1)
-                end
-
-                -- Any special chest
-                if pickup.Variant ~= PickupVariant.PICKUP_CHEST then
-                    if PST:getTreeSnapshotMod("isExpedRun", false) then
-                        local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1))
-                        if tmpObols > 0 then PST:expedDropObolsAt(pickup.Position, tmpObols) end
-                    end
-                end
+                PST_expedOpenChest(pickup)
             end
         end
     end

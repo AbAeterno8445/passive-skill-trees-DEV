@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.5",
+        "- Adjusted Sidereal Caches' internal ID to potentially avoid conflicts.",
+        "- Fixed chests that give items when opened not counting towards expedition objectives.",
+        "- Fixed stone chests not counting towards expedition objectives.",
+        "",
+
         "v0.4.4",
         "- Slightly adjusted obol drop rates within runs. Boss obol drops now slightly decrease the chance for further boss",
         "obol drops within that run.",
