@@ -792,6 +792,14 @@ function PST:onNewLevel()
         PST:addModifiers({ shellGameFloorUses = { value = 0, set = true } }, true)
     end
 
+    -- Ancient starcursed jewel: Glittering Starstone
+    if PST:getTreeSnapshotMod("SC_glitterStoneCoinCap", 0) > 0 then
+        PST:addModifiers({ SC_glitterStoneCoinCap = { value = 0, set = true } }, true)
+        if player:GetNumCoins() > 50 then
+            player:AddCoins(50 - player:GetNumCoins())
+        end
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

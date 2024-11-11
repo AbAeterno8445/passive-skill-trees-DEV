@@ -78,6 +78,11 @@ function PST:onShopPurchase(pickup, player, spent)
             end
         end
 
+        -- Ancient starcursed jewel: Glittering Starstone
+        if PST:SC_getSnapshotMod("glitteringStarstone", false) then
+            PST:addModifiers({ SC_glitterStoneCoinCap = math.ceil(spent / 2) }, true)
+        end
+
         -- Expedition objective: purchase shop items
 		PST:expedAddProgInRun("purchases", 1)
     elseif spent < 0 then
@@ -148,6 +153,11 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
         -- Ancient starcursed jewel: Baubleseeker
         if pickupVariant == PickupVariant.PICKUP_TRINKET and PST:SC_getSnapshotMod("baubleseeker", false) then
             priceMod = priceMod + 3
+        end
+
+        -- Ancient starcursed jewel: Glittering Starstone
+        if PST:SC_getSnapshotMod("glitteringStarstone", false) then
+            priceMult = priceMult + 1
         end
 
         -- Expedition curse: greater expenses

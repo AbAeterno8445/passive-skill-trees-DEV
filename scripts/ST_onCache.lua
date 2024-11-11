@@ -283,6 +283,11 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.ancwep_nimbleRedTimer > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + PST.specialNodes.ancwep_nimbleRedBuff
         end
+
+        -- Ancient starcursed jewel: Glittering Starstone
+        if PST:SC_getSnapshotMod("glitteringStarstone", false) then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + player:GetNumCoins()
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active

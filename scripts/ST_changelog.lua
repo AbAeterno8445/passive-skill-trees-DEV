@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.5",
+        "- Added a new Ancient Jewel: \"Glittering Starstone\".",
         "- Adjusted Sidereal Caches' internal ID to potentially avoid conflicts.",
         "- Expeditions' Curse of Punishment damage should no longer cause penalties such as reducing devil deal chance.",
         "- Fixed final expedition nodes occasionally being replaced by different node types.",

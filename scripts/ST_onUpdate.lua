@@ -1305,6 +1305,14 @@ function PST:onUpdate()
 		if PST:getSnapAstralWepMod("auricPersecutor") then
 			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
 		end
+		-- Ancient starcursed jewel: Glittering Starstone
+		if PST:SC_getSnapshotMod("glitteringStarstone", false) then
+			local tmpCap = 50 + PST:getTreeSnapshotMod("SC_glitterStoneCoinCap", 0)
+			if player:GetNumCoins() > tmpCap then
+				player:AddCoins(tmpCap - player:GetNumCoins())
+			end
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
 		updateTrackers.coinTracker = player:GetNumCoins()
 	end
 

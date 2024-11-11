@@ -226,6 +226,14 @@ function PST:onNewRun(isContinued)
                 player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
             end
         end
+        -- Ancient starcursed jewel: Glittering Starstone
+        if PST:SC_getSnapshotMod("glitteringStarstone", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
+        PST:addModifiers({ damagePerc = -50 }, true)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

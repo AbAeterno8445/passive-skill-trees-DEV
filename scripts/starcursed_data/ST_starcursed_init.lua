@@ -864,6 +864,23 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    glitteringStarstone = {
+        weight = 90,
+        spriteFrame = 31,
+        name = "Glittering Starstone",
+        description = {
+            "Start with Soy Milk and Head of the Keeper.",
+            "-50% damage, +1% damage per coin you have.",
+            "Your max coin count is now 50.",
+            "Purchasing an item increases this cap by half of the item's price for the current floor.",
+            "Shop items cost twice as much."
+        },
+        rewards = {
+            xpgain = 40,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 
