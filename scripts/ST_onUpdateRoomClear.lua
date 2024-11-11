@@ -629,7 +629,7 @@ function PST:onRoomClear(level, room)
 			if tmpMod > 0 and PST:getTreeSnapshotMod("roomKills", 0) > 0 then
 				PST:addModifiers({ cursePunishmentCount = 1 }, true)
 				if PST:getTreeSnapshotMod("cursePunishmentCount", 0) >= tmpMod then
-					player:TakeDamage(1, DamageFlag.DAMAGE_NOKILL, EntityRef(player), 0)
+					player:TakeDamage(1, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_NO_PENALTIES, EntityRef(player), 0)
 					PST:addModifiers({ cursePunishmentCount = { value = 0, set = true } }, true)
 				end
 			end

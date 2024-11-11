@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.5",
         "- Adjusted Sidereal Caches' internal ID to potentially avoid conflicts.",
+        "- Expeditions' Curse of Punishment damage should no longer cause penalties such as reducing devil deal chance.",
         "- Fixed final expedition nodes occasionally being replaced by different node types.",
         "- Fixed cases where completing the last node in an expedition wouldn't reset it and unlock the next depth.",
         "- Fixed chests that give items when opened not counting towards expedition objectives.",
