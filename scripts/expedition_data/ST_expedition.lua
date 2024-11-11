@@ -275,7 +275,7 @@ function PST:completeExpedNode(depth, col, row, giveReward)
 
         -- Final node completion
         local resetExped = false
-        if tmpNode.nodeType == PSTExpNodeType.FINAL then
+        if tmpNode.nodeType == PSTExpNodeType.FINAL or not tmpExpedition.nodes[col + 1] then
             -- Unlock next depth
             if depth + 1 > PST.modData.expeditionDepth then
                 PST.modData.expeditionDepth = depth + 1

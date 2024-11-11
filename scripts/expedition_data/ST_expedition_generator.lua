@@ -115,20 +115,21 @@ function PST:generateExpedition(depth, seed)
                 connections = {},
             }
             -- Final node
-            if col == expLength then newNode.nodeType = PSTExpNodeType.FINAL end
+            local isFinal = col == expLength
+            if isFinal then newNode.nodeType = PSTExpNodeType.FINAL end
 
             -- Guarantee expedition curses in second column
             if col == 2 then newNode.nodeType = PSTExpNodeType.CURSED end
 
             -- Past depth 5, guarantee curses in 6th column and every 4 columns thereafter
-            if depth >= 5 then
+            if depth >= 5 and not isFinal then
                 if ((col - 6) % 4) == 0 then
                     newNode.nodeType = PSTExpNodeType.CURSED
                 end
             end
 
             -- Past second column
-            if col > 2 then
+            if col > 2 and not isFinal then
                 if newNode.nodeType == PSTExpNodeType.NORMAL then
                     -- Chance for curse nodes
                     if colCurses > 0 and expRNG:RandomFloat() < curseChance then
