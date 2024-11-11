@@ -506,6 +506,9 @@ local function astralForgeScreenRender(self, tScreen)
                 table.insert(wepDesc, "Hold the Respec button for 1 second to deconstruct this weapon and gain these materials.")
             end
         end
+        if not self.hoveredWeapon.equipped then
+            table.insert(wepDesc, "Press Shift + Allocate to equip this weapon with " .. PST:getCurrentCharName() .. ".")
+        end
 
         tScreen:DrawNodeBox(tmpTitle, wepDesc)
     -- Hovered deconstruction button description

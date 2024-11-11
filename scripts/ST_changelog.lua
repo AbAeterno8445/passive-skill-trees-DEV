@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.6",
+        "- Added a hint to hovered weapons in the Astral Forge displaying the 'equip' keybind for weapons.",
+        "",
+
         "v0.4.5",
         "- Added a new Ancient Jewel: \"Glittering Starstone\".",
         "- Adjusted Sidereal Caches' internal ID to potentially avoid conflicts.",
