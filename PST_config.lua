@@ -384,7 +384,6 @@ function PST:initModConfigMenu()
             end,
             OnChange = function(n)
                 PST.config.expedProgTextThreshold = expObjThresholds[n]
-                print(PST.config.expedProgTextThreshold)
             end,
             Info = {"Expedition objective progress threshold to display floating text", "e.g. at 25%, show a floating text every 25% of progress made"}
         }
