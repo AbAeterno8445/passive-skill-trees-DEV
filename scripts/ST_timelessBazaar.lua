@@ -1,11 +1,11 @@
 local failsafeCap = 1000
 
 local itemCosts = {
-    [0] = { SP = 1, obols = 40 },
-    [1] = { SP = 2, obols = 90 },
-    [2] = { SP = 3, obols = 160 },
-    [3] = { SP = 4, obols = 400 },
-    refresh = { SP = 3, obols = 120, respecs = 5 }
+    [0] = { SP = 1, obols = 20 },
+    [1] = { SP = 2, obols = 60 },
+    [2] = { SP = 3, obols = 120 },
+    [3] = { SP = 3, obols = 250 },
+    refresh = { SP = 2, obols = 100, respecs = 5 }
 }
 function PST:bazaarGetCost(targetCost)
     return itemCosts[targetCost] or itemCosts[3]
@@ -36,8 +36,9 @@ function PST:bazaarTryPurchase(itemID)
             local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
             if itemCfg then
                 local siderealMods = PST:getAllTreeMods("sidereal")
-                local tmpMod = siderealMods["bazaarSelKeep"]
+
                 -- Mod: % chance to keep other item choices after purchasing one item
+                local tmpMod = siderealMods["bazaarSelKeep"]
                 local keepItems = tmpMod and 100 * math.random() < tmpMod
 
                 local tmpCosts = PST:bazaarGetCost(itemCfg.Quality)

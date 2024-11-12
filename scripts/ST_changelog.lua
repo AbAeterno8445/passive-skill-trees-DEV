@@ -3,6 +3,13 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.10",
+        "- Generally reduced Timeless Bazaar's item and refreshing costs.",
+        "- Added the ability to 'freeze/unfreeze' offered items in the Timeless Bazaar. This prevents the offered items",
+        "from getting re-rolled naturally by winning/losing runs, allowing you to save them for a later run.",
+        "- Added a help screen describing this item freezing feature to the timeless bazaar help section.",
+        "",
+
         "v0.4.9",
         "- Fixed Sidereal Tree modifiers not being applied to runs under certain circumstances.",
         "",

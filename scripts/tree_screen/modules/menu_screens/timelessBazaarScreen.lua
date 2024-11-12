@@ -93,6 +93,20 @@ function timelessBazaarScreen:OnInput()
         self.buyPause = false
     end
 
+    -- Input: Switch Tree (freeze/unfreeze items)
+    if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
+        local charData = PST:getCurrentCharData()
+        if charData then
+            if not charData.bazaarFrozen then
+                charData.bazaarFrozen = true
+                SFXManager():Play(SoundEffect.SOUND_FREEZE, 0.7, 2, false, 1.2)
+            else
+                charData.bazaarFrozen = nil
+                SFXManager():Play(SoundEffect.SOUND_FREEZE_SHATTER, 0.7, 2, false, 1.2)
+            end
+        end
+    end
+
     -- Input: Respec
     if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
         if not self:CanRefresh() then
@@ -193,7 +207,7 @@ local tmpResources = {
 
 ---@param tScreen PST.treeScreen
 function timelessBazaarScreen:Render(tScreen)
-    local boxW, boxH = 300, 243
+    local boxW, boxH = 300, 255
     local startX = tScreen.screenW / 2 - boxW / 2
     local startY = tScreen.screenH / 2 - boxH / 2
     self:DrawUIBox(startX, startY, boxW, boxH)
@@ -259,8 +273,18 @@ function timelessBazaarScreen:Render(tScreen)
     drawX = drawX - 2
     drawY = drawY + 3
 
+    local charData = PST:getCurrentCharData()
+
     -- Draw offered items
-    PST.miniFont:DrawString("Offered Items:", drawX, drawY, PST.kcolors.PURPLE1)
+    local tmpColor = PST.kcolors.PURPLE1
+    tmpStr = "Offered Items:"
+    if charData and charData.bazaarFrozen then
+        tmpColor = PST.kcolors.SKY_BLUE
+        tmpStr = tmpStr .. " (frozen)"
+        self.bazaarUISprite:SetFrame("Default", 3)
+        self.bazaarUISprite:Render(Vector(drawX + PST.miniFont:GetStringWidth(tmpStr) + 3, drawY - 5))
+    end
+    PST.miniFont:DrawString(tmpStr, drawX, drawY, tmpColor)
     drawY = drawY + 15
 
     local itemBoxW = boxW - 10
@@ -268,9 +292,12 @@ function timelessBazaarScreen:Render(tScreen)
     self.BGSprite.Color.RO = 0.16
     self.BGSprite.Color.GO = 0.1
     self.BGSprite.Color.BO = 0.2
+    if charData and charData.bazaarFrozen then
+        self.BGSprite.Color.RO = 0.05
+        self.BGSprite.Color.GO = 0.05
+    end
     self:DrawUIBox(tScreen.screenW / 2 - itemBoxW / 2, drawY, itemBoxW, itemBoxH)
 
-    local charData = PST:getCurrentCharData()
     if charData and charData.bazaarSelection then
         local gameCfg = Isaac.GetItemConfig()
         for i, tmpItem in ipairs(charData.bazaarSelection) do
@@ -304,6 +331,8 @@ function timelessBazaarScreen:Render(tScreen)
     drawX = drawX + 3
     drawY = drawY + 36
     PST.luaminiFont:DrawString("Left/Right to select item.", drawX, drawY, PST.kcolors.WHITE)
+    drawY = drawY + 12
+    PST.luaminiFont:DrawString("Press Q to freeze/unfreeze offered items.", drawX, drawY, PST.kcolors.SKY_BLUE)
     drawY = drawY + 16
 
     -- Draw purchased items

@@ -8,7 +8,7 @@ function PST:onRunOver(isGameOver)
 
         -- Timeless Bazaar, refresh
         local charData = PST:getCurrentCharData()
-        if charData and charData.bazaarSelection ~= nil then
+        if charData and not charData.bazaarFrozen and charData.bazaarSelection ~= nil then
             charData.bazaarPurchased = {}
             charData.bazaarDone = nil
             PST:bazaarGenSelection()
@@ -37,7 +37,7 @@ function PST:onRunOver(isGameOver)
 
         -- Timeless Bazaar, refresh after losing 2x past floor 7
         local charData = PST:getCurrentCharData()
-        if charData and charData.bazaarSelection ~= nil and PST:getLevel():GetStage() > 7 then
+        if charData and not charData.bazaarFrozen and charData.bazaarSelection ~= nil and PST:getLevel():GetStage() > 7 then
             PST:addModifiers({ bazaarLoseRefresh = 1 }, true)
             if PST:getTreeSnapshotMod("bazaarLoseRefresh", 0) >= 2 then
                 charData.bazaarPurchased = {}
