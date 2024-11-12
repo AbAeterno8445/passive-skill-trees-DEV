@@ -764,6 +764,29 @@ function PST:postDamage(target, damage, flag, source)
                     end
                     PST.specialNodes.ancwep_volatileArbalestCD = 30
                 end
+
+                -- Ancient weapon mod: Circuit Splitter
+                tmpMod = PST:getSnapAstralWepMod("circuitSplitter")
+                if tmpMod and (flag & DamageFlag.DAMAGE_EXPLOSION) == 0 and target:GetBleedingCountdown() > 0 and #PST.specialNodes.ancwep_circuitEnems < 3 then
+                    local isInList = false
+                    for _, tmpEnemy in ipairs(PST.specialNodes.ancwep_circuitEnems) do
+                        if tmpEnemy.enemy.InitSeed == target.InitSeed or (source.Entity and tmpEnemy.laser.InitSeed == source.Entity.InitSeed) then
+                            isInList = true
+                            break
+                        end
+                    end
+                    if not isInList then
+                        local newLaser = EntityLaser.ShootAngle(LaserVariant.THIN_RED, target.Position, 0, math.ceil(tmpMod[2] * 30), Vector.Zero, PST:getPlayer())
+                        newLaser.SubType = LaserSubType.LASER_SUBTYPE_RING_PROJECTILE
+                        newLaser.Radius = 50
+                        newLaser.CollisionDamage = math.min(5, PST:getPlayer().Damage * (tmpMod[1] / 100))
+                        table.insert(PST.specialNodes.ancwep_circuitEnems, {
+                            laser = newLaser,
+                            timer = math.ceil(tmpMod[2] * 30),
+                            enemy = target
+                        })
+                    end
+                end
             end
 
             -- Ancient weapon mod: Nimble Twins (special tear hits)

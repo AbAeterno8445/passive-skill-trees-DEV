@@ -4,10 +4,13 @@ function PST:getChangelogList()
         "",
 
         "v0.4.10",
+        "- Added a new Ancient astral weapon: Circuit Splitter (axe).",
         "- Generally reduced Timeless Bazaar's item and refreshing costs.",
         "- Added the ability to 'freeze/unfreeze' offered items in the Timeless Bazaar. This prevents the offered items",
         "from getting re-rolled naturally by winning/losing runs, allowing you to save them for a later run.",
         "- Added a help screen describing this item freezing feature to the timeless bazaar help section.",
+        "- Fixed occasional error when using certain active items.",
+        "- Fixed T. Jacob's \"Spiritual Covenant\" working even while Jacob wasn't in spirit form.",
         "",
 
         "v0.4.9",

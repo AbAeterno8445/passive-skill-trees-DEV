@@ -1832,7 +1832,7 @@ function PST:onDamage(target, damage, flag, source)
                     end
 
                     -- Spiritual Covenant node (T. Jacob's tree)
-                    if PST:getTreeSnapshotMod("spiritualCovenant", false) then
+                    if PST:getTreeSnapshotMod("spiritualCovenant", false) and PST:getPlayer():GetPlayerType() == PlayerType.PLAYER_JACOB2_B then
                         PST.specialNodes.spiritCovenantTarget = target
                     end
 

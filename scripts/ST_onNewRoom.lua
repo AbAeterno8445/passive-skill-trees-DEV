@@ -29,6 +29,7 @@ function PST:onNewRoom()
 	PST.specialNodes.spiritCovenantTarget = nil
 	PST.specialNodes.ancwep_taleEnderProc = false
 	PST.specialNodes.ancwep_preciseSeekerMarked = nil
+	PST.specialNodes.ancwep_circuitEnems = {}
 	PST:clearAnimFXList()
 
 	local player = PST:getPlayer()

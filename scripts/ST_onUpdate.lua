@@ -2672,6 +2672,29 @@ function PST:onUpdate()
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL)
 	end
 
+	-- Ancient weapon mod: Circuit Splitter
+	if #PST.specialNodes.ancwep_circuitEnems > 0 then
+		for i=#PST.specialNodes.ancwep_circuitEnems,1,-1 do
+			local tmpEnemy = PST.specialNodes.ancwep_circuitEnems[i]
+			if tmpEnemy and tmpEnemy.timer > 0 then
+				-- Make laser follow enemy
+				local enemyExists = tmpEnemy.enemy and tmpEnemy.enemy:Exists()
+				if enemyExists and tmpEnemy.laser:Exists() then
+					tmpEnemy.laser.Position = tmpEnemy.enemy.Position
+				end
+
+				-- Subtract timer
+				tmpEnemy.timer = tmpEnemy.timer - 1
+				if tmpEnemy.timer == 0 then
+					if tmpEnemy.laser:Exists() then
+						tmpEnemy.laser:Remove()
+					end
+					table.remove(PST.specialNodes.ancwep_circuitEnems, i)
+				end
+			end
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

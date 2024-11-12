@@ -1690,6 +1690,7 @@ function PST:resetMods()
 		---@type Entity|nil
 		ancwep_preciseSeekerMarked = nil,
 		ancwep_preciseSeekerTimer = 0,
+		ancwep_circuitEnems = {},
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

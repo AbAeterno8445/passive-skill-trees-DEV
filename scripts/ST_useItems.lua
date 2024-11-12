@@ -7,7 +7,7 @@
 ---@param customVarData any
 function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
-    local isNormalCharge = (itemCfg and itemCfg.ChargeType == 0) or (player:GetActiveMaxCharge(slot) > 0 and player:GetActiveMaxCharge(slot) <= 12)
+    local isNormalCharge = (itemCfg and itemCfg.ChargeType == 0) or (slot ~= -1 and player:GetActiveMaxCharge(slot) > 0 and player:GetActiveMaxCharge(slot) <= 12)
 
     -- Mod: % chance to remove Birthright when using any active item (Serendipitous Soul - T. Eden's tree)
     if PST:getTreeSnapshotMod("serendipitousSoul", false) and itemType ~= CollectibleType.COLLECTIBLE_EDENS_SOUL then

@@ -702,6 +702,18 @@ PST.astralWepMods = {
         maxRolls = {5, 36, 18},
         upgIncrements = {0.1, 0.8, 0.4}
     },
+    circuitSplitter = {
+        description = {
+            "Hitting a bleeding enemy creates a laser ring that follows them, damaging nearby enemies",
+            "for {{roll1}}% of your damage per tick, capped at 5.",
+            "Laser rings last {{roll2}} seconds and can linger in place after the enemy dies.",
+            "Up to 3 laser rings from this effect can be in the room simultaneously."
+        },
+        ancient = true,
+        minRolls = {15, 2},
+        maxRolls = {25, 3},
+        upgIncrements = {1, 0.1}
+    },
     -- Ancient Greataxes
     berserkerWrath = {
         description = {
@@ -1192,6 +1204,13 @@ PST.astralWepData = {
                 spriteFrame = 19,
                 weight = 100,
                 ancientMods = {"ancientRunicChopper"}
+            },
+            -- Circuit Splitter
+            {
+                name = "Circuit Splitter",
+                spriteFrame = 36,
+                weight = 100,
+                ancientMods = {"circuitSplitter"}
             }
         }
     },
