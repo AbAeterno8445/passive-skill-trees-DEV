@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.9",
+        "- Fixed Sidereal Tree modifiers not being applied to runs under certain circumstances.",
+        "",
+
         "v0.4.8",
         "- Added a new Ancient astral weapon: Glowing Sunblade (longsword).",
         "- Adjusted starmight requirement for expeditions, it now grows slower with depth and caps at 800.",

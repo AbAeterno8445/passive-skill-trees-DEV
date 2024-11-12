@@ -339,7 +339,7 @@ function PST:onNewRun(isContinued)
         -- Get snapshot of tree modifiers
         for nodeID, node in pairs(PST.trees["sidereal"]) do
             if PST:isNodeAllocated("sidereal", nodeID) then
-                PST:addModifiers(node.modifiers)
+                PST:addModifiers(node.modifiers, true)
             end
         end
 
