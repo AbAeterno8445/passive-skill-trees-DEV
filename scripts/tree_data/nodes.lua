@@ -303,11 +303,10 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                 if charlvlReq and currentChar and currentChar.level < charlvlReq then
                     return false
                 end
-
-                -- Sidereal tree: non-travel nodes require 1 global SP
-                if tree == "sidereal" and not PST:arrHasValue(siderealTravelNodes, nodeData.name) and PST.modData.skillPoints <= 0 then
-                    return false
-                end
+            end
+            -- Sidereal tree: non-travel nodes require 1 global SP
+            if tree == "sidereal" and not PST:arrHasValue(siderealTravelNodes, nodeData.name) and PST.modData.skillPoints <= 0 then
+                return false
             end
         end
         if nodeData.name == "Star Tree" and not PST:SC_isStarTreeUnlocked() then

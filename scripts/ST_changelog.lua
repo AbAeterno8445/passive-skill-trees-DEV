@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.12",
+        "- Fixed certain Sidereal Tree nodes being allocatable with 0 global SP.",
+        "",
+
         "v0.4.11",
         "- Potential fix for Bazaar items costing the wrong amount internally, making the purchase fail.",
         "- Fixed basement 1 during the Ascent counting as entering the first floor and triggering associated effects.",
