@@ -433,7 +433,7 @@ end
 function PST:isFirstOrigStage()
 	local level = PST:getLevel()
 	return level:GetStage() == LevelStage.STAGE1_1 and (level:GetStageType() == StageType.STAGETYPE_ORIGINAL or
-	level:GetStageType() == StageType.STAGETYPE_AFTERBIRTH or level:GetStageType() == StageType.STAGETYPE_WOTL)
+	level:GetStageType() == StageType.STAGETYPE_AFTERBIRTH or level:GetStageType() == StageType.STAGETYPE_WOTL) and not level:IsAscent()
 end
 
 function PST:arrHasValue(arr, value)

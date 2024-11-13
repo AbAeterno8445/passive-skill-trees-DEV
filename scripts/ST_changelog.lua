@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.11",
+        "- Fixed basement 1 during the Ascent counting as entering the first floor and triggering associated effects.",
+        "",
+
         "v0.4.10",
         "- Added a new Ancient astral weapon: Circuit Splitter (axe).",
         "- Generally reduced Timeless Bazaar's item and refreshing costs.",
