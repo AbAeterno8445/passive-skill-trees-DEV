@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.11",
+        "- Potential fix for Bazaar items costing the wrong amount internally, making the purchase fail.",
         "- Fixed basement 1 during the Ascent counting as entering the first floor and triggering associated effects.",
         "- Fixed Sidereal Universalization node not being applied properly.",
         "",

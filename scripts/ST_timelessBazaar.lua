@@ -32,34 +32,36 @@ function PST:bazaarTryPurchase(itemID)
     local charData = PST:getCurrentCharData()
     if charData then
         local tmpItem = charData.bazaarSelection[itemID]
-        if tmpItem and PST:bazaarCanAffordCost(tmpItem) then
+        if tmpItem and PST:bazaarCanAffordCost(itemID) then
+            local tmpCosts = PST:bazaarGetCost(1)
             local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
             if itemCfg then
-                local siderealMods = PST:getAllTreeMods("sidereal")
+                tmpCosts = PST:bazaarGetCost(itemCfg.Quality)
+            end
+            local siderealMods = PST:getAllTreeMods("sidereal")
 
-                -- Mod: % chance to keep other item choices after purchasing one item
-                local tmpMod = siderealMods["bazaarSelKeep"]
-                local keepItems = tmpMod and 100 * math.random() < tmpMod
+            -- Mod: % chance to keep other item choices after purchasing one item
+            local tmpMod = siderealMods["bazaarSelKeep"]
+            local keepItems = tmpMod and 100 * math.random() < tmpMod
 
-                local tmpCosts = PST:bazaarGetCost(itemCfg.Quality)
-                if not keepItems then
-                    charData.bazaarSelection = {}
-                else
-                    for i, _ in ipairs(charData.bazaarSelection) do
-                        if i == itemID then
-                            table.remove(charData.bazaarSelection, i)
-                        end
+            tmpCosts = PST:bazaarGetCost(itemCfg.Quality)
+            if not keepItems then
+                charData.bazaarSelection = {}
+            else
+                for i, _ in ipairs(charData.bazaarSelection) do
+                    if i == itemID then
+                        table.remove(charData.bazaarSelection, i)
                     end
                 end
-                if not PST.debugOptions.freeBazaar then
-                    PST.modData.skillPoints = PST.modData.skillPoints - tmpCosts.SP
-                    charData.arcaneObols = charData.arcaneObols - tmpCosts.obols
-                end
-
-                if not charData.bazaarPurchased then charData.bazaarPurchased = {} end
-                table.insert(charData.bazaarPurchased, tmpItem)
-                return true
             end
+            if not PST.debugOptions.freeBazaar then
+                PST.modData.skillPoints = PST.modData.skillPoints - tmpCosts.SP
+                charData.arcaneObols = charData.arcaneObols - tmpCosts.obols
+            end
+
+            if not charData.bazaarPurchased then charData.bazaarPurchased = {} end
+            table.insert(charData.bazaarPurchased, tmpItem)
+            return true
         end
     end
     return false
