@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.11",
         "- Fixed basement 1 during the Ascent counting as entering the first floor and triggering associated effects.",
+        "- Fixed Sidereal Universalization node not being applied properly.",
         "",
 
         "v0.4.10",
