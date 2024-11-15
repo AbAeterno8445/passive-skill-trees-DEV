@@ -276,7 +276,7 @@ function PST:onNewRoom()
 	end
 
 	-- Ancient starcursed jewel: Glowing Glass Piece
-	if PST:SC_getSnapshotMod("glowingGlassPiece", false) then
+	if PST:SC_getSnapshotMod("glowingGlassPiece", false) and roomType ~= RoomType.ROOM_BOSS then
 		if room:GetAliveEnemiesCount() == 0 and PST:getLevel():GetCurrentRoomDesc().ClearCount == 1 then
 			player:UseActiveItem(CollectibleType.COLLECTIBLE_D7, UseFlag.USE_NOANIM)
 			PST.specialNodes.SC_glowingGlassProc = true

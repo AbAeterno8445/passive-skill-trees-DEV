@@ -8,8 +8,9 @@ function PST:getChangelogList()
         "being applied to runs.",
         "- Adjusted Eldritch Mapping: it can now trigger up to 3 times per floor, reduces all stats by -4% per trigger",
         "(from -6%) and adds +10% curse chance to the next floor (from +15%).",
-        "- Fixed certain Sidereal Tree nodes being allocatable with 0 global SP.",
         "- Ultra sin bosses (pre-beast) no longer drop ancient stardust.",
+        "- Glowing Glass Piece (ancient jewel) no longer attempts to trigger in boss rooms.",
+        "- Fixed certain Sidereal Tree nodes being allocatable with 0 global SP.",
         "",
 
         "v0.4.11",
