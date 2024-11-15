@@ -1033,14 +1033,12 @@ function PST:onUpdate()
 
 	-- Eldritch Mapping node
     if PST:getTreeSnapshotMod("eldritchMapping", false) and roomFrame % 20 == 0 then
-		if (level:GetCurses() & LevelCurse.CURSE_OF_THE_LOST) > 0 then
+		if (level:GetCurses() & LevelCurse.CURSE_OF_THE_LOST) > 0 and PST:getTreeSnapshotMod("eldritchMappingDebuffs", 0) < 3 then
+			PST:addModifiers({ eldritchMappingDebuffs = 1, allstatsPerc = -4 }, true)
+			local curDebuffs = PST:getTreeSnapshotMod("eldritchMappingDebuffs")
 			level:RemoveCurses(LevelCurse.CURSE_OF_THE_LOST)
-			PST:createFloatTextFX("Eldritch Mapping", Vector.Zero, Color(0.2, 0.1, 0.21, 1), 0.12, 90, true)
+			PST:createFloatTextFX("Eldritch Mapping " .. tostring(curDebuffs) .. "/3", Vector.Zero, Color(0.2, 0.1, 0.21, 1), 0.12, 90, true)
 			SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
-			PST:addModifiers({ eldritchMappingDebuffs = 1 }, true)
-			if PST:getTreeSnapshotMod("eldritchMappingDebuffs") <= 2 then
-				PST:addModifiers({ allstatsPerc = -6 }, true)
-			end
 		end
     end
 

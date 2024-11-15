@@ -363,8 +363,9 @@ PST.treeModDescriptions = {
     eldritchMapping = {
         str = {
             "Whenever Curse of the Lost is or becomes present, remove it",
-            "    When this happens, receive -6%% all stats for the current floor, up to -12%%",
-            "    When removing Curse of the Lost, +15%% chance to receive a curse on the next floor"
+            "    When this happens, receive -4%% all stats for the current floor, up to -12%%",
+            "    When removing Curse of the Lost, +10%% chance to receive a curse on the next floor",
+            "    This effect can trigger up to 3 times per floor"
         },
         category = "extra", sort = 1111
     },

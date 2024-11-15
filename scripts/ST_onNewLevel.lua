@@ -879,7 +879,7 @@ function PST:onCurseEval(curses)
     -- Eldritch mapping curse chance
     tmpMod = PST:getTreeSnapshotMod("eldritchMappingDebuffs", 0)
     if tmpMod > 0 then
-        curseChance = curseChance + 15 * tmpMod
+        curseChance = curseChance + 10 * tmpMod
     end
 
     if 100 * math.random() < curseChance then
