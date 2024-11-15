@@ -24,5 +24,12 @@ The mod comes with a few debug settings which make testing its features easier. 
 - **infSP**: No longer spend or require skill points for nodes
 - **infRespec**: No longer spend or require respec points for nodes
 - **allAvailable**: Makes all nodes available at all times, regardless of connections
+- **cosmicRUnlocked**: Removes character unlock requirement from the Cosmic Realignment node
+- **drawNodeIDs**: Draw node IDs on the tree screen
+- **printModsOnStart**: Print modifiers applied to the snapshot on run start
+- **freeForging**: Astral forge actions become free
+- **freeBazaar**: Timeless Bazaar items and refreshing become free
+
+You can also run the "PST:toggleDebugMode()" command from the in-game console to toggle most of these.
 
 There's also the PST_config.lua file, where you can also find some extra settings such as whether to draw the xp bar, floating texts, and char info in character select, as well as re-configuring the keybinds used in the tree screen, in case of conflicts.
