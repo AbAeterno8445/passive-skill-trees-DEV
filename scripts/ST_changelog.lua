@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.12",
         "- Fixed certain Sidereal Tree nodes being allocatable with 0 global SP.",
+        "- Ultra sin bosses (pre-beast) no longer drop ancient stardust.",
         "",
 
         "v0.4.11",
