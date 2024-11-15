@@ -37,6 +37,10 @@ function PST:getExpedSave(expData)
     if expData.attempts < expData.startAttempts then
         tmpExpSave.usedAttempts = expData.startAttempts - expData.attempts
     end
+    -- Boons
+    if #expData.boons > 0 then
+        tmpExpSave.boons = expData.boons
+    end
     -- Upgraded boons
     if #expData.upgradedBoons > 0 then
         tmpExpSave.upgBoons = expData.upgradedBoons
@@ -44,6 +48,10 @@ function PST:getExpedSave(expData)
     -- Boon upgrade points
     if expData.boonUpgradePoints > 0 then
         tmpExpSave.upgBoonPts = expData.boonUpgradePoints
+    end
+    -- Curses
+    if #expData.curses > 0 then
+        tmpExpSave.curses = expData.curses
     end
     return tmpExpSave
 end
@@ -117,10 +125,26 @@ function PST:loadExpedition(depth, expSave)
     if expSave.usedAttempts and expSave.usedAttempts > 0 then
         tmpExped.attempts = tmpExped.attempts - expSave.usedAttempts
     end
+    -- Boons
+    if expSave.boons then
+        for _, tmpBoon in ipairs(expSave.boons) do
+            if not PST:arrHasValue(tmpExped.boons, tmpBoon) then
+                table.insert(tmpExped.boons, tmpBoon)
+            end
+        end
+    end
     -- Upgraded boons
     if expSave.upgBoons then tmpExped.upgradedBoons = expSave.upgBoons end
     -- Boon upgrade points
     if expSave.upgBoonPts then tmpExped.boonUpgradePoints = expSave.upgBoonPts end
+    -- Curses
+    if expSave.curses then
+        for _, tmpCurse in ipairs(expSave.curses) do
+            if not PST:arrHasValue(tmpExped.curses, tmpCurse) then
+                table.insert(tmpExped.curses, tmpCurse)
+            end
+        end
+    end
 
     PST.expeditionsData[depth] = tmpExped
     PST:updateExpedAccess(depth)

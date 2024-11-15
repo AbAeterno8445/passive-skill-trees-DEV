@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v0.4.12",
+        "- Adjusted how expeditions save and load boons/curses, preventing issues like boons occasionally not",
+        "being applied to runs.",
         "- Fixed certain Sidereal Tree nodes being allocatable with 0 global SP.",
         "- Ultra sin bosses (pre-beast) no longer drop ancient stardust.",
         "",

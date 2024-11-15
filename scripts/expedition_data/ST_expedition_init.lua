@@ -70,8 +70,10 @@ PSTExpNodeType = {
 ---@field compNodes? number[]
 ---@field deadNodes? number[]
 ---@field noRwNodes? number[]
+---@field boons? number[]
 ---@field upgBoons? number[]
 ---@field upgBoonPts? number
+---@field curses? number[]
 ---@field usedAttempts? number
 ---@field modifiers? table
 
