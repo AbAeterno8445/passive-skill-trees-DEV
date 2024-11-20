@@ -9,6 +9,7 @@ function PST:getChangelogList()
         "dimension.",
         "- Fixed challenges that apply tree mods using the last menu-selected character's tree instead of the",
         "challenge character's tree.",
+        "- Fixed special chests that drop items not counting towards chest expedition objectives.",
         "",
 
         "v0.4.12",

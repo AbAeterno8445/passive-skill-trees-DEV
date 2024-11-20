@@ -873,16 +873,17 @@ local function PST_expedOpenChest(pickup)
     -- Expedition objective: open any chest
     PST:expedAddProgInRun("chests", 1)
 
+    local pedestal = pickup:GetAlternatePedestal()
     -- Locked chests
-    if pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST then
+    if pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST or pedestal == PedestalType.GOLDEN_CHEST or pedestal == PedestalType.GOLDEN_CHEST_COIN_SLOT then
         -- Expedition objective: open locked chests
         PST:expedAddProgInRun("goldChests", 1)
     -- Red chests
-    elseif pickup.Variant == PickupVariant.PICKUP_REDCHEST then
+    elseif pickup.Variant == PickupVariant.PICKUP_REDCHEST or pedestal == PedestalType.RED_CHEST then
         -- Expedition objective: open red chests
         PST:expedAddProgInRun("redChests", 1)
     -- Stone chests
-    elseif pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
+    elseif pickup.Variant == PickupVariant.PICKUP_BOMBCHEST or pedestal == PedestalType.STONE_CHEST then
         -- Expedition objective: open stone/bomb chests
         PST:expedAddProgInRun("stoneChests", 1)
     end
