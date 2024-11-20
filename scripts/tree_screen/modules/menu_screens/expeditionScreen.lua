@@ -93,6 +93,7 @@ function expeditionScreen:OnOpen(openData)
 
     if PST.expeditionsData[self.currentDepth] == nil then
         PST:resetExpedition(self.currentDepth)
+        PST.treeScreen.treeHasChanges = true
     end
     PST:updateExpedAccess(self.currentDepth)
 end
