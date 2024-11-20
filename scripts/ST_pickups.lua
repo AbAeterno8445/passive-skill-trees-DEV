@@ -627,8 +627,9 @@ function PST:onPickup(pickup, collider, low, forced)
             -- Black heart pickup
             if subtype == HeartSubType.HEART_BLACK then
                 -- Sacrifice Darkness node (Judas' tree)
-                if PST:getTreeSnapshotMod("sacrificeDarkness", false) and PST:getLevel():GetDimension() ~= Dimension.MIRROR then
-                    player:TakeDamage(2, DamageFlag.DAMAGE_NOKILL, EntityRef(player), 0)
+                if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
+                    player:AddBlackHearts(-2)
+                    player:UseActiveItem(CollectibleType.COLLECTIBLE_NECRONOMICON, UseFlag.USE_NOANIM)
                     player:ResetDamageCooldown()
                     player:AddSoulHearts(2)
                     if PST:getTreeSnapshotMod("blackHeartSacrifices", 0) < 6 then

@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.13",
+        "- Adjusted Judas' \"Sacrifice Darkness\", it now removes the gained black heart, grants a soul heart, and",
+        "triggers Necronomicon's effect, instead of just trying to damage you. It can now trigger in the mirror",
+        "dimension.",
+        "",
+
         "v0.4.12",
         "- Adjusted how expeditions save and load boons/curses, preventing issues like boons occasionally not",
         "being applied to runs.",
