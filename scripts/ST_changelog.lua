@@ -7,6 +7,8 @@ function PST:getChangelogList()
         "- Adjusted Judas' \"Sacrifice Darkness\", it now removes the gained black heart, grants a soul heart, and",
         "triggers Necronomicon's effect, instead of just trying to damage you. It can now trigger in the mirror",
         "dimension.",
+        "- Fixed challenges that apply tree mods using the last menu-selected character's tree instead of the",
+        "challenge character's tree.",
         "",
 
         "v0.4.12",

@@ -11,7 +11,8 @@ function PST:onNewRun(isContinued)
     local itemPool = Game():GetItemPool()
 
     PST:resetMods()
-    local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and Isaac.GetChallenge() == 0) or PST.config.treeOnChallenges)
+    local isChallenge = Isaac.GetChallenge() ~= 0
+    local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and not isChallenge) or PST.config.treeOnChallenges)
     if treeActive then
         local globalTrees = {"global", "starTree"}
         -- Get snapshot of tree modifiers
@@ -23,7 +24,7 @@ function PST:onNewRun(isContinued)
             end
         end
         local currentChar = PST.charNames[1 + PST.selectedMenuChar]
-        if currentChar == nil then
+        if currentChar == nil or isChallenge then
             currentChar = PST.charNames[1 + player:GetPlayerType()]
         end
         if currentChar ~= nil then
