@@ -4,6 +4,9 @@ function PST:getChangelogList()
         "",
 
         "v0.4.13",
+        "- Added an internal versioning system for expedition generation. Saved expeditions should still work",
+        "as before, but new expeditions generated from this version onwards will use the latest generator version.",
+        "This should help prevent issues where expeditions unintentionally re-roll node types, rewards, curses, etc.",
         "- Adjusted Judas' \"Sacrifice Darkness\", it now removes the gained black heart, grants a soul heart, and",
         "triggers Necronomicon's effect, instead of just trying to damage you. It can now trigger in the mirror",
         "dimension.",

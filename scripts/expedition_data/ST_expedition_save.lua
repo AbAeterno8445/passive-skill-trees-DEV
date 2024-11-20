@@ -3,7 +3,7 @@
 ---@return PSTExpeditionSave
 function PST:getExpedSave(expData)
     ---@type PSTExpeditionSave
-    local tmpExpSave = {seed = expData.seed}
+    local tmpExpSave = {seed = expData.seed, version = expData.version or 1}
     -- Save special node states
     for _, tmpCol in ipairs(expData.nodes) do
         for _, tmpNode in ipairs(tmpCol) do
@@ -60,7 +60,7 @@ end
 ---@param expSave PSTExpeditionSave
 function PST:loadExpedition(depth, expSave)
     ---@type PSTExpedition
-    local tmpExped = PST:generateExpedition(depth, expSave.seed)
+    local tmpExped = PST:generateExpedition(depth, expSave.seed, expSave.version or 1)
 
     -- Completed nodes
     if expSave.compNodes then

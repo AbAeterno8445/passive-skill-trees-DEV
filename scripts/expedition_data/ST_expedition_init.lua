@@ -54,6 +54,7 @@ PSTExpNodeType = {
 ---@field nodes PSTExpNode[][]
 ---@field selectedNode PSTSelectedExpNode|nil
 ---@field seed integer
+---@field version integer
 ---@field implicits? table
 ---@field startAttempts number
 ---@field attempts number
@@ -66,6 +67,7 @@ PSTExpNodeType = {
 -- Expedition save class (expedition data that gets stored in savefile)
 ---@class PSTExpeditionSave
 ---@field seed integer
+---@field version integer
 ---@field selNode? PSTSelectedExpNode|nil
 ---@field compNodes? number[]
 ---@field deadNodes? number[]

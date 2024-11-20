@@ -1,5 +1,5 @@
 include("scripts.expedition_data.ST_expedition_init")
-include("scripts.expedition_data.ST_expedition_generator")
+include("scripts.expedition_data.generators.ST_expedition_generator_main")
 
 function PST:expedGetNodeAt(depth, col, row)
     local tmpExpedition = PST.expeditionsData[depth]
