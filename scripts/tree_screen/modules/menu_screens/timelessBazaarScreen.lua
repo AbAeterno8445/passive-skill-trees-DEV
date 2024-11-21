@@ -383,7 +383,7 @@ function timelessBazaarScreen:Render(tScreen)
                 table.insert(itemDesc, "Purchasing this item will remove the other options!")
             end
             -- Cost
-            table.insert(itemDesc, {"Cost: " .. tostring(itemCost.SP) .. " global SP, " .. tostring(itemCost.obols) .. " arcane obols.", costColor})
+            table.insert(itemDesc, {"Cost: " .. tostring(itemCost.obols) .. " arcane obols.", costColor})
 
             -- Final item description box
             tScreen:DrawNodeBox(itemName, itemDesc, startX + 7, 190, true, 1)

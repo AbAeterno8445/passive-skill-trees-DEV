@@ -497,7 +497,7 @@ function PST:onNewRun(isContinued)
                     itemPool:RemoveCollectible(tmpItem)
                     player:AddCollectible(tmpItem)
                 end
-                charData.bazaarPurchased = {}
+                --charData.bazaarPurchased = {}
             end
         end
     end

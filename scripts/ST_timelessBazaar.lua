@@ -1,11 +1,11 @@
 local failsafeCap = 1000
 
 local itemCosts = {
-    [0] = { SP = 1, obols = 20 },
-    [1] = { SP = 2, obols = 60 },
-    [2] = { SP = 3, obols = 120 },
-    [3] = { SP = 3, obols = 250 },
-    refresh = { SP = 2, obols = 100, respecs = 5 }
+    [0] = { obols = 30 },
+    [1] = { obols = 70 },
+    [2] = { obols = 120 },
+    [3] = { obols = 200 },
+    refresh = { SP = 1, obols = 120, respecs = 5 }
 }
 function PST:bazaarGetCost(targetCost)
     return itemCosts[targetCost] or itemCosts[3]
@@ -16,7 +16,7 @@ function PST:bazaarCanAffordCost(targetCost)
 
     local tmpCost = PST:bazaarGetCost(targetCost)
     -- Global SP
-    if PST.modData.skillPoints < tmpCost.SP then return false end
+    if tmpCost.SP and PST.modData.skillPoints < tmpCost.SP then return false end
     -- Arcane obols
     local charData = PST:getCurrentCharData()
     if not charData or (charData and not charData.arcaneObols) or (charData and charData.arcaneObols and charData.arcaneObols < tmpCost.obols) then
@@ -32,36 +32,42 @@ function PST:bazaarTryPurchase(itemID)
     local charData = PST:getCurrentCharData()
     if charData then
         local tmpItem = charData.bazaarSelection[itemID]
-        if tmpItem and PST:bazaarCanAffordCost(itemID) then
-            local tmpCosts = PST:bazaarGetCost(1)
+        if tmpItem then
             local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
-            if itemCfg then
+            if PST:bazaarCanAffordCost(itemCfg.Quality) then
+                local tmpCosts = PST:bazaarGetCost(1)
+                if itemCfg then
+                    tmpCosts = PST:bazaarGetCost(itemCfg.Quality)
+                end
+                local siderealMods = PST:getAllTreeMods("sidereal")
+
+                -- Mod: % chance to keep other item choices after purchasing one item
+                local tmpMod = siderealMods["bazaarSelKeep"]
+                local keepItems = tmpMod and 100 * math.random() < tmpMod
+
                 tmpCosts = PST:bazaarGetCost(itemCfg.Quality)
-            end
-            local siderealMods = PST:getAllTreeMods("sidereal")
-
-            -- Mod: % chance to keep other item choices after purchasing one item
-            local tmpMod = siderealMods["bazaarSelKeep"]
-            local keepItems = tmpMod and 100 * math.random() < tmpMod
-
-            tmpCosts = PST:bazaarGetCost(itemCfg.Quality)
-            if not keepItems then
-                charData.bazaarSelection = {}
-            else
-                for i, _ in ipairs(charData.bazaarSelection) do
-                    if i == itemID then
-                        table.remove(charData.bazaarSelection, i)
+                if not keepItems then
+                    charData.bazaarSelection = {}
+                else
+                    for i, _ in ipairs(charData.bazaarSelection) do
+                        if i == itemID then
+                            table.remove(charData.bazaarSelection, i)
+                        end
                     end
                 end
-            end
-            if not PST.debugOptions.freeBazaar then
-                PST.modData.skillPoints = PST.modData.skillPoints - tmpCosts.SP
-                charData.arcaneObols = charData.arcaneObols - tmpCosts.obols
-            end
+                if not PST.debugOptions.freeBazaar then
+                    if tmpCosts.SP then
+                        PST.modData.skillPoints = PST.modData.skillPoints - tmpCosts.SP
+                    end
+                    if tmpCosts.obols then
+                        charData.arcaneObols = charData.arcaneObols - tmpCosts.obols
+                    end
+                end
 
-            if not charData.bazaarPurchased then charData.bazaarPurchased = {} end
-            table.insert(charData.bazaarPurchased, tmpItem)
-            return true
+                if not charData.bazaarPurchased then charData.bazaarPurchased = {} end
+                table.insert(charData.bazaarPurchased, tmpItem)
+                return true
+            end
         end
     end
     return false
