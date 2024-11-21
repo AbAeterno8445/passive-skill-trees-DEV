@@ -1017,8 +1017,8 @@ function PST:onPickupInit(pickup, firstSpawn)
     -- Poops
     elseif variant == PickupVariant.PICKUP_POOP then
         -- Mod: chance to turn dropped small poop pickups into large poops
-        local tmpMod = PST:getTreeSnapshotMod("poopPickupEnlarge", 0)
-        if tmpMod > 0 and subtype == PoopPickupSubType.POOP_SMALL and 100 * math.random() < tmpMod then
+        tmpMod = PST:getTreeSnapshotMod("poopPickupEnlarge", 0)
+        if firstSpawn and tmpMod > 0 and subtype == PoopPickupSubType.POOP_SMALL and 100 * math.random() < tmpMod then
             pickup:Morph(pickup.Type, variant, PoopPickupSubType.POOP_BIG, true, true)
         end
     else

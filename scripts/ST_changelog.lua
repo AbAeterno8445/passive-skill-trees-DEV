@@ -22,6 +22,7 @@ function PST:getChangelogList()
         "- Fixed special chests that drop items not counting towards chest expedition objectives.",
         "- Fixed ancient weapon imprinting not checking for material costs.",
         "- Potential fix for Timeless Bazaar checking the wrong cost internally, making purchases fail occasionally.",
+        "- Fixed T. Blue Baby's small poop upgrade nodes re-triggering when entering visited rooms.",
         "",
 
         "v0.4.12",
