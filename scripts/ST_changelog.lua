@@ -20,6 +20,7 @@ function PST:getChangelogList()
         "- Fixed challenges that apply tree mods using the last menu-selected character's tree instead of the",
         "challenge character's tree.",
         "- Fixed special chests that drop items not counting towards chest expedition objectives.",
+        "- Fixed ancient weapon imprinting not checking for material costs.",
         "- Potential fix for Timeless Bazaar checking the wrong cost internally, making purchases fail occasionally.",
         "",
 

@@ -54,13 +54,15 @@ astralForgeScreen.forgeUISprite:Play("Default", true)
 -- Astral Forge rendering func
 local astralForgeScreenRender = include("scripts.tree_screen.modules.menu_screens.astralForgeRender")
 
-local function PSTDeconstructWeapon(targetWep)
+local function PSTDeconstructWeapon(targetWep, noMats)
     for i, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
         if tmpWeapon == targetWep then
-            local wepMats = PST:getAstralWepDeconMats(targetWep)
-            PST.modData.mundaneEssence = PST.modData.mundaneEssence + wepMats.mundane
-            PST.modData.sparkEssence = PST.modData.sparkEssence + wepMats.spark
-            PST.modData.ancientEssence = PST.modData.ancientEssence + wepMats.ancient
+            if noMats ~= true then
+                local wepMats = PST:getAstralWepDeconMats(targetWep)
+                PST.modData.mundaneEssence = PST.modData.mundaneEssence + wepMats.mundane
+                PST.modData.sparkEssence = PST.modData.sparkEssence + wepMats.spark
+                PST.modData.ancientEssence = PST.modData.ancientEssence + wepMats.ancient
+            end
             table.remove(PST.modData.astralWepInventory, i)
             break
         end
@@ -149,13 +151,27 @@ function astralForgeScreen:OnInput()
             -- Imprinting mode + magic weapon, attempt imprint
             elseif self.imprintMode then
                 if self.selectedWeapon and self.selectedWeapon.rarity == PSTAstralWepRarity.ANCIENT then
-                    if self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
+                    local forgeCosts = PST:getAstralWepCraftCosts(self.selectedWeapon)["imprinting"]
+                    local canAfford = true
+                    for matName, matCost in pairs(forgeCosts) do
+                        if not PST.modData[matName] or (PST.modData[matName] and PST.modData[matName] < matCost) then
+                            canAfford = false
+                            break
+                        end
+                    end
+                    if (canAfford or PST.debugOptions.freeForging) and self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
                         local result = PST:astralWepForgeImprint(self.selectedWeapon, self.hoveredWeapon)
                         if result then
                             -- Successful imprint
-                            PSTDeconstructWeapon(self.hoveredWeapon)
+                            PSTDeconstructWeapon(self.hoveredWeapon, true)
                             SFXManager():Play(SoundEffect.SOUND_FLASHBACK)
                             SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.8)
+                            -- Subtract materials
+                            if not PST.debugOptions.freeForging then
+                                for matName, matCost in pairs(forgeCosts) do
+                                    PST.modData[matName] = PST.modData[matName] - matCost
+                                end
+                            end
                             self.imprintMode = false
                         else
                             SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
