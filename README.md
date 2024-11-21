@@ -29,6 +29,7 @@ The mod comes with a few debug settings which make testing its features easier. 
 - **printModsOnStart**: Print modifiers applied to the snapshot on run start
 - **freeForging**: Astral forge actions become free
 - **freeBazaar**: Timeless Bazaar items and refreshing become free
+- **freeBounties**: Ancient Weapon Bounties become free (generating/rerolling bounties)
 
 You can also run the "PST:toggleDebugMode()" command from the in-game console to toggle most of these.
 

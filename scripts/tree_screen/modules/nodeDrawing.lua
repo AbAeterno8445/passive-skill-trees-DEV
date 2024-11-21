@@ -119,6 +119,12 @@ function nodeDrawingModule:Render(tScreen)
                 self.nodesExtraSprite:Render(Vector(finalDrawX, finalDrawY))
             end
 
+            -- Ancient Weapon Bounties node, draw sword icon
+            if node.name == "Ancient Weapon Bounties" then
+                tmpSprite:SetFrame("Default", 845)
+                tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+            end
+
             local nodeHalf = 15 * tScreen.zoomScale
             if tScreen.camCenterX >= nodeX - nodeHalf and tScreen.camCenterX <= nodeX + nodeHalf and
             tScreen.camCenterY >= nodeY - nodeHalf and tScreen.camCenterY <= nodeY + nodeHalf then

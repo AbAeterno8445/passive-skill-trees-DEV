@@ -57,6 +57,7 @@ PST.debugOptions = {
 	printModsOnStart = false, -- Print modifiers applied to the snapshot on run start,
 	freeForging = false, -- Astral Forge actions become free
 	freeBazaar = false, -- Timeless Bazaar items and refreshing become free
+	freeBounties = false, -- Free Ancient Weapon Bounty generation/rerolling
 }
 
 local localDebugMode = false
@@ -68,6 +69,7 @@ function PST:toggleDebugMode()
 	PST.debugOptions.cosmicRUnlocked = localDebugMode
 	PST.debugOptions.freeForging = localDebugMode
 	PST.debugOptions.freeBazaar = localDebugMode
+	PST.debugOptions.freeBounties = localDebugMode
 	print("Passive Skill Trees: debug mode now", localDebugMode and "on" or "off")
 end
 

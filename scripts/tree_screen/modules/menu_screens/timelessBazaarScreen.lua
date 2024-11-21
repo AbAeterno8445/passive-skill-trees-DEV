@@ -217,25 +217,22 @@ function timelessBazaarScreen:Render(tScreen)
 
     -- Decor bazaar icon at the top
     local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
+    local oldScaleX, oldScaleY, oldAlpha = nodeSprite.Scale.X, nodeSprite.Scale.Y, nodeSprite.Color.A
+    nodeSprite.Scale.X = 1
+    nodeSprite.Scale.Y = 1
+
     nodeSprite:SetFrame("Default", 792)
     nodeSprite:Render(Vector(startX + boxW / 2, startY))
 
     -- Refresh button & usage info
     local canRefresh = self:CanRefresh()
     nodeSprite:SetFrame("Default", 797)
-    local oldAlpha = nodeSprite.Color.A
     if not canRefresh then
         nodeSprite.Color.A = 0.4
     elseif self.refreshTimer > 0 and not self.refreshPause then
         nodeSprite.Color.A = 1 + (self.refreshTimer / 60) * 10
     end
-    local oldScaleX, oldScaleY = nodeSprite.Scale.X, nodeSprite.Scale.Y
-    nodeSprite.Scale.X = 1
-    nodeSprite.Scale.Y = 1
     nodeSprite:Render(Vector(drawX, drawY))
-    nodeSprite.Scale.X = oldScaleX
-    nodeSprite.Scale.Y = oldScaleY
-    nodeSprite.Color.A = oldAlpha
     drawX = drawX + 17
     drawY = drawY - 18
 
@@ -392,6 +389,11 @@ function timelessBazaarScreen:Render(tScreen)
             tScreen:DrawNodeBox(itemName, itemDesc, startX + 7, 190, true, 1)
         end
     end
+
+    -- Reset tree nodes sprite
+    nodeSprite.Scale.X = oldScaleX
+    nodeSprite.Scale.Y = oldScaleY
+    nodeSprite.Color.A = oldAlpha
 end
 
 return timelessBazaarScreen

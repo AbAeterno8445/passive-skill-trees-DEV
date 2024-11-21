@@ -206,11 +206,25 @@ end
 
 -- In-run helper function to add progress to the given objective
 function PST:expedAddProgInRun(objName, prog)
-    if Isaac.IsInGame() and PST:getTreeSnapshotMod("isExpedRun", false) then
-        local expDepth = PST:getTreeSnapshotMod("expedDepth", 0)
-        local expData = PST.expeditionsData[expDepth]
-        if expData and PST:expedCanProgress(expDepth) then
-            PST:expedAddProgress(expDepth, prog, objName)
+    if Isaac.IsInGame() then
+        if PST:getTreeSnapshotMod("isExpedRun", false) then
+            local expDepth = PST:getTreeSnapshotMod("expedDepth", 0)
+            local expData = PST.expeditionsData[expDepth]
+            if expData and PST:expedCanProgress(expDepth) then
+                PST:expedAddProgress(expDepth, prog, objName)
+            end
+        end
+
+        -- Ancient Weapon Bounty objective progress
+        if PST:isRunSidereal() then
+            local charData = PST:getCurrentCharData()
+            if charData and charData.ancWepBounty then
+                for _, tmpObjective in ipairs(charData.ancWepBounty.objectives) do
+                    if tmpObjective.name == objName then
+                        tmpObjective.prog = math.min(tmpObjective.req, tmpObjective.prog + prog)
+                    end
+                end
+            end
         end
     end
 end
@@ -341,6 +355,7 @@ function PST:expedLoseAttempt(depth)
     end
 end
 
+-- Return description for the given expedition node's objective, comparing it to the expedition's selected node's progress
 ---@param nodeData PSTExpNode
 ---@param expData PSTExpedition
 function PST:getExpNodeObjectiveDesc(nodeData, expData)

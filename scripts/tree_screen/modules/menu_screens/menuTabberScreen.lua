@@ -59,6 +59,17 @@ local targetScreens = {
         end
     },
     {
+        name = "Ancient Weapon Bounties",
+        nodeFrame = 845,
+        enabledFunc = function()
+            return PST:isNodeNameAllocated("sidereal", "Ancient Weapon Bounties")
+        end,
+        ---@param tScreen PST.treeScreen
+        switchFunc = function(tScreen)
+            tScreen.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.ANCIENT_WEAPON_BOUNTIES)
+        end
+    },
+    {
         name = "Timeless Bazaar",
         nodeFrame = 792,
         enabledFunc = function()
@@ -128,7 +139,7 @@ function menuTabberScreen:Render(tScreen)
     local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
     local tmpDrawn = 0
     for i, tmpTarget in ipairs(targetScreens) do
-        local nodeY = tmpDrawY + 15 + tmpDrawn * 36
+        local nodeY = tmpDrawY + 15 + tmpDrawn * 35
         local isSelected = self.selectedOption == i
         local isEnabled = tmpTarget:enabledFunc()
 
@@ -155,9 +166,11 @@ function menuTabberScreen:Render(tScreen)
         end
         if not isEnabled then
             tmpColor = PST.kcolors.RED1
-            tmpNodeTxt = tmpNodeTxt .. " (locked)"
         end
-        PST.miniFont:DrawString(tmpNodeTxt, tmpDrawX + 40, nodeY - 4, tmpColor)
+        PST.miniFont:DrawString(tmpNodeTxt, tmpDrawX + 40, nodeY - 7, tmpColor)
+        if not isEnabled then
+            PST.miniFont:DrawStringScaled("Locked", tmpDrawX + 40, nodeY + 5, 0.5, 0.5, PST.kcolors.RED1)
+        end
 
         tmpDrawn = tmpDrawn + 1
     end

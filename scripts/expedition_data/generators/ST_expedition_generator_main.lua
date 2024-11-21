@@ -58,7 +58,6 @@ function PST:generateExpedition(depth, seed, version)
         PST.generateExpeditionV2,
     }
     local expedVer = version or PST.expedGeneratorVersion
-    print("generated expedition at depth", depth, "seed", seed, "version", expedVer)
     return expedGenerators[expedVer](PST, depth, seed)
 end
 

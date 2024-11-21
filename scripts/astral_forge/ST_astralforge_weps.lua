@@ -1,4 +1,5 @@
 include("scripts.astral_forge.ST_astralforge_init")
+include("scripts.astral_forge.ST_astralwep_bounties")
 
 function PST:astralWepRoundRolls(modRolls)
     local newModRolls = {}

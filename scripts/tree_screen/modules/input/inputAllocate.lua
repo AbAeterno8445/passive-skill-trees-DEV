@@ -81,6 +81,11 @@ function PST.treeScreen:InputAllocate()
                     self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.ASTRAL_FORGE)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
 
+                -- Ancient Weapon Bounties node, switch to Ancient Weapon Bounties menu
+                elseif self.hoveredNode.name == "Ancient Weapon Bounties" then
+                    self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.ANCIENT_WEAPON_BOUNTIES)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
                 -- Obol Exchange node, convert global SP into arcane obols
                 elseif self.hoveredNode.name == "Obol Exchange" then
                     if PST.modData.skillPoints > 0 then
