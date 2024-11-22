@@ -104,7 +104,7 @@ end
 ---@param wepType PSTAstralWepType
 function PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
     ---@type PSTAstralWeapon
-    local newWep = {type = wepType, rarity = wepRarity, tier = wepTier or 1}
+    local newWep = {type = wepType, rarity = wepRarity, tier = math.min(5, wepTier) or 1}
 
     local wepTypeData = PST.astralWepData[wepType]
     -- Assign implicit modifier

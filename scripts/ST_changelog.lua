@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.15",
+        "- Fixed Ancient Weapon Bounties being able to award weapon tiers above 5, which causes errors.",
+        "",
+
         "v0.4.14",
         "- Added a new Ancient Jewel: \"Shiftstone\".",
         "- XP multiplier setting can now go up to 5.0.",
