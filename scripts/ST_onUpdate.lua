@@ -1031,6 +1031,24 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Ancient starcursed jewel: Shiftstone
+	if PST:SC_getSnapshotMod("shiftstone", false) then
+		local roomCenterX = room:GetCenterPos().X
+		if room:GetGridWidth() > 15 then
+			roomCenterX = 600
+		end
+		if player.Position.X <= roomCenterX and room:GetBrokenWatchState() ~= 2 then
+			-- Speed up
+			room:SetBrokenWatchState(2)
+		elseif player.Position.X > roomCenterX then
+			-- Slow down
+			room:SetSlowDown(2)
+			if room:GetBrokenWatchState() ~= 1 then
+				room:SetBrokenWatchState(1)
+			end
+		end
+	end
+
 	-- Eldritch Mapping node
     if PST:getTreeSnapshotMod("eldritchMapping", false) and roomFrame % 20 == 0 then
 		if (level:GetCurses() & LevelCurse.CURSE_OF_THE_LOST) > 0 and PST:getTreeSnapshotMod("eldritchMappingDebuffs", 0) < 3 then

@@ -881,6 +881,20 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    shiftstone = {
+        weight = 100,
+        spriteFrame = 32,
+        name = "Shiftstone",
+        description = {
+            "Speed everything up while on the left side of a room.",
+            "Slow everything down while on the right side of a room."
+        },
+        rewards = {
+            xpgain = 60,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

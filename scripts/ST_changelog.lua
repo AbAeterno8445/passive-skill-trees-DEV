@@ -4,8 +4,9 @@ function PST:getChangelogList()
         "",
 
         "v0.4.14",
+        "- Added a new Ancient Jewel: \"Shiftstone\".",
         "- XP multiplier setting can now go up to 5.0.",
-        "- Ancient Weapon Bounties' generated weapon now has its tier determined by the highest expedition depth",
+        "- Ancient Weapon Bounties' weapon rewards now have their tier determined by the highest expedition depth",
         "you've reached.",
         "- Fixed Ancient Essence counter when deconstructing weapons (it was displaying the same number as the",
         "sparkling essence counter).",
