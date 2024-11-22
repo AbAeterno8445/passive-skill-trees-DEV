@@ -102,7 +102,8 @@ function PST:ancWepBountyCharComplete()
             if wepTypeData then
                 local ancientData = wepTypeData.ancients[charData.ancWepBounty.rewardWepAncient]
                 if ancientData then
-                    PST:astralWepTrinketPickup("Astral weapon: " .. ancientData.name)
+                    local wepTier = 1 + math.floor(PST.modData.expeditionDepth / 10)
+                    PST:astralWepTrinketPickup("Astral weapon: " .. ancientData.name, wepTier)
                 end
             end
         end

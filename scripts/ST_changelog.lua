@@ -3,6 +3,13 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.14",
+        "- Ancient Weapon Bounties' generated weapon now has its tier determined by the highest expedition depth",
+        "you've reached.",
+        "- Fixed Ancient Essence counter when deconstructing weapons (it was displaying the same number as the",
+        "sparkling essence counter).",
+        "",
+
         "v0.4.13",
         "- Added an internal versioning system for expedition generation. Saved expeditions should still work",
         "as before, but new expeditions generated from this version onwards will use the latest generator version.",

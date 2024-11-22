@@ -189,10 +189,10 @@ function PST:dropRandAstralWepAt(position, wepTier, factorMods, velocity)
 end
 
 -- Astral weapon trinket picked up - add corresponding weapon to player inventory
-function PST:astralWepTrinketPickup(trinketName)
+function PST:astralWepTrinketPickup(trinketName, wepTierParam)
     local wepType = nil
     local wepRarity = PSTAstralWepRarity.NORMAL
-    local wepTier = PST:getTreeSnapshotMod("astralWepTierDrops", 1)
+    local wepTier = wepTierParam or PST:getTreeSnapshotMod("astralWepTierDrops", 1)
     local ancientID = nil
 
     local preStr = "Astral weapon: "

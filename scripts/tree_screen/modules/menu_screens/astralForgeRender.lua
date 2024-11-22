@@ -498,7 +498,7 @@ local function astralForgeScreenRender(self, tScreen)
                 table.insert(wepDesc, {tostring(wepMats.spark) .. "x " .. matsData.sparkEssence[1] .. ".", matsData.sparkEssence[2]})
             end
             if wepMats.ancient > 0 then
-                table.insert(wepDesc, {tostring(wepMats.spark) .. "x " .. matsData.ancientEssence[1] .. ".", matsData.ancientEssence[2]})
+                table.insert(wepDesc, {tostring(wepMats.ancient) .. "x " .. matsData.ancientEssence[1] .. ".", matsData.ancientEssence[2]})
             end
             if self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
                 table.insert(wepDesc, "Press the Respec button to deconstruct this weapon and gain these materials.")
