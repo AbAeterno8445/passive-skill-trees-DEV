@@ -401,10 +401,16 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
                     local ancientUpgrades = weaponData.ancientUpg or 0
                     for i, tmpRoll in ipairs(tmpModData.minRolls) do
                         local tgtRoll = "roll" .. tostring(i)
-                        tmpRollList[tgtRoll] = tostring(tmpRoll + tmpModData.upgIncrements[i] * ancientUpgrades)
+                        local tmpMathFunc = math.min
+                        local tmpSign = ""
+                        if tmpModData.upgIncrements[i] < 0 then
+                            tmpMathFunc = math.max
+                            tmpSign = "-"
+                        end
+                        tmpRollList[tgtRoll] = tostring(tmpMathFunc(tmpModData.maxRolls[i], tmpRoll + tmpModData.upgIncrements[i] * ancientUpgrades))
                         -- Show max value
                         if showModRanges then
-                            tmpRollList[tgtRoll] = tmpRollList[tgtRoll] .. " (" .. tostring(tmpModData.maxRolls[i]) .. ")"
+                            tmpRollList[tgtRoll] = tmpRollList[tgtRoll] .. " (" .. tmpSign .. tostring(tmpModData.maxRolls[i]) .. ")"
                         end
                     end
                 end

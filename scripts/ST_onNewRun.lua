@@ -369,7 +369,9 @@ function PST:onNewRun(isContinued)
                             for i, tmpMinRoll in ipairs(tmpModData.minRolls) do
                                 local newRoll = tmpMinRoll
                                 if eqWeapon.ancientUpg then
-                                    newRoll = newRoll + tmpModData.upgIncrements[i] * eqWeapon.ancientUpg
+                                    local tmpMathFunc = math.min
+                                    if tmpModData.upgIncrements[i] < 0 then tmpMathFunc = math.max end
+                                    newRoll = tmpMathFunc(tmpModData.maxRolls[i], newRoll + tmpModData.upgIncrements[i] * eqWeapon.ancientUpg)
                                 end
                                 table.insert(ancRolls, newRoll)
                             end

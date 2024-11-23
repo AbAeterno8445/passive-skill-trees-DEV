@@ -5,6 +5,8 @@ function PST:getChangelogList()
 
         "v0.4.16",
         "- Added a 'Press Q' hint message to the global tree UI for accessing the current character's tree.",
+        "- Fixed Ancient Weapon modifier upgrades going past the maximum value for certain weapons.",
+        "- Fixed Astral Forge weapon modifications occasionally not getting saved.",
         "- Fixed Myosotis being able to spawn un-openable Sidereal Caches.",
         "",
 

@@ -73,6 +73,10 @@ function astralForgeScreen:CenterCamera()
     self.camera = Vector.Zero
 end
 
+function astralForgeScreen:OnOpen()
+    PST.treeScreen.treeHasChanges = true
+end
+
 function astralForgeScreen:OnClose()
     self.deconMode = false
     self.imprintMode = false
