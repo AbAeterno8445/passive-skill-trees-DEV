@@ -288,6 +288,14 @@ function PST:onUpdate()
 			end
 		end
 
+		-- Re-open sidereal caches just in case
+		if PST:isRunSidereal() then
+			local sideCaches = Isaac.FindByType(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 1)
+			for _, tmpCache in ipairs(sideCaches) do
+				tmpCache:ToPickup():Morph(tmpCache.Type, tmpCache.Variant, 0)
+			end
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece

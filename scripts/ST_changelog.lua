@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.16",
+        "- Fixed Myosotis being able to spawn un-openable Sidereal Caches.",
+        "",
+
         "v0.4.15",
         "- Fixed Ancient Weapon Bounties being able to award weapon tiers above 5, which causes errors.",
         "",
