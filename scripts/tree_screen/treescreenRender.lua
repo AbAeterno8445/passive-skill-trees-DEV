@@ -97,7 +97,18 @@ function PST.treeScreen:Render()
 
         -- Tree name
         Isaac.RenderText(treeName, tmpX, tmpY, 1, 1, 1, 1)
-        tmpY = tmpY + 16
+        tmpY = tmpY + 12
+        local tmpCharName = PST:getCurrentCharName()
+        if self.currentTree == "global" and tmpCharName and PST.trees[tmpCharName] then
+            local tmpPossessive = "s"
+            if string.sub(tmpCharName, -1) == "s" then
+                tmpPossessive = ""
+            end
+            PST.miniFont:DrawStringScaled("Press Q to access " .. tmpCharName .. "'" .. tmpPossessive .. " tree.", tmpX, tmpY, 1, 1, PST.kcolors.WHITE)
+            tmpY = tmpY + 16
+        else
+            tmpY = tmpY + 4
+        end
 
         -- Tree disabled warning
         if PST.modData.treeDisabled then

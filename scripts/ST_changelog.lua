@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.16",
+        "- Added a 'Press Q' hint message to the global tree UI for accessing the current character's tree.",
         "- Fixed Myosotis being able to spawn un-openable Sidereal Caches.",
         "",
 
