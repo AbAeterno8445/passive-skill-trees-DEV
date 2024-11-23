@@ -377,7 +377,7 @@ PST:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, PST.familiarUpdate)
 --PST:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, PST.onPickupInit) -- Now called on the first frame on pickup update
 PST:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, PST.onPickupUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_BOMB_INIT, PST.onBombInit)
-PST:AddCallback(ModCallbacks.MC_POST_UPDATE, PST.onUpdate)
+PST:AddPriorityCallback(ModCallbacks.MC_POST_UPDATE, CallbackPriority.EARLY, PST.onUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, PST.onCurseEval)
 PST:AddCallback(ModCallbacks.MC_POST_GET_COLLECTIBLE, PST.onRollCollectible)
 PST:AddCallback(ModCallbacks.MC_USE_ITEM, PST.onUseItem)
