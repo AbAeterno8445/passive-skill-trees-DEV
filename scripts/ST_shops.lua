@@ -91,7 +91,9 @@ function PST:onShopPurchase(pickup, player, spent)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             player:AddBlackHearts(2)
         end
+    end
 
+    if spent ~= 0 then
         -- Expedition objective: make devil deals
         if roomType == RoomType.ROOM_DEVIL then
 		    PST:expedAddProgInRun("devilDeals", 1)

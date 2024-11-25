@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.17",
+        "- Devil deal expedition objectives now also count purchasing items with coins while in the devil room,",
+        "rather than just hearts.",
+        "",
+
         "v0.4.16",
         "- Added a 'Press Q' hint message to the global tree UI for accessing the current character's tree.",
         "- Adjusted mod update logic priority to avoid conflicts with certain older mods.",
