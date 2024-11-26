@@ -570,7 +570,7 @@ function PST:onNewRoom()
 		local procs = math.max(1, math.floor(playerTears / 0.8))
 		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
-			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() then
+			if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
 				table.insert(enemyList, tmpNPC)
 			end
 		end

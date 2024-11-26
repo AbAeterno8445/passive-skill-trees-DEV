@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Devil deal expedition objectives now also count purchasing items with coins while in the devil room,",
         "rather than just hearts.",
         "- Opening Sidereal Caches in challenge rooms should now start the challenge.",
+        "- Fixed T. Azazel's \"Curseborne\" node affecting friendly monsters.",
         "",
 
         "v0.4.16",
