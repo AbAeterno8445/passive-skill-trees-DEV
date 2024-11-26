@@ -61,6 +61,11 @@ function PST:prePickup(pickup, collider, low)
                 end
             end
 
+            -- Start challenge room
+            if PST:getRoom():GetType() == RoomType.ROOM_CHALLENGE and not PST:getTreeSnapshotMod("challRoomClear", false) then
+                Ambush.StartChallenge()
+            end
+
             -- Chance for Sidereal Caches to drop 1-2 sacks
             tmpMod = PST:getTreeSnapshotMod("sideCacheSacks", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then

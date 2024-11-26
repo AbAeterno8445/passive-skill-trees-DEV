@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v0.4.17",
         "- Devil deal expedition objectives now also count purchasing items with coins while in the devil room,",
         "rather than just hearts.",
+        "- Opening Sidereal Caches in challenge rooms should now start the challenge.",
         "",
 
         "v0.4.16",
