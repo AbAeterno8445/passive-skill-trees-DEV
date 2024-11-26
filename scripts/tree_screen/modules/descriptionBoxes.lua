@@ -200,6 +200,42 @@ function descriptionBoxesModule:Render(tScreen)
             tmpDescription = newDescData.description
         end
 
+        -- Crimson nodes
+        if PST:arrHasValue(PST.crimsonNodeNames, hoveredNode.name) then
+            local charData = PST:getCurrentCharData()
+            if charData and charData.crimsonNodes then
+                local tmpCrimsonNode = charData.crimsonNodes[tostring(hoveredNode.id)]
+                if tmpCrimsonNode then
+                    local tgtNode = nil
+                    -- Fetch selected node's original description
+                    if PST:strStartsWith(hoveredNode.name, "Universal") and PST.globalMedNodes[tmpCrimsonNode.name] then
+                        tgtNode = PST.globalMedNodes[tmpCrimsonNode.name]
+                    elseif PST:strStartsWith(hoveredNode.name, "Core") then
+                        local tmpTree = PST:getCurrentCharName()
+                        if tmpTree and PST.charMedNodes[tmpTree][tmpCrimsonNode.name] then
+                            tgtNode = PST.charMedNodes[tmpTree][tmpCrimsonNode.name]
+                        end
+                    else
+                        for tmpTree, _ in pairs(PST.charMedNodes) do
+                            if tmpTree ~= PST:getCurrentCharName() and PST.charMedNodes[tmpTree][tmpCrimsonNode.name] then
+                                tgtNode = PST.charMedNodes[tmpTree][tmpCrimsonNode.name]
+                                break
+                            end
+                        end
+                    end
+                    if tgtNode then
+                        tmpDescription = {
+                            table.unpack(hoveredNode.description),
+                            {"Selected node: " .. tgtNode.name, PST.kcolors.LIGHTRED1}
+                        }
+                        for _, tmpLine in ipairs(tgtNode.description) do
+                            table.insert(tmpDescription, {tmpLine, PST.kcolors.LIGHTRED1})
+                        end
+                    end
+                end
+            end
+        end
+
         -- Special node requirements
         if hoveredNode.reqs and not isAllocated then
             tmpDescription = {table.unpack(tmpDescription)}
@@ -227,7 +263,21 @@ function descriptionBoxesModule:Render(tScreen)
             local currentChar = PST:getCurrentCharData()
             local charlvlReq = hoveredNode.reqs.charLevel
             if charlvlReq and currentChar and currentChar.level < charlvlReq then
-                table.insert(tmpDescription, {"Requires the current character (" .. PST:getCurrentCharName() .. ") to reach level " .. tostring(charlvlReq) .. "."})
+                table.insert(tmpDescription, {"Requires the current character (" .. PST:getCurrentCharName() .. ") to reach level " .. tostring(charlvlReq) .. ".", PST.kcolors.LIGHTRED1})
+            end
+
+            -- Crimson starcores requirement
+            local crimsonStarcoreReq = hoveredNode.reqs.crimsonStarcore
+            if crimsonStarcoreReq then
+                local tmpColor = PST.kcolors.RED1
+                if currentChar and currentChar.crimsonStarcores and currentChar.crimsonStarcores >= crimsonStarcoreReq then
+                    tmpColor = PST.kcolors.GREEN1
+                end
+                table.insert(tmpDescription, {"Requires 1 crimson starcore.", tmpColor})
+
+                if currentChar then
+                    table.insert(tmpDescription, {PST:getCurrentCharName() .. " crimson starcores: " .. tostring(currentChar.crimsonStarcores or 0), tmpColor})
+                end
             end
         end
         if not isAllocated and PST:arrHasValue(tScreen.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
@@ -271,6 +321,15 @@ function descriptionBoxesModule:Render(tScreen)
                     jewelTitle = jewelTitle .. " (Mighty)"
                 end
                 tScreen:DrawNodeBox(jewelTitle, tmpDescription)
+            end
+        -- Crimson node submenu, hovered node description
+        elseif submenusModule.currentSubmenu == PSTSubmenu.CRIMSON_NODE then
+            local crimsonNodeSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_NODE]
+            local nodeData = crimsonNodeSubmenu.hoveredNode
+            if nodeData then
+                local tmpDesc = {table.unpack(nodeData.description)}
+                table.insert(tmpDesc, "Press Allocate to select this node.")
+                tScreen:DrawNodeBox(nodeData.name, tmpDesc)
             end
         end
     end

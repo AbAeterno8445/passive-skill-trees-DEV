@@ -241,6 +241,39 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    -- Crimson nodes
+    local charData = PST:getCurrentCharData()
+    if treeActive and charData and charData.crimsonNodes then
+        local charTree = PST.trees[PST:getCurrentCharName()]
+        if charTree then
+            for crimsonNodeID, crimsonNodeData in pairs(charData.crimsonNodes) do
+                local origCrimsonNode = charTree[tonumber(crimsonNodeID)]
+                if origCrimsonNode then
+                    local tgtNode = nil
+                    -- Fetch selected node's modifiers
+                    if PST:strStartsWith(origCrimsonNode.name, "Universal") and PST.globalMedNodes[crimsonNodeData.name] then
+                        tgtNode = PST.globalMedNodes[crimsonNodeData.name]
+                    elseif PST:strStartsWith(origCrimsonNode.name, "Core") then
+                        local tmpTree = PST:getCurrentCharName()
+                        if tmpTree and PST.charMedNodes[tmpTree][crimsonNodeData.name] then
+                            tgtNode = PST.charMedNodes[tmpTree][crimsonNodeData.name]
+                        end
+                    else
+                        for tmpTree, _ in pairs(PST.charMedNodes) do
+                            if tmpTree ~= PST:getCurrentCharName() and PST.charMedNodes[tmpTree][crimsonNodeData.name] then
+                                tgtNode = PST.charMedNodes[tmpTree][crimsonNodeData.name]
+                                break
+                            end
+                        end
+                    end
+                    if tgtNode and tgtNode.modifiers then
+                        PST:addModifiers(tgtNode.modifiers, true)
+                    end
+                end
+            end
+        end
+    end
+
     -- Astral Expeditions
     if treeActive and PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth) then
         local expData = PST.expeditionsData[PST.modData.expedSelDepth]
@@ -491,7 +524,6 @@ function PST:onNewRun(isContinued)
         end
 
         -- Timeless Bazaar
-        local charData = PST:getCurrentCharData()
         if PST:isNodeNameAllocated("sidereal", "Timeless Bazaar") and charData then
             -- Add purchased items
             if charData.bazaarPurchased then

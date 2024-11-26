@@ -45,6 +45,15 @@ function PST:addCurrentCharObols(amount)
     end
 end
 
+-- Add crimson starcores to the currently selected/played character
+function PST:addCurrentCharCrimsonStarcores(amount)
+    local currentChar = PST:getCurrentCharData()
+    if currentChar then
+        if not currentChar.crimsonStarcores then currentChar.crimsonStarcores = 0 end
+        currentChar.crimsonStarcores = currentChar.crimsonStarcores + amount
+    end
+end
+
 -- Add boon to expedition, or upgrade it if already present
 function PST:expedAddBoon(depth, boonID)
     local tmpExpedition = PST.expeditionsData[depth]
@@ -280,6 +289,9 @@ function PST:completeExpedNode(depth, col, row, giveReward)
             -- Arcane obols
             elseif tmpNode.rewardType == PSTExpNodeRewardType.OBOLS then
                 PST:addCurrentCharObols(tmpNode.rewardData)
+            -- Crimson starcore
+            elseif tmpNode.rewardType == PSTExpNodeRewardType.C_STARCORE then
+                PST:addCurrentCharCrimsonStarcores(1)
             end
             -- Boon upgrade point reward
             if tmpNode.nodeType == PSTExpNodeType.BOONUPGRADE then
@@ -486,6 +498,9 @@ function PST:getExpNodeDescription(nodeData, expData)
                 if not shownItem then
                     table.insert(tmpDescription, {"   Add shown item to this Expedition", tmpColor})
                 end
+            -- Reward: Crimson starcore
+            elseif nodeData.rewardType == PSTExpNodeRewardType.C_STARCORE then
+                table.insert(tmpDescription, {"   +1 Crimson Starcore with " .. (PST:getCurrentCharName() or "the current character"), tmpColor})
             end
             -- Boon Upgrade node
             if nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then

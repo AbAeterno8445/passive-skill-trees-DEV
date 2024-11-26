@@ -25,7 +25,15 @@ function PST.treeScreen:InputRespec()
                 end
             end
             if not isSocketedJewel then
-                if PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, false) then
+                local isAllocated = PST:isNodeAllocated(self.currentTree, self.hoveredNode.id)
+                local charData = PST:getCurrentCharData()
+                -- Crimson node, un-select node
+                if PST:arrHasValue(PST.crimsonNodeNames, self.hoveredNode.name) and isAllocated and charData and charData.crimsonNodes and
+                charData.crimsonNodes[tostring(self.hoveredNode.id)] then
+                    charData.crimsonNodes[tostring(self.hoveredNode.id)] = nil
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
+                elseif PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, false) then
                     -- Respec Cosmic Realignment node
                     local cosmicRChar = PST.modData.cosmicRealignment
                     if self.hoveredNode.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
@@ -34,7 +42,7 @@ function PST.treeScreen:InputRespec()
                     else
                         if not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
                             if not PST.debugOptions.infRespec then
-                                PST.modData.respecPoints = PST.modData.respecPoints - 1
+                                PST.modData.respecPoints = math.max(0, PST.modData.respecPoints - 1)
                             end
                             if not PST.debugOptions.infSP then
                                 if PST:arrHasValue(self.globalTrees, self.currentTree) then
@@ -49,7 +57,7 @@ function PST.treeScreen:InputRespec()
                         self:UpdateStarTreeTotals()
                         submenusModule:CloseSubmenu()
                     end
-                elseif PST:isNodeAllocated(self.currentTree, self.hoveredNode.id) then
+                elseif isAllocated then
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.4)
                 end
             end

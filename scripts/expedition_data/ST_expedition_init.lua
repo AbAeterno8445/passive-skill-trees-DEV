@@ -15,7 +15,8 @@ PSTExpNodeRewardType = {
     OBOLS = 2,
     ITEM = 3,
     ATTEMPTS = 4,
-    BOON = 5
+    BOON = 5,
+    C_STARCORE = 6
 }
 
 ---@enum PSTExpNodeType

@@ -32,28 +32,42 @@ function nodeDrawingModule:Update(tScreen)
     end
 end
 
+local function PST_isNodeVisible(node, charData)
+    -- Crimson nodes, hide if no crimson starcores on character yet
+    if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and not charData.crimsonStarcores)) then
+        return false
+    end
+    return true
+end
+
 ---@param tScreen PST.treeScreen
 function nodeDrawingModule:Render(tScreen)
+    local charData = PST:getCurrentCharData()
+
     -- Draw node links
     for _, nodeLink in ipairs(PST.nodeLinks[tScreen.currentTree]) do
-        local linkX = nodeLink.pos.X * 38 * tScreen.zoomScale + nodeLink.dirX * 19 * tScreen.zoomScale
-        local linkY = nodeLink.pos.Y * 38 * tScreen.zoomScale + nodeLink.dirY * 19 * tScreen.zoomScale
+        local node1 = PST.trees[tScreen.currentTree][nodeLink.node1]
+        local node2 = PST.trees[tScreen.currentTree][nodeLink.node2]
+        if PST_isNodeVisible(node1, charData) and PST_isNodeVisible(node2, charData) then
+            local linkX = nodeLink.pos.X * 38 * tScreen.zoomScale + nodeLink.dirX * 19 * tScreen.zoomScale
+            local linkY = nodeLink.pos.Y * 38 * tScreen.zoomScale + nodeLink.dirY * 19 * tScreen.zoomScale
 
-        local hasNode1 = PST:isNodeAllocated(tScreen.currentTree, nodeLink.node1)
-        local hasNode2 = PST:isNodeAllocated(tScreen.currentTree, nodeLink.node2)
-        if hasNode1 and hasNode2 then
-            self.nodeLinkSprite:Play(nodeLink.type .. " Allocated", true)
-        elseif hasNode1 or hasNode2 then
-            self.nodeLinkSprite:Play(nodeLink.type .. " Available", true)
-        else
-            self.nodeLinkSprite:Play(nodeLink.type .. " Unavailable", true)
-        end
+            local hasNode1 = PST:isNodeAllocated(tScreen.currentTree, nodeLink.node1)
+            local hasNode2 = PST:isNodeAllocated(tScreen.currentTree, nodeLink.node2)
+            if hasNode1 and hasNode2 then
+                self.nodeLinkSprite:Play(nodeLink.type .. " Allocated", true)
+            elseif hasNode1 or hasNode2 then
+                self.nodeLinkSprite:Play(nodeLink.type .. " Available", true)
+            else
+                self.nodeLinkSprite:Play(nodeLink.type .. " Unavailable", true)
+            end
 
-        local finalDrawX = linkX - tScreen.treeCamera.X - tScreen.camZoomOffset.X
-        local finalDrawY = linkY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
-        if tScreen:IsSpriteVisibleAt(finalDrawX, finalDrawY, 76, 76) then
-            self.nodeLinkSprite.Scale = nodeLink.origScale * tScreen.zoomScale
-            self.nodeLinkSprite:Render(Vector(finalDrawX, finalDrawY))
+            local finalDrawX = linkX - tScreen.treeCamera.X - tScreen.camZoomOffset.X
+            local finalDrawY = linkY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
+            if tScreen:IsSpriteVisibleAt(finalDrawX, finalDrawY, 76, 76) then
+                self.nodeLinkSprite.Scale = nodeLink.origScale * tScreen.zoomScale
+                self.nodeLinkSprite:Render(Vector(finalDrawX, finalDrawY))
+            end
         end
     end
 
@@ -71,7 +85,7 @@ function nodeDrawingModule:Render(tScreen)
         local finalDrawX = nodeX - tScreen.treeCamera.X - tScreen.camZoomOffset.X
         local finalDrawY = nodeY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
 
-        if tScreen:IsSpriteVisibleAt(finalDrawX, finalDrawY, 38, 38) then
+        if tScreen:IsSpriteVisibleAt(finalDrawX, finalDrawY, 38, 38) and PST_isNodeVisible(node, charData) then
             local nodeAllocated = PST:isNodeAllocated(tScreen.currentTree, node.id)
             if node.available and not nodeAllocated then
                 if not PST.debugOptions.infSP and PST:isNodeAllocatable(tScreen.currentTree, node.id, true) then
@@ -123,6 +137,25 @@ function nodeDrawingModule:Render(tScreen)
             if node.name == "Ancient Weapon Bounties" then
                 tmpSprite:SetFrame("Default", 845)
                 tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+            end
+
+            -- Crimson node, draw chosen medium node
+            if PST:arrHasValue(PST.crimsonNodeNames, node.name) and charData then
+                local isChosen = (charData.crimsonNodes and charData.crimsonNodes[tostring(node.id)])
+                if isChosen then
+                    local crimsonNodeData = charData.crimsonNodes[tostring(node.id)]
+                    if crimsonNodeData.sprite then
+                        local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
+                        tmpSprite.Color.RO = 0.25
+                        tmpSprite.Scale.X = tmpSprite.Scale.X / 2
+                        tmpSprite.Scale.Y = tmpSprite.Scale.Y / 2
+                        tmpSprite:SetFrame("Default", crimsonNodeData.sprite)
+                        tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+                        tmpSprite.Color.RO = 0
+                        tmpSprite.Scale.X = oldScaleX
+                        tmpSprite.Scale.Y = oldScaleY
+                    end
+                end
             end
 
             local nodeHalf = 15 * tScreen.zoomScale

@@ -2,7 +2,8 @@ local expNodeRewardFrame = {
     [PSTExpNodeRewardType.EXP] = 0,
     [PSTExpNodeRewardType.OBOLS] = 1,
     [PSTExpNodeRewardType.BOON] = 2,
-    [PSTExpNodeRewardType.ATTEMPTS] = 3
+    [PSTExpNodeRewardType.ATTEMPTS] = 3,
+    [PSTExpNodeRewardType.C_STARCORE] = 5
 }
 local nodeSpacing = Vector(80, 60)
 

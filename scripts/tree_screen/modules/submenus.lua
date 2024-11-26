@@ -2,7 +2,8 @@
 PSTSubmenu = {
     NONE = "",
     COSMICREALIGNMENT = "cosmicRealignment",
-    STARJEWELINV = "starJewelInventory"
+    STARJEWELINV = "starJewelInventory",
+    CRIMSON_NODE = "crimsonNode"
 }
 
 -- Submenus refer to the smaller interactable menus that show up for e.g. Cosmic Realignment or starcursed jewel inventories
@@ -13,7 +14,8 @@ local submenusModule = {
 
     submenus = {
         [PSTSubmenu.COSMICREALIGNMENT] = include("scripts.tree_screen.modules.submenus.cosmicRSubmenu"),
-        [PSTSubmenu.STARJEWELINV] = include("scripts.tree_screen.modules.submenus.starcursedInvSubmenu")
+        [PSTSubmenu.STARJEWELINV] = include("scripts.tree_screen.modules.submenus.starcursedInvSubmenu"),
+        [PSTSubmenu.CRIMSON_NODE] = include("scripts.tree_screen.modules.submenus.crimsonNodeSubmenu")
     },
 }
 
@@ -34,14 +36,18 @@ function submenusModule:DrawNodeSubMenu(tScreen, menuRows, centerX, centerY, men
     -- Draw BG
     self.BGSprite.Scale.X = 168
     self.BGSprite.Scale.Y = 24 + 32 * math.ceil(menuRows / 5)
-    self.BGSprite.Color.A = 0.9
+    self.BGSprite.Color.A = 0.95
     local tmpBGX = menuX * tScreen.zoomScale - 84
     local tmpBGY = menuY * tScreen.zoomScale + 14
     self.BGSprite:Render(Vector(tmpBGX - tScreen.treeCamera.X - tScreen.camZoomOffset.X, tmpBGY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y))
 
     -- Stop node hovering while cursor is in this menu
+    local tmpExtraHeight = 0
+    if pagination then
+        tmpExtraHeight = 32
+    end
     if centerX >= tmpBGX and centerX <= tmpBGX + self.BGSprite.Scale.X and
-    centerY >= tmpBGY and centerY <= tmpBGY + self.BGSprite.Scale.Y then
+    centerY >= tmpBGY and centerY <= tmpBGY + self.BGSprite.Scale.Y + tmpExtraHeight then
         tScreen.hoveredNode = nil
     end
 

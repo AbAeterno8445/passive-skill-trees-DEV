@@ -54,6 +54,9 @@ end
 -- Nodes that cost no global SP
 PST.nodeSPExceptions = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
 
+-- Crimson node variants
+PST.crimsonNodeNames = {"Universal Crimson Node", "Core Crimson Node", "Divergent Crimson Node"}
+
 PST.finalBosses = {
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_ISAAC, EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN,
 	EntityType.ENTITY_BEAST, EntityType.ENTITY_MOTHER, EntityType.ENTITY_ULTRA_GREED
@@ -445,6 +448,25 @@ PST.blueItemPool = {}
 PST.ItemPoolType = {
 	---@diagnostic disable-next-line: undefined-field
     POOL_BLUE = Isaac.GetPoolIdByName("blueItems")
+}
+PST.globalMedNodes = {}
+PST.charMedNodes = {}
+PST.bannedCharMedNodes = {
+	"Coalescing Soul Chance", "Floor Ephemeral Bond", "Jacob Heart On Kill", "Recall Damage Buff",
+	"Forgotten Bone Tear Speed Debuff", "Held Forgotten Speed Boost", "Whip Damage Vs Tears",
+	"Hold Buffs", "Forgotten Bone Tear Kill Luck", "Forgotten Bone Tear Damage", "Dark Arpeggio Tear Delay",
+	"Locust Lost Contact Tears", "Black Heart On Pulse Kill", "Brown Nugget On Hold", "Locust Tear Damage",
+	"Whip Speed Buff", "Pulse Damage", "Forgotten Launch Telekinesis", "Lazarus Speed",
+	"Poop Transmutation", "Ephemeral Bond On Hitless Boss", "Heart Luck", "Esau Soul On Kill",
+	"Small Poop Pickup Upgrade", "Brother Hit Negation", "Lazarus Luck", "Forgotten Melee Tear Buff",
+	"Lazarus Damage", "Base Minimum Luck", "Coupon Charge Nullification Chance", "Item Reroll Avoidance",
+	"Higher Quality Reroll Chance", "Non Dark Arts Damage", "Forgotten Soul Damage", "Soul Bone Tears",
+	"Lazarus Tears", "Lazarus Range", "Lazarus Hearts On Room Clear", "Forgotten Bone Tear Paralysis",
+	"Brother Items All Stats", "Troll Bomb Disarm", "Bag Of Crafting Melee Damage", "Form Stat Up On Kills",
+	"Hold Poop Regain", "Inner Flare Slow Duration", "Shadowmeld Explosion", "Siren Minion Damage",
+	"Forgotten Soul Tears", "Coalescing Homing Tear", "Shadowmeld Explosion Damage", "Birthright Removal Chance",
+	"Shieldless Boss Speed", "Berserk Character Size", "Stat Boost On Blood Charge", "Soul Bone Damage",
+	"Red Hearts Soul Charge", "Room Clear Soul Charge", "Eternal Heart Drop Conversion"
 }
 
 -- First update when entering a new floor

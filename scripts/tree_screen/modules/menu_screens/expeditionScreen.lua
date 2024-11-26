@@ -241,9 +241,11 @@ function expeditionScreen:OnInput()
             if self.resetTimer == 180 then
                 local obolCost = PST:getExpedResetCost(self.currentDepth)
                 local currentChar = PST:getCurrentCharData()
-                if currentChar and PST.modData.skillPoints >= 1 and currentChar.arcaneObols >= obolCost then
-                    PST.modData.skillPoints = PST.modData.skillPoints - 1
-                    currentChar.arcaneObols = currentChar.arcaneObols - obolCost
+                if currentChar and ((PST.modData.skillPoints >= 1 and currentChar.arcaneObols >= obolCost) or PST.debugOptions.infSP) then
+                    if not PST.debugOptions.infSP then
+                        PST.modData.skillPoints = PST.modData.skillPoints - 1
+                        currentChar.arcaneObols = currentChar.arcaneObols - obolCost
+                    end
                     PST:resetExpedition(self.currentDepth)
                     SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
                     PST.treeScreen.treeHasChanges = true

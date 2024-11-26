@@ -1,6 +1,6 @@
 PST.SkillTreesAPI.AddCharacterTree("Isaac", false, [[
 {
-"4": "{\"pos\":[0,0],\"type\":50,\"size\":\"Small\",\"name\":\"All Stats\",\"description\":[\"+0.01 all stats\"],\"modifiers\":{\"allstats\":0.01},\"adjacent\":[19,138,171],\"alwaysAvailable\":true}",
+"4": "{\"pos\":[0,0],\"type\":50,\"size\":\"Small\",\"name\":\"All Stats\",\"description\":[\"+0.01 all stats\"],\"modifiers\":{\"allstats\":0.01},\"adjacent\":[19,138,171,223],\"alwaysAvailable\":true}",
 "19": "{\"pos\":[0,-1],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[4,25,194,192]}",
 "25": "{\"pos\":[0,-2],\"type\":23,\"size\":\"Small\",\"name\":\"Speed\",\"description\":[\"+0.01 speed\"],\"modifiers\":{\"speed\":0.01},\"adjacent\":[19,37,32,26]}",
 "26": "{\"pos\":[-1,-3],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[25,27]}",
@@ -15,11 +15,11 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", false, [[
 "38": "{\"pos\":[0,-4],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[37,39]}",
 "39": "{\"pos\":[0,-5],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[38,47]}",
 "41": "{\"pos\":[0,-7],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[47,44]}",
-"42": "{\"pos\":[-2,-6],\"type\":30,\"size\":\"Med\",\"name\":\"Damage\",\"description\":[\"+0.05 damage\"],\"modifiers\":{\"damage\":0.05},\"adjacent\":[28,30]}",
+"42": "{\"pos\":[-2,-6],\"type\":30,\"size\":\"Med\",\"name\":\"Damage\",\"description\":[\"+0.05 damage\"],\"modifiers\":{\"damage\":0.05},\"adjacent\":[28,30,221]}",
 "43": "{\"pos\":[-2,-8],\"type\":24,\"size\":\"Small\",\"name\":\"Damage\",\"description\":[\"+0.01 damage\"],\"modifiers\":{\"damage\":0.01},\"adjacent\":[30,48]}",
 "44": "{\"pos\":[0,-8],\"type\":31,\"size\":\"Small\",\"name\":\"Tears\",\"description\":[\"+0.01 tears\"],\"modifiers\":{\"tears\":0.01},\"adjacent\":[41,50]}",
 "45": "{\"pos\":[2,-8],\"type\":21,\"size\":\"Small\",\"name\":\"Shot Speed\",\"description\":[\"+0.01 shot speed\"],\"modifiers\":{\"shotSpeed\":0.01},\"adjacent\":[36,52]}",
-"46": "{\"pos\":[2,-6],\"type\":27,\"size\":\"Med\",\"name\":\"Shot Speed\",\"description\":[\"+0.05 shot speed\"],\"modifiers\":{\"shotSpeed\":0.05},\"adjacent\":[34,36]}",
+"46": "{\"pos\":[2,-6],\"type\":27,\"size\":\"Med\",\"name\":\"Shot Speed\",\"description\":[\"+0.05 shot speed\"],\"modifiers\":{\"shotSpeed\":0.05},\"adjacent\":[34,36,225]}",
 "47": "{\"pos\":[0,-6],\"type\":32,\"size\":\"Med\",\"name\":\"Tears\",\"description\":[\"+0.05 tears\"],\"modifiers\":{\"tears\":0.05},\"adjacent\":[39,41]}",
 "48": "{\"pos\":[-2,-9],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[43,49]}",
 "49": "{\"pos\":[-1,-9],\"type\":19,\"size\":\"Small\",\"name\":\"Luck\",\"description\":[\"+0.05 luck\"],\"modifiers\":{\"luck\":0.05},\"adjacent\":[48,50]}",
@@ -40,7 +40,7 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", false, [[
 "97": "{\"pos\":[5,-11],\"type\":6,\"size\":\"Large\",\"name\":\"Isaac's Blessing\",\"description\":[\"Start a run with +5% all stats.\",\"Restarting the run removes this effect.\",\"Defeating Mom's Heart re-enables this for the next run.\"],\"modifiers\":{\"isaacBlessing\":5},\"adjacent\":[95]}",
 "98": "{\"pos\":[0,-12],\"type\":49,\"size\":\"Small\",\"name\":\"All Stats - Birthright\",\"description\":[\"+0.01 all stats while holding Birthright\"],\"modifiers\":{\"allstatsBirthright\":0.01},\"adjacent\":[53,99]}",
 "99": "{\"pos\":[0,-13],\"type\":49,\"size\":\"Small\",\"name\":\"All Stats - Birthright\",\"description\":[\"+0.01 all stats while holding Birthright\"],\"modifiers\":{\"allstatsBirthright\":0.01},\"adjacent\":[98,100]}",
-"100": "{\"pos\":[0,-14],\"type\":49,\"size\":\"Small\",\"name\":\"All Stats - Birthright\",\"description\":[\"+0.01 all stats while holding Birthright\"],\"modifiers\":{\"allstatsBirthright\":0.01},\"adjacent\":[99,101]}",
+"100": "{\"pos\":[0,-14],\"type\":49,\"size\":\"Small\",\"name\":\"All Stats - Birthright\",\"description\":[\"+0.01 all stats while holding Birthright\"],\"modifiers\":{\"allstatsBirthright\":0.01},\"adjacent\":[99,101,222,226]}",
 "101": "{\"pos\":[0,-15],\"type\":49,\"size\":\"Small\",\"name\":\"All Stats - Birthright\",\"description\":[\"+0.01 all stats while holding Birthright\"],\"modifiers\":{\"allstatsBirthright\":0.01},\"adjacent\":[100,102]}",
 "102": "{\"pos\":[0,-16],\"type\":49,\"size\":\"Small\",\"name\":\"All Stats - Birthright\",\"description\":[\"+0.01 all stats while holding Birthright\"],\"modifiers\":{\"allstatsBirthright\":0.01},\"adjacent\":[101,80,103]}",
 "103": "{\"pos\":[-1,-17],\"type\":49,\"size\":\"Small\",\"name\":\"All Stats - Birthright\",\"description\":[\"+0.01 all stats while holding Birthright\"],\"modifiers\":{\"allstatsBirthright\":0.01},\"adjacent\":[102,104]}",
@@ -63,7 +63,7 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", false, [[
 "152": "{\"pos\":[5,3],\"type\":52,\"size\":\"Small\",\"name\":\"D6 Charge\",\"description\":[\"2% chance when using D6 to keep half of its charge.\"],\"modifiers\":{\"d6HalfCharge\":2},\"adjacent\":[151,153]}",
 "153": "{\"pos\":[5,4],\"type\":52,\"size\":\"Small\",\"name\":\"D6 Charge\",\"description\":[\"2% chance when using D6 to keep half of its charge.\"],\"modifiers\":{\"d6HalfCharge\":2},\"adjacent\":[152,154]}",
 "154": "{\"pos\":[5,5],\"type\":52,\"size\":\"Small\",\"name\":\"D6 Charge\",\"description\":[\"2% chance when using D6 to keep half of its charge.\"],\"modifiers\":{\"d6HalfCharge\":2},\"adjacent\":[153,156]}",
-"155": "{\"pos\":[6,1],\"type\":53,\"size\":\"Med\",\"name\":\"D6 Pickups\",\"description\":[\"8% chance when using D6 to spawn a random pickup (coin, bomb, key or heart).\"],\"modifiers\":{\"d6Pickup\":8},\"adjacent\":[142,144]}",
+"155": "{\"pos\":[6,1],\"type\":53,\"size\":\"Med\",\"name\":\"D6 Pickups\",\"description\":[\"8% chance when using D6 to spawn a random pickup (coin, bomb, key or heart).\"],\"modifiers\":{\"d6Pickup\":8},\"adjacent\":[142,144,224]}",
 "156": "{\"pos\":[6,6],\"type\":54,\"size\":\"Med\",\"name\":\"D6 Charge\",\"description\":[\"8% chance when using D6 to keep half of its charge.\"],\"modifiers\":{\"d6HalfCharge\":8},\"adjacent\":[154,164,157,147]}",
 "157": "{\"pos\":[7,6],\"type\":51,\"size\":\"Small\",\"name\":\"D6 Pickups\",\"description\":[\"2% chance when using D6 to spawn a random pickup (coin, bomb, key or heart).\"],\"modifiers\":{\"d6Pickup\":2},\"adjacent\":[158,156]}",
 "158": "{\"pos\":[8,6],\"type\":51,\"size\":\"Small\",\"name\":\"D6 Pickups\",\"description\":[\"2% chance when using D6 to spawn a random pickup (coin, bomb, key or heart).\"],\"modifiers\":{\"d6Pickup\":2},\"adjacent\":[157,159]}",
@@ -114,6 +114,12 @@ PST.SkillTreesAPI.AddCharacterTree("Isaac", false, [[
 "215": "{\"pos\":[4,-3],\"type\":303,\"size\":\"Small\",\"name\":\"Fire XP\",\"description\":[\"Gain +2 xp when putting out fires.\"],\"modifiers\":{\"fireXP\":2},\"adjacent\":[216,214]}",
 "216": "{\"pos\":[4,-2],\"type\":304,\"size\":\"Small\",\"name\":\"Poop XP\",\"description\":[\"Gain +2 xp when destroying poop.\"],\"modifiers\":{\"poopXP\":2},\"adjacent\":[197,215]}",
 "219": "{\"pos\":[-5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[196]}",
-"220": "{\"pos\":[5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[197]}"
+"220": "{\"pos\":[5,-2],\"type\":4,\"size\":\"Small\",\"name\":\"Challenge XP\",\"description\":[\"Gain 20 XP upon completing a challenge room.\"],\"modifiers\":{\"challengeXP\":20},\"adjacent\":[197]}",
+"221": "{\"pos\":[-3,-6],\"type\":847,\"size\":\"Large\",\"name\":\"Core Crimson Node\",\"description\":[\"Allocate to choose any medium node from this character tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[42],\"reqs\":{\"crimsonStarcore\":1}}",
+"222": "{\"pos\":[-1,-14],\"type\":847,\"size\":\"Large\",\"name\":\"Core Crimson Node\",\"description\":[\"Allocate to choose any medium node from this character tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[100],\"reqs\":{\"crimsonStarcore\":1}}",
+"223": "{\"pos\":[0,1],\"type\":848,\"size\":\"Large\",\"name\":\"Universal Crimson Node\",\"description\":[\"Allocate to choose any medium node from the global skill tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[4],\"reqs\":{\"crimsonStarcore\":1}}",
+"224": "{\"pos\":[7,0],\"type\":848,\"size\":\"Large\",\"name\":\"Universal Crimson Node\",\"description\":[\"Allocate to choose any medium node from the global skill tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[155],\"reqs\":{\"crimsonStarcore\":1}}",
+"225": "{\"pos\":[3,-6],\"type\":849,\"size\":\"Large\",\"name\":\"Divergent Crimson Node\",\"description\":[\"Allocate to choose any medium node from another character's tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[46],\"reqs\":{\"crimsonStarcore\":1}}",
+"226": "{\"pos\":[1,-14],\"type\":849,\"size\":\"Large\",\"name\":\"Divergent Crimson Node\",\"description\":[\"Allocate to choose any medium node from another character's tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[100],\"reqs\":{\"crimsonStarcore\":1}}"
 }
 ]])

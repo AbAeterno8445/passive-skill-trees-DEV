@@ -4,6 +4,10 @@ function PST:getChangelogList()
         "",
 
         "v0.4.17",
+        "- Introduced Crimson Starcores, a new character-bound material that can sometimes show up as a reward",
+        "in depth 20+ expeditions' final nodes.",
+        "- Once obtained, Crimson Starcores enable new Crimson Nodes within character trees, which allow selecting",
+        "medium nodes from other trees to be applied to that character.",
         "- Devil deal expedition objectives now also count purchasing items with coins while in the devil room,",
         "rather than just hearts.",
         "- Opening Sidereal Caches in challenge rooms should now start the challenge.",

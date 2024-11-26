@@ -4,6 +4,7 @@ function PST.treeScreen:InputAllocate()
         local submenusModule = self.modules.submenusModule
         local cosmicRSubmenu = submenusModule.submenus[PSTSubmenu.COSMICREALIGNMENT]
         local starInvSubmenu = submenusModule.submenus[PSTSubmenu.STARJEWELINV]
+        local crimsonNodeSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_NODE]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -20,9 +21,9 @@ function PST.treeScreen:InputAllocate()
             if PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, true) then
                 if not PST.debugOptions.infSP and not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
                     if PST:arrHasValue(self.globalTrees, self.currentTree) then
-                        PST.modData.skillPoints = PST.modData.skillPoints - 1
+                        PST.modData.skillPoints = math.max(0, PST.modData.skillPoints - 1)
                     elseif PST.modData.charData[self.currentTree] then
-                        PST.modData.charData[self.currentTree].skillPoints = PST.modData.charData[self.currentTree].skillPoints - 1
+                        PST.modData.charData[self.currentTree].skillPoints = math.max(0, PST.modData.charData[self.currentTree].skillPoints - 1)
                     end
                 end
 
@@ -44,7 +45,13 @@ function PST.treeScreen:InputAllocate()
                         obolReq = PST[obolReq.var]
                     end
                     if obolReq and currentChar and not PST.debugOptions.infSP then
-                        currentChar.arcaneObols = currentChar.arcaneObols - obolReq
+                        currentChar.arcaneObols = math.max(0, currentChar.arcaneObols - obolReq)
+                    end
+
+                    -- Crimson starcore requirement
+                    local crimsonStarcoreReq = self.hoveredNode.reqs.crimsonStarcore
+                    if crimsonStarcoreReq and currentChar and currentChar.crimsonStarcores and not PST.debugOptions.infSP then
+                        currentChar.crimsonStarcores = math.max(0, currentChar.crimsonStarcores - crimsonStarcoreReq)
                     end
                 end
 
@@ -149,6 +156,29 @@ function PST.treeScreen:InputAllocate()
                             end
                         end
                     end
+
+                    -- Crimson nodes
+                    if PST:arrHasValue(PST.crimsonNodeNames, self.hoveredNode.name) then
+                        local tmpCrimsonType = PSTCrimsonNodeType.UNIVERSAL
+                        if PST:strStartsWith(self.hoveredNode.name, "Core") then
+                            tmpCrimsonType = PSTCrimsonNodeType.CORE
+                        elseif PST:strStartsWith(self.hoveredNode.name, "Divergent") then
+                            tmpCrimsonType = PSTCrimsonNodeType.DIVERGENT
+                        end
+                        if crimsonNodeSubmenu.crimsonType ~= tmpCrimsonType then
+                            submenusModule:SwitchSubmenu(PSTSubmenu.CRIMSON_NODE, {
+                                menuX = self.hoveredNode.pos.X * 38,
+                                menuY = self.hoveredNode.pos.Y * 38,
+                                invPage = 0,
+                                crimsonType = tmpCrimsonType,
+                                crimsonNodeID = self.hoveredNode.id
+                            })
+                        else
+                            crimsonNodeSubmenu.crimsonType = nil
+                            submenusModule:CloseSubmenu()
+                        end
+                        SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    end
                 end
             end
         -- Cosmic Realignment submenu
@@ -172,21 +202,45 @@ function PST.treeScreen:InputAllocate()
         -- Starcursed inventory
         elseif submenusModule.currentSubmenu == PSTSubmenu.STARJEWELINV then
             -- Identify/equip hovered jewel
-            if starInvSubmenu.hoveredJewel ~= nil then
+            local jewelData = starInvSubmenu.hoveredJewel
+            if jewelData ~= nil then
                 self.treeHasChanges = true
-                local jewelData = starInvSubmenu.hoveredJewel
-                if jewelData then
-                    if jewelData.unidentified then
-                        SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
-                        SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
-                        PST:SC_identifyJewel(starInvSubmenu.hoveredJewel)
-                    elseif starInvSubmenu.socket then
-                        SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
-                        PST:SC_equipJewel(jewelData, starInvSubmenu.socket)
-                        self:UpdateStarTreeTotals()
-                        starInvSubmenu.jewelType = ""
-                        submenusModule:CloseSubmenu()
+                if jewelData.unidentified then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.65, 2, false, 1.6 + 0.1 * math.random())
+                    PST:SC_identifyJewel(starInvSubmenu.hoveredJewel)
+                elseif starInvSubmenu.socket then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    PST:SC_equipJewel(jewelData, starInvSubmenu.socket)
+                    self:UpdateStarTreeTotals()
+                    starInvSubmenu.jewelType = ""
+                    submenusModule:CloseSubmenu()
+                end
+            end
+        -- Crimson node submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.CRIMSON_NODE then
+            -- Select node
+            local nodeData = crimsonNodeSubmenu.hoveredNode
+            if nodeData ~= nil then
+                self.treeHasChanges = true
+                local charData = PST:getCurrentCharData()
+                if charData and crimsonNodeSubmenu.crimsonNodeID then
+                    if not charData.crimsonNodes then
+                        charData.crimsonNodes = {}
                     end
+                    local crimsonNodeData = charData.crimsonNodes[tostring(crimsonNodeSubmenu.crimsonNodeID)]
+                    if crimsonNodeData and crimsonNodeData.name == nodeData.name then
+                        charData.crimsonNodes[tostring(crimsonNodeSubmenu.crimsonNodeID)] = nil
+                    else
+                        charData.crimsonNodes[tostring(crimsonNodeSubmenu.crimsonNodeID)] = {
+                            name = nodeData.name,
+                            sprite = nodeData.sprite
+                        }
+                    end
+                    submenusModule:CloseSubmenu()
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                else
+                    SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
                 end
             end
         end
