@@ -384,7 +384,15 @@ function PST:onNewRun(isContinued)
                 local wepTypeData = PST.astralWepData[eqWeapon.type]
 
                 -- Weapon implicit mod
-                if eqWeapon.implicitMod then
+                if eqWeapon.multiImplicits then
+                    for _, tmpMod in ipairs(eqWeapon.multiImplicits) do
+                        local origWepTypeData = PST.astralWepData[tmpMod.type]
+                        if origWepTypeData then
+                            local tmpModName = PST.astralWepPrefix .. origWepTypeData.implicitMod.name
+                            PST.modData.treeModSnapshot[tmpModName] = tmpMod.rolls
+                        end
+                    end
+                elseif eqWeapon.implicitMod then
                     local tmpModName = PST.astralWepPrefix .. wepTypeData.implicitMod.name
                     PST.modData.treeModSnapshot[tmpModName] = eqWeapon.implicitMod
                 end
@@ -519,6 +527,24 @@ function PST:onNewRun(isContinued)
                 if tmpMod then
                     player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL)
                     PST:addModifiers({ damagePerc = -tmpMod[1], tearsPerc = -tmpMod[1] }, true)
+                end
+
+                -- Ancient weapon mod: Magefist
+                tmpMod = PST:getSnapAstralWepMod("magefist")
+                if tmpMod then
+                    local tmpAllstats = #eqWeapon.mods * tmpMod[1]
+                    if tmpAllstats > 0 then
+                        PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+                    end
+                end
+
+                -- Ancient weapon mod: Ironhand
+                tmpMod = PST:getSnapAstralWepMod("ironhand")
+                if tmpMod then
+                    local tmpAllstats = math.floor(eqWeapon.honing / 10) * tmpMod[1]
+                    if tmpAllstats > 0 then
+                        PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+                    end
                 end
             end
         end

@@ -25,6 +25,18 @@ function PST:getAstralWepCraftCosts(weaponData)
     costs.imprinting.sparkStardust = 20
     costs.imprinting.ancientEssence = 4
     costs.imprinting.ancientStardust = 2
+    -- Imprint modifier: Magefist mod
+    if weaponData.rarity == PSTAstralWepRarity.ANCIENT then
+        for _, tmpMod in ipairs(weaponData.mods) do
+            if tmpMod.name == "magefist" then
+                costs.imprinting.sparkEssence = math.floor(costs.imprinting.sparkEssence / 2)
+                costs.imprinting.sparkStardust = math.floor(costs.imprinting.sparkStardust / 2)
+                costs.imprinting.ancientEssence = math.floor(costs.imprinting.ancientEssence / 2)
+                costs.imprinting.ancientStardust = math.floor(costs.imprinting.ancientStardust / 2)
+                break
+            end
+        end
+    end
     -- Upgrade Ancient modifiers
     costs.ancUpgrade.mundaneEssence = 8
     costs.ancUpgrade.sparkEssence = 4
@@ -44,6 +56,12 @@ function PST:getAstralWepCraftCosts(weaponData)
     costs.transmutation.mundaneEssence = 20 + weaponData.tier * 5
     costs.transmutation.sparkEssence = 4 + weaponData.tier * 3
     costs.transmutation.sparkStardust = 3 + weaponData.tier * 2
+    -- Transmutation: gauntlet implicit
+    if weaponData.type == PSTAstralWepType.GAUNTLET then
+        costs.transmutation.mundaneEssence = math.floor(costs.transmutation.mundaneEssence / 2)
+        costs.transmutation.sparkEssence = math.floor(costs.transmutation.sparkEssence / 2)
+        costs.transmutation.sparkStardust = math.floor(costs.transmutation.sparkStardust / 2)
+    end
     --[[ Ascension: upgrade the weapon's tier
     costs.ascension.mundaneEssence = 10 * weaponData.tier
     costs.ascension.sparkEssence = 8 * weaponData.tier
@@ -56,6 +74,10 @@ end
 ---@param weaponData PSTAstralWeapon
 function PST:astralWepForgeHone(weaponData)
     if not weaponData.honing then weaponData.honing = 0 end
+    -- Gauntlets - no honing, except for Ironhand
+    if weaponData.type == PSTAstralWepType.GAUNTLET and not (weaponData.rarity == PSTAstralWepRarity.ANCIENT and weaponData.ancientID == 2) then
+        return false
+    end
     if weaponData.honing < 50 then
         weaponData.honing = weaponData.honing + 1
         PST:astralWepUpdateImplicit(weaponData)
@@ -74,7 +96,11 @@ end
 -- Add missing modifier to weapon, if it has only 1
 ---@param weaponData PSTAstralWeapon
 function PST:astralWepForgeAdd(weaponData)
-    if weaponData.mods and #weaponData.mods == 1 then
+    local maxMods = 2
+    if weaponData.type == PSTAstralWepType.GAUNTLET then
+        maxMods = 3
+    end
+    if weaponData.mods and #weaponData.mods < maxMods then
         PST:astralWepAddMod(weaponData)
         return true
     end
@@ -103,8 +129,20 @@ end
 ---@param weaponData PSTAstralWeapon
 ---@param targetWeapon PSTAstralWeapon
 function PST:astralWepForgeImprint(weaponData, targetWeapon)
+    -- Special mod interactions
+    local imprintLimit = 1
+    for _, tmpMod in ipairs(weaponData.mods) do
+        -- Magefist
+        if tmpMod.name == "magefist" then
+            imprintLimit = 3
+        -- Ironhand, cannot imprint
+        elseif tmpMod.name == "ironhand" then
+            return false
+        end
+    end
+
     if weaponData.rarity == PSTAstralWepRarity.ANCIENT and targetWeapon.rarity == PSTAstralWepRarity.MAGIC and
-    weaponData.mods and #weaponData.mods == 1 and targetWeapon.mods and #targetWeapon.mods == 2 then
+    weaponData.mods and #weaponData.mods < imprintLimit + 1 and targetWeapon.mods and #targetWeapon.mods == 2 then
         local randMod = targetWeapon.mods[math.random(#targetWeapon.mods)]
         table.insert(weaponData.mods, PST:copyTable(randMod))
         return true

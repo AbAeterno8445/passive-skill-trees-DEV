@@ -14,6 +14,7 @@ local invFilters = {
     { weaponType = PSTAstralWepType.SHORTBOW },
     { weaponType = PSTAstralWepType.BOW },
     { weaponType = PSTAstralWepType.CROSSBOW },
+    { weaponType = PSTAstralWepType.GAUNTLET },
     { weaponRarity = PSTAstralWepRarity.NORMAL },
     { weaponRarity = PSTAstralWepRarity.MAGIC },
     { weaponRarity = PSTAstralWepRarity.ANCIENT }

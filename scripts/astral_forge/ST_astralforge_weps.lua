@@ -90,15 +90,29 @@ function PST:astralWepUpdateImplicit(weaponData, honing)
     local wepTypeData = PST.astralWepData[weaponData.type]
 
     honing = honing or weaponData.honing or 0
-    local impRolls = wepTypeData.implicitMod.rollsFunc(honing)
-    local newImpRolls = {}
-    for i=1,5 do
-        local tmpRoll = impRolls["roll" .. tostring(i)]
-        if tmpRoll then
-            table.insert(newImpRolls, tmpRoll)
+    local function PST_tmpRollImplicit(targetImplicit)
+        local impRolls = targetImplicit.rollsFunc(honing)
+        local newImpRolls = {}
+        for i=1,5 do
+            local tmpRoll = impRolls["roll" .. tostring(i)]
+            if tmpRoll then
+                table.insert(newImpRolls, tmpRoll)
+            end
         end
+        return newImpRolls
     end
-    weaponData.implicitMod = newImpRolls
+
+    if weaponData.multiImplicits then
+        -- Check for multiple implicit weapons (e.g. Ironhand gauntlet)
+        for _, tmpImplicit in ipairs(weaponData.multiImplicits) do
+            local tgtWepType = PST.astralWepData[tmpImplicit.type]
+            if tgtWepType and tgtWepType.implicitMod then
+                tmpImplicit.rolls = PST_tmpRollImplicit(tgtWepType.implicitMod)
+            end
+        end
+    else
+        weaponData.implicitMod = PST_tmpRollImplicit(wepTypeData.implicitMod)
+    end
 end
 
 ---@param wepType PSTAstralWepType
@@ -107,6 +121,29 @@ function PST:createAstralWep(wepType, wepRarity, wepTier, ancientID)
     local newWep = {type = wepType, rarity = wepRarity, tier = math.min(5, wepTier) or 1}
 
     local wepTypeData = PST.astralWepData[wepType]
+
+    -- Ironhand, multiple implicits
+    if wepType == PSTAstralWepType.GAUNTLET and wepRarity == PSTAstralWepRarity.ANCIENT and ancientID == 2 then
+        newWep.multiImplicits = {}
+
+        local tmpImplicits = {}
+        for tmpType, _ in pairs(PST.astralWepData) do
+            if tmpType ~= PSTAstralWepType.GAUNTLET then
+                table.insert(tmpImplicits, tmpType)
+            end
+        end
+
+        -- Roll Ironhand implicits
+        for _=1,3 do
+            local newImplicitID = math.random(#tmpImplicits)
+            table.insert(newWep.multiImplicits, {
+                type = tmpImplicits[newImplicitID],
+                rolls = {}
+            })
+            table.remove(tmpImplicits, newImplicitID)
+        end
+    end
+
     -- Assign implicit modifier
     PST:astralWepUpdateImplicit(newWep, 0)
 
@@ -344,32 +381,47 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
     local tmpType = wepTypeData.name
     table.insert(tmpDescription, {tmpRarity .. " " .. tmpType, tmpColor})
 
+    local function PST_tmpShowImplicit(wepType, implicitRolls)
+        local implicitWepTypeData = PST.astralWepData[wepType]
+        if implicitWepTypeData then
+            local impRolls = {}
+            for i, tmpRoll in ipairs(implicitRolls) do
+                local tgtRoll = "roll" .. tostring(i)
+                impRolls[tgtRoll] = tostring(tmpRoll)
+            end
+            -- Show max rolls
+            if showModRanges then
+                local maxRolls = implicitWepTypeData.implicitMod.rollsFunc(50)
+                for tmpTgtRoll, tmpMaxRoll in pairs(maxRolls) do
+                    impRolls[tmpTgtRoll] = impRolls[tmpTgtRoll] .. " (" .. tostring(tmpMaxRoll) .. ")"
+                end
+            end
+
+            local targetDesc = implicitWepTypeData.implicitMod.description
+            if type(targetDesc) == "table" then
+                for _, tmpLine in ipairs(targetDesc) do
+                    table.insert(tmpDescription, PST:formatString(tmpLine, impRolls))
+                end
+            else
+                table.insert(tmpDescription, PST:formatString(targetDesc, impRolls))
+            end
+        end
+    end
+
     local modDisplayed = false
+    -- Multi-implicit mod
+    if weaponData.multiImplicits and #weaponData.multiImplicits > 0 then
+        table.insert(tmpDescription, {"---- Implicits ----", PST.kcolors.GRAY1})
+
+        for _, tmpMod in ipairs(weaponData.multiImplicits) do
+            if tmpMod.type and tmpMod.rolls then PST_tmpShowImplicit(tmpMod.type, tmpMod.rolls) end
+        end
+        modDisplayed = true
     -- Implicit modifier
-    if weaponData.implicitMod then
+    elseif weaponData.implicitMod and not wepTypeData.implicitMod.noAncient or (wepTypeData.implicitMod.noAncient and weaponData.rarity ~= PSTAstralWepRarity.ANCIENT) then
         table.insert(tmpDescription, {"---- Implicit ----", PST.kcolors.GRAY1})
 
-        local impRolls = {}
-        for i, tmpRoll in ipairs(weaponData.implicitMod) do
-            local tgtRoll = "roll" .. tostring(i)
-            impRolls[tgtRoll] = tostring(tmpRoll)
-        end
-        -- Show max rolls
-        if showModRanges then
-            local maxRolls = wepTypeData.implicitMod.rollsFunc(50)
-            for tmpTgtRoll, tmpMaxRoll in pairs(maxRolls) do
-                impRolls[tmpTgtRoll] = impRolls[tmpTgtRoll] .. " (" .. tostring(tmpMaxRoll) .. ")"
-            end
-        end
-
-        local targetDesc = wepTypeData.implicitMod.description
-        if type(targetDesc) == "table" then
-            for _, tmpLine in ipairs(targetDesc) do
-                table.insert(tmpDescription, PST:formatString(tmpLine, impRolls))
-            end
-        else
-            table.insert(tmpDescription, PST:formatString(targetDesc, impRolls))
-        end
+        PST_tmpShowImplicit(weaponData.type, weaponData.implicitMod)
         modDisplayed = true
     end
 

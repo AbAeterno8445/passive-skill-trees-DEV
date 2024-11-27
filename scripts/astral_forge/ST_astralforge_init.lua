@@ -11,7 +11,8 @@ PSTAstralWepType = {
     GREATAXE = 8,
     SHORTBOW = 9,
     BOW = 10,
-    CROSSBOW = 11
+    CROSSBOW = 11,
+    GAUNTLET = 12
 }
 
 ---@enum PSTAstralWepRarity
@@ -32,6 +33,7 @@ PST.astralWepBossBaseRate = 12
 ---@field rarity PSTAstralWepRarity
 ---@field tier number
 ---@field implicitMod? number[]
+---@field multiImplicits? table[]
 ---@field ancientID? integer
 ---@field ancientUpg? number
 -- Weapon mods are stored as tables with {mod name (string), mod rolls (table)}, e.g. {consecFireDmg, {14}}
@@ -825,6 +827,29 @@ PST.astralWepMods = {
         minRolls = {5, 200},
         maxRolls = {2.5, 400},
         upgIncrements = {-0.25, 10}
+    },
+    -- Ancient Gauntlets
+    magefist = {
+        description = {
+            "Can imprint up to 3 modifiers on this weapon.",
+            "Imprinting cost is halved.",
+            "+{{roll1}}% all stats per modifier on this weapon."
+        },
+        ancient = true,
+        minRolls = {0.2},
+        maxRolls = {1.5},
+        upgIncrements = {0, 0.1}
+    },
+    ironhand = {
+        description = {
+            "Rolls 3 random weapon implicits.",
+            "Cannot imprint modifiers into this weapon.",
+            "+{{roll1}}% all stats for every 10 honing on this weapon."
+        },
+        ancient = true,
+        minRolls = {0.2},
+        maxRolls = {1},
+        upgIncrements = {0.05}
     }
 }
 
@@ -1381,6 +1406,42 @@ PST.astralWepData = {
                 spriteFrame = 30,
                 weight = 100,
                 ancientMods = {"preciseSeeker"}
+            }
+        }
+    },
+    -- Gauntlets
+    [PSTAstralWepType.GAUNTLET] = {
+        name = "Gauntlet",
+        spriteFrames = {
+            [PSTAstralWepRarity.NORMAL] = 24,
+            [PSTAstralWepRarity.MAGIC] = 25,
+            overlay = 12
+        },
+        implicitMod = {
+            name = "gauntletImp",
+            description = {
+                "Can have an additional magic modifier.",
+                "Transmutation cost is halved."
+            },
+            rollsFunc = function(honing)
+                return { roll1 = 1 }
+            end,
+            noAncient = true
+        },
+        ancients = {
+            -- Magefist
+            {
+                name = "Magefist",
+                spriteFrame = 37,
+                weight = 100,
+                ancientMods = {"magefist"}
+            },
+            -- Ironhand
+            {
+                name = "Ironhand",
+                spriteFrame = 38,
+                weight = 100,
+                ancientMods = {"ironhand"}
             }
         }
     }
