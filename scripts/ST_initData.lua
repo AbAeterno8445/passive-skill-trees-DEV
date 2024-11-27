@@ -1713,6 +1713,8 @@ function PST:resetMods()
 		ancwep_preciseSeekerMarked = nil,
 		ancwep_preciseSeekerTimer = 0,
 		ancwep_circuitEnems = {},
+		ancwep_ivoryVampTimer = 0,
+		ancwep_ivoryVampStacks = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

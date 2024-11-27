@@ -113,7 +113,7 @@
     <trinket description="Ancient astral weapon: Oceanic Might (trident)" gfx="trinket_astralwep_oceanic_might.png" id="72" name="Astral weapon: Oceanic Might" achievement="99999" />
     <trinket description="Ancient astral weapon: Glowing Sunblade (longsword)" gfx="trinket_astralwep_glowing_sunblade.png" id="73" name="Astral weapon: Glowing Sunblade" achievement="99999" />
     <trinket description="Ancient astral weapon: Circuit Splitter (axe)" gfx="trinket_astralwep_circuit_splitter.png" id="74" name="Astral weapon: Circuit Splitter" achievement="99999" />
-
     <trinket description="Ancient astral weapon: Magefist (gauntlet)" gfx="trinket_astralwep_magefist.png" id="77" name="Astral weapon: Magefist" achievement="99999" />
     <trinket description="Ancient astral weapon: Ironhand (gauntlet)" gfx="trinket_astralwep_ironhand.png" id="78" name="Astral weapon: Ironhand" achievement="99999" />
+    <trinket description="Ancient astral weapon: Ivory Vampire (dagger)" gfx="trinket_astralwep_ivory_vampire.png" id="79" name="Astral weapon: Ivory Vampire" achievement="99999" />
 </items>

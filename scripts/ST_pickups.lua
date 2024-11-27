@@ -531,17 +531,41 @@ function PST:prePickup(pickup, collider, low)
     end
 end
 
+local redHeartWorth = {
+    [HeartSubType.HEART_HALF] = 1,
+    [HeartSubType.HEART_FULL] = 2,
+    [HeartSubType.HEART_DOUBLEPACK] = 4
+}
+
 ---@param pickup EntityPickup
 ---@param collider Entity
 ---@param low boolean
 ---@param forced boolean
 function PST:onPickup(pickup, collider, low, forced)
-    if pickup:GetSprite():GetAnimation() ~= "Collect" and not forced then return end
-
     local player = collider:ToPlayer()
     local variant = pickup.Variant
     local subtype = pickup.SubType
-    if player ~= nil and (not pickup:IsShopItem() or forced) then
+
+    -- Ancient weapon mod: Ivory Vampire (force red heart pickups)
+    local tmpMod = PST:getSnapAstralWepMod("ivoryVampire")
+    if player and tmpMod and variant == PickupVariant.PICKUP_HEART and (subtype == HeartSubType.HEART_FULL or
+    subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_DOUBLEPACK) then
+        -- Force pickup if necessary
+        if player:GetHearts() >= player:GetMaxHearts() then
+            pickup:GetSprite():Play("Collect")
+            pickup:PlayPickupSound()
+            pickup:Die()
+        end
+        -- Apply buff
+        PST.specialNodes.ancwep_ivoryVampTimer = math.floor(tmpMod[2] * 30)
+        PST.specialNodes.ancwep_ivoryVampStacks = math.min(8, PST.specialNodes.ancwep_ivoryVampStacks + (redHeartWorth[subtype] or 1))
+        PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SPEED)
+    end
+
+    -- Exit if not collecting
+    if pickup:GetSprite():GetAnimation() ~= "Collect" and not forced then return end
+
+    if player and (not pickup:IsShopItem() or forced) then
         -- On pickup coin
         if variant == PickupVariant.PICKUP_COIN then
             local coinChance = PST:getTreeSnapshotMod("coinDupe", 0)

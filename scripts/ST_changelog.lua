@@ -10,6 +10,7 @@ function PST:getChangelogList()
         "medium nodes from other trees to be applied to that character.",
         "- Added help pages explaining Crimson Starcores & Nodes, under the Expeditions category.",
         "- Introduced a new astral weapon type: Gauntlets. Comes with 2 ancients: Ironhand and Magefist.",
+        "- Added a new Ancient astral weapon: Ivory Vampire (dagger).",
         "- Devil deal expedition objectives now also count purchasing items with coins while in the devil room,",
         "rather than just hearts.",
         "- Opening Sidereal Caches in challenge rooms should now start the challenge.",

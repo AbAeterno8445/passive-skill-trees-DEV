@@ -909,6 +909,14 @@ function PST:onCache(player, cacheFlag)
         dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpTreeMod[3]
     end
 
+    -- Ancient weapon mod: Ivory Vampire
+    tmpTreeMod = PST:getSnapAstralWepMod("ivoryVampire")
+    if tmpTreeMod and PST.specialNodes.ancwep_ivoryVampTimer > 0 then
+        dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod[1] * PST.specialNodes.ancwep_ivoryVampStacks
+        dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod[1] * PST.specialNodes.ancwep_ivoryVampStacks
+        dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod[1] * PST.specialNodes.ancwep_ivoryVampStacks
+    end
+
     -- Consuming Void node (T. Isaac's tree)
     tmpTreeMod = PST:getTreeSnapshotMod("consumingVoidBuff", 0)
     if tmpTreeMod > 0 then

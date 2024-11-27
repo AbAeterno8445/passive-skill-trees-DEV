@@ -2719,6 +2719,15 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Ancient weapon mod: Ivory Vampire
+	if PST.specialNodes.ancwep_ivoryVampTimer > 0 and room:GetAliveEnemiesCount() > 0 then
+		PST.specialNodes.ancwep_ivoryVampTimer = PST.specialNodes.ancwep_ivoryVampTimer - 1
+		if PST.specialNodes.ancwep_ivoryVampTimer == 0 then
+			PST.specialNodes.ancwep_ivoryVampStacks = 0
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SPEED)
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

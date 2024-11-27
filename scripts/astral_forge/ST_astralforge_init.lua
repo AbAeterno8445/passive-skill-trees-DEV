@@ -529,6 +529,18 @@ PST.astralWepMods = {
         maxRolls = {35, 60, 280},
         upgIncrements = {0.5, 1, 5}
     },
+    ivoryVampire = {
+        description = {
+            "Red hearts can be picked up regardless of health status.",
+            "Every 1/2 red heart picked up grants you {{roll1}}% speed, tears and damage for {{roll2}} seconds,",
+            "which stacks up to 8 times.",
+            "Buff timer is paused while in a room with no enemies."
+        },
+        ancient = true,
+        minRolls = {2, 4},
+        maxRolls = {4, 5},
+        upgIncrements = {0.2, 0.1}
+    },
     -- Ancient Quickblades
     nimbleTwins = {
         description = {
@@ -1002,6 +1014,13 @@ PST.astralWepData = {
                 spriteFrame = 7,
                 weight = 100,
                 ancientMods = {"adriftBlade"}
+            },
+            -- Ivory Vampire
+            {
+                name = "Ivory Vampire",
+                spriteFrame = 39,
+                weight = 100,
+                ancientMods = {"ivoryVampire"}
             }
         }
     },
