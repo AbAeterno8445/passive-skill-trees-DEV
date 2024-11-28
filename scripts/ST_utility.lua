@@ -349,6 +349,18 @@ function PST:onNPCPickTarget(npc, target)
 	end
 end
 
+-- Returns whether the given entity has any active status effects
+---@param entity Entity
+function PST:entityHasAnyStatus(entity)
+	if entity:GetBurnCountdown() > 0 or entity:GetFearCountdown() > 0 or entity:GetBaitedCountdown() > 0 or
+	entity:GetFreezeCountdown() > 0 or entity:GetShrinkCountdown() > 0 or entity:GetCharmedCountdown() > 0 or
+	entity:GetSlowingCountdown() > 0 or entity:GetBleedingCountdown() > 0 or
+	(entity:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
+		return true
+	end
+	return false
+end
+
 --- Get the amount of familiars in the room
 ---@param specificType? FamiliarVariant Check for a specific familiar type instead, and return the amount of those
 function PST:getRoomFamiliars(specificType)
@@ -803,6 +815,23 @@ function PST:preSFXPlay(sfxID, volume, frameDelay, loop, pitch, pan)
 		-- Chromatic Blessing node (T. Siren's tree), reset on failure
 		if PST:getTreeSnapshotMod("chromaticBlessing", false) and PST.specialNodes.sirenUsedMelody == 3 then
 			PST.specialNodes.sirenUsedMelody = -1
+		end
+	end
+
+	-- Ancient weapon mod: Tolling Bell
+	local tmpMod = PST:getSnapAstralWepMod("tollingBell")
+	if tmpMod then
+		if PST:arrHasValue(PST.explosionSounds, sfxID) then
+			PST.specialNodes.ancwep_tollBellSpeedTimer = 90
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+		if PST:arrHasValue(PST.rockBreakSounds, sfxID) then
+			PST.specialNodes.ancwep_tollBellDamageTimer = 120
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+		if sfxID == SoundEffect.SOUND_DOOR_HEAVY_CLOSE then
+			PST.specialNodes.ancwep_tollBellTearsTimer = 210
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
 		end
 	end
 end

@@ -136,6 +136,7 @@ function astralForgeScreen:OnInput()
                     end
                 end
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                self.invPage = 1
             end
         -- Hovered decon button, toggle mode
         elseif self.deconHovered then

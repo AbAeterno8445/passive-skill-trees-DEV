@@ -546,6 +546,12 @@ function PST:onNewRun(isContinued)
                         PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
                     end
                 end
+
+                -- Ancient weapon mod: Tolling Bell
+                tmpMod = PST:getSnapAstralWepMod("tollingBell")
+                if tmpMod then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO)
+                end
             end
         end
 

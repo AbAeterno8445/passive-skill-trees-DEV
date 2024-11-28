@@ -15,6 +15,7 @@ local invFilters = {
     { weaponType = PSTAstralWepType.BOW },
     { weaponType = PSTAstralWepType.CROSSBOW },
     { weaponType = PSTAstralWepType.GAUNTLET },
+    { weaponType = PSTAstralWepType.GREATMACE },
     { weaponRarity = PSTAstralWepRarity.NORMAL },
     { weaponRarity = PSTAstralWepRarity.MAGIC },
     { weaponRarity = PSTAstralWepRarity.ANCIENT }
@@ -263,7 +264,7 @@ local function astralForgeScreenRender(self, tScreen)
         tmpSprite.Scale.Y = oldScaleY
     end
 
-    tmpY = tmpY + math.ceil(#invFilters / 8) * 18 + 3
+    tmpY = tmpY + math.ceil(#invFilters / 9) * 18 + 3
 
     -- Weapons
     local drawnWeps = {}

@@ -63,6 +63,9 @@
     <trinket description="Astral weapon: Gauntlet" gfx="trinket_astralwep_gauntlet.png" id="75" name="Astral weapon: Gauntlet" achievement="99999" />
     <trinket description="Astral weapon: Gauntlet (magic)" gfx="trinket_astralwep_gauntlet_magic.png" id="76" name="Astral weapon: Gauntlet (magic)" achievement="99999" />
 
+    <trinket description="Astral weapon: Great Mace" gfx="trinket_astralwep_greatmace.png" id="80" name="Astral weapon: Great Mace" achievement="99999" />
+    <trinket description="Astral weapon: Great Mace (magic)" gfx="trinket_astralwep_greatmace_magic.png" id="81" name="Astral weapon: Great Mace (magic)" achievement="99999" />
+
     <!-- ASTRAL WEAPONS: ANCIENT -->
     <trinket description="Ancient astral weapon: Grey Wind (longsword)" gfx="trinket_astralwep_greywind.png" id="38" name="Astral weapon: Grey Wind" achievement="99999" />
     <trinket description="Ancient astral weapon: Executioner (longsword)" gfx="trinket_astralwep_executioner.png" id="39" name="Astral weapon: Executioner" achievement="99999" />
@@ -116,4 +119,9 @@
     <trinket description="Ancient astral weapon: Magefist (gauntlet)" gfx="trinket_astralwep_magefist.png" id="77" name="Astral weapon: Magefist" achievement="99999" />
     <trinket description="Ancient astral weapon: Ironhand (gauntlet)" gfx="trinket_astralwep_ironhand.png" id="78" name="Astral weapon: Ironhand" achievement="99999" />
     <trinket description="Ancient astral weapon: Ivory Vampire (dagger)" gfx="trinket_astralwep_ivory_vampire.png" id="79" name="Astral weapon: Ivory Vampire" achievement="99999" />
+    <trinket description="Ancient astral weapon: Mighty Purifier (great mace)" gfx="trinket_astralwep_mighty_purifier.png" id="82" name="Astral weapon: Mighty Purifier" achievement="99999" />
+    <trinket description="Ancient astral weapon: Chaotic Tumult (great mace)" gfx="trinket_astralwep_chaotic_tumult.png" id="83" name="Astral weapon: Chaotic Tumult" achievement="99999" />
+    <trinket description="Ancient astral weapon: Firestarter (great mace)" gfx="trinket_astralwep_firestarter.png" id="84" name="Astral weapon: Firestarter" achievement="99999" />
+    <trinket description="Ancient astral weapon: Colossal Maul (great mace)" gfx="trinket_astralwep_colossal_maul.png" id="85" name="Astral weapon: Colossal Maul" achievement="99999" />
+    <trinket description="Ancient astral weapon: Tolling Bell (great mace)" gfx="trinket_astralwep_tolling_bell.png" id="86" name="Astral weapon: Tolling Bell" achievement="99999" />
 </items>

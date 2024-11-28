@@ -29,7 +29,8 @@ function PST:astralWepPickRandType(factorMods)
     for tmpType, typeWeight in pairs(typeWeights) do
         if factorMods then
             -- Mod: Specific weapon type chances
-            local tmpMod = PST:getTreeSnapshotMod("astralWepRate" .. PST.astralWepData[tmpType].name, 0)
+            local wepTypeName = PST.astralWepData[tmpType].internalName or PST.astralWepData[tmpType].name
+            local tmpMod = PST:getTreeSnapshotMod("astralWepRate" .. wepTypeName, 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
                 return tmpType
             end
@@ -454,15 +455,13 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
                     for i, tmpRoll in ipairs(tmpModData.minRolls) do
                         local tgtRoll = "roll" .. tostring(i)
                         local tmpMathFunc = math.min
-                        local tmpSign = ""
                         if tmpModData.upgIncrements[i] < 0 then
                             tmpMathFunc = math.max
-                            tmpSign = "-"
                         end
                         tmpRollList[tgtRoll] = tostring(tmpMathFunc(tmpModData.maxRolls[i], tmpRoll + tmpModData.upgIncrements[i] * ancientUpgrades))
                         -- Show max value
                         if showModRanges then
-                            tmpRollList[tgtRoll] = tmpRollList[tgtRoll] .. " (" .. tmpSign .. tostring(tmpModData.maxRolls[i]) .. ")"
+                            tmpRollList[tgtRoll] = tmpRollList[tgtRoll] .. " (" .. tostring(tmpModData.maxRolls[i]) .. ")"
                         end
                     end
                 end

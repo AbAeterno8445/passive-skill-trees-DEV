@@ -442,6 +442,45 @@ PST.grandConsonanceWhitelist = {
 	FamiliarVariant.FRUITY_PLUM, FamiliarVariant.LIL_ABADDON, FamiliarVariant.LIL_PORTAL, FamiliarVariant.TWISTED_BABY,
 	131 -- My Shadow
 }
+PST.undeadEnemies = {
+	EntityType.ENTITY_HUSH_GAPER, EntityType.ENTITY_WRAITH, EntityType.ENTITY_DEEP_GAPER,
+	EntityType.ENTITY_BLURB, EntityType.ENTITY_GAPER_L2, EntityType.ENTITY_MOTHER, EntityType.ENTITY_EXORCIST,
+	EntityType.ENTITY_CANDLER, EntityType.ENTITY_SUB_HORF, EntityType.ENTITY_NECRO, EntityType.ENTITY_HUSH_FLY,
+	EntityType.ENTITY_GLOBIN, EntityType.ENTITY_CLICKETY_CLACK, EntityType.ENTITY_COHORT, EntityType.ENTITY_MAW,
+	EntityType.ENTITY_RAGLING, EntityType.ENTITY_HUSH_BOIL, EntityType.ENTITY_BLACK_GLOBIN, EntityType.ENTITY_BLACK_GLOBIN_HEAD,
+	EntityType.ENTITY_BLACK_GLOBIN_BODY, EntityType.ENTITY_GUTTED_FATTY, EntityType.ENTITY_MRMAW, EntityType.ENTITY_MR_MINE,
+	EntityType.ENTITY_VIS_VERSA, EntityType.ENTITY_EVIS, EntityType.ENTITY_CYST, EntityType.ENTITY_PREY,
+	EntityType.ENTITY_FAT_SACK, EntityType.ENTITY_BLUBBER, EntityType.ENTITY_HALF_SACK,
+	EntityType.ENTITY_BUBBLES, EntityType.ENTITY_BIG_BONY, EntityType.ENTITY_BLOATY,
+	EntityType.ENTITY_VIS_FATTY, EntityType.ENTITY_DEATHS_HEAD, EntityType.ENTITY_FLESH_DEATHS_HEAD, EntityType.ENTITY_MOMS_DEAD_HAND,
+	EntityType.ENTITY_WIZOOB, EntityType.ENTITY_RED_GHOST,EntityType.ENTITY_BONY,
+	EntityType.ENTITY_BLACK_BONY, EntityType.ENTITY_REVENANT, EntityType.ENTITY_MAZE_ROAMER, EntityType.ENTITY_PSY_TUMOR,
+	EntityType.ENTITY_BISHOP, EntityType.ENTITY_CULTIST, EntityType.ENTITY_GRUB, EntityType.ENTITY_THE_HAUNT,
+	EntityType.ENTITY_POLTY, EntityType.ENTITY_DUST, EntityType.ENTITY_FLY_TRAP,
+	EntityType.ENTITY_FISSURE, EntityType.ENTITY_DUKE, EntityType.ENTITY_MEGA_MAW,
+	EntityType.ENTITY_PESTILENCE, EntityType.ENTITY_CAGE, EntityType.ENTITY_GATE,
+	EntityType.ENTITY_DEATH, EntityType.ENTITY_RAG_MAN, EntityType.ENTITY_RAG_MEGA,
+	EntityType.ENTITY_STAIN, EntityType.ENTITY_FORSAKEN, EntityType.ENTITY_SISTERS_VIS,
+	EntityType.ENTITY_LIL_BLUB, EntityType.ENTITY_RAINMAKER, EntityType.ENTITY_CLUTCH,
+	EntityType.ENTITY_HERETIC, EntityType.ENTITY_CHIMERA, EntityType.ENTITY_SCOURGE, EntityType.ENTITY_ROTGUT,
+	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_HUSH,
+	EntityType.ENTITY_DOGMA, EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_MONSTRO2
+}
+PST.undeadEnemiesSpec = {
+	{EntityType.ENTITY_GAPER, 3}, {EntityType.ENTITY_BEAST, 21}, {EntityType.ENTITY_HIVE, 1}, {EntityType.ENTITY_CHARGER, 1},
+	{EntityType.ENTITY_CHARGER, 3}, {EntityType.ENTITY_BOOMFLY, 2}, {EntityType.ENTITY_BOOMFLY, 4}, {EntityType.ENTITY_HOPPER, 2},
+	{EntityType.ENTITY_BABY, 3}, {EntityType.ENTITY_MEMBRAIN, 2}, {EntityType.ENTITY_CONJOINED_FATTY, 1}, {EntityType.ENTITY_SKINNY, 1},
+	{EntityType.ENTITY_NEEDLE, 1}, {EntityType.ENTITY_CHUB, 2}, {EntityType.ENTITY_GEMINI, 2}, {EntityType.ENTITY_PEEP, 1},
+	{EntityType.ENTITY_PIN, 2}, {EntityType.ENTITY_POLYCEPHALUS, 1}, {EntityType.ENTITY_BEAST, 20}, {EntityType.ENTITY_BEAST, 40},
+	{EntityType.ENTITY_ISAAC, 1}
+}
+PST.explosionSounds = {
+	SoundEffect.SOUND_EXPLOSION_DEBRIS, SoundEffect.SOUND_EXPLOSION_STRONG, SoundEffect.SOUND_EXPLOSION_WEAK,
+	SoundEffect.SOUND_EXPLOSIVE_DIAH, SoundEffect.SOUND_BOSS1_EXPLOSIONS
+}
+PST.rockBreakSounds = {
+	SoundEffect.SOUND_ROCK_CRUMBLE, SoundEffect.SOUND_GROUND_TREMOR, SoundEffect.SOUND_HELLBOSS_GROUNDPOUND
+}
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}
@@ -1686,6 +1725,7 @@ function PST:resetMods()
 		astralwep_onHitEnemyDmgTimer = 0,
 		astralwep_famKillTimer = 0,
 		astralwep_activeDmgTimer = 0,
+		astralwep_greatmaceCD = 0,
 
 		ancwep_greyWindCD = 0,
 		ancwep_maxwellBuff = 0,
@@ -1715,6 +1755,11 @@ function PST:resetMods()
 		ancwep_circuitEnems = {},
 		ancwep_ivoryVampTimer = 0,
 		ancwep_ivoryVampStacks = 0,
+		ancwep_chaosTumultDmgStacks = 0,
+		ancwep_firestarterBuffTimer = 0,
+		ancwep_tollBellSpeedTimer = 0,
+		ancwep_tollBellDamageTimer = 0,
+		ancwep_tollBellTearsTimer = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

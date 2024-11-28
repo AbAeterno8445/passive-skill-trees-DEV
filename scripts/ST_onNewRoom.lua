@@ -1342,6 +1342,12 @@ function PST:onNewRoom()
 		end
     end
 
+	-- Ancient weapon mod: Chaotic Tumullt
+	if PST.specialNodes.ancwep_chaosTumultDmgStacks > 0 then
+		PST.specialNodes.ancwep_chaosTumultDmgStacks = 0
+		PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+	end
+
 	-- Challenge room clear proc
 	if PST:getTreeSnapshotMod("challRoomClear", false) and roomType ~= RoomType.ROOM_CHALLENGE then
 		PST:addModifiers({ challRoomClear = false }, true)

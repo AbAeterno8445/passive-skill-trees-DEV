@@ -38,7 +38,8 @@ local weaponTypeSpriteIDs = {
     [PSTAstralWepType.SHORTBOW] = 775,
     [PSTAstralWepType.BOW] = 776,
     [PSTAstralWepType.CROSSBOW] = 777,
-    [PSTAstralWepType.GAUNTLET] = 850
+    [PSTAstralWepType.GAUNTLET] = 850,
+    [PSTAstralWepType.GREATMACE] = 851
 }
 
 function ancientWepBountiesScreen:OnOpen()

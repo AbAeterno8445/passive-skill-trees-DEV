@@ -357,7 +357,7 @@ function PST:onDamage(target, damage, flag, source)
 
                 -- Ancient starcursed jewel: Sanguinis
                 if PST:SC_getSnapshotMod("sanguinis", false) then
-                    local tmpChance = 40
+                    tmpChance = 40
                     if PST:getLevel():IsAscent() then
                         tmpChance = 20
                     end
@@ -494,6 +494,33 @@ function PST:onDamage(target, damage, flag, source)
                 tmpMod = PST:getSnapAstralWepMod("onHitEnemyDmgTaken")
                 if tmpMod then
                     PST.specialNodes.astralwep_onHitEnemyDmgTimer = math.ceil(tmpMod[2] * 30)
+                end
+
+                -- Ancient weapon mod: Mighty Purifier
+                tmpMod = PST:getSnapAstralWepMod("mightyPurifier")
+                if tmpMod then
+                    local isUndead = PST:arrHasValue(PST.undeadEnemies, target.Type)
+                    if not isUndead then
+                        for _, tmpType in ipairs(PST.undeadEnemiesSpec) do
+                            if target.Type == tmpType[1] and target.Variant == tmpType[2] then
+                                isUndead = true
+                                break
+                            end
+                        end
+                    end
+                    if isUndead and 100 * math.random() < tmpMod[2] then
+                        SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.9, 2, false, 1.2)
+                        return { Damage = 0 }
+                    end
+                end
+
+                -- Ancient weapon mod: Firestarter
+                tmpMod = PST:getSnapAstralWepMod("firestarter")
+                if tmpMod and source.Entity:GetBurnCountdown() > 0 then
+                    if PST.specialNodes.ancwep_firestarterBuffTimer == 0 then
+                        PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                    end
+                    PST.specialNodes.ancwep_firestarterBuffTimer = 90
                 end
 
                 -- Beast-hunter's Rush node
@@ -848,13 +875,13 @@ function PST:onDamage(target, damage, flag, source)
                                     for _, tmpEnemy in ipairs(nearbyEnemies) do
                                         if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly and
                                         (not tmpEnemy:IsBoss() or (tmpEnemy:IsBoss() and math.random() < 0.2)) then
-                                            tmpEnemy:AddFear(EntityRef(PST:getPlayer()), 90)
+                                            tmpEnemy:AddFear(EntityRef(srcPlayer), 90)
                                         end
                                     end
                                 end
                             end
                         end
-                        local scytheDmg = math.min(PST:getPlayer().Damage * 4, damage * (tmpMod[1] / 100))
+                        local scytheDmg = math.min(srcPlayer.Damage * 4, damage * (tmpMod[1] / 100))
                         local mobripper = PST:getSnapAstralWepMod("mobripper")
                         if mobripper then
                             scytheDmg = damage * (mobripper[1] / 100)
@@ -927,13 +954,12 @@ function PST:onDamage(target, damage, flag, source)
                         end
                     end
 
-                    local tmpPlayer = srcPlayer or PST:getPlayer()
                     local tmpChance = 3 + PST:getTreeSnapshotMod("ancwep_scramblerChance", 0)
-                    if tmpPlayer.Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
+                    if srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(1.5) then
                         tmpChance = tmpChance * 3
                     end
                     if 100 * math.random() < tmpChance then
-                        target:AddConfusion(EntityRef(tmpPlayer), 120, false)
+                        target:AddConfusion(EntityRef(srcPlayer), 120, false)
                     end
                 end
 
@@ -969,7 +995,7 @@ function PST:onDamage(target, damage, flag, source)
                         if target:IsBoss() then
                             tmpDur = tmpDur * 2
                         end
-                        target:AddBleeding(EntityRef(PST:getPlayer()), tmpDur)
+                        target:AddBleeding(EntityRef(srcPlayer), tmpDur)
                     end
                 end
 
@@ -985,17 +1011,153 @@ function PST:onDamage(target, damage, flag, source)
                     dmgMult = dmgMult + (tmpMod[1] / 100)
                     PST.specialNodes.ancwep_bruteOnslaughtHits = PST.specialNodes.ancwep_bruteOnslaughtHits - 1
                 end
+
+                -- Ancient weapon mod: Mighty Purifier
+                tmpMod = PST:getSnapAstralWepMod("mightyPurifier")
+                if tmpMod then
+                    local isUndead = PST:arrHasValue(PST.undeadEnemies, target.Type)
+                    if not isUndead then
+                        for _, tmpType in ipairs(PST.undeadEnemiesSpec) do
+                            if target.Type == tmpType[1] and target.Variant == tmpType[2] then
+                                isUndead = true
+                                break
+                            end
+                        end
+                    end
+                    if isUndead then
+                        if not target:GetData().PST_mightyPurifierStun then
+                            target:AddFreeze(EntityRef(srcPlayer), math.ceil(tmpMod[1] * 30))
+                            target:GetData().PST_mightyPurifierStun = true
+                        end
+                        dmgMult = dmgMult + (tmpMod[3] / 100)
+                    end
+                end
+
+                -- Astral weapon mod: Great Mace implicit
+                tmpMod = PST:getSnapAstralWepMod("greatmaceImp")
+                if tmpMod and PST.specialNodes.astralwep_greatmaceCD == 0 and (flag & DamageFlag.DAMAGE_CRUSH) == 0 then
+                    local tmpDist = srcPlayer.Position:Distance(target.Position)
+                    if tmpDist <= PST:getTilesDist(2.5) then
+                        local colossalMaul = PST:getSnapAstralWepMod("colossalMaul")
+
+                        -- Shockwave
+                        if not colossalMaul then
+                            Game():MakeShockwave(target.Position, 0.015, 0.01, 15)
+                            SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK)
+                        else
+                            Game():MakeShockwave(target.Position, 0.03, 0.015, 15)
+                            SFXManager():Play(SoundEffect.SOUND_HELLBOSS_GROUNDPOUND, 0.85)
+                        end
+
+                        -- Paralyze nearby enemies
+                        local tmpTileRange = 2.5
+                        if colossalMaul then tmpTileRange = tmpTileRange * (1 + colossalMaul[3] / 100) end
+
+                        local tmpMobs = Isaac.FindInRadius(target.Position, PST:getTilesDist(tmpTileRange), EntityPartition.ENEMY)
+                        for _, tmpMob in ipairs(tmpMobs) do
+                            if tmpMob:IsActiveEnemy(false) and tmpMob:IsVulnerableEnemy() and not EntityRef(tmpMob).IsFriendly then
+                                local dmgMob = true
+                                if tmpMob:GetFreezeCountdown() == 0 then
+                                    dmgMob = false
+                                    if not PST:getSnapAstralWepMod("chaoticTumult") then
+                                        tmpMob:AddFreeze(EntityRef(srcPlayer), math.ceil(tmpMod[1] * 30))
+                                    else
+                                        local tmpStatusSrc = EntityRef(srcPlayer)
+                                        local tmpStatusDur = math.ceil(tmpMod[1] * 60)
+                                        -- Ancient weapon mod: Chaotic Tumult
+                                        local randStatus = math.random(10)
+                                        if randStatus == 1 then
+                                            tmpMob:AddBurn(tmpStatusSrc, tmpStatusDur, srcPlayer.Damage)
+                                        elseif randStatus == 2 then
+                                            tmpMob:AddFear(tmpStatusSrc, tmpStatusDur)
+                                        elseif randStatus == 3 then
+                                            tmpMob:AddBaited(tmpStatusSrc, tmpStatusDur)
+                                        elseif randStatus == 4 then
+                                            tmpMob:AddFreeze(tmpStatusSrc, tmpStatusDur)
+                                        elseif randStatus == 5 then
+                                            tmpMob:AddShrink(tmpStatusSrc, tmpStatusDur)
+                                        elseif randStatus == 6 then
+                                            tmpMob:AddCharmed(tmpStatusSrc, tmpStatusDur)
+                                        elseif randStatus == 7 then
+                                            tmpMob:AddSlowing(tmpStatusSrc, tmpStatusDur, 0.8, Color(0.8, 0.8, 0.8, 1))
+                                        elseif randStatus == 8 then
+                                            tmpMob:AddBleeding(tmpStatusSrc, tmpStatusDur)
+                                        elseif randStatus == 9 then
+                                            tmpMob:AddConfusion(tmpStatusSrc, tmpStatusDur, false)
+                                        elseif randStatus == 10 then
+                                            tmpMob:AddPoison(tmpStatusSrc, tmpStatusDur, srcPlayer.Damage)
+                                        end
+                                    end
+                                end
+                                if dmgMob or colossalMaul then
+                                    -- Damage already paralyzed enemies
+                                    local tmpDmg = math.min(50, srcPlayer.Damage * (tmpMod[2] / 100))
+                                    -- Ancient weapon mod: Colossal Maul
+                                    if colossalMaul then tmpDmg = tmpDmg * 2 end
+                                    tmpMob:TakeDamage(tmpDmg, DamageFlag.DAMAGE_CRUSH, EntityRef(srcPlayer), 0)
+                                end
+                            end
+                        end
+                        PST.specialNodes.astralwep_greatmaceCD = math.ceil(tmpMod[3] * 30)
+                        if colossalMaul then
+                            PST.specialNodes.astralwep_greatmaceCD = PST.specialNodes.astralwep_greatmaceCD + math.ceil(colossalMaul[1] * 30)
+                            PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+                        end
+                    end
+                end
+
+                -- Ancient weapon mod: Chaotic Tumult
+                tmpMod = PST:getSnapAstralWepMod("chaoticTumult")
+                if tmpMod then
+                    local tmpStatusSrc = EntityRef(srcPlayer)
+                    local tmpStatusDur = 90
+                    if PST:entityHasAnyStatus(target) and 100 * math.random() < 15 then
+                        -- Spread status to a nearby enemy
+                        local nearbyEnemies = Isaac.FindInRadius(target.Position, PST:getTilesDist(tmpMod[1]), EntityPartition.ENEMY)
+                        local nearbyEnem = nil
+                        local dist = 9999
+                        for _, tmpEnemy in ipairs(nearbyEnemies) do
+                            if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly and tmpEnemy.InitSeed ~= target.InitSeed then
+                                local tmpDist = target.Position:Distance(tmpEnemy.Position)
+                                if tmpDist < dist then
+                                    nearbyEnem = tmpEnemy
+                                    dist = tmpDist
+                                end
+                            end
+                        end
+                        if nearbyEnem then
+                            if target:GetBurnCountdown() > 0 then nearbyEnem:AddBurn(tmpStatusSrc, tmpStatusDur, srcPlayer.Damage)
+                            elseif target:GetFearCountdown() > 0 then nearbyEnem:AddFear(tmpStatusSrc, tmpStatusDur)
+                            elseif target:GetBaitedCountdown() > 0 then nearbyEnem:AddBaited(tmpStatusSrc, tmpStatusDur)
+                            elseif target:GetFreezeCountdown() > 0 then nearbyEnem:AddFreeze(tmpStatusSrc, tmpStatusDur)
+                            elseif target:GetShrinkCountdown() > 0 then nearbyEnem:AddShrink(tmpStatusSrc, tmpStatusDur)
+                            elseif target:GetCharmedCountdown() > 0 then nearbyEnem:AddCharmed(tmpStatusSrc, tmpStatusDur)
+                            elseif target:GetSlowingCountdown() > 0 then nearbyEnem:AddSlowing(tmpStatusSrc, tmpStatusDur, 0.8, Color(0.8, 0.8, 0.8, 1))
+                            elseif target:GetBleedingCountdown() > 0 then nearbyEnem:AddBleeding(tmpStatusSrc, tmpStatusDur)
+                            elseif (target:GetEntityFlags() & EntityFlag.FLAG_CONFUSION) > 0 then nearbyEnem:AddConfusion(tmpStatusSrc, tmpStatusDur, false)
+                            elseif (target:GetEntityFlags() & EntityFlag.FLAG_POISON) > 0 then nearbyEnem:AddPoison(tmpStatusSrc, tmpStatusDur, srcPlayer.Damage)
+                            end
+                        end
+                    end
+                end
+
+                -- Ancient weapon mod: Firestarter
+                tmpMod = PST:getSnapAstralWepMod("firestarter")
+                if tmpMod then
+                    local tmpChance = tmpMod[1]
+                    if (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+                        tmpChance = tmpChance * 3
+                    end
+                    if target:GetBurnCountdown() == 0 and 100 * math.random() < tmpChance then
+                        target:AddBurn(EntityRef(srcPlayer), 150, srcPlayer.Damage)
+                    end
+                end
             end
 
             -- Astral weapon mod: +% damage dealt to enemies affected by status effects
             tmpMod = PST:getSnapAstralWepMod("dmgStatus")
-            if tmpMod then
-                if target:GetBurnCountdown() > 0 or target:GetFearCountdown() > 0 or target:GetBaitedCountdown() > 0 or
-                target:GetFreezeCountdown() > 0 or target:GetShrinkCountdown() > 0 or target:GetCharmedCountdown() > 0 or
-                target:GetSlowingCountdown() > 0 or target:GetBleedingCountdown() > 0 or
-                (target:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
-                    dmgMult = dmgMult + tmpMod[1] / 100
-                end
+            if tmpMod and PST:entityHasAnyStatus(target) then
+                dmgMult = dmgMult + tmpMod[1] / 100
             end
 
             -- Astral weapon mod: +% damage dealt to slowed denemies

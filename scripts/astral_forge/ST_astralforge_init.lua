@@ -12,7 +12,8 @@ PSTAstralWepType = {
     SHORTBOW = 9,
     BOW = 10,
     CROSSBOW = 11,
-    GAUNTLET = 12
+    GAUNTLET = 12,
+    GREATMACE = 13
 }
 
 ---@enum PSTAstralWepRarity
@@ -862,6 +863,69 @@ PST.astralWepMods = {
         minRolls = {0.2},
         maxRolls = {1},
         upgIncrements = {0.05}
+    },
+    -- Ancient Great Maces
+    mightyPurifier = {
+        description = {
+            "Paralyze undead enemies for {{roll1}} second(s) when first hitting them.",
+            "{{roll2}}% chance to block hits from undead enemies.",
+            "+{{roll3}}% damage dealt to undead enemies."
+        },
+        ancient = true,
+        minRolls = {1.5, 15, 25},
+        maxRolls = {2.5, 22, 35},
+        upgIncrements = {0.1, 0.5, 1}
+    },
+    chaoticTumult = {
+        description = {
+            "The implicit shockwave now triggers a random status effect on hit for twice as long, instead of paralysis.",
+            "When hitting an enemy affected by a status effect, 15% chance to spread the effect to a",
+            "random enemy within {{roll1}} tiles of the hit.",
+            "+1% damage for the current room when killing enemies affected by status effects, up to {{roll2}}%."
+        },
+        ancient = true,
+        minRolls = {3, 8},
+        maxRolls = {4, 15},
+        upgIncrements = {0.1, 0.5}
+    },
+    firestarter = {
+        description = {
+            "{{roll1}}% chance to inflict burning for 5 seconds on hit.",
+            "Chance is tripled for explosion hits.",
+            "Killing a burning enemy has a 35% chance to cause an explosion dealing {{roll2}}% of your damage, capped",
+            "at 50.",
+            "Getting hit by a burning enemy grants you +15% speed for 3 seconds."
+        },
+        ancient = true,
+        minRolls = {12, 220},
+        maxRolls = {18, 300},
+        upgIncrements = {0.2, 6}
+    },
+    colossalMaul = {
+        description = {
+            "Double the implicit shockwave's damage.",
+            "+{{roll3}}% implicit shockwave size.",
+            "Implicit shockwave's damage can affect enemies regardless of paralysis status.",
+            "+{{roll1}} seconds to the implicit shockwave's cooldown.",
+            "-{{roll2}}% speed and tears while the implicit shockwave is on cooldown."
+        },
+        ancient = true,
+        minRolls = {3, 12, 30},
+        maxRolls = {2, 5, 40},
+        upgIncrements = {-0.1, -0.5, 1}
+    },
+    tollingBell = {
+        description = {
+            "Start with innate Leo.",
+            "When certain sounds play, gain a temporary buff:",
+            "- Explosion sounds: +{{roll1}}% speed for 3 seconds.",
+            "- Broken rock sounds: +{{roll2}}% damage for 4 seconds.",
+            "- Boss door closing: +{{roll3}}% tears for 7 seconds."
+        },
+        ancient = true,
+        minRolls = {7, 10, 10},
+        maxRolls = {12, 18, 20},
+        upgIncrements = {0.5, 0.5, 1}
     }
 }
 
@@ -1461,6 +1525,68 @@ PST.astralWepData = {
                 spriteFrame = 38,
                 weight = 100,
                 ancientMods = {"ironhand"}
+            }
+        }
+    },
+    -- Great Maces
+    [PSTAstralWepType.GREATMACE] = {
+        name = "Great Mace",
+        internalName = "GreatMace",
+        spriteFrames = {
+            [PSTAstralWepRarity.NORMAL] = 26,
+            [PSTAstralWepRarity.MAGIC] = 27,
+            overlay = 13
+        },
+        implicitMod = {
+            name = "greatmaceImp",
+            description = {
+                "Hitting an enemy within 2.5 tiles causes a shockwave, paralyzing nearby enemies for {{roll1}} seconds.",
+                "Already paralyzed enemies hit by the shockwave receive {{roll2}}% of your damage, capped at 50.",
+                "{{roll3}} second cooldown."
+            },
+            rollsFunc = function(honing)
+                return {
+                    roll1 = 1.5 + PST:roundFloat(0.5 * (honing / 50), -2),
+                    roll2 = 200 + honing,
+                    roll3 = 7 - PST:roundFloat(1.5 * (honing / 50), -2)
+                }
+            end
+        },
+        ancients = {
+            -- Mighty Purifier
+            {
+                name = "Mighty Purifier",
+                spriteFrame = 40,
+                weight = 100,
+                ancientMods = {"mightyPurifier"}
+            },
+            -- Chaotic Tumult
+            {
+                name = "Chaotic Tumult",
+                spriteFrame = 41,
+                weight = 100,
+                ancientMods = {"chaoticTumult"}
+            },
+            -- Firestarter
+            {
+                name = "Firestarter",
+                spriteFrame = 42,
+                weight = 100,
+                ancientMods = {"firestarter"}
+            },
+            -- Colossal Maul
+            {
+                name = "Colossal Maul",
+                spriteFrame = 43,
+                weight = 100,
+                ancientMods = {"colossalMaul"}
+            },
+            -- Tolling Bell
+            {
+                name = "Tolling Bell",
+                spriteFrame = 44,
+                weight = 100,
+                ancientMods = {"tollingBell"}
             }
         }
     }

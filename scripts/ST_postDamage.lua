@@ -787,6 +787,13 @@ function PST:postDamage(target, damage, flag, source)
                         })
                     end
                 end
+
+                -- Ancient weapon mod: Firestarter
+                tmpMod = PST:getSnapAstralWepMod("firestarter")
+                if tmpMod and target:GetBurnCountdown() > 0 and isKillingHit and 100 * math.random() < 35 then
+                    local tmpPlayer = srcPlayer or PST:getPlayer()
+                    Isaac.Explode(target.Position, PST:getPlayer(), math.min(50, tmpPlayer.Damage * (tmpMod[2] / 100)))
+                end
             end
 
             -- Ancient weapon mod: Nimble Twins (special tear hits)

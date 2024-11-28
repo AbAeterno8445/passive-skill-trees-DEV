@@ -288,6 +288,12 @@ function PST:onCache(player, cacheFlag)
         if PST:SC_getSnapshotMod("glitteringStarstone", false) then
             dynamicMods.damagePerc = dynamicMods.damagePerc + player:GetNumCoins()
         end
+
+        -- Ancient weapon mod: Chaotic Tumult
+        tmpTreeMod = PST:getSnapAstralWepMod("chaoticTumult")
+        if tmpTreeMod and PST.specialNodes.ancwep_chaosTumultDmgStacks > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + math.min(tmpTreeMod[2], PST.specialNodes.ancwep_chaosTumultDmgStacks)
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -380,6 +386,11 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod > 0 and player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) then
             dynamicMods.speedPerc = dynamicMods.speedPerc + 10
             if tmpTreeMod == 1 then dynamicMods.speedPerc = dynamicMods.speedPerc + 5 end
+        end
+
+        -- Ancient weapon mod: Firestarter
+        if PST.specialNodes.ancwep_firestarterBuffTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + 15
         end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
@@ -915,6 +926,27 @@ function PST:onCache(player, cacheFlag)
         dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod[1] * PST.specialNodes.ancwep_ivoryVampStacks
         dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod[1] * PST.specialNodes.ancwep_ivoryVampStacks
         dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod[1] * PST.specialNodes.ancwep_ivoryVampStacks
+    end
+
+    -- Ancient weapon mod: Colossal Maul
+    tmpTreeMod = PST:getSnapAstralWepMod("colossalMaul")
+    if tmpTreeMod and PST.specialNodes.astralwep_greatmaceCD > 0 then
+        dynamicMods.speedPerc = dynamicMods.speedPerc - tmpTreeMod[2]
+        dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpTreeMod[2]
+    end
+
+    -- Ancient weapon mod: Tolling Bell
+    tmpTreeMod = PST:getSnapAstralWepMod("tollingBell")
+    if tmpTreeMod then
+        if PST.specialNodes.ancwep_tollBellSpeedTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod[1]
+        end
+        if PST.specialNodes.ancwep_tollBellDamageTimer > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpTreeMod[2]
+        end
+        if PST.specialNodes.ancwep_tollBellTearsTimer > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod[3]
+        end
     end
 
     -- Consuming Void node (T. Isaac's tree)

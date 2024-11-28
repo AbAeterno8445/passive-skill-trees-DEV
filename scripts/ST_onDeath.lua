@@ -585,6 +585,16 @@ function PST:onDeath(entity)
             end
         end
 
+        -- Killed enemy with any status effect
+        if PST:entityHasAnyStatus(entity) then
+            -- Ancient weapon mod: Chaotic Tumult
+            tmpMod = PST:getSnapAstralWepMod("chaoticTumult")
+            if tmpMod and PST.specialNodes.ancwep_chaosTumultDmgStacks < tmpMod[2] then
+                PST.specialNodes.ancwep_chaosTumultDmgStacks = PST.specialNodes.ancwep_chaosTumultDmgStacks + 1
+                PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+            end
+        end
+
         -- Ascetic Soul node (T. Blue Baby's tree)
         if PST:getTreeSnapshotMod("asceticSoul", false) and PST:getTreeSnapshotMod("asceticSoulDrops", 0) < 5 and PST:getPlayer():GetPoopMana() >= 8 and
         100 * math.random() < 7 then

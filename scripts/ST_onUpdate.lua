@@ -2728,6 +2728,48 @@ function PST:onUpdate()
 		end
 	end
 
+	-- Astral weapon mod: Great Mace implicit
+	if PST.specialNodes.astralwep_greatmaceCD > 0 then
+		PST.specialNodes.astralwep_greatmaceCD = PST.specialNodes.astralwep_greatmaceCD - 1
+		-- Ancient weapon mod: Colossal Maul
+		if PST.specialNodes.astralwep_greatmaceCD == 0 and PST:getSnapAstralWepMod("colossalMaul") then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+
+	-- Ancient weapon mod: Firestarter
+	if PST.specialNodes.ancwep_firestarterBuffTimer > 0 then
+		PST.specialNodes.ancwep_firestarterBuffTimer = PST.specialNodes.ancwep_firestarterBuffTimer - 1
+		if PST.specialNodes.ancwep_firestarterBuffTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+	end
+
+	-- Ancient weapon mod: Tolling Bell
+	if PST:getSnapAstralWepMod("tollingBell") then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_LEO) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO)
+		end
+		if PST.specialNodes.ancwep_tollBellSpeedTimer > 0 then
+			PST.specialNodes.ancwep_tollBellSpeedTimer = PST.specialNodes.ancwep_tollBellSpeedTimer - 1
+			if PST.specialNodes.ancwep_tollBellSpeedTimer == 0 then
+				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+			end
+		end
+		if PST.specialNodes.ancwep_tollBellDamageTimer > 0 then
+			PST.specialNodes.ancwep_tollBellDamageTimer = PST.specialNodes.ancwep_tollBellDamageTimer - 1
+			if PST.specialNodes.ancwep_tollBellDamageTimer == 0 then
+				PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+			end
+		end
+		if PST.specialNodes.ancwep_tollBellTearsTimer > 0 then
+			PST.specialNodes.ancwep_tollBellTearsTimer = PST.specialNodes.ancwep_tollBellTearsTimer - 1
+			if PST.specialNodes.ancwep_tollBellTearsTimer == 0 then
+				PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+			end
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 
