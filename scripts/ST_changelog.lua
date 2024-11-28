@@ -16,6 +16,8 @@ function PST:getChangelogList()
         "- Devil deal expedition objectives now also count purchasing items with coins while in the devil room,",
         "rather than just hearts.",
         "- Opening Sidereal Caches in challenge rooms should now start the challenge.",
+        "- Fixed general monster modifiers (such as higher hp or speed) not applying to monsters spawned after",
+        "entering the room.",
         "- Fixed T. Azazel's \"Curseborne\" node affecting friendly monsters.",
         "- Fixed Auric Persecutor calculating the tears multiplier incorrectly.",
         "- Fixed Starsteel Broadaxe's buff persisting between rooms. Its maximum tear buff is now 33% (from 40%).",

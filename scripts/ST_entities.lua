@@ -63,6 +63,73 @@ function PST:onNPCUpdate(npc)
         Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, npc.Position, Vector.Zero, nil, 0, Random() + 1)
         npc:Remove()
     end
+
+    -- Monster init modifiers
+    if npc:IsActiveEnemy(false) and npc:IsVulnerableEnemy() and not EntityRef(npc).IsFriendly then
+        if not npc:GetData().PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON then
+            npc:GetData().PST_mobInit = true
+
+            ---- HP modifiers ----
+            local tmpHPMod = 0
+            local tmpHPMult = 1
+
+            local extraHPMult = 1
+            -- Halve monster HP boosts on the very first floor
+            if PST:isFirstOrigStage() then
+                extraHPMult = 0.5
+            end
+
+            -- Larry Jr nerf
+            if npc.Type == EntityType.ENTITY_LARRYJR then
+                extraHPMult = extraHPMult / 2
+            end
+
+            if not npc:IsBoss() and not npc:IsChampion() then
+                tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
+                tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * extraHPMult) / 100
+            else
+                if npc:IsChampion() then
+                    tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * extraHPMult) / 100
+                    if PST:SC_getSnapshotMod("mightstone", false) then
+                        tmpHPMult = tmpHPMult + 0.15 * extraHPMult
+                    end
+                end
+                if npc:IsBoss() then
+                    tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
+                    tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * extraHPMult) / 100
+                end
+            end
+
+            -- Expedition implicit: mob hp
+            local tmpMod = PST:getTreeSnapshotMod("expedImp_mobHP", 0)
+            if tmpMod > 0 then
+                tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
+            end
+
+            -- Expedition curse: resilience
+            tmpMod = PST:getTreeSnapshotMod("curseResilience", 0)
+            if tmpMod > 0 then
+                tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
+            end
+
+            npc.MaxHitPoints = (npc.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
+            npc.HitPoints = npc.MaxHitPoints
+
+            -- Boon: bosses start with % missing HP
+            tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
+            if tmpMod > 0 then
+                npc.HitPoints = math.ceil(npc.MaxHitPoints * (1 - tmpMod / 100))
+            end
+
+            ---- Speed modifiers ----
+            -- Expedition implicit: monster speed
+            tmpMod = PST:getTreeSnapshotMod("expedImp_mobSpeed", 0)
+            if tmpMod > 0 then
+                local tmpSpeed = npc:GetSpeedMultiplier()
+                npc:SetSpeedMultiplier(tmpSpeed * (1 + (tmpMod / 100)))
+            end
+        end
+    end
 end
 
 ---@param familiar EntityFamiliar

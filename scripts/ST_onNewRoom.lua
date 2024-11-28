@@ -104,68 +104,6 @@ function PST:onNewRoom()
 						end
 					end
 				end
-
-				if tmpNPC.Type ~= EntityType.ENTITY_GIDEON then
-					---- HP modifiers ----
-					local tmpHPMod = 0
-					local tmpHPMult = 1
-
-					local extraHPMult = 1
-					-- Halve monster HP boosts on the very first floor
-					if PST:isFirstOrigStage() then
-						extraHPMult = 0.5
-					end
-
-					-- Larry Jr nerf
-					if tmpNPC.Type == EntityType.ENTITY_LARRYJR then
-						extraHPMult = extraHPMult / 2
-					end
-
-					if not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
-						tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
-						tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * extraHPMult) / 100
-					else
-						if tmpNPC:IsChampion() then
-							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * extraHPMult) / 100
-							if PST:SC_getSnapshotMod("mightstone", false) then
-								tmpHPMult = tmpHPMult + 0.15 * extraHPMult
-							end
-						end
-						if tmpNPC:IsBoss() then
-							tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
-							tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * extraHPMult) / 100
-						end
-					end
-
-					-- Expedition implicit: mob hp
-					local tmpMod = PST:getTreeSnapshotMod("expedImp_mobHP", 0)
-					if tmpMod > 0 then
-						tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
-					end
-
-					-- Expedition curse: resilience
-					tmpMod = PST:getTreeSnapshotMod("curseResilience", 0)
-					if tmpMod > 0 then
-						tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
-					end
-
-					tmpEntity.MaxHitPoints = (tmpEntity.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
-					tmpEntity.HitPoints = tmpEntity.MaxHitPoints
-
-					-- Boon: bosses start with % missing HP
-					tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
-					if tmpMod > 0 then
-						tmpEntity.HitPoints = math.ceil(tmpEntity.MaxHitPoints * (1 - tmpMod / 100))
-					end
-
-					---- Speed modifiers ----
-					-- Expedition implicit: monster speed
-					tmpMod = PST:getTreeSnapshotMod("expedImp_mobSpeed", 0)
-					if tmpMod > 0 then
-						local tmpSpeed = tmpEntity:GetSpeedMultiplier()
-						tmpEntity:SetSpeedMultiplier(tmpSpeed * (1 + (tmpMod / 100)))
-					end
-				end
 			end
 		end
 
