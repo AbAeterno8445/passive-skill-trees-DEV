@@ -1348,6 +1348,12 @@ function PST:onNewRoom()
 		PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 	end
 
+	-- Ancient weapon mod: Starsteel Broadaxe
+	if PST.specialNodes.ancwep_starsteelAxeBuff > 0 then
+		PST.specialNodes.ancwep_starsteelAxeBuff = 0
+		PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+	end
+
 	-- Challenge room clear proc
 	if PST:getTreeSnapshotMod("challRoomClear", false) and roomType ~= RoomType.ROOM_CHALLENGE then
 		PST:addModifiers({ challRoomClear = false }, true)

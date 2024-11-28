@@ -17,7 +17,8 @@ function PST:getChangelogList()
         "rather than just hearts.",
         "- Opening Sidereal Caches in challenge rooms should now start the challenge.",
         "- Fixed T. Azazel's \"Curseborne\" node affecting friendly monsters.",
-        "- Fixed Auric Persecutor (ancient weapon) calculating the tears multiplier incorrectly.",
+        "- Fixed Auric Persecutor calculating the tears multiplier incorrectly.",
+        "- Fixed Starsteel Broadaxe's buff persisting between rooms. Its maximum tear buff is now 33% (from 40%).",
         "",
 
         "v0.4.16",

@@ -704,7 +704,7 @@ PST.astralWepMods = {
         },
         ancient = true,
         minRolls = {20},
-        maxRolls = {40},
+        maxRolls = {33},
         upgIncrements = {1}
     },
     ancientRunicChopper = {

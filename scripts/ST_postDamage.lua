@@ -672,10 +672,8 @@ function PST:postDamage(target, damage, flag, source)
                 tmpMod = PST:getSnapAstralWepMod("starsteelBroadaxe")
                 if tmpMod then
                     if target:GetBleedingCountdown() > 0 then
-                        local tmpAdd = math.min(2, tmpMod[1] - PST:getTreeSnapshotMod("ancwep_starsteelAxeBuff", 0))
-                        if tmpAdd > 0 then
-                            PST:addModifiers({ tearsPerc = tmpAdd, ancwep_starsteelAxeBuff = tmpAdd }, true)
-                        end
+                        PST.specialNodes.ancwep_starsteelAxeBuff = math.min(tmpMod[1], PST.specialNodes.ancwep_starsteelAxeBuff + 2)
+                        PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
                     end
                     if target:IsBoss() then
                         local tmpCD = target:GetBossStatusEffectCooldown()

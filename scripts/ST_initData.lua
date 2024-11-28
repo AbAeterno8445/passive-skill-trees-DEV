@@ -1605,7 +1605,6 @@ function PST:resetMods()
 		ancwep_consecratorDmg = 0,
 		ancwep_consecratorTears = 0,
 		ancwep_taleEnderProcs = 0,
-		ancwep_starsteelAxeBuff = 0,
 		ancwep_runicChopperBuff = 0,
 		ancwep_berserkerWrathProc = false,
 		ancwep_gildedSeekerBuff = 0,
@@ -1760,6 +1759,7 @@ function PST:resetMods()
 		ancwep_tollBellSpeedTimer = 0,
 		ancwep_tollBellDamageTimer = 0,
 		ancwep_tollBellTearsTimer = 0,
+		ancwep_starsteelAxeBuff = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

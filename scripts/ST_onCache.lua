@@ -519,6 +519,12 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod and PST.specialNodes.ancwep_bruteOnslaughtBuffTimer > 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod[2]
         end
+
+        -- Ancient weapon mod: Starsteel Broadaxe
+        tmpTreeMod = PST:getSnapAstralWepMod("starsteelBroadaxe")
+        if tmpTreeMod and PST.specialNodes.ancwep_starsteelAxeBuff > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.min(tmpMod[1], PST.specialNodes.ancwep_starsteelAxeBuff)
+        end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- Mod: range while dead bird is active
