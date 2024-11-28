@@ -900,7 +900,7 @@ function PST:onCache(player, cacheFlag)
     -- Ancient weapon mod: Auric Persecutor
     tmpTreeMod = PST:getSnapAstralWepMod("auricPersecutor")
     if tmpTreeMod then
-        dynamicMods.tearsPerc = math.min(tmpTreeMod[1], player:GetNumCoins() / 2)
+        dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.min(tmpTreeMod[1], player:GetNumCoins() / 2)
     end
 
     -- Ancient weapon mod: Gravitas

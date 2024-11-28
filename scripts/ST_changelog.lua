@@ -15,6 +15,7 @@ function PST:getChangelogList()
         "rather than just hearts.",
         "- Opening Sidereal Caches in challenge rooms should now start the challenge.",
         "- Fixed T. Azazel's \"Curseborne\" node affecting friendly monsters.",
+        "- Fixed Auric Persecutor (ancient weapon) calculating the tears multiplier incorrectly.",
         "",
 
         "v0.4.16",
