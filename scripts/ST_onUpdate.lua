@@ -40,6 +40,15 @@ function PST:frameUpdate()
 	local roomFrame = room:GetFrameCount()
 	local gameFrame = Game():GetFrameCount()
 
+	-- Dynamically init specific characters
+	if PST:getCurrentCharName() == nil then
+		local plType = player:GetPlayerType()
+		-- Epiphany: Tarnished Judas phases support
+		if Epiphany and Epiphany.Character.JUDAS.isJudas(plType) then
+			PST:initUnknownChar("Tr. Judas", false, 1 + plType)
+		end
+	end
+
 	if inDeathCertificate and level:GetDimension() ~= Dimension.DEATH_CERTIFICATE then
 		-- Left death certificate dimension, re-update level
 		PST.floorFirstUpdate = true

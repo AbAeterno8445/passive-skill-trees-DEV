@@ -489,12 +489,16 @@ if Isaac.IsInGame() then
 	if PST.charNames[1 + tmpPlayer:GetPlayerType()] == nil then
 		-- Epiphany, tarnished characters
 		if Epiphany then
-			local playerConfig = EntityConfig.GetPlayer(tmpPlayer:GetPlayerType())
+			local plType = tmpPlayer:GetPlayerType()
+			local playerConfig = EntityConfig.GetPlayer(plType)
 			if playerConfig then
 				local tmpName = playerConfig:GetName()
-				if string.byte(string.sub(tmpName, 1, 3)) == 226 then
+				-- Tarnished Judas phases support
+				if Epiphany.Character.JUDAS.isJudas(plType) then
+					PST:initUnknownChar("Tr. Judas", false, 1 + plType)
+				elseif string.byte(string.sub(tmpName, 1, 3)) == 226 then
 					tmpName = "Tr. " .. string.sub(tmpName, 4)
-					PST:initUnknownChar(tmpName, false, 1 + tmpPlayer:GetPlayerType())
+					PST:initUnknownChar(tmpName, false, 1 + plType)
 				end
 			end
 		end
