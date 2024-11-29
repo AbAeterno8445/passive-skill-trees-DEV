@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Epiphany: Added support for various feature interactions, such as chests, familiars, mobs, items, etc.",
         "- Epiphany: Sidereal Caches can now be opened with Multitools.",
         "- Epiphany: Fixed Tarnished Judas' phase transitions removing xp and levels.",
+        "- Crimson Starcores can now show up at expedition depths 15+ (from 20+), at a slightly reduced rate.",
         "- Added a new Ancient astral weapon: Metamorphic Claw (gauntlet).",
         "- Added a new global node that allows switching the tree description box style freely.",
         "- Marked now contributes to 'while firing' modifiers at a reduced rate, while the marker is out.",

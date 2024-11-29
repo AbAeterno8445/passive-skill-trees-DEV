@@ -172,9 +172,9 @@ function PST:generateExpeditionV2(depth, seed)
                 newNode.rewardType = PSTExpNodeRewardType.OBOLS
             end
 
-            -- Chance for crimson starcore on final node past depth 20
-            if depth >= 20 and (col == expLength) then
-                local starcoreChance = math.min(0.55, 0.2 + (depth - 20) * 0.02)
+            -- Chance for crimson starcore on final node past depth 15
+            if depth >= 15 and (col == expLength) then
+                local starcoreChance = math.min(0.55, 0.12 + (depth - 15) * 0.02)
                 if rewardRNG:RandomFloat() < starcoreChance then
                     newNode.rewardType = PSTExpNodeRewardType.C_STARCORE
                 end
