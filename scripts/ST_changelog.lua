@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.19",
+        "- Epiphany: Added support for various feature interactions, such as chests, familiars, mobs, items, etc.",
         "- Epiphany: Sidereal Caches can now be opened with Multitools.",
         "- Epiphany: Fixed Tarnished Judas' phase transitions removing xp and levels.",
         "- Added a new Ancient astral weapon: Metamorphic Claw (gauntlet).",

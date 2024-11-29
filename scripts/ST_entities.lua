@@ -358,6 +358,9 @@ function PST:familiarUpdate(familiar)
         -- Removed familiars
         elseif familiar.Variant == FamiliarVariant.BBF or familiar.Variant == FamiliarVariant.MOMS_RAZOR then
             familiar:Remove()
+        -- Epiphany: Old Knife
+        elseif Epiphany and familiar.Variant == Isaac.GetEntityVariantByName("Old Knife") then
+            hide = (familiar.State == 0)
         end
 
         -- Pop-up poof FX

@@ -1315,6 +1315,12 @@ function PST:onNewRoom()
 		for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(PST.ItemPoolType.POOL_BLUE)) do
 			table.insert(PST.blueItemPool, tmpItem.itemID)
 		end
+		-- Epiphany blue items
+		if Epiphany then
+			table.insert(PST.blueItemPool, Epiphany.Item.DIVINE_REMNANTS.ID)
+			table.insert(PST.blueItemPool, Epiphany.Item.CHANCE_CUBE.ID)
+			table.insert(PST.blueItemPool, Epiphany.Item.D5.ID)
+		end
 		PST:updateCacheDelayed(PST.allstatsCache)
 	end
 

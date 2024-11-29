@@ -308,36 +308,6 @@ function PST:getCurrentCharData()
 	return PST.modData.charData[currentChar]
 end
 
--- Mod compatibility helper
-local initMods = {}
-function PST:initModCompat()
-	-- Epiphany
-	if Epiphany and not initMods.epiphany then
-		initMods.epiphany = true
-		-- Tarnished Keeper blacklisted items
-		Epiphany.Character.KEEPER.DisallowedPickUpVariants[Isaac.GetEntityVariantByName("Sidereal Cache")] = 0
-		if not Epiphany.Character.KEEPER.DisallowedPickUpVariants[PickupVariant.PICKUP_TRINKET] then
-			Epiphany.Character.KEEPER.DisallowedPickUpVariants[PickupVariant.PICKUP_TRINKET] = {}
-		end
-		local tmpBlacklist = Epiphany.Character.KEEPER.DisallowedPickUpVariants[PickupVariant.PICKUP_TRINKET]
-		tmpBlacklist[Isaac.GetTrinketIdByName("Azure Starcursed Jewel")] = 0
-		tmpBlacklist[Isaac.GetTrinketIdByName("Crimson Starcursed Jewel")] = 0
-		tmpBlacklist[Isaac.GetTrinketIdByName("Viridian Starcursed Jewel")] = 0
-		tmpBlacklist[Isaac.GetTrinketIdByName("Ancient Starcursed Jewel")] = 0
-		for i=1,8 do
-			tmpBlacklist[Isaac.GetTrinketIdByName("Arcane Obols " .. tostring(i))] = 0
-		end
-		local wepPrefix = "Astral weapon: "
-		for _, wepData in pairs(PST.astralWepData) do
-			tmpBlacklist[Isaac.GetTrinketIdByName(wepPrefix .. wepData.name)] = 0
-			tmpBlacklist[Isaac.GetTrinketIdByName(wepPrefix .. wepData.name .. " (magic)")] = 0
-			for _, tmpAncient in ipairs(wepData.ancients) do
-				tmpBlacklist[Isaac.GetTrinketIdByName(wepPrefix .. tmpAncient.name)] = 0
-			end
-		end
-	end
-end
-
 function PST:postModsLoaded()
 	-- Associate Soul of the Siren to Siren playertype
 	local sirenType = Isaac.GetPlayerTypeByName("Siren")
@@ -363,6 +333,7 @@ function PST:onExitGame()
 	PST.specialFX.shadowmeldTransition = false
 end
 
+include("scripts.ST_modCompat")
 include("scripts.ST_utility")
 include("scripts.ST_completionEvents")
 include("scripts.ST_cosmicRData")

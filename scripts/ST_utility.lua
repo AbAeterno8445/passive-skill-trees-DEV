@@ -716,7 +716,7 @@ function PST:NPCChampionAvailable(npc)
 	end
 	for _, mobData in ipairs(tmpBlacklist) do
 		if type(mobData) == "table" then
-			if npc.Type == mobData[1] and npc.SubType == mobData[2] then
+			if npc.Type == mobData[1] and npc.Variant == mobData[2] then
 				return false
 			end
 		elseif npc.Type == mobData then
