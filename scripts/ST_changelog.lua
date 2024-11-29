@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.19",
         "- Epiphany: Sidereal Caches can now be opened with Multitools.",
+        "- Keeper and T. Keeper can no longer receive broken hearts from expedition effects.",
         "",
 
         "v0.4.18",

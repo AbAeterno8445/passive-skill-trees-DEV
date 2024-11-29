@@ -481,6 +481,7 @@ PST.explosionSounds = {
 PST.rockBreakSounds = {
 	SoundEffect.SOUND_ROCK_CRUMBLE, SoundEffect.SOUND_GROUND_TREMOR, SoundEffect.SOUND_HELLBOSS_GROUNDPOUND
 }
+PST.brokenHeartCharBlacklist = {"Keeper", "T. Keeper"}
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}
