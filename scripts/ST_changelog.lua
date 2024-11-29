@@ -6,6 +6,8 @@ function PST:getChangelogList()
         "v0.4.19",
         "- Epiphany: Sidereal Caches can now be opened with Multitools.",
         "- Epiphany: Fixed Tarnished Judas' phase transitions removing xp and levels.",
+        "- Added a new Ancient astral weapon: Metamorphic Claw (gauntlet).",
+        "- Added a new global node that allows switching the tree description box style freely.",
         "- Keeper and T. Keeper can no longer receive broken hearts from expedition effects.",
         "- Fixed Starsteel Broadaxe error when updating its buff.",
         "",

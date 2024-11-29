@@ -864,6 +864,17 @@ PST.astralWepMods = {
         maxRolls = {1},
         upgIncrements = {0.05}
     },
+    metamorphicClaw = {
+        description = {
+            "Mimics the effect of a random non-Gauntlet ancient weapon.",
+            "Effect changes every floor.",
+            "Ancient upgrade level used for chosen effects: {{roll1}}."
+        },
+        ancient = true,
+        minRolls = {0},
+        maxRolls = {8},
+        upgIncrements = {1}
+    },
     -- Ancient Great Maces
     mightyPurifier = {
         description = {
@@ -1525,6 +1536,13 @@ PST.astralWepData = {
                 spriteFrame = 38,
                 weight = 100,
                 ancientMods = {"ironhand"}
+            },
+            -- Metamorphic Claw
+            {
+                name = "Metamorphic Claw",
+                spriteFrame = 45,
+                weight = 100,
+                ancientMods = {"metamorphicClaw"}
             }
         }
     },

@@ -16,6 +16,7 @@ function PST:astralWepRoundRolls(modRolls)
     return newModRolls
 end
 
+---@return PSTAstralWepType
 function PST:astralWepPickRandType(factorMods)
     local typeWeights = {}
     local totalWeight = 0
@@ -478,6 +479,37 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
         modDisplayed = true
     end
 
+    -- Metamorphic Claw: show chosen modifier while in-game
+    local tmpMod = PST:getSnapAstralWepMod("metamorphicClaw")
+    if Isaac.IsInGame() and tmpMod and weaponData.type == PSTAstralWepType.GAUNTLET and weaponData.rarity == PSTAstralWepRarity.ANCIENT and
+    weaponData.ancientID == 3 then
+        local targetMods = PST:getTreeSnapshotMod("ancwep_metaClawMod", nil)
+        if targetMods then
+            for _, tmpTargetMod in ipairs(targetMods) do
+                local tmpModData = PST.astralWepMods[tmpTargetMod]
+                if tmpModData then
+                    local modDesc = tmpModData.description
+                    local tmpRollList = {}
+                    for i, tmpRoll in ipairs(tmpModData.minRolls) do
+                        local tgtRoll = "roll" .. tostring(i)
+                        local tmpMathFunc = math.min
+                        if tmpModData.upgIncrements[i] < 0 then
+                            tmpMathFunc = math.max
+                        end
+                        tmpRollList[tgtRoll] = tostring(tmpMathFunc(tmpModData.maxRolls[i], tmpRoll + tmpModData.upgIncrements[i] * tmpMod[1]))
+                    end
+                    if type(modDesc) == "table" then
+                        for _, tmpLine in ipairs(modDesc) do
+                            table.insert(tmpDescription, {PST:formatString(tmpLine, tmpRollList), PST.kcolors.PURPLE1})
+                        end
+                    else
+                        table.insert(tmpDescription, {PST:formatString(modDesc, tmpRollList), PST.kcolors.PURPLE1})
+                    end
+                end
+            end
+        end
+    end
+
     if modDisplayed then
         table.insert(tmpDescription, "")
     end
@@ -492,6 +524,76 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
     table.insert(tmpDescription, {"Tier " .. tmpTierStr, PST.kcolors["WEP_TIER_" .. tmpTierStr]})
 
     return tmpDescription
+end
+
+-- Holds functions that allow applying/removing ancient weapon modifier stats/items dynamically
+local ancientWepStatFuncs = {
+    executioner = function(tmpMod, remove)
+        PST:addModifiers({ damagePerc = tmpMod[1] * ((remove == true) and -1 or 1) }, true)
+    end,
+    nimbleTwins = function(tmpMod, remove)
+        PST:addModifiers({ tearsPerc = tmpMod[1] * ((remove == true) and -1 or 1) }, true)
+    end,
+    lostCoralTrident = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS, ((remove == true) and -1 or 1))
+        PST:addModifiers({ damagePerc = -tmpMod[1] * ((remove == true) and -1 or 1) }, true)
+    end,
+    oceanicMight = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS, ((remove == true) and -1 or 1))
+    end,
+    mobripper = function(tmpMod, remove)
+        PST:addModifiers({ damagePerc = -tmpMod[2] * ((remove == true) and -1 or 1) }, true)
+    end,
+    berserkerWrath = function(tmpMod, remove)
+        PST:addModifiers({ berserkDuration = tmpMod[1] * ((remove == true) and -1 or 1) }, true)
+    end,
+    stormAdvance = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT, ((remove == true) and -1 or 1))
+    end,
+    quillRain = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK, ((remove == true) and -1 or 1))
+    end,
+    gildedSeeker = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER, ((remove == true) and -1 or 1))
+    end,
+    glowingMoonblade = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA, ((remove == true) and -1 or 1))
+        PST:addModifiers({
+            damagePerc = -tmpMod[1] * ((remove == true) and -1 or 1),
+            tearsPerc = -tmpMod[1] * ((remove == true) and -1 or 1)
+        }, true)
+    end,
+    glowingSunblade = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL, ((remove == true) and -1 or 1))
+        PST:addModifiers({
+            damagePerc = -tmpMod[1] * ((remove == true) and -1 or 1),
+            tearsPerc = -tmpMod[1] * ((remove == true) and -1 or 1)
+        }, true)
+    end,
+    tollingBell = function(tmpMod, remove, player)
+        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO, ((remove == true) and -1 or 1))
+    end
+}
+
+-- Ancient weapon mods that apply stats on run beginning, can use this to remove or re-apply if necessary
+---@param player EntityPlayer
+---@param removeMod? string -- If provided, removes this ancient mod's stat effects
+function PST:astralWepApplyAncientStats(player, removeMod)
+    if not removeMod then
+        for tmpModName, tmpMod in pairs(PST.astralWepMods) do
+            if tmpMod.ancient and ancientWepStatFuncs[tmpModName] then
+                local plMod = PST:getSnapAstralWepMod(tmpModName)
+                if plMod then
+                    ancientWepStatFuncs[tmpModName](plMod, false, player)
+                end
+            end
+        end
+    elseif ancientWepStatFuncs[removeMod] then
+        local plMod = PST:getSnapAstralWepMod(removeMod)
+        if plMod then
+            ancientWepStatFuncs[removeMod](plMod, true, player)
+        end
+    end
 end
 
 include("scripts.astral_forge.ST_astralforge_forging")

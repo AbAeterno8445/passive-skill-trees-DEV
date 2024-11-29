@@ -836,6 +836,51 @@ function PST:onNewLevel()
         end
     end
 
+    -- Ancient weapon mod: Metamorphic Claw
+    tmpMod = PST:getSnapAstralWepMod("metamorphicClaw")
+    if tmpMod then
+        local oldMods = PST:getTreeSnapshotMod("ancwep_metaClawMod", nil)
+        if oldMods then
+            for _, tmpOldMod in ipairs(oldMods) do
+                PST:astralWepApplyAncientStats(player, tmpOldMod)
+                PST.modData.treeModSnapshot[PST.astralWepPrefix .. tmpOldMod] = nil
+            end
+            PST:addModifiers({ ancwep_metaClawMod = nil }, true)
+        end
+        -- Pick random ancient and apply its modifiers, using claw's upgrade level mod
+        local randType = PST:astralWepPickRandType(false)
+        while randType == PSTAstralWepType.GAUNTLET do
+            randType = PST:astralWepPickRandType(false)
+        end
+
+        local randTypeData = PST.astralWepData[randType]
+        if randTypeData and randTypeData.ancients and #randTypeData.ancients > 0 then
+            local totalWeight = 0
+            for _, tmpAncient in ipairs(randTypeData.ancients) do
+                totalWeight = totalWeight + tmpAncient.weight
+            end
+            local randWeight = math.random(totalWeight)
+            for _, tmpAncient in ipairs(randTypeData.ancients) do
+                randWeight = randWeight - tmpAncient.weight
+                if randWeight <= 0 then
+                    for _, ancModName in ipairs(tmpAncient.ancientMods) do
+                        local ancModData = PST.astralWepMods[ancModName]
+                        if ancModData and ancModData.ancient then
+                            local ancRolls = {table.unpack(ancModData.minRolls)}
+                            for i, tmpRoll in ipairs(ancRolls) do
+                                ancRolls[i] = math.min(ancModData.maxRolls[i], tmpRoll + ancModData.upgIncrements[i] * tmpMod[1])
+                            end
+                            PST:addModifiers({ [PST.astralWepPrefix .. ancModName] = { value = ancRolls, set = true } }, true)
+                        end
+                    end
+                    PST:addModifiers({ ancwep_metaClawMod = { value = {table.unpack(tmpAncient.ancientMods)}, set = true } }, true)
+                    break
+                end
+            end
+            PST:astralWepApplyAncientStats(player)
+        end
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

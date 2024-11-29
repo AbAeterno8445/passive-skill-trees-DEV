@@ -18,7 +18,15 @@ function PST.treeScreen:InputAllocate()
         elseif self.hoveredNode ~= nil then
             -- Hovered node
             self.treeHasChanges = true
-            if PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, true) then
+            if self.hoveredNode.name == "Description Box Style" then
+                -- Description box style switch
+                if PST.config.descriptionBoxStyle == 0 then
+                    PST.config.descriptionBoxStyle = 1
+                else
+                    PST.config.descriptionBoxStyle = 0
+                end
+                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+            elseif PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, true) then
                 if not PST.debugOptions.infSP and not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
                     if PST:arrHasValue(self.globalTrees, self.currentTree) then
                         PST.modData.skillPoints = math.max(0, PST.modData.skillPoints - 1)

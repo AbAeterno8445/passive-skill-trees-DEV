@@ -52,7 +52,7 @@ function PST:firstRenderInit()
 end
 
 -- Nodes that cost no global SP
-PST.nodeSPExceptions = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
+PST.nodeSPExceptions = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse", "Description Box Style"}
 
 -- Crimson node variants
 PST.crimsonNodeNames = {"Universal Crimson Node", "Core Crimson Node", "Divergent Crimson Node"}
@@ -1614,6 +1614,7 @@ function PST:resetMods()
 		ancwep_moonbladeSpeed = false,
 		ancwep_sunbladeProc = false,
 		ancwep_sunbladeSpeed = false,
+		ancwep_metaClawMod = nil,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)

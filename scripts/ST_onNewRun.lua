@@ -463,72 +463,6 @@ function PST:onNewRun(isContinued)
                     PST:addModifiers({ damage = -0.6 }, true)
                 end
 
-                -- Ancient weapon mod: Executioner
-                tmpMod = PST:getSnapAstralWepMod("executioner")
-                if tmpMod then
-                    PST:addModifiers({ damagePerc = tmpMod[1] }, true)
-                end
-
-                -- Ancient weapon mod: Nimble Twins
-                tmpMod = PST:getSnapAstralWepMod("nimbleTwins")
-                if tmpMod then
-                    PST:addModifiers({ tearsPerc = tmpMod[1] }, true)
-                end
-
-                -- Ancient weapon mod: Lost Coral Trident
-                tmpMod = PST:getSnapAstralWepMod("lostCoralTrident")
-                if tmpMod then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS)
-                    PST:addModifiers({ damagePerc = -tmpMod[1] }, true)
-                end
-
-                -- Ancient weapon mod: Oceanic Might
-                if PST:getSnapAstralWepMod("oceanicMight") then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS)
-                end
-
-                -- Ancient weapon mod: Mobripper
-                tmpMod = PST:getSnapAstralWepMod("mobripper")
-                if tmpMod then
-                    PST:addModifiers({ damagePerc = -tmpMod[2] }, true)
-                end
-
-                -- Ancient weapon mod: Berserker's Wrath
-                tmpMod = PST:getSnapAstralWepMod("berserkerWrath")
-                if tmpMod then
-                    PST:addModifiers({ berserkDuration = tmpMod[1] }, true)
-                end
-
-                -- Ancient weapon mod: Storm's Advance
-                if PST:getSnapAstralWepMod("stormAdvance") then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT)
-                end
-
-                -- Ancient weapon mod: Quill Rain
-                if PST:getSnapAstralWepMod("quillRain") then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
-                end
-
-                -- Ancient weapon mod: Gilded Seeker
-                tmpMod = PST:getSnapAstralWepMod("gildedSeeker")
-                if tmpMod then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
-                end
-
-                -- Ancient weapon mod: Glowing Moonblade
-                tmpMod = PST:getSnapAstralWepMod("glowingMoonblade")
-                if tmpMod then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA)
-                    PST:addModifiers({ damagePerc = -tmpMod[1], tearsPerc = -tmpMod[1] }, true)
-                end
-
-                -- Ancient weapon mod: Glowing Sunblade
-                tmpMod = PST:getSnapAstralWepMod("glowingSunblade")
-                if tmpMod then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL)
-                    PST:addModifiers({ damagePerc = -tmpMod[1], tearsPerc = -tmpMod[1] }, true)
-                end
-
                 -- Ancient weapon mod: Magefist
                 tmpMod = PST:getSnapAstralWepMod("magefist")
                 if tmpMod then
@@ -547,11 +481,7 @@ function PST:onNewRun(isContinued)
                     end
                 end
 
-                -- Ancient weapon mod: Tolling Bell
-                tmpMod = PST:getSnapAstralWepMod("tollingBell")
-                if tmpMod then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO)
-                end
+                PST:astralWepApplyAncientStats(player)
             end
         end
 
