@@ -9,6 +9,7 @@ function PST:getChangelogList()
         "- Added a new Ancient astral weapon: Metamorphic Claw (gauntlet).",
         "- Added a new global node that allows switching the tree description box style freely.",
         "- Marked now contributes to 'while firing' modifiers at a reduced rate, while the marker is out.",
+        "- Opening the tree now disables the 'Filter' game option while open, as it breaks some sprites.",
         "- Keeper and T. Keeper can no longer receive broken hearts from expedition effects.",
         "- Fixed Starsteel Broadaxe error when updating its buff.",
         "",

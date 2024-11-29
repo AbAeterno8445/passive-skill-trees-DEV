@@ -144,6 +144,7 @@ end
 
 -- Open tree
 local changelogPopup = false
+local hadFilterOption = false
 function PST:openTreeMenu()
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
@@ -163,6 +164,12 @@ function PST:openTreeMenu()
     spaceModule:ShuffleStarfield()
     spaceModule.spaceOffPos = Vector.Zero
     spaceModule.spaceOffDir = Vector(-1 + 2 * math.random(), -1 + 2 * math.random())
+
+    -- Filter option
+    if Options.Filter then
+        hadFilterOption = true
+        Options.Filter = false
+    end
 
     PST:updateNodes("global", true)
     PST.treeScreen.currentNodeTab = 0
@@ -211,6 +218,12 @@ function PST:closeTreeMenu(mute, force)
     end
     if not mute then
         SFXManager():Play(SoundEffect.SOUND_PAPER_OUT)
+    end
+
+    -- Filter option
+    if hadFilterOption then
+        Options.Filter = true
+        hadFilterOption = false
     end
     PST.treeScreen.modules.submenusModule:CloseSubmenu()
     PST.treeScreen.modules.menuScreensModule:CloseMenu()
