@@ -93,10 +93,11 @@ function PST:charInit(charName, forceReset)
 end
 
 -- Save mod data
+local saveLoaded = false
 local lastSave = 0
 function PST:save(forceSave)
 	-- Limit saving to once every 200 ms
-	if not forceSave and lastSave ~= 0 and os.clock() - lastSave < 0.2 then
+	if not saveLoaded or (not forceSave and lastSave ~= 0 and os.clock() - lastSave < 0.2) then
 		return
 	end
 
@@ -238,6 +239,8 @@ function PST:processLoadedData(loadedData)
 	PST:updateAllCharsXPReq()
 end
 function PST:load()
+	saveLoaded = true
+
 	local modDataSave = PST.saveManager.GetPersistentSave()
 	if modDataSave and modDataSave.modData then
 		PST:processLoadedData(modDataSave.modData)
