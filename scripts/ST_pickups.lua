@@ -38,6 +38,17 @@ function PST:prePickup(pickup, collider, low)
     if player ~= nil then
         -- Sidereal Cache opening
         local canOpenLock = player:GetNumKeys() > 0 or player:HasGoldenKey()
+
+        -- Epiphany multitool support for sidereal caches
+        local usedMultitool = false
+        if Epiphany then
+            local multitool = Epiphany.Pickup.MULTITOOL
+            if multitool and multitool:HasMultiTool() and Input.IsActionPressed(ButtonAction.ACTION_DROP, player.ControllerIndex) then
+                usedMultitool = true
+                canOpenLock = true
+            end
+        end
+
         if variant == Isaac.GetEntityVariantByName("Sidereal Cache") and canOpenLock and pickup.SubType ~= 1 and
         pickup:GetSprite():GetAnimation() == "Idle" then
             local saveKey = false
@@ -49,6 +60,11 @@ function PST:prePickup(pickup, collider, low)
             pickup:GetSprite():Play("Open", true)
             pickup.SubType = 1
             SFXManager():Play(Isaac.GetSoundIdByName("unlock cosmic"), 1, 2, false, 0.9 + 0.2 * math.random())
+
+            if usedMultitool then
+                Epiphany.Pickup.MULTITOOL:AddMultiTool(-1)
+                Epiphany.sfxman:Play(Isaac.GetSoundIdByName("Multitool Use"))
+            end
 
             if PST:isRunSidereal() then
                 local depth = PST:getTreeSnapshotMod("expedDepth", 1)
