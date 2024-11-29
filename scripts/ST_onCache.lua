@@ -523,7 +523,7 @@ function PST:onCache(player, cacheFlag)
         -- Ancient weapon mod: Starsteel Broadaxe
         tmpTreeMod = PST:getSnapAstralWepMod("starsteelBroadaxe")
         if tmpTreeMod and PST.specialNodes.ancwep_starsteelAxeBuff > 0 then
-            dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.min(tmpMod[1], PST.specialNodes.ancwep_starsteelAxeBuff)
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.min(tmpTreeMod[1], PST.specialNodes.ancwep_starsteelAxeBuff)
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then

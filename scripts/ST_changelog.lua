@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Epiphany: Sidereal Caches can now be opened with Multitools.",
         "- Epiphany: Fixed Tarnished Judas' phase transitions removing xp and levels.",
         "- Keeper and T. Keeper can no longer receive broken hearts from expedition effects.",
+        "- Fixed Starsteel Broadaxe error when updating its buff.",
         "",
 
         "v0.4.18",
