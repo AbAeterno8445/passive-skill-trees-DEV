@@ -669,6 +669,7 @@ function PST:resetMods()
 		openedChests = {},
 
 		roomBossKills = 0,
+		deliriumInit = false,
 
 		craftingBagFull = false,
 

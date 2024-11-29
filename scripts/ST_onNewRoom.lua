@@ -1318,6 +1318,11 @@ function PST:onNewRoom()
 		PST:updateCacheDelayed(PST.allstatsCache)
 	end
 
+	-- Delirium init proc
+	if PST:getTreeSnapshotMod("deliriumInit", false) then
+		PST:addModifiers({ deliriumInit = false }, true)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

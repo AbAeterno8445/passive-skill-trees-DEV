@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Added xp and leveling support for Epiphany's Tarnished characters.",
         "- Epiphany: Tarnished Keeper no longer turns special pickups from this mod into coins, such as jewels, weapons,",
         "caches or obols.",
+        "- Fixed Delirium re-initializing when switching forms.",
         "",
 
         "v0.4.17",

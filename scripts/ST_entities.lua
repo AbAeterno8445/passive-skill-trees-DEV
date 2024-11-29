@@ -66,7 +66,16 @@ function PST:onNPCUpdate(npc)
 
     -- Monster init modifiers
     if npc:IsActiveEnemy(false) and npc:IsVulnerableEnemy() and not EntityRef(npc).IsFriendly then
-        if not npc:GetData().PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON then
+        local noUpdate = false
+        if npc.Type == EntityType.ENTITY_DELIRIUM then
+            -- Init Delirium only once
+            if not PST:getTreeSnapshotMod("deliriumInit", false) then
+                PST:addModifiers({ deliriumInit = true }, true)
+            else
+                noUpdate = true
+            end
+        end
+        if not npc:GetData().PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
             npc:GetData().PST_mobInit = true
 
             ---- HP modifiers ----
