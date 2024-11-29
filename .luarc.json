@@ -250,7 +250,8 @@
     "PST_BackupSave",
     "PST_BackupExists",
     "PST_BackupFetch",
-    "PST_BackupReplace"
+    "PST_BackupReplace",
+        "Epiphany"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

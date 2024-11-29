@@ -40,16 +40,17 @@ function PST:getCurrentCharName()
 end
 
 -- Attempt to init a non-vanilla character so they can earn XP
-function PST:initUnknownChar(charName, tainted)
+function PST:initUnknownChar(charName, tainted, customID)
 	local tmpName = charName
 	if tainted then
 		tmpName = "T. " .. charName
 	end
-	if PST.charNames[1 + Isaac.GetPlayerTypeByName(charName, tainted)] == nil then
-		PST.charNames[1 + Isaac.GetPlayerTypeByName(charName, tainted)] = tmpName
-		if not tainted then
-			table.insert(PST.modData.newChars, charName)
-		else
+	local tmpCharID = customID or (1 + Isaac.GetPlayerTypeByName(charName, tainted))
+	if PST.charNames[tmpCharID] == nil then
+		PST.charNames[tmpCharID] = tmpName
+		if not tainted and not PST:arrHasValue(PST.modData.newChars, tmpName) then
+			table.insert(PST.modData.newChars, tmpName)
+		elseif tainted and not PST:arrHasValue(PST.modData.newCharsTainted, tmpName) then
 			table.insert(PST.modData.newCharsTainted, tmpName)
 		end
 		PST:charInit(tmpName)

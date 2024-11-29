@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.18",
+        "- Added xp and leveling support for Epiphany's Tarnished characters.",
+        "- Epiphany: Tarnished Keeper no longer turns special pickups from this mod into coins, such as jewels, weapons,",
+        "caches or obols.",
+        "",
+
         "v0.4.17",
         "- Introduced Crimson Starcores, a new character-bound material that can sometimes show up as a reward",
         "in depth 20+ expeditions' final nodes.",

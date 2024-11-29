@@ -113,6 +113,22 @@ end
 
 -- Rendering function
 function PST:Render()
+	-- Support for Epiphany's character menu
+	if Epiphany and Epiphany.character_menu_visible then
+		local charIndex = Epiphany.current_door % Epiphany.num_doors
+		local selCharType = Epiphany.table_aside_type_id[charIndex]
+		local epCharName = Epiphany.table_name[selCharType]
+		if epCharName and epCharName ~= "NOT_MADE" and PST.charNames[1 + selCharType] == nil then
+			-- Initialize tarnished character
+			local charConfig = EntityConfig.GetPlayer(selCharType)
+			if charConfig then
+				-- Account for zero-width character at the beginning of tarnished char name
+				local tmpCharName = "Tr. " .. string.sub(charConfig:GetName(), 4)
+				PST:initUnknownChar(tmpCharName, false, 1 + selCharType)
+			end
+		end
+	end
+
 	local player = PST:getPlayer()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
 	local screenRatioY = Isaac.GetScreenHeight() / 270

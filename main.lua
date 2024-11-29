@@ -305,6 +305,36 @@ function PST:getCurrentCharData()
 	return PST.modData.charData[currentChar]
 end
 
+-- Mod compatibility helper
+local initMods = {}
+function PST:initModCompat()
+	-- Epiphany
+	if Epiphany and not initMods.epiphany then
+		initMods.epiphany = true
+		-- Tarnished Keeper blacklisted items
+		Epiphany.Character.KEEPER.DisallowedPickUpVariants[Isaac.GetEntityVariantByName("Sidereal Cache")] = 0
+		if not Epiphany.Character.KEEPER.DisallowedPickUpVariants[PickupVariant.PICKUP_TRINKET] then
+			Epiphany.Character.KEEPER.DisallowedPickUpVariants[PickupVariant.PICKUP_TRINKET] = {}
+		end
+		local tmpBlacklist = Epiphany.Character.KEEPER.DisallowedPickUpVariants[PickupVariant.PICKUP_TRINKET]
+		tmpBlacklist[Isaac.GetTrinketIdByName("Azure Starcursed Jewel")] = 0
+		tmpBlacklist[Isaac.GetTrinketIdByName("Crimson Starcursed Jewel")] = 0
+		tmpBlacklist[Isaac.GetTrinketIdByName("Viridian Starcursed Jewel")] = 0
+		tmpBlacklist[Isaac.GetTrinketIdByName("Ancient Starcursed Jewel")] = 0
+		for i=1,8 do
+			tmpBlacklist[Isaac.GetTrinketIdByName("Arcane Obols " .. tostring(i))] = 0
+		end
+		local wepPrefix = "Astral weapon: "
+		for _, wepData in pairs(PST.astralWepData) do
+			tmpBlacklist[Isaac.GetTrinketIdByName(wepPrefix .. wepData.name)] = 0
+			tmpBlacklist[Isaac.GetTrinketIdByName(wepPrefix .. wepData.name .. " (magic)")] = 0
+			for _, tmpAncient in ipairs(wepData.ancients) do
+				tmpBlacklist[Isaac.GetTrinketIdByName(wepPrefix .. tmpAncient.name)] = 0
+			end
+		end
+	end
+end
+
 function PST:postModsLoaded()
 	-- Associate Soul of the Siren to Siren playertype
 	local sirenType = Isaac.GetPlayerTypeByName("Siren")
@@ -313,6 +343,8 @@ function PST:postModsLoaded()
 		PST.playerSoulstones[sirenType] = Isaac.GetCardIdByName("SoulOfTheSiren")
 		PST.playerSoulstones[tSirenType] = Isaac.GetCardIdByName("SoulOfTheSiren")
 	end
+
+	PST:initModCompat()
 end
 
 function PST:onExitGame()
@@ -448,8 +480,27 @@ end
 
 if Isaac.IsInGame() then
 	PST:firstRenderInit()
+
+	-- Re-init special characters
+	local tmpPlayer = PST:getPlayer()
+	if PST.charNames[1 + tmpPlayer:GetPlayerType()] == nil then
+		-- Epiphany, tarnished characters
+		if Epiphany then
+			local playerConfig = EntityConfig.GetPlayer(tmpPlayer:GetPlayerType())
+			if playerConfig then
+				local tmpName = playerConfig:GetName()
+				if string.byte(string.sub(tmpName, 1, 3)) == 226 then
+					tmpName = "Tr. " .. string.sub(tmpName, 4)
+					PST:initUnknownChar(tmpName, false, 1 + tmpPlayer:GetPlayerType())
+				end
+			end
+		end
+	end
+
 	PST.gameInit = true
 end
+
+PST:initModCompat()
 
 print("Initialized Passive Skill Trees", PST.modVersion)
 for optName, enabled in pairs(PST.debugOptions) do

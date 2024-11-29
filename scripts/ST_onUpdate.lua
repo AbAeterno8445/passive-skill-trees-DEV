@@ -23,8 +23,16 @@ local hasDarkArtsEffect = false
 local isFiring = false
 
 -- On update
-local modResetUpdate = false
 function PST:onUpdate()
+	local doUpdate = true
+	if Epiphany and Epiphany.character_menu_visible then
+		doUpdate = false
+	end
+	if doUpdate then PST:frameUpdate() end
+end
+
+local modResetUpdate = false
+function PST:frameUpdate()
 	local level = PST:getLevel()
 	local room = PST:getRoom()
 	local player = PST:getPlayer()
