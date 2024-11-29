@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "- Epiphany: Fixed Tarnished Judas' phase transitions removing xp and levels.",
         "- Added a new Ancient astral weapon: Metamorphic Claw (gauntlet).",
         "- Added a new global node that allows switching the tree description box style freely.",
+        "- Marked now contributes to 'while firing' modifiers at a reduced rate, while the marker is out.",
         "- Keeper and T. Keeper can no longer receive broken hearts from expedition effects.",
         "- Fixed Starsteel Broadaxe error when updating its buff.",
         "",

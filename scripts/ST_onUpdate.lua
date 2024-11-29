@@ -2518,6 +2518,10 @@ function PST:frameUpdate()
 	local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
 	if isShooting then
 		PST.specialNodes.consecutiveFire = PST.specialNodes.consecutiveFire + 1
+	elseif player:GetMarkedTarget() ~= nil then
+		if math.random() < 0.7 then
+			PST.specialNodes.consecutiveFire = PST.specialNodes.consecutiveFire + 1
+		end
 	else
 		PST.specialNodes.consecutiveFire = 0
 	end
