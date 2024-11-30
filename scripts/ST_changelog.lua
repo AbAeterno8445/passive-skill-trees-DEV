@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "becoming champions or gaining HP.",
         "- Added a node to the global tree that informs you if the save backups addon is not detected. This node is",
         "purely informative and goes away once the addon is installed.",
+        "- Expedition reset obol cost now caps out at 500.",
         "",
 
         "v0.4.19",
