@@ -156,6 +156,15 @@ local descriptionBoxesModule = {
                 table.insert(newDesc, {charName .. " skill points: " .. tostring(charData.skillPoints), PST.kcolors.LEVEL_PURPLE})
             end
             return { name = descName, description = newDesc }
+        end,
+
+        -- Save Backups Addon warning node
+        ["Save Backups Addon"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local newDesc = {}
+            for _, tmpLine in ipairs(tmpDescription) do
+                table.insert(newDesc, {tmpLine, PST.kcolors.LIGHTRED1})
+            end
+            return { name = descName, description = newDesc }
         end
     }
 }

@@ -1,3 +1,6 @@
+-- Nodes that are just informative, pressing Allocate won't do anything on these
+local passiveNodes = {"Save Backups Addon"}
+
 function PST.treeScreen:InputAllocate()
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
@@ -15,7 +18,7 @@ function PST.treeScreen:InputAllocate()
             else
                 SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
             end
-        elseif self.hoveredNode ~= nil then
+        elseif self.hoveredNode ~= nil and not PST:arrHasValue(passiveNodes, self.hoveredNode.name) then
             -- Hovered node
             self.treeHasChanges = true
             if self.hoveredNode.name == "Description Box Style" then

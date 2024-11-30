@@ -52,7 +52,9 @@ function PST:firstRenderInit()
 end
 
 -- Nodes that cost no global SP
-PST.nodeSPExceptions = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse", "Description Box Style"}
+PST.nodeSPExceptions = {
+	"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse", "Description Box Style", "Save Backups Addon"
+}
 
 -- Crimson node variants
 PST.crimsonNodeNames = {"Universal Crimson Node", "Core Crimson Node", "Divergent Crimson Node"}

@@ -6,6 +6,8 @@ function PST:getChangelogList()
         "v0.4.20",
         "- Added support for many Fiend Folio monsters and bosses, such as stopping certain monsters from duplicating,",
         "becoming champions or gaining HP.",
+        "- Added a node to the global tree that informs you if the save backups addon is not detected. This node is",
+        "purely informative and goes away once the addon is installed.",
         "",
 
         "v0.4.19",

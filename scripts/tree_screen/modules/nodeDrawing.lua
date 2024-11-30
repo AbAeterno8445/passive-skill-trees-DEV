@@ -37,10 +37,14 @@ local function PST_isNodeVisible(node, charData)
     if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and not charData.crimsonStarcores)) then
         return false
     end
+    -- Save Backups Addon node, remove if addon detected
+    if node.name == "Save Backups Addon" and PST_BackupSave ~= nil then
+        return false
+    end
     return true
 end
 
-local noFlashingNodes = {"Description Box Style"}
+local noFlashingNodes = {"Description Box Style", "Save Backups Addon"}
 
 ---@param tScreen PST.treeScreen
 function nodeDrawingModule:Render(tScreen)
