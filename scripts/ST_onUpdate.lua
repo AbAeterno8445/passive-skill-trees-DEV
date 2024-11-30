@@ -642,11 +642,22 @@ function PST:frameUpdate()
 		if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
 			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
 				local tmpNPC = tmpEntity:ToNPC()
-				if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly and
-				not PST:arrHasValue(PST.noSplitMobs, tmpNPC.Type) and not PST:arrHasValue(PST.causeConverterBossBlacklist, tmpNPC.Type) and
-				not tmpNPC.Parent and not tmpNPC.Child then
-					---@diagnostic disable-next-line: undefined-field
-					tmpNPC:TrySplit(0, EntityRef(player))
+				if tmpNPC then
+					local noSplit = PST:arrHasValue(PST.noSplitMobs, tmpNPC.Type)
+					if not noSplit then
+						for _, tmpSplit in ipairs(PST.noSplitMobsSpec) do
+							if tmpNPC.Type == tmpSplit[1] and tmpNPC.Variant == tmpSplit[2] then
+								noSplit = true
+								break
+							end
+						end
+					end
+					if tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly and
+					not noSplit and not PST:arrHasValue(PST.causeConverterBossBlacklist, tmpNPC.Type) and
+					not tmpNPC.Parent and not tmpNPC.Child then
+						---@diagnostic disable-next-line: undefined-field
+						tmpNPC:TrySplit(0, EntityRef(player))
+					end
 				end
 			end
 		end

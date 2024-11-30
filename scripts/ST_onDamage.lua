@@ -501,10 +501,10 @@ function PST:onDamage(target, damage, flag, source)
                 if tmpMod then
                     local isUndead = PST:arrHasValue(PST.undeadEnemies, target.Type)
                     if not isUndead then
-                        for _, tmpType in ipairs(PST.undeadEnemiesSpec) do
-                            if target.Type == tmpType[1] and target.Variant == tmpType[2] then
+                        local tmpVariant = PST.undeadEnemiesSpec[target.Type]
+                        if tmpVariant then
+                            if (type(tmpVariant) == "table" and PST:arrHasValue(tmpVariant, target.Variant)) or tmpVariant == target.Variant then
                                 isUndead = true
-                                break
                             end
                         end
                     end
@@ -1017,10 +1017,10 @@ function PST:onDamage(target, damage, flag, source)
                 if tmpMod then
                     local isUndead = PST:arrHasValue(PST.undeadEnemies, target.Type)
                     if not isUndead then
-                        for _, tmpType in ipairs(PST.undeadEnemiesSpec) do
-                            if target.Type == tmpType[1] and target.Variant == tmpType[2] then
+                        local tmpVariant = PST.undeadEnemiesSpec[target.Type]
+                        if tmpVariant then
+                            if (type(tmpVariant) == "table" and PST:arrHasValue(tmpVariant, target.Variant)) or tmpVariant == target.Variant then
                                 isUndead = true
-                                break
                             end
                         end
                     end

@@ -78,56 +78,70 @@ function PST:onNPCUpdate(npc)
         if not npc:GetData().PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
             npc:GetData().PST_mobInit = true
 
+            local noHPMods = false
+            for _, tmpMob in ipairs(PST.mobHPBlacklist) do
+                if type(tmpMob) == "table" then
+                    if npc.Type == tmpMob[1] and npc.Variant == tmpMob[2] then
+                        noHPMods = true
+                    end
+                elseif npc.Type == tmpMob then
+                    noHPMods = true
+                end
+                if noHPMods then break end
+            end
+
             ---- HP modifiers ----
-            local tmpHPMod = 0
-            local tmpHPMult = 1
+            if not noHPMods then
+                local tmpHPMod = 0
+                local tmpHPMult = 1
 
-            local extraHPMult = 1
-            -- Halve monster HP boosts on the very first floor
-            if PST:isFirstOrigStage() then
-                extraHPMult = 0.5
-            end
+                local extraHPMult = 1
+                -- Halve monster HP boosts on the very first floor
+                if PST:isFirstOrigStage() then
+                    extraHPMult = 0.5
+                end
 
-            -- Larry Jr nerf
-            if npc.Type == EntityType.ENTITY_LARRYJR then
-                extraHPMult = extraHPMult / 2
-            end
+                -- Larry Jr nerf
+                if npc.Type == EntityType.ENTITY_LARRYJR then
+                    extraHPMult = extraHPMult / 2
+                end
 
-            if not npc:IsBoss() and not npc:IsChampion() then
-                tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
-                tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * extraHPMult) / 100
-            else
-                if npc:IsChampion() then
-                    tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * extraHPMult) / 100
-                    if PST:SC_getSnapshotMod("mightstone", false) then
-                        tmpHPMult = tmpHPMult + 0.15 * extraHPMult
+                if not npc:IsBoss() and not npc:IsChampion() then
+                    tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("mobHP", 0)
+                    tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("mobHPPerc", 0) * extraHPMult) / 100
+                else
+                    if npc:IsChampion() then
+                        tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("champHPPerc", 0) * extraHPMult) / 100
+                        if PST:SC_getSnapshotMod("mightstone", false) then
+                            tmpHPMult = tmpHPMult + 0.15 * extraHPMult
+                        end
+                    end
+                    if npc:IsBoss() then
+                        tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
+                        tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * extraHPMult) / 100
                     end
                 end
-                if npc:IsBoss() then
-                    tmpHPMod = tmpHPMod + PST:SC_getSnapshotMod("bossHP", 0)
-                    tmpHPMult = tmpHPMult + (PST:SC_getSnapshotMod("bossHPPerc", 0) * extraHPMult) / 100
+
+                -- Expedition implicit: mob hp
+                local tmpMod = PST:getTreeSnapshotMod("expedImp_mobHP", 0)
+                if tmpMod > 0 then
+                    tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
                 end
-            end
 
-            -- Expedition implicit: mob hp
-            local tmpMod = PST:getTreeSnapshotMod("expedImp_mobHP", 0)
-            if tmpMod > 0 then
-                tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
-            end
+                -- Expedition curse: resilience
+                tmpMod = PST:getTreeSnapshotMod("curseResilience", 0)
+                if tmpMod > 0 then
+                    tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
+                end
 
-            -- Expedition curse: resilience
-            tmpMod = PST:getTreeSnapshotMod("curseResilience", 0)
-            if tmpMod > 0 then
-                tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
-            end
+                npc.MaxHitPoints = (npc.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
+                npc.HitPoints = npc.MaxHitPoints
 
-            npc.MaxHitPoints = (npc.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
-            npc.HitPoints = npc.MaxHitPoints
-
-            -- Boon: bosses start with % missing HP
-            tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
-            if tmpMod > 0 then
-                npc.HitPoints = math.ceil(npc.MaxHitPoints * (1 - tmpMod / 100))
+                -- Boon: bosses start with % missing HP
+                tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
+                if tmpMod > 0 then
+                    npc.HitPoints = math.ceil(npc.MaxHitPoints * (1 - tmpMod / 100))
+                end
             end
 
             ---- Speed modifiers ----

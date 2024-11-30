@@ -82,4 +82,76 @@ function PST:initModCompat()
         -- Grand Consonance node whitelist
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Old Knife"))
 	end
+
+    -- Fiend Folio
+    if FiendFolio then
+        local function PST_getCustomMobTable(mobName)
+            return {Isaac.GetEntityTypeByName(mobName), Isaac.GetEntityVariantByName(mobName)}
+        end
+
+        -- No-duplication mobs
+        local noDupeMobs = {
+            "Mr. Horf", "Mr. Red Horf", "Mr. Sub Horf", "Ossularry", "Clickety Clash", "Flagpole", "Mr. Bones",
+            "Mr. Gob", "Bola", "Rotspin", "Cherubskull"
+        }
+        for _, tmpMobName in ipairs(noDupeMobs) do
+            table.insert(PST.noSplitMobsSpec, PST_getCustomMobTable(tmpMobName))
+            -- Just in case, include no-duplication mobs into no-champion mobs
+            table.insert(PST.noChampionMobs, PST_getCustomMobTable(tmpMobName))
+        end
+
+        -- No HP modifier mobs
+        table.insert(PST.mobHPBlacklist, PST_getCustomMobTable("Fishaac"))
+        table.insert(PST.mobHPBlacklist, PST_getCustomMobTable("Missing Link"))
+
+        -- No-champion mobs
+        table.insert(PST.noChampionMobs, PST_getCustomMobTable("Fishaac"))
+        table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link"))
+        table.insert(PST.noChampionMobs, PST_getCustomMobTable("Alfil"))
+
+        -- No-champion bosses (added everyone just in case)
+        local noChampBosses = {
+            "Buck", "The Whispers", "Honeydrop", "Griddle Horn", "Buster", "Meltdown", "Ghostbuster",
+            "Cacamancer", "Battie", "Kingpin", "Slinger", "Monsoon", "Aquagob", "Chaser", "Speedy",
+            "Bashful", "Pokey", "Gutso", "Luncheon", "Pollution", "Tsar", "Junkstrap", "Warp Zone",
+            "Dusk", "Madomme", "Basco", "The Sun", "Peeping", "Cacophobia", "Mr. Dead"
+        }
+        for _, tmpMobName in ipairs(noChampBosses) do
+            table.insert(PST.noChampionBosses, PST_getCustomMobTable(tmpMobName))
+        end
+
+        -- Undead mobs
+        local tmpUndead = {
+            "Yawner", "Shirk", "Spoop", "Buckethead", "Mr. Sub Horf", "Rift Walker", "Cushion", "Skipper",
+            "Archer", "Deathany", "Tango", "Onlyfan", "Zephyr", "Cuffs", "Fish", "Slick", "Stump",
+            "Jim", "Pale Limb", "Dr. Shambles", "Nimbus", "Floodface", "Tubby", "Bubble Bat", "Cistern",
+            "Bubble Blowing Double Baby", "Offal", "Eroded Host", "Eroded Smidgen", "Fishface", "Aquabab",
+            "Fireswirl", "Pyroclasm", "Dry Wheeze", "Marlin", "Fishfreak", "Clickety Clash", "Ossularry",
+            "Skitter Skull", "Dried Offal", "Phoenix", "Gritty", "Flanks", "Flagpole", "Blare", "Striker",
+            "Pale Loafer", "Smasher", "Ghostse", "Gnawful", "Peek-a-boo", "Temper", "Banshee", "G. Host",
+            "Thousand Eyes", "Scythe Rider", "Bone Worm", "Sternum", "Splodum", "Doom Fly", "Crepitus",
+            "Mr. Bones", "Possessed", "Cracker", "Jawbone", "Ribbone", "Ribeye", "Unpawtunate", "Fracture",
+            "Molar System", "Spinny", "Creepterum", "Dangler", "Gravin", "Shaker", "Clergy", "Alfil",
+            "Zealot", "Pale Gaper", "Pale Gusher", "Pale Horf", "Pale Clotty", "Morvid", "Skulltist",
+            "Zissuru", "Shi", "Empath", "Discy", "Nobody", "Drooler", "Marzlammer", "Rotdrink", "Rotskull",
+            "Rotspin", "Spoilie", "Sagging Spit", "Droolie", "Diagetic", "Gut Knight", "Fingore",
+            "Bamboo Cutter", "Frayed Nerve", "Torment", "Putrefatty", "Coconut", "Wheezer", "Whale",
+            "Whale Guts", "Weeper", "Cancer Boy", "Musk", "Foetus", "Foetu", "Bub", "Molly", "Toma Chunk",
+            "Small Conglobberate", "Medium Conglobberate", "Large Conglobberate", "Molargan", "Oralid",
+            "Oralopede", "Quitter", "Tommy", "Benny", "Steralis", "Lurker", "Enlightened", "Effigy",
+            "Deadfly", "Cherub", "Cherubskull", "Congression", "Specturn", "Dizzy", "Reaper", "Buck",
+            "The Whispers", "Griddle Horn", "Meltdown", "Ghostbuster", "Slinger", "Aquagob", "Junkstrap",
+            "The Organization", "Dusk", "Mr. Dead", "Cacophobia", "Gravedigger"
+        }
+        for _, tmpMobName in ipairs(tmpUndead) do
+            local mobType, mobVariant = table.unpack(PST_getCustomMobTable(tmpMobName))
+            if not PST.undeadEnemiesSpec[mobType] then
+                PST.undeadEnemiesSpec[mobType] = {}
+            elseif type(PST.undeadEnemiesSpec[mobType]) ~= "table" then
+                PST.undeadEnemiesSpec[mobType] = {PST.undeadEnemiesSpec[mobType]}
+            end
+            ---@diagnostic disable-next-line: param-type-mismatch
+            table.insert(PST.undeadEnemiesSpec[mobType], mobVariant)
+        end
+    end
 end

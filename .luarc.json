@@ -251,7 +251,8 @@
     "PST_BackupExists",
     "PST_BackupFetch",
     "PST_BackupReplace",
-        "Epiphany"
+        "Epiphany",
+        "FiendFolio"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

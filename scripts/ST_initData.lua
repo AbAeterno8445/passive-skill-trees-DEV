@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.4.19"
+PST.modVersion = "v0.4.20"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -278,6 +278,7 @@ PST.noSplitMobs = {
 	EntityType.ENTITY_GIDEON, EntityType.ENTITY_BLOOD_PUPPY, EntityType.ENTITY_GRUB, EntityType.ENTITY_CHUB, EntityType.ENTITY_SCOURGE,
 	EntityType.ENTITY_SWINGER
 }
+PST.noSplitMobsSpec = {}
 PST.allRunes = {
 	Card.RUNE_ALGIZ, Card.RUNE_ANSUZ, Card.RUNE_BERKANO, Card.RUNE_BLACK, Card.RUNE_BLANK, Card.RUNE_DAGAZ, Card.RUNE_EHWAZ, Card.RUNE_HAGALAZ,
 	Card.RUNE_JERA, Card.RUNE_PERTHRO, Card.RUNE_SHARD
@@ -463,17 +464,29 @@ PST.undeadEnemies = {
 	EntityType.ENTITY_STAIN, EntityType.ENTITY_FORSAKEN, EntityType.ENTITY_SISTERS_VIS,
 	EntityType.ENTITY_LIL_BLUB, EntityType.ENTITY_RAINMAKER, EntityType.ENTITY_CLUTCH,
 	EntityType.ENTITY_HERETIC, EntityType.ENTITY_CHIMERA, EntityType.ENTITY_SCOURGE, EntityType.ENTITY_ROTGUT,
-	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_HUSH,
-	EntityType.ENTITY_DOGMA, EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_MONSTRO2
+	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_HUSH, EntityType.ENTITY_DOGMA, EntityType.ENTITY_ULTRA_GREED,
+	EntityType.ENTITY_MONSTRO2, EntityType.ENTITY_KEEPER, EntityType.ENTITY_HANGER
 }
 PST.undeadEnemiesSpec = {
-	{EntityType.ENTITY_GAPER, 3}, {EntityType.ENTITY_BEAST, 21}, {EntityType.ENTITY_HIVE, 1}, {EntityType.ENTITY_CHARGER, 1},
-	{EntityType.ENTITY_CHARGER, 3}, {EntityType.ENTITY_BOOMFLY, 2}, {EntityType.ENTITY_BOOMFLY, 4}, {EntityType.ENTITY_HOPPER, 2},
-	{EntityType.ENTITY_BABY, 3}, {EntityType.ENTITY_MEMBRAIN, 2}, {EntityType.ENTITY_CONJOINED_FATTY, 1}, {EntityType.ENTITY_SKINNY, 1},
-	{EntityType.ENTITY_NEEDLE, 1}, {EntityType.ENTITY_CHUB, 2}, {EntityType.ENTITY_GEMINI, 2}, {EntityType.ENTITY_PEEP, 1},
-	{EntityType.ENTITY_PIN, 2}, {EntityType.ENTITY_POLYCEPHALUS, 1}, {EntityType.ENTITY_BEAST, 20}, {EntityType.ENTITY_BEAST, 40},
-	{EntityType.ENTITY_ISAAC, 1}
+	[EntityType.ENTITY_GAPER] = 3,
+	[EntityType.ENTITY_BEAST] = {20, 21, 40},
+	[EntityType.ENTITY_HIVE] = 1,
+	[EntityType.ENTITY_CHARGER] = {1, 3},
+	[EntityType.ENTITY_BOOMFLY] = 2,
+	[EntityType.ENTITY_HOPPER] = 2,
+	[EntityType.ENTITY_BABY] = 3,
+	[EntityType.ENTITY_MEMBRAIN] = 2,
+	[EntityType.ENTITY_CONJOINED_FATTY] = 1,
+	[EntityType.ENTITY_SKINNY] = 1,
+	[EntityType.ENTITY_NEEDLE] = 1,
+	[EntityType.ENTITY_CHUB] = 2,
+	[EntityType.ENTITY_GEMINI] = 2,
+	[EntityType.ENTITY_PEEP] = 1,
+	[EntityType.ENTITY_PIN] = 2,
+	[EntityType.ENTITY_POLYCEPHALUS] = 1,
+	[EntityType.ENTITY_ISAAC] = 1
 }
+PST.mobHPBlacklist = {}
 PST.explosionSounds = {
 	SoundEffect.SOUND_EXPLOSION_DEBRIS, SoundEffect.SOUND_EXPLOSION_STRONG, SoundEffect.SOUND_EXPLOSION_WEAK,
 	SoundEffect.SOUND_EXPLOSIVE_DIAH, SoundEffect.SOUND_BOSS1_EXPLOSIONS

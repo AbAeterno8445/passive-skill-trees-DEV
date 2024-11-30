@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.20",
+        "- Added support for many Fiend Folio monsters and bosses, such as stopping certain monsters from duplicating,",
+        "becoming champions or gaining HP.",
+        "",
+
         "v0.4.19",
         "- Epiphany: Added support for various feature interactions, such as chests, familiars, mobs, items, etc.",
         "- Epiphany: Sidereal Caches can now be opened with Multitools.",

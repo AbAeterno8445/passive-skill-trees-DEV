@@ -77,7 +77,16 @@ function PST:onNewRoom()
 				if roomType ~= RoomType.ROOM_BOSS then
 					-- SC mod: Chance to duplicate
 					local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
-					if not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
+					local noSplit = PST:arrHasValue(PST.noSplitMobs, tmpEntity.Type)
+					if not noSplit then
+						for _, tmpSplit in ipairs(PST.noSplitMobsSpec) do
+							if tmpEntity.Type == tmpSplit[1] and tmpEntity.Variant == tmpSplit[2] then
+								noSplit = true
+								break
+							end
+						end
+					end
+					if not noSplit and not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
 						local tmpPos = Isaac.GetFreeNearPosition(tmpEntity.Position, 5)
 						Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
 					end
