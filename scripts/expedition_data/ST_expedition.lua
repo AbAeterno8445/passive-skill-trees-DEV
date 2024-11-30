@@ -411,7 +411,7 @@ function PST:getExpNodeObjectiveDesc(nodeData, expData)
 end
 
 function PST:getExpedResetCost(depth)
-    return depth * 40
+    return math.min(500, depth * 40)
 end
 
 ---@param nodeData PSTExpNode
