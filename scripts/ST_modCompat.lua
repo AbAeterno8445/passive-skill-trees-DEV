@@ -138,7 +138,7 @@ function PST:initModCompat()
             "Bamboo Cutter", "Frayed Nerve", "Torment", "Putrefatty", "Coconut", "Wheezer", "Whale",
             "Whale Guts", "Weeper", "Cancer Boy", "Musk", "Foetus", "Foetu", "Bub", "Molly", "Toma Chunk",
             "Small Conglobberate", "Medium Conglobberate", "Large Conglobberate", "Molargan", "Oralid",
-            "Oralopede", "Quitter", "Tommy", "Benny", "Steralis", "Lurker", "Enlightened", "Effigy",
+            "Oralopede", "Tommy", "Benny", "Steralis", "Lurker", "Enlightened", "Effigy",
             "Deadfly", "Cherub", "Cherubskull", "Congression", "Specturn", "Dizzy", "Reaper", "Buck",
             "The Whispers", "Griddle Horn", "Meltdown", "Ghostbuster", "Slinger", "Aquagob", "Junkstrap",
             "The Organization", "Dusk", "Mr. Dead", "Cacophobia", "Gravedigger"

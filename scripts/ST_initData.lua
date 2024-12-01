@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.4.20"
+PST.modVersion = "v0.4.21"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -488,7 +488,7 @@ PST.undeadEnemiesSpec = {
 	[EntityType.ENTITY_POLYCEPHALUS] = 1,
 	[EntityType.ENTITY_ISAAC] = 1
 }
-PST.mobHPBlacklist = {}
+PST.mobHPBlacklist = {EntityType.ENTITY_HUSH_FLY}
 PST.explosionSounds = {
 	SoundEffect.SOUND_EXPLOSION_DEBRIS, SoundEffect.SOUND_EXPLOSION_STRONG, SoundEffect.SOUND_EXPLOSION_WEAK,
 	SoundEffect.SOUND_EXPLOSIVE_DIAH, SoundEffect.SOUND_BOSS1_EXPLOSIONS
