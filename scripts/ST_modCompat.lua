@@ -84,7 +84,9 @@ function PST:initModCompat()
 	end
 
     -- Fiend Folio
-    if FiendFolio then
+    if FiendFolio and not initMods.fiendFolio then
+        initMods.fiendFolio = true
+
         local function PST_getCustomMobTable(mobName)
             return {Isaac.GetEntityTypeByName(mobName), Isaac.GetEntityVariantByName(mobName)}
         end
