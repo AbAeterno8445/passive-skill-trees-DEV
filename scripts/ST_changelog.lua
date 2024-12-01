@@ -6,7 +6,7 @@ function PST:getChangelogList()
         "v0.4.21",
         "- Added additional support for many Fiend Folio items, cards, familiars, and their interactions with nodes.",
         "- Hush flies are no longer affected by HP modifiers. This also fixes their initial invulnerability not being applied.",
-        "- Fixed certain expedition implicits breaking the 'Effects' tab display.",
+        "- Fixed certain expedition implicits breaking the 'Effects' tab display in some depth levels.",
         "",
 
         "v0.4.20",
