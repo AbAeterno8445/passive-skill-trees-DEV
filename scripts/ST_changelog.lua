@@ -4,9 +4,11 @@ function PST:getChangelogList()
         "",
 
         "v0.4.21",
+        "- Added a new Ancient Jewel: \"Phantasm Prism\".",
         "- Added additional support for many Fiend Folio items, cards, familiars, and their interactions with nodes.",
         "- Hush flies are no longer affected by HP modifiers. This also fixes their initial invulnerability not being applied.",
         "- Fixed certain expedition implicits breaking the 'Effects' tab display in some depth levels.",
+        "- Fixed Mighty Purifier (ancient weapon) never blocking undead enemy hits.",
         "",
 
         "v0.4.20",

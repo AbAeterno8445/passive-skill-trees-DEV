@@ -895,6 +895,22 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    phantasmPrism = {
+        weight = 100,
+        spriteFrame = 33,
+        name = "Phantasm Prism",
+        description = {
+            "When killing a non-boss living enemy, 20% chance to summon a random undead enemy with",
+            "a similar base HP value.",
+            "This effect does not apply to living enemies spawned after entering the room.",
+            "Whenever you get hit by an undead enemy, increase this chance by 4%, up to 50%."
+        },
+        rewards = {
+            xpgain = 70,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

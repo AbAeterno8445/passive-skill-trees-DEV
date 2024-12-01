@@ -499,19 +499,16 @@ function PST:onDamage(target, damage, flag, source)
                 -- Ancient weapon mod: Mighty Purifier
                 tmpMod = PST:getSnapAstralWepMod("mightyPurifier")
                 if tmpMod then
-                    local isUndead = PST:arrHasValue(PST.undeadEnemies, target.Type)
-                    if not isUndead then
-                        local tmpVariant = PST.undeadEnemiesSpec[target.Type]
-                        if tmpVariant then
-                            if (type(tmpVariant) == "table" and PST:arrHasValue(tmpVariant, target.Variant)) or tmpVariant == target.Variant then
-                                isUndead = true
-                            end
-                        end
-                    end
-                    if isUndead and 100 * math.random() < tmpMod[2] then
+                    if PST:isMobUndead(tmpSource) and 100 * math.random() < tmpMod[2] then
                         SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.9, 2, false, 1.2)
                         return { Damage = 0 }
                     end
+                end
+
+                -- Ancient starcursed jewel: Phantasm Prism
+                if PST:SC_getSnapshotMod("phantasmPrism", false) and PST:getTreeSnapshotMod("SC_phantasmChance", 0) < 50 and
+                PST:isMobUndead(tmpSource) then
+                    PST:addModifiers({ SC_phantasmChance = 4 }, true)
                 end
 
                 -- Ancient weapon mod: Firestarter

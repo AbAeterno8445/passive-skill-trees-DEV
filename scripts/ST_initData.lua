@@ -1503,6 +1503,8 @@ function PST:resetMods()
 		SC_anamnesisOther = {},
 		SC_emberAzuriteItems = {},
 		SC_glitterStoneCoinCap = 0,
+		SC_phantasmChance = 0,
+		SC_phantasmUndeadMobs = {},
 		--#endregion
 
 		--#region ASTRAL EXPEDITIONS --

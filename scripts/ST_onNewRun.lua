@@ -233,7 +233,36 @@ function PST:onNewRun(isContinued)
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
             player:AddCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
             player:AddCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
-        PST:addModifiers({ damagePerc = -50 }, true)
+            PST:addModifiers({ damagePerc = -50 }, true)
+        end
+        -- Ancient starcursed jewel: Phantasm Prism
+        if PST:SC_getSnapshotMod("phantasmPrism", false) then
+            local undeadMobs = {}
+            for _, tmpMob in ipairs(PST.undeadEnemies) do
+                local tmpMobConfig = EntityConfig.GetEntity(tmpMob)
+                if tmpMobConfig then
+                    table.insert(undeadMobs, {tmpMob, 0, tmpMobConfig:GetBaseHP()})
+                end
+            end
+            for tmpMobType, tmpMobVariant in pairs(PST.undeadEnemiesSpec) do
+                if type(tmpMobVariant) == "table" then
+                    for _, tmpVariant in ipairs(tmpMobVariant) do
+                        local tmpMobConfig = EntityConfig.GetEntity(tmpMobType, tmpVariant)
+                        if tmpMobConfig then
+                            table.insert(undeadMobs, {tmpMobType, tmpVariant, tmpMobConfig:GetBaseHP()})
+                        end
+                    end
+                else
+                    local tmpMobConfig = EntityConfig.GetEntity(tmpMobType, tmpMobVariant)
+                    if tmpMobConfig then
+                        table.insert(undeadMobs, {tmpMobType, tmpMobVariant, tmpMobConfig:GetBaseHP()})
+                    end
+                end
+            end
+            PST:addModifiers({
+                SC_phantasmChance = { value = 20, set = true },
+                SC_phantasmUndeadMobs = { value = undeadMobs, set = true }
+            }, true)
         end
 
         if next(tmpSCMods) ~= nil then

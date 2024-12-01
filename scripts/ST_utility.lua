@@ -726,6 +726,19 @@ function PST:NPCChampionAvailable(npc)
 	return true
 end
 
+function PST:isMobUndead(npc)
+	local isUndead = PST:arrHasValue(PST.undeadEnemies, npc.Type)
+	if not isUndead then
+		local tmpVariant = PST.undeadEnemiesSpec[npc.Type]
+		if tmpVariant then
+			if (type(tmpVariant) == "table" and PST:arrHasValue(tmpVariant, npc.Variant)) or tmpVariant == npc.Variant then
+				isUndead = true
+			end
+		end
+	end
+	return isUndead
+end
+
 function PST:preSFXPlay(sfxID, volume, frameDelay, loop, pitch, pan)
 	-- Ancient starcursed jewel: Cause Converter - mute Siren screech!!
 	if PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt.Type == EntityType.ENTITY_SIREN then

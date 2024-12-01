@@ -417,6 +417,36 @@ function PST:onDeath(entity)
             end
             PST:addModifiers({ SC_mightstoneProcs = 1 }, true)
         end
+        -- Ancient starcursed jewel: Phantasm Prism
+        if PST:SC_getSnapshotMod("phantasmPrism", false) and tmpNPC and not PST:isMobUndead(tmpNPC) and entity.SpawnerType == 0 and
+        not tmpNPC:IsBoss() and 100 * math.random() < PST:getTreeSnapshotMod("SC_phantasmChance", 0) then
+            local npcConfig = EntityConfig.GetEntity(tmpNPC.Type, tmpNPC.Variant, tmpNPC.SubType)
+            if npcConfig then
+                local undeadMobTable = PST:getTreeSnapshotMod("SC_phantasmUndeadMobs", nil)
+                if undeadMobTable then
+                    local tmpCandidates = {}
+                    local npcHP = npcConfig:GetBaseHP()
+                    local hpRange = 4 + PST:getLevel():GetStage() * 3
+                    if PST:getLevel():GetStage() >= 9 then
+                        hpRange = 100
+                    end
+                    for _, tmpMob in ipairs(undeadMobTable) do
+                        if math.abs(tmpMob[3] - npcHP) <= hpRange then
+                            table.insert(tmpCandidates, {tmpMob[1], tmpMob[2]})
+                        end
+                    end
+                    if #tmpCandidates > 0 then
+                        local newMob = tmpCandidates[math.random(#tmpCandidates)]
+                        Isaac.Spawn(newMob[1], newMob[2], 0, tmpNPC.Position, Vector.Zero, nil)
+                        local tmpPos = tmpNPC.Position
+                        if tmpNPC:IsFlying() then
+                            tmpPos = Isaac.GetFreeNearPosition(tmpNPC.Position, 20)
+                        end
+                        Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+                    end
+                end
+            end
+        end
 
         -- Samson temp mods
         if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then
