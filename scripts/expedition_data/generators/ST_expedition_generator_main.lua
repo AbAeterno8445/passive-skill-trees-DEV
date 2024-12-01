@@ -23,7 +23,7 @@ function PST:getExpeditionImplicits(depth)
     end
     -- Depths 8+ remove random quality 4 items from the pool when starting a run
     if depth >= 8 then
-        implicits.expedImp_quality4Remove = math.min(15, math.floor(depth - 6) / 2)
+        implicits.expedImp_quality4Remove = math.min(15, math.floor((depth - 6) / 2))
     end
     -- Depths 10 & 20, start with an additional broken heart, and heartbreak can no longer show up
     if depth >= 10 then

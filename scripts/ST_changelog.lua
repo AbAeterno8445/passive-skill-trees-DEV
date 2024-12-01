@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.21",
         "- Hush flies are no longer affected by HP modifiers. This also fixes their initial invulnerability not being applied.",
+        "- Fixed certain expedition implicits breaking the 'Effects' tab display.",
         "",
 
         "v0.4.20",

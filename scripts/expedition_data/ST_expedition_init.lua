@@ -852,7 +852,7 @@ PST.expedDescriptions = {
     expedImp_mobSpeed = "+%d%% monster speed.",
     expedImp_floorCurse = "+%d%% chance to receive a curse when entering a floor.",
     expedImp_pickupScarcity = "+%d%% coin, key, bomb and heart scarcity.",
-    expedImp_quality4Remove = "Remove %d random quality 4 items from the pool when starting a run.",
+    expedImp_quality4Remove = "Remove %d random quality 4 item(s) from the pool when starting a run.",
     expedImp_heartbreak = {
         "Start with %d additional broken heart(s).",
         "Heartbreak can no longer show up."
