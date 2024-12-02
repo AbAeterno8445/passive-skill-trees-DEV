@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.22",
+        "- Fixed starcursed jewel modifiers not being displayed in the total modifier screen.",
+        "",
+
         "v0.4.21",
         "- Added a new Ancient Jewel: \"Phantasm Prism\".",
         "- Added additional support for many Fiend Folio items, cards, familiars, and their interactions with nodes.",

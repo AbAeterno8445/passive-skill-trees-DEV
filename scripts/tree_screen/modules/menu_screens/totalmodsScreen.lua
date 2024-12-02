@@ -7,7 +7,7 @@ function totalmodsScreen:OnOpen(openData)
     local sortedModNames = {}
     local tmpModsList = {}
     self.totalModsList = {}
-    local function processTreeNodes(tmpTree)
+    local function PST_processTreeNodes(tmpTree)
         for tmpNodeID, tmpNode in pairs(PST.trees[tmpTree]) do
             if PST:isNodeAllocated(tmpTree, tmpNodeID) then
                 -- Create sorted table of modifier names
@@ -28,10 +28,10 @@ function totalmodsScreen:OnOpen(openData)
             end
         end
     end
-    processTreeNodes("global")
+    PST_processTreeNodes("global")
     local tmpCharName = PST.charNames[1 + PST.selectedMenuChar]
     if tmpCharName and PST.trees[tmpCharName] ~= nil then
-        processTreeNodes(tmpCharName)
+        PST_processTreeNodes(tmpCharName)
     end
 
     table.sort(sortedModNames, function(a, b)
@@ -91,12 +91,13 @@ function totalmodsScreen:OnOpen(openData)
     end
 
     -- Star tree mods for description table
-    if self.starcursedTotalMods and (next(self.starcursedTotalMods.totalMods) ~= nil or self.starcursedTotalMods.totalStarmight > 0) then
+    local tScreen = PST.treeScreen
+    if tScreen.starcursedTotalMods and (next(tScreen.starcursedTotalMods.totalMods) ~= nil or tScreen.starcursedTotalMods.totalStarmight > 0) then
         local starTreeModsColor = PST.kcolors.STAR_ORANGE
         local starTreeMods = {}
         table.insert(self.totalModsList, "")
         table.insert(self.totalModsList, {"---- Star Tree Mods ----", starTreeModsColor})
-        for _, modData in pairs(self.starcursedTotalMods.totalMods) do
+        for _, modData in pairs(tScreen.starcursedTotalMods.totalMods) do
             if type(modData) == "table" then
                 table.insert(starTreeMods, {modData.description, starTreeModsColor})
             end
@@ -106,9 +107,9 @@ function totalmodsScreen:OnOpen(openData)
             return a[1] < b[1]
         end)
         -- Starmight
-        table.insert(starTreeMods, {tostring(self.starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
+        table.insert(starTreeMods, {tostring(tScreen.starcursedTotalMods.totalStarmight) .. " total Starmight.", starTreeModsColor})
         table.insert(starTreeMods, {"Starmight bonuses:", starTreeModsColor})
-        for modName, modVal in pairs(PST:SC_getStarmightImplicits(self.starcursedTotalMods.totalStarmight)) do
+        for modName, modVal in pairs(PST:SC_getStarmightImplicits(tScreen.starcursedTotalMods.totalStarmight)) do
             local parsedModLines = PST:parseModifierLines(modName, modVal)
             for _, tmpLine in ipairs(parsedModLines) do
                 table.insert(starTreeMods, {"   " .. tmpLine, starTreeModsColor})
