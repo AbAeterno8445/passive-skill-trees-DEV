@@ -44,6 +44,9 @@ PST.config = {
     -- Max amount of backups to keep (if backup dll is present)
     maxBackups = 3,
 
+    -- Toggle special challenge mark rendering (in case incompatibilities break it)
+    specialMarkRendering = true,
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed
@@ -523,6 +526,26 @@ function PST:initModConfigMenu()
                 PST.config.tSirenSing = b
             end,
             Info = {"Makes Tainted Siren sing when using Manifest Melody"}
+        }
+    )
+    -- Special challenge mark rendering toggle
+    ModConfigMenu.RemoveSetting(PST.modName, "Misc", "specialMarkRendering")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Misc",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "specialMarkRendering",
+            CurrentSetting = function()
+                return PST.config.specialMarkRendering
+            end,
+            Display = function()
+                return "Draw special marks: " .. (PST.config.specialMarkRendering and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.specialMarkRendering = b
+            end,
+            Info = {"Draw special challenge marks", "Disable if the challenge mark graphic looks broken"}
         }
     )
 end
