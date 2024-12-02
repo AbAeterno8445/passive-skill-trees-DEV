@@ -1632,6 +1632,7 @@ function PST:resetMods()
 		ancwep_sunbladeProc = false,
 		ancwep_sunbladeSpeed = false,
 		ancwep_metaClawMod = nil,
+		ancwep_quicksilverProc = false,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
@@ -1780,6 +1781,9 @@ function PST:resetMods()
 		ancwep_tollBellDamageTimer = 0,
 		ancwep_tollBellTearsTimer = 0,
 		ancwep_starsteelAxeBuff = 0,
+		ancwep_quicksilverParryCD = 0,
+		ancwep_quicksilverParrying = 0,
+		ancwep_quicksilverBuff = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

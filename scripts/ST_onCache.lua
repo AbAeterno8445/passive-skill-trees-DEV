@@ -955,6 +955,13 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
+    -- Ancient weapon mod: Quicksilver
+    tmpTreeMod = PST:getSnapAstralWepMod("quicksilver")
+    if tmpTreeMod and PST.specialNodes.ancwep_quicksilverBuff > 0 then
+        dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod[2]
+        dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod[2]
+    end
+
     -- Consuming Void node (T. Isaac's tree)
     tmpTreeMod = PST:getTreeSnapshotMod("consumingVoidBuff", 0)
     if tmpTreeMod > 0 then

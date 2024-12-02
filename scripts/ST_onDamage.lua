@@ -328,6 +328,22 @@ function PST:onDamage(target, damage, flag, source)
                 tmpSource = source.Entity.SpawnerEntity:ToNPC()
             end
             if tmpSource and tmpSource.Type ~= EntityType.ENTITY_FIREPLACE then
+                -- Ancient weapon mod: Quicksilver
+                if PST.specialNodes.ancwep_quicksilverParrying > 0 then
+                    SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.5, 2, false, 1.3)
+                    player:SetColor(Color(1, 1, 1, 1, 0.4, 0.4, 0.8), 12, 1, true, false)
+                    player:SetMinDamageCooldown(12)
+
+                    if PST.specialNodes.ancwep_quicksilverBuff == 0 then
+                        PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+                    end
+                    PST.specialNodes.ancwep_quicksilverBuff = 90
+
+                    PST:addModifiers({ ancwep_quicksilverProc = true }, true)
+                    PST.specialNodes.ancwep_quicksilverParrying = 0
+                    return false
+                end
+
                 -- Set hit by mob in room flag
                 if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
                     PST:addModifiers({ roomGotHitByMob = true }, true)
@@ -1148,6 +1164,12 @@ function PST:onDamage(target, damage, flag, source)
                     if target:GetBurnCountdown() == 0 and 100 * math.random() < tmpChance then
                         target:AddBurn(EntityRef(srcPlayer), 150, srcPlayer.Damage)
                     end
+                end
+
+                -- Ancient weapon mod: Quicksilver
+                if PST:getTreeSnapshotMod("ancwep_quicksilverProc", false) then
+                    dmgMult = dmgMult + 1
+                    PST:addModifiers({ ancwep_quicksilverProc = false }, true)
                 end
             end
 

@@ -2803,6 +2803,23 @@ function PST:frameUpdate()
 		end
 	end
 
+	-- Ancient weapon mod: Quicksilver
+	tmpMod = PST:getSnapAstralWepMod("quicksilver")
+	if tmpMod then
+		if PST.specialNodes.ancwep_quicksilverParryCD > 0 then
+			PST.specialNodes.ancwep_quicksilverParryCD = PST.specialNodes.ancwep_quicksilverParryCD - 1
+		end
+		if PST.specialNodes.ancwep_quicksilverParrying > 0 then
+			PST.specialNodes.ancwep_quicksilverParrying = PST.specialNodes.ancwep_quicksilverParrying - 1
+		end
+		if PST.specialNodes.ancwep_quicksilverBuff > 0 then
+			PST.specialNodes.ancwep_quicksilverBuff = PST.specialNodes.ancwep_quicksilverBuff - 1
+			if PST.specialNodes.ancwep_quicksilverBuff == 0 then
+				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+			end
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

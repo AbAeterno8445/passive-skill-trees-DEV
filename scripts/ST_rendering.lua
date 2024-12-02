@@ -427,6 +427,18 @@ function PST:Render()
 			end
 		end
 
+		-- Ancient weapon mod: Quicksilver (parrying input)
+		tmpMod = PST:getSnapAstralWepMod("quicksilver")
+		if tmpMod and Input.IsActionTriggered(ButtonAction.ACTION_DROP, player.ControllerIndex) and
+		PST.specialNodes.ancwep_quicksilverParryCD == 0 then
+			-- Parrying frames
+			PST.specialNodes.ancwep_quicksilverParrying = 7
+			player:SetColor(Color(1, 1, 1, 1, 0.8, 0.8, 0.8), PST.specialNodes.ancwep_quicksilverParrying, 1, true, false)
+			SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN)
+
+			PST.specialNodes.ancwep_quicksilverParryCD = math.ceil(tmpMod[1] * 30)
+		end
+
 		-- Manage floating texts
 		if floatTextDelay > 0 then
 			floatTextDelay = floatTextDelay - 1

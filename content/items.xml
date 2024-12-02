@@ -125,4 +125,5 @@
     <trinket description="Ancient astral weapon: Colossal Maul (great mace)" gfx="trinket_astralwep_colossal_maul.png" id="85" name="Astral weapon: Colossal Maul" achievement="99999" />
     <trinket description="Ancient astral weapon: Tolling Bell (great mace)" gfx="trinket_astralwep_tolling_bell.png" id="86" name="Astral weapon: Tolling Bell" achievement="99999" />
     <trinket description="Ancient astral weapon: Metamorphic Claw (gauntlet)" gfx="trinket_astralwep_metamorphic_claw.png" id="87" name="Astral weapon: Metamorphic Claw" achievement="99999" />
+    <trinket description="Ancient astral weapon: Quicksilver (quickblade)" gfx="trinket_astralwep_quicksilver.png" id="88" name="Astral weapon: Quicksilver" achievement="99999" />
 </items>

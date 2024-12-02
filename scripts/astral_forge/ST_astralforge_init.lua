@@ -567,6 +567,19 @@ PST.astralWepMods = {
         maxRolls = {6, 0.4, 9},
         upgIncrements = {0.25, 0.02, -1}
     },
+    quicksilver = {
+        description = {
+            "Press the Drop button to briefly perform a Parry. Parrying blocks up to 1 incoming hit if timed right.",
+            "Parrying has a {{roll1}} second cooldown. You can only parry monster hits.",
+            "When successfully parrying a hit:",
+            "- Your next hit deals double damage. This doesn't stack.",
+            "- Gain +{{roll2}}% tears and speed for 3 seconds."
+        },
+        ancient = true,
+        minRolls = {1.5, 8},
+        maxRolls = {0.8, 12},
+        upgIncrements = {-0.05, 0.4}
+    },
     -- Ancient Spears
     beastbane = {
         description = {
@@ -1136,6 +1149,13 @@ PST.astralWepData = {
                 spriteFrame = 9,
                 weight = 100,
                 ancientMods = {"crimsonAltruist"}
+            },
+            -- Quicksilver
+            {
+                name = "Quicksilver",
+                spriteFrame = 46,
+                weight = 100,
+                ancientMods = {"quicksilver"}
             }
         }
     },
