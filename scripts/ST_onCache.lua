@@ -1030,9 +1030,10 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         -- LUCK
         local tmpMod = PST:getTreeSnapshotMod("luck", 0) + dynamicMods.luck
-        local tmpMult = 1 + PST:getTreeSnapshotMod("luckPerc", 0) / 100
+        local tmpMult = PST:getTreeSnapshotMod("luckPerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.luckPerc / 100
-        player.Luck = (player.Luck + tmpMod) * math.max(0.05, tmpMult)
+        player.Luck = player.Luck + tmpMod
+        player.Luck = player.Luck + math.abs(player.Luck) * tmpMult
 
         -- Fickle Fortune node (Cain's tree)
         if PST:getTreeSnapshotMod("fickleFortune", false) and (player:GetTrinket(0) ~= 0 or player:GetTrinket(1) ~= 0) then
