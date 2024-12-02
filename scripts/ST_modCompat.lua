@@ -1,3 +1,7 @@
+local function PST_getCustomMobTable(mobName)
+    return {Isaac.GetEntityTypeByName(mobName), Isaac.GetEntityVariantByName(mobName)}
+end
+
 -- Mod compatibility helper
 local initMods = {}
 function PST:initModCompat()
@@ -86,10 +90,6 @@ function PST:initModCompat()
     -- Fiend Folio
     if FiendFolio and not initMods.fiendFolio then
         initMods.fiendFolio = true
-
-        local function PST_getCustomMobTable(mobName)
-            return {Isaac.GetEntityTypeByName(mobName), Isaac.GetEntityVariantByName(mobName)}
-        end
 
         -- No-duplication mobs
         local noDupeMobs = {
@@ -285,5 +285,32 @@ function PST:initModCompat()
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Token Bag"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Bag of Bobbies"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Fetal Stone"))
+    end
+
+    -- Last Judgement
+    if LastJudgement then
+        local noDupeMobs = {"Tainted Mr. Maw" , "Coil (LJ)", "Cyabin"}
+        for _, tmpMobName in ipairs(noDupeMobs) do
+            table.insert(PST.noSplitMobsSpec, PST_getCustomMobTable(tmpMobName))
+            -- Just in case, include no-duplication mobs into no-champion mobs
+            table.insert(PST.noChampionMobs, PST_getCustomMobTable(tmpMobName))
+        end
+
+        local tmpUndead = {
+            "Cage Vis", "Exorcist (LJ)", "Remnant", "Coil (LJ)", "Donor", "Slinking Guts", "Hulking Guts",
+            "Pathetic Guts", "Popper", "Lobodious", "Heap", "Gash", "Jibble", "Cyabin", "Cyabin Goo", "D.O.C.",
+            "Ministro II", "Skinburster", "AIDS", "Carnis", "Patho", "Cadavra (LJ)", "Chubs (LJ)", "Nibs (LJ)",
+            "Cadavra Gut", "Pinky", "Haemotoxia", "Tainted Mr. Maw", "Tainted Maw"
+        }
+        for _, tmpMobName in ipairs(tmpUndead) do
+            local mobType, mobVariant = table.unpack(PST_getCustomMobTable(tmpMobName))
+            if not PST.undeadEnemiesSpec[mobType] then
+                PST.undeadEnemiesSpec[mobType] = {}
+            elseif type(PST.undeadEnemiesSpec[mobType]) ~= "table" then
+                PST.undeadEnemiesSpec[mobType] = {PST.undeadEnemiesSpec[mobType]}
+            end
+            ---@diagnostic disable-next-line: param-type-mismatch
+            table.insert(PST.undeadEnemiesSpec[mobType], mobVariant)
+        end
     end
 end

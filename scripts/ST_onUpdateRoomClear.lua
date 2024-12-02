@@ -186,7 +186,7 @@ function PST:onRoomClear(level, room)
 			        PST:expedAddProgInRun("bossRoomsNoDmg", 1)
 
 					-- Expedition objective: clear boss rooms past chapter 3 (womb and beyond) without taking damage
-					if level:GetStage() >= 7 then
+					if level:GetStage() >= 7 or PST:LJ_inMortis() then
 						PST:expedAddProgInRun("bossesNoDmgC3", 1)
 					end
 				end

@@ -6,6 +6,8 @@ function PST:getChangelogList()
         "v0.4.22",
         "- Added an option to disable special marks rendering (such as from Cosmic Realignment), in case mod incompatibilities",
         "break it. Option can be found using Mod Config Menu in-game, under \"Misc\".",
+        "- Added support for Last Judgement monsters. Mortis now counts for expedition objectives that require clearing",
+        "content past chapter 3.",
         "- Fixed starcursed jewel modifiers not being displayed in the total modifier screen.",
         "- Potential fix for stats not refreshing immediately when starting a new run after ending an old one.",
         "",

@@ -887,6 +887,10 @@ function PST:inMineshaftPuzzle()
 	return level:GetDimension() == Dimension.MINESHAFT and (level:GetStage() == LevelStage.STAGE2_1 or level:GetStage() == LevelStage.STAGE2_2)
 end
 
+function PST:LJ_inMortis()
+	return LastJudgement and StageAPI and StageAPI:GetCurrentStage() and StageAPI:GetCurrentStage().Name == "Mortis"
+end
+
 function PST:getTilesDist(tiles)
 	return 40 + math.ceil(40 * tiles)
 end

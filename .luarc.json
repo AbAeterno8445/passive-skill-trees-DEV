@@ -252,7 +252,9 @@
     "PST_BackupFetch",
     "PST_BackupReplace",
         "Epiphany",
-        "FiendFolio"
+        "FiendFolio",
+        "LastJudgement",
+        "StageAPI"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }
