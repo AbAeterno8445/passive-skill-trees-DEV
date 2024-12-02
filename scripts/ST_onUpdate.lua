@@ -75,6 +75,7 @@ function PST:frameUpdate()
 	-- First update when entering floor
 	if PST.floorFirstUpdate then
 		PST.floorFirstUpdate = false
+		PST:updateCacheDelayed()
 		updateTrackers.jacobHeartDiffTracker = 0
 		updateTrackers.luckTracker = 0
 		updateTrackers.familiarsTracker = 0

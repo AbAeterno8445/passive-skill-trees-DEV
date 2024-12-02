@@ -975,8 +975,6 @@ function PST:onNewRun(isContinued)
     PST.player = player
     PST.gameInit = true
 
-    PST:updateCacheDelayed()
-
     -- Initial level & room funcs
     PST:onNewLevel()
     PST:onNewRoom()
