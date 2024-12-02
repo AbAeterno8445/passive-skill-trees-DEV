@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.22",
         "- Fixed starcursed jewel modifiers not being displayed in the total modifier screen.",
+        "- Potential fix for stats not refreshing immediately when starting a new run after ending an old one.",
         "",
 
         "v0.4.21",
