@@ -243,6 +243,9 @@ function PST:onDeath(entity)
                 if entity.SubType == 1 then
                     tmpMod = tmpMod * 2
                 end
+                if entity.Type == EntityType.ENTITY_ENVY then
+                    tmpMod = tmpMod / 8
+                end
                 if tmpMod > 0 and PST:arrHasValue(PST.deadlySinBosses, entity.Type) and 100 * math.random() < tmpMod then
                     Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, KeySubType.KEY_NORMAL, entity.Position, RandomVector() * 3, nil)
                 end
@@ -250,6 +253,9 @@ function PST:onDeath(entity)
                 tmpMod = PST:getTreeSnapshotMod("deadlySinBattery", 0)
                 if entity.SubType == 1 then
                     tmpMod = tmpMod * 2
+                end
+                if entity.Type == EntityType.ENTITY_ENVY then
+                    tmpMod = tmpMod / 8
                 end
                 if tmpMod > 0 and PST:arrHasValue(PST.deadlySinBosses, entity.Type) and 100 * math.random() < tmpMod then
                     Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_NORMAL, entity.Position, RandomVector() * 3, nil)

@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.24",
+        "- Added additional 'boss sparkling stardust chance' nodes to the sidereal tree.",
+        "- Reduced the drop rate of keys/batteries from relevant nodes when killing Envy.",
+        "",
+
         "v0.4.23",
         "- Added a new Ancient Jewel: \"Arachnite\".",
         "- Added support for undead monsters from the Crabby Cretins, Restored Monster Pack and Fall From Grace mods.",
