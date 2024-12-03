@@ -2,6 +2,19 @@ local function PST_getCustomMobTable(mobName)
     return {Isaac.GetEntityTypeByName(mobName), Isaac.GetEntityVariantByName(mobName)}
 end
 
+local function PST_addUndeadMobs(mobList)
+    for _, tmpMobName in ipairs(mobList) do
+        local mobType, mobVariant = table.unpack(PST_getCustomMobTable(tmpMobName))
+        if not PST.undeadEnemiesSpec[mobType] then
+            PST.undeadEnemiesSpec[mobType] = {}
+        elseif type(PST.undeadEnemiesSpec[mobType]) ~= "table" then
+            PST.undeadEnemiesSpec[mobType] = {PST.undeadEnemiesSpec[mobType]}
+        end
+        ---@diagnostic disable-next-line: param-type-mismatch
+        table.insert(PST.undeadEnemiesSpec[mobType], mobVariant)
+    end
+end
+
 -- Mod compatibility helper
 local initMods = {}
 function PST:initModCompat()
@@ -148,16 +161,7 @@ function PST:initModCompat()
             "The Whispers", "Griddle Horn", "Meltdown", "Ghostbuster", "Slinger", "Aquagob", "Junkstrap",
             "The Organization", "Dusk", "Mr. Dead", "Cacophobia", "Gravedigger"
         }
-        for _, tmpMobName in ipairs(tmpUndead) do
-            local mobType, mobVariant = table.unpack(PST_getCustomMobTable(tmpMobName))
-            if not PST.undeadEnemiesSpec[mobType] then
-                PST.undeadEnemiesSpec[mobType] = {}
-            elseif type(PST.undeadEnemiesSpec[mobType]) ~= "table" then
-                PST.undeadEnemiesSpec[mobType] = {PST.undeadEnemiesSpec[mobType]}
-            end
-            ---@diagnostic disable-next-line: param-type-mismatch
-            table.insert(PST.undeadEnemiesSpec[mobType], mobVariant)
-        end
+        PST_addUndeadMobs(tmpUndead)
 
         -- Progression items
         table.insert(PST.progressionItems, Isaac.GetItemIdByName("Contraband"))
@@ -302,15 +306,36 @@ function PST:initModCompat()
             "Ministro II", "Skinburster", "AIDS", "Carnis", "Patho", "Cadavra (LJ)", "Chubs (LJ)", "Nibs (LJ)",
             "Cadavra Gut", "Pinky", "Haemotoxia", "Tainted Mr. Maw", "Tainted Maw"
         }
-        for _, tmpMobName in ipairs(tmpUndead) do
-            local mobType, mobVariant = table.unpack(PST_getCustomMobTable(tmpMobName))
-            if not PST.undeadEnemiesSpec[mobType] then
-                PST.undeadEnemiesSpec[mobType] = {}
-            elseif type(PST.undeadEnemiesSpec[mobType]) ~= "table" then
-                PST.undeadEnemiesSpec[mobType] = {PST.undeadEnemiesSpec[mobType]}
-            end
-            ---@diagnostic disable-next-line: param-type-mismatch
-            table.insert(PST.undeadEnemiesSpec[mobType], mobVariant)
-        end
+        PST_addUndeadMobs(tmpUndead)
+    end
+
+    -- Crabby Cretins
+    if CrabbyCretins then
+        local tmpUndead = {
+            "?.Fly", "Enraged Bones", "Zealot", "Flood Cap", "Dank Gazing Globin", "Flooder",
+            "Tainted Hanger", "Vessel", "Spec-Soul", "The Blighted", "Rib Fly", "Rib Fly",
+            "Globlobber", "Ramble Gag"
+        }
+        PST_addUndeadMobs(tmpUndead)
+    end
+
+    -- Restored Monster Pack
+    if RestoredMonsterPack then
+        local tmpUndead = {
+            "Skinling", "Scab", "Mortling", "Scorchling", "Sporeling", "Stillborn", "Chubby Bunny", "Swapper",
+            "Barfy", "Screamer", "Splashy Long Legs", "Carrion Rider", "Beard Bat", "Rag Creep",
+            "Vessel (Antibirth)"
+        }
+        PST_addUndeadMobs(tmpUndead)
+    end
+
+    -- Fall From Grace
+    if FallFromGrace then
+        local tmpUndead = {
+            "Mulliboil", "Puff Bat", "Hotshot", "Sourdough", "Hyph Man", "Hypher Man", "Fungori", "Gluey",
+            "Valve Guy", "Wraith (Reimplemented)", "Braapinfly", "Robert", "Bobert", "Bursti", "Plumey",
+            "Affusion", "Salmon", "Ms. Guano", "Bumblebat"
+        }
+        PST_addUndeadMobs(tmpUndead)
     end
 end

@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.23",
+        "- Added support for undead monsters from the Crabby Cretins, Restored Monster Pack and Fall From Grace mods.",
         "- Fixed certain special effects rendering incorrectly in the mirror world.",
         "",
 

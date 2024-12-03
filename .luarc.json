@@ -254,7 +254,10 @@
         "Epiphany",
         "FiendFolio",
         "LastJudgement",
-        "StageAPI"
+        "StageAPI",
+        "FallFromGrace",
+        "RestoredMonsterPack",
+        "CrabbyCretins"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }
