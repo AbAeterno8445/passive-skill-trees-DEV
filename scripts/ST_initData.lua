@@ -53,7 +53,8 @@ end
 
 -- Nodes that cost no global SP
 PST.nodeSPExceptions = {
-	"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse", "Description Box Style", "Save Backups Addon"
+	"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse", "Description Box Style", "Save Backups Addon",
+	"Global Skill Point Exchange"
 }
 
 -- Crimson node variants
