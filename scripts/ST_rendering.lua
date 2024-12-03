@@ -533,6 +533,10 @@ function PST:Render()
 			for i = #animFXList, 1, -1 do
 				local tmpFX = animFXList[i]
 				local worldPos = room:WorldToScreenPosition(tmpFX.pos)
+				if room:IsMirrorWorld() then
+					local newX = room:GetCenterPos().X - (tmpFX.pos.X - room:GetCenterPos().X)
+					worldPos = room:WorldToScreenPosition(Vector(newX, tmpFX.pos.Y))
+				end
 
 				tmpFX.sprite:Render(worldPos)
 				-- Sprite update + associated frame funcs

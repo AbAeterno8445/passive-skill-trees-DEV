@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.23",
+        "- Fixed certain special effects rendering incorrectly in the mirror world.",
+        "",
+
         "v0.4.22",
         "- Added an option to disable special marks rendering (such as from Cosmic Realignment), in case mod incompatibilities",
         "break it. Option can be found using Mod Config Menu in-game, under \"Misc\".",
