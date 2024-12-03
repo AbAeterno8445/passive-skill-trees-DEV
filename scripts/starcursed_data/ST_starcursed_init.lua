@@ -911,6 +911,21 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    arachnite = {
+        weight = 100,
+        spriteFrame = 34,
+        name = "Arachnite",
+        description = {
+            "Killing enemies has a 40% chance to spawn 1-5 swarm spiders, up to 12 times per room.",
+            "Chance increases by 8% per floor, up to 90%.",
+            "Bursting Sack can no longer show up."
+        },
+        rewards = {
+            xpgain = 65,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

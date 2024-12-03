@@ -1505,6 +1505,7 @@ function PST:resetMods()
 		SC_glitterStoneCoinCap = 0,
 		SC_phantasmChance = 0,
 		SC_phantasmUndeadMobs = {},
+		SC_arachniteProcs = 0,
 		--#endregion
 
 		--#region ASTRAL EXPEDITIONS --

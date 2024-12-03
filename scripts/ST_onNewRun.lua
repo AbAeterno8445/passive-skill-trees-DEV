@@ -264,6 +264,10 @@ function PST:onNewRun(isContinued)
                 SC_phantasmUndeadMobs = { value = undeadMobs, set = true }
             }, true)
         end
+        -- Ancient starcursed jewel: Arachnite
+        if PST:SC_getSnapshotMod("arachnite", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BURSTING_SACK)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

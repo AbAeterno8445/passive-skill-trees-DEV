@@ -447,6 +447,19 @@ function PST:onDeath(entity)
                 end
             end
         end
+        -- Ancient starcursed jewel: Arachnite
+        if tmpNPC and tmpNPC.Type ~= EntityType.ENTITY_SWARM_SPIDER and PST:SC_getSnapshotMod("arachnite", false) and PST:getTreeSnapshotMod("SC_arachniteProcs", 0) < 12 then
+            local tmpChance = math.min(90, 40 + 8 * PST:getLevel():GetStage())
+            if 100 * math.random() < tmpChance then
+                local minSpiders = 1 + math.floor(PST:getLevel():GetStage() / 4)
+                local maxSpiders = math.max(minSpiders, math.random(5))
+                for _=minSpiders,maxSpiders do
+                    local tmpSpider = Isaac.Spawn(EntityType.ENTITY_SWARM_SPIDER, 0, 0, tmpNPC.Position, RandomVector() * 2, nil)
+                    tmpSpider.Color = Color(1, 1, 1, 1, 0.6, 0.6, 0.6)
+                end
+                PST:addModifiers({ SC_arachniteProcs = 1 }, true)
+            end
+        end
 
         -- Samson temp mods
         if PST:getTreeSnapshotMod("samsonTempDamage", 0) > 0 or PST:getTreeSnapshotMod("samsonTempSpeed", 0) > 0 then
