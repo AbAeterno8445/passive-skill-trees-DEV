@@ -165,6 +165,28 @@ local descriptionBoxesModule = {
                 table.insert(newDesc, {tmpLine, PST.kcolors.LIGHTRED1})
             end
             return { name = descName, description = newDesc }
+        end,
+
+        -- Global Skill Point exchange node, show exchange rate
+        ["Global Skill Point Exchange"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {}
+            if not isAllocated then
+                table.insert(nodeDesc, "Once allocated, press the Allocate button to convert some Arcane Obols into a Global Skill Point.")
+                table.insert(nodeDesc, "Obol conversion cost increases the more you use this exchange with the current character.")
+            else
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    if not charData.obolGSPtrades then charData.obolGSPtrades = 0 end
+                    table.insert(nodeDesc, "Press the Allocate button to convert:")
+                    table.insert(nodeDesc, {
+                        tostring(PST:getExpedObolToGSPRate(charData.obolGSPtrades)) .. " obols into 1 Global Skill Point.",
+                        PST.kcolors.PURPLE1
+                    })
+                else
+                    table.insert(nodeDesc, {"Could not load current character data.", PST.kcolors.RED1})
+                end
+            end
+            return { name = descName, description = nodeDesc }
         end
     }
 }

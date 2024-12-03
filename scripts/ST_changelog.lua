@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v0.4.24",
+        "- Added a new \"Global Skill Point Exchange\" node to the Sidereal Tree. This allows you to exchange some obols",
+        "with the selected character into 1 global SP. Cost increases the more you exchange with that character.",
         "- Added support for the Revelations mod's undead monsters.",
         "- Added additional 'boss sparkling stardust chance' nodes to the sidereal tree.",
         "- Gauntlet weapons now roll higher magnitudes on magic modifiers.",

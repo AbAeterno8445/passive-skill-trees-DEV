@@ -8,6 +8,11 @@ PST.siderealVicinityCost = 5
 PST.siderealRegionCost = 50
 PST.siderealExpanseCost = 150
 
+function PST:getExpedObolToGSPRate(totalTrades)
+    local cost = math.ceil(30 + totalTrades * (2 ^ (1 + totalTrades / 12)))
+    return math.min(200, cost)
+end
+
 ---@enum PSTExpNodeRewardType
 PSTExpNodeRewardType = {
     NONE = 0,

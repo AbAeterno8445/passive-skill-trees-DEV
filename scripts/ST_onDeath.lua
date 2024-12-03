@@ -198,7 +198,7 @@ function PST:onDeath(entity)
                     if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
                         -- Chance for Sparkling Stardust
                         if PST:isNodeNameAllocated("sidereal", "Astral Forge") then
-                            local sparkStardustChance = 12 + PST:getLevel():GetStage() + PST:getTreeSnapshotMod("bossSparkStardust", 0)
+                            local sparkStardustChance = 15 + PST:getLevel():GetStage() + PST:getTreeSnapshotMod("bossSparkStardust", 0)
                             -- Reduce chance for multi-segment bosses
                             if PST:arrHasValue(PST.segmentBosses, entity.Type) then
                                 sparkStardustChance = sparkStardustChance / 12

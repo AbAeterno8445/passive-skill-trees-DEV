@@ -113,6 +113,26 @@ function PST.treeScreen:InputAllocate()
                             charData.arcaneObols = charData.arcaneObols + 10
                             self.treeHasChanges = true
                             SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.35, 2, false, 0.8)
+                        else
+                            SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                        end
+                    else
+                        SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                    end
+
+                -- Global Skill Point Exchange node, convert obols to global SP
+                elseif self.hoveredNode.name == "Global Skill Point Exchange" then
+                    local charData = PST:getCurrentCharData()
+                    if charData then
+                        local obolCost = PST:getExpedObolToGSPRate(charData.obolGSPtrades)
+                        if charData.arcaneObols and charData.arcaneObols >= obolCost then
+                            charData.arcaneObols = charData.arcaneObols - obolCost
+                            PST.modData.skillPoints = PST.modData.skillPoints + 1
+                            charData.obolGSPtrades = charData.obolGSPtrades + 1
+                            self.treeHasChanges = true
+                            SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.35, 2, false, 0.9)
+                        else
+                            SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
                         end
                     else
                         SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
