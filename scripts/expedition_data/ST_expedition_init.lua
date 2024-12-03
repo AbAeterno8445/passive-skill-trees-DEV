@@ -10,7 +10,7 @@ PST.siderealExpanseCost = 150
 
 function PST:getExpedObolToGSPRate(totalTrades)
     local cost = math.ceil(30 + totalTrades * (2 ^ (1 + totalTrades / 12)))
-    return math.min(200, cost)
+    return math.min(220, cost)
 end
 
 ---@enum PSTExpNodeRewardType
