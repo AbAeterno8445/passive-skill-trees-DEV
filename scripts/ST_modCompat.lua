@@ -323,8 +323,8 @@ function PST:initModCompat()
     if RestoredMonsterPack then
         local tmpUndead = {
             "Skinling", "Scab", "Mortling", "Scorchling", "Sporeling", "Stillborn", "Chubby Bunny", "Swapper",
-            "Barfy", "Screamer", "Splashy Long Legs", "Carrion Rider", "Beard Bat", "Rag Creep",
-            "Vessel (Antibirth)"
+			"Barfy", "Screamer", "Splashy Long Legs", "​Carrion Rider", "Beard Bat", "​Rag Creep",
+			"​Vessel (Antibirth)", "Vessel (RM)"
         }
         PST_addUndeadMobs(tmpUndead)
     end
@@ -338,4 +338,17 @@ function PST:initModCompat()
         }
         PST_addUndeadMobs(tmpUndead)
     end
+
+    -- Revelations
+	if REVEL then
+		local tmpUndead = {
+            "Blockhead", "Cardinal Blockhead", "Yellow Blockhead", "Yellow Cardinal Blockhead", "Block Gaper", "Cardinal Block Gaper", 
+			"Yellow Block Gaper", "Yellow Cardinal Block Gaper", "Block Block Block Gaper", "Ice Hazard Brother Bloody", "Brother Bloody", 
+			"Frost Rider", "Frost Rider Phase 2", "Wendy", "Rag Tag", "Arrowhead", "Rag Gaper", "Rag Gaper (Head)", "Rag Gusher", 
+			"Cricket (boss)", "Tammy (boss)", "Guppy (boss)", "Moxie (boss)", "Pyramid Head", "Aragnid", "Aragnid Innard", "Anima", 
+			"Rag Bony", "Rag Trite", "Innard", "Necragmancer", "Wretcher", "Urny", "Rag Fatty", "Sarcophaguts", "Sarcophaguts Head", "Sarcgut", 
+			"Rag Drifty", "Pseudo Rag Drifty", "Draugr", "Haugr", "Jaugr", "Juniaugr", "Snowst", "Ragtime", "Rag Dancer", "Ragma"
+        }
+        PST_addUndeadMobs(tmpUndead)
+	end
 end

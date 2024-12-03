@@ -4,7 +4,9 @@ function PST:getChangelogList()
         "",
 
         "v0.4.24",
+        "- Added support for the Revelations mod's undead monsters.",
         "- Added additional 'boss sparkling stardust chance' nodes to the sidereal tree.",
+        "- Gauntlet weapons now roll higher magnitudes on magic modifiers.",
         "- Reduced the drop rate of keys/batteries from relevant nodes when killing Envy.",
         "",
 

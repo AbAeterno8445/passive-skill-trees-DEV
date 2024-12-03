@@ -1534,7 +1534,7 @@ PST.astralWepData = {
         implicitMod = {
             name = "gauntletImp",
             description = {
-                "Can have an additional magic modifier.",
+                "Can have an additional magic modifier. Magic modifiers are stronger.",
                 "Transmutation cost is halved."
             },
             rollsFunc = function(honing)

@@ -257,7 +257,8 @@
         "StageAPI",
         "FallFromGrace",
         "RestoredMonsterPack",
-        "CrabbyCretins"
+        "CrabbyCretins",
+        "REVEL"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

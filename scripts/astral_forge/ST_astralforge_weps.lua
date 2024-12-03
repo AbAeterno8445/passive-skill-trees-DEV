@@ -69,7 +69,11 @@ function PST:astralWepAddMod(weaponData)
 
     -- Percentages for every potential roll in the mod
     local rollPercs = {math.random(), math.random(), math.random(), math.random(), math.random()}
-    local modRolls = PST.astralWepMods[newModName].rollsFunc(weaponData.tier, rollPercs)
+    local tmpWepTier = weaponData.tier
+    if weaponData.type == PSTAstralWepType.GAUNTLET then
+        tmpWepTier = tmpWepTier + 3
+    end
+    local modRolls = PST.astralWepMods[newModName].rollsFunc(tmpWepTier, rollPercs)
     local newModRolls = PST:astralWepRoundRolls(modRolls)
 
     table.insert(weaponData.mods, {
