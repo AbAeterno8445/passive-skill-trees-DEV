@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "- Added additional 'boss sparkling stardust chance' nodes to the sidereal tree.",
         "- Gauntlet weapons now roll higher magnitudes on magic modifiers.",
         "- Reduced the drop rate of keys/batteries from relevant nodes when killing Envy.",
+        "- Fixed Sidereal Universalization not applying to new runs.",
         "",
 
         "v0.4.23",
