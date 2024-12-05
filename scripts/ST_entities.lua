@@ -58,8 +58,8 @@ end
 ---@param npc EntityNPC
 function PST:onNPCUpdate(npc)
     -- Ancient starcursed jewel: Cause Converter - remove boss minions
-    if (npc.Parent or npc.SpawnerEntity) and PST.specialNodes.SC_causeConvBossEnt and (npc.Parent.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed or
-    npc.SpawnerEntity.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed) then
+    if PST.specialNodes.SC_causeConvBossEnt and ((npc.Parent and npc.Parent.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed) or
+    (npc.SpawnerEntity and npc.SpawnerEntity.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed)) then
         Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, npc.Position, Vector.Zero, nil, 0, Random() + 1)
         npc:Remove()
     end

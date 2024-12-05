@@ -4,7 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v0.4.25",
-        "- Added support for various items and monsters from the Repentance Plus (mod), Reverie and Revelations mods.",
+        "- Added support for various items and monsters from the Repentance Plus (mod), Reverie, and Revelations mods.",
+        "- Potential fix for occasional Cause Converter (ancient jewel) error for certain bosses.",
         "",
 
         "v0.4.24",
