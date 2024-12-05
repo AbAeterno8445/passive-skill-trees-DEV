@@ -214,15 +214,6 @@ function PST:onNewLevel()
         }, true)
     end
 
-    -- King's Curse node (Lazarus' tree)
-    if PST:getTreeSnapshotMod("kingCurse", false) then
-        if not player:HasCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE) then
-            player:AddCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
-        else
-            player:RemoveCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
-        end
-    end
-
     -- Sporadic Growth node (Eden's tree)
     if PST:getTreeSnapshotMod("sporadicGrowth", false) and not PST:isFirstOrigStage() then
         for _=1,2 do

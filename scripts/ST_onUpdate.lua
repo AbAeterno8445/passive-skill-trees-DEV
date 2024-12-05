@@ -306,6 +306,15 @@ function PST:frameUpdate()
 			end
 		end
 
+		-- King's Curse node (Lazarus' tree)
+		if PST:getTreeSnapshotMod("kingCurse", false) then
+			if not player:HasCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE) then
+				player:AddCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
+			else
+				player:RemoveCollectible(CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE)
+			end
+		end
+
 		-- Re-open sidereal caches just in case
 		if PST:isRunSidereal() then
 			local sideCaches = Isaac.FindByType(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 1)

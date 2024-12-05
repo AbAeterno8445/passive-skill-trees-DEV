@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.26",
+        "- Potential fix for Lazarus' King's Curse node not triggering on new floor.",
+        "- Fixed modifier description error for Lazarus when in the total modifier screen.",
+        "",
+
         "v0.4.25",
         "- Added support for various items and monsters from the Repentance Plus (mod, not DLC), Reverie, and",
         "Revelations mods.",

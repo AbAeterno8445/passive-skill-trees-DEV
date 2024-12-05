@@ -1009,7 +1009,7 @@ PST.treeModDescriptions = {
             "King's Curse:",
             "    Start with Damocles activated",
             "    When entering a new floor, remove Damocles if you have it, or re-add it if you don't",
-            "    -10% all stats while not Lazarus Risen",
+            "    -10%% all stats while not Lazarus Risen",
             "    -1 luck while not Lazarus Risen"
         },
         category = "charTree", sort = 2401
