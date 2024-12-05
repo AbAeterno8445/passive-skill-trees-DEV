@@ -395,7 +395,7 @@ function PST:onRoomClear(level, room)
 
 			-- A True Ending? node (Lazarus' tree)
 			if isBossRoom and PST:getTreeSnapshotMod("aTrueEnding", false) and
-			(level:GetStage() == LevelStage.STAGE1_1 or level:GetStage() == LevelStage.STAGE3_2 or level:GetStage() == LevelStage.STAGE4_2) then
+			((level:GetStage() == LevelStage.STAGE1_1) or (level:GetStage() == LevelStage.STAGE3_2) or (level:GetStage() == LevelStage.STAGE4_2)) then
 				-- Drop Suicide King card when defeating first boss, mom, or mom's heart
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_SUICIDE_KING, Random() + 1)
