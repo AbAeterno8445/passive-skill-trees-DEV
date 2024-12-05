@@ -258,7 +258,9 @@
         "FallFromGrace",
         "RestoredMonsterPack",
         "CrabbyCretins",
-        "REVEL"
+        "REVEL",
+        "RepentancePlusMod",
+        "Reverie"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

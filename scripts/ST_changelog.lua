@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.25",
+        "- Added support for various items and monsters from the Repentance Plus (mod), Reverie and Revelations mods.",
+        "",
+
         "v0.4.24",
         "- Added a new \"Global Skill Point Exchange\" node to the Sidereal Tree. This allows you to exchange some obols",
         "with the selected character into 1 global SP. Cost increases the more you exchange with that character.",

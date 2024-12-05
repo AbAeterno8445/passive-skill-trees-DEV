@@ -1324,35 +1324,7 @@ function PST:onNewRoom()
 		for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(PST.ItemPoolType.POOL_BLUE)) do
 			table.insert(PST.blueItemPool, tmpItem.itemID)
 		end
-		-- Epiphany blue items
-		if Epiphany then
-			table.insert(PST.blueItemPool, Epiphany.Item.DIVINE_REMNANTS.ID)
-			table.insert(PST.blueItemPool, Epiphany.Item.CHANCE_CUBE.ID)
-			table.insert(PST.blueItemPool, Epiphany.Item.D5.ID)
-		end
-		-- Fiend Folio blue items
-		if FiendFolio then
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Golem's Orb"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Peach Creep"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Ophiuchus"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Cetus"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Deimos"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Page of Virtues"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Musca"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Robo-Baby 3.0"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Nyx"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Spindle"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Azurite Spindown"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("D3"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Bag of Bobbies"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Bottle of Water"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Dad's Battery"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Mama Spooter"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Pinhead"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Chirumiru"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Bedtime Story"))
-			table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Telebombs"))
-		end
+		PST:initModBlueItems()
 		PST:updateCacheDelayed(PST.allstatsCache)
 	end
 
