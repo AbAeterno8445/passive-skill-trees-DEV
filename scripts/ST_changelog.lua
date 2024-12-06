@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v0.4.26",
+        "- Adjusted how Lazarus' \"A True Ending?\" node triggers internally, which should fix it not triggering",
+        "occasionally.",
         "- Potential fix for Lazarus' King's Curse node not triggering on new floor.",
         "- Fixed modifier description error for Lazarus when in the total modifier screen.",
         "",

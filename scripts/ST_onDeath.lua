@@ -260,6 +260,14 @@ function PST:onDeath(entity)
                 if tmpMod > 0 and PST:arrHasValue(PST.deadlySinBosses, entity.Type) and 100 * math.random() < tmpMod then
                     Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_NORMAL, entity.Position, RandomVector() * 3, nil)
                 end
+
+                -- A True Ending? node (Lazarus' tree)
+                if PST:getTreeSnapshotMod("aTrueEnding", false) and ((PST:isFirstOrigStage()) or (entity.Type == EntityType.ENTITY_MOM) or
+                (entity.Type == EntityType.ENTITY_MOMS_HEART)) then
+                    -- Drop Suicide King card when defeating first boss, mom, or mom's heart
+                    local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_SUICIDE_KING, Random() + 1)
+                end
             end
 
             -- Chance for champions to drop a random starcursed jewel
