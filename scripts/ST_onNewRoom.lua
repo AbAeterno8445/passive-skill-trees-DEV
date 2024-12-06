@@ -149,6 +149,14 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Ancient starcursed jewel: Mistlestone
+	if PST:SC_getSnapshotMod("mistlestone", false) and room:IsFirstVisit() and (roomType == RoomType.ROOM_TREASURE or roomType == RoomType.ROOM_PLANETARIUM) then
+		local roomItems = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
+		for _, tmpItem in ipairs(roomItems) do
+			tmpItem:ToPickup():Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_MYSTERY_GIFT)
+		end
+	end
+
 	-- Ancient starcursed jewel: Challenger's Starpiece
 	if PST:SC_getSnapshotMod("challengerStarpiece", false) and not PST:getTreeSnapshotMod("SC_challClear", false) and
 	PST:getTreeSnapshotMod("SC_levelHasChall", false) then
@@ -295,7 +303,7 @@ function PST:onNewRoom()
 
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 80)
 			local newCrane = Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME, tmpPos, Vector.Zero, nil, 0, Random() + 1)
-			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 			SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND, 0.7)
 			newCrane:SetSize(0.6, Vector(0.6, 0.6), 1)
 

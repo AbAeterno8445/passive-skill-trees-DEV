@@ -389,7 +389,7 @@ function PST:onDamage(target, damage, flag, source)
                 end
 
                 -- Chance for monsters to also remove 1/2 soul/black heart when hitting
-                local tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
+                tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if 100 * math.random() < tmpMod then
                     player:AddSoulHearts(-1)
                 end
@@ -539,6 +539,11 @@ function PST:onDamage(target, damage, flag, source)
                 -- Beast-hunter's Rush node
                 if PST:getTreeSnapshotMod("beasthunterRush", false) then
                     Game().BossRushParTime = Game().BossRushParTime + 90
+                end
+
+                -- Ancient starcursed jewel: Mistlestone
+                if PST:SC_getSnapshotMod("mistlestone", false) then
+                    PST:addModifiers({ devilChance = -5 }, true)
                 end
 
                 -- Chance for normal monsters to deal an extra 1/2 heart damage

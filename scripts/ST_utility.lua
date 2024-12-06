@@ -379,7 +379,7 @@ function PST:removeRoomItems(protected)
 		if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
 		not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
 			if not protected or (protected and not PST:arrHasValue(PST.specialNodes.itemRemovalProtected, tmpEntity.InitSeed)) then
-				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, Random() + 1)
 				tmpEntity:Remove()
 			end
 		end

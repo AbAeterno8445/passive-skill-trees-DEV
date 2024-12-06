@@ -268,6 +268,10 @@ function PST:onNewRun(isContinued)
         if PST:SC_getSnapshotMod("arachnite", false) then
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BURSTING_SACK)
         end
+        -- Ancient starcursed jewel: Mistlestone
+        if PST:SC_getSnapshotMod("mistlestone", false) then
+            PST:addModifiers({ devilChance = 15 }, true)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

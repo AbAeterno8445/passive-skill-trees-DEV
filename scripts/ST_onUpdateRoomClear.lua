@@ -71,7 +71,7 @@ function PST:onRoomClear(level, room)
 			if not PST.specialNodes.bossGreedSpawned and (PST:getTreeSnapshotMod("thieveryGreedProc", false) or
 			(level:GetStage() == LevelStage.STAGE1_1 and 100 * math.random() < PST:getTreeSnapshotMod("firstBossGreed", 0))) then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 				Game():Spawn(EntityType.ENTITY_GREED, 0, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
 				PST.specialNodes.bossGreedSpawned = true
@@ -80,6 +80,16 @@ function PST:onRoomClear(level, room)
 			-- Ancient starcursed jewel: Nullstone
 			if PST:SC_getSnapshotMod("nullstone", false) then
 				PST:addModifiers({ SC_nullstoneClear = true }, true)
+			end
+
+			-- Ancient starcursed jewel: Mistlestone
+			if PST:SC_getSnapshotMod("mistlestone", false) and not PST.specialNodes.SC_mistleKrampusSpawn and
+			100 * math.random() < PST:getTreeSnapshotMod("SC_mistleKrampus", 0) then
+				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+				Game():Spawn(EntityType.ENTITY_FALLEN, 1, tmpPos, Vector.Zero, nil, 0, Random() + 1)
+				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
+				PST.specialNodes.SC_mistleKrampusSpawn = true
 			end
 		-- Boss rush
 		elseif room:GetType() == RoomType.ROOM_BOSSRUSH then

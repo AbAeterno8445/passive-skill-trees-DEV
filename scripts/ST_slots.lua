@@ -86,7 +86,7 @@ function PST:onSlotUpdate(slot)
                         for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
                             if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_COLLECTIBLE and
                             not PST:arrHasValue(PST.progressionItems, tmpEntity.SubType) then
-                                Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+                                Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, Random() + 1)
                                 tmpEntity:Remove()
                             end
                         end

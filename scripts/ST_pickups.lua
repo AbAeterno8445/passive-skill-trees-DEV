@@ -22,7 +22,7 @@ function PST:isPickupChest(variant)
 end
 
 function PST:vanishPickup(pickup)
-    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector.Zero, nil, 1, 0)
+    Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector.Zero, nil, 1, Random() + 1)
     pickup:Remove()
 end
 
@@ -150,7 +150,7 @@ function PST:prePickup(pickup, collider, low)
                     -- Remove crane games
                     local craneGames = Isaac.FindByType(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME)
                     for _, tmpCrane in ipairs(craneGames) do
-                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCrane.Position, Vector.Zero, nil, 0, 0)
+                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCrane.Position, Vector.Zero, nil, 0, Random() + 1)
                         tmpCrane:Remove()
                     end
 

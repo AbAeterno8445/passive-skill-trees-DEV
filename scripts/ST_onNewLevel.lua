@@ -13,6 +13,7 @@ function PST:onNewLevel()
     PST.specialNodes.temporaryHeartDmgStacks = 0
     PST.specialNodes.temporaryHeartTearStacks = 0
     PST.specialNodes.craftBagSnapshot = {}
+    PST.specialNodes.SC_mistleKrampusSpawn = false
 	PST:resetFloatingTexts()
     PST.floorFirstUpdate = true
     PST:addModifiers({

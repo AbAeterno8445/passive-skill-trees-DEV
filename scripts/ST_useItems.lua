@@ -1,3 +1,18 @@
+-- Pre item use
+function PST:preUseItem(itemType, RNG, player, useFlags, slot, customVarData)
+    -- Mystery gift
+    if itemType == CollectibleType.COLLECTIBLE_MYSTERY_GIFT then
+        if PST:SC_getSnapshotMod("mistlestone", false) then
+            local roomType = PST:getRoom():GetType()
+            if roomType ~= RoomType.ROOM_BOSS and roomType ~= RoomType.ROOM_ANGEL and roomType ~= RoomType.ROOM_DEVIL then
+                return true
+            else
+                PST:addModifiers({ SC_mistleKrampus = 8 }, true)
+            end
+        end
+    end
+end
+
 -- On item use
 ---@param itemType CollectibleType
 ---@param RNG RNG
@@ -194,7 +209,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
                 if tmpEntity.Type == EntityType.ENTITY_PICKUP and tmpEntity.Variant == PickupVariant.PICKUP_TRINKET then
                     if PST:arrHasValue(PST.locustTrinkets, tmpEntity.SubType &~ TrinketType.TRINKET_GOLDEN_FLAG) then
-                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, 0)
+                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpEntity.Position, Vector.Zero, nil, 0, Random() + 1)
                         tmpEntity:Remove()
                         player:AddSmeltedTrinket(tmpEntity.SubType)
                         PST:addModifiers({ luck = PST:getTreeSnapshotMod("locustConsumedLuck", 0) }, true)
@@ -410,7 +425,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             end
 
             -- Mod: -% to all room monsters' HP when using Flip, up to 4 times per room
-            local tmpMod = PST:getTreeSnapshotMod("flipMobHPDown", 0)
+            tmpMod = PST:getTreeSnapshotMod("flipMobHPDown", 0)
             local tmpProcs = PST:getTreeSnapshotMod("flipMobHPDownProcs", 0)
             if tmpMod > 0 and tmpProcs < 4 then
                 local foundMob = false
@@ -546,7 +561,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
 
         -- Chaos Take The World node (T. Eden's tree)
         if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) then
-            local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
+            itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
             if itemCfg and itemCfg.MaxCharges >= 2 then
                 player:UseActiveItem(CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS, UseFlag.USE_NOANIM)
             end

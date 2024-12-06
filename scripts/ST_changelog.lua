@@ -4,10 +4,12 @@ function PST:getChangelogList()
         "",
 
         "v0.4.26",
+        "- Added a new Ancient Jewel: \"Mistlestone\". Happy holidays everyone!",
         "- Adjusted how Lazarus' \"A True Ending?\" node triggers internally, which should fix it not triggering",
         "occasionally.",
         "- Potential fix for Lazarus' King's Curse node not triggering on new floor.",
         "- Fixed modifier description error for Lazarus when in the total modifier screen.",
+        "- Fixed error when spawning certain special effects.",
         "",
 
         "v0.4.25",

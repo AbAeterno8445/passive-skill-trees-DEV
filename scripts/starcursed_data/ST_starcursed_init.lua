@@ -926,6 +926,23 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    mistlestone = {
+        weight = 100,
+        spriteFrame = 35,
+        name = "Mistlestone",
+        description = {
+            "Treasure room and Planetarium items are replaced with Mystery Gifts.",
+            "Mystery gifts can only be used in boss, angel or devil rooms.",
+            "8% chance for Krampus to show up after clearing the boss room per used mystery gift.",
+            "+15% chance to find an angel/devil room.",
+            "-5% chance to find an angel/devil room whenever you get hit."
+        },
+        rewards = {
+            xpgain = 50,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
     }
 }
 

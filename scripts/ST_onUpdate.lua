@@ -248,7 +248,7 @@ function PST:frameUpdate()
 		-- Violent Marauder node (T. Samson's tree)
 		if PST:getTreeSnapshotMod("violentMarauderRemoved", false) then
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+			Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 			Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_SUPLEX, Random() + 1)
 			PST:addModifiers({ violentMarauderRemoved = false }, true)
 		end
@@ -401,7 +401,7 @@ function PST:frameUpdate()
 				local tmpPos = room:GetCenterPos()
 				tmpPos.Y = tmpPos.Y - 40
 				Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.BLOOD_DONATION_MACHINE, tmpPos, Vector.Zero, nil, 0, Random() + 1)
-				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 				SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND, 0.7)
 			end
 
@@ -427,7 +427,7 @@ function PST:frameUpdate()
 				local tmpChance = PST:getTreeSnapshotMod("demonHelpersBeggarChance", 0)
 				if 100 * math.random() < tmpChance then
 					local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-					Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+					Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 					Game():Spawn(EntityType.ENTITY_SLOT, SlotVariant.DEVIL_BEGGAR, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 					PST:addModifiers({ demonHelpersBeggarChance = { value = 5, set = true } }, true)
 				elseif tmpChance < 40 then
@@ -439,7 +439,7 @@ function PST:frameUpdate()
 			tmpMod = PST:getTreeSnapshotMod("edenBlessingSpawn", 0)
 			if tmpMod > 0 and 100 * math.random() < tmpMod and not PST:getTreeSnapshotMod("edenBlessingSpawned", false) then
 				local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, 0)
+				Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpPos, Vector.Zero, nil, 0, Random() + 1)
 				Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_EDENS_BLESSING, Random() + 1)
 				PST:addModifiers({ edenBlessingSpawned = true }, true)
 			end

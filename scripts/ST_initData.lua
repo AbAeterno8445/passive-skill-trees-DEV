@@ -1507,6 +1507,7 @@ function PST:resetMods()
 		SC_phantasmChance = 0,
 		SC_phantasmUndeadMobs = {},
 		SC_arachniteProcs = 0,
+		SC_mistleKrampus = 0,
 		--#endregion
 
 		--#region ASTRAL EXPEDITIONS --
@@ -1816,6 +1817,7 @@ function PST:resetMods()
 		SC_anamnesisResetTimer = 0,
 		SC_anamnesisItemPicked = 0,
 		SC_anamnesisJustReset = false,
+		SC_mistleKrampusSpawn = false,
 	}
 	-- Temporary data for misc custom effects
 	PST.specialFX = {
