@@ -270,7 +270,7 @@ function PST:onNewRun(isContinued)
         end
         -- Ancient starcursed jewel: Mistlestone
         if PST:SC_getSnapshotMod("mistlestone", false) then
-            PST:addModifiers({ devilChance = 15 }, true)
+            PST:addModifiers({ devilChance = 25 }, true)
         end
 
         if next(tmpSCMods) ~= nil then
