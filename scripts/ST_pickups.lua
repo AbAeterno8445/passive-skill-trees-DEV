@@ -479,7 +479,7 @@ function PST:prePickup(pickup, collider, low)
             elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
                 -- The Lost, non-red hearts vanish on pickup
                 if variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_FULL and
-                subtype ~= HeartSubType.HEART_HALF then
+                subtype ~= HeartSubType.HEART_HALF and subtype ~= HeartSubType.HEART_SCARED then
                     PST:vanishPickup(pickup)
                     return false
                 end
@@ -556,6 +556,7 @@ end
 local redHeartWorth = {
     [HeartSubType.HEART_HALF] = 1,
     [HeartSubType.HEART_FULL] = 2,
+    [HeartSubType.HEART_SCARED] = 2,
     [HeartSubType.HEART_DOUBLEPACK] = 4
 }
 
@@ -571,7 +572,7 @@ function PST:onPickup(pickup, collider, low, forced)
     -- Ancient weapon mod: Ivory Vampire (force red heart pickups)
     local tmpMod = PST:getSnapAstralWepMod("ivoryVampire")
     if player and tmpMod and variant == PickupVariant.PICKUP_HEART and (subtype == HeartSubType.HEART_FULL or
-    subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_DOUBLEPACK) then
+    subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_DOUBLEPACK or subtype == HeartSubType.HEART_SCARED) then
         -- Force pickup if necessary
         if player:GetHearts() >= player:GetMaxHearts() then
             pickup:GetSprite():Play("Collect")
@@ -744,7 +745,8 @@ function PST:onPickup(pickup, collider, low, forced)
                 end
             end
             -- Red heart pickups
-            if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_BLENDED or subtype == HeartSubType.HEART_DOUBLEPACK then
+            if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_BLENDED or subtype == HeartSubType.HEART_DOUBLEPACK or
+            subtype == HeartSubType.HEART_SCARED then
                 -- Mod: chance to gain a soul charge when picking up a red heart
                 if 100 * math.random() < PST:getTreeSnapshotMod("redHeartsSoulCharge", 0) then
                     SFXManager():Play(SoundEffect.SOUND_BEEP)
@@ -815,7 +817,7 @@ function PST:onPickup(pickup, collider, low, forced)
                     local consonanceCache = PST:getTreeSnapshotMod("grandConsonanceCache", nil)
                     if consonanceCache then
                         if consonanceCache.darkBumHearts == nil then consonanceCache.darkBumHearts = 0 end
-                        if subtype == HeartSubType.HEART_FULL then
+                        if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_SCARED then
                             consonanceCache.darkBumHearts = consonanceCache.darkBumHearts + 2
                         elseif subtype == HeartSubType.HEART_DOUBLEPACK then
                             consonanceCache.darkBumHearts = consonanceCache.darkBumHearts + 4
@@ -1124,7 +1126,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             -- Heartseeker Phantasm node (The Lost's tree)
             if PST:getTreeSnapshotMod("heartseekerPhantasm", false) and not isShop and not pickupGone then
                 -- Convert red and eternal hearts to soul hearts
-                if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_ETERNAL then
+                if subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_ETERNAL or subtype == HeartSubType.HEART_SCARED then
                     pickup:Remove()
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, pickup.Position, pickup.Velocity, nil, HeartSubType.HEART_SOUL, Random() + 1)
                     pickupGone = true
@@ -1133,7 +1135,7 @@ function PST:onPickupInit(pickup, firstSpawn)
 
             -- Soul Trickle node (Bethany's tree)
             if firstSpawn and not pickupGone and PST:getTreeSnapshotMod("soulTrickle", false) and
-            (subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF) then
+            (subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_SCARED) then
                 local player = PST:getPlayer()
                 if player:GetHearts() == player:GetMaxHearts() and not isShop and 100 * math.random() < 30 then
                     pickup:Remove()
@@ -1273,7 +1275,7 @@ function PST:onPickupInit(pickup, firstSpawn)
                         end
                     end
                 elseif variant == PickupVariant.PICKUP_HEART then
-                    if subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_FULL then
+                    if subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_SCARED then
                         if 100 * math.random() < 50 then
                             pickup:Morph(pickup.Type, variant, HeartSubType.HEART_GOLDEN)
                         else
