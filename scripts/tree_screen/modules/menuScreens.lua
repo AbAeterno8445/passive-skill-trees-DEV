@@ -34,6 +34,7 @@ local menuScreensModule = {
 function menuScreensModule:SwitchToMenu(targetMenu, openData)
     if not self.menus[targetMenu] then self.currentMenu = PSTTreeScreenMenu.NONE end
 
+    PST.treeScreen.modules.submenusModule:CloseSubmenu()
     self.menuScrollY = 0
     self.currentMenu = targetMenu
     if self.menus[targetMenu].OnOpen then
