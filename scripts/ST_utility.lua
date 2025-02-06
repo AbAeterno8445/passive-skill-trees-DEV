@@ -739,6 +739,13 @@ function PST:isMobUndead(npc)
 	return isUndead
 end
 
+function PST:roomHasSubmerged()
+	for _, tmpType in ipairs(PST.submergedEnemies) do
+		if #Isaac.FindByType(tmpType) > 0 then return true end
+	end
+	return false
+end
+
 function PST:preSFXPlay(sfxID, volume, frameDelay, loop, pitch, pan)
 	-- Ancient starcursed jewel: Cause Converter - mute Siren screech!!
 	if PST.specialNodes.SC_causeConvBossEnt and PST.specialNodes.SC_causeConvBossEnt.Type == EntityType.ENTITY_SIREN then

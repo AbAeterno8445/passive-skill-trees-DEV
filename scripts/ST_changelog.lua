@@ -3,6 +3,15 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.27",
+        "- Crimson nodes can no longer be respecced.",
+        "- Sidereal tree: replaced a set of sidereal cache key consumption nodes with a new set of nodes:",
+        "\"% chance for Sidereal Caches to return 1-2 keys when opened\"",
+        "- Global tree: reduced total chance for \"Sacrifice Room Red Hearts\" nodes (42% -> 25%).",
+        "- Segmented bosses should now count only once per type per room for expedition objectives.",
+        "- Rooms no longer trigger on-clear effects if there are submerged enemies waiting to show up.",
+        "",
+
         "v0.4.26",
         "- Added a new Ancient Jewel: \"Mistlestone\". Happy holidays everyone!",
         "- Adjusted how Lazarus' \"A True Ending?\" node triggers internally, which should fix it not triggering",

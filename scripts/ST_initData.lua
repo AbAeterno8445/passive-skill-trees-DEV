@@ -489,6 +489,9 @@ PST.undeadEnemiesSpec = {
 	[EntityType.ENTITY_POLYCEPHALUS] = 1,
 	[EntityType.ENTITY_ISAAC] = 1
 }
+PST.submergedEnemies = {
+	EntityType.ENTITY_DEEP_GAPER
+}
 PST.mobHPBlacklist = {EntityType.ENTITY_HUSH_FLY}
 PST.explosionSounds = {
 	SoundEffect.SOUND_EXPLOSION_DEBRIS, SoundEffect.SOUND_EXPLOSION_STRONG, SoundEffect.SOUND_EXPLOSION_WEAK,

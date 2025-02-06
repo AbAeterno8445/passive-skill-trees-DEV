@@ -3,7 +3,7 @@ local clearRoomProc = false
 ---@param room Room
 function PST:onRoomClear(level, room)
     -- On room clear
-	if room:GetAliveEnemiesCount() == 0 and (not clearRoomProc or PST.modData.xpObtained > 0) then
+	if room:GetAliveEnemiesCount() == 0 and (not clearRoomProc or PST.modData.xpObtained > 0) and not PST:roomHasSubmerged() then
 		PST.modData.spawnKills = 0
 
         local player = PST:getPlayer()
@@ -335,7 +335,7 @@ function PST:onRoomClear(level, room)
 				local roomType = room:GetType()
 				if roomType == RoomType.ROOM_BOSS then
 					PST:addModifiers({ SC_cursedAuricSpeedProc = true }, true)
-				elseif 100 * math.random() < 90 then
+				elseif not PST.debugOptions.disableAuric and 100 * math.random() < 90 then
 					if roomType ~= RoomType.ROOM_BOSS and roomType ~= RoomType.ROOM_BOSSRUSH and roomType ~= RoomType.ROOM_ANGEL and roomType ~= RoomType.ROOM_DEVIL and
 					roomType ~= RoomType.ROOM_CURSE and roomType ~= RoomType.ROOM_CHALLENGE then
 						PST:addModifiers({ SC_cursedAuricTimer = { value = Game():GetFrameCount(), set = true } }, true)

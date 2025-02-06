@@ -58,6 +58,8 @@ PST.debugOptions = {
 	freeForging = false, -- Astral Forge actions become free
 	freeBazaar = false, -- Timeless Bazaar items and refreshing become free
 	freeBounties = false, -- Free Ancient Weapon Bounty generation/rerolling
+
+	disableAuric = false, -- Disable cursed auric shard jewel teleport effect
 }
 
 local localDebugMode = false
