@@ -259,7 +259,7 @@ end
 
 local siderealTravelNodes = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
 -- Nodes with names included here can't be respecced
-local respecBans = {"Sidereal Universalization"}
+local respecBans = {"Sidereal Universalization", "Core Crimson Node", "Universal Crimson Node", "Divergent Crimson Node"}
 
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
 function PST:isNodeAllocatable(tree, nodeID, allocation)
