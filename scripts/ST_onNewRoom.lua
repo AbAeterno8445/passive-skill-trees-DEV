@@ -1336,6 +1336,11 @@ function PST:onNewRoom()
 		PST:updateCacheDelayed(PST.allstatsCache)
 	end
 
+	-- Ancient starcursed jewel: Phantasm Prism
+	if PST:getTreeSnapshotMod("SC_phantasmProcs", 0) > 0 then
+		PST:addModifiers({ SC_phantasmProcs = { value = 0, set = true } }, true)
+	end
+
 	-- Ancient starcursed jewel: Arachnite
 	if PST:getTreeSnapshotMod("SC_arachniteProcs", 0) > 0 then
 		PST:addModifiers({ SC_arachniteProcs = { value = 0, set = true } }, true)

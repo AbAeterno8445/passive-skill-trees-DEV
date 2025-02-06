@@ -449,7 +449,7 @@ function PST:onDeath(entity)
         end
         -- Ancient starcursed jewel: Phantasm Prism
         if PST:SC_getSnapshotMod("phantasmPrism", false) and tmpNPC and not isFrozen and not PST:isMobUndead(tmpNPC) and entity.SpawnerType == 0 and
-        not tmpNPC:IsBoss() and 100 * math.random() < PST:getTreeSnapshotMod("SC_phantasmChance", 0) then
+        not tmpNPC:IsBoss() and PST:getTreeSnapshotMod("SC_phantasmProcs", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("SC_phantasmChance", 0) then
             local npcConfig = EntityConfig.GetEntity(tmpNPC.Type, tmpNPC.Variant, tmpNPC.SubType)
             if npcConfig then
                 local undeadMobTable = PST:getTreeSnapshotMod("SC_phantasmUndeadMobs", nil)
@@ -473,6 +473,7 @@ function PST:onDeath(entity)
                             tmpPos = Isaac.GetFreeNearPosition(tmpNPC.Position, 20)
                         end
                         Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+                        PST:addModifiers({ SC_phantasmProcs = 1 }, true)
                     end
                 end
             end

@@ -4,7 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v0.4.27",
-        "- Additional compatibility for latest Epiphany version.",
+        "- Additional compatibility for the latest Epiphany version.",
         "- Crimson nodes can no longer be respecced.",
         "- Sidereal tree: replaced a set of sidereal cache key consumption nodes with a new set of nodes:",
         "\"% chance for Sidereal Caches to return 1-2 keys when opened\"",
@@ -13,6 +13,7 @@ function PST:getChangelogList()
         "- Rooms no longer trigger on-clear effects if there are submerged enemies waiting to show up.",
         "- Reduced xp gained from destroying frozen enemies.",
         "- Destroying frozen enemies should no longer proc effects that spawn more enemies.",
+        "- Phantasm Prism (ancient jewel) now triggers up to 12 times per room.",
         "",
 
         "v0.4.26",

@@ -902,7 +902,7 @@ PST.SCAncients = {
         name = "Phantasm Prism",
         description = {
             "When killing a non-boss living enemy, 20% chance to summon a random undead enemy with",
-            "a similar base HP value.",
+            "a similar base HP value, up to 12 times per room.",
             "This effect does not apply to living enemies spawned after entering the room.",
             "Whenever you get hit by an undead enemy, increase this chance by 4%, up to 50%."
         },
