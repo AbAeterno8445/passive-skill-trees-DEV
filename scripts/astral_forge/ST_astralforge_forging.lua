@@ -142,7 +142,8 @@ function PST:astralWepForgeImprint(weaponData, targetWeapon)
     end
 
     if weaponData.rarity == PSTAstralWepRarity.ANCIENT and targetWeapon.rarity == PSTAstralWepRarity.MAGIC and
-    weaponData.mods and #weaponData.mods < imprintLimit + 1 and targetWeapon.mods and #targetWeapon.mods == 2 then
+    weaponData.mods and #weaponData.mods < imprintLimit + 1 and targetWeapon.mods and (#targetWeapon.mods == 2 or
+    (targetWeapon.type == PSTAstralWepType.GAUNTLET and #targetWeapon.mods == 3)) then
         local randMod = targetWeapon.mods[math.random(#targetWeapon.mods)]
         table.insert(weaponData.mods, PST:copyTable(randMod))
         return true

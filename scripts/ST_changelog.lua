@@ -15,6 +15,7 @@ function PST:getChangelogList()
         "- Destroying frozen enemies should no longer proc effects that spawn more enemies.",
         "- Phantasm Prism (ancient jewel) now triggers up to 12 times per room.",
         "- Scared red hearts are now accounted for in pickup effects, such as The Lost's \"Heartseeker Phantasm\".",
+        "- Can now imprint modifiers into ancient weapons using magic gauntlets with 3 modifiers.",
         "- Fixed \"Meek Giants\" expedition boon applying to non-boss monsters.",
         "- Fixed Lazarus' \"A True Ending?\" being able to drop multiple Suicide King cards in a single room.",
         "- Fixed error and data initialization for Tarnished Judas (Epiphany).",
