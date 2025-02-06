@@ -279,11 +279,12 @@ function PST:onDeath(entity)
                 end
 
                 -- A True Ending? node (Lazarus' tree)
-                if PST:getTreeSnapshotMod("aTrueEnding", false) and ((PST:isFirstOrigStage()) or (entity.Type == EntityType.ENTITY_MOM) or
-                (entity.Type == EntityType.ENTITY_MOMS_HEART)) then
+                if PST:getTreeSnapshotMod("aTrueEnding", false) and room:GetType() == RoomType.ROOM_BOSS and ((PST:isFirstOrigStage()) or (entity.Type == EntityType.ENTITY_MOM) or
+                (entity.Type == EntityType.ENTITY_MOMS_HEART)) and not PST:getTreeSnapshotMod("aTrueEndingProc", false) then
                     -- Drop Suicide King card when defeating first boss, mom, or mom's heart
                     local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_SUICIDE_KING, Random() + 1)
+                    PST:addModifiers({ aTrueEndingProc = true }, true)
                 end
             end
 

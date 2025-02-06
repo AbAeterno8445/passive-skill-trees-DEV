@@ -215,6 +215,11 @@ function PST:onNewLevel()
         }, true)
     end
 
+    -- A True Ending? node (Lazarus' tree)
+    if PST:getTreeSnapshotMod("aTrueEndingProc", false) then
+        PST:addModifiers({ aTrueEndingProc = false }, true)
+    end
+
     -- Sporadic Growth node (Eden's tree)
     if PST:getTreeSnapshotMod("sporadicGrowth", false) and not PST:isFirstOrigStage() then
         for _=1,2 do

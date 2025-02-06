@@ -16,6 +16,7 @@ function PST:getChangelogList()
         "- Phantasm Prism (ancient jewel) now triggers up to 12 times per room.",
         "- Scared red hearts are now accounted for in pickup effects, such as The Lost's \"Heartseeker Phantasm\".",
         "- Fixed \"Meek Giants\" expedition boon applying to non-boss monsters.",
+        "- Fixed Lazarus' \"A True Ending?\" being able to drop multiple Suicide King cards in a single room.",
         "- Fixed error and data initialization for Tarnished Judas (Epiphany).",
         "",
 

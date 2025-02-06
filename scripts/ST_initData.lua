@@ -880,6 +880,7 @@ function PST:resetMods()
 		kingCurse = false,
 		kingCurseActive = false,
 		aTrueEnding = false,
+		aTrueEndingProc = false,
 		aTrueEndingCardUses = 0,
 		lazarusDamage = 0,
 		lazarusSpeed = 0,
