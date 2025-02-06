@@ -31,6 +31,8 @@ function PST:onDeath(entity)
         -- Enemy death
         local room = PST:getRoom()
 
+        local isFrozen = entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
+
         local addXP = false
         if not (entity:IsBoss() and entity.Parent) or entity.Type == EntityType.ENTITY_LARRYJR then
             if entity.SpawnerType ~= 0 then
@@ -68,6 +70,9 @@ function PST:onDeath(entity)
             if tmpNPC and tmpNPC:IsChampion() then
                 mult = mult + PST:getTreeSnapshotMod("championXP", 0) / 100
             end
+
+            -- Max 8% xp from frozen enemies
+            if isFrozen and mult > 0.08 then mult = 0.08 end
 
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
@@ -293,7 +298,6 @@ function PST:onDeath(entity)
         local tmpMod = PST:SC_getSnapshotMod("hoveringTearsOnDeath", {0, 0})
         if tmpMod[1] > 0 and tmpMod[2] > 0 then
             local proc = true
-            local isFrozen = entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
             if isFrozen then
                 proc = PST:distBetweenPoints(entity.Position, PST:getPlayer().Position) > 60
             end
@@ -444,7 +448,7 @@ function PST:onDeath(entity)
             PST:addModifiers({ SC_mightstoneProcs = 1 }, true)
         end
         -- Ancient starcursed jewel: Phantasm Prism
-        if PST:SC_getSnapshotMod("phantasmPrism", false) and tmpNPC and not PST:isMobUndead(tmpNPC) and entity.SpawnerType == 0 and
+        if PST:SC_getSnapshotMod("phantasmPrism", false) and tmpNPC and not isFrozen and not PST:isMobUndead(tmpNPC) and entity.SpawnerType == 0 and
         not tmpNPC:IsBoss() and 100 * math.random() < PST:getTreeSnapshotMod("SC_phantasmChance", 0) then
             local npcConfig = EntityConfig.GetEntity(tmpNPC.Type, tmpNPC.Variant, tmpNPC.SubType)
             if npcConfig then
@@ -474,7 +478,7 @@ function PST:onDeath(entity)
             end
         end
         -- Ancient starcursed jewel: Arachnite
-        if tmpNPC and tmpNPC.Type ~= EntityType.ENTITY_SWARM_SPIDER and PST:SC_getSnapshotMod("arachnite", false) and PST:getTreeSnapshotMod("SC_arachniteProcs", 0) < 12 then
+        if tmpNPC and not isFrozen and tmpNPC.Type ~= EntityType.ENTITY_SWARM_SPIDER and PST:SC_getSnapshotMod("arachnite", false) and PST:getTreeSnapshotMod("SC_arachniteProcs", 0) < 12 then
             local tmpChance = math.min(90, 40 + 8 * PST:getLevel():GetStage())
             if 100 * math.random() < tmpChance then
                 local minSpiders = 1 + math.floor(PST:getLevel():GetStage() / 4)

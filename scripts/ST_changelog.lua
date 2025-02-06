@@ -4,12 +4,15 @@ function PST:getChangelogList()
         "",
 
         "v0.4.27",
+        "- Additional compatibility for latest Epiphany version.",
         "- Crimson nodes can no longer be respecced.",
         "- Sidereal tree: replaced a set of sidereal cache key consumption nodes with a new set of nodes:",
         "\"% chance for Sidereal Caches to return 1-2 keys when opened\"",
         "- Global tree: reduced total chance for \"Sacrifice Room Red Hearts\" nodes (42% -> 25%).",
         "- Segmented bosses should now count only once per type per room for expedition objectives.",
         "- Rooms no longer trigger on-clear effects if there are submerged enemies waiting to show up.",
+        "- Reduced xp gained from destroying frozen enemies.",
+        "- Destroying frozen enemies should no longer proc effects that spawn more enemies.",
         "",
 
         "v0.4.26",
