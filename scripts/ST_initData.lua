@@ -61,7 +61,7 @@ PST.nodeSPExceptions = {
 PST.crimsonNodeNames = {"Universal Crimson Node", "Core Crimson Node", "Divergent Crimson Node"}
 
 PST.finalBosses = {
-	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_ISAAC, EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN,
+	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_ISAAC, EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN_2,
 	EntityType.ENTITY_BEAST, EntityType.ENTITY_MOTHER, EntityType.ENTITY_ULTRA_GREED
 }
 PST.impromptuGamblerPools = {
@@ -343,7 +343,7 @@ PST.causeConverterBossBlacklist = {
 	EntityType.ENTITY_BLASTOCYST_BIG, EntityType.ENTITY_BLASTOCYST_MEDIUM, EntityType.ENTITY_BLASTOCYST_SMALL,
 	EntityType.ENTITY_MAMA_GURDY, EntityType.ENTITY_ROTGUT, EntityType.ENTITY_MOTHER,
 	EntityType.ENTITY_MOTHERS_SHADOW, EntityType.ENTITY_HUSH, EntityType.ENTITY_SATAN,
-	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_ISAAC, EntityType.ENTITY_MEGA_SATAN,
+	EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_ISAAC, EntityType.ENTITY_MEGA_SATAN, EntityType.ENTITY_MEGA_SATAN_2,
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_DOGMA, EntityType.ENTITY_BEAST,
 	EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_GEMINI, EntityType.ENTITY_PIN
 }

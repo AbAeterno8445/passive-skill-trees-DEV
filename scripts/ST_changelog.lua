@@ -18,6 +18,7 @@ function PST:getChangelogList()
         "- Fixed \"Meek Giants\" expedition boon applying to non-boss monsters.",
         "- Fixed Lazarus' \"A True Ending?\" being able to drop multiple Suicide King cards in a single room.",
         "- Fixed error and data initialization for Tarnished Judas (Epiphany).",
+        "- Fixed first phase of Mega Satan counting as a final boss, instead of only second phase.",
         "",
 
         "v0.4.26",
