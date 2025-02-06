@@ -895,7 +895,13 @@ function PST:inMineshaftPuzzle()
 end
 
 function PST:LJ_inMortis()
-	return LastJudgement and StageAPI and StageAPI:GetCurrentStage() and StageAPI:GetCurrentStage().Name == "Mortis"
+	if not StageAPI then return false end
+
+	local currentStage = StageAPI:GetCurrentStage()
+	if currentStage then
+		return LastJudgement and currentStage.Name == "Mortis"
+	end
+	return false
 end
 
 function PST:getTilesDist(tiles)
