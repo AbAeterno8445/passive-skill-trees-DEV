@@ -21,6 +21,7 @@ function PST:getChangelogList()
         "- Fixed error and data initialization for Tarnished Judas (Epiphany).",
         "- Fixed first phase of Mega Satan counting as a final boss, instead of only second phase.",
         "- Fixed sub-menus (such as jewel inventories) staying open when switching menus.",
+        "- Fixed expedition Curse of the Heartbroken not applying broken hearts properly.",
         "",
 
         "v0.4.26",

@@ -376,9 +376,8 @@ function PST:onNewRun(isContinued)
             end
 
             -- Expedition curse: heartbroken
-            tmpMod = PST:getTreeSnapshotMod("curseHeartbroken", 0)
             -- Expedition implicit: additional broken hearts
-            tmpMod = PST:getTreeSnapshotMod("expedImp_heartbreak", 0)
+            tmpMod = PST:getTreeSnapshotMod("expedImp_heartbreak", 0) + PST:getTreeSnapshotMod("curseHeartbroken", 0)
             if tmpMod > 0 and not PST:arrHasValue(PST.brokenHeartCharBlacklist, PST:getCurrentCharName()) then
                 player:AddBrokenHearts(tmpMod)
             end
