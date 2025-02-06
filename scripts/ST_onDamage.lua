@@ -764,10 +764,14 @@ function PST:onDamage(target, damage, flag, source)
             end
 
             if blockedDamage or PST.specialNodes.mobPeriodicShield then
-                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
+                if not (target.Type == EntityType.ENTITY_ROUND_WORM and target.Variant == 2) then
+                    SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.3)
+                end
                 return { Damage = 0 }
             elseif partialBlock then
-                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.4)
+                if not (target.Type == EntityType.ENTITY_ROUND_WORM and target.Variant == 2) then
+                    SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.2, 2, false, 1.4)
+                end
                 return { Damage = damage * dmgMult * 0.35 }
             end
 
