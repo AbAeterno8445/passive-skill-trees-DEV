@@ -299,6 +299,10 @@ function ancientWepBountiesScreen:Render(tScreen)
                 PST.luaminiFont:DrawString("Hold Allocate for 1 second when finished to complete.", drawX, drawY, PST.kcolors.WHITE)
                 drawY = drawY + 14
                 PST.luaminiFont:DrawString("Hold Respec for 1 second to abandon this bounty.", drawX, drawY, PST.kcolors.LIGHTRED1)
+                if Isaac.IsInGame() and not PST:isRunSidereal() then
+                    drawY = drawY + 14
+                    PST.luaminiFont:DrawString("Current run cannot progress this bounty (not an expedition).", drawX, drawY, PST.kcolors.RED2)
+                end
             else
                 -- Draw ancient weapon reward's modifier
                 PST.miniFont:DrawString("Weapon Modifier (press TAB to view bounty objectives)", drawX, drawY, PST.kcolors.ANCIENT_ORANGE)

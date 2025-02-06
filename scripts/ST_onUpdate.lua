@@ -2837,7 +2837,7 @@ function PST:frameUpdate()
 			-- Segmented boss killed
 			if #totalLeft == 0 then
 				-- Expedition boss kill
-                if PST:getTreeSnapshotMod("isExpedRun", false) then
+                if PST:isRunSidereal() then
 					PST:expedAddProgInRun("defeatBosses", 1)
 				end
 			end

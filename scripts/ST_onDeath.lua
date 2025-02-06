@@ -87,8 +87,8 @@ function PST:onDeath(entity)
             isFinalBoss = false
         end
 
-        -- Expedition checks
-        if PST:getTreeSnapshotMod("isExpedRun", false) then
+        -- Expedition/sidereal univ
+        if PST:isRunSidereal() then
             -- Expedition objective: defeat monsters
             PST:expedAddProgInRun("defeatMonsters", 1)
 
@@ -118,10 +118,7 @@ function PST:onDeath(entity)
             PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
                 PST:expedAddProgInRun("beastDeliNoDmg", 1)
             end
-        end
 
-        -- Expedition/sidereal univ
-        if PST:isRunSidereal() then
             -- Final boss kill
             if isFinalBoss then
                 -- Ancient Stardust drop
@@ -191,8 +188,8 @@ function PST:onDeath(entity)
                     })
                 end
 
-                -- Expedition boss kill
-                if PST:getTreeSnapshotMod("isExpedRun", false) then
+                -- Sidereal run
+                if PST:isRunSidereal() then
                     -- Expedition objective: defeat bosses
                     if not PST:arrHasValue(PST.segmentBosses, entity.Type) then
                         PST:expedAddProgInRun("defeatBosses", 1)
@@ -207,10 +204,7 @@ function PST:onDeath(entity)
                             PST:addModifiers({ bossObolDrops = 1 }, true)
                         end
                     end
-                end
 
-                -- Sidereal run
-                if PST:isRunSidereal() then
                     -- Proc up to 5 times within this room
                     if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
                         -- Chance for Sparkling Stardust

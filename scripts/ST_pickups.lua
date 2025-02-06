@@ -77,10 +77,8 @@ function PST:prePickup(pickup, collider, low)
                 local obolsAmt = PST.obolEvents.siderealCache(depth)
                 PST:expedDropObolsAt(pickup.Position, obolsAmt)
 
-                if PST:getTreeSnapshotMod("isExpedRun", false) then
-                    -- Expedition objective: open any chest
-                    PST:expedAddProgInRun("chests", 1)
-                end
+                -- Expedition objective: open any chest
+                PST:expedAddProgInRun("chests", 1)
             end
 
             -- Start challenge room
