@@ -60,6 +60,9 @@ function PST:initModCompat()
         table.insert(PST.progressionItems, Epiphany.Item.BROKEN_ORB.ID)
         table.insert(PST.progressionItems, Epiphany.Item.KAEK.ID)
         table.insert(PST.progressionItems, Epiphany.Item.KAEK.ID2)
+		table.insert(PST.progressionItems, Epiphany.Item.SHRED.ID)
+		table.insert(PST.progressionItems, Epiphany.Item.SHRED.BUNDLED_PHOTOS)
+		table.insert(PST.progressionItems, Epiphany.Item.SHADOW_REMNANTS)
 
         -- Locked chests
         table.insert(PST.lockedChests, Epiphany.Pickup.DUSTY_CHEST.ID)
@@ -75,6 +78,13 @@ function PST:initModCompat()
         -- Non-championable bosses
         table.insert(PST.noChampionBosses, Epiphany.Npc.ABEL.ID)
 
+        -- Poop items
+        table.insert(PST.poopItems, Epiphany.Item.MIX.ID)
+		table.insert(PST.poopItems, Epiphany.Item.ANAL_FISSURE.ID)
+
+		-- Poop Trinkets
+		table.insert(PST.poopTrinkets, Epiphany.Trinket.IED.ID)
+
         -- Blue Gambit cards
         table.insert(PST.blueGambitCards, Epiphany.Card.HOUSE_QUEEN_OF_HEARTS.ID)
         table.insert(PST.blueGambitCards, Epiphany.Card.HOUSE_TWO_OF_SPADES.ID)
@@ -88,6 +98,7 @@ function PST:initModCompat()
         table.insert(PST.blueGambitCards, Epiphany.Card.DRAWN_CARD.ID)
         table.insert(PST.blueGambitCards, Epiphany.Card.GO_TO_JAIL.ID)
         table.insert(PST.blueGambitCards, Epiphany.Card.EXCLAMATION_MARK.ID)
+		table.insert(PST.blueGambitCards, Epiphany.Card.AGAINST_HUMANITY.ID)
 
         -- Cause converter blacklist
         table.insert(PST.causeConverterBossBlacklist, Epiphany.Npc.ABEL.ID)
@@ -95,9 +106,11 @@ function PST:initModCompat()
         -- Song of the Few node familiars
         table.insert(PST.songOfTheFewFamiliars, Epiphany.Item.LIL_GUPPY.ID)
         table.insert(PST.songOfTheFewFamiliars, Epiphany.Item.OLD_KNIFE.ID)
+		table.insert(PST.songOfTheFewFamiliars, Epiphany.Item.CARDBOARD_CUTOUT.ID)
 
         -- Grand Consonance node whitelist
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Old Knife"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cardboard Cutout"))
 	end
 
     -- Fiend Folio
