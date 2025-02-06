@@ -44,7 +44,7 @@ function PST:frameUpdate()
 	if PST:getCurrentCharName() == nil then
 		local plType = player:GetPlayerType()
 		-- Epiphany: Tarnished Judas phases support
-		if Epiphany and Epiphany.Character.JUDAS.isJudas(plType) then
+		if Epiphany and Epiphany.Character.JUDAS.IsJudas(player) then
 			PST:initUnknownChar("Tr. Judas", false, 1 + plType)
 		end
 	end
