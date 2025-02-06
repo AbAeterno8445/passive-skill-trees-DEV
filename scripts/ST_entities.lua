@@ -138,9 +138,11 @@ function PST:onNPCUpdate(npc)
                 npc.HitPoints = npc.MaxHitPoints
 
                 -- Boon: bosses start with % missing HP
-                tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
-                if tmpMod > 0 then
-                    npc.HitPoints = math.ceil(npc.MaxHitPoints * (1 - tmpMod / 100))
+                if npc:IsBoss() then
+                    tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
+                    if tmpMod > 0 then
+                        npc.HitPoints = math.ceil(npc.MaxHitPoints * (1 - tmpMod / 100))
+                    end
                 end
             end
 
