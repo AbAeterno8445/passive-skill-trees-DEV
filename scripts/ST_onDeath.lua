@@ -102,14 +102,14 @@ function PST:onDeath(entity)
                 end
 
                 -- Expedition objective: defeat hush without getting hit more than once
-                if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 2 then
+                if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
                     PST:expedAddProgInRun("hushNoDmgOnce", 1)
                 end
             end
 
             -- Expedition final boss kill
             if isFinalBoss then
-                -- Expedition objective: defeat any final boss (add Isaac boss type check for blue baby boss on chest)
+                -- Expedition objective: defeat any final boss
                 PST:expedAddProgInRun("finalBoss", 1)
             end
 
