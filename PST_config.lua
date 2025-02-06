@@ -124,9 +124,7 @@ PST.config = {
             actionItem = true
         },
         toggleHelp = {
-            keyboardButton = Keyboard.KEY_H
-        },
-        toggleHelpController = {
+            keyboardButton = Keyboard.KEY_H,
             controllerAction = ButtonAction.ACTION_MAP
         },
         zoomIn = {
@@ -152,7 +150,7 @@ PST.config = {
         },
         tab = {
             keyboardButton = Keyboard.KEY_TAB,
-            controllerAction = ButtonAction.ACTION_RESTART
+            controllerAction = ButtonAction.ACTION_DROP
         },
         num1 = { keyboardButton = Keyboard.KEY_1 },
         num2 = { keyboardButton = Keyboard.KEY_2 },
@@ -182,7 +180,6 @@ PSTKeybind = {
     SWITCH_TREE = "switchTree",
     TOGGLE_TREE_MODS = "toggleTreeMods",
     TOGGLE_HELP = "toggleHelp",
-    TOGGLE_HELP_CONTROLLER = "toggleHelpController",
     ZOOM_IN = "zoomIn",
     ZOOM_OUT = "zoomOut",
     TOGGLE_TOTAL_MODS = "toggleTotalMods",

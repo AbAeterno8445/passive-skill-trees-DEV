@@ -263,6 +263,8 @@ function PST:load()
 				end
 			end
 		end
+		-- Contingency: keep default keybinds until they can be changed in-game
+		modConfigSave.config.keybinds = PST:copyTable(PST.config.keybinds)
 		PST.config = modConfigSave.config
 	end
 
