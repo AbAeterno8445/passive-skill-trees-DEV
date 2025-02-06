@@ -57,6 +57,12 @@ function PST:prePickup(pickup, collider, low)
             if not saveKey and not player:HasGoldenKey() then
                 player:AddKeys(-1)
             end
+            -- Chance for sidereal caches to return 1-2 keys when opened
+            tmpMod = PST:getTreeSnapshotMod("sideCacheKeyReturn", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                player:AddKeys(math.random(2))
+            end
+
             pickup:GetSprite():Play("Open", true)
             pickup.SubType = 1
             SFXManager():Play(Isaac.GetSoundIdByName("unlock cosmic"), 1, 2, false, 0.9 + 0.2 * math.random())

@@ -1592,6 +1592,7 @@ function PST:resetMods()
 		sideCacheFloorChance = 0,
 		sideCacheFloorChanceTotal = 0,
 		sideCacheNoKey = 0,
+		sideCacheKeyReturn = 0,
 		sideCacheReplica = 0,
 		sideCacheReplicaProc = false,
 		sideCacheSacks = 0,
