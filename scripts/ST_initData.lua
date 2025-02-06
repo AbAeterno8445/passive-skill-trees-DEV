@@ -532,6 +532,9 @@ PST.floorFirstUpdate = false
 PST.delayedCacheUpdate = 0
 PST.delayedCacheFlags = 0
 
+-- For segmented boss kill checks
+PST.segmentBossKillProcs = {}
+
 function PST:copyTable(dataTable)
 	local tmpTable = {}
 	if type(dataTable) == "table" then

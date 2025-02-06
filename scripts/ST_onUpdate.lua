@@ -2210,7 +2210,7 @@ function PST:frameUpdate()
 
 	-- Mod: slowly gain up to + tears while Gello is retracted
 	tmpMod = PST:getTreeSnapshotMod("gelloTearsBonus", 0)
-	if tmpMod > 0 and room:GetFrameCount() % 15 == 0 then
+	if tmpMod > 0 and roomFrame % 15 == 0 then
 		local plInput = player:GetShootingInput()
 		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
 		if not isShooting then
@@ -2226,7 +2226,7 @@ function PST:frameUpdate()
 
 	-- Mod: deal damage to enemies caught in Gello's cord every second
 	tmpMod = PST:getTreeSnapshotMod("cordDamage", 0)
-	if tmpMod > 0 and room:GetFrameCount() % 15 == 0 then
+	if tmpMod > 0 and roomFrame % 15 == 0 then
 		local plInput = player:GetShootingInput()
 		local isShooting = plInput.X ~= 0 or plInput.Y ~= 0
 		if isShooting and PST.specialNodes.gelloEntity then
@@ -2298,7 +2298,7 @@ function PST:frameUpdate()
 	tmpMod = PST:getTreeSnapshotMod("darkEsauProxDmgSpeed", 0)
 	if tmpMod > 0 then
 		local inProximity = false
-		if (room:GetFrameCount() % 10) == 0 then
+		if (roomFrame % 10) == 0 then
 			local darkEsauQuery = Isaac.FindByType(EntityType.ENTITY_DARK_ESAU)
 			if #darkEsauQuery > 0 then
 				for _, tmpDarkEsau in ipairs(darkEsauQuery) do
@@ -2689,7 +2689,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Precise Seeker
-	if (Game():GetFrameCount() % 30) == 0 and PST:getSnapAstralWepMod("preciseSeeker") and room:GetAliveEnemiesCount() > 0 and
+	if (gameFrame % 30) == 0 and PST:getSnapAstralWepMod("preciseSeeker") and room:GetAliveEnemiesCount() > 0 and
 	not PST.specialNodes.ancwep_preciseSeekerMarked then
 		local validEnemies = {}
 		local validBosses = {}
@@ -2826,6 +2826,22 @@ function PST:frameUpdate()
 			if PST.specialNodes.ancwep_quicksilverBuff == 0 then
 				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
 			end
+		end
+	end
+
+	-- Segmented boss kill checks
+	if #PST.segmentBossKillProcs > 0 then
+		local bossData = PST.segmentBossKillProcs[1]
+		if bossData and gameFrame > bossData.killFrame + 2 then
+			local totalLeft = Isaac.FindByType(bossData.bossType, bossData.bossVariant, bossData.bossSub)
+			-- Segmented boss killed
+			if #totalLeft == 0 then
+				-- Expedition boss kill
+                if PST:getTreeSnapshotMod("isExpedRun", false) then
+					PST:expedAddProgInRun("defeatBosses", 1)
+				end
+			end
+			table.remove(PST.segmentBossKillProcs, 1)
 		end
 	end
 

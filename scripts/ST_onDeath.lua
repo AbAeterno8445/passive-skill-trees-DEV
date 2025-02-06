@@ -176,10 +176,22 @@ function PST:onDeath(entity)
                 -- Boss kill counters
                 PST:addModifiers({ roomBossKills = 1 }, true)
 
+                -- Segment boss check
+                if PST:arrHasValue(PST.segmentBosses, entity.Type) then
+                    table.insert(PST.segmentBossKillProcs, {
+                        killFrame = Game():GetFrameCount(),
+                        bossType = entity.Type,
+                        bossVariant = entity.Variant,
+                        bossSub = entity.SubType
+                    })
+                end
+
                 -- Expedition boss kill
                 if PST:getTreeSnapshotMod("isExpedRun", false) then
                     -- Expedition objective: defeat bosses
-                    PST:expedAddProgInRun("defeatBosses", 1)
+                    if not PST:arrHasValue(PST.segmentBosses, entity.Type) then
+                        PST:expedAddProgInRun("defeatBosses", 1)
+                    end
 
                     -- Proc up to 5 times within this room
                     if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
