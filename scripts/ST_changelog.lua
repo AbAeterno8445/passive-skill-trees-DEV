@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v0.4.28",
+        "- Added support for Community Remix items.",
+        "",
+
         "v0.4.27",
         "- Additional compatibility for the latest Epiphany version.",
         "- Crimson nodes can no longer be respecced.",

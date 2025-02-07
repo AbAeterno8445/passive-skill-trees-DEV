@@ -563,6 +563,73 @@ function PST:initModCompat()
         -- Grand Consonance
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Willo Familiar"))
 	end
+
+	-- Community Remix
+	if communityRemix then
+		-- Baby Familiars
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Cousin Cletus"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Conqueror Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Boner Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Burnt Baby"))
+
+        -- Poop Items
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Potty"))
+
+        -- Poop Trinkets
+        table.insert(PST.poopTrinkets, Isaac.GetTrinketIdByName("Suppository"))
+
+        --HP Ups
+        local tmpHPUpItems = {
+            {"Taco", 1}, {"Gummy Bear", 1}, {"Croissant", 1}, {"Brunch", 1}, {"Mystery Meat", 1}, {"Akedah", 3}, {"Mudpie", 1}, {"Old Bib", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+		--Book Items
+		table.insert(PST.bookItems, Isaac.GetItemIdByName("The Book of Love"))
+		table.insert(PST.bookItems, Isaac.GetItemIdByName("How to Jump 2.0"))
+		table.insert(PST.bookItems, Isaac.GetItemIdByName("Book of Virtues "))
+		table.insert(PST.bookItems, Isaac.GetItemIdByName("The Book of Sorrow"))
+
+		-- Blue Gambit Cards
+		local tmpCards = {
+            "I - The Cold" , "II - The Servant", "III - Wisdom", "IV - Repentance", "V - Eternity", "VI - Corruption",
+			"VII - Immolation", "VIII - Worship", "IX - Dissension", "X - The Damned", "XI - Occult"
+        }
+        for _, tmpCard in ipairs(tmpCards) do
+            local tmpCardID = Isaac.GetCardIdByName(tmpCard)
+            if tmpCardID then
+                table.insert(PST.blueGambitCards, tmpCardID)
+            end
+        end
+
+		-- Planetarium Items (hexed planetarium items but whatever)
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Dagon"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Cthulhu"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Tulzscha"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Kassogtha"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Azathoth"))
+
+		-- Penny Trinkets
+		table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Penny on a String"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Dark Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Sharpened Penny"))
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Cousin Cletus"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Conqueror Baby"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Boner Baby"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Burnt Baby"))
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cousin Cletus"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Boner Baby"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burnt Baby"))
+	end
 end
 
 -- Add mod items to the 'blue' item pool
@@ -639,4 +706,19 @@ function PST:initModBlueItems()
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Alpha and Omega"))
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Pegasus"))
     end
+
+	-- Community Remix blue items
+	if communityRemix then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Chilly Bean"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Cryobombs"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Hive"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Heartache"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Ophiuchus"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blue Waffle"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Conqueror Baby"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("_NULL"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Twin Candles"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Power Ball"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Holy Glaive"))
+	end
 end
