@@ -2845,6 +2845,11 @@ function PST:frameUpdate()
 		end
 	end
 
+	-- Sidereal Artifact cooldown
+	if PST.specialNodes.sideArtiCD > 0 then
+		PST.specialNodes.sideArtiCD = PST.specialNodes.sideArtiCD - 1
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

@@ -52,9 +52,33 @@ function PST.treeScreen:InputRespec()
                                 end
                             end
                         end
+
                         PST:allocateNodeID(self.currentTree, self.hoveredNode.id, 0)
                         SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE, 0.75)
                         self:UpdateStarTreeTotals()
+
+                        -- Sidereal Artifacts
+                        if self.hoveredNode.reqs and self.hoveredNode.reqs.sideArti and charData then
+                            local sideArtiName
+                            for tmpMod, _ in pairs(self.hoveredNode.modifiers) do
+                                if PST.sideArtiData[tmpMod] then
+                                    sideArtiName = tmpMod
+                                    break
+                                end
+                            end
+                            if sideArtiName then
+                                if PST.sideArtiData[sideArtiName].type == "septentrion" then
+                                    for i, tmpArti in ipairs(charData.northArtis) do
+                                        if tmpArti == sideArtiName then table.remove(charData.northArtis, i) end
+                                    end
+                                elseif PST.sideArtiData[sideArtiName].type == "meridion" then
+                                    for i, tmpArti in ipairs(charData.southArtis) do
+                                        if tmpArti == sideArtiName then table.remove(charData.southArtis, i) end
+                                    end
+                                end
+                            end
+                        end
+
                         submenusModule:CloseSubmenu()
                     end
                 elseif isAllocated then

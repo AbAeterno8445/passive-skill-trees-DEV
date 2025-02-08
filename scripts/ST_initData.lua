@@ -1645,6 +1645,12 @@ function PST:resetMods()
 		ancwep_sunbladeSpeed = false,
 		ancwep_metaClawMod = nil,
 		ancwep_quicksilverProc = false,
+
+		-- Sidereal Artifacts
+		sideArtiEnergy = 0,
+		artiObj_runBossKills = 0,
+		artiObj_finalBossKills = 0,
+		artiObj_itemPurchases = 0,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
@@ -1827,6 +1833,9 @@ function PST:resetMods()
 		SC_anamnesisItemPicked = 0,
 		SC_anamnesisJustReset = false,
 		SC_mistleKrampusSpawn = false,
+
+		sideArtiCD = 0,
+		arti_beastseekerHits = 0,
 	}
 	-- Temporary data for misc custom effects
 	PST.specialFX = {
@@ -1918,6 +1927,9 @@ function PST:resetData()
 		mundaneStardust = 0,
 		sparkStardust = 0,
 		ancientStardust = 0,
+
+		-- Sidereal Artifact unlock progress
+		sideArtiUnlockProg = {},
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},

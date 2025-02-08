@@ -180,6 +180,16 @@ function PST:postDamage(target, damage, flag, source)
                 if tmpMod then
                     PST.specialNodes.astralwep_famKillTimer = math.ceil(tmpMod[2] * 30)
                 end
+
+                -- Sidereal Artifact objective: kill monsters with familiar damage
+                if isKillingHit then
+                    PST:sideArtiObjProgress("allianceSeptentrion", 1)
+
+                    -- Sidereal Artifact objective: kill boss monsters with familiar damage
+                    if target:IsBoss() then
+                        PST:sideArtiObjProgress("virtuousMeridion", 1)
+                    end
+                end
             -- Bomb hits enemy
             elseif source.Type == EntityType.ENTITY_BOMB then
                 -- Troll bomb hit
@@ -230,6 +240,11 @@ function PST:postDamage(target, damage, flag, source)
                                 PST:addModifiers({ luck = 0.03, forgBoneTearLuckBuff = 0.03 }, true)
                             end
                         end
+
+                        -- Sidereal Artifact objective: kill monsters with tears
+                        if isKillingHit then
+                            PST:sideArtiObjProgress("flowingMeridion", 1)
+                        end
                     -- Player effect hit
                     elseif source.Entity.Type == EntityType.ENTITY_EFFECT then
                         -- Dark Arts
@@ -265,6 +280,12 @@ function PST:postDamage(target, damage, flag, source)
                                     end
                                 end
                             end
+                        end
+                    -- Laser hit
+                    elseif (flag & DamageFlag.DAMAGE_LASER) > 0 then
+                        if isKillingHit then
+                            -- Sidereal Artifact objective: kill enemies with lasers
+                            PST:sideArtiObjProgress("brimMeridion", 1)
                         end
                     -- Direct non-tear player hit to enemy (e.g. melee hits)
                     elseif source.Entity.Type == EntityType.ENTITY_PLAYER and flag == 0 then
@@ -369,6 +390,16 @@ function PST:postDamage(target, damage, flag, source)
                             end
                         end
                     end
+
+                    -- Septentrional Artifact condition: Hit a boss 3 times
+                    local tmpNPC = target:ToNPC()
+                    if tmpNPC and tmpNPC:IsBoss() then
+                        PST.specialNodes.arti_beastseekerHits = PST.specialNodes.arti_beastseekerHits + 1
+                        if PST.specialNodes.arti_beastseekerHits >= 3 then
+                            PST.specialNodes.arti_beastseekerHits = 0
+                            PST:sideArtiAddEnergy(PST.sideArtiData.beastseekerSeptentrion.energy)
+                        end
+                    end
                 end
             end
 
@@ -393,10 +424,7 @@ function PST:postDamage(target, damage, flag, source)
                     if target:GetBossStatusEffectCooldown() > 0 then
                         target:SetBossStatusEffectCooldown(math.floor(target:GetBossStatusEffectCooldown() / 2))
                     end
-                    if target:GetBaitedCountdown() > 0 or target:GetBleedingCountdown() > 0 or target:GetBurnCountdown() > 0 or
-                    target:GetCharmedCountdown() > 0 or target:GetSlowingCountdown() > 0 or target:GetFearCountdown() > 0 or
-                    target:GetShrinkCountdown() > 0 or target:GetFreezeCountdown() > 0 or
-                    (target:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
+                    if PST:entityHasAnyStatus(target) then
                         local tmpMod = PST:getTreeSnapshotMod("boonMercyChance", 0)
                         local hpPerc = target.HitPoints / target.MaxHitPoints
                         if tmpMod > 0 and hpPerc <= PST:getTreeSnapshotMod("boonMercyHP", 0) / 100 and 100 * math.random() < tmpMod then

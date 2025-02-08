@@ -13,6 +13,21 @@ function PST:onRunOver(isGameOver)
             charData.bazaarDone = nil
             PST:bazaarGenSelection()
         end
+
+        -- Sidereal Artifact objective: win a run with the Circadian Destructor ancient jewel equipped
+        if PST:SC_getSocketedAncient("Circadian Destructor") ~= nil then
+            PST:sideArtiObjProgress("blastingMeridion", 1)
+        end
+        -- Sidereal Artifact objective: win a run with at least 4 smelted trinkets
+        local tmpTrinkets = 0
+        for _, tmpTrinket in pairs(PST:getPlayer():GetSmeltedTrinkets()) do
+            if tmpTrinket.trinketAmount > 0 or tmpTrinket.goldenTrinketAmount > 0 then
+                tmpTrinkets = tmpTrinkets + 1
+            end
+        end
+        if tmpTrinkets >= 4 then
+            PST:sideArtiObjProgress("smelterMeridion", 1)
+        end
     else
         -- Astral Expeditions, subtract attempts on run loss
         if PST:getTreeSnapshotMod("isExpedRun", false) then

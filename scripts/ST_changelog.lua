@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v0.4.28",
         "- Added support for Community Remix items.",
+        "- Fixed error when first loading a savefile while having Epiphany.",
         "",
 
         "v0.4.27",

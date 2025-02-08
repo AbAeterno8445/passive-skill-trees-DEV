@@ -30,7 +30,9 @@ function PST.treeScreen:InputAllocate()
                 end
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
             elseif PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, true) then
-                if not PST.debugOptions.infSP and not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
+                local reqs = self.hoveredNode.reqs
+                local noSP = (reqs and reqs.noSP)
+                if not PST.debugOptions.infSP and not noSP and not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
                     if PST:arrHasValue(self.globalTrees, self.currentTree) then
                         PST.modData.skillPoints = math.max(0, PST.modData.skillPoints - 1)
                     elseif PST.modData.charData[self.currentTree] then
@@ -47,11 +49,45 @@ function PST.treeScreen:InputAllocate()
                     Isaac.GetPersistentGameData():TryUnlock(Achievement.LOST_HOLDS_HOLY_MANTLE)
                 end
 
+                -- Sidereal Artifacts
+                local charData = PST:getCurrentCharData()
+                if self.hoveredNode.reqs and self.hoveredNode.reqs.sideArti and charData then
+                    local sideArtiName
+                    for tmpMod, _ in pairs(self.hoveredNode.modifiers) do
+                        if PST.sideArtiData[tmpMod] then
+                            sideArtiName = tmpMod
+                            break
+                        end
+                    end
+                    if sideArtiName then
+                        local targetTable
+                        if PST.sideArtiData[sideArtiName].type == "septentrion" then
+                            targetTable = charData.northArtis
+                        elseif PST.sideArtiData[sideArtiName].type == "meridion" then
+                            targetTable = charData.southArtis
+                        end
+                        if targetTable then
+                            local alloc = true
+                            for _, tmpArti in ipairs(targetTable) do
+                                if tmpArti == sideArtiName then alloc = false end
+                            end
+                            if alloc then
+                                table.insert(targetTable, sideArtiName)
+                            end
+                        end
+                    end
+                end
+                if self.hoveredNode.name == "Additional Septentrional Choice" then
+                    if charData then
+                        charData.maxNorthArtis = charData.maxNorthArtis + 1
+                    end
+                end
+
                 -- Special node requirement subtractions
-                if self.hoveredNode.reqs then
+                if reqs then
                     local currentChar = PST:getCurrentCharData()
                     -- Arcane obols requirement
-                    local obolReq = self.hoveredNode.reqs.obols
+                    local obolReq = reqs.obols
                     if type(obolReq) == "table" and obolReq.var and PST[obolReq.var] then
                         obolReq = PST[obolReq.var]
                     end
@@ -60,7 +96,7 @@ function PST.treeScreen:InputAllocate()
                     end
 
                     -- Crimson starcore requirement
-                    local crimsonStarcoreReq = self.hoveredNode.reqs.crimsonStarcore
+                    local crimsonStarcoreReq = reqs.crimsonStarcore
                     if crimsonStarcoreReq and currentChar and currentChar.crimsonStarcores and not PST.debugOptions.infSP then
                         currentChar.crimsonStarcores = math.max(0, currentChar.crimsonStarcores - crimsonStarcoreReq)
                     end

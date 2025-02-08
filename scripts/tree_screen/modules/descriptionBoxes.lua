@@ -1,3 +1,5 @@
+include("scripts.tree_screen.modules.siderealArtifact")
+
 local descriptionBoxesModule = {
     -- Extra description pieces added to specific nodes based on other data/states. Key is node name
     dynamicNodeDescriptions = {
@@ -187,6 +189,98 @@ local descriptionBoxesModule = {
                 end
             end
             return { name = descName, description = nodeDesc }
+        end,
+
+        -- Sidereal Artifact node description
+        ["Sidereal Artifact"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {}
+            if not isAllocated then
+                nodeDesc = tmpDescription
+            else
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    -- Chosen Septentrional Artifact descriptions
+                    if charData.northArtis and #charData.northArtis > 0 then
+                        table.insert(nodeDesc, "Selected Septentrional Artifacts:")
+                        for _, tmpArtiName in ipairs(charData.northArtis) do
+                            local tmpArtiData = PST.sideArtiData[tmpArtiName]
+                            if tmpArtiData then
+                                table.insert(nodeDesc, {tmpArtiData.name, PST.kcolors.BLUE1})
+                                for _, tmpLine in ipairs(tmpArtiData.desc) do
+                                    local newTmpLine
+                                    if type(tmpLine) == "table" then
+                                        newTmpLine = {tmpLine[1], PST.kcolors.BLUE1}
+                                    else
+                                        newTmpLine = {tmpLine, PST.kcolors.BLUE1}
+                                    end
+                                    table.insert(nodeDesc, newTmpLine)
+                                end
+                            end
+                        end
+                    else
+                        table.insert(nodeDesc, {"No Septentrional Artifacts Selected", PST.kcolors.BLUE1})
+                    end
+
+                    -- Chosen Meridional Artifact descriptions
+                    if charData.southArtis and #charData.southArtis > 0 then
+                        table.insert(nodeDesc, "Selected Meridional Artifacts:")
+                        for _, tmpArtiName in ipairs(charData.southArtis) do
+                            local tmpArtiData = PST.sideArtiData[tmpArtiName]
+                            if tmpArtiData then
+                                table.insert(nodeDesc, {tmpArtiData.name, PST.kcolors.ANCIENT_ORANGE})
+                                for _, tmpLine in ipairs(tmpArtiData.desc) do
+                                    local newTmpLine
+                                    if type(tmpLine) == "table" then
+                                        newTmpLine = {tmpLine[1], PST.kcolors.ANCIENT_ORANGE}
+                                    else
+                                        newTmpLine = {tmpLine, PST.kcolors.ANCIENT_ORANGE}
+                                    end
+                                    table.insert(nodeDesc, newTmpLine)
+                                end
+                            end
+                        end
+                    else
+                        table.insert(nodeDesc, {"No Meridional Artifacts Selected", PST.kcolors.ANCIENT_ORANGE})
+                    end
+                end
+                table.insert(nodeDesc, "Select Artifacts by allocating them, at no cost.")
+            end
+            return { name = descName, description = nodeDesc }
+        end,
+
+        -- Individual Artifact node description
+        ["Sidereal Artifact Individual"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {}
+            local artiData = PST.sideArtiData[extraData.artifact]
+            if artiData then
+                for _, tmpLine in ipairs(artiData.desc) do
+                    table.insert(nodeDesc, tmpLine)
+                end
+                if artiData.objective then
+                    local artiProg = 0
+                    if PST.modData.sideArtiUnlockProg[extraData.artifact] ~= nil then
+                        artiProg = PST.modData.sideArtiUnlockProg[extraData.artifact]
+                    end
+                    local tmpCol = PST.kcolors.RED1
+                    if artiProg >= artiData.objective.req then
+                        tmpCol = PST.kcolors.GREEN1
+                    end
+                    table.insert(nodeDesc, {"Unlock: " .. PST:formatString(artiData.objective.desc, { progress = artiProg }), tmpCol})
+                end
+                if not artiData.objective then
+                    table.insert(nodeDesc, "Default unlock.")
+                end
+
+                local charData = PST:getCurrentCharData()
+                if charData and not isAllocated then
+                    if artiData.type == "septentrion" and #charData.northArtis >= charData.maxNorthArtis then
+                        table.insert(nodeDesc, {"Max Septentrional artifacts selected! Respec a different artifact to select this one.", PST.kcolors.RED1})
+                    elseif artiData.type == "meridion" and #charData.southArtis >= charData.maxSouthArtis then
+                        table.insert(nodeDesc, {"Max Meridional artifacts selected! Respec a different artifact to select this one.", PST.kcolors.RED1})
+                    end
+                end
+            end
+            return { name = descName, description = nodeDesc }
         end
     }
 }
@@ -221,6 +315,16 @@ function descriptionBoxesModule:Render(tScreen)
                         extraData.isSocket = isSocket
                         extraData.jewelType = tmpType
                     end
+                    break
+                end
+            end
+        end
+        -- Sidereal Artifact nodes
+        if not nodeDescFunc then
+            for tmpMod, _ in pairs(hoveredNode.modifiers) do
+                if PST.sideArtiData[tmpMod] then
+                    extraData.artifact = tmpMod
+                    nodeDescFunc = self.dynamicNodeDescriptions["Sidereal Artifact Individual"]
                     break
                 end
             end
@@ -268,6 +372,7 @@ function descriptionBoxesModule:Render(tScreen)
         end
 
         -- Special node requirements
+        local noSP = (hoveredNode.reqs and hoveredNode.reqs.noSP)
         if hoveredNode.reqs and not isAllocated then
             tmpDescription = {table.unpack(tmpDescription)}
 
@@ -311,7 +416,7 @@ function descriptionBoxesModule:Render(tScreen)
                 end
             end
         end
-        if not isAllocated and PST:arrHasValue(tScreen.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
+        if not isAllocated and not noSP and PST:arrHasValue(tScreen.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
             tmpDescription = {table.unpack(tmpDescription)}
             table.insert(tmpDescription, {"Requires 1 Global SP to allocate.", PST.kcolors.BLUE1})
         end

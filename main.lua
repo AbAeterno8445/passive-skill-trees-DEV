@@ -92,6 +92,10 @@ function PST:charInit(charName, forceReset)
 	-- Init misc char variables
 	local charData = PST.modData.charData[charName]
 	if not charData.arcaneObols then charData.arcaneObols = 0 end
+	if not charData.maxNorthArtis then charData.maxNorthArtis = 1 end
+	if not charData.maxSouthArtis then charData.maxSouthArtis = 1 end
+	if not charData.northArtis then charData.northArtis = {} end
+	if not charData.southArtis then charData.southArtis = {} end
 end
 
 -- Save mod data
@@ -204,19 +208,6 @@ function PST:processLoadedData(loadedData)
 		end
 	end
 
-	---- Load Astral Expeditions
-	-- Expeditions data number indexes
-	local tmpExpeditionsData = { [0] = {} }
-	for k, v in pairs(PST.modData.expeditionsData) do
-		tmpExpeditionsData[tonumber(k)] = v
-	end
-	for depth, tmpExpedSave in pairs(tmpExpeditionsData) do
-		if depth > 0 then
-			PST:loadExpedition(depth, tmpExpedSave)
-		end
-	end
-	PST.modData.expeditionsData = tmpExpeditionsData
-
 	-- Refund allocated nodes that no longer exist
 	for tree, nodes in pairs(PST.modData.treeNodes) do
 		for nodeID, allocated in pairs(nodes) do
@@ -322,6 +313,19 @@ function PST:postModsLoaded()
 	end
 
 	PST:initModCompat()
+
+	---- Load Astral Expeditions
+	-- Expeditions data number indexes
+	local tmpExpeditionsData = { [0] = {} }
+	for k, v in pairs(PST.modData.expeditionsData) do
+		tmpExpeditionsData[tonumber(k)] = v
+	end
+	for depth, tmpExpedSave in pairs(tmpExpeditionsData) do
+		if depth > 0 then
+			PST:loadExpedition(depth, tmpExpedSave)
+		end
+	end
+	PST.modData.expeditionsData = tmpExpeditionsData
 end
 
 function PST:onExitGame()

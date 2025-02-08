@@ -64,6 +64,25 @@ function PST:onNPCUpdate(npc)
         npc:Remove()
     end
 
+    -- Status effect checks
+    if not PST:entityHasAnyStatus(npc) and npc:GetData().PST_statusInflicted == nil then
+        npc:GetData().PST_statusInflicted = false
+    elseif PST:entityHasAnyStatus(npc) and npc:GetData().PST_statusInflicted == false then
+        -- Status inflicted
+        npc:GetData().PST_statusInflicted = true
+
+        if npc:IsBoss() then
+            -- Sidereal Artifact objective: inflict status effects on bosses
+            PST:sideArtiObjProgress("rotseekerSeptentrion", 1)
+        else
+            -- Sidereal Artifact objective: inflict status effects on non-boss enemies
+            PST:sideArtiObjProgress("infectiousMeridion", 1)
+        end
+    elseif not PST:entityHasAnyStatus(npc) and npc:GetData().PST_statusInflicted then
+        -- Status dropped
+        npc:GetData().PST_statusInflicted = false
+    end
+
     -- Monster init modifiers
     if npc:IsActiveEnemy(false) and npc:IsVulnerableEnemy() and not EntityRef(npc).IsFriendly then
         local noUpdate = false

@@ -85,6 +85,14 @@ function PST:onShopPurchase(pickup, player, spent)
 
         -- Expedition objective: purchase shop items
 		PST:expedAddProgInRun("purchases", 1)
+
+        -- Sidereal Artifact objective: purchase 12 items within the same run
+        if not PST:isSideArtiUnlocked("gildedMeridion") then
+            PST:addModifiers({ artiObj_itemPurchases = 1 }, true)
+            if PST:getTreeSnapshotMod("artiObj_itemPurchases", 0) >= 12 then
+                PST:sideArtiObjProgress("gildedMeridion", 1)
+            end
+        end
     elseif spent < 0 then
         -- Mod: chance to gain a black heart when spending hearts on deals
         local tmpMod = PST:getTreeSnapshotMod("blackHeartOnDeals", 0)

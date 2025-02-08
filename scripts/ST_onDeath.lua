@@ -74,6 +74,48 @@ function PST:onDeath(entity)
             -- Max 8% xp from frozen enemies
             if isFrozen and mult > 0.08 then mult = 0.08 end
 
+            -- Sidereal Artifact objective: kill monsters (count only xp granting mobs)
+            PST:sideArtiObjProgress("bloodSeptentrion", 1)
+            -- Sidereal Artifact objective: kill monsters affected by any status effect
+            if PST:entityHasAnyStatus(entity) then
+                PST:sideArtiObjProgress("taintbloodSeptentrion", 1)
+            end
+            -- Sidereal Artifact objective: destroy frozen monsters
+            if (entity:GetEntityFlags() & EntityFlag.FLAG_ICE_FROZEN) > 0 then
+                PST:sideArtiObjProgress("icySeptentrion", 1)
+            end
+            if tmpNPC then
+                -- Sidereal Artifact objective: kill monsters that have at least 10 HP
+                if tmpNPC.MaxHitPoints >= 10 then
+                    PST:sideArtiObjProgress("assassinSeptentrion", 1)
+
+                    -- Sidereal Artifact objective: kill undead monsters with at least 10 HP
+                    if PST:isMobUndead(tmpNPC) then
+                        PST:sideArtiObjProgress("deathseekerSeptentrion", 1)
+                    end
+                end
+                -- Sidereal Artifact objective: kill champion monsters
+                if tmpNPC:IsChampion() then
+                    PST:sideArtiObjProgress("slayerSeptentrion", 1)
+                end
+            end
+            -- Sidereal Artifact objective: kill slowed monsters
+            if entity:GetSlowingCountdown() > 0 then
+                PST:sideArtiObjProgress("glacialMeridion", 1)
+            end
+            -- Sidereal Artifact objective: kill petrified monsters
+            if entity:GetFreezeCountdown() > 0 then
+                PST:sideArtiObjProgress("stoneMeridion", 1)
+            end
+            -- Sidereal Artifact objective: kill burning monsters
+            if entity:GetBurnCountdown() > 0 then
+                PST:sideArtiObjProgress("infernalMeridion", 1)
+            end
+            -- Sidereal Artifact objective: kill Bonys or its variants
+            if entity:GetType() == EntityType.ENTITY_BONY or entity:GetType() == EntityType.ENTITY_BLACK_BONY or entity:GetType() == EntityType.ENTITY_REVENANT then
+                PST:sideArtiObjProgress("osseousMeridion", 1)
+            end
+
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
@@ -85,6 +127,21 @@ function PST:onDeath(entity)
         -- Beast must be variant 0
         if isFinalBoss and entity.Type == EntityType.ENTITY_BEAST and entity.Variant ~= 0 then
             isFinalBoss = false
+        end
+
+        -- Regular final boss kill
+        if isFinalBoss then
+            -- Sidereal Artifact objective: defeat a final boss without taking damage more than once
+            if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
+                PST:sideArtiObjProgress("titanseekerSeptentrion", 1)
+            end
+            -- Sidereal Artifact objective: defeat 2 final bosses within the same run
+            if not PST:isSideArtiUnlocked("executionerMeridion") then
+                PST:addModifiers({ artiObj_finalBossKills = 1 }, true)
+                if PST:getTreeSnapshotMod("artiObj_finalBossKills", 0) == 2 then
+                    PST:sideArtiObjProgress("executionerMeridion", 1)
+                end
+            end
         end
 
         -- Expedition/sidereal univ
@@ -186,6 +243,14 @@ function PST:onDeath(entity)
                         bossVariant = entity.Variant,
                         bossSub = entity.SubType
                     })
+                else
+                    -- Sidereal Artifact objective: kill 15 bosses within the same run
+                    if not PST:isSideArtiUnlocked("beastseekerSeptentrion") then
+                        PST:addModifiers({ artiObj_runBossKills = 1 }, true)
+                        if PST:getTreeSnapshotMod("artiObj_runBossKills", 0) == 15 then
+                            PST:sideArtiObjProgress("beastseekerSeptentrion", 1)
+                        end
+                    end
                 end
 
                 -- Sidereal run

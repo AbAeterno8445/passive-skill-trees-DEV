@@ -51,6 +51,7 @@ function PST:prePickup(pickup, collider, low)
 
         if variant == Isaac.GetEntityVariantByName("Sidereal Cache") and canOpenLock and pickup.SubType ~= 1 and
         pickup:GetSprite():GetAnimation() == "Idle" then
+            -- Sidereal Cache opened
             local saveKey = false
             local tmpMod = PST:getTreeSnapshotMod("sideCacheNoKey", 0)
             saveKey = tmpMod > 0 and 100 * math.random() < tmpMod
@@ -116,6 +117,9 @@ function PST:prePickup(pickup, collider, low)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
                 PST:SC_dropRandomJewelAt(pickup.Position, PST.SCDropRates.curseRoom(PST:getLevel():GetStage()).ancient, RandomVector() * 3 * math.random())
             end
+
+            -- Sidereal Artifact objective: open sidereal caches
+            PST:sideArtiObjProgress("siderealMeridion", 1)
         end
 
         -- Collectibles

@@ -199,6 +199,9 @@ function PST:onRoomClear(level, room)
 					if level:GetStage() >= 7 or PST:LJ_inMortis() then
 						PST:expedAddProgInRun("bossesNoDmgC3", 1)
 					end
+
+					-- Sidereal Artifact objective: clear boss rooms without taking damage
+					PST:sideArtiObjProgress("giantseekerSeptentrion", 1)
 				end
 
 				-- Boss room + took no damage in floor
@@ -225,6 +228,11 @@ function PST:onRoomClear(level, room)
 					elseif PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 1 then
 						PST:expedAddProgInRun("floorNoDmgOnce", 1)
 					end
+				end
+
+				-- Sidereal Artifact objective: clear boss rooms while having at least 6 familiars
+				if PST:getTreeSnapshotMod("totalFamiliars", 0) >= 6 then
+					PST:sideArtiObjProgress("monstrousMeridion", 1)
 				end
 
 				-- Deferred Aegis node (T. Lost's tree)
@@ -648,6 +656,11 @@ function PST:onRoomClear(level, room)
                 PST:addModifiers({ consumingVoidBuff = -tmpMod / 2 }, true)
                 PST:updateCacheDelayed(PST.allstatsCache)
             end
+
+			-- Sidereal Artifact objective: clear rooms within 8 seconds
+			if room:GetFrameCount() <= 250 then
+				PST:sideArtiObjProgress("smitingMeridion", 1)
+			end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)

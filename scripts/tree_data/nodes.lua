@@ -259,7 +259,10 @@ end
 
 local siderealTravelNodes = {"Sidereal Vicinity", "Sidereal Region", "Sidereal Expanse"}
 -- Nodes with names included here can't be respecced
-local respecBans = {"Sidereal Universalization", "Core Crimson Node", "Universal Crimson Node", "Divergent Crimson Node"}
+local respecBans = {
+    "Sidereal Universalization", "Core Crimson Node", "Universal Crimson Node", "Divergent Crimson Node",
+    "Additional Septentrional Choice"
+}
 
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
 function PST:isNodeAllocatable(tree, nodeID, allocation)
@@ -271,16 +274,17 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
     if allocation then
         -- Allocation
         if not infSP then
-            if (tree == "global" or tree == "starTree") and PST.modData.skillPoints <= 0 then
+            local reqs = nodeData.reqs
+            local noSP = (reqs and reqs.noSP)
+            if (tree == "global" or tree == "starTree") and PST.modData.skillPoints <= 0 and not noSP then
                 return false
             elseif tree ~= "global" and tree ~= "starTree" and PST.modData.charData[tree] ~= nil then
-                if PST.modData.charData[tree].skillPoints <= 0 then
+                if PST.modData.charData[tree].skillPoints <= 0 and not noSP then
                     return false
                 end
             end
 
             -- Special node requirements
-            local reqs = nodeData.reqs
             if reqs then
                 local currentChar = PST:getCurrentCharData()
                 -- Arcane obols requirement
@@ -310,9 +314,38 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                 (currentChar.crimsonStarcores and currentChar.crimsonStarcores < crimsonStarcoreReq)) then
                     return false
                 end
+
+                -- Sidereal Artifact objectives
+                local sideArtiReq = reqs.sideArti
+                if sideArtiReq then
+                    -- Objective unlocked
+                    local sideArtiName
+                    for tmpMod, _ in pairs(nodeData.modifiers) do
+                        if PST.sideArtiData[tmpMod] then
+                            sideArtiName = tmpMod
+                            if not PST:isSideArtiUnlocked(tmpMod) then
+                                return false
+                            end
+                            break
+                        end
+                    end
+                    -- Artifact selection limit
+                    local charData = PST:getCurrentCharData()
+                    if charData and sideArtiName then
+                        if string.find(nodeData.name, "Septentrion") ~= nil then
+                            if #charData.northArtis >= charData.maxNorthArtis then
+                                return false
+                            end
+                        elseif string.find(nodeData.name, "Meridion") ~= nil then
+                            if #charData.southArtis >= charData.maxSouthArtis then
+                                return false
+                            end
+                        end
+                    end
+                end
             end
             -- Sidereal tree: non-travel nodes require 1 global SP
-            if tree == "sidereal" and not PST:arrHasValue(siderealTravelNodes, nodeData.name) and PST.modData.skillPoints <= 0 then
+            if tree == "sidereal" and not PST:arrHasValue(siderealTravelNodes, nodeData.name) and PST.modData.skillPoints <= 0 and not noSP then
                 return false
             end
         end

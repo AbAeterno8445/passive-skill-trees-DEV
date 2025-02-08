@@ -624,6 +624,15 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         end
         PST.specialNodes.ancwep_bruteOnslaughtBuffTimer = 150
     end
+
+    -- Sidereal Artifact objective: use active items with at least 1 charge in rooms with monsters
+    if player:GetActiveMaxCharge(slot) >= 1 and PST:getRoom():GetAliveEnemiesCount() > 0 then
+        PST:sideArtiObjProgress("magicSeptentrion", 1)
+    end
+    -- Sidereal Artifact objective: use active items with at least 3 charges in boss rooms
+    if player:GetActiveMaxCharge(slot) >= 3 and PST:getRoom():GetType() == RoomType.ROOM_BOSS then
+        PST:sideArtiObjProgress("deadSeaMeridion", 1)
+    end
 end
 
 ---- CUSTOM ITEMS ----
