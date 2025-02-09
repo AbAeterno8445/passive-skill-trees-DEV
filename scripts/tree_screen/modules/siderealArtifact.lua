@@ -3,7 +3,7 @@ PST.sideArtiData = {
     bloodSeptentrion = {
         name = "Blood Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = {
             {"Condition: Kill a monster", PST.kcolors.BLUE1},
             {"Generates 3 energy.", PST.kcolors.TEAL1}
         },
@@ -12,7 +12,7 @@ PST.sideArtiData = {
     taintbloodSeptentrion = {
         name = "Taintblood Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Kill a monster affected by any status effect", PST.kcolors.BLUE1},
             {"Generates 4 energy.", PST.kcolors.TEAL1}
         },
@@ -25,7 +25,7 @@ PST.sideArtiData = {
     icySeptentrion = {
         name = "Icy Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Destroy a frozen monster.", PST.kcolors.BLUE1},
             {"Generates 3 energy.", PST.kcolors.TEAL1}
         },
@@ -51,7 +51,7 @@ PST.sideArtiData = {
     giantseekerSeptentrion = {
         name = "Giantseeker Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Hit a boss monster 8 times.", PST.kcolors.BLUE1},
             {"Generates 4 energy.", PST.kcolors.TEAL1}
         },
@@ -64,7 +64,7 @@ PST.sideArtiData = {
     rotseekerSeptentrion = {
         name = "Rotseeker Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Hit a boss affected by any status effect.", PST.kcolors.BLUE1},
             {"Generates 3 energy.", PST.kcolors.TEAL1}
         },
@@ -77,7 +77,7 @@ PST.sideArtiData = {
     titanseekerSeptentrion = {
         name = "Titanseeker Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Hit a final boss.", PST.kcolors.BLUE1},
             {"Generates 2 energy.", PST.kcolors.TEAL1}
         },
@@ -90,7 +90,7 @@ PST.sideArtiData = {
     assassinSeptentrion = {
         name = "Assassin Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Hit a non-boss monster above 90% HP or below 10% HP.", PST.kcolors.BLUE1},
             {"Generates 2 energy.", PST.kcolors.TEAL1}
         },
@@ -103,7 +103,7 @@ PST.sideArtiData = {
     deathseekerSeptentrion = {
         name = "Deathseeker Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Hit an undead monster.", PST.kcolors.BLUE1},
             {"Generates 3 energy.", PST.kcolors.TEAL1}
         },
@@ -116,7 +116,7 @@ PST.sideArtiData = {
     allianceSeptentrion = {
         name = "Alliance Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Kill a monster with familiar damage.", PST.kcolors.BLUE1},
             {"Generates 5 energy.", PST.kcolors.TEAL1}
         },
@@ -129,7 +129,7 @@ PST.sideArtiData = {
     slayerSeptentrion = {
         name = "Slayer Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Kill a champion monster.", PST.kcolors.BLUE1},
             {"Generates 7 energy.", PST.kcolors.TEAL1}
         },
@@ -142,7 +142,7 @@ PST.sideArtiData = {
     magicSeptentrion = {
         name = "Magic Septentrion",
         type = "septentrion",
-        desc = { -- TODO
+        desc = { -- TEST
             {"Condition: Use an active item.", PST.kcolors.BLUE1},
             {"Generates 2 energy per used charge.", PST.kcolors.TEAL1}
         },
@@ -409,7 +409,7 @@ end
 -- Add progress to the given Sidereal Artifact's unlock objective, up to the objective requirement
 function PST:sideArtiObjProgress(artiName, prog, set)
     local sideArtiData = PST.sideArtiData[artiName]
-    if sideArtiData then
+    if sideArtiData and sideArtiData.objective then
         if not PST.modData.sideArtiUnlockProg[artiName] then
             PST.modData.sideArtiUnlockProg[artiName] = 0
         end
@@ -422,6 +422,7 @@ end
 
 function PST:sideArtiAddEnergy(energy)
     if PST.specialNodes.sideArtiCD == 0 then
-        PST:addModifiers({ sideArtiEnergy = energy }, true)
+        --PST:addModifiers({ sideArtiEnergy = energy }, true)
+        print("Sidereal Artifact: generated", energy, "energy.")
     end
 end

@@ -181,9 +181,12 @@ function PST:postDamage(target, damage, flag, source)
                     PST.specialNodes.astralwep_famKillTimer = math.ceil(tmpMod[2] * 30)
                 end
 
-                -- Sidereal Artifact objective: kill monsters with familiar damage
+                -- Sidereal Artifact objective/condition: kill monsters with familiar damage
                 if isKillingHit then
                     PST:sideArtiObjProgress("allianceSeptentrion", 1)
+                    if PST:getTreeSnapshotMod("allianceSeptentrion", false) then
+                        PST:sideArtiAddEnergy(PST.sideArtiData.allianceSeptentrion.energy)
+                    end
 
                     -- Sidereal Artifact objective: kill boss monsters with familiar damage
                     if target:IsBoss() then
@@ -391,14 +394,38 @@ function PST:postDamage(target, damage, flag, source)
                         end
                     end
 
-                    -- Septentrional Artifact condition: Hit a boss 3 times
                     local tmpNPC = target:ToNPC()
-                    if tmpNPC and tmpNPC:IsBoss() then
-                        PST.specialNodes.arti_beastseekerHits = PST.specialNodes.arti_beastseekerHits + 1
-                        if PST.specialNodes.arti_beastseekerHits >= 3 then
-                            PST.specialNodes.arti_beastseekerHits = 0
-                            PST:sideArtiAddEnergy(PST.sideArtiData.beastseekerSeptentrion.energy)
+                    if tmpNPC then
+                        -- Boss hit
+                        if tmpNPC:IsBoss() then
+                            -- Septentrional Artifact condition: Hit a boss 3 times
+                            if PST:getTreeSnapshotMod("beastseekerSeptentrion", false) then
+                                PST.specialNodes.arti_beastseekerHits = PST.specialNodes.arti_beastseekerHits + 1
+                                if PST.specialNodes.arti_beastseekerHits >= 3 then
+                                    PST.specialNodes.arti_beastseekerHits = 0
+                                    PST:sideArtiAddEnergy(PST.sideArtiData.beastseekerSeptentrion.energy)
+                                end
+                            end
+
+                            -- Septentrional Artifact condition: Hit a boss 8 times
+                            if PST:getTreeSnapshotMod("giantseekerSeptentrion", false) then
+                                PST.specialNodes.arti_giantseekerHits = PST.specialNodes.arti_giantseekerHits + 1
+                                if PST.specialNodes.arti_giantseekerHits >= 8 then
+                                    PST.specialNodes.arti_giantseekerHits = 0
+                                    PST:sideArtiAddEnergy(PST.sideArtiData.giantseekerSeptentrion.energy)
+                                end
+                            end
+
+                            -- Septentrional Artifact condition: Hit a boss affected by any status effect
+                            if PST:getTreeSnapshotMod("rotseekerSeptentrion", false) and PST:entityHasAnyStatus(tmpNPC) then
+                                PST:sideArtiAddEnergy(PST.sideArtiData.rotseekerSeptentrion.energy)
+                            end
                         end
+                    end
+
+                    -- Septentrional Artifact condition: Hit a final boss
+                    if PST:getTreeSnapshotMod("titanseekerSeptentrion") and PST:entityIsFinalBoss(target) then
+                        PST:sideArtiAddEnergy(PST.sideArtiData.titanseekerSeptentrion.energy)
                     end
                 end
             end

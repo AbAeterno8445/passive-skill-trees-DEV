@@ -1835,6 +1835,7 @@ function PST:resetMods()
 
 		sideArtiCD = 0,
 		arti_beastseekerHits = 0,
+		arti_giantseekerHits = 0,
 	}
 	-- Temporary data for misc custom effects
 	PST.specialFX = {

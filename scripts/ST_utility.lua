@@ -362,6 +362,20 @@ function PST:entityHasAnyStatus(entity)
 	return false
 end
 
+---@param entity Entity
+function PST:entityIsFinalBoss(entity)
+	local isFinalBoss = PST:arrHasValue(PST.finalBosses, entity.Type)
+	-- ??? is Isaac with variant 1
+	if isFinalBoss and entity.Type == EntityType.ENTITY_ISAAC and entity.Variant ~= 1 then
+		isFinalBoss = false
+	end
+	-- Beast must be variant 0
+	if isFinalBoss and entity.Type == EntityType.ENTITY_BEAST and entity.Variant ~= 0 then
+		isFinalBoss = false
+	end
+	return isFinalBoss
+end
+
 --- Get the amount of familiars in the room
 ---@param specificType? FamiliarVariant Check for a specific familiar type instead, and return the amount of those
 function PST:getRoomFamiliars(specificType)

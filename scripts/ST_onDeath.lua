@@ -74,15 +74,23 @@ function PST:onDeath(entity)
             -- Max 8% xp from frozen enemies
             if isFrozen and mult > 0.08 then mult = 0.08 end
 
-            -- Sidereal Artifact objective: kill monsters (count only xp granting mobs)
-            PST:sideArtiObjProgress("bloodSeptentrion", 1)
-            -- Sidereal Artifact objective: kill monsters affected by any status effect
+            -- Sidereal Artifact condition: kill monsters (count only xp granting mobs)
+            if PST:getTreeSnapshotMod("bloodSeptentrion", false) then
+                PST:sideArtiAddEnergy(PST.sideArtiData.bloodSeptentrion.energy)
+            end
+            -- Sidereal Artifact objective/condition: kill monsters affected by any status effect
             if PST:entityHasAnyStatus(entity) then
                 PST:sideArtiObjProgress("taintbloodSeptentrion", 1)
+                if PST:getTreeSnapshotMod("taintbloodSeptentrion", false) then
+                    PST:sideArtiAddEnergy(PST.sideArtiData.taintbloodSeptentrion.energy)
+                end
             end
-            -- Sidereal Artifact objective: destroy frozen monsters
+            -- Sidereal Artifact objective/condition: destroy frozen monsters
             if (entity:GetEntityFlags() & EntityFlag.FLAG_ICE_FROZEN) > 0 then
                 PST:sideArtiObjProgress("icySeptentrion", 1)
+                if PST:getTreeSnapshotMod("icySeptentrion", false) then
+                    PST:sideArtiAddEnergy(PST.sideArtiData.icySeptentrion.energy)
+                end
             end
             if tmpNPC then
                 -- Sidereal Artifact objective: kill monsters that have at least 10 HP
@@ -94,9 +102,12 @@ function PST:onDeath(entity)
                         PST:sideArtiObjProgress("deathseekerSeptentrion", 1)
                     end
                 end
-                -- Sidereal Artifact objective: kill champion monsters
+                -- Sidereal Artifact objective/condition: kill champion monsters
                 if tmpNPC:IsChampion() then
                     PST:sideArtiObjProgress("slayerSeptentrion", 1)
+                    if PST:getTreeSnapshotMod("slayerSeptentrion", false) then
+                        PST:sideArtiAddEnergy(PST.sideArtiData.slayerSeptentrion.energy)
+                    end
                 end
             end
             -- Sidereal Artifact objective: kill slowed monsters
@@ -119,15 +130,7 @@ function PST:onDeath(entity)
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
-        local isFinalBoss = PST:arrHasValue(PST.finalBosses, entity.Type)
-        -- ??? is Isaac with variant 1
-        if isFinalBoss and entity.Type == EntityType.ENTITY_ISAAC and entity.Variant ~= 1 then
-            isFinalBoss = false
-        end
-        -- Beast must be variant 0
-        if isFinalBoss and entity.Type == EntityType.ENTITY_BEAST and entity.Variant ~= 0 then
-            isFinalBoss = false
-        end
+        local isFinalBoss = PST:entityIsFinalBoss(entity)
 
         -- Regular final boss kill
         if isFinalBoss then

@@ -1180,6 +1180,19 @@ function PST:onDamage(target, damage, flag, source)
                     dmgMult = dmgMult + 1
                     PST:addModifiers({ ancwep_quicksilverProc = false }, true)
                 end
+
+                -- Sidereal Artifact condition: Hit a non-boss monster above 90% HP or below 10% HP
+                if PST:getTreeSnapshotMod("assassinSeptentrion", false) then
+                    local targetHPPerc = target.HitPoints / target.MaxHitPoints
+                    if targetHPPerc >= 0.9 or targetHPPerc <= 0.1 then
+                        PST:sideArtiAddEnergy(PST.sideArtiData.assassinSeptentrion.energy)
+                    end
+                end
+
+                -- Sidereal Artifact condition: Hit an undead monster
+                if PST:getTreeSnapshotMod("deathseekerSeptentrion", false) and PST:isMobUndead(target) then
+                    PST:sideArtiAddEnergy(PST.sideArtiData.deathseekerSeptentrion.energy)
+                end
             end
 
             -- Astral weapon mod: +% damage dealt to enemies affected by status effects
