@@ -657,8 +657,8 @@ function PST:onRoomClear(level, room)
                 PST:updateCacheDelayed(PST.allstatsCache)
             end
 
-			-- Sidereal Artifact objective: clear rooms within 8 seconds
-			if room:GetFrameCount() <= 250 then
+			-- Sidereal Artifact objective: clear rooms within 7 seconds
+			if room:GetFrameCount() <= 220 then
 				PST:sideArtiObjProgress("smitingMeridion", 1)
 			end
 		end

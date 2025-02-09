@@ -86,7 +86,7 @@ function PST:onDeath(entity)
                 end
             end
             -- Sidereal Artifact objective/condition: destroy frozen monsters
-            if (entity:GetEntityFlags() & EntityFlag.FLAG_ICE_FROZEN) > 0 then
+            if isFrozen then
                 PST:sideArtiObjProgress("icySeptentrion", 1)
                 if PST:getTreeSnapshotMod("icySeptentrion", false) then
                     PST:sideArtiAddEnergy(PST.sideArtiData.icySeptentrion.energy)
@@ -426,7 +426,7 @@ function PST:onDeath(entity)
         end
         -- Ancient starcursed jewel: Glace
         if PST:SC_getSnapshotMod("glace", false) then
-            if entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN) and PST:getTreeSnapshotMod("SC_glaceDebuff", 0) > 0 then
+            if isFrozen and PST:getTreeSnapshotMod("SC_glaceDebuff", 0) > 0 then
                 PST:addModifiers({ speedPerc = 0.5, tearsPerc = 0.5, SC_glaceDebuff = -0.5 }, true)
             end
         end

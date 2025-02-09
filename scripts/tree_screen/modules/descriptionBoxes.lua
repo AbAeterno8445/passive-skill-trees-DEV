@@ -272,7 +272,7 @@ local descriptionBoxesModule = {
                 end
 
                 local charData = PST:getCurrentCharData()
-                if charData and not isAllocated then
+                if charData and not isAllocated and extraData.available then
                     if artiData.type == "septentrion" and #charData.northArtis >= charData.maxNorthArtis then
                         table.insert(nodeDesc, {"Max Septentrional artifacts selected! Respec a different artifact to select this one.", PST.kcolors.RED1})
                     elseif artiData.type == "meridion" and #charData.southArtis >= charData.maxSouthArtis then
@@ -324,6 +324,7 @@ function descriptionBoxesModule:Render(tScreen)
             for tmpMod, _ in pairs(hoveredNode.modifiers) do
                 if PST.sideArtiData[tmpMod] then
                     extraData.artifact = tmpMod
+                    extraData.available = hoveredNode.available
                     nodeDescFunc = self.dynamicNodeDescriptions["Sidereal Artifact Individual"]
                     break
                 end

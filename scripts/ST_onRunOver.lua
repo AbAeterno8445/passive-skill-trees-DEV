@@ -15,14 +15,14 @@ function PST:onRunOver(isGameOver)
         end
 
         -- Sidereal Artifact objective: win a run with the Circadian Destructor ancient jewel equipped
-        if PST:SC_getSocketedAncient("Circadian Destructor") ~= nil then
+        if PST:SC_getSnapshotMod("circadianDestructor", false) then
             PST:sideArtiObjProgress("blastingMeridion", 1)
         end
         -- Sidereal Artifact objective: win a run with at least 4 smelted trinkets
         local tmpTrinkets = 0
         for _, tmpTrinket in pairs(PST:getPlayer():GetSmeltedTrinkets()) do
             if tmpTrinket.trinketAmount > 0 or tmpTrinket.goldenTrinketAmount > 0 then
-                tmpTrinkets = tmpTrinkets + 1
+                tmpTrinkets = tmpTrinkets + tmpTrinket.trinketAmount + tmpTrinket.goldenTrinketAmount
             end
         end
         if tmpTrinkets >= 4 then
