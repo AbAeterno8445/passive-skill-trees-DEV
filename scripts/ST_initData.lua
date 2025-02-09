@@ -505,7 +505,6 @@ PST.brokenHeartCharBlacklist = {"Keeper", "T. Keeper"}
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}
 PST.ItemPoolType = {
-	---@diagnostic disable-next-line: undefined-field
     POOL_BLUE = Isaac.GetPoolIdByName("blueItems")
 }
 PST.globalMedNodes = {}

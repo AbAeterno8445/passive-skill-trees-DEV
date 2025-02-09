@@ -210,11 +210,11 @@ function PST:generateExpeditionV2(depth, seed)
                 end
             -- Item reward type, pick an item
             elseif newNode.rewardType == PSTExpNodeRewardType.ITEM then
-                local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE, false, rewardTypeRNG:RandomInt(100000))
+                local newItem = PST.expeditionItems[expRNG:RandomInt(1, #PST.expeditionItems)]
                 local itemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
                 local failsafe = 0
                 while (PST:arrHasValue(pickedItems, newItem) or (itemCfg and itemCfg.Type ~= ItemType.ITEM_PASSIVE)) and failsafe < 300 do
-                    newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_TREASURE, false, rewardTypeRNG:RandomInt(100000))
+                    newItem = PST.expeditionItems[expRNG:RandomInt(1, #PST.expeditionItems)]
                     itemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
                     failsafe = failsafe + 1
                 end

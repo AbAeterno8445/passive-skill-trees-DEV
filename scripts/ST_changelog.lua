@@ -5,6 +5,9 @@ function PST:getChangelogList()
 
         "v0.4.28",
         "- Added support for Community Remix items.",
+        "- Expedition item rewards now draw items from a fixed pool, regardless of item unlock status. This also means",
+        "mod items can no longer appear as rewards, given potential inconsistencies if enabling/disabling more/existing mods.",
+        "Unfortunately this means that existing item reward nodes will get rerolled one last time.",
         "- Fixed error when first loading a savefile while having Epiphany.",
         "",
 
