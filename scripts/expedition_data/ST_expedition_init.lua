@@ -582,7 +582,8 @@ PST.expeditionCurses = {
         name = "Flimsy Gadgets",
         description = {
             "When hit, {{curseFlimGadgDrop}}% chance to drop held trinkets.",
-            "{{curseFlimGadgVanish}}% chance for dropped trinkets to vanish instead."
+            "{{curseFlimGadgVanish}}% chance for dropped trinkets to vanish instead. This includes",
+            "trinkets dropped manually by players."
         },
         spriteFrame = 10,
         modsFunc = function(depth)

@@ -21,26 +21,6 @@ function PST:onDamage(target, damage, flag, source)
             return { Damage = 0 }
         end
 
-        -- Fickle Fortune node (Cain's tree) - also Expedition curse: flimsy gadgets
-        local tmpChance = 0
-        if PST:getTreeSnapshotMod("fickleFortune", false) then
-            tmpChance = 7
-        end
-        tmpChance = tmpChance + PST:getTreeSnapshotMod("curseFlimGadgDrop", 0)
-
-        if tmpChance > 0 and 100 * math.random() < tmpChance then
-            local vanishChance = 0
-            if PST:getTreeSnapshotMod("fickleFortune", false) then
-                vanishChance = 7
-            end
-            vanishChance = vanishChance + PST:getTreeSnapshotMod("curseFlimGadgVanish", 0)
-
-            if vanishChance > 0 and 100 * math.random() < vanishChance then
-                PST.specialNodes.fickleFortuneVanish = true
-            end
-            player:DropTrinket(player.Position, true)
-        end
-
         -- Hasted node (Samson's tree)
         if PST:getTreeSnapshotMod("hasted", false) and PST:getTreeSnapshotMod("hastedHits", 0) < 5 then
             PST:addModifiers({ tearsPerc = -1.5, shotSpeedPerc = -1.5, hastedHits = 1 }, true)
@@ -50,21 +30,6 @@ function PST:onDamage(target, damage, flag, source)
         if PST:getTreeSnapshotMod("rageBuildup", false) then
             local tmpTotal = PST:getTreeSnapshotMod("rageBuildupTotal", 0)
             PST:addModifiers({ damage = -tmpTotal, rageBuildupTotal = { value = 0, set = true } }, true)
-        end
-
-        -- Mod: +% speed when hit, up to 15%
-        local tmpBonus = PST:getTreeSnapshotMod("speedWhenHit", 0)
-        local tmpTotal = PST:getTreeSnapshotMod("speedWhenHitTotal", 0)
-        if tmpBonus > 0 and tmpTotal < 15 then
-            local tmpAdd = math.min(tmpBonus, 15 - tmpTotal)
-            if tmpAdd > 0 then
-                PST:addModifiers({ speedPerc = tmpAdd, speedWhenHitTotal = tmpAdd }, true)
-            end
-        end
-
-        -- Mod: +luck if you clear the boss room without getting hit more than 3 times (register hit)
-        if room:GetType() == RoomType.ROOM_BOSS then
-            PST.specialNodes.bossRoomHitsFrom = PST.specialNodes.bossRoomHitsFrom + 1
         end
 
         -- Mod: chance to negate incoming hit if it would've killed you
@@ -132,33 +97,6 @@ function PST:onDamage(target, damage, flag, source)
                     player:UseActiveItem(CollectibleType.COLLECTIBLE_BUTTER_BEAN, UseFlag.USE_NOANIM)
                 end
             end
-        end
-
-        -- Cosmic Realignment node
-	    if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
-            -- Samson, -0.15 damage when hit, up to -0.9
-            if room:GetAliveEnemiesCount() > 0 and cosmicRCache.samsonDmg < 0.9 then
-                cosmicRCache.samsonDmg = cosmicRCache.samsonDmg + 0.15
-                PST:addModifiers({ damage = -0.15 }, true)
-            end
-        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
-            -- Tainted Samson, -5% all stats when hit, up to -20%
-            if room:GetAliveEnemiesCount() > 0 and cosmicRCache.TSamsonBuffer > -20 then
-                cosmicRCache.TSamsonBuffer = cosmicRCache.TSamsonBuffer - 5
-                player:AddCacheFlags(PST.allstatsCache, true)
-            end
-        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN_B) then
-            -- Tainted Eden, shuffle stat reduction
-            for stat, _ in pairs(cosmicRCache.TEdenDebuff) do
-                cosmicRCache.TEdenDebuff[stat] = 0
-            end
-            for _=1,6 do
-                local tmpStat = PST:getRandomStat()
-                cosmicRCache.TEdenDebuff[tmpStat] = cosmicRCache.TEdenDebuff[tmpStat] - 0.1
-            end
-            local tmpStat = PST:getRandomStat()
-            cosmicRCache.TEdenDebuff[tmpStat .. "Perc"] = math.floor(-25 * math.random())
-            player:AddCacheFlags(PST.allstatsCache, true)
         end
 
         -- Mod: chance to nullify hit that wakes dead bird
@@ -304,19 +242,6 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
-        -- Ancient starcursed jewel: Martian Ultimatum
-        if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
-            PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
-        end
-
-        -- Ancient starcursed jewel: Crimson Warpstone
-        if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
-            tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyDrop", 0)
-            if tmpMod > 0 then
-                PST:addModifiers({ SC_crimsonWarpKeyDrop = -15 }, true)
-            end
-        end
-
         -- Monster hits specifically
         if source and source.Entity then
             local tmpDmg = 0
@@ -328,6 +253,81 @@ function PST:onDamage(target, damage, flag, source)
                 tmpSource = source.Entity.SpawnerEntity:ToNPC()
             end
             if tmpSource and tmpSource.Type ~= EntityType.ENTITY_FIREPLACE then
+                -- Fickle Fortune node (Cain's tree) - also Expedition curse: flimsy gadgets
+                local tmpChance = 0
+                if PST:getTreeSnapshotMod("fickleFortune", false) then
+                    tmpChance = 7
+                end
+                tmpChance = tmpChance + PST:getTreeSnapshotMod("curseFlimGadgDrop", 0)
+
+                if tmpChance > 0 and 100 * math.random() < tmpChance then
+                    local vanishChance = 0
+                    if PST:getTreeSnapshotMod("fickleFortune", false) then
+                        vanishChance = 7
+                    end
+                    vanishChance = vanishChance + PST:getTreeSnapshotMod("curseFlimGadgVanish", 0)
+
+                    if vanishChance > 0 and 100 * math.random() < vanishChance then
+                        PST.specialNodes.fickleFortuneVanish = true
+                    end
+                    player:DropTrinket(player.Position, true)
+                end
+
+                -- Mod: +% speed when hit, up to 15%
+                local tmpBonus = PST:getTreeSnapshotMod("speedWhenHit", 0)
+                local tmpTotal = PST:getTreeSnapshotMod("speedWhenHitTotal", 0)
+                if tmpBonus > 0 and tmpTotal < 15 then
+                    local tmpAdd = math.min(tmpBonus, 15 - tmpTotal)
+                    if tmpAdd > 0 then
+                        PST:addModifiers({ speedPerc = tmpAdd, speedWhenHitTotal = tmpAdd }, true)
+                    end
+                end
+
+                -- Mod: +luck if you clear the boss room without getting hit more than 3 times (register hit)
+                if room:GetType() == RoomType.ROOM_BOSS then
+                    PST.specialNodes.bossRoomHitsFrom = PST.specialNodes.bossRoomHitsFrom + 1
+                end
+
+                -- Cosmic Realignment node
+                if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then
+                    -- Samson, -0.15 damage when hit, up to -0.9
+                    if room:GetAliveEnemiesCount() > 0 and cosmicRCache.samsonDmg < 0.9 then
+                        cosmicRCache.samsonDmg = cosmicRCache.samsonDmg + 0.15
+                        PST:addModifiers({ damage = -0.15 }, true)
+                    end
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
+                    -- Tainted Samson, -5% all stats when hit, up to -20%
+                    if room:GetAliveEnemiesCount() > 0 and cosmicRCache.TSamsonBuffer > -20 then
+                        cosmicRCache.TSamsonBuffer = cosmicRCache.TSamsonBuffer - 5
+                        player:AddCacheFlags(PST.allstatsCache, true)
+                    end
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN_B) then
+                    -- Tainted Eden, shuffle stat reduction
+                    for stat, _ in pairs(cosmicRCache.TEdenDebuff) do
+                        cosmicRCache.TEdenDebuff[stat] = 0
+                    end
+                    for _=1,6 do
+                        local tmpStat = PST:getRandomStat()
+                        cosmicRCache.TEdenDebuff[tmpStat] = cosmicRCache.TEdenDebuff[tmpStat] - 0.1
+                    end
+                    local tmpStat = PST:getRandomStat()
+                    cosmicRCache.TEdenDebuff[tmpStat .. "Perc"] = math.floor(-25 * math.random())
+                    player:AddCacheFlags(PST.allstatsCache, true)
+                end
+
+                -- Ancient starcursed jewel: Martian Ultimatum
+                if PST:SC_getSnapshotMod("martianUltimatum", false) and PST:getTreeSnapshotMod("SC_martianDebuff", 0) < 0.5 then
+                    PST:addModifiers({ speed = -0.1, SC_martianDebuff = 0.1 }, true)
+                end
+
+                -- Ancient starcursed jewel: Crimson Warpstone
+                if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+                    tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyDrop", 0)
+                    if tmpMod > 0 then
+                        PST:addModifiers({ SC_crimsonWarpKeyDrop = -15 }, true)
+                    end
+                end
+
                 -- Ancient weapon mod: Quicksilver
                 if PST.specialNodes.ancwep_quicksilverParrying > 0 then
                     SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.5, 2, false, 1.3)
