@@ -88,7 +88,6 @@ local chroniclerUISprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
 chroniclerUISprite:Play("Chronicler UI", true)
 
 local expedUISprite = Sprite("gfx/ui/skilltrees/nodes/expedition_nodes.anm2", true)
-expedUISprite:SetFrame("UI", 0)
 
 local animFXList = {}
 -- Spawn an animated effect using the given anm2 path. Returns the new sprite object in case further manipulation is needed
@@ -257,12 +256,33 @@ function PST:Render()
 	if hudVisible then
 		-- Expedition run UI icon
 		if PST:getTreeSnapshotMod("isExpedRun", false) then
+			expedUISprite:SetFrame("UI", 0)
 			if PST:isKeybindActive(PSTKeybind.TREE_TAB, true) and expedUISprite.Color.A < 1 then
 				expedUISprite.Color.A = expedUISprite.Color.A + 0.05
 			elseif expedUISprite.Color.A > 0.25 then
 				expedUISprite.Color.A = expedUISprite.Color.A - 0.05
 			end
 			expedUISprite:Render(Vector(8, 8))
+		end
+
+		-- Sidereal Artifact UI
+		if PST.config.sideArtiUI then
+			local charData = PST:getCurrentCharData()
+			if charData and #charData.northArtis > 0 and #charData.southArtis > 0 then
+				expedUISprite:SetFrame("UI", 1)
+				if PST:isKeybindActive(PSTKeybind.TREE_TAB, true) and expedUISprite.Color.A < 1 then
+					expedUISprite.Color.A = expedUISprite.Color.A + 0.05
+				elseif expedUISprite.Color.A > 0.25 then
+					expedUISprite.Color.A = expedUISprite.Color.A - 0.05
+				end
+				expedUISprite:Render(Vector(8, 22))
+				local tmpMeridion = charData.southArtis[1]
+				local tmpColor = KColor(1, 1, 1, expedUISprite.Color.A)
+				if PST.specialNodes.sideArtiCD > 0 then
+					tmpColor = KColor(1, 0.3, 0.3, expedUISprite.Color.A)
+				end
+				PST.luaminiFont:DrawString(PST:getTreeSnapshotMod("sideArtiEnergy", 0) .. "/" .. PST.sideArtiData[tmpMeridion].energyReq, 16, 14, tmpColor)
+			end
 		end
 
 		-- Ancient starcursed jewel: Chronicler Stone UI

@@ -5,6 +5,8 @@ function PST:getChangelogList()
 
         "v0.4.28",
         "- Added support for Community Remix items.",
+        "- New Sidereal Tree feature: Sidereal Artifacts. These allow choosing between many artifact nodes that grant a",
+        "condition to generate 'energy', and an effect to be triggered once enough energy is gathered.",
         "- Expedition item rewards now draw items from a fixed pool, regardless of item unlock status. This also means",
         "mod items can no longer appear as rewards, given potential inconsistencies if enabling/disabling more/existing mods.",
         "Unfortunately this means that existing item reward nodes will get rerolled one last time.",

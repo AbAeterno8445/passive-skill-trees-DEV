@@ -1885,6 +1885,8 @@ function PST:resetMods()
 		arti_executionerBuffTimer = 0,
 		arti_blastingProcs = 0,
 		arti_gildedTimer = 0,
+		arti_solarBuffTimer = 0,
+		arti_lunarBuffTimer = 0,
 
 		explosionImmunityTimer = 0,
 	}

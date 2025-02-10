@@ -152,6 +152,32 @@ PST.sideArtiData = {
         },
         energy = 2
     },
+    solarSeptentrion = {
+        name = "Solar Septentrion",
+        type = "septentrion",
+        desc = {
+            {"Condition: Enter a treasure room for the first time in the floor.", PST.kcolors.BLUE1},
+            {"Generates 2 energy per second for 60 seconds.", PST.kcolors.TEAL1}
+        },
+        objective = {
+            desc = "Enter {{progress}}/30 different treasure rooms.",
+            req = 30
+        },
+        energy = 2
+    },
+    lunarSeptentrion = {
+        name = "Lunar Septentrion",
+        type = "septentrion",
+        desc = {
+            {"Condition: Enter a secret room for the first time in the floor.", PST.kcolors.BLUE1},
+            {"Generates 4 energy per second for 30 seconds.", PST.kcolors.TEAL1}
+        },
+        objective = {
+            desc = "Enter {{progress}}/30 different secret rooms.",
+            req = 30
+        },
+        energy = 4
+    },
 
     ---- MERIDIONS ----
     galvanicMeridion = {
@@ -434,7 +460,9 @@ function PST:sideArtiAddEnergy(energy)
                 end
                 PST:addModifiers({ sideArtiEnergy = { value = 0, set = true } }, true)
 
-                PST:createFloatTextFX(artiData.name, Vector(0, 8), PST:RGBColor(80, 255, 255), 0.12, 90, true)
+                if PST.config.sideArtiText then
+                    PST:createFloatTextFX(artiData.name, Vector(0, 8), PST:RGBColor(80, 255, 255), 0.12, 90, true)
+                end
                 SFXManager():Play(SoundEffect.SOUND_REDLIGHTNING_ZAP_STRONG, 0.5, 2, false, 1.2)
 
                 -- Galvanic Meridion

@@ -2873,6 +2873,22 @@ function PST:frameUpdate()
 		PST.specialNodes.arti_gildedTimer = PST.specialNodes.arti_gildedTimer - 1
 	end
 
+	-- Sidereal Artifact: Solar Septentrion buff
+	if PST.specialNodes.arti_solarBuffTimer > 0 then
+		PST.specialNodes.arti_solarBuffTimer = PST.specialNodes.arti_solarBuffTimer - 1
+		if (PST.specialNodes.arti_solarBuffTimer % 30) == 0 then
+			PST:sideArtiAddEnergy(PST.sideArtiData.solarSeptentrion.energy)
+		end
+	end
+
+	-- Sidereal Artifact: Lunar Septentrion buff
+	if PST.specialNodes.arti_lunarBuffTimer > 0 then
+		PST.specialNodes.arti_lunarBuffTimer = PST.specialNodes.arti_lunarBuffTimer - 1
+		if (PST.specialNodes.arti_lunarBuffTimer % 30) == 0 then
+			PST:sideArtiAddEnergy(PST.sideArtiData.lunarSeptentrion.energy)
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

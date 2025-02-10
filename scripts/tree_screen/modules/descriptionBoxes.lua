@@ -205,7 +205,7 @@ local descriptionBoxesModule = {
                         for _, tmpArtiName in ipairs(charData.northArtis) do
                             local tmpArtiData = PST.sideArtiData[tmpArtiName]
                             if tmpArtiData then
-                                table.insert(nodeDesc, {tmpArtiData.name, PST.kcolors.BLUE1})
+                                table.insert(nodeDesc, {tmpArtiData.name, PST.kcolors.BLUE2})
                                 for _, tmpLine in ipairs(tmpArtiData.desc) do
                                     local newTmpLine
                                     if type(tmpLine) == "table" then

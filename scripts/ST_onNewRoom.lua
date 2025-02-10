@@ -1365,6 +1365,22 @@ function PST:onNewRoom()
 		PST:addModifiers({ arti_gildedProc = false }, true)
 	end
 
+	-- Sidereal Artifact objective/effect: Solar Septentrion
+	if roomType == RoomType.ROOM_TREASURE and room:IsFirstVisit() then
+		PST:sideArtiObjProgress("solarSeptentrion", 1)
+		if PST:getTreeSnapshotMod("solarSeptentrion", false) then
+			PST.specialNodes.arti_solarBuffTimer = 1800
+		end
+	end
+
+	-- Sidereal Artifact objective/effect: Lunar Septentrion
+	if (roomType == RoomType.ROOM_SECRET or roomType == RoomType.ROOM_SUPERSECRET) and room:IsFirstVisit() then
+		PST:sideArtiObjProgress("lunarSeptentrion", 1)
+		if PST:getTreeSnapshotMod("lunarSeptentrion", false) then
+			PST.specialNodes.arti_lunarBuffTimer = 900
+		end
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

@@ -47,6 +47,12 @@ PST.config = {
     -- Toggle special challenge mark rendering (in case incompatibilities break it)
     specialMarkRendering = true,
 
+    -- Sidereal Artifact top left UI toggle
+    sideArtiUI = true,
+
+    -- Sidereal Artifact text on proc toggle
+    sideArtiText = true,
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed
@@ -407,6 +413,47 @@ function PST:initModConfigMenu()
                 PST.config.astralWepDrops = b
             end,
             Info = {"Toggle Astral Weapons from dropping (expedition runs)"}
+        }
+    )
+
+    -- Sidereal Artifact UI toggle
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "sideArtiUI")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "sideArtiUI",
+            CurrentSetting = function()
+                return PST.config.sideArtiUI
+            end,
+            Display = function()
+                return "Sidereal Artifact UI: " .. (PST.config.sideArtiUI and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.sideArtiUI = b
+            end,
+            Info = {"Display sidereal artifact energy in the top left when artifacts are equipped"}
+        }
+    )
+    -- Sidereal Artifact text toggle
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "sideArtiText")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "sideArtiText",
+            CurrentSetting = function()
+                return PST.config.sideArtiText
+            end,
+            Display = function()
+                return "Sidereal Artifact floating text: " .. (PST.config.sideArtiText and "on" or "off")
+            end,
+            OnChange = function(b)
+                PST.config.sideArtiText = b
+            end,
+            Info = {"Display a floating text above your character when a sidereal artifact's effect is triggered"}
         }
     )
 
