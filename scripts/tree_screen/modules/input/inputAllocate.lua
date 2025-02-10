@@ -8,6 +8,7 @@ function PST.treeScreen:InputAllocate()
         local cosmicRSubmenu = submenusModule.submenus[PSTSubmenu.COSMICREALIGNMENT]
         local starInvSubmenu = submenusModule.submenus[PSTSubmenu.STARJEWELINV]
         local crimsonNodeSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_NODE]
+        local infMeridionSubmenu = submenusModule.submenus[PSTSubmenu.INFECTIOUS_MERIDION]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -108,7 +109,6 @@ function PST.treeScreen:InputAllocate()
                 -- Cosmic Realignment node, open/close menu
                 if self.hoveredNode.name == "Cosmic Realignment" then
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
-
                     submenusModule:SwitchSubmenu(PSTSubmenu.COSMICREALIGNMENT, {
                         menuX = self.hoveredNode.pos.X * 38,
                         menuY = self.hoveredNode.pos.Y * 38
@@ -192,6 +192,15 @@ function PST.treeScreen:InputAllocate()
                 elseif self.hoveredNode.name == "Timeless Bazaar" then
                     self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.BAZAAR)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
+                -- Infectious Meridion node, open status selection submenu
+                elseif self.hoveredNode.name == "Infectious Meridion" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.INFECTIOUS_MERIDION, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do
@@ -308,6 +317,16 @@ function PST.treeScreen:InputAllocate()
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                end
+            end
+        -- Infectious Meridion submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.INFECTIOUS_MERIDION then
+            local tmpStatus = infMeridionSubmenu.hoveredStatus
+            if tmpStatus ~= nil then
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    charData.artiInfMeridionStatus = tmpStatus
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 end
             end
         end

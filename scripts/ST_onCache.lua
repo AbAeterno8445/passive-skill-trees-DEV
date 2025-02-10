@@ -978,6 +978,11 @@ function PST:onCache(player, cacheFlag)
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - allstatDebuff
     end
 
+    -- Sidereal Artifact: Galvanic Meridion buff
+    if PST.specialNodes.arti_galvanicBuffTimer > 0 then
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + 3
+    end
+
     local allstats = PST:getTreeSnapshotMod("allstats", 0) + dynamicMods.allstats
     local allstatsPerc = PST:getTreeSnapshotMod("allstatsPerc", 0) + dynamicMods.allstatsPerc
     if cacheFlag == CacheFlag.CACHE_DAMAGE then

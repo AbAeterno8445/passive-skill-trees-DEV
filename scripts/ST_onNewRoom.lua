@@ -30,6 +30,10 @@ function PST:onNewRoom()
 	PST.specialNodes.ancwep_taleEnderProc = false
 	PST.specialNodes.ancwep_preciseSeekerMarked = nil
 	PST.specialNodes.ancwep_circuitEnems = {}
+	PST.specialNodes.arti_smitingProcs = 0
+	PST.specialNodes.arti_deadSeaProcs = 0
+	PST.specialNodes.arti_brimProc = false
+	PST.specialNodes.arti_blastingProcs = 0
 	PST:clearAnimFXList()
 
 	local player = PST:getPlayer()
@@ -1349,6 +1353,16 @@ function PST:onNewRoom()
 	-- Delirium init proc
 	if PST:getTreeSnapshotMod("deliriumInit", false) then
 		PST:addModifiers({ deliriumInit = false }, true)
+	end
+
+	-- Sidereal Artifact: Infernal Meridion proc
+	if PST:getTreeSnapshotMod("arti_infernalProc", false) then
+		PST:addModifiers({ arti_infernalProc = false }, true)
+	end
+
+	-- Sidereal Artifact: Gilded Meridion proc
+	if PST:getTreeSnapshotMod("arti_gildedProc", false) then
+		PST:addModifiers({ arti_gildedProc = false }, true)
 	end
 
 	if PST.savePending then

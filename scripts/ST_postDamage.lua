@@ -398,7 +398,7 @@ function PST:postDamage(target, damage, flag, source)
                     if tmpNPC then
                         -- Boss hit
                         if tmpNPC:IsBoss() then
-                            -- Septentrional Artifact condition: Hit a boss 3 times
+                            -- Sidereal Artifact condition: Hit a boss 3 times
                             if PST:getTreeSnapshotMod("beastseekerSeptentrion", false) then
                                 PST.specialNodes.arti_beastseekerHits = PST.specialNodes.arti_beastseekerHits + 1
                                 if PST.specialNodes.arti_beastseekerHits >= 3 then
@@ -407,7 +407,7 @@ function PST:postDamage(target, damage, flag, source)
                                 end
                             end
 
-                            -- Septentrional Artifact condition: Hit a boss 8 times
+                            -- Sidereal Artifact condition: Hit a boss 8 times
                             if PST:getTreeSnapshotMod("giantseekerSeptentrion", false) then
                                 PST.specialNodes.arti_giantseekerHits = PST.specialNodes.arti_giantseekerHits + 1
                                 if PST.specialNodes.arti_giantseekerHits >= 8 then
@@ -416,16 +416,28 @@ function PST:postDamage(target, damage, flag, source)
                                 end
                             end
 
-                            -- Septentrional Artifact condition: Hit a boss affected by any status effect
+                            -- Sidereal Artifact condition: Hit a boss affected by any status effect
                             if PST:getTreeSnapshotMod("rotseekerSeptentrion", false) and PST:entityHasAnyStatus(tmpNPC) then
                                 PST:sideArtiAddEnergy(PST.sideArtiData.rotseekerSeptentrion.energy)
                             end
                         end
                     end
 
-                    -- Septentrional Artifact condition: Hit a final boss
+                    -- Sidereal Artifact condition: Hit a final boss
                     if PST:getTreeSnapshotMod("titanseekerSeptentrion") and PST:entityIsFinalBoss(target) then
                         PST:sideArtiAddEnergy(PST.sideArtiData.titanseekerSeptentrion.energy)
+                    end
+
+                    -- Sidereal Artifact: Executioner Meridion
+                    if PST.specialNodes.arti_executionerBuffTimer > 0 and (target.HitPoints / target.MaxHitPoints) <= 0.15 then
+                        local function PST_tmpDmgTick()
+                            return function()
+                                target:TakeDamage(target.MaxHitPoints, 0, EntityRef(srcPlayer), 0)
+                            end
+                        end
+                        PST:createAnimFXAt("gfx/1000.176_cleaver slash.anm2", "Slash", target.Position - Vector(0, 12), {
+                            [3] = PST_tmpDmgTick()
+                        })
                     end
                 end
             end

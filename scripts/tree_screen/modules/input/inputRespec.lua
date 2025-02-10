@@ -34,13 +34,15 @@ function PST.treeScreen:InputRespec()
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
 
                 elseif PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, false) then
+                    local noSP = (self.hoveredNode.reqs and self.hoveredNode.reqs.noSP)
+
                     -- Respec Cosmic Realignment node
                     local cosmicRChar = PST.modData.cosmicRealignment
                     if self.hoveredNode.name == "Cosmic Realignment" and type(cosmicRChar) == "number" then
                         PST.modData.cosmicRealignment = false
                         SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     else
-                        if not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
+                        if not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) and not noSP then
                             if not PST.debugOptions.infRespec then
                                 PST.modData.respecPoints = math.max(0, PST.modData.respecPoints - 1)
                             end

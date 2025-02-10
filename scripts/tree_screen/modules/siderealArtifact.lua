@@ -157,8 +157,8 @@ PST.sideArtiData = {
     galvanicMeridion = {
         name = "Galvanic Meridion",
         type = "meridion",
-        desc = { -- TODO
-            {"15 energy: Gain 5% all stats for 5 seconds.", PST.kcolors.TEAL1},
+        desc = {
+            {"15 energy: Gain 3% all stats for 5 seconds.", PST.kcolors.TEAL1},
             "No artifact cooldown.",
         },
         energyReq = 15
@@ -166,66 +166,66 @@ PST.sideArtiData = {
     glacialMeridion = {
         name = "Glacial Meridion",
         type = "meridion",
-        desc = { -- TODO
-            {"20 energy: Slow all enemies in the room for 4 seconds.", PST.kcolors.TEAL1},
+        desc = {
+            {"25 energy: Triggers Hourglass' effect.", PST.kcolors.TEAL1},
             "4 second artifact cooldown."
         },
         objective = {
             desc = "Kill {{progress}}/40 slowed enemies.",
             req = 40
         },
-        energyReq = 20,
+        energyReq = 25,
         cooldown = 4
     },
     smitingMeridion = {
         name = "Smiting Meridion",
         type = "meridion",
-        desc = { -- TODO
-            {"35 energy: Damage all enemies in the room for 8 + 5% of their HP, up to 4 times per room.", PST.kcolors.TEAL1},
-            "5 second artifact cooldown."
+        desc = {
+            {"30 energy: Damage all enemies in the room for 5 + 7% of their max HP, up to 4 times per room.", PST.kcolors.TEAL1},
+            {"Flat damage dealt goes up as you progress through floors.", PST.kcolors.TEAL1},
+            "3 second artifact cooldown."
         },
         objective = {
             desc = "Clear {{progress}}/30 rooms within 7 seconds each.",
             req = 30
         },
-        energyReq = 35,
-        cooldown = 5
+        energyReq = 30,
+        cooldown = 3
     },
     infectiousMeridion = {
         name = "Infectious Meridion",
         type = "meridion",
-        desc = { -- TODO
-            {"25 energy: Generate a pulse that damages nearby enemies and inflicts a status effect on them", PST.kcolors.TEAL1},
+        desc = {
+            {"20 energy: Generate a pulse that damages nearby enemies and inflicts a status effect on them", PST.kcolors.TEAL1},
             {"for 4 seconds.", PST.kcolors.TEAL1},
-            "4 second artifact cooldown",
-            "Once allocated, press Allocate to choose the status effect the pulse inflicts. Causes poison by default."
+            "2 second artifact cooldown"
         },
         objective = {
             desc = "Inflict status effects on non-boss enemies {{progress}}/200 times.",
             req = 200
         },
-        energyReq = 25,
-        cooldown = 4
+        energyReq = 20,
+        cooldown = 2
     },
     virtuousMeridion = {
         name = "Virtuous Meridion",
         type = "meridion",
-        desc = { -- TODO
-            {"40 energy: Generate a random orbiting Wisp to assist you, up to 8 times per floor.", PST.kcolors.TEAL1},
-            "8 second artifact cooldown."
+        desc = {
+            {"60 energy: Generate a random orbiting Wisp to assist you, up to 5 times per floor.", PST.kcolors.TEAL1},
+            "7 second artifact cooldown."
         },
         objective = {
             desc = "Kill {{progress}}/15 boss monsters with familiar damage.",
             req = 15
         },
-        energyReq = 40,
-        cooldown = 8
+        energyReq = 60,
+        cooldown = 7
     },
     stoneMeridion = {
         name = "stoneMeridion",
         type = "meridion",
-        desc = { -- TODO
-            {"30 energy: Petrify a random enemy in the room for 6 seconds, prioritizing enemies with the", PST.kcolors.TEAL1},
+        desc = {
+            {"30 energy: Petrify a random enemy in the room for 7 seconds, prioritizing enemies with the", PST.kcolors.TEAL1},
             {"highest health.", PST.kcolors.TEAL1},
             "4 second artifact cooldown."
         },
@@ -239,9 +239,9 @@ PST.sideArtiData = {
     infernalMeridion = {
         name = "infernalMeridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"90 energy:", PST.kcolors.TEAL1},
-            {"   Inflict burning on all enemies in the room for 5 seconds.", PST.kcolors.TEAL1},
+            {"   Inflict burning on all enemies in the room for 6 seconds.", PST.kcolors.TEAL1},
             {"   For the rest of the room, burning enemies explode on death, damaging other nearby enemies.", PST.kcolors.TEAL1},
             "6 second artifact cooldown."
         },
@@ -255,7 +255,7 @@ PST.sideArtiData = {
     deadSeaMeridion = {
         name = "Dead Sea Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"30 energy: Trigger Dead Sea Scrolls' effect, up to 4 times per room.", PST.kcolors.TEAL1},
             "4 second artifact cooldown."
         },
@@ -269,7 +269,7 @@ PST.sideArtiData = {
     flowingMeridion = {
         name = "Flowing Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"20 energy: Trigger Isaac's Tears' effect.", PST.kcolors.TEAL1},
             "3 second artifact cooldown."
         },
@@ -283,7 +283,7 @@ PST.sideArtiData = {
     osseousMeridion = {
         name = "Osseous Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"70 energy:", PST.kcolors.TEAL1},
             {"   Floors 1-3: Spawn 2 friendly Bonys, up to 3 times per floor.", PST.kcolors.TEAL1},
             {"   Floors 4-6: Spawn 3 friendly Bonys, up to 3 times per floor.", PST.kcolors.TEAL1},
@@ -301,7 +301,7 @@ PST.sideArtiData = {
     monstrousMeridion = {
         name = "Monstrous Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"50 energy: Trigger Monster Manual's effect, up to 4 times per floor.", PST.kcolors.TEAL1},
             "3 second artifact cooldown."
         },
@@ -315,8 +315,9 @@ PST.sideArtiData = {
     brimMeridion = {
         name = "Brim Meridion",
         type = "meridion",
-        desc = { -- TODO
-            {"45 energy: Inflict every monster in the room with Hemoptysis' curse, once per room.", PST.kcolors.TEAL1},
+        desc = {
+            {"45 energy: Inflict every monster in the room with Hemoptysis' curse for 7 seconds,", PST.kcolors.TEAL1},
+            {"once per room.", PST.kcolors.TEAL1},
             "No artifact cooldown."
         },
         objective = {
@@ -328,8 +329,8 @@ PST.sideArtiData = {
     executionerMeridion = {
         name = "Executioner Meridion",
         type = "meridion",
-        desc = { -- TODO
-            {"60 energy: For 6 seconds, your hits will execute monsters below 12% HP.", PST.kcolors.TEAL1},
+        desc = {
+            {"60 energy: For 8 seconds, your hits will execute monsters below 15% HP.", PST.kcolors.TEAL1},
             "4 second artifact cooldown."
         },
         objective = {
@@ -342,7 +343,7 @@ PST.sideArtiData = {
     blastingMeridion = {
         name = "Blasting Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"60 energy: Trigger XVI - The Tower's effect and become immune to explosions for 4 seconds,", PST.kcolors.TEAL1},
             {"up to twice per room.", PST.kcolors.TEAL1},
             "5 second artifact cooldown."
@@ -357,7 +358,7 @@ PST.sideArtiData = {
     gildedMeridion = {
         name = "Gilded Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"50 energy: For 7 seconds, killing enemies will drop double pennies that vanish in 3 seconds, once", PST.kcolors.TEAL1},
             {"per room.", PST.kcolors.TEAL1},
             "5 second artifact cooldown."
@@ -372,7 +373,7 @@ PST.sideArtiData = {
     smelterMeridion = {
         name = "Smelter Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"200 energy: Smelt a random trinket you don't currently have for the current floor, up to 3 per floor.", PST.kcolors.TEAL1},
             "3 second artifact cooldown."
         },
@@ -386,7 +387,7 @@ PST.sideArtiData = {
     siderealMeridion = {
         name = "Sidereal Meridion",
         type = "meridion",
-        desc = { -- TODO
+        desc = {
             {"200 energy: Spawn a Sidereal Cache, up to 5 times per floor.", PST.kcolors.TEAL1},
             "3 second artifact cooldown."
         },
@@ -422,7 +423,215 @@ end
 
 function PST:sideArtiAddEnergy(energy)
     if PST.specialNodes.sideArtiCD == 0 then
-        --PST:addModifiers({ sideArtiEnergy = energy }, true)
-        print("Sidereal Artifact: generated", energy, "energy.")
+        PST:addModifiers({ sideArtiEnergy = energy }, true)
+        local newEnergy = PST:getTreeSnapshotMod("sideArtiEnergy", 0)
+
+        -- Meridional Artifact effects
+        for tmpArti, artiData in pairs(PST.sideArtiData) do
+            if artiData.type == "meridion" and PST:getTreeSnapshotMod(tmpArti, false) and newEnergy >= artiData.energyReq then
+                if artiData.cooldown and artiData.cooldown > 0 then
+                    PST.specialNodes.sideArtiCD = artiData.cooldown * 30
+                end
+                PST:addModifiers({ sideArtiEnergy = { value = 0, set = true } }, true)
+
+                PST:createFloatTextFX(artiData.name, Vector(0, 8), PST:RGBColor(80, 255, 255), 0.12, 90, true)
+                SFXManager():Play(SoundEffect.SOUND_REDLIGHTNING_ZAP_STRONG, 0.5, 2, false, 1.2)
+
+                -- Galvanic Meridion
+                if tmpArti == "galvanicMeridion" then
+                    if PST.specialNodes.arti_galvanicBuffTimer == 0 then
+                        PST:updateCacheDelayed()
+                    end
+                    PST.specialNodes.arti_galvanicBuffTimer = 150
+
+                -- Glacial Meridion
+                elseif tmpArti == "glacialMeridion" then
+                    PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_HOURGLASS, UseFlag.USE_NOANIM)
+
+                -- Smiting Meridion
+                elseif tmpArti == "smitingMeridion" then
+                    if PST.specialNodes.arti_smitingProcs < 4 then
+                        local tmpMobs = Isaac.GetRoomEntities()
+                        for _, tmpMob in ipairs(tmpMobs) do
+                            local tmpNPC = tmpMob:ToNPC()
+                            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                                local tmpDmg = 5 + PST:getLevel():GetStage() - 1 + tmpNPC.MaxHitPoints * 0.07
+                                tmpNPC:TakeDamage(tmpDmg, 0, EntityRef(PST:getPlayer()), 0)
+                            end
+                        end
+                        PST.specialNodes.arti_smitingProcs = PST.specialNodes.arti_smitingProcs + 1
+                    end
+
+                -- Infectious Meridion
+                elseif tmpArti == "infectiousMeridion" then
+                    local charData = PST:getCurrentCharData()
+                    local tmpPlayer = PST:getPlayer()
+                    local pulseSprite = PST:createAnimFXAt("gfx/1000.164_siren ring.anm2", "Idle", tmpPlayer.Position)
+                    pulseSprite.Color = Color(1, 1, 1, 1)
+                    pulseSprite.PlaybackSpeed = 1.5
+                    pulseSprite.Scale = Vector(0.8, 0.8)
+                    SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.8, 2, false, 1.3 + 0.2 * math.random())
+
+                    if charData then
+                        local nearbyEnem = Isaac.FindInRadius(tmpPlayer.Position, 200, EntityPartition.ENEMY)
+                        for _, tmpEnemy in ipairs(nearbyEnem) do
+                            if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                if charData.artiInfMeridionStatus == "poison" then
+                                    tmpEnemy:AddPoison(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
+                                elseif charData.artiInfMeridionStatus == "fear" then
+                                    tmpEnemy:AddFear(EntityRef(tmpPlayer), 120)
+                                elseif charData.artiInfMeridionStatus == "charm" then
+                                    tmpEnemy:AddCharmed(EntityRef(tmpPlayer), 120)
+                                elseif charData.artiInfMeridionStatus == "slow" then
+                                    tmpEnemy:AddSlowing(EntityRef(tmpPlayer), 120, 0.8, Color(0.8, 0.8, 0.8, 1))
+                                elseif charData.artiInfMeridionStatus == "burn" then
+                                    tmpEnemy:AddBurn(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
+                                end
+                                local tmpDmg = 7 + PST:getLevel():GetStage() - 1
+                                tmpEnemy:TakeDamage(tmpDmg, 0, EntityRef(tmpPlayer), 0)
+                            end
+                        end
+                    end
+
+                -- Virtuous Meridion
+                elseif tmpArti == "virtuousMeridion" then
+                    if PST:getTreeSnapshotMod("arti_virtuousWisps", 0) < 5 then
+                        PST:addModifiers({ arti_virtuousWisps = 1 }, true)
+                        PST:addRandomWisp()
+                    end
+
+                -- Stone Meridion
+                elseif tmpArti == "stoneMeridion" then
+                    local tmpEnemy = nil
+                    local tmpHP = 0
+                    for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
+                        local tmpNPC = tmpMob:ToNPC()
+                        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly and
+                        tmpNPC.MaxHitPoints > tmpHP then
+                            tmpHP = tmpNPC.MaxHitPoints
+                            tmpEnemy = tmpNPC
+                        end
+                    end
+                    if tmpEnemy then
+                        tmpEnemy:AddFreeze(EntityRef(PST:getPlayer()), 210)
+                    end
+
+                -- Infernal Meridion
+                elseif tmpArti == "infernalMeridion" then
+                    for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
+                        local tmpNPC = tmpMob:ToNPC()
+                        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                            tmpNPC:AddBurn(EntityRef(PST:getPlayer()), 180, math.min(PST:getPlayer().Damage, 20))
+                            PST:addModifiers({ arti_infernalProc = true }, true)
+                        end
+                    end
+
+                -- Dead Sea Meridion
+                elseif tmpArti == "deadSeaMeridion" then
+                    if PST.specialNodes.arti_deadSeaProcs < 4 then
+                        PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS, UseFlag.USE_NOANIM)
+                        PST.specialNodes.arti_deadSeaProcs = PST.specialNodes.arti_deadSeaProcs + 1
+                    end
+
+                -- Flowing Meridion
+                elseif tmpArti == "flowingMeridion" then
+                    PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_ISAACS_TEARS, UseFlag.USE_NOANIM)
+
+                -- Osseous Meridion
+                elseif tmpArti == "osseousMeridion" then
+                    local tmpStage = PST:getLevel():GetStage()
+                    if tmpStage <= 6 then
+                        if PST:getTreeSnapshotMod("arti_osseousProcs", 0) < 3 then
+                            PST:addModifiers({ arti_osseousProcs = 1 }, true)
+
+                            local maxSpawns = 2
+                            if tmpStage > 3 then maxSpawns = 3 end
+                            for _=1,maxSpawns do
+                                local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 10)
+                                local newBony = Isaac.Spawn(EntityType.ENTITY_BONY, 0, 0, tmpPos, Vector.Zero, nil)
+                                newBony:AddCharmed(EntityRef(PST:getPlayer()), -1)
+                            end
+                        end
+                    else
+                        local maxProcs = 1
+                        if tmpStage >= 10 then maxProcs = 2 end
+                        if PST:getTreeSnapshotMod("arti_osseousProcs", 0) < maxProcs then
+                            PST:addModifiers({ arti_osseousProcs = 1 }, true)
+
+                            local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 10)
+                            local newBony = Isaac.Spawn(EntityType.ENTITY_BONY, 1, 0, tmpPos, Vector.Zero, nil)
+                            newBony:AddCharmed(EntityRef(PST:getPlayer()), -1)
+                        end
+                    end
+
+                -- Monstrous Meridion
+                elseif tmpArti == "monstrousMeridion" then
+                    if PST:getTreeSnapshotMod("arti_monstrousProcs", 0) < 4 then
+                        PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
+                        PST:addModifiers({ arti_monstrousProcs = 1 }, true)
+                    end
+
+                -- Brim Meridion
+                elseif tmpArti == "brimMeridion" then
+                    if not PST.specialNodes.arti_brimProc then
+                        PST.specialNodes.arti_brimProc = true
+                        for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
+                            local tmpNPC = tmpMob:ToNPC()
+                            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                                tmpNPC:AddBrimstoneMark(EntityRef(PST:getPlayer()), 210)
+                            end
+                        end
+                    end
+
+                -- Executioner Meridion
+                elseif tmpArti == "executionerMeridion" then
+                    SFXManager():Play(SoundEffect.SOUND_SIREN_SING_STAB, 0.4, 2, false, 1.3)
+                    PST.specialNodes.arti_executionerBuffTimer = 240
+
+                -- Blasting Meridion
+                elseif tmpArti == "blastingMeridion" then
+                    if PST:getTreeSnapshotMod("arti_blastingProcs", 0) < 2 then
+                        PST:addModifiers({ arti_blastingProcs = 1 }, true)
+                        PST:getPlayer():UseCard(Card.CARD_TOWER, UseFlag.USE_NOANIM)
+                        PST.specialNodes.explosionImmunityTimer = 120
+                    end
+
+                -- Gilded Meridion
+                elseif tmpArti == "gildedMeridion" then
+                    if not PST:getTreeSnapshotMod("arti_gildedProc", false) then
+                        PST.specialNodes.arti_gildedTimer = 210
+                        SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.4, 2, false, 1.3)
+                        PST:addModifiers({ arti_gildedProc = true }, true)
+                    end
+
+                -- Smelter Meridion
+                elseif tmpArti == "smelterMeridion" then
+                    if PST:getTreeSnapshotMod("arti_smelterProcs", 0) < 3 then
+                        local newTrinket = Game():GetItemPool():GetTrinket()
+                        local smeltedTrinkets = PST:getPlayer():GetSmeltedTrinkets()
+                        local failsafe = 0
+                        while (smeltedTrinkets[newTrinket] and (smeltedTrinkets[newTrinket].trinketAmount > 0 or smeltedTrinkets[newTrinket].goldenTrinketAmount > 0)) and failsafe < 200 do
+                            newTrinket = Game():GetItemPool():GetTrinket()
+                            failsafe = failsafe + 1
+                        end
+                        if failsafe < 200 then
+                            PST:getPlayer():AddSmeltedTrinket(newTrinket)
+                            PST:addModifiers({ arti_smelterProcs = 1 }, true)
+                        end
+                    end
+
+                -- Sidereal Meridion
+                elseif tmpArti == "siderealMeridion" then
+                    if PST:getTreeSnapshotMod("arti_siderealProcs", 0) < 5 then
+                        local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
+                        Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+                        Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
+                        SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
+                        PST:addModifiers({ arti_siderealProcs = 1 }, true)
+                    end
+                end
+                break
+            end
+        end
     end
 end

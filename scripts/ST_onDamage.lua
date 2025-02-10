@@ -2121,6 +2121,12 @@ function PST:prePlayerDamage(player, damage, flag, source)
     if PST.specialFX.shadowmeldTransition then
         return false
     end
+
+    -- Explosion Immunity
+    if PST.specialNodes.explosionImmunityTimer > 0 and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+        SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.75)
+        return false
+    end
 end
 
 function PST:preNPCCollision(npc, collider, low)

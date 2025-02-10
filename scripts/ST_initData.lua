@@ -489,6 +489,40 @@ PST.undeadEnemiesSpec = {
 	[EntityType.ENTITY_POLYCEPHALUS] = 1,
 	[EntityType.ENTITY_ISAAC] = 1
 }
+PST.wispActives = {
+	CollectibleType.COLLECTIBLE_ABYSS, CollectibleType.COLLECTIBLE_PONY, CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK,
+	CollectibleType.COLLECTIBLE_BEAN, CollectibleType.COLLECTIBLE_BERSERK, CollectibleType.COLLECTIBLE_BEST_FRIEND,
+	CollectibleType.COLLECTIBLE_BIBLE, CollectibleType.COLLECTIBLE_BLACK_HOLE, CollectibleType.COLLECTIBLE_BLANK_CARD,
+	CollectibleType.COLLECTIBLE_BLOOD_RIGHTS, CollectibleType.COLLECTIBLE_BOBS_ROTTEN_HEAD, CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL,
+	CollectibleType.COLLECTIBLE_BOOK_OF_THE_DEAD, CollectibleType.COLLECTIBLE_BOOK_OF_REVELATIONS, CollectibleType.COLLECTIBLE_BOOK_OF_SECRETS,
+	CollectibleType.COLLECTIBLE_BOOK_OF_SIN, CollectibleType.COLLECTIBLE_BOOMERANG, CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS,
+	CollectibleType.COLLECTIBLE_BOX_OF_SPIDERS, CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_1, CollectibleType.COLLECTIBLE_BROWN_NUGGET,
+	CollectibleType.COLLECTIBLE_CLEAR_RUNE, CollectibleType.COLLECTIBLE_CONVERTER, CollectibleType.COLLECTIBLE_CROOKED_PENNY,
+	CollectibleType.COLLECTIBLE_COUPON, CollectibleType.COLLECTIBLE_CRACK_THE_SKY, CollectibleType.COLLECTIBLE_CRYSTAL_BALL,
+	CollectibleType.COLLECTIBLE_D_INFINITY, CollectibleType.COLLECTIBLE_D1, CollectibleType.COLLECTIBLE_D4,
+	CollectibleType.COLLECTIBLE_D8, CollectibleType.COLLECTIBLE_D10, CollectibleType.COLLECTIBLE_D12,
+	CollectibleType.COLLECTIBLE_DAMOCLES, CollectibleType.COLLECTIBLE_DARK_ARTS, CollectibleType.COLLECTIBLE_DECK_OF_CARDS,
+	CollectibleType.COLLECTIBLE_DULL_RAZOR, CollectibleType.COLLECTIBLE_ERASER, CollectibleType.COLLECTIBLE_ETERNAL_D6,
+	CollectibleType.COLLECTIBLE_FORGET_ME_NOW, CollectibleType.COLLECTIBLE_FORTUNE_COOKIE, CollectibleType.COLLECTIBLE_FREE_LEMONADE,
+	CollectibleType.COLLECTIBLE_GAMEKID, CollectibleType.COLLECTIBLE_GLASS_CANNON, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS,
+	CollectibleType.COLLECTIBLE_GOLDEN_RAZOR, CollectibleType.COLLECTIBLE_GUPPYS_HEAD, CollectibleType.COLLECTIBLE_HEAD_OF_KRAMPUS,
+	CollectibleType.COLLECTIBLE_HOURGLASS, CollectibleType.COLLECTIBLE_IV_BAG, CollectibleType.COLLECTIBLE_KAMIKAZE,
+	CollectibleType.COLLECTIBLE_KEEPERS_BOX, CollectibleType.COLLECTIBLE_KIDNEY_BEAN, CollectibleType.COLLECTIBLE_LEMEGETON,
+	CollectibleType.COLLECTIBLE_LEMON_MISHAP, CollectibleType.COLLECTIBLE_MAGIC_FINGERS, CollectibleType.COLLECTIBLE_MAGIC_SKIN,
+	CollectibleType.COLLECTIBLE_MAMA_MEGA, CollectibleType.COLLECTIBLE_MEGA_BEAN, CollectibleType.COLLECTIBLE_MEGA_BLAST,
+	CollectibleType.COLLECTIBLE_MOMS_BOTTLE_OF_PILLS, CollectibleType.COLLECTIBLE_MOMS_BRA, CollectibleType.COLLECTIBLE_MOMS_PAD,
+	CollectibleType.COLLECTIBLE_MONSTROS_TOOTH, CollectibleType.COLLECTIBLE_MR_BOOM, CollectibleType.COLLECTIBLE_MR_ME,
+	CollectibleType.COLLECTIBLE_NECRONOMICON, CollectibleType.COLLECTIBLE_THE_NAIL, CollectibleType.COLLECTIBLE_PAUSE,
+	CollectibleType.COLLECTIBLE_PINKING_SHEARS, CollectibleType.COLLECTIBLE_PLACEBO, CollectibleType.COLLECTIBLE_PLAN_C,
+	CollectibleType.COLLECTIBLE_POOP, CollectibleType.COLLECTIBLE_PRAYER_CARD, CollectibleType.COLLECTIBLE_RAZOR_BLADE,
+	CollectibleType.COLLECTIBLE_RED_CANDLE, CollectibleType.COLLECTIBLE_RED_KEY, CollectibleType.COLLECTIBLE_SATANIC_BIBLE,
+	CollectibleType.COLLECTIBLE_SCISSORS, CollectibleType.COLLECTIBLE_SCOOPER, CollectibleType.COLLECTIBLE_SHARP_KEY,
+	CollectibleType.COLLECTIBLE_SMELTER, CollectibleType.COLLECTIBLE_SPIDER_BUTT, CollectibleType.COLLECTIBLE_SPRINKLER,
+	CollectibleType.COLLECTIBLE_SULFUR, CollectibleType.COLLECTIBLE_TAMMYS_HEAD, CollectibleType.COLLECTIBLE_TELEPATHY_BOOK,
+	CollectibleType.COLLECTIBLE_TELEPORT, CollectibleType.COLLECTIBLE_UNDEFINED, CollectibleType.COLLECTIBLE_WE_NEED_TO_GO_DEEPER,
+	CollectibleType.COLLECTIBLE_WAIT_WHAT, CollectibleType.COLLECTIBLE_WAVY_CAP, CollectibleType.COLLECTIBLE_WHITE_PONY,
+	CollectibleType.COLLECTIBLE_WOODEN_NICKEL, CollectibleType.COLLECTIBLE_YUCK_HEART, CollectibleType.COLLECTIBLE_YUM_HEART
+}
 PST.submergedEnemies = {
 	EntityType.ENTITY_DEEP_GAPER
 }
@@ -1650,6 +1684,14 @@ function PST:resetMods()
 		artiObj_runBossKills = 0,
 		artiObj_finalBossKills = 0,
 		artiObj_itemPurchases = 0,
+
+		arti_virtuousWisps = 0,
+		arti_infernalProc = false,
+		arti_osseousProcs = 0,
+		arti_monstrousProcs = 0,
+		arti_gildedProc = false,
+		arti_smelterProcs = 0,
+		arti_siderealProcs = 0,
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
@@ -1836,6 +1878,15 @@ function PST:resetMods()
 		sideArtiCD = 0,
 		arti_beastseekerHits = 0,
 		arti_giantseekerHits = 0,
+		arti_galvanicBuffTimer = 0,
+		arti_smitingProcs = 0,
+		arti_deadSeaProcs = 0,
+		arti_brimProc = false,
+		arti_executionerBuffTimer = 0,
+		arti_blastingProcs = 0,
+		arti_gildedTimer = 0,
+
+		explosionImmunityTimer = 0,
 	}
 	-- Temporary data for misc custom effects
 	PST.specialFX = {

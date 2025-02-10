@@ -96,6 +96,7 @@ function PST:charInit(charName, forceReset)
 	if not charData.maxSouthArtis then charData.maxSouthArtis = 1 end
 	if not charData.northArtis then charData.northArtis = {} end
 	if not charData.southArtis then charData.southArtis = {} end
+	if not charData.artiInfMeridionStatus then charData.artiInfMeridionStatus = "poison" end
 end
 
 -- Save mod data

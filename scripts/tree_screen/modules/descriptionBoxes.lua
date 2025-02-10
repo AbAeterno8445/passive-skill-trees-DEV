@@ -256,6 +256,13 @@ local descriptionBoxesModule = {
                 for _, tmpLine in ipairs(artiData.desc) do
                     table.insert(nodeDesc, tmpLine)
                 end
+
+                -- Infectious Meridion extra
+                if extraData.artifact == "infectiousMeridion" then
+                    table.insert(nodeDesc, "Once allocated, press Allocate to choose the status effect the pulse inflicts. Causes poison by default.")
+                end
+
+                -- Unlock objective
                 if artiData.objective then
                     local artiProg = 0
                     if PST.modData.sideArtiUnlockProg[extraData.artifact] ~= nil then
@@ -271,8 +278,9 @@ local descriptionBoxesModule = {
                     table.insert(nodeDesc, "Default unlock.")
                 end
 
+                -- Max selected
                 local charData = PST:getCurrentCharData()
-                if charData and not isAllocated and extraData.available then
+                if charData and not isAllocated and PST:isSideArtiUnlocked(extraData.artifact) and extraData.available then
                     if artiData.type == "septentrion" and #charData.northArtis >= charData.maxNorthArtis then
                         table.insert(nodeDesc, {"Max Septentrional artifacts selected! Respec a different artifact to select this one.", PST.kcolors.RED1})
                     elseif artiData.type == "meridion" and #charData.southArtis >= charData.maxSouthArtis then
@@ -467,6 +475,15 @@ function descriptionBoxesModule:Render(tScreen)
                 local tmpDesc = {table.unpack(nodeData.description)}
                 table.insert(tmpDesc, "Press Allocate to select this node.")
                 tScreen:DrawNodeBox(nodeData.name, tmpDesc)
+            end
+        -- Infectious Meridion submenu, hovered status
+        elseif submenusModule.currentSubmenu == PSTSubmenu.INFECTIOUS_MERIDION then
+            local infMeridionSubmenu = submenusModule.submenus[PSTSubmenu.INFECTIOUS_MERIDION]
+            local tmpStatus = infMeridionSubmenu.hoveredStatus
+            if tmpStatus then
+                local tmpName = tmpStatus:gsub("^[a-z]", string.upper)
+                local tmpDesc = {"Pulse will inflict " .. tmpStatus .. "."}
+                tScreen:DrawNodeBox(tmpName, tmpDesc)
             end
         end
     end

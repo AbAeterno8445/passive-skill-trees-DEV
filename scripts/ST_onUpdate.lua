@@ -2845,9 +2845,32 @@ function PST:frameUpdate()
 		end
 	end
 
+	-- Explosion immunity timer
+	if PST.specialNodes.explosionImmunityTimer > 0 then
+		PST.specialNodes.explosionImmunityTimer = PST.specialNodes.explosionImmunityTimer - 1
+	end
+
 	-- Sidereal Artifact cooldown
 	if PST.specialNodes.sideArtiCD > 0 then
 		PST.specialNodes.sideArtiCD = PST.specialNodes.sideArtiCD - 1
+	end
+
+	-- Sidereal Artifact: Galvanic Meridion buff timer
+	if PST.specialNodes.arti_galvanicBuffTimer > 0 then
+		PST.specialNodes.arti_galvanicBuffTimer = PST.specialNodes.arti_galvanicBuffTimer - 1
+		if PST.specialNodes.arti_galvanicBuffTimer == 0 then
+			PST:updateCacheDelayed()
+		end
+	end
+
+	-- Sidereal Artifact: Executioner Meridion buff timer
+	if PST.specialNodes.arti_executionerBuffTimer > 0 then
+		PST.specialNodes.arti_executionerBuffTimer = PST.specialNodes.arti_executionerBuffTimer - 1
+	end
+
+	-- Sidereal Artifact: Gilded Meridion buff timer
+	if PST.specialNodes.arti_gildedTimer > 0 then
+		PST.specialNodes.arti_gildedTimer = PST.specialNodes.arti_gildedTimer - 1
 	end
 
 	-- Room clear update check

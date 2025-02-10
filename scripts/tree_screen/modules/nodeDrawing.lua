@@ -9,7 +9,9 @@ local nodeDrawingModule = {
     nodeLinkSprite = Sprite("gfx/ui/skilltrees/nodes/node_links.anm2", true),
     nodesExtraSprite = Sprite("gfx/ui/skilltrees/nodes/nodes_extra.anm2", true),
 
-    SCJewelSprite = Sprite("gfx/items/starcursed_jewels.anm2", true)
+    SCJewelSprite = Sprite("gfx/items/starcursed_jewels.anm2", true),
+
+    infMeridionSprite = Sprite("gfx/ui/skilltrees/nodes/infectious_meridion_status.anm2", true)
 }
 
 -- Init sprites
@@ -162,6 +164,15 @@ function nodeDrawingModule:Render(tScreen)
                         tmpSprite.Scale.Y = oldScaleY
                     end
                 end
+            end
+
+            -- Infectious Meridion node, draw picked status
+            if charData and node.name == "Infectious Meridion" then
+                self.infMeridionSprite.Color = tmpSprite.Color
+                self.infMeridionSprite.Scale.X = 0.35 * tScreen.zoomScale
+                self.infMeridionSprite.Scale.Y = 0.35 * tScreen.zoomScale
+                self.infMeridionSprite:Play(charData.artiInfMeridionStatus, true)
+                self.infMeridionSprite:Render(Vector(finalDrawX + 8 * tScreen.zoomScale, finalDrawY + 8 * tScreen.zoomScale))
             end
 
             local nodeHalf = 15 * tScreen.zoomScale

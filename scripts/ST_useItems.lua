@@ -616,7 +616,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
 
     -- Ancient weapon mod: Brute's Onslaught
     tmpMod = PST:getSnapAstralWepMod("bruteOnslaught")
-    if tmpMod and isNormalCharge and player:GetActiveMaxCharge(slot) > 0 then
+    if tmpMod and isNormalCharge and slot ~= -1 and player:GetActiveMaxCharge(slot) > 0 then
         local charges = player:GetActiveMaxCharge(slot)
         PST.specialNodes.ancwep_bruteOnslaughtHits = PST.specialNodes.ancwep_bruteOnslaughtHits + 5 * charges
         if PST.specialNodes.ancwep_bruteOnslaughtBuffTimer == 0 then
@@ -626,11 +626,11 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     end
 
     -- Sidereal Artifact objective: use active items with at least 1 charge in rooms with monsters
-    if isNormalCharge and player:GetActiveMaxCharge(slot) >= 1 and PST:getRoom():GetAliveEnemiesCount() > 0 then
+    if isNormalCharge and slot ~= -1 and player:GetActiveMaxCharge(slot) >= 1 and PST:getRoom():GetAliveEnemiesCount() > 0 then
         PST:sideArtiObjProgress("magicSeptentrion", 1)
     end
     -- Sidereal Artifact objective: use active items with at least 3 charges in boss rooms
-    if isNormalCharge and player:GetActiveMaxCharge(slot) >= 3 and PST:getRoom():GetType() == RoomType.ROOM_BOSS then
+    if isNormalCharge and slot ~= -1 and player:GetActiveMaxCharge(slot) >= 3 and PST:getRoom():GetType() == RoomType.ROOM_BOSS then
         PST:sideArtiObjProgress("deadSeaMeridion", 1)
     end
     -- Sidereal Artifact condition: use an active item

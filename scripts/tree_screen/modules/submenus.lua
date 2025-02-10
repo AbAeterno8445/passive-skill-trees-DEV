@@ -3,7 +3,8 @@ PSTSubmenu = {
     NONE = "",
     COSMICREALIGNMENT = "cosmicRealignment",
     STARJEWELINV = "starJewelInventory",
-    CRIMSON_NODE = "crimsonNode"
+    CRIMSON_NODE = "crimsonNode",
+    INFECTIOUS_MERIDION = "infectiousMeridion"
 }
 
 -- Submenus refer to the smaller interactable menus that show up for e.g. Cosmic Realignment or starcursed jewel inventories
@@ -15,7 +16,8 @@ local submenusModule = {
     submenus = {
         [PSTSubmenu.COSMICREALIGNMENT] = include("scripts.tree_screen.modules.submenus.cosmicRSubmenu"),
         [PSTSubmenu.STARJEWELINV] = include("scripts.tree_screen.modules.submenus.starcursedInvSubmenu"),
-        [PSTSubmenu.CRIMSON_NODE] = include("scripts.tree_screen.modules.submenus.crimsonNodeSubmenu")
+        [PSTSubmenu.CRIMSON_NODE] = include("scripts.tree_screen.modules.submenus.crimsonNodeSubmenu"),
+        [PSTSubmenu.INFECTIOUS_MERIDION] = include("scripts.tree_screen.modules.submenus.infectiousMeridionSubmenu")
     },
 }
 

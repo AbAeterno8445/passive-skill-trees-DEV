@@ -878,6 +878,27 @@ function PST:onNewLevel()
         end
     end
 
+    -- Sidereal Artifact: Virtuous Meridion reset
+    if PST:getTreeSnapshotMod("arti_virtuousWisps", 0) > 0 then
+        PST:addModifiers({ arti_virtuousWisps = { value = 0, set = true } }, true)
+    end
+    -- Sidereal Artifact: Osseous Meridion reset
+    if PST:getTreeSnapshotMod("arti_osseousProcs", 0) > 0 then
+        PST:addModifiers({ arti_osseousProcs = { value = 0, set = true } }, true)
+    end
+    -- Sidereal Artifact: Monstrous Meridion reset
+    if PST:getTreeSnapshotMod("arti_monstrousProcs", 0) > 0 then
+        PST:addModifiers({ arti_monstrousProcs = { value = 0, set = true } }, true)
+    end
+    -- Sidereal Artifact: Smelter Meridion reset
+    if PST:getTreeSnapshotMod("arti_smelterProcs", 0) > 0 then
+        PST:addModifiers({ arti_smelterProcs = { value = 0, set = true } }, true)
+    end
+    -- Sidereal Artifact: Sidereal Meridion reset
+    if PST:getTreeSnapshotMod("arti_siderealProcs", 0) > 0 then
+        PST:addModifiers({ arti_siderealProcs = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

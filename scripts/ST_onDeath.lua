@@ -127,6 +127,16 @@ function PST:onDeath(entity)
                 PST:sideArtiObjProgress("osseousMeridion", 1)
             end
 
+            -- Sidereal Artifact: Infernal Meridion
+            if PST:getTreeSnapshotMod("arti_infernalProc", false) and entity:GetBurnCountdown() > 0 then
+                Isaac.Explode(entity.Position, PST:getPlayer(), 20)
+            end
+            -- Sidereal Artifact: Gilded Meridion
+            if PST.specialNodes.arti_gildedTimer > 0 then
+                local newCoin = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_DOUBLEPACK, entity.Position, 3 * RandomVector(), nil)
+                newCoin:ToPickup().Timeout = 90
+            end
+
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
