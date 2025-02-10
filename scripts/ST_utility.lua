@@ -731,7 +731,7 @@ end
 function PST:NPCChampionAvailable(npc)
 	local tmpBlacklist = PST.noChampionMobs
 	if npc:IsBoss() then
-		tmpBlacklist = PST.noChampionBosses
+		return false
 	end
 	for _, mobData in ipairs(tmpBlacklist) do
 		if type(mobData) == "table" then

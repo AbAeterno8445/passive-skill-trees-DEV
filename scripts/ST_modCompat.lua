@@ -75,9 +75,6 @@ function PST:initModCompat()
         table.insert(PST.noChampionMobs, {EntityType.ENTITY_GAPER, Epiphany.Npc.EDEN_GLITCH.ID})
         table.insert(PST.noChampionMobs, {Epiphany.Npc.ABEL.ID, Epiphany.Npc.ABEL.SHEEP_VAR})
 
-        -- Non-championable bosses
-        table.insert(PST.noChampionBosses, Epiphany.Npc.ABEL.ID)
-
         -- Poop items
         table.insert(PST.poopItems, Epiphany.Item.MIX.ID)
 		table.insert(PST.poopItems, Epiphany.Item.ANAL_FISSURE.ID)
@@ -144,17 +141,6 @@ function PST:initModCompat()
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Flagpole"))
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Mr. Bones"))
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Mr. Gob"))
-
-        -- No-champion bosses (added everyone just in case)
-        local noChampBosses = {
-            "Buck", "The Whispers", "Honeydrop", "Griddle Horn", "Buster", "Meltdown", "Ghostbuster",
-            "Cacamancer", "Battie", "Kingpin", "Slinger", "Monsoon", "Aquagob", "Chaser", "Speedy",
-            "Bashful", "Pokey", "Gutso", "Luncheon", "Pollution", "Tsar", "Junkstrap", "Warp Zone",
-            "Dusk", "Madomme", "Basco", "The Sun", "Peeping", "Cacophobia", "Mr. Dead"
-        }
-        for _, tmpMobName in ipairs(noChampBosses) do
-            table.insert(PST.noChampionBosses, PST_getCustomMobTable(tmpMobName))
-        end
 
         -- Segmented bosses
         table.insert(PST.segmentBosses, Isaac.GetEntityTypeByName("Kingpin"))

@@ -13,6 +13,7 @@ function PST:getChangelogList()
         "- The following effects now trigger only on monster hits, instead of any hit such as self damage:",
         "Fickle Fortune (Cain node), Flimsy Gadgets expedition curse, +% speed when hit mod, Cosmic Realignment curses,",
         "Martian Ultimatum and Crimson Warpstone ancient jewels.",
+        "- Bosses can no longer be turned into champions with tree/jewel effects.",
         "- Fixed error when first loading a savefile while having Epiphany.",
         "",
 
