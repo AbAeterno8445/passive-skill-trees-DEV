@@ -15,6 +15,7 @@ function PST:getChangelogList()
         "Martian Ultimatum and Crimson Warpstone ancient jewels.",
         "- Bosses can no longer be turned into champions with tree/jewel effects.",
         "- Fixed error when first loading a savefile while having Epiphany.",
+        "- Fixed Cause Converter incorrectly spawning Chub and variants.",
         "",
 
         "v0.4.27",

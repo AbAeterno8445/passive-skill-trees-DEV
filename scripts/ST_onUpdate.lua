@@ -3,19 +3,28 @@ local sfx = SFXManager()
 
 local inDeathCertificate = false
 
+local causeConvMultiBosses = {
+	[EntityType.ENTITY_CHUB] = 3
+}
 local function PST_causeConvBossSpawn()
 	local player = PST:getPlayer()
 	local tmpBoss = PST:getTreeSnapshotMod("SC_causeConvBoss", nil)
 	if tmpBoss then
-		local bossVariant = PST:getTreeSnapshotMod("SC_causeConvBossVariant", 0)
-		PST.specialNodes.SC_causeConvBossEnt = Isaac.Spawn(
-			tmpBoss,
-			bossVariant, 0,
-			player.Position,
-			Vector.Zero,
-			player
-		)
-		PST.specialNodes.SC_causeConvBossEnt:AddCharmed(EntityRef(player), -1)
+		local iter = 1
+		if causeConvMultiBosses[tmpBoss] ~= nil then
+			iter = causeConvMultiBosses[tmpBoss]
+		end
+		for _=1,iter do
+			local bossVariant = PST:getTreeSnapshotMod("SC_causeConvBossVariant", 0)
+			PST.specialNodes.SC_causeConvBossEnt = Isaac.Spawn(
+				tmpBoss,
+				bossVariant, 0,
+				player.Position,
+				Vector.Zero,
+				player
+			)
+			PST.specialNodes.SC_causeConvBossEnt:AddCharmed(EntityRef(player), -1)
+		end
 	end
 end
 
