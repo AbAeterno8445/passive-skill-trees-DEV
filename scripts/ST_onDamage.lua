@@ -1140,7 +1140,7 @@ function PST:onDamage(target, damage, flag, source)
                             tmpTear:ToTear().Height = srcPlayer.TearHeight
                             tmpTear:ToTear().FallingSpeed = 1
                             tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING | TearFlags.TEAR_POISON)
-                            tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.3, 15)
+                            tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.2, 15)
                             tmpTear.Color = PST:RGBColor(45, 225, 45)
                             tmpTear:GetData().PST_whipTear = true
                             tmpTear:GetData().PST_snakebiteTear = true
@@ -1156,7 +1156,7 @@ function PST:onDamage(target, damage, flag, source)
                             tmpTear:ToTear().Height = srcPlayer.TearHeight
                             tmpTear:ToTear().FallingSpeed = 1
                             tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
-                            tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.3, 15)
+                            tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.2, 15)
                             tmpTear:GetData().PST_whipTear = true
 
                             -- Ancient weapon mod: Devil's Tongue
@@ -1268,6 +1268,30 @@ function PST:onDamage(target, damage, flag, source)
                 -- Sidereal Artifact condition: Hit an undead monster
                 if PST:getTreeSnapshotMod("deathseekerSeptentrion", false) and PST:isMobUndead(target) then
                     PST:sideArtiAddEnergy(PST.sideArtiData.deathseekerSeptentrion.energy)
+                end
+
+                local charData = PST:getCurrentCharData()
+                local tmpNPC = target:ToNPC()
+                if charData and tmpNPC then
+                    -- Crimson Convergence buff: +% damage dealt to normal monsters
+                    if PST:getTreeSnapshotMod("crimConvBuff", "") == "mundaneSlaughter" and not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
+                        dmgMult = dmgMult + 0.01 * charData.crimsonStarcores
+                    end
+
+                    -- Crimson Convergence buff: +% damage dealt to champions and non-final bosses
+                    if PST:getTreeSnapshotMod("crimConvBuff", "") == "giantSlaughter" and ((tmpNPC:IsBoss() and not PST:entityIsFinalBoss(target)) or tmpNPC:IsChampion()) then
+                        dmgMult = dmgMult + 0.01 * charData.crimsonStarcores
+                    end
+
+                    -- Crimson Convergence buff: +% damage dealt to final bosses
+                    if PST:getTreeSnapshotMod("crimConvBuff", "") == "titanSlaughter" and PST:entityIsFinalBoss(target) then
+                        dmgMult = dmgMult + 0.02 * charData.crimsonStarcores
+                    end
+
+                    -- Crimson Convergence buff: +% damage dealt to enemies affected by any status effect
+                    if PST:getTreeSnapshotMod("crimConvBuff", "") == "blightseeking" and PST:entityHasAnyStatus(target) then
+                        dmgMult = dmgMult + 0.01 * charData.crimsonStarcores
+                    end
                 end
             end
 

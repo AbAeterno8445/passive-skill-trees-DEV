@@ -148,6 +148,10 @@ end
 -- Drop obols at the given position
 function PST:expedDropObolsAt(position, amount)
     local tmpAmount = amount
+    if PST:getTreeSnapshotMod("obolsFound", 0) > 0 then
+        tmpAmount = math.ceil(tmpAmount * (1 + PST:getTreeSnapshotMod("obolsFound", 0) / 100))
+    end
+
     local obolDrops = {}
     for i=#PST.expedObolDropValues,1,-1 do
         local obolValue = PST.expedObolDropValues[i]

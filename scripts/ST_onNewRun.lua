@@ -532,6 +532,21 @@ function PST:onNewRun(isContinued)
                 --charData.bazaarPurchased = {}
             end
         end
+
+        -- Infectious Meridion picked status
+        if PST:isNodeNameAllocated("sidereal", "Infectious Meridion") and charData and charData.artiInfMeridionStatus then
+            PST:addModifiers({ infMeridionStatus = charData.artiInfMeridionStatus }, true)
+        end
+
+        -- Crimson Convergence buff
+        if PST:isNodeNameAllocated("sidereal", "Crimson Convergence") and charData and charData.crimConvBuff then
+            PST:addModifiers({ crimConvBuff = charData.crimConvBuff }, true)
+
+            -- Starstruck crimson buff
+            if charData.crimConvBuff == "starstruck" and charData.crimsonStarcores > 0 then
+                PST:addModifiers({ obolsFound = charData.crimsonStarcores * 3 }, true)
+            end
+        end
     end
 
     -- Reset specialNodes that might be left over

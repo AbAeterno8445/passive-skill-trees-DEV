@@ -603,7 +603,7 @@ function PST:postDamage(target, damage, flag, source)
                     blueTear.Color = PST:RGBColor(85, 85, 255)
                     blueTear:GetData().PST_nimbleTwinsBlue = true
 
-                    PST.specialNodes.ancwep_nimbleTwinsCD = 8
+                    PST.specialNodes.ancwep_nimbleTwinsCD = 24
                 end
 
                 -- Ancient weapon mod: Gravitas

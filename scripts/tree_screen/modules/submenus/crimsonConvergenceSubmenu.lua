@@ -1,14 +1,12 @@
-local infMeridionSubmenu = {
+local crimsonConvergenceSubmenu = {
     menuX = 0,
     menuY = 0,
-    statusSprite = Sprite("gfx/ui/skilltrees/nodes/infectious_meridion_status.anm2", true),
-    hoveredStatus = nil
+    crimsonBuffSprite = Sprite("gfx/ui/skilltrees/nodes/crimson_convergence_nodes.anm2", true),
+    hoveredBuff = nil
 }
 
-local infStatus = { "poison", "fear", "charm", "slow", "burn" }
-
 ---@param openData? table
-function infMeridionSubmenu:OnOpen(openData)
+function crimsonConvergenceSubmenu:OnOpen(openData)
     if not openData then return end
     for k, v in pairs(openData) do
         if self[k] ~= nil then self[k] = v end
@@ -16,38 +14,37 @@ function infMeridionSubmenu:OnOpen(openData)
 end
 
 ---@param tScreen PST.treeScreen
-function infMeridionSubmenu:Render(tScreen, submenusModule)
+function crimsonConvergenceSubmenu:Render(tScreen, submenusModule)
     local charData = PST:getCurrentCharData()
-    self.hoveredStatus = nil
+    self.hoveredBuff = nil
     submenusModule:DrawNodeSubMenu(
         tScreen,
-        #infStatus,
+        PST.crimConvBuffsLen,
         tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
-        "Infectious Meridion",
+        "Crimson Convergence",
         function()
-            local i = 1
-            for _, tmpStatus in ipairs(infStatus) do
+            for i, buffName in ipairs(PST.crimConvBuffOrder) do
                 local nodeX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32
                 local nodeY = self.menuY * tScreen.zoomScale + 52 + math.floor((i - 1) / 5) * 32
-                local isSelected = (charData and charData.artiInfMeridionStatus == tmpStatus)
+                local isSelected = (charData and charData.crimConvBuff == buffName)
 
                 -- Hovered
-                self.statusSprite.Color.A = 1
-                if self.hoveredStatus == nil then
+                self.crimsonBuffSprite.Color.A = 1
+                if self.hoveredBuff == nil then
                     if tScreen.camCenterX > nodeX - 16 and tScreen.camCenterX < nodeX + 16 and
                     tScreen.camCenterY > nodeY - 16 and tScreen.camCenterY < nodeY + 16 then
-                        self.hoveredStatus = tmpStatus
+                        self.hoveredBuff = buffName
                         tScreen.cursorHighlight = true
                     elseif not isSelected then
-                        self.statusSprite.Color.A = 0.5
+                        self.crimsonBuffSprite.Color.A = 0.5
                     end
                 elseif not isSelected then
-                    self.statusSprite.Color.A = 0.5
+                    self.crimsonBuffSprite.Color.A = 0.5
                 end
 
-                self.statusSprite:Play(tmpStatus, true)
-                self.statusSprite:Render(Vector(
+                self.crimsonBuffSprite:SetFrame("Default", i - 1)
+                self.crimsonBuffSprite:Render(Vector(
                     nodeX - tScreen.treeCamera.X - tScreen.camZoomOffset.X,
                     nodeY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
                 ))
@@ -61,11 +58,9 @@ function infMeridionSubmenu:Render(tScreen, submenusModule)
                         nodeY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
                     ))
                 end
-
-                i = i + 1
             end
         end
     )
 end
 
-return infMeridionSubmenu
+return crimsonConvergenceSubmenu

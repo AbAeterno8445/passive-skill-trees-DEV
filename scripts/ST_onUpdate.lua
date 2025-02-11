@@ -698,6 +698,12 @@ function PST:frameUpdate()
 				player:TakeDamage(1, 0, EntityRef(player), 0)
 			end
 		end
+
+		-- Crimson Convergence buff: Gain a shield when entering a room with monsters
+		local charData = PST:getCurrentCharData()
+		if charData and PST:getTreeSnapshotMod("crimConvBuff", "") == "bloodshield" and room:GetAliveEnemiesCount() > 0 then
+			player:SetMinDamageCooldown(90 + 6 * charData.crimsonStarcores)
+		end
 	end
 
 	-- First heart-related functions update

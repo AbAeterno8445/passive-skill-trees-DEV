@@ -1,3 +1,6 @@
+include("scripts.tree_screen.modules.siderealArtifact")
+include("scripts.tree_screen.modules.crimsonConvergence")
+
 ---@class PST.treeScreen
 PST.treeScreen = {
     open = false,

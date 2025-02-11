@@ -9,6 +9,7 @@ function PST.treeScreen:InputAllocate()
         local starInvSubmenu = submenusModule.submenus[PSTSubmenu.STARJEWELINV]
         local crimsonNodeSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_NODE]
         local infMeridionSubmenu = submenusModule.submenus[PSTSubmenu.INFECTIOUS_MERIDION]
+        local crimConvSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_CONVERGENCE]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -201,6 +202,14 @@ function PST.treeScreen:InputAllocate()
                         menuY = self.hoveredNode.pos.Y * 38
                     })
 
+                -- Crimson Convergence node, open buff selection submenu
+                elseif self.hoveredNode.name == "Crimson Convergence" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.CRIMSON_CONVERGENCE, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do
@@ -326,6 +335,20 @@ function PST.treeScreen:InputAllocate()
                 local charData = PST:getCurrentCharData()
                 if charData then
                     charData.artiInfMeridionStatus = tmpStatus
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                end
+            end
+        -- Crimson Convergence submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.CRIMSON_CONVERGENCE then
+            local tmpBuff = crimConvSubmenu.hoveredBuff
+            if tmpBuff ~= nil then
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    if charData.crimConvBuff ~= tmpBuff then
+                        charData.crimConvBuff = tmpBuff
+                    else
+                        charData.crimConvBuff = ""
+                    end
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 end
             end

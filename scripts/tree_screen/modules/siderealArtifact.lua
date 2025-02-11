@@ -504,15 +504,16 @@ function PST:sideArtiAddEnergy(energy)
                         local nearbyEnem = Isaac.FindInRadius(tmpPlayer.Position, 200, EntityPartition.ENEMY)
                         for _, tmpEnemy in ipairs(nearbyEnem) do
                             if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
-                                if charData.artiInfMeridionStatus == "poison" then
+                                local pickedStatus = PST:getTreeSnapshotMod("infMeridionStatus", "")
+                                if pickedStatus == "poison" then
                                     tmpEnemy:AddPoison(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
-                                elseif charData.artiInfMeridionStatus == "fear" then
+                                elseif pickedStatus == "fear" then
                                     tmpEnemy:AddFear(EntityRef(tmpPlayer), 120)
-                                elseif charData.artiInfMeridionStatus == "charm" then
+                                elseif pickedStatus == "charm" then
                                     tmpEnemy:AddCharmed(EntityRef(tmpPlayer), 120)
-                                elseif charData.artiInfMeridionStatus == "slow" then
+                                elseif pickedStatus == "slow" then
                                     tmpEnemy:AddSlowing(EntityRef(tmpPlayer), 120, 0.8, Color(0.8, 0.8, 0.8, 1))
-                                elseif charData.artiInfMeridionStatus == "burn" then
+                                elseif pickedStatus == "burn" then
                                     tmpEnemy:AddBurn(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
                                 end
                                 local tmpDmg = 7 + PST:getLevel():GetStage() - 1

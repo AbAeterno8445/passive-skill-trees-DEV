@@ -1329,6 +1329,34 @@ function PST:onPickupInit(pickup, firstSpawn)
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, pickup.Position, pickup.Velocity, nil, CoinSubType.COIN_PENNY, Random() + 1)
                 end
             end
+
+            local charData = PST:getCurrentCharData()
+            if firstSpawn and charData then
+                -- Crimson Convergence buff: % chance to duplicate coin/key/bomb
+                if PST:getTreeSnapshotMod("crimConvBuff", "") == "abundanceGoods" then
+                    local tmpChance = charData.crimsonStarcores
+                    if pickup.Timeout > 0 then
+                        tmpChance = tmpChance * 3
+                    end
+                    if not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
+                    variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpChance then
+                        local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
+                        newPickup:GetData().PST_duped = true
+                    end
+                end
+
+                -- Crimson Convergence buff: % chance to duplicate hearts
+                if PST:getTreeSnapshotMod("crimConvBuff", "") == "abundanceVitality" then
+                    local tmpChance = charData.crimsonStarcores
+                    if pickup.Timeout > 0 then
+                        tmpChance = tmpChance * 2
+                    end
+                    if not isShop and variant == PickupVariant.PICKUP_HEART and 100 * math.random() < tmpChance then
+                        local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
+                        newPickup:GetData().PST_duped = true
+                    end
+                end
+            end
         end
     end
 end
@@ -1337,7 +1365,8 @@ end
 function PST:onPickupUpdate(pickup)
     -- Init pickup
     if pickup.FrameCount == 1 then
-        PST:onPickupInit(pickup, not pickup:GetData().PST_init)
+        local isFirstSpawn = not pickup:GetData().PST_init and not pickup:GetData().PST_duped
+        PST:onPickupInit(pickup, isFirstSpawn)
         pickup:GetData().PST_init = true
     end
 

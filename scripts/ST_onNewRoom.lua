@@ -1387,6 +1387,11 @@ function PST:onNewRoom()
 		PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 	end
 
+	-- Crimson Convergence buff: Celerity update
+	if PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" then
+		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

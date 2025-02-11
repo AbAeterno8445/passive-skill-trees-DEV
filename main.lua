@@ -91,12 +91,14 @@ function PST:charInit(charName, forceReset)
 	end
 	-- Init misc char variables
 	local charData = PST.modData.charData[charName]
+	if not charData.crimsonStarcores then charData.crimsonStarcores = 0 end
 	if not charData.arcaneObols then charData.arcaneObols = 0 end
 	if not charData.maxNorthArtis then charData.maxNorthArtis = 1 end
 	if not charData.maxSouthArtis then charData.maxSouthArtis = 1 end
 	if not charData.northArtis then charData.northArtis = {} end
 	if not charData.southArtis then charData.southArtis = {} end
 	if not charData.artiInfMeridionStatus then charData.artiInfMeridionStatus = "poison" end
+	if not charData.crimConvBuff then charData.crimConvBuff = "" end
 end
 
 -- Save mod data

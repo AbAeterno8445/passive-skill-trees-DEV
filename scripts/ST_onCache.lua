@@ -1031,6 +1031,14 @@ function PST:onCache(player, cacheFlag)
             player.Damage = player.Damage + (player.Damage * (player.MoveSpeed - 1)) * shieldMult
         end
 
+        -- Crimson Convergence buff: % of luck stat gets added to your damage
+        if PST:getTreeSnapshotMod("crimConvBuff", "") == "fortuna" then
+            local charData = PST:getCurrentCharData()
+            if charData then
+                player.Damage = player.Damage + player.Luck * 0.01 * charData.crimsonStarcores
+            end
+        end
+
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- TEARS (MaxFireDelay)
         local tmpMod = PST:getTreeSnapshotMod("tears", 0) + dynamicMods.tears + allstats
@@ -1162,6 +1170,15 @@ function PST:onCache(player, cacheFlag)
         tmpMod = PST:getTreeSnapshotMod("boonLethargyMinSpd", 0)
         if tmpMod > 0 and player.MoveSpeed < tmpMod then
             player.MoveSpeed = tmpMod
+        end
+
+        -- Crimson Convergence buff: Minimum speed in cleared rooms
+        local charData = PST:getCurrentCharData()
+        if charData and PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" and PST:getRoom():GetAliveEnemiesCount() == 0 then
+            local tmpSpeed = math.min(2, 1 + 0.04 * charData.crimsonStarcores)
+            if player.MoveSpeed < tmpSpeed then
+                player.MoveSpeed = tmpSpeed
+            end
         end
     end
 end

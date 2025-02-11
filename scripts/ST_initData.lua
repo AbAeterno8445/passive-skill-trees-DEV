@@ -1623,6 +1623,9 @@ function PST:resetMods()
 		sideCacheAstralWep = 0,
 		sideCacheJewel = 0,
 
+		-- Obols found multiplier
+		obolsFound = 0,
+
 		-- Timeless Bazaar
 		bazaarLoseRefresh = 0,
 
@@ -1662,6 +1665,8 @@ function PST:resetMods()
 		ancwep_metaClawMod = nil,
 		ancwep_quicksilverProc = false,
 
+		crimConvBuff = "",
+
 		-- Sidereal Artifacts
 		sideArtiEnergy = 0,
 		artiObj_runBossKills = 0,
@@ -1675,6 +1680,8 @@ function PST:resetMods()
 		arti_gildedProc = false,
 		arti_smelterProcs = 0,
 		arti_siderealProcs = 0,
+
+		infMeridionStatus = "",
 		--#endregion
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)

@@ -1,5 +1,3 @@
-include("scripts.tree_screen.modules.siderealArtifact")
-
 local descriptionBoxesModule = {
     -- Extra description pieces added to specific nodes based on other data/states. Key is node name
     dynamicNodeDescriptions = {
@@ -289,6 +287,26 @@ local descriptionBoxesModule = {
                 end
             end
             return { name = descName, description = nodeDesc }
+        end,
+
+        -- Crimson Convergence node starcore display
+        ["Crimson Convergence"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {table.unpack(tmpDescription)}
+            if isAllocated then
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    table.insert(nodeDesc, {PST:getCurrentCharName() .. " Crimson Starcores: " .. charData.crimsonStarcores, PST.kcolors.RED3})
+
+                    if charData.crimConvBuff and PST.crimConvergenceBuffs[charData.crimConvBuff] then
+                        local buffData = PST.crimConvergenceBuffs[charData.crimConvBuff]
+                        table.insert(nodeDesc, {"Selected: " .. buffData.name, PST.kcolors.ANCIENT_ORANGE})
+                        for _, tmpLine in ipairs(buffData.desc) do
+                            table.insert(nodeDesc, {tmpLine, PST.kcolors.ANCIENT_ORANGE})
+                        end
+                    end
+                end
+            end
+            return { name = descName, description = nodeDesc }
         end
     }
 }
@@ -484,6 +502,14 @@ function descriptionBoxesModule:Render(tScreen)
                 local tmpName = tmpStatus:gsub("^[a-z]", string.upper)
                 local tmpDesc = {"Pulse will inflict " .. tmpStatus .. "."}
                 tScreen:DrawNodeBox(tmpName, tmpDesc)
+            end
+        -- Crimson Convergence submenu, hovered buff
+        elseif submenusModule.currentSubmenu == PSTSubmenu.CRIMSON_CONVERGENCE then
+            local crimConvSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_CONVERGENCE]
+            local tmpBuff = crimConvSubmenu.hoveredBuff
+            if tmpBuff and PST.crimConvergenceBuffs[tmpBuff] then
+                local buffData = PST.crimConvergenceBuffs[tmpBuff]
+                tScreen:DrawNodeBox(buffData.name, buffData.desc)
             end
         end
     end

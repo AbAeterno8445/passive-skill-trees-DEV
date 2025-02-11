@@ -701,6 +701,11 @@ function PST:onRoomClear(level, room)
 			PST:expedAddProgInRun("rooms", 1)
 		end
 
+		-- Crimson Convergence buff: Celerity update
+		if PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+
 		-- Reset room kills
 		PST:addModifiers({ roomKills = { value = 0, set = true } }, true)
 

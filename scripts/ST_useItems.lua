@@ -634,8 +634,22 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         PST:sideArtiObjProgress("deadSeaMeridion", 1)
     end
     -- Sidereal Artifact condition: use an active item
-    if PST:getTreeSnapshotMod("magicSeptentrion", false) and isNormalCharge then
+    if isNormalCharge and PST:getTreeSnapshotMod("magicSeptentrion", false) then
         PST:sideArtiAddEnergy(PST.sideArtiData.magicSeptentrion.energy * player:GetActiveMaxCharge(slot))
+    end
+
+    -- Crimson Convergence buff: % chance to regain charges
+    if isNormalCharge and slot ~= -1 and PST:getTreeSnapshotMod("crimConvBuff", "") == "sanguineCharges" and player:GetActiveMaxCharge(slot) >= 2 then
+        local charData = PST:getCurrentCharData()
+        if charData then
+            local tmpChance = charData.crimsonStarcores * 10
+            while tmpChance > 0 do
+                if 100 * math.random() < tmpChance then
+                    player:AddActiveCharge(1, slot, true, true, false)
+                end
+                tmpChance = tmpChance - 100
+            end
+        end
     end
 end
 
