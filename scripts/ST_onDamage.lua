@@ -61,11 +61,18 @@ function PST:onDamage(target, damage, flag, source)
         -- Sacrifice room
         if room:GetType() == RoomType.ROOM_SACRIFICE and (flag & DamageFlag.DAMAGE_SPIKES) ~= 0 then
             -- Mod: chance to spawn a red heart when using a sacrifice room, up to 4 times
-            if 100 * math.random() < PST:getTreeSnapshotMod("sacrificeRoomHearts", 0) then
+            local tmpMod = PST:getTreeSnapshotMod("sacrificeRoomHearts", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
                 if PST:getTreeSnapshotMod("sacrificeRoomHeartsSpawned", 0) < 4 then
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, room:GetCenterPos(), RandomVector() * 3, nil, HeartSubType.HEART_FULL, Random() + 1)
                     PST:addModifiers({ sacrificeRoomHeartsSpawned = 1 }, true)
                 end
+            end
+
+            -- Mod: +% all stats for the current floor when using a sacrifice room, up to 20 times per floor
+            tmpMod = PST:getTreeSnapshotMod("sacRoomBuff", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("sacRoomBuffUses", 0) < 20 then
+                PST:addModifiers({ allstatsPerc = tmpMod, sacRoomBuffUses = 1 }, true)
             end
         end
 

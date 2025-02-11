@@ -305,6 +305,16 @@ function PST:onNewLevel()
         PST:addModifiers({ sacrificeRoomHeartsSpawned = { value = 0, set = true } }, true)
     end
 
+    -- Mod: % all stats for the current floor when using a sacrifice room (reset)
+    tmpMod = PST:getTreeSnapshotMod("sacRoomBuffUses", 0)
+    if tmpMod > 0 then
+        local buffAmt = PST:getTreeSnapshotMod("sacRoomBuff", 0)
+        PST:addModifiers({
+            allstatsPerc = -buffAmt * tmpMod,
+            sacRoomBuffUses = { value = 0, set = true }
+        }, true)
+    end
+
     -- Mod: chance to reveal map
     if 100 * math.random() < PST:getTreeSnapshotMod("mapChance", 0) + PST:getTreeSnapshotMod("ansuzMapreveal", 0) then
         PST:addModifiers({ mapRevealed = true }, true)

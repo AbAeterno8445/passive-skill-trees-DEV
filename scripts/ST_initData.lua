@@ -657,6 +657,8 @@ function PST:resetMods()
 		goldenKeyConvertProc = false,
 		sacrificeRoomHearts = 0,
 		sacrificeRoomHeartsSpawned = 0,
+		sacRoomBuff = 0,
+		sacRoomBuffUses = 0,
 		naturalCurseCleanse = 0,
 		naturalCurseCleanseProc = false,
 		goldenTrinkets = 0,
