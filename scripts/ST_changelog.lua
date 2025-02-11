@@ -11,6 +11,7 @@ function PST:getChangelogList()
         "condition to generate 'energy', and an effect to be triggered once enough energy is gathered.",
         "- New Sidereal Tree node: Crimson Convergence. Once allocated, it allows selecting one of many buffs that grow",
         "stronger the more Crimson Starcores your character owns.",
+        "- Crimson nodes can now be respecced, and doing so will return the spent Crimson Starcores.",
         "- Expedition item rewards now draw items from a fixed pool, regardless of item unlock status. This also means",
         "mod items can no longer appear as rewards, given potential inconsistencies if enabling/disabling more/existing mods.",
         "Unfortunately this means that existing item reward nodes will get rerolled one last time.",
