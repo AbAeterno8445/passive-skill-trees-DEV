@@ -13,7 +13,8 @@ PSTAstralWepType = {
     BOW = 10,
     CROSSBOW = 11,
     GAUNTLET = 12,
-    GREATMACE = 13
+    GREATMACE = 13,
+    WHIP = 14
 }
 
 ---@enum PSTAstralWepRarity
@@ -950,6 +951,51 @@ PST.astralWepMods = {
         minRolls = {7, 10, 10},
         maxRolls = {12, 18, 20},
         upgIncrements = {0.5, 0.5, 1}
+    },
+    -- Ancient Whips
+    snakebite = {
+        description = {
+            "Implicit instead fires 3 tears that poison on hit for {{roll1}} seconds.",
+            "These deal {{roll2}}% damage to already poisoned enemies."
+        },
+        ancient = true,
+        minRolls = {4, 250},
+        maxRolls = {8, 400},
+        upgIncrements = {0.25, 10}
+    },
+    devilTongue = {
+        description = {
+            "Implicit tears petrify enemies for {{roll1}} second(s) on hit.",
+            "Already petrified enemies are inflicted with burning for 3 seconds on hit.",
+            "Implicit cooldown is raised to 3 seconds.",
+            "+{{roll2}}% damage against burning enemies."
+        },
+        ancient = true,
+        minRolls = {0.8, 12},
+        maxRolls = {1.6, 18},
+        upgIncrements = {0.05, 0.5}
+    },
+    azurebinder = {
+        description = {
+            "Implicit tears gain Lost Contact and Tiny Planet's effects.",
+            "Implicit fires {{roll1}} additional tears.",
+            "+{{roll2}}% damage for the current room per blocked tear, up to {{roll3}}%."
+        },
+        ancient = true,
+        minRolls = {2, 1, 8},
+        maxRolls = {5, 3, 15},
+        upgIncrements = {0.2, 0.2, 0.4}
+    },
+    sacredScourge = {
+        description = {
+            "After killing an undead enemy, for {{roll1}} seconds gain the following:",
+            "   - Implicit tears gain homing and double speed.",
+            "   - Halve implicit cooldown."
+        },
+        ancient = true,
+        minRolls = {4},
+        maxRolls = {8},
+        upgIncrements = {0.2}
     }
 }
 
@@ -1625,6 +1671,62 @@ PST.astralWepData = {
                 spriteFrame = 44,
                 weight = 100,
                 ancientMods = {"tollingBell"}
+            }
+        }
+    },
+    -- Whips
+    [PSTAstralWepType.WHIP] = {
+        name = "Whip",
+        internalName = "Whip",
+        spriteFrames = {
+            [PSTAstralWepRarity.NORMAL] = 28,
+            [PSTAstralWepRarity.MAGIC] = 29,
+            overlay = 14
+        },
+        implicitMod = {
+            name = "whipImp",
+            description = {
+                "When hitting an enemy, shoot a stream of 5 tears in a line towards them.",
+                "Hitting enemies with these tears randomly grants you either +{{roll1}}% speed or",
+                "+{{roll1}}% tears, up to {{roll2}}%, for {{roll3}} seconds.",
+                "2 second cooldown between tear shots."
+            },
+            rollsFunc = function(honing)
+                return {
+                    roll1 = 0.3 + PST:roundFloat(0.9 * (honing / 50), -2), --1.5 + PST:roundFloat(0.5 * (honing / 50), -2),
+                    roll2 = 8 + PST:roundFloat(7 * (honing / 50), -2),
+                    roll3 = 2 + PST:roundFloat(3 * (honing / 50), -2)
+                }
+            end
+        },
+        ancients = {
+            -- Snakebite
+            {
+                name = "Snakebite",
+                spriteFrame = 46,
+                weight = 100,
+                ancientMods = {"snakebite"}
+            },
+            -- Devil's Tongue
+            {
+                name = "Devil's Tongue",
+                spriteFrame = 47,
+                weight = 100,
+                ancientMods = {"devilTongue"}
+            },
+            -- Azurebinder
+            {
+                name = "Azurebinder",
+                spriteFrame = 48,
+                weight = 100,
+                ancientMods = {"azurebinder"}
+            },
+            -- Sacred Scourge
+            {
+                name = "Sacred Scourge",
+                spriteFrame = 49,
+                weight = 100,
+                ancientMods = {"sacredScourge"}
             }
         }
     }

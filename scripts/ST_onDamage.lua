@@ -1128,6 +1128,23 @@ function PST:onDamage(target, damage, flag, source)
                     end
                 end
 
+                -- Astral weapon mod: Whip implicit
+                tmpMod = PST:getSnapAstralWepMod("whipImp")
+                if tmpMod and PST.specialNodes.astralwep_whipCD == 0 and not (source.Entity and source.Entity:GetData().PST_whipTear) then
+                    for i=1,5 do
+                        local tmpVel = (target.Position - srcPlayer.Position):Normalized() * (3 + 2 * (i - 1))
+                        local tmpTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                        tmpTear:ToTear().Height = srcPlayer.TearHeight
+                        tmpTear:ToTear().FallingSpeed = 1
+                        tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
+                        tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.3, 15)
+                        --tmpTear.Color = PST:RGBColor(225, 85, 85)
+                        tmpTear:GetData().PST_whipTear = true
+                    end
+
+                    PST.specialNodes.astralwep_whipCD = 60
+                end
+
                 -- Ancient weapon mod: Chaotic Tumult
                 tmpMod = PST:getSnapAstralWepMod("chaoticTumult")
                 if tmpMod then

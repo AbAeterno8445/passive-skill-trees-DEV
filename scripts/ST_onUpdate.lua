@@ -2898,6 +2898,23 @@ function PST:frameUpdate()
 		end
 	end
 
+	-- Astral weapon mod: Whip cooldowns/buffs
+	if PST.specialNodes.astralwep_whipCD > 0 then
+		PST.specialNodes.astralwep_whipCD = PST.specialNodes.astralwep_whipCD - 1
+	end
+	if PST.specialNodes.astralwep_whipSpeedTimer > 0 then
+		PST.specialNodes.astralwep_whipSpeedTimer = PST.specialNodes.astralwep_whipSpeedTimer - 1
+		if PST.specialNodes.astralwep_whipSpeedTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+	end
+	if PST.specialNodes.astralwep_whipTearTimer > 0 then
+		PST.specialNodes.astralwep_whipTearTimer = PST.specialNodes.astralwep_whipTearTimer - 1
+		if PST.specialNodes.astralwep_whipTearTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

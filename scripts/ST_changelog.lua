@@ -5,6 +5,8 @@ function PST:getChangelogList()
 
         "v0.4.28",
         "- Added support for Community Remix items.",
+        "- Introduced a new astral weapon type: Whips. Comes with 4 ancients: Snakebite, Devil's Tongue, Azurebinder",
+        "and Sacred Scourge.",
         "- New Sidereal Tree feature: Sidereal Artifacts. These allow choosing between many artifact nodes that grant a",
         "condition to generate 'energy', and an effect to be triggered once enough energy is gathered.",
         "- Expedition item rewards now draw items from a fixed pool, regardless of item unlock status. This also means",

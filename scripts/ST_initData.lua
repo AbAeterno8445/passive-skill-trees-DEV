@@ -1788,6 +1788,11 @@ function PST:resetMods()
 		astralwep_famKillTimer = 0,
 		astralwep_activeDmgTimer = 0,
 		astralwep_greatmaceCD = 0,
+		astralwep_whipCD = 0,
+		astralwep_whipTearBuff = 0,
+		astralwep_whipTearTimer = 0,
+		astralwep_whipSpeedBuff = 0,
+		astralwep_whipSpeedTimer = 0,
 
 		ancwep_greyWindCD = 0,
 		ancwep_maxwellBuff = 0,

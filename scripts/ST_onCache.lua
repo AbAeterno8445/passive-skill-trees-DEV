@@ -392,6 +392,11 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.ancwep_firestarterBuffTimer > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + 15
         end
+
+        -- Astral weapon mod: Whip buff
+        if PST.specialNodes.astralwep_whipSpeedTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + PST.specialNodes.astralwep_whipSpeedBuff
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active
@@ -524,6 +529,11 @@ function PST:onCache(player, cacheFlag)
         tmpTreeMod = PST:getSnapAstralWepMod("starsteelBroadaxe")
         if tmpTreeMod and PST.specialNodes.ancwep_starsteelAxeBuff > 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.min(tmpTreeMod[1], PST.specialNodes.ancwep_starsteelAxeBuff)
+        end
+
+        -- Astral weapon mod: Whip buff
+        if PST.specialNodes.astralwep_whipTearTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + PST.specialNodes.astralwep_whipTearBuff
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
