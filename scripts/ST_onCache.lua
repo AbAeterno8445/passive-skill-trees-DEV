@@ -294,6 +294,11 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod and PST.specialNodes.ancwep_chaosTumultDmgStacks > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + math.min(tmpTreeMod[2], PST.specialNodes.ancwep_chaosTumultDmgStacks)
         end
+
+        -- Ancient weapon mod: Azurebinder
+        if PST.specialNodes.ancwep_azurebinderBuff > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + PST.specialNodes.ancwep_azurebinderBuff
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -533,7 +538,7 @@ function PST:onCache(player, cacheFlag)
 
         -- Astral weapon mod: Whip buff
         if PST.specialNodes.astralwep_whipTearTimer > 0 then
-            dynamicMods.speedPerc = dynamicMods.speedPerc + PST.specialNodes.astralwep_whipTearBuff
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + PST.specialNodes.astralwep_whipTearBuff
         end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then

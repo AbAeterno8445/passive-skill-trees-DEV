@@ -1131,18 +1131,77 @@ function PST:onDamage(target, damage, flag, source)
                 -- Astral weapon mod: Whip implicit
                 tmpMod = PST:getSnapAstralWepMod("whipImp")
                 if tmpMod and PST.specialNodes.astralwep_whipCD == 0 and not (source.Entity and source.Entity:GetData().PST_whipTear) then
-                    for i=1,5 do
-                        local tmpVel = (target.Position - srcPlayer.Position):Normalized() * (3 + 2 * (i - 1))
-                        local tmpTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
-                        tmpTear:ToTear().Height = srcPlayer.TearHeight
-                        tmpTear:ToTear().FallingSpeed = 1
-                        tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
-                        tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.3, 15)
-                        --tmpTear.Color = PST:RGBColor(225, 85, 85)
-                        tmpTear:GetData().PST_whipTear = true
+                    local totalCD = 60
+                    if PST:getSnapAstralWepMod("snakebite") then
+                        -- Ancient weapon mod: Snakebite
+                        for i=1,3 do
+                            local tmpVel = (target.Position - srcPlayer.Position):Normalized() * (3 + 3.5 * (i - 1))
+                            local tmpTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                            tmpTear:ToTear().Height = srcPlayer.TearHeight
+                            tmpTear:ToTear().FallingSpeed = 1
+                            tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING | TearFlags.TEAR_POISON)
+                            tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.3, 15)
+                            tmpTear.Color = PST:RGBColor(45, 225, 45)
+                            tmpTear:GetData().PST_whipTear = true
+                            tmpTear:GetData().PST_snakebiteTear = true
+                        end
+                    else
+                        local tmpMaxTears = 5
+                        if PST.specialNodes.ancwep_sacScourgeBuff > 0 then
+                            tmpMaxTears = tmpMaxTears + 2
+                        end
+                        for i=1,tmpMaxTears do
+                            local tmpVel = (target.Position - srcPlayer.Position):Normalized() * (3 + 2 * (i - 1))
+                            local tmpTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                            tmpTear:ToTear().Height = srcPlayer.TearHeight
+                            tmpTear:ToTear().FallingSpeed = 1
+                            tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
+                            tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.3, 15)
+                            tmpTear:GetData().PST_whipTear = true
+
+                            -- Ancient weapon mod: Devil's Tongue
+                            if PST:getSnapAstralWepMod("devilTongue") then
+                                tmpTear.Color = PST:RGBColor(120, 70, 70)
+                                tmpTear:ToTear():ChangeVariant(TearVariant.FIRE_MIND)
+                                tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_FREEZE)
+                                tmpTear:GetData().PST_devilTongueTear = true
+                            -- Ancient weapon mod: Azurebinder
+                            elseif PST:getSnapAstralWepMod("azurebinder") then
+                                tmpTear.Color = PST:RGBColor(120, 220, 220)
+                                tmpTear:ToTear():ChangeVariant(TearVariant.LOST_CONTACT)
+                                tmpTear:ToTear().FallingSpeed = -4
+                                tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SHIELDED | TearFlags.TEAR_ORBIT_ADVANCED)
+                                tmpTear:ToTear():ClearTearFlags(TearFlags.TEAR_HOMING)
+                            -- Ancient weapon mod: Sacred Scourge
+                            elseif PST.specialNodes.ancwep_sacScourgeBuff > 0 then
+                                tmpTear:ToTear():ChangeVariant(TearVariant.DIAMOND)
+                                tmpTear:GetSprite():SetRenderFlags(AnimRenderFlags.GOLDEN)
+                                tmpTear:ToTear().FallingSpeed = -3
+                            end
+                        end
                     end
 
-                    PST.specialNodes.astralwep_whipCD = 60
+                    if PST:getSnapAstralWepMod("devilTongue") then
+                        totalCD = totalCD + 30
+                    end
+
+                    PST.specialNodes.astralwep_whipCD = totalCD
+                end
+
+                -- Ancient weapon mod: Snakebite
+                tmpMod = PST:getSnapAstralWepMod("snakebite")
+                if tmpMod and (source.Entity and source.Entity:GetData().PST_snakebiteTear) and (target:GetEntityFlags() & EntityFlag.FLAG_POISON) > 0 then
+                    dmgMult = dmgMult + tmpMod[1] / 100
+                end
+
+                -- Ancient weapon mod: Devil's Tongue
+                tmpMod = PST:getSnapAstralWepMod("devilTongue")
+                if tmpMod and (source.Entity and source.Entity:GetData().PST_devilTongueTear) then
+                    if target:GetFreezeCountdown() > 0 then
+                        target:AddBurn(EntityRef(srcPlayer), 90, math.min(srcPlayer.Damage, 20))
+                    else
+                        target:AddFreeze(EntityRef(srcPlayer), tmpMod[1] * 30)
+                    end
                 end
 
                 -- Ancient weapon mod: Chaotic Tumult

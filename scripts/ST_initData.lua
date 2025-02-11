@@ -1831,6 +1831,8 @@ function PST:resetMods()
 		ancwep_quicksilverParryCD = 0,
 		ancwep_quicksilverParrying = 0,
 		ancwep_quicksilverBuff = 0,
+		ancwep_azurebinderBuff = 0,
+		ancwep_sacScourgeBuff = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

@@ -955,12 +955,12 @@ PST.astralWepMods = {
     -- Ancient Whips
     snakebite = {
         description = {
-            "Implicit instead fires 3 tears that poison on hit for {{roll1}} seconds.",
-            "These deal {{roll2}}% damage to already poisoned enemies."
+            "Implicit instead fires 3 tears that poison on hit.",
+            "These deal {{roll1}}% increased damage to already poisoned enemies."
         },
         ancient = true,
-        minRolls = {4, 250},
-        maxRolls = {8, 400},
+        minRolls = {250},
+        maxRolls = {400},
         upgIncrements = {0.25, 10}
     },
     devilTongue = {
@@ -978,23 +978,24 @@ PST.astralWepMods = {
     azurebinder = {
         description = {
             "Implicit tears gain Lost Contact and Tiny Planet's effects.",
-            "Implicit fires {{roll1}} additional tears.",
-            "+{{roll2}}% damage for the current room per blocked tear, up to {{roll3}}%."
+            "Implicit tears fly for longer.",
+            "+{{roll1}}% damage for the current room per blocked tear, up to {{roll2}}%."
         },
         ancient = true,
-        minRolls = {2, 1, 8},
-        maxRolls = {5, 3, 15},
+        minRolls = {1, 8},
+        maxRolls = {3, 15},
         upgIncrements = {0.2, 0.2, 0.4}
     },
     sacredScourge = {
         description = {
             "After killing an undead enemy, for {{roll1}} seconds gain the following:",
-            "   - Implicit tears gain homing and double speed.",
+            "   - Implicit fires an additional 2 tears.",
+            "   - Implicit tears fly for longer.",
             "   - Halve implicit cooldown."
         },
         ancient = true,
-        minRolls = {4},
-        maxRolls = {8},
+        minRolls = {5},
+        maxRolls = {9},
         upgIncrements = {0.2}
     }
 }
@@ -1703,28 +1704,28 @@ PST.astralWepData = {
             -- Snakebite
             {
                 name = "Snakebite",
-                spriteFrame = 46,
+                spriteFrame = 47,
                 weight = 100,
                 ancientMods = {"snakebite"}
             },
             -- Devil's Tongue
             {
                 name = "Devil's Tongue",
-                spriteFrame = 47,
+                spriteFrame = 48,
                 weight = 100,
                 ancientMods = {"devilTongue"}
             },
             -- Azurebinder
             {
                 name = "Azurebinder",
-                spriteFrame = 48,
+                spriteFrame = 49,
                 weight = 100,
                 ancientMods = {"azurebinder"}
             },
             -- Sacred Scourge
             {
                 name = "Sacred Scourge",
-                spriteFrame = 49,
+                spriteFrame = 50,
                 weight = 100,
                 ancientMods = {"sacredScourge"}
             }

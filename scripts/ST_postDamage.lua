@@ -439,6 +439,12 @@ function PST:postDamage(target, damage, flag, source)
                             [3] = PST_tmpDmgTick()
                         })
                     end
+
+                    -- Ancient weapon mod: Sacred Scourge
+                    local tmpMod = PST:getSnapAstralWepMod("sacredScourge")
+                    if tmpMod and PST:isMobUndead(target) and isKillingHit then
+                        PST.specialNodes.ancwep_sacScourgeBuff = tmpMod[1] * 30
+                    end
                 end
             end
 
@@ -881,21 +887,23 @@ function PST:postDamage(target, damage, flag, source)
 
             -- Astral weapon mod: Whips
             tmpMod = PST:getSnapAstralWepMod("whipImp")
-            if tmpMod and source.Entity:GetData().PST_whipTear then
-                if math.random() <= 0.5 then
-                    -- Speed buff
-                    if PST.specialNodes.astralwep_whipSpeedBuff < tmpMod[2] then
-                        PST.specialNodes.astralwep_whipSpeedBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_whipSpeedBuff + tmpMod[1])
-                        PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+            if tmpMod then
+                if source.Entity:GetData().PST_whipTear then
+                    if math.random() <= 0.5 then
+                        -- Speed buff
+                        if PST.specialNodes.astralwep_whipSpeedBuff < tmpMod[2] then
+                            PST.specialNodes.astralwep_whipSpeedBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_whipSpeedBuff + tmpMod[1])
+                            PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                        end
+                        PST.specialNodes.astralwep_whipSpeedTimer = tmpMod[3] * 30
+                    else
+                        -- Tears buff
+                        if PST.specialNodes.astralwep_whipTearBuff < tmpMod[2] then
+                            PST.specialNodes.astralwep_whipTearBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_whipTearBuff + tmpMod[1])
+                            PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+                        end
+                        PST.specialNodes.astralwep_whipTearTimer = tmpMod[3] * 30
                     end
-                    PST.specialNodes.astralwep_whipSpeedTimer = tmpMod[3] * 30
-                else
-                    -- Tears buff
-                    if PST.specialNodes.astralwep_whipTearBuff < tmpMod[2] then
-                        PST.specialNodes.astralwep_whipTearBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_whipTearBuff + tmpMod[1])
-                        PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
-                    end
-                    PST.specialNodes.astralwep_whipTearTimer = tmpMod[3] * 30
                 end
             end
 

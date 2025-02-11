@@ -576,6 +576,9 @@ local ancientWepStatFuncs = {
     end,
     tollingBell = function(tmpMod, remove, player)
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO, ((remove == true) and -1 or 1))
+    end,
+    devilTongue = function(tmpMod, remove)
+        PST:addModifiers({ astralwep_dmgStatusBurn = {tmpMod[2] * ((remove == true) and -1 or 1)} }, true)
     end
 }
 

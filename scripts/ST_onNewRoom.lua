@@ -1381,6 +1381,12 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Ancient weapon mod: Azurebinder
+	if PST.specialNodes.ancwep_azurebinderBuff > 0 then
+		PST.specialNodes.ancwep_azurebinderBuff = 0
+		PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

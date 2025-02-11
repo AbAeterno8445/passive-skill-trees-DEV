@@ -281,7 +281,7 @@ function PST:Render()
 				if PST.specialNodes.sideArtiCD > 0 then
 					tmpColor = KColor(1, 0.3, 0.3, expedUISprite.Color.A)
 				end
-				PST.luaminiFont:DrawString(PST:getTreeSnapshotMod("sideArtiEnergy", 0) .. "/" .. PST.sideArtiData[tmpMeridion].energyReq, 16, 14, tmpColor)
+				PST.miniFont:DrawStringScaled(PST:getTreeSnapshotMod("sideArtiEnergy", 0) .. "/" .. PST.sideArtiData[tmpMeridion].energyReq, 3, 22, 0.5, 0.5, tmpColor)
 			end
 		end
 
