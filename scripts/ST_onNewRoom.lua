@@ -157,7 +157,9 @@ function PST:onNewRoom()
 	if PST:SC_getSnapshotMod("mistlestone", false) and room:IsFirstVisit() and (roomType == RoomType.ROOM_TREASURE or roomType == RoomType.ROOM_PLANETARIUM) then
 		local roomItems = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
 		for _, tmpItem in ipairs(roomItems) do
-			tmpItem:ToPickup():Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_MYSTERY_GIFT)
+			if not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
+				tmpItem:ToPickup():Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_MYSTERY_GIFT)
+			end
 		end
 	end
 

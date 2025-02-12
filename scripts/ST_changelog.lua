@@ -22,6 +22,7 @@ function PST:getChangelogList()
         "- Increased the cooldown between Nimble Twins (ancient quickblade) tear shots.",
         "- Fixed error when first loading a savefile while having Epiphany.",
         "- Fixed Cause Converter incorrectly spawning Chub and variants.",
+        "- Fixed Mistlestone turning progression items into mystery gifts.",
         "",
 
         "v0.4.27",
