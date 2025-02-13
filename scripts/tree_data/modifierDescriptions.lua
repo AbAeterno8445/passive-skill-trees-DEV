@@ -590,7 +590,7 @@ PST.treeModDescriptions = {
     magdaleneBlessing = {
         str = {
             "Magdalene's Blessing:",
-            "    -0.02 speed and +0.1 damage for every red heart container after the 4th one"
+            "    -0.02 speed and +0.2 damage for every red heart container after the 4th one"
         },
         category = "charTree", sort = 2050
     },

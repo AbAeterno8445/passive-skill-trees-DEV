@@ -923,6 +923,18 @@ function PST:onNewLevel()
         PST:addModifiers({ damagePerc = -tmpMod, pickupBoonsBombBuff = { value = 0, set = true } }, true)
     end
 
+    -- Heartblessed chest list (reset)
+    tmpMod = PST:getTreeSnapshotMod("heartblessedList", {})
+    if #tmpMod > 0 then
+        PST.modData.treeModSnapshot.heartblessedList = {}
+    end
+
+    -- Mod: +% speed when opening a heartblessed chest (reset)
+    tmpMod = PST:getTreeSnapshotMod("heartblessedSpeedBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ speedPerc = -tmpMod, heartblessedSpeedBuff = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

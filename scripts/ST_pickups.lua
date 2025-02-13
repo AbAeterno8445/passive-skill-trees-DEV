@@ -16,9 +16,8 @@ function PST:tryGrabBag()
 end
 
 function PST:isPickupChest(variant)
-    return variant == PickupVariant.PICKUP_CHEST or variant == PickupVariant.PICKUP_REDCHEST or
-    variant == PickupVariant.PICKUP_LOCKEDCHEST or variant == PickupVariant.PICKUP_SPIKEDCHEST or
-    variant == PickupVariant.PICKUP_WOODENCHEST or variant == PickupVariant.PICKUP_BOMBCHEST
+    return PST:arrHasValue(PST.regularChests, variant) or PST:arrHasValue(PST.lockedChests, variant) or
+    variant == PickupVariant.PICKUP_BOMBCHEST or variant == Isaac.GetEntityVariantByName("Sidereal Cache")
 end
 
 function PST:vanishPickup(pickup)
@@ -1051,6 +1050,15 @@ function PST:onPickupInit(pickup, firstSpawn)
         PST_expedOpenChest(pickup)
     end
 
+    -- Mod: % chance for chests to become heart-blessed when appearing
+    tmpMod = PST:getTreeSnapshotMod("heartblessedChests", 0)
+    if tmpMod > 0 and PST:isPickupChest(variant) and 100 * math.random() < tmpMod then
+        local heartblessedList = PST:getTreeSnapshotMod("heartblessedList", {})
+        if not PST:arrHasValue(heartblessedList, pickup.InitSeed) then
+            table.insert(heartblessedList, pickup.InitSeed)
+        end
+    end
+
     -- Trinkets
     if variant == PickupVariant.PICKUP_TRINKET then
         -- Fickle Fortune node (Cain's tree), vanish proc
@@ -1454,24 +1462,53 @@ function PST:onPickupUpdate(pickup)
         end
 
         -- Chests
-        if PST:arrHasValue(PST.regularChests, pickup.Variant) or PST:arrHasValue(PST.lockedChests, pickup.Variant) or pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
+        if PST:isPickupChest(pickup.Variant) then
             local pickupSpr = pickup:GetSprite()
             -- Opened chest
-            if pickupSpr:GetAnimation() == "Open" then
-                if pickupSpr:GetFrame() == 1 then
-                    PST_expedOpenChest(pickup)
+            if pickupSpr:GetAnimation() == "Open" and pickupSpr:GetFrame() == 1 then
+                PST_expedOpenChest(pickup)
 
-                    -- Mod: % chance for chests to re-close after opening, up to twice per room
-                    local tmpMod = PST:getTreeSnapshotMod("chestReclose", 0)
-                    local rTotal = pickup:GetData().PST_recloseTotal
-                    if tmpMod > 0 and (not rTotal or (rTotal and rTotal < 2)) and
-                    100 * math.random() < tmpMod then
-                        pickup:GetData().PST_recloseProc = true
-                        if not rTotal then
-                            pickup:GetData().PST_recloseTotal = 0
+                -- Mod: % chance for chests to re-close after opening, up to twice per room
+                local tmpMod = PST:getTreeSnapshotMod("chestReclose", 0)
+                local rTotal = pickup:GetData().PST_recloseTotal
+                if tmpMod > 0 and (not rTotal or (rTotal and rTotal < 2)) and
+                100 * math.random() < tmpMod then
+                    pickup:GetData().PST_recloseProc = true
+                    if not rTotal then
+                        pickup:GetData().PST_recloseTotal = 0
+                    end
+                    pickup:GetData().PST_recloseTotal = pickup:GetData().PST_recloseTotal + 1
+                    pickup.Timeout = 60
+                end
+
+                -- Heartblessed chests
+                local heartblessedList = PST:getTreeSnapshotMod("heartblessedList", {})
+                if PST:arrHasValue(heartblessedList, pickup.InitSeed) then
+                    -- Drop extra hearts
+                    local heartTypes = {HeartSubType.HEART_SOUL, HeartSubType.HEART_BLACK}
+                    local maxHearts = math.random(2)
+                    for _=1,maxHearts do
+                        local heartSub = heartTypes[math.random(#heartTypes)]
+                        if math.random() < 0.7 then
+                            heartSub = HeartSubType.HEART_FULL
+                            if math.random() < 0.3 then
+                                heartSub = HeartSubType.HEART_HALF
+                            end
                         end
-                        pickup:GetData().PST_recloseTotal = pickup:GetData().PST_recloseTotal + 1
-                        pickup.Timeout = 60
+                        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, heartSub, pickup.Position, 3 * RandomVector(), nil)
+
+                        for i, tmpID in ipairs(heartblessedList) do
+                            if tmpID == pickup.InitSeed then
+                                table.remove(heartblessedList, i)
+                                break
+                            end
+                        end
+                    end
+
+                    -- Mod: +% speed for the current floor when opening a heartblessed chest
+                    tmpMod = PST:getTreeSnapshotMod("heartblessedSpeed", 0)
+                    if tmpMod > 0 and PST:getTreeSnapshotMod("heartblessedSpeedBuff", 0) < 12 then
+                        PST:addModifiers({ speedPerc = tmpMod, heartblessedSpeedBuff = tmpMod }, true)
                     end
                 end
             end
@@ -1562,5 +1599,14 @@ function PST:onPickupVoided(pickup, isBlackRune)
                 PST:addModifiers({ luck = tmpMod }, true)
             end
         end
+    end
+end
+
+---@param pickup EntityPickup
+function PST:onPickupRender(pickup)
+    -- Heartblessed chests FX
+    if PST:isPickupChest(pickup.Variant) and PST:arrHasValue(PST:getTreeSnapshotMod("heartblessedList", {}), pickup.InitSeed) and
+    (pickup:GetSprite():GetAnimation() == "Appear" or pickup:GetSprite():GetAnimation() == "Idle") then
+        PST.specialFX.heartbless:Render(PST:getRoom():WorldToScreenPosition(pickup.Position + Vector(0, -16)))
     end
 end

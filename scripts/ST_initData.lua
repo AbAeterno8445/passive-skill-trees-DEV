@@ -807,6 +807,13 @@ function PST:resetMods()
 		bloodDonationLuckBuff = 0,
         bloodDonationNickel = 0,
         healOnClear = 0,
+		heartblessedChests = 0,
+		heartblessedList = {},
+		heartblessedSpeed = 0,
+		heartblessedSpeedBuff = 0,
+		blesserHeart = false,
+		fullHealthCharge = 0,
+		innerGlow = false,
 		---- Cain's tree ----
 		impromptuGambler = false,
 		impromptuGamblerProcs = {},
@@ -1910,6 +1917,9 @@ function PST:resetMods()
 		shadowmeldEndPos = Vector.Zero,
 		-- Soul of the Siren effect
 		sirenSoulUses = {},
+
+		-- Heartblessed chest FX
+		heartbless = Sprite("gfx/effect_heartbless.anm2", true)
 	}
 	-- Init sprites
 	PST.specialNodes.SC_nullstonePoofFX.sprite.Color = Color(0.04, 0.04, 0.04, 1, 0.04, 0.04, 0.04)
@@ -1927,6 +1937,9 @@ function PST:resetMods()
 	PST.specialFX.shadowmeldStartFX.PlaybackSpeed = 0.8
 	PST.specialFX.shadowmeldEndFX.Scale = Vector(0.8, 0.8)
 	PST.specialFX.shadowmeldEndFX.PlaybackSpeed = 0.8
+
+	PST.specialFX.heartbless.PlaybackSpeed = 0.5
+	PST.specialFX.heartbless:Play("Default", true)
 
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

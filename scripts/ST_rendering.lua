@@ -459,6 +459,9 @@ function PST:Render()
 			PST.specialNodes.ancwep_quicksilverParryCD = math.ceil(tmpMod[1] * 30)
 		end
 
+		-- Heartblessed chest FX
+		if isEvenFrame then PST.specialFX.heartbless:Update() end
+
 		-- Manage floating texts
 		if floatTextDelay > 0 then
 			floatTextDelay = floatTextDelay - 1

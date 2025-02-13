@@ -58,7 +58,7 @@ function PST:onCache(player, cacheFlag)
             local tmpHearts = math.ceil((player:GetMaxHearts() - 8) / 2)
             if tmpHearts > 0 then
                 dynamicMods.speed = dynamicMods.speed - tmpHearts * 0.02
-                dynamicMods.damage = dynamicMods.damage + tmpHearts * 0.1
+                dynamicMods.damage = dynamicMods.damage + tmpHearts * 0.2
             end
         end
     end

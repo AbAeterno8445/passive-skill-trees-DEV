@@ -98,6 +98,22 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         if 100 * math.random() < PST:getTreeSnapshotMod("yumHeartHealHalf", 0) then
             player:AddHearts(1)
         end
+
+        -- Blesser Heart node (Magdalene's tree)
+        if PST:getTreeSnapshotMod("blesserHeart", false) and player:GetMaxHearts() > 0 and player:GetHearts() == player:GetMaxHearts() then
+            local roomPickups = Isaac.FindByType(EntityType.ENTITY_PICKUP)
+            local tmpProcs = 0
+            for _, tmpPickup in ipairs(roomPickups) do
+                if PST:isPickupChest(tmpPickup.Variant) then
+                    local heartblessedList = PST:getTreeSnapshotMod("heartblessedList", {})
+                    if not PST:arrHasValue(heartblessedList, tmpPickup.InitSeed) then
+                        table.insert(heartblessedList, tmpPickup.InitSeed)
+                        tmpProcs = tmpProcs + 1
+                        if tmpProcs == 3 then break end
+                    end
+                end
+            end
+        end
     -- Book of Belial
     elseif itemType == CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL then
         -- Dark Heart node (Judas' tree)
@@ -586,6 +602,21 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                     newTear.Color = PST:RGBColor(120, 30, 182)
                 end
             end
+        end
+
+        -- Mod: % chance to keep 1 charge per red heart container if you're at full health
+        tmpMod = PST:getTreeSnapshotMod("fullHealthCharge", 0)
+        if tmpMod > 0 and player:GetMaxHearts() > 0 and player:GetHearts() == player:GetMaxHearts() then
+            local tmpChance = player:GetMaxHearts() * tmpMod
+            if 100 * math.random() < tmpChance then
+                player:AddActiveCharge(1, slot, true, false, false)
+            end
+        end
+
+        -- Inner Glow node (Magdalene's tree)
+        if PST:getTreeSnapshotMod("innerGlow", false) and isNormalCharge and player:GetActiveMaxCharge(slot) >= 3 and
+        100 * math.random() < 33 then
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_YUM_HEART)
         end
     end
 
