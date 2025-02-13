@@ -1300,6 +1300,11 @@ function PST:onDamage(target, damage, flag, source)
                         dmgMult = dmgMult + 0.01 * charData.crimsonStarcores
                     end
                 end
+
+                -- Boon of the Ordinary node (Isaac's tree)
+                if PST:getTreeSnapshotMod("boonOrdinary", false) and srcPlayer:GetNumBombs() >= 12 and 100 * math.random() < 10 then
+                    dmgMult = dmgMult + 1
+                end
             end
 
             -- Astral weapon mod: +% damage dealt to enemies affected by status effects

@@ -578,11 +578,11 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 2003
     },
     d6Pickup = {
-        str = "%d%% chance when using D6 to spawn a random pickup (coin, bomb, key or heart)",
+        str = "%d%% chance when using any dice active to spawn a random pickup (coin, bomb, key or heart)",
         category = "charTree", sort = 2004
     },
     d6HalfCharge = {
-        str = "%d%% chance when using D6 to keep half of its charge",
+        str = "%d%% chance when using any dice active to keep half of its charge",
         category = "charTree", sort = 2004
     },
 

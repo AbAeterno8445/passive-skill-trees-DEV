@@ -869,6 +869,11 @@ function PST:onNewRun(isContinued)
         Ambush.SetMaxBossrushWaves(15 + tmpMod)
     end
 
+    -- Boon of the Ordinary node (Isaac's tree)
+    if PST:getTreeSnapshotMod("boonOrdinary", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

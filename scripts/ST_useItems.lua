@@ -82,40 +82,6 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 player:AddCacheFlags(PST.allstatsCache, true)
             end
         end
-
-        -- Mod: chance to spawn pickup when using D6
-        if 100 * math.random() < PST:getTreeSnapshotMod("d6Pickup", 0) then
-            local pickupType = { PickupVariant.PICKUP_COIN, PickupVariant.PICKUP_KEY, PickupVariant.PICKUP_BOMB, PickupVariant.PICKUP_HEART }
-            local randPickup = pickupType[math.random(#pickupType)]
-            local tmpSubtype = 1
-            if randPickup == PickupVariant.PICKUP_HEART then
-                if 100 * math.random() < 70 then
-                    tmpSubtype = HeartSubType.HEART_HALF
-                elseif 100 * math.random() < 10 then
-                    if 100 * math.random() < 70 then
-                        tmpSubtype = HeartSubType.HEART_HALF_SOUL
-                    else
-                        tmpSubtype = HeartSubType.HEART_SOUL
-                    end
-                end
-            end
-            -- Very rarely spawn a chest/locked chest
-            if 100 * math.random() < 5 then
-                if 100 * math.random() < 90 then
-                    randPickup = PickupVariant.PICKUP_CHEST
-                else
-                    randPickup = PickupVariant.PICKUP_LOCKEDCHEST
-                end
-            end
-            Game():Spawn(EntityType.ENTITY_PICKUP, randPickup, player.Position, Vector.Zero, nil, tmpSubtype, Random() + 1)
-        end
-
-        -- Mod: chance to keep half the charge when using D6
-        if 100 * math.random() < PST:getTreeSnapshotMod("d6HalfCharge", 0) then
-            if slot ~= -1 and player:GetBatteryCharge(slot) == 0 then
-                player:AddActiveCharge(math.ceil(player:GetActiveMaxCharge(slot) / 2), slot, true, true, false)
-            end
-        end
     -- Yum Heart
     elseif itemType == CollectibleType.COLLECTIBLE_YUM_HEART then
         -- Crystal Heart node (Magdalene's tree)
@@ -548,6 +514,43 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                     PST.specialNodes.sirenUsedMelody = -1
                 end
                 break
+            end
+        end
+    end
+
+    -- Dice items
+    if PST:arrHasValue(PST.diceItems, itemType) then
+        -- Mod: chance to spawn pickup when using any dice item
+        if 100 * math.random() < PST:getTreeSnapshotMod("d6Pickup", 0) then
+            local pickupType = { PickupVariant.PICKUP_COIN, PickupVariant.PICKUP_KEY, PickupVariant.PICKUP_BOMB, PickupVariant.PICKUP_HEART }
+            local randPickup = pickupType[math.random(#pickupType)]
+            local tmpSubtype = 1
+            if randPickup == PickupVariant.PICKUP_HEART then
+                if 100 * math.random() < 70 then
+                    tmpSubtype = HeartSubType.HEART_HALF
+                elseif 100 * math.random() < 10 then
+                    if 100 * math.random() < 70 then
+                        tmpSubtype = HeartSubType.HEART_HALF_SOUL
+                    else
+                        tmpSubtype = HeartSubType.HEART_SOUL
+                    end
+                end
+            end
+            -- Very rarely spawn a chest/locked chest
+            if 100 * math.random() < 5 then
+                if 100 * math.random() < 90 then
+                    randPickup = PickupVariant.PICKUP_CHEST
+                else
+                    randPickup = PickupVariant.PICKUP_LOCKEDCHEST
+                end
+            end
+            Game():Spawn(EntityType.ENTITY_PICKUP, randPickup, player.Position, Vector.Zero, nil, tmpSubtype, Random() + 1)
+        end
+
+        -- Mod: chance to keep half the charge when using any dice item
+        if 100 * math.random() < PST:getTreeSnapshotMod("d6HalfCharge", 0) then
+            if slot ~= -1 and player:GetBatteryCharge(slot) == 0 then
+                player:AddActiveCharge(math.ceil(player:GetActiveMaxCharge(slot) / 2), slot, true, true, false)
             end
         end
     end

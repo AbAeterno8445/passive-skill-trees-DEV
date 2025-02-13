@@ -214,6 +214,12 @@ PST.bookItems = {
 	CollectibleType.COLLECTIBLE_TELEPATHY_BOOK, CollectibleType.COLLECTIBLE_MONSTER_MANUAL,
 	CollectibleType.COLLECTIBLE_LEMEGETON
 }
+PST.diceItems = {
+	CollectibleType.COLLECTIBLE_D1, CollectibleType.COLLECTIBLE_D4, CollectibleType.COLLECTIBLE_D6,
+	CollectibleType.COLLECTIBLE_D7, CollectibleType.COLLECTIBLE_D8, CollectibleType.COLLECTIBLE_D10,
+	CollectibleType.COLLECTIBLE_D20, CollectibleType.COLLECTIBLE_D100, CollectibleType.COLLECTIBLE_D_INFINITY,
+	CollectibleType.COLLECTIBLE_ETERNAL_D6,CollectibleType.COLLECTIBLE_D12, CollectibleType.COLLECTIBLE_SPINDOWN_DICE
+}
 PST.progressionItems = {
 	0, CollectibleType.COLLECTIBLE_KEY_PIECE_1, CollectibleType.COLLECTIBLE_KEY_PIECE_2,
 	CollectibleType.COLLECTIBLE_POLAROID, CollectibleType.COLLECTIBLE_NEGATIVE,
@@ -785,6 +791,10 @@ function PST:resetMods()
         allstatsRoomProc = false,
         d6Pickup = 0,
         d6HalfCharge = 0,
+		pickupDupe = 0,
+		boonOrdinary = false,
+		pickupBoons = 0,
+		chestReclose = 0,
         ---- Magdalene's tree ----
         allstatsFullRed = 0,
         allstatsFullRedProc = false,

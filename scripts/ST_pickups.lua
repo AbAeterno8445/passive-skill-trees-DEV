@@ -662,6 +662,17 @@ function PST:onPickup(pickup, collider, low, forced)
             if tmpMod and PST:getRoom():GetAliveEnemiesCount() > 0 and PST:getTreeSnapshotMod("ancwep_gildedSeekerBuff", 0) < tmpMod[1] then
                 PST:addModifiers({ damagePerc = 1, ancwep_gildedSeekerBuff = 1 }, true)
             end
+
+            -- Mod: +% speed per coin picked up
+            tmpMod = PST:getTreeSnapshotMod("pickupBoons", 0)
+            if tmpMod and PST:getTreeSnapshotMod("pickupBoonsCoinBuff", 0) < 10 then
+                PST:addModifiers({ speedPerc = tmpMod, pickupBoonsCoinBuff = tmpMod }, true)
+            end
+
+            -- Boon of the Ordinary node (Isaac's tree)
+            if PST:getTreeSnapshotMod("boonOrdinary", false) then
+                PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+            end
         -- On pickup key
         elseif variant == PickupVariant.PICKUP_KEY then
             local keyChance = PST:getTreeSnapshotMod("keyDupe", 0)
@@ -669,6 +680,12 @@ function PST:onPickup(pickup, collider, low, forced)
                 player:AddKeys(1)
             end
             PST:tryGrabBag()
+
+            -- Mod: +% tears per key picked up
+            tmpMod = PST:getTreeSnapshotMod("pickupBoons", 0)
+            if tmpMod and PST:getTreeSnapshotMod("pickupBoonsKeyBuff", 0) < 10 then
+                PST:addModifiers({ tearsPerc = tmpMod, pickupBoonsKeyBuff = tmpMod }, true)
+            end
         -- On pickup bomb
         elseif variant == PickupVariant.PICKUP_BOMB then
             local bombChance = PST:getTreeSnapshotMod("bombDupe", 0)
@@ -676,6 +693,12 @@ function PST:onPickup(pickup, collider, low, forced)
                 player:AddBombs(1)
             end
             PST:tryGrabBag()
+
+            -- Mod: +% damage per coin picked up
+            tmpMod = PST:getTreeSnapshotMod("pickupBoons", 0)
+            if tmpMod and PST:getTreeSnapshotMod("pickupBoonsBombBuff", 0) < 10 then
+                PST:addModifiers({ damagePerc = tmpMod, pickupBoonsBombBuff = tmpMod }, true)
+            end
         -- On pickup hearts
         elseif variant == PickupVariant.PICKUP_HEART then
             -- Black heart pickup
@@ -1357,6 +1380,14 @@ function PST:onPickupInit(pickup, firstSpawn)
                     end
                 end
             end
+
+            -- Mod: % chance to duplicate dropped coins/keys/bombs
+            tmpMod = PST:getTreeSnapshotMod("pickupDupe", 0)
+            if tmpMod > 0 and firstSpawn and not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
+            variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpMod then
+                local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
+                newPickup:GetData().PST_duped = true
+            end
         end
     end
 end
@@ -1388,6 +1419,15 @@ function PST:onPickupUpdate(pickup)
                 PST.specialNodes.temporaryCoins[pickup.InitSeed] = true
             end
         end
+
+        -- Re-closing chests
+        if pickup:GetData().PST_recloseProc then
+            if pickup.Timeout == 1 then
+                local newChest = Isaac.Spawn(pickup.Type, pickup.Variant, 0, pickup.Position, Vector.Zero, nil)
+                newChest:GetData().PST_recloseTotal = pickup:GetData().PST_recloseTotal
+                pickup:Remove()
+            end
+        end
     else
         -- Ancient starcursed jewel: Embered Azurite
         if PST:SC_getSnapshotMod("emberedAzurite", false) and pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and not
@@ -1414,11 +1454,26 @@ function PST:onPickupUpdate(pickup)
         end
 
         -- Chests
-        if PST:arrHasValue(PST.regularChests, pickup.Variant) or PST:arrHasValue(PST.lockedChests, pickup.Variant) or pickup.Variant == PickupVariant.PICKUP_BOMBCHEST  then
+        if PST:arrHasValue(PST.regularChests, pickup.Variant) or PST:arrHasValue(PST.lockedChests, pickup.Variant) or pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
             local pickupSpr = pickup:GetSprite()
             -- Opened chest
-            if pickupSpr:GetAnimation() == "Open" and pickupSpr:GetFrame() == 1 then
-                PST_expedOpenChest(pickup)
+            if pickupSpr:GetAnimation() == "Open" then
+                if pickupSpr:GetFrame() == 1 then
+                    PST_expedOpenChest(pickup)
+
+                    -- Mod: % chance for chests to re-close after opening, up to twice per room
+                    local tmpMod = PST:getTreeSnapshotMod("chestReclose", 0)
+                    local rTotal = pickup:GetData().PST_recloseTotal
+                    if tmpMod > 0 and (not rTotal or (rTotal and rTotal < 2)) and
+                    100 * math.random() < tmpMod then
+                        pickup:GetData().PST_recloseProc = true
+                        if not rTotal then
+                            pickup:GetData().PST_recloseTotal = 0
+                        end
+                        pickup:GetData().PST_recloseTotal = pickup:GetData().PST_recloseTotal + 1
+                        pickup.Timeout = 60
+                    end
+                end
             end
         end
     end

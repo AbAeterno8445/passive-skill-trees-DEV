@@ -1180,5 +1180,10 @@ function PST:onCache(player, cacheFlag)
                 player.MoveSpeed = tmpSpeed
             end
         end
+
+        -- Boon of the Ordinary node (Isaac's tree)
+        if PST:getTreeSnapshotMod("boonOrdinary", false) and player:GetNumCoins() >= 25 and player.MoveSpeed < 1.33 then
+            player.MoveSpeed = 1.33
+        end
     end
 end

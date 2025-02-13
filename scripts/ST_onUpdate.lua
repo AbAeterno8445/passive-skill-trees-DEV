@@ -2928,6 +2928,15 @@ function PST:frameUpdate()
 		PST.specialNodes.ancwep_sacScourgeBuff = PST.specialNodes.ancwep_sacScourgeBuff - 1
 	end
 
+	-- Boon of the Ordinary node (Isaac's tree)
+	if PST:getTreeSnapshotMod("boonOrdinary", false) then
+		if player:GetNumKeys() >= 12 and not PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
+			player:AddCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
+		elseif player:GetNumKeys() < 12 and PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
+			player:RemoveCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

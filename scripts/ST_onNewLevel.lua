@@ -909,6 +909,20 @@ function PST:onNewLevel()
         PST:addModifiers({ arti_siderealProcs = { value = 0, set = true } }, true)
     end
 
+    -- Mod: % stats when picking up coins/keys/bombs (reset)
+    tmpMod = PST:getTreeSnapshotMod("pickupBoonsCoinBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ speedPerc = -tmpMod, pickupBoonsCoinBuff = { value = 0, set = true } }, true)
+    end
+    tmpMod = PST:getTreeSnapshotMod("pickupBoonsKeyBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ tearsPerc = -tmpMod, pickupBoonsKeyBuff = { value = 0, set = true } }, true)
+    end
+    tmpMod = PST:getTreeSnapshotMod("pickupBoonsBombBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod, pickupBoonsBombBuff = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)
