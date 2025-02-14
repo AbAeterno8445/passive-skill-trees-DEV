@@ -935,6 +935,26 @@ function PST:onNewLevel()
         PST:addModifiers({ speedPerc = -tmpMod, heartblessedSpeedBuff = { value = 0, set = true } }, true)
     end
 
+    -- Gilded machines (reset)
+    tmpMod = PST:getTreeSnapshotMod("gildedMachineBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luckPerc = -tmpMod, gildedMachineBuff = { value = 0, set = true } }, true)
+    end
+    tmpMod = PST:getTreeSnapshotMod("gildedMachineList", {})
+    if #tmpMod > 0 then
+        PST.modData.treeModSnapshot.gildedMachineList = {}
+    end
+    tmpMod = PST:getTreeSnapshotMod("gildedMachineInit", {})
+    if #tmpMod > 0 then
+        PST.modData.treeModSnapshot.gildedMachineInit = {}
+    end
+
+    -- Golden Gimmick node (Cain's tree)
+    tmpMod = PST:getTreeSnapshotMod("goldenGimmickBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod, goldenGimmickBuff = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

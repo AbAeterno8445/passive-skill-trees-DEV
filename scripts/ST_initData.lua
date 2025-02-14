@@ -524,6 +524,10 @@ PST.rockBreakSounds = {
 	SoundEffect.SOUND_ROCK_CRUMBLE, SoundEffect.SOUND_GROUND_TREMOR, SoundEffect.SOUND_HELLBOSS_GROUNDPOUND
 }
 PST.brokenHeartCharBlacklist = {"Keeper", "T. Keeper"}
+PST.coinMachines = {
+	SlotVariant.DONATION_MACHINE, SlotVariant.FORTUNE_TELLING_MACHINE, SlotVariant.GREED_DONATION_MACHINE,
+	SlotVariant.SHOP_RESTOCK_MACHINE, SlotVariant.SLOT_MACHINE, SlotVariant.CRANE_GAME
+}
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}
@@ -828,6 +832,15 @@ function PST:resetMods()
 		arcadeReveal = 0,
 		shopReveal = 0,
 		nickelOnClear = 0,
+		gildedMachines = 0,
+		gildedMachineList = {},
+		gildedMachineInit = {},
+		gildedMachineBuff = 0,
+		goldenGimmick = false,
+		goldenGimmickProcs = 0,
+		goldenGimmickBuff = 0,
+		wealthsmith = false,
+		wealthsmithBuff = 0,
 		---- Judas' Tree ----
 		darkHeart = false,
 		darkHeartActive = false,
@@ -1793,6 +1806,7 @@ function PST:resetMods()
 			sprite = Sprite("gfx/effect_siren_ring.anm2", true),
 			position = Vector.Zero
 		},
+		goldenGimmickUses = 0,
 
 		consecutiveFire = 0,
 

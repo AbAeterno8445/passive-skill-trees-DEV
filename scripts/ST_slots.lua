@@ -17,6 +17,31 @@ function PST:onSlotUpdate(slot)
     slot.Variant == SlotVariant.ROTTEN_BEGGAR or slot.Variant == SlotVariant.DEVIL_BEGGAR or
     slot.Variant == SlotVariant.KEY_MASTER or slot.Variant == SlotVariant.BOMB_BUM
 
+    -- Gilded machines
+    local tmpMod = PST:getTreeSnapshotMod("gildedMachines", 0)
+    if tmpMod > 0 and PST:arrHasValue(PST.coinMachines, slot.Variant) and slot.FrameCount == 1 then
+        local initMachines = PST:getTreeSnapshotMod("gildedMachineInit", {})
+        local gildedMachines = PST:getTreeSnapshotMod("gildedMachineList", {})
+
+        -- Init
+        if not PST:arrHasValue(initMachines, slot.InitSeed) then
+            -- Gild coin machine
+            if 100 * math.random() < tmpMod then
+                table.insert(gildedMachines, slot.InitSeed)
+                SFXManager():Play(SoundEffect.SOUND_GOLD_HEART)
+                local tmpFX = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, 0, slot.Position, Vector.Zero, nil)
+                tmpFX:GetSprite().Scale = Vector(1.15, 1.15)
+                tmpFX.Color = Color(1, 1, 0.25, 1)
+            end
+            table.insert(initMachines, slot.InitSeed)
+        end
+
+        -- Gilded FX
+        if PST:arrHasValue(gildedMachines, slot.InitSeed) then
+            slot:GetSprite():SetRenderFlags(slot:GetSprite():GetRenderFlags() | AnimRenderFlags.GOLDEN)
+        end
+    end
+
     -- Player collided with slot
     if slot:GetTouch() > 0 then
         local player = PST:getPlayer()
@@ -26,6 +51,30 @@ function PST:onSlotUpdate(slot)
         local spentHearts = playerHearts < lastResources.hearts
         local spentKeys = player:GetNumKeys() < lastResources.keys
         local spentBombs = player:GetNumBombs() < lastResources.bombs
+
+        local freeUse = false
+
+        -- Gilded machine use
+        local gildedMachines = PST:getTreeSnapshotMod("gildedMachineList", {})
+        if PST:arrHasValue(gildedMachines, slot.InitSeed) and spentCoins then
+            -- 50% chance to be free
+            if math.random() < 0.5 then freeUse = true end
+
+            -- +0.5% luck for the current floor
+            PST:addModifiers({ luckPerc = 0.5, gildedMachineBuff = 0.5 }, true)
+
+            -- Golden Gimmick node (Cain's tree)
+            if PST:getTreeSnapshotMod("goldenGimmick", false) then
+                PST.specialNodes.goldenGimmickUses = PST.specialNodes.goldenGimmickUses + 1
+                if PST.specialNodes.goldenGimmickUses >= 4 then
+                    if PST:getTreeSnapshotMod("goldenGimmickBuff", 0) < 12 then
+                        player:AddCoins(-1)
+                        PST:addModifiers({ damagePerc = 2, goldenGimmickBuff = 2 }, true)
+                    end
+                    PST.specialNodes.goldenGimmickUses = 0
+                end
+            end
+        end
 
         -- Blood donation machine
         if slot.Variant == SlotVariant.BLOOD_DONATION_MACHINE and spentHearts then
@@ -76,7 +125,9 @@ function PST:onSlotUpdate(slot)
             -- Impromptu Gambler node (Cain's tree)
             if PST:getTreeSnapshotMod("impromptuGambler", false) then
                 if PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
-                    player:AddCoins(-2)
+                    if not freeUse then
+                        player:AddCoins(-2)
+                    end
                     lastResources.coins = player:GetNumCoins()
 
                     -- Remove natural treasure room items
@@ -115,7 +166,7 @@ function PST:onSlotUpdate(slot)
             end
 
             -- Mod: +% to a random stat every 5 coins given to the donation machine, up to 5 times per floor
-            local tmpMod = PST:getTreeSnapshotMod("donoMachineStatBoost", 0)
+            tmpMod = PST:getTreeSnapshotMod("donoMachineStatBoost", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("donoMachineStatBoostProcs", 0) < 5 then
                 PST:addModifiers({ donoMachineStatBoostUses = 1 }, true)
                 if PST:getTreeSnapshotMod("donoMachineStatBoostUses", 0) >= 5 then
@@ -139,7 +190,7 @@ function PST:onSlotUpdate(slot)
         -- Slot machine
         elseif slot.Variant == SlotVariant.SLOT_MACHINE and spentCoins then
             -- Mod: +xp when spending coins on slot machines in the floor
-            local tmpMod = PST:getTreeSnapshotMod("slotMachineXP", 0)
+            tmpMod = PST:getTreeSnapshotMod("slotMachineXP", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("slotMachineFloorUses", 0) < 50 then
                 PST:addTempXP(tmpMod, true, true)
                 PST:addModifiers({ slotMachineFloorUses = 1 }, true)
@@ -147,7 +198,7 @@ function PST:onSlotUpdate(slot)
         -- Fortune machine
         elseif slot.Variant == SlotVariant.FORTUNE_TELLING_MACHINE and spentCoins then
             -- Mod: +xp when spending coins on fortune machines in the floor
-            local tmpMod = PST:getTreeSnapshotMod("fortuneMachineXPmax", 0)
+            tmpMod = PST:getTreeSnapshotMod("fortuneMachineXPmax", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("fortuneMachineFloorUses", 0) < 50 then
                 local tmpXP = math.random(0, tmpMod)
                 PST:addTempXP(tmpXP, true, true)
@@ -192,12 +243,16 @@ function PST:onSlotUpdate(slot)
         if spentCoins and (slot.Variant == SlotVariant.FORTUNE_TELLING_MACHINE or slot.Variant == SlotVariant.SHOP_RESTOCK_MACHINE or
         slot.Variant == SlotVariant.SLOT_MACHINE or slot.Variant == SlotVariant.CRANE_GAME) then
             -- Mod: chance for machines that use coins to cost nothing on use
-            local tmpMod = PST:getTreeSnapshotMod("freeMachinesChance", 0)
+            tmpMod = PST:getTreeSnapshotMod("freeMachinesChance", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
-                player:AddCoins(lastResources.coins - player:GetNumCoins())
+                freeUse = true
                 PST:createFloatTextFX("Free use!", Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 50, true)
                 SFXManager():Play(SoundEffect.SOUND_PENNYPICKUP)
             end
+        end
+
+        if freeUse then
+            player:AddCoins(lastResources.coins - player:GetNumCoins())
         end
     end
 

@@ -874,6 +874,11 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
     end
 
+    -- Wealthsmith node (Cain's tree)
+    if PST:getTreeSnapshotMod("boonOrdinary", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

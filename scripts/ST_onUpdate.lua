@@ -568,6 +568,19 @@ function PST:frameUpdate()
 					PST:createFloatTextFX("Normalized Vitality", Vector.Zero, tmpColor, 0.12, 100, true)
 				end
 			end
+
+			-- Golden Gimmick node (Cain's tree)
+			if PST:getTreeSnapshotMod("goldenGimmick", false) and PST:getTreeSnapshotMod("goldenGimmickProcs", 0) < 2 and
+			100 * math.random() < 15 then
+				local validMachines = {
+					SlotVariant.FORTUNE_TELLING_MACHINE, SlotVariant.SLOT_MACHINE, SlotVariant.CRANE_GAME
+				}
+				local newMachineVariant = validMachines[math.random(#validMachines)]
+				local newMachine = Isaac.Spawn(EntityType.ENTITY_SLOT, newMachineVariant, 0, Isaac.GetFreeNearPosition(player.Position + Vector(60, 60), 20), Vector.Zero, nil)
+				table.insert(PST:getTreeSnapshotMod("gildedMachineInit", {}), newMachine.InitSeed)
+				table.insert(PST:getTreeSnapshotMod("gildedMachineList", {}), newMachine.InitSeed)
+				PST:addModifiers({ goldenGimmickProcs = 1 }, true)
+			end
 		end
 	end
 
@@ -1367,6 +1380,16 @@ function PST:frameUpdate()
 			tmpMod = PST:SC_getSnapshotMod("loseCoinsOnSpend", {0, 0})
 			if tmpMod[1] > 0 and tmpMod[2] > 0 and 100 * math.random() < tmpMod[1] then
 				player:AddCoins(-tmpMod[2])
+			end
+
+			-- Wealthsmith node (Cain's tree)
+			if PST:getTreeSnapshotMod("wealthsmith", false) then
+				local diff = updateTrackers.coinTracker - player:GetNumCoins()
+				local buffTotal = PST:getTreeSnapshotMod("wealthsmithBuff", 0)
+				local tmpAdd = math.min(12 - buffTotal, 0.2 * diff)
+				if tmpAdd > 0 then
+					PST:addModifiers({ tearsPerc = tmpAdd, wealthsmithBuff = tmpAdd }, true)
+				end
 			end
 		-- Gained coins
 		elseif player:GetNumCoins() > updateTrackers.coinTracker then
@@ -2934,6 +2957,16 @@ function PST:frameUpdate()
 			player:AddCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
 		elseif player:GetNumKeys() < 12 and PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
 			player:RemoveCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
+		end
+	end
+
+	-- Wealthsmith node (Cain's tree)
+	if PST:getTreeSnapshotMod("wealthsmith", false) then
+		local hasCoinKeys = (player:GetNumCoins() >= 20 and player:GetNumKeys() < 10)
+		if hasCoinKeys and not player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
+			player:AddCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
+		elseif not hasCoinKeys and player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
+			player:RemoveCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
 		end
 	end
 
