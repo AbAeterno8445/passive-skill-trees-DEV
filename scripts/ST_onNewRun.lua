@@ -894,6 +894,16 @@ function PST:onNewRun(isContinued)
         player:AddSmeltedTrinket(TrinketType.TRINKET_BLOODY_CROWN)
     end
 
+    -- Demonic Ambition node (Azazel's tree)
+    if PST:getTreeSnapshotMod("demonicAmbition", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
+    end
+
+    -- Early Bird node (Azazel's tree)
+    if PST:getTreeSnapshotMod("earlyBird", false) then
+        player:AddBlackHearts(1)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

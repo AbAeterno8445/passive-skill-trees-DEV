@@ -942,6 +942,8 @@ function PST:resetMods()
 		cardFloorDamageTotal = 0,
 		cardFloorTears = 0,
 		cardFloorTearsTotal = 0,
+		demonicAmbition = false,
+		earlyBird = false,
 		---- Lazarus' Tree ----
 		soulfulAwakening = false,
 		kingCurse = false,

@@ -595,6 +595,15 @@ function PST:frameUpdate()
 				table.insert(PST:getTreeSnapshotMod("gildedMachineList", {}), newMachine.InitSeed)
 				PST:addModifiers({ goldenGimmickProcs = 1 }, true)
 			end
+
+			-- Early Bird node (Azazel's tree)
+			if PST:getTreeSnapshotMod("earlyBird", false) and not PST:getTreeSnapshotMod("earlyBirdProc", false) then
+				local maxHP = player:GetMaxHearts() + player:GetSoulHearts() + player:GetRottenHearts() + player:GetBoneHearts()
+				if maxHP >= 2 then
+					player:AddSoulHearts(-2)
+					PST:addModifiers({ earlyBirdProc = true }, true)
+				end
+			end
 		end
 	end
 
@@ -2981,6 +2990,15 @@ function PST:frameUpdate()
 			player:AddCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
 		elseif not hasCoinKeys and player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
 			player:RemoveCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
+		end
+	end
+
+	-- Demonic Ambition node (Azazel's tree)
+	if PST:getTreeSnapshotMod("demonicAmbition", false) then
+		if PST:GetBlackHeartCount(player) >= 4 and not player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
+			player:AddCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
+		elseif PST:GetBlackHeartCount(player) < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
+			player:RemoveCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
 		end
 	end
 
