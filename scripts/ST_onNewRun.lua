@@ -879,6 +879,11 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
     end
 
+    -- Bean Diet node (Blue Baby's tree)
+    if PST:getTreeSnapshotMod("beanDiet", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_GIGANTE_BEAN)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

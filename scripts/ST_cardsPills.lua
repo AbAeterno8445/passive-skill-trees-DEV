@@ -354,6 +354,12 @@ function PST:onUseCard(card, player, useFlags)
             PST.specialNodes.ancwep_runicChopperTimer = 300
         end
     end
+
+    -- Mod: % chance to trigger The Poop's effect when using any card/pill
+    tmpMod = PST:getTreeSnapshotMod("cardPillPoop", 0)
+    if tmpMod > 0 and 100 * math.random() < tmpMod then
+        player:UseActiveItem(CollectibleType.COLLECTIBLE_POOP, UseFlag.USE_NOANIM)
+    end
 end
 
 function PST:blueGambitPillSwap(oldColor, oldEffect, newColor)
@@ -427,5 +433,11 @@ function PST:onUsePill(pillEffect, player, useFlags)
         for i=0,3 do
             player:AddActiveCharge(tmpMod, i, true, false, false)
         end
+    end
+
+    -- Mod: % chance to trigger The Poop's effect when using any card/pill
+    tmpMod = PST:getTreeSnapshotMod("cardPillPoop", 0)
+    if tmpMod > 0 and 100 * math.random() < tmpMod then
+        player:UseActiveItem(CollectibleType.COLLECTIBLE_POOP, UseFlag.USE_NOANIM)
     end
 end

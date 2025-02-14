@@ -152,6 +152,12 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 poopAllStatsProc = true
             }, true)
         end
+
+        -- Bean Diet node (Blue Baby's tree)
+        if PST:getTreeSnapshotMod("beanDiet", false) then
+            local tmpBean = PST.beanItems[math.random(#PST.beanItems)]
+            player:UseActiveItem(tmpBean, UseFlag.USE_NOANIM)
+        end
     -- Eternal D6
     elseif itemType == CollectibleType.COLLECTIBLE_ETERNAL_D6 then
         -- Mod: chance for Eternal D6 to not consume charges on use
