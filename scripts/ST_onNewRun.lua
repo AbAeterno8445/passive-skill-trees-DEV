@@ -889,6 +889,11 @@ function PST:onNewRun(isContinued)
         player:AddSmeltedTrinket(TrinketType.TRINKET_EVES_BIRD_FOOT)
     end
 
+    -- Blood-Crowned node (Samson's tree)
+    if PST:getTreeSnapshotMod("bloodcrowned", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_BLOODY_CROWN)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

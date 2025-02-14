@@ -261,7 +261,8 @@
         "REVEL",
         "RepentancePlusMod",
         "Reverie",
-        "communityRemix"
+        "communityRemix",
+        "GodsGambit"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

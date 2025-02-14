@@ -332,6 +332,20 @@ function PST:frameUpdate()
 			end
 		end
 
+		-- Mod: % chance for treasure rooms to additionally contain a double red heart pickup
+		tmpMod = PST:getTreeSnapshotMod("treasureDoubleHeart", 0)
+		if tmpMod > 0 and room:GetType() == RoomType.ROOM_TREASURE and room:IsFirstVisit() and 100 * math.random() < tmpMod then
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos() + Vector(40, 40), 20)
+			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_DOUBLEPACK, tmpPos, Vector.Zero, nil)
+		end
+
+		-- Blood-Crowned node (Samson's tree)
+		if PST:getTreeSnapshotMod("bloodcrowned", false) and (level:GetStage() >= 7 or PST:LJ_inMortis()) and not PST:getTreeSnapshotMod("bloodcrownedProc", false) then
+			local tmpPos = Isaac.GetFreeNearPosition(player.Position + Vector(60, 60), 20)
+			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_DEVILS_CROWN, tmpPos, Vector.Zero, nil)
+			PST:addModifiers({ bloodcrownedProc = true }, true)
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece

@@ -960,6 +960,16 @@ function PST:onNewLevel()
         PST:addModifiers({ blackHeartLuckProcs = { value = 0, set = true } }, true)
     end
 
+    -- Blood-Crowned node (Samson's tree)
+    if PST:getTreeSnapshotMod("bloodcrowned", false) and player:HasTrinket(TrinketType.TRINKET_BLOODY_CROWN) then
+        local tmpChance = 2 * (player:GetMaxHearts() - player:GetHearts())
+        if tmpChance > 0 and 100 * math.random() < tmpChance then
+            player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_BLOODY_CROWN)
+            SFXManager():Play(SoundEffect.SOUND_BLACK_POOF)
+            PST:createFloatTextFX("Blood-Crowned no more...", Vector.Zero, Color(0.9, 0.3, 0.3, 1), 0.11, 150, true)
+        end
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

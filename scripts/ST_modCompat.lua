@@ -616,6 +616,18 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Boner Baby"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burnt Baby"))
 	end
+
+    -- God's Gambit (TODO: review interactions with effects such as Challenger's Starpiece + check if GetEntityTypeByName works instead)
+    --[[if GodsGambit then
+        -- Deadly "Sins"
+        table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Kindness"))
+        table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Chastity"))
+        table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Charity"))
+        table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Humility"))
+        table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Diligence"))
+        table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Temperance"))
+        table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Patience"))
+    end]]
 end
 
 -- Add mod items to the 'blue' item pool

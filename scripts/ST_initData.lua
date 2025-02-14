@@ -925,6 +925,9 @@ function PST:resetMods()
 		bossQuickKillLuckBuff = 0,
 		bossFlawlessLuck = 0,
 		bossFlawlessLuckBuff = 0,
+		treasureDoubleHeart = 0,
+		bloodcrowned = false,
+		bloodcrownedProc = false,
 		---- Azazel's Tree ----
 		demonicSouvenirs = false,
 		demonicSouvenirsProc = false,
