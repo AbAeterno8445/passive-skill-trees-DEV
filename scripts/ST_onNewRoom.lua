@@ -1395,6 +1395,17 @@ function PST:onNewRoom()
 		player:ChangePlayerType(PlayerType.PLAYER_JUDAS)
 	end
 
+	-- Mod: % chance to gain Eve's Mascara for the current room when killing champion monsters
+	if PST:getTreeSnapshotMod("eveMascaraChampProc", false) then
+		PST:addModifiers({ eveMascaraChampProc = false }, true)
+	end
+
+	-- Phantomcrows node (Eve's tree)
+	if PST:getTreeSnapshotMod("phantomcrowsProc", false) then
+		player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_EVES_BIRD_FOOT)
+		PST:addModifiers({ phantomcrowsProc = false }, true)
+	end
+
 	-- Crimson Convergence buff: Celerity update
 	if PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" then
 		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)

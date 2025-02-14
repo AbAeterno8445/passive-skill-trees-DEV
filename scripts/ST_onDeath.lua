@@ -246,6 +246,13 @@ function PST:onDeath(entity)
                     Isaac.Spawn(EntityType.ENTITY_PICKUP, chestType, ChestSubType.CHEST_CLOSED, entity.Position, Vector.Zero, nil)
                     PST:addModifiers({ championChestDrops = 1 }, true)
                 end
+
+                -- Mod: % chance to gain Eve's Mascara for the current room when killing champion monsters
+                tmpMod = PST:getTreeSnapshotMod("eveMascaraChamp", 0)
+                if tmpMod > 0 and not PST:getTreeSnapshotMod("eveMascaraChampProc", false) and 100 * math.random() < tmpMod then
+                    PST:getPlayer():AddCollectible(CollectibleType.COLLECTIBLE_EVES_MASCARA)
+                    PST:addModifiers({ eveMascaraChampProc = true }, true)
+                end
             end
 
             -- Boss kill

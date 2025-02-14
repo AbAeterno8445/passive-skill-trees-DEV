@@ -884,7 +884,7 @@ function PST:resetMods()
 		soulHeartTearsRangeTotal = 0,
 		hallowedGroundProc = false,
 		cardPillPoop = 0,
-		beanDiet = false, -- TODO
+		beanDiet = false,
 		---- Eve's Tree ----
 		heartless = false,
 		heartlessTotal = 0,
@@ -904,6 +904,10 @@ function PST:resetMods()
 		luckOnClearBelowFullBuff = 0,
 		allStatsOneRed = 0,
 		allStatsOneRedActive = false,
+		eveMascaraChamp = 0,
+		eveMascaraChampProc = false,
+		phantomcrows = false,
+		phantomcrowsProc = false,
 		---- Samson's Tree ----
 		hasted = false,
 		hastedHits = 0,

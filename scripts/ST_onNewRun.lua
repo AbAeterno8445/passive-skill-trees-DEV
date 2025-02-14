@@ -884,6 +884,11 @@ function PST:onNewRun(isContinued)
         player:AddSmeltedTrinket(TrinketType.TRINKET_GIGANTE_BEAN)
     end
 
+    -- Phantomcrows node (Eve's tree)
+    if PST:getTreeSnapshotMod("phantomcrows", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_EVES_BIRD_FOOT)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

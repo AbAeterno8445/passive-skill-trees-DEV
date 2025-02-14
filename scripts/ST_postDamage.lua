@@ -81,7 +81,7 @@ function PST:postDamage(target, damage, flag, source)
             end
             if tmpFamiliar and target:IsActiveEnemy(false) and target:IsVulnerableEnemy() and target.Type ~= EntityType.ENTITY_BLOOD_PUPPY then
                 -- Dead bird
-                if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD then
+                if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD or tmpFamiliar.Variant == FamiliarVariant.EVES_BIRD_FOOT then
                     -- Carrion Avian node (Eve's tree)
                     if PST:getTreeSnapshotMod("carrionAvian", false) and isKillingHit then
                         -- +0.15 damage when dead bird kills an enemy, up to +3. Permanent +0.6 if boss
@@ -92,6 +92,12 @@ function PST:postDamage(target, damage, flag, source)
                         elseif PST:getTreeSnapshotMod("carrionAvianBossProc", 0) < 2 then
                             PST:addModifiers({ damage = 0.6, carrionAvianBossProc = 1 }, true)
                         end
+                    end
+
+                    -- Phantomcrows node (Eve's tree)
+                    if PST:getTreeSnapshotMod("phantomcrows", false) and not PST:getTreeSnapshotMod("phantomcrowsProc", false) and 100 * math.random() < 0.5 then
+                        PST:getPlayer():AddSmeltedTrinket(TrinketType.TRINKET_EVES_BIRD_FOOT)
+                        PST:addModifiers({ phantomcrowsProc = true }, true)
                     end
                 -- Locusts / locust trinkets
                 elseif tmpFamiliar.Variant == FamiliarVariant.ABYSS_LOCUST or (tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY and tmpFamiliar.SubType >= 1 and tmpFamiliar.SubType <= 5) then
