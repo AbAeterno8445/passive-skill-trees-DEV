@@ -120,6 +120,15 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         if PST:getTreeSnapshotMod("darkHeart", false) and not PST:getTreeSnapshotMod("darkHeartBelial", false) then
             PST:addModifiers({ darkHeartBelial = true }, true)
         end
+
+        -- Dark Apotheosis node (Judas' tree)
+        if PST:getTreeSnapshotMod("darkApotheosis", false) and player:GetPlayerType() == PlayerType.PLAYER_JUDAS then
+            local tmpHearts = player:GetMaxHearts() / 2
+            player:ChangePlayerType(PlayerType.PLAYER_BLACKJUDAS)
+            player:AddBlackHearts(tmpHearts)
+            SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
+            PST:addModifiers({ darkApotheosisProc = true }, true)
+        end
     -- The Poop
     elseif itemType == CollectibleType.COLLECTIBLE_POOP then
         -- Brown Blessing node (Blue Baby's tree)
@@ -617,6 +626,23 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         if PST:getTreeSnapshotMod("innerGlow", false) and isNormalCharge and player:GetActiveMaxCharge(slot) >= 3 and
         100 * math.random() < 33 then
             player:UseActiveItem(CollectibleType.COLLECTIBLE_YUM_HEART)
+        end
+
+        -- Tenet of Belial node (Judas' tree)
+        if PST:getTreeSnapshotMod("tenetBelial", false) and itemType ~= CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL and isNormalCharge and
+        player:GetActiveMaxCharge(slot) >= 4 then
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
+            if math.random() < 0.5 then
+                player:SetActiveCharge(0, slot)
+            end
+
+            PST:addModifiers({ tenetBelialProcs = 1 }, true)
+            if PST:getTreeSnapshotMod("tenetBelialProcs", 0) >= 20 then
+                PST:addModifiers({ tenetBelial = false }, true)
+                if not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+                end
+            end
         end
     end
 

@@ -1389,6 +1389,12 @@ function PST:onNewRoom()
 		PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 	end
 
+	-- Dark Apotheosis node (Judas' tree)
+	if PST:getTreeSnapshotMod("darkApotheosisProc", false) then
+		PST:addModifiers({ darkApotheosisProc = false }, true)
+		player:ChangePlayerType(PlayerType.PLAYER_JUDAS)
+	end
+
 	-- Crimson Convergence buff: Celerity update
 	if PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" then
 		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)

@@ -1980,11 +1980,12 @@ function PST:onDamage(target, damage, flag, source)
                             PST.specialNodes.testOfTemperanceCD = 15
                         end
 
-                        -- Mod: chance for Book of Belial to gain a charge when hitting a boss
-                        local tmpSlot = srcPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL)
-                        if tmpSlot ~= -1 then
-                            if PST:getTreeSnapshotMod("belialChargesGained", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("belialBossHitCharge", 0) then
-                                PST:addModifiers({ belialChargesGained = 1 }, true)
+                        -- Mod: chance for active items to gain a charge when hitting a boss while you have black hearts
+                        local tmpMod = PST:getTreeSnapshotMod("belialBossHitCharge", 0)
+                        if tmpMod > 0 and PST:GetBlackHeartCount(srcPlayer) > 0 and PST:getTreeSnapshotMod("belialChargesGained", 0) < 12 and
+                        100 * math.random() < tmpMod then
+                            PST:addModifiers({ belialChargesGained = 1 }, true)
+                            for tmpSlot=0,3 do
                                 srcPlayer:AddActiveCharge(1, tmpSlot, true, false, false)
                             end
                         end

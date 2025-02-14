@@ -677,6 +677,11 @@ function PST:GetBlackHeartCount(player)
         end
     end
 
+	-- Dark Heart node (Judas' tree)
+	if PST:getTreeSnapshotMod("darkHeart", false) then
+		black_count = black_count + soul_hearts
+	end
+
     return black_count
 end
 

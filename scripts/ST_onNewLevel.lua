@@ -955,6 +955,11 @@ function PST:onNewLevel()
         PST:addModifiers({ damagePerc = -tmpMod, goldenGimmickBuff = { value = 0, set = true } }, true)
     end
 
+    -- Mod: % chance for monsters with at least 50 HP to drop a black heart on death based on luck (reset)
+    if PST:getTreeSnapshotMod("blackHeartLuckProcs", 0) > 0 then
+        PST:addModifiers({ blackHeartLuckProcs = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

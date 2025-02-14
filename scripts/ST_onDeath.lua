@@ -26,6 +26,11 @@ function PST:onDeath(entity)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
             PST:addModifiers({ luck = -0.5 }, true)
         end
+
+        -- Dark Apotheosis node (Judas' tree)
+        if PST:getTreeSnapshotMod("darkApotheosisProc", false) then
+            PST:addModifiers({ darkApotheosisProc = false }, true)
+        end
     elseif entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly and
     PST:getRoom():GetFrameCount() > 1 then
         -- Enemy death
@@ -364,6 +369,14 @@ function PST:onDeath(entity)
             local levelStage = PST:getLevel():GetStage()
             if tmpNPC:IsChampion() and 100 * math.random() < PST.SCDropRates.championKill(levelStage).regular then
                 PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill(levelStage).ancient)
+            end
+
+            -- Mod: % chance for monsters with at least 50 HP to drop a black heart on death based on luck
+            local tmpMod = PST:getTreeSnapshotMod("blackHeartLuckDrop", 0)
+            if tmpMod > 0 and tmpNPC.MaxHitPoints >= 50 and PST:getTreeSnapshotMod("blackHeartLuckProcs", 0) < 3 and
+            100 * math.random() < ((PST:getPlayer().Luck / 0.5) * tmpMod) then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, tmpNPC.Position, 2 * RandomVector(), nil)
+                PST:addModifiers({ blackHeartLuckProcs = 1 }, true)
             end
         end
 

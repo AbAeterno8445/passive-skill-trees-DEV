@@ -855,6 +855,12 @@ function PST:resetMods()
 		belialChargesGained = 0,
 		lostBlackHeartsLuck = 0,
 		lostBlackHeartsLuckBuff = 0,
+		tenetBelial = false,
+		tenetBelialProcs = 0,
+		darkApotheosis = false,
+		darkApotheosisProc = false,
+		blackHeartLuckDrop = 0,
+		blackHeartLuckProcs = 0,
 		---- Blue Baby's Tree ----
 		blueGambit = false,
 		blueGambitPillSwap = { old = nil, new = nil },
