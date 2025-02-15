@@ -674,6 +674,14 @@ function PST:onRoomClear(level, room)
 			if PST:getTreeSnapshotMod("spaghettification", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and 100 * math.random() < 20 then
 				PST.specialNodes.spaghettificationTimer = 300
 			end
+
+			-- Mod: % chance to trigger Monster Manual's effect when clearing a room without taking damage within 7 seconds of entering
+			tmpMod = PST:getTreeSnapshotMod("monsterManualOnClear", 0)
+			if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and PST:getTreeSnapshotMod("monsterManualOnClearProcs", 0) < 3 and
+			room:GetFrameCount() <= 220 and 100 * math.random() < tmpMod then
+				player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
+				PST:addModifiers({ monsterManualOnClearProcs = 1 }, true)
+			end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)

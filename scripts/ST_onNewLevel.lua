@@ -975,6 +975,11 @@ function PST:onNewLevel()
         PST:addModifiers({ pennyToBlessedProc = false }, true)
     end
 
+    -- Mod: % chance to trigger Monster Manual's effect when clearing a room without taking damage within 7 seconds of entering (reset)
+    if PST:getTreeSnapshotMod("monsterManualOnClearProcs", 0) > 0 then
+        PST:addModifiers({ monsterManualOnClearProcs = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

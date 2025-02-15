@@ -921,6 +921,11 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_SOUL)
     end
 
+    -- Companionship Gravitas node (Lilith's tree)
+    if PST:getTreeSnapshotMod("companionshipGravitas", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_FRIENDSHIP_NECKLACE)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

@@ -1015,6 +1015,9 @@ function PST:resetMods()
 		boxOfFriendsCharge = 0,
 		boxOfFriendsAllStats = 0,
 		boxOfFriendsAllStatsProc = false,
+		monsterManualOnClear = 0,
+		monsterManualOnClearProcs = 0,
+		companionshipGravitas = false,
 		---- Keeper's Tree ----
 		keeperBlessing = false,
 		keeperBlessingHeals = 0,
