@@ -528,7 +528,7 @@ PST.coinMachines = {
 	SlotVariant.DONATION_MACHINE, SlotVariant.FORTUNE_TELLING_MACHINE, SlotVariant.GREED_DONATION_MACHINE,
 	SlotVariant.SHOP_RESTOCK_MACHINE, SlotVariant.SLOT_MACHINE, SlotVariant.CRANE_GAME
 }
-PST.beanItems = {
+PST.beanActives = {
 	CollectibleType.COLLECTIBLE_BEAN, CollectibleType.COLLECTIBLE_BUTTER_BEAN, CollectibleType.COLLECTIBLE_MEGA_BEAN,
 	CollectibleType.COLLECTIBLE_KIDNEY_BEAN, CollectibleType.COLLECTIBLE_WAIT_WHAT
 }

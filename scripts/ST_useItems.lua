@@ -155,7 +155,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
 
         -- Bean Diet node (Blue Baby's tree)
         if PST:getTreeSnapshotMod("beanDiet", false) then
-            local tmpBean = PST.beanItems[math.random(#PST.beanItems)]
+            local tmpBean = PST.beanActives[math.random(#PST.beanActives)]
             player:UseActiveItem(tmpBean, UseFlag.USE_NOANIM)
         end
     -- Eternal D6

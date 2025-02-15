@@ -108,6 +108,10 @@ function PST:initModCompat()
         -- Grand Consonance node whitelist
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Old Knife"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cardboard Cutout"))
+
+        -- Coin machines
+        table.insert(PST.coinMachines, Epiphany.Slot.DICE_MACHINE)
+        table.insert(PST.coinMachines, Epiphany.Slot.PAIN_O_MATIC)
 	end
 
     -- Fiend Folio
@@ -296,6 +300,13 @@ function PST:initModCompat()
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Token Bag"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Bag of Bobbies"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Fetal Stone"))
+
+        -- Coin machines
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Robot Teller"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Vending Machine (Vanilla)"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Vending Machine (Fiend Folio)"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Golden Slot Machine"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Midarizer"))
     end
 
     -- Last Judgement
@@ -548,6 +559,9 @@ function PST:initModCompat()
 
         -- Grand Consonance
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Willo Familiar"))
+
+        -- Coin machines
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Revending Machine"))
 	end
 
 	-- Community Remix
@@ -615,6 +629,11 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cousin Cletus"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Boner Baby"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burnt Baby"))
+
+        --[[ Bean items (double check whether these are active items)
+        table.insert(PST.beanActives, Isaac.GetItemIdByName("Spring Bean"))
+        table.insert(PST.beanActives, Isaac.GetItemIdByName("Chilly Bean"))
+        table.insert(PST.beanActives, Isaac.GetItemIdByName("Bowl o' Beans"))]]
 	end
 
     -- God's Gambit (TODO: review interactions with effects such as Challenger's Starpiece + check if GetEntityTypeByName works instead)
