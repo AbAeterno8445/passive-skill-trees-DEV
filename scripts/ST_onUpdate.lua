@@ -1812,8 +1812,11 @@ function PST:frameUpdate()
 					tearVel = (tmpSoul.Position - player.Position):Normalized() * (10 * player.ShotSpeed)
 				end
 				if tearVel.X ~= 0 or tearVel.Y ~= 0 then
-					local playerTears = 30 / (player.MaxFireDelay + 1)
-					PST.specialNodes.ballistosseousTimer = math.ceil(30 / playerTears)
+					local tmpTears = 30 / (player.MaxFireDelay + 1)
+					if isHeld then
+						tmpTears = tmpTears * 0.4
+					end
+					PST.specialNodes.ballistosseousTimer = math.ceil(30 / tmpTears)
 
 					local newTear = Game():Spawn(
 						EntityType.ENTITY_TEAR,
@@ -1829,7 +1832,7 @@ function PST:frameUpdate()
 					newTear:ToTear().FallingSpeed = -player.TearFallingSpeed
 					newTear.CollisionDamage = player.Damage * (0.5 + PST:getTreeSnapshotMod("forgBoneTearDmg", 0) / 100)
 
-					if not isHeld and 100 * math.random() < 50 then
+					if not isHeld then
 						newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING)
 					end
 				end

@@ -673,18 +673,21 @@ function PST:onDamage(target, damage, flag, source)
             if PST:getTreeSnapshotMod("harmonizedSpecters", false) then
                 local tmpTwin = srcPlayer:GetOtherTwin()
                 if tmpTwin then
-                    local tmpFulfilled = false
                     local inGround = 1 - math.max(math.abs(srcPlayer.Velocity.X), math.abs(srcPlayer.Velocity.Y)) > 0.9
                     if target.Position:Distance(tmpTwin.Position) <= 110 then
-                        dmgMult = dmgMult + 0.12
-                        tmpFulfilled = true
+                        dmgMult = dmgMult + 0.08
                     end
                     if srcPlayer.Position:Distance(tmpTwin.Position) > 10 and inGround then
-                        dmgMult = dmgMult + 0.12
-                        tmpFulfilled = true
+                        dmgMult = dmgMult + 0.08
                     end
-                    if not tmpFulfilled then
-                        dmgMult = dmgMult - 0.2
+                    local tmpBonys = Isaac.FindByType(EntityType.ENTITY_BONY)
+                    if #tmpBonys > 0 then
+                        for _, tmpBony in ipairs(tmpBonys) do
+                            if EntityRef(tmpBony).IsFriendly then
+                                dmgMult = dmgMult + 0.08
+                                break
+                            end
+                        end
                     end
                 end
             end
