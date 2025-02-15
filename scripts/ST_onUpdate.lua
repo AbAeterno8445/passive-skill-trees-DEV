@@ -1500,11 +1500,6 @@ function PST:frameUpdate()
 
 	-- Blood charge changes
 	if player:GetEffectiveBloodCharge() ~= updateTrackers.bloodCharges then
-		-- Blood Harvest node (T. Bethany's tree)
-		if PST:getTreeSnapshotMod("bloodHarvest", false) then
-			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_SPEED)
-		end
-
 		if updateTrackers.bloodCharges ~= nil then
 			local tmpDiff = player:GetEffectiveBloodCharge() - updateTrackers.bloodCharges
 			if tmpDiff ~= 0 then

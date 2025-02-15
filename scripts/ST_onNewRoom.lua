@@ -1423,6 +1423,14 @@ function PST:onNewRoom()
 		PST:addModifiers({ blueKinProc = false }, true)
 	end
 
+	-- Blood Harvest node (T. Bethany's tree)
+    if PST:getTreeSnapshotMod("bloodHarvestBossDrops", 0) > 0 or PST:getTreeSnapshotMod("bloodHarvestDrops", 0) > 0 then
+        PST:addModifiers({
+            bloodHarvestDrops = { value = 0, set = true },
+            bloodHarvestBossDrops = { value = 0, set = true }
+        }, true)
+    end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

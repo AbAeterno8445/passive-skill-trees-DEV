@@ -919,10 +919,13 @@ function PST:onDeath(entity)
         end
 
         -- Blood Harvest node (T. Bethany's tree)
-        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestDrops", 0) < 6 and 100 * math.random() < 25 then
-            local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, entity.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
-            tmpHeart.Timeout = 90
-            PST:addModifiers({ bloodHarvestDrops = 1 }, true)
+        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestDrops", 0) < 6 and entity.MaxHitPoints >= 15 then
+            local tmpChance = 25 - math.max(0, 0.3 * (PST:getPlayer():GetEffectiveBloodCharge() - 30))
+            if 100 * math.random() < tmpChance then
+                local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, entity.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
+                tmpHeart.Timeout = 90
+                PST:addModifiers({ bloodHarvestDrops = 1 }, true)
+            end
         end
 
         -- Mod: % chance to gain +luck when killing enemies while you have 1 soul/black heart or less, doubled against bosses

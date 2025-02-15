@@ -2015,10 +2015,13 @@ function PST:onDamage(target, damage, flag, source)
                         end
 
                         -- Blood Harvest node (T. Bethany's tree)
-                        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestBossDrops", 0) < 4 and 100 * math.random() < 7 then
-                            local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
-                            tmpHeart.Timeout = 90
-                            PST:addModifiers({ bloodHarvestBossDrops = 1 }, true)
+                        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestBossDrops", 0) < 4 then
+                            local tmpChance = 7 - math.max(0, 0.3 * (srcPlayer:GetEffectiveBloodCharge() - 30))
+                            if 100 * math.random() < tmpChance then
+                                local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
+                                tmpHeart.Timeout = 90
+                                PST:addModifiers({ bloodHarvestBossDrops = 1 }, true)
+                            end
                         end
                     end
 

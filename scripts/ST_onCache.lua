@@ -861,15 +861,6 @@ function PST:onCache(player, cacheFlag)
         end
     end
 
-    -- Blood Harvest node (T. Bethany's tree)
-    if PST:getTreeSnapshotMod("bloodHarvest", false) then
-        local tmpDiff = math.min(25, player:GetEffectiveBloodCharge() - 20)
-        if tmpDiff > 0 then
-            dynamicMods.damagePerc = dynamicMods.damagePerc - tmpDiff
-            dynamicMods.speedPerc = dynamicMods.speedPerc - tmpDiff
-        end
-    end
-
     -- Mod: +% damage and speed while near Dark Esau
     tmpTreeMod = PST:getTreeSnapshotMod("darkEsauProxDmgSpeed", 0)
     if tmpTreeMod > 0 and PST.specialNodes.darkEsauProxBuffTimer > 0 then

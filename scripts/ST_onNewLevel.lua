@@ -580,14 +580,6 @@ function PST:onNewLevel()
         PST:addModifiers({ luck = -tmpMod / 2, forgBoneTearLuckBuff = -tmpMod / 2 }, true)
     end
 
-    -- Blood Harvest node (T. Bethany's tree)
-    if PST:getTreeSnapshotMod("bloodHarvestBossDrops", 0) > 0 or PST:getTreeSnapshotMod("bloodHarvestDrops", 0) > 0 then
-        PST:addModifiers({
-            bloodHarvestDrops = { value = 0, set = true },
-            bloodHarvestBossDrops = { value = 0, set = true }
-        }, true)
-    end
-
     -- Otherside Seeker node (T. Bethany's tree)
     tmpMod = PST:getTreeSnapshotMod("othersideSeekerBuff", 0)
     if tmpMod > 0 then
