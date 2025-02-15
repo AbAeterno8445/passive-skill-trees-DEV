@@ -984,7 +984,7 @@ function PST:resetMods()
 		clayshaping = false,
 		devilItemCEpiphany = 0,
 		treasureItemCEpiphany = 0,
-		edenHairdo = false, -- TODO
+		edenHairdo = false,
 		---- The Lost's Tree ----
 		spectralAdvantage = false,
 		spectralAdvantageHearts = 0,
@@ -1000,6 +1000,9 @@ function PST:resetMods()
 		blackHeartDamageTotal = 0,
 		eternalD6Charge = 0,
 		soulHeartOnClear = 0,
+		pennyToBlessed = 0,
+		pennyToBlessedProc = false,
+		vagrantSoul = false,
 		---- Lilith's Tree ----
 		minionManeuvering = false,
 		totalFamiliars = 0,

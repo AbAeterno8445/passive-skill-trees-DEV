@@ -915,6 +915,12 @@ function PST:onNewRun(isContinued)
         player:AddSmeltedTrinket(TrinketType.TRINKET_MODELING_CLAY)
     end
 
+    -- Vagrant Soul node (The Lost's tree)
+    if PST:getTreeSnapshotMod("vagrantSoul", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_SOUL)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_SOUL)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

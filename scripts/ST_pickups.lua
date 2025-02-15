@@ -1201,6 +1201,15 @@ function PST:onPickupInit(pickup, firstSpawn)
                     pickupGone = true
                 end
             end
+
+            -- Mod: % chance to replace dropped pennies with a Blessed Penny if you don't already have one, once per floor
+            tmpMod = PST:getTreeSnapshotMod("pennyToBlessed", 0)
+            if not pickupGone and tmpMod > 0 and not PST:getTreeSnapshotMod("pennyToBlessedProc", false) and subtype == CoinSubType.COIN_PENNY and
+            100 * math.random() < tmpMod then
+                pickup:Morph(pickup.Type, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_BLESSED_PENNY)
+                PST:addModifiers({ pennyToBlessedProc = true }, true)
+                pickupGone = true
+            end
         -- Keys
         elseif variant == PickupVariant.PICKUP_KEY then
             -- Mod: chance to replace keys with golden keys, once per floor

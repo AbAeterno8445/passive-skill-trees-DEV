@@ -610,6 +610,11 @@ function PST:frameUpdate()
 					PST:addModifiers({ earlyBirdProc = true }, true)
 				end
 			end
+
+			-- Vagrant Soul node (The Lost's tree)
+			if PST:getTreeSnapshotMod("vagrantSoul", false) and player:HasCollectible(CollectibleType.COLLECTIBLE_SOUL) and 100 * math.random() < 10 then
+				player:RemoveCollectible(CollectibleType.COLLECTIBLE_SOUL)
+			end
 		end
 	end
 

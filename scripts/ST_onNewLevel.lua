@@ -970,6 +970,11 @@ function PST:onNewLevel()
         end
     end
 
+    -- Mod: % chance to replace dropped pennies with a Blessed Penny if you don't already have one, once per floor (reset)
+    if PST:getTreeSnapshotMod("pennyToBlessedProc", false) then
+        PST:addModifiers({ pennyToBlessedProc = false }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)
