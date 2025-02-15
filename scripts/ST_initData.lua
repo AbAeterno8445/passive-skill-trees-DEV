@@ -1059,6 +1059,8 @@ function PST:resetMods()
 		famineLocustRangeShotspeed = 0,
 		pestilenceLocustLuck = 0,
 		warLocustDamage = 0,
+		reverseAnnihilation = false,
+		reverseAnnihilationProcs = 0,
 		---- The Forgotten's Tree ----
 		soulful = false,
 		spiritEbb = false,

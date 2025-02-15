@@ -985,6 +985,11 @@ function PST:onNewLevel()
         PST:addModifiers({ avidShopperProcs = { value = 0, set = true } }, true)
     end
 
+    -- Reverse Annihilation node (Apollyon's tree)
+    if PST:getTreeSnapshotMod("reverseAnnihilationProcs", 0) > 0 then
+        PST:addModifiers({ reverseAnnihilationProcs = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

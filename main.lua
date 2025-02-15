@@ -400,6 +400,7 @@ PST:AddCallback(ModCallbacks.MC_USE_PILL, PST.onUsePill)
 PST:AddCallback(ModCallbacks.MC_INPUT_ACTION, PST.onInput)
 PST:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, PST.postFireTear)
 PST:AddCallback(ModCallbacks.MC_POST_TEAR_DEATH, PST.onTearDeath)
+PST:AddCallback(ModCallbacks.MC_POST_TEAR_COLLISION, PST.onTearCollision)
 -- Repentogon callbacks
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.onSaveSlot)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)

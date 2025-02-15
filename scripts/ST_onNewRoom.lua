@@ -402,7 +402,7 @@ function PST:onNewRoom()
 	end
 
 	-- Mod: chance for the second floor's treasure room to contain an additional Eraser item pedestal
-	if (level:GetStage() == LevelStage.STAGE1_2 or (level:GetStage() == LevelStage.STAGE1_1 and not PST:isFirstOrigStage())) and
+	if (level:GetStage() == LevelStage.STAGE1_2 or level:GetStage() == 5 or (level:GetStage() == LevelStage.STAGE1_1 and not PST:isFirstOrigStage())) and
 	roomType == RoomType.ROOM_TREASURE and not PST:getTreeSnapshotMod("eraserSecondFloorProc", false) then
 		if 100 * math.random() < PST:getTreeSnapshotMod("eraserSecondFloor", 0) then
 			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
