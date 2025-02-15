@@ -1087,6 +1087,8 @@ function PST:resetMods()
 		wispFloorBuff = 0,
 		wispFloorBuffTotal = 0,
 		redHeartsSoulCharge = 0,
+		chaoticWisps = false,
+		chaoticWispsInit = {},
 		---- Jacob & Esau's Tree ----
 		heartLink = false,
 		statuePilgrimage = false,

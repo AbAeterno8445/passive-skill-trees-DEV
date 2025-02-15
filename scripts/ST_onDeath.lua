@@ -1035,6 +1035,18 @@ function PST:onDeath(entity)
                 if tmpMod > 0 and 100 * math.random() < tmpMod then
                     PST:addModifiers({ luck = 0.03 }, true)
                 end
+            -- Wisp death
+            elseif tmpFamiliar.Variant == FamiliarVariant.WISP then
+                -- Chaotic Wisps node (Bethany's tree)
+                if PST:getTreeSnapshotMod("chaoticWisps", false) then
+                    local chaoticWispsInit = PST:getTreeSnapshotMod("chaoticWispsInit", {})
+                    for i, tmpID in ipairs(chaoticWispsInit) do
+                        if tmpID == tmpFamiliar.InitSeed then
+                            table.remove(chaoticWispsInit, i)
+                            break
+                        end
+                    end
+                end
             end
         end
     end

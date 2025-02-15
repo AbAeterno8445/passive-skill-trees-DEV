@@ -225,6 +225,24 @@ function PST:familiarInit(familiar)
                     PST:addModifiers({ greatDevourerBoost = 1 }, true)
                 end
             end
+        -- Wisps
+        elseif familiar.Variant == FamiliarVariant.WISP then
+            -- Regular wisp spawn
+            if familiar.SubType == 584 or familiar.SubType == 489 then
+                -- Chaotic Wisps node (Bethany's tree)
+                if PST:getTreeSnapshotMod("chaoticWisps", false) then
+                    local chaoticWispsInit = PST:getTreeSnapshotMod("chaoticWispsInit", {})
+                    if not PST:arrHasValue(chaoticWispsInit, familiar.InitSeed) then
+                        if 100 * math.random() < 50 then
+                            PST:addRandomWisp()
+                            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, 0, familiar.Position, Vector.Zero, nil)
+                            familiar:Die()
+                        else
+                            table.insert(chaoticWispsInit, familiar.InitSeed)
+                        end
+                    end
+                end
+            end
         end
     end
 end
