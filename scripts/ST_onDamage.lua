@@ -569,6 +569,15 @@ function PST:onDamage(target, damage, flag, source)
                     PST:addModifiers({ blueKinProc = true }, true)
                 end
 
+                -- Choices? node (Jacob and Esau's tree)
+                if PST:getTreeSnapshotMod("JEChoices", false) then
+                    tmpChance = 15 + (PST:getLevel():GetStage() - 1) * 5
+                    if 100 * math.random() < tmpChance then
+                        player:RemoveCollectible(CollectibleType.COLLECTIBLE_THERES_OPTIONS)
+                        player:RemoveCollectible(CollectibleType.COLLECTIBLE_MORE_OPTIONS)
+                    end
+                end
+
                 -- Chance for normal monsters to deal an extra 1/2 heart damage
                 tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then

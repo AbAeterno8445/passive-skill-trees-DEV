@@ -1102,6 +1102,12 @@ function PST:resetMods()
 		esauSoulOnKill = 0,
 		esauSoulOnKillProc = false,
 		jacobItemAllstats = 0,
+		slowParaExtension = 0,
+		redStewBoon = 0,
+		redStewBoonRooms = 0,
+		keepThemAtBay = false,
+		keepThemAtBayFails = 0,
+		JEChoices = false,
 		---- Siren's Tree ----
 		darkSongstress = false,
 		darkSongstressActive = false,

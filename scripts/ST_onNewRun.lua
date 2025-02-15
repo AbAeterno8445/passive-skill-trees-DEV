@@ -932,6 +932,16 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INFESTATION)
     end
 
+    -- Choices? node (Jacob and Esau's tree)
+    if PST:getTreeSnapshotMod("JEChoices", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_THERES_OPTIONS)
+        if player:GetOtherTwin() then
+            player:GetOtherTwin():AddCollectible(CollectibleType.COLLECTIBLE_MORE_OPTIONS)
+        end
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_THERES_OPTIONS)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_MORE_OPTIONS)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

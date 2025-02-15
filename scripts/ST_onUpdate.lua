@@ -615,6 +615,18 @@ function PST:frameUpdate()
 			if PST:getTreeSnapshotMod("vagrantSoul", false) and player:HasCollectible(CollectibleType.COLLECTIBLE_SOUL) and 100 * math.random() < 10 then
 				player:RemoveCollectible(CollectibleType.COLLECTIBLE_SOUL)
 			end
+
+			-- Mod: % chance to spawn a Red Stew per room cleared in the previous floor without taking damage
+			tmpMod = PST:getTreeSnapshotMod("redStewBoon", 0)
+			if tmpMod > 0 then
+				local tmpChance = tmpMod * PST:getTreeSnapshotMod("redStewBoonRooms", 0)
+				if tmpChance > 0 and 100 * math.random() < tmpChance then
+					local tmpPos = Isaac.GetFreeNearPosition(player.Position + Vector(60, 60), 20)
+					Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+					Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_RED_STEW, tmpPos, Vector.Zero, nil)
+				end
+				PST:addModifiers({ redStewBoonRooms = { value = 0, set = true } }, true)
+			end
 		end
 	end
 
@@ -756,6 +768,18 @@ function PST:frameUpdate()
 		tmpMod = PST:getTreeSnapshotMod("curseRoomCEpiphany", 0)
 		if tmpMod > 0 and room:IsFirstVisit() and room:GetType() == RoomType.ROOM_CURSE and 100 * math.random() < tmpMod then
 			PST:edenChaoticEpiphany(player)
+		end
+
+		-- Keep Them At Bay node (Jacob and Esau's tree)
+		if PST:getTreeSnapshotMod("keepThemAtBay", false) and room:IsFirstVisit() and room:GetAliveEnemiesCount() > 0 and
+		(player:GetHearts() >= 6 or (player:GetOtherTwin() and player:GetOtherTwin():GetHearts() >= 6)) then
+			local tmpChance = 15 * (2 ^ PST:getTreeSnapshotMod("keepThemAtBayFails", 0))
+			if 100 * math.random() < tmpChance then
+				player:UseActiveItem(CollectibleType.COLLECTIBLE_HOURGLASS, UseFlag.USE_NOANIM)
+				PST:addModifiers({ keepThemAtBayFails = { value = 0, set = true } }, true)
+			else
+				PST:addModifiers({ keepThemAtBayFails = 1 }, true)
+			end
 		end
 	end
 

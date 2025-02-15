@@ -682,6 +682,12 @@ function PST:onRoomClear(level, room)
 				player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
 				PST:addModifiers({ monsterManualOnClearProcs = 1 }, true)
 			end
+
+			-- Mod: % chance to spawn Red Stew per room cleared in the previous floor without taking damage
+			tmpMod = PST:getTreeSnapshotMod("redStewBoon", 0)
+			if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+				PST:addModifiers({ redStewBoonRooms = 1 }, true)
+			end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)

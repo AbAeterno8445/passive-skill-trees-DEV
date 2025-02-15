@@ -451,6 +451,23 @@ function PST:postDamage(target, damage, flag, source)
                     if tmpMod and PST:isMobUndead(target) and isKillingHit then
                         PST.specialNodes.ancwep_sacScourgeBuff = tmpMod[1] * 30
                     end
+
+                    -- Mod: hitting enemies affected by slow or paralysis extends the status by X seconds, up to 4 times per enemy
+                    tmpMod = PST:getTreeSnapshotMod("slowParaExtension", 0)
+                    if tmpMod > 0 then
+                        if not target:GetData().PST_slowParaExtension then
+                            target:GetData().PST_slowParaExtension = 0
+                        end
+                        if target:GetData().PST_slowParaExtension < 4 then
+                            target:GetData().PST_slowParaExtension = target:GetData().PST_slowParaExtension + 1
+                            if target:GetSlowingCountdown() > 0 then
+                                target:SetSlowingCountdown(target:GetSlowingCountdown() + tmpMod * 30)
+                            end
+                            if target:GetFreezeCountdown() > 0 then
+                                target:SetFreezeCountdown(target:GetFreezeCountdown() + tmpMod * 30)
+                            end
+                        end
+                    end
                 end
             end
 
