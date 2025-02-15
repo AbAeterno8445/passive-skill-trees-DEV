@@ -1024,6 +1024,7 @@ function PST:resetMods()
 		gulp = false,
 		gulpActive = false,
 		avidShopper = false,
+		avidShopperProcs = 0,
 		coinShield = 0,
 		itemPurchaseLuck = 0,
 		itemPurchaseLuckBuff = 0,
@@ -1035,6 +1036,8 @@ function PST:resetMods()
 		greedDimeDrop = 0,
 		blueFlyDeathDamage = 0,
 		blueFlyDeathDamageTotal = 0,
+		blueKin = false,
+		blueKinProc = false,
 		---- Apollyon's Tree ----
 		apollyonBlessing = false,
 		null = false,

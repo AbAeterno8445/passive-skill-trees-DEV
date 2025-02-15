@@ -980,6 +980,11 @@ function PST:onNewLevel()
         PST:addModifiers({ monsterManualOnClearProcs = { value = 0, set = true } }, true)
     end
 
+    -- Avid Shopper node (Keeper's tree)
+    if PST:getTreeSnapshotMod("avidShopperProcs", 0) > 0 then
+        PST:addModifiers({ avidShopperProcs = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

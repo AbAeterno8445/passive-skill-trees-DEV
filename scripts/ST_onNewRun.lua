@@ -926,6 +926,12 @@ function PST:onNewRun(isContinued)
         player:AddSmeltedTrinket(TrinketType.TRINKET_FRIENDSHIP_NECKLACE)
     end
 
+    -- Blue Kin node (Keeper's tree)
+    if PST:getTreeSnapshotMod("blueKin", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_INFESTATION)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INFESTATION)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

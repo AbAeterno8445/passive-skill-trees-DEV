@@ -368,8 +368,9 @@ function PST:onDamage(target, damage, flag, source)
                 end
 
                 -- Avid Shopper node (Keeper's tree)
-                if PST:getTreeSnapshotMod("avidShopper", false) then
+                if PST:getTreeSnapshotMod("avidShopper", false) and PST:getTreeSnapshotMod("avidShopperProcs", 0) < 5 then
                     player:AddCoins(-math.random(3))
+                    PST:addModifiers({ avidShopperProcs = 1 }, true)
                 end
 
                 -- Mod: -% coalescing soul trigger chance when hit by a monster
@@ -560,6 +561,12 @@ function PST:onDamage(target, damage, flag, source)
                         PST:addModifiers({ spaghettificationFirst = true }, true)
                     end
                     PST.specialNodes.spaghettificationTimer = 300
+                end
+
+                -- Blue Kin node (Keeper's tree)
+                if PST:getTreeSnapshotMod("blueKin", 0) and not player:HasCollectible(CollectibleType.COLLECTIBLE_MULLIGAN) and 100 * math.random() < 30 then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_MULLIGAN)
+                    PST:addModifiers({ blueKinProc = true }, true)
                 end
 
                 -- Chance for normal monsters to deal an extra 1/2 heart damage

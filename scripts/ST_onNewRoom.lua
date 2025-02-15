@@ -1417,6 +1417,12 @@ function PST:onNewRoom()
         player:ReplaceCostumeSprite(Isaac.GetItemConfig():GetNullItem(NullItemID.ID_EDEN), "gfx/characters/costumes/character_009_edenhair" .. charData.hairdo .. ".png", 0)
     end
 
+	-- Blue Kin node (Keeper's tree)
+	if PST:getTreeSnapshotMod("blueKinProc", false) then
+		player:RemoveCollectible(CollectibleType.COLLECTIBLE_MULLIGAN)
+		PST:addModifiers({ blueKinProc = false }, true)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false
