@@ -3028,6 +3028,14 @@ function PST:frameUpdate()
 		end
 	end
 
+	-- Mod: +% speed for 5 seconds after using any Bean active
+	if PST.specialNodes.beanSpeedTimer > 0 then
+		PST.specialNodes.beanSpeedTimer = PST.specialNodes.beanSpeedTimer - 1
+		if PST.specialNodes.beanSpeedTimer == 0 then
+			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

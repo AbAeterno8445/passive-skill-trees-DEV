@@ -584,6 +584,16 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 player:AddActiveCharge(math.ceil(player:GetActiveMaxCharge(slot) / 2), slot, true, true, false)
             end
         end
+    -- Bean items
+    elseif PST:arrHasValue(PST.beanActives, itemType) then
+        -- Mod: +% speed for 5 seconds after using a Bean active
+        tmpMod = PST:getTreeSnapshotMod("beanActiveSpeed", 0)
+        if tmpMod > 0 then
+            if PST.specialNodes.beanSpeedTimer == 0 then
+                PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+            end
+            PST.specialNodes.beanSpeedTimer = 150
+        end
     end
 
     -- Self-used items

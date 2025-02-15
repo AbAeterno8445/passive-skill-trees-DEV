@@ -402,6 +402,12 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.astralwep_whipSpeedTimer > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + PST.specialNodes.astralwep_whipSpeedBuff
         end
+
+        -- Mod: +% speed after using a Bean active
+        tmpTreeMod = PST:getTreeSnapshotMod("beanActiveSpeed", 0)
+        if tmpTreeMod > 0 and PST.specialNodes.beanSpeedTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active

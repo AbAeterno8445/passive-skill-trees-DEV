@@ -630,10 +630,10 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Boner Baby"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burnt Baby"))
 
-        --[[ Bean items (double check whether these are active items)
+        -- Bean items (double check whether these are active items)
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Spring Bean"))
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Chilly Bean"))
-        table.insert(PST.beanActives, Isaac.GetItemIdByName("Bowl o' Beans"))]]
+        table.insert(PST.beanActives, Isaac.GetItemIdByName("Bowl o' Beans"))
 	end
 
     -- God's Gambit (TODO: review interactions with effects such as Challenger's Starpiece + check if GetEntityTypeByName works instead)

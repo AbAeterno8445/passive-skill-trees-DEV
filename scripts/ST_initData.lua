@@ -885,6 +885,7 @@ function PST:resetMods()
 		hallowedGroundProc = false,
 		cardPillPoop = 0,
 		beanDiet = false,
+		beanActiveSpeed = 0,
 		---- Eve's Tree ----
 		heartless = false,
 		heartlessTotal = 0,
@@ -1838,6 +1839,7 @@ function PST:resetMods()
 		},
 		goldenGimmickUses = 0,
 		spaghettificationTimer = 0,
+		beanSpeedTimer = 0,
 
 		consecutiveFire = 0,
 
