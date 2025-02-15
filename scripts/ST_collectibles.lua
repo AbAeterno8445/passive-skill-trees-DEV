@@ -120,9 +120,10 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
     end
 
-    -- Mod: +random stat when collecting a treasure/shop room item
     if firstTime then
         local roomType = PST:getRoom():GetType()
+
+        -- Mod: +random stat when collecting a treasure/shop room item
         local tmpBonus = PST:getTreeSnapshotMod("treasureShopItemStat", 0)
         local tmpBonusPerc = PST:getTreeSnapshotMod("treasureShopItemStatPerc", 0)
         if (roomType == RoomType.ROOM_TREASURE or roomType == RoomType.ROOM_SHOP) and (tmpBonus ~= 0 or tmpBonusPerc ~= 0) then
@@ -144,10 +145,23 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
             end
         end
 
+        -- Mod: % chance to trigger Chaotic Epiphany when first obtaining a treasure/shop room item
+        tmpMod = PST:getTreeSnapshotMod("treasureItemCEpiphany", 0)
+        if tmpMod > 0 and (roomType == RoomType.ROOM_TREASURE or roomType == RoomType.ROOM_SHOP) and 100 * math.random() < tmpMod then
+            PST:edenChaoticEpiphany(player)
+        end
+
+        -- Mod: % chance to trigger Chaotic Epiphany when first obtaining a devil/angel/boss room item
+        tmpMod = PST:getTreeSnapshotMod("devilItemCEpiphany", 0)
+        if tmpMod > 0 and (roomType == RoomType.ROOM_DEVIL or roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_BOSS) and
+        100 * math.random() < tmpMod then
+            PST:edenChaoticEpiphany(player)
+        end
+
         -- Mod: +- luck when first obtaining any passive item
         tmpBonus = PST:getTreeSnapshotMod("itemRandLuck", 0)
         if tmpBonus ~= 0 then
-            PST:addModifiers({ luck = -tmpBonus + tmpBonus * 2 * math.random() }, true)
+            PST:addModifiers({ luck = (-tmpBonus / 2) + tmpBonus * 2 * math.random() }, true)
         end
 
         -- Ancient starcursed jewel: Chronicler Stone (halve debuff when first grabbing a book item)

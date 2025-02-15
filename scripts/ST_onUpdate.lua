@@ -346,6 +346,12 @@ function PST:frameUpdate()
 			PST:addModifiers({ bloodcrownedProc = true }, true)
 		end
 
+		-- Mod: % chance to gain Myosotis when clearing a room without taking damage
+		if PST:getTreeSnapshotMod("myosotisOnClearProc", 0) then
+			player:TryRemoveTrinket(TrinketType.TRINKET_MYOSOTIS)
+			PST:addModifiers({ myosotisOnClearProc = false }, true)
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -739,6 +745,12 @@ function PST:frameUpdate()
 		local charData = PST:getCurrentCharData()
 		if charData and PST:getTreeSnapshotMod("crimConvBuff", "") == "bloodshield" and room:GetAliveEnemiesCount() > 0 then
 			player:SetMinDamageCooldown(90 + 6 * charData.crimsonStarcores)
+		end
+
+		-- Mod: % chance to trigger Chaotic Epiphany when entering a Curse Room
+		tmpMod = PST:getTreeSnapshotMod("curseRoomCEpiphany", 0)
+		if tmpMod > 0 and room:IsFirstVisit() and room:GetType() == RoomType.ROOM_CURSE and 100 * math.random() < tmpMod then
+			PST:edenChaoticEpiphany(player)
 		end
 	end
 
@@ -2999,6 +3011,20 @@ function PST:frameUpdate()
 			player:AddCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
 		elseif PST:GetBlackHeartCount(player) < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
 			player:RemoveCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
+		end
+	end
+
+	-- Spaghettification node (Eden's tree)
+	if PST.specialNodes.spaghettificationTimer > 0 then
+		if PST.specialNodes.spaghettificationTimer == 300 then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+		elseif PST.specialNodes.spaghettificationTimer == 150 then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE, -1)
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
+		end
+		PST.specialNodes.spaghettificationTimer = PST.specialNodes.spaghettificationTimer - 1
+		if PST.specialNodes.spaghettificationTimer == 0 then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE, -1)
 		end
 	end
 

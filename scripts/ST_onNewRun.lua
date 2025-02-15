@@ -599,6 +599,7 @@ function PST:onNewRun(isContinued)
             local tmpStat = PST:getRandomStat()
             PST:addModifiers({ [tmpStat .. "Perc"] = 1 }, true)
         end
+        player:AddSmeltedTrinket(TrinketType.TRINKET_BROKEN_SYRINGE)
     end
 
     -- Starblessed node (Eden's tree)
@@ -902,6 +903,16 @@ function PST:onNewRun(isContinued)
     -- Early Bird node (Azazel's tree)
     if PST:getTreeSnapshotMod("earlyBird", false) then
         player:AddBlackHearts(1)
+    end
+
+    -- Spaghettification node (Eden's tree)
+    if PST:getTreeSnapshotMod("spaghettification", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_3_DOLLAR_BILL)
+    end
+
+    -- Clayshaping node (Eden's tree)
+    if PST:getTreeSnapshotMod("clayshaping", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_MODELING_CLAY)
     end
 
     -- Update familiars

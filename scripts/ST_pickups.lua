@@ -1535,7 +1535,7 @@ function PST:onTrinketAdd(player, type, firstTime)
     if firstTime then
         local tmpBonus = PST:getTreeSnapshotMod("trinketRandLuck", 0)
         if tmpBonus ~= 0 then
-            PST:addModifiers({ luck = -tmpBonus + tmpBonus * 2 * math.random() }, true)
+            PST:addModifiers({ luck = (-tmpBonus / 2) + tmpBonus * 2 * math.random() }, true)
         end
     end
 

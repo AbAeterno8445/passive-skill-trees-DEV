@@ -975,6 +975,15 @@ function PST:resetMods()
 		startCoinKeyBomb = 0,
 		edenBlessingSpawn = 0,
 		edenBlessingSpawned = false,
+		myosotisOnClear = 0,
+		myosotisOnClearProc = false,
+		curseRoomCEpiphany = 0,
+		spaghettification = false,
+		spaghettificationFirst = false,
+		clayshaping = false,
+		devilItemCEpiphany = 0,
+		treasureItemCEpiphany = 0,
+		edenHairdo = false, -- TODO
 		---- The Lost's Tree ----
 		spectralAdvantage = false,
 		spectralAdvantageHearts = 0,
@@ -1828,6 +1837,7 @@ function PST:resetMods()
 			position = Vector.Zero
 		},
 		goldenGimmickUses = 0,
+		spaghettificationTimer = 0,
 
 		consecutiveFire = 0,
 

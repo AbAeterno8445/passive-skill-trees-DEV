@@ -10,6 +10,7 @@ function PST.treeScreen:InputAllocate()
         local crimsonNodeSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_NODE]
         local infMeridionSubmenu = submenusModule.submenus[PSTSubmenu.INFECTIOUS_MERIDION]
         local crimConvSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_CONVERGENCE]
+        local edenHairSubmenu = submenusModule.submenus[PSTSubmenu.EDEN_HAIR]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -210,6 +211,14 @@ function PST.treeScreen:InputAllocate()
                         menuY = self.hoveredNode.pos.Y * 38
                     })
 
+                -- Eden Hairdo node, open Eden hair submenu
+                elseif self.hoveredNode.name == "Eden Hairdo" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.EDEN_HAIR, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do
@@ -348,6 +357,20 @@ function PST.treeScreen:InputAllocate()
                         charData.crimConvBuff = tmpBuff
                     else
                         charData.crimConvBuff = ""
+                    end
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                end
+            end
+        -- Eden hair submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.EDEN_HAIR then
+            local tmpHairID = edenHairSubmenu.hoveredHair
+            if tmpHairID ~= nil then
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    if charData.hairdo ~= tmpHairID then
+                        charData.hairdo = tmpHairID
+                    else
+                        charData.hairdo = 0
                     end
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 end

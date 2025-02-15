@@ -1411,6 +1411,12 @@ function PST:onNewRoom()
 		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
 	end
 
+	-- Eden Hairdo
+	local charData = PST:getCurrentCharData()
+    if PST:getTreeSnapshotMod("edenHairdo", false) and charData and charData.hairdo and charData.hairdo > 0 then
+        player:ReplaceCostumeSprite(Isaac.GetItemConfig():GetNullItem(NullItemID.ID_EDEN), "gfx/characters/costumes/character_009_edenhair" .. charData.hairdo .. ".png", 0)
+    end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

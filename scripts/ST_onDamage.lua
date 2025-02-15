@@ -553,6 +553,15 @@ function PST:onDamage(target, damage, flag, source)
                     PST:addModifiers({ devilChance = -5 }, true)
                 end
 
+                -- Spaghettification node (Eden's tree)
+                if PST:getTreeSnapshotMod("spaghettification", false) then
+                    if not PST:getTreeSnapshotMod("spaghettificationFirst", false) then
+                        player:RemoveCollectible(CollectibleType.COLLECTIBLE_3_DOLLAR_BILL)
+                        PST:addModifiers({ spaghettificationFirst = true }, true)
+                    end
+                    PST.specialNodes.spaghettificationTimer = 300
+                end
+
                 -- Chance for normal monsters to deal an extra 1/2 heart damage
                 tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then

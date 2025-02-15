@@ -546,6 +546,56 @@ function PST:getTCainRandPickup()
 	end
 end
 
+-- Eden Chaotic Epiphany mechanic
+---@param player EntityPlayer
+function PST:edenChaoticEpiphany(player)
+	local roll = math.random()
+	-- 25%: add 2-4% to a random stat
+	if roll < 0.25 then
+		local randStat = PST:getRandomStat() .. "Perc"
+		PST:addModifiers({ [randStat] = 1 + math.random(3) }, true)
+	-- 25%: spawn a double coin/key/bomb
+	elseif roll >= 0.25 and roll < 0.5 then
+		local randPickups = {
+			{PickupVariant.PICKUP_COIN, CoinSubType.COIN_DOUBLEPACK},
+			{PickupVariant.PICKUP_KEY, KeySubType.KEY_DOUBLEPACK},
+			{PickupVariant.PICKUP_BOMB, BombSubType.BOMB_DOUBLEPACK}
+		}
+		local tmpPos = Isaac.GetFreeNearPosition(player.Position, 20)
+		local newPickupType = randPickups[math.random(#randPickups)]
+		Isaac.Spawn(EntityType.ENTITY_PICKUP, newPickupType[1], newPickupType[2], tmpPos, Vector.Zero, nil)
+	-- 20%: spawn a random heart
+	elseif roll >= 0.5 and roll < 0.7 then
+		local randHearts = {
+			HeartSubType.HEART_HALF, HeartSubType.HEART_HALF_SOUL, HeartSubType.HEART_SOUL, HeartSubType.HEART_BLACK,
+			HeartSubType.HEART_FULL, HeartSubType.HEART_DOUBLEPACK, HeartSubType.HEART_BONE, HeartSubType.HEART_ROTTEN,
+			HeartSubType.HEART_BLENDED, HeartSubType.HEART_ETERNAL, HeartSubType.HEART_GOLDEN
+		}
+		local tmpPos = Isaac.GetFreeNearPosition(player.Position, 20)
+		local newPickupType = randHearts[math.random(#randHearts)]
+		Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, newPickupType, tmpPos, Vector.Zero, nil)
+	-- 20%: spawn a regular chest
+	elseif roll >= 0.7 and roll < 0.9 then
+		local tmpPos = Isaac.GetFreeNearPosition(player.Position + 20 * RandomVector(), 20)
+		Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, 0, tmpPos, Vector.Zero, nil)
+	-- 10%: spawn a special chest
+	else
+		local tmpChestTypes = {table.unpack(PST.regularChests), table.unpack(PST.lockedChests)}
+		for i, tmpChestType in ipairs(tmpChestTypes) do
+			if tmpChestType == PickupVariant.PICKUP_CHEST then
+				table.remove(tmpChestTypes, i)
+				break
+			end
+		end
+		if PST:isRunSidereal() then
+			table.insert(tmpChestTypes, Isaac.GetEntityVariantByName("Sidereal Cache"))
+		end
+		local tmpPos = Isaac.GetFreeNearPosition(player.Position + 20 * RandomVector(), 20)
+		local newChestType = tmpChestTypes[math.random(#tmpChestTypes)]
+		Isaac.Spawn(EntityType.ENTITY_PICKUP, newChestType, 0, tmpPos, Vector.Zero, nil)
+	end
+end
+
 function PST:isBerserk()
 	return PST:getPlayer():GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
 end

@@ -661,6 +661,19 @@ function PST:onRoomClear(level, room)
 			if room:GetFrameCount() <= 220 then
 				PST:sideArtiObjProgress("smitingMeridion", 1)
 			end
+
+			-- Mod: % chance to gain a smelted Myosotis after clearing a room without taking damage
+			tmpMod = PST:getTreeSnapshotMod("myosotisOnClear", 0)
+			if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and not player:HasTrinket(TrinketType.TRINKET_MYOSOTIS) and
+			100 * math.random() < tmpMod then
+				player:AddSmeltedTrinket(TrinketType.TRINKET_MYOSOTIS)
+				PST:addModifiers({ myosotisOnClearProc = true }, true)
+			end
+
+			-- Spaghettification node (Eden's tree)
+			if PST:getTreeSnapshotMod("spaghettification", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and 100 * math.random() < 20 then
+				PST.specialNodes.spaghettificationTimer = 300
+			end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)
