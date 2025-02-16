@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v0.4.28"
+PST.modVersion = "v1.0.0"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -203,16 +203,6 @@ PST.deadlySinBosses = {
 PST.segmentBosses = {
 	EntityType.ENTITY_ENVY, EntityType.ENTITY_LARRYJR, EntityType.ENTITY_PIN, EntityType.ENTITY_CHUB,
 	EntityType.ENTITY_FISTULA_MEDIUM, EntityType.ENTITY_FISTULA_SMALL, EntityType.ENTITY_BLASTOCYST_MEDIUM, EntityType.ENTITY_BLASTOCYST_SMALL
-}
-PST.bookItems = {
-	CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK, CollectibleType.COLLECTIBLE_BIBLE,
-	CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL, CollectibleType.COLLECTIBLE_BOOK_OF_REVELATIONS,
-	CollectibleType.COLLECTIBLE_BOOK_OF_SECRETS, CollectibleType.COLLECTIBLE_BOOK_OF_SHADOWS,
-	CollectibleType.COLLECTIBLE_BOOK_OF_SIN, CollectibleType.COLLECTIBLE_BOOK_OF_THE_DEAD,
-	CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES, CollectibleType.COLLECTIBLE_NECRONOMICON,
-	CollectibleType.COLLECTIBLE_HOW_TO_JUMP, CollectibleType.COLLECTIBLE_SATANIC_BIBLE,
-	CollectibleType.COLLECTIBLE_TELEPATHY_BOOK, CollectibleType.COLLECTIBLE_MONSTER_MANUAL,
-	CollectibleType.COLLECTIBLE_LEMEGETON
 }
 PST.diceItems = {
 	CollectibleType.COLLECTIBLE_D1, CollectibleType.COLLECTIBLE_D4, CollectibleType.COLLECTIBLE_D6,
@@ -531,6 +521,10 @@ PST.coinMachines = {
 PST.beanActives = {
 	CollectibleType.COLLECTIBLE_BEAN, CollectibleType.COLLECTIBLE_BUTTER_BEAN, CollectibleType.COLLECTIBLE_MEGA_BEAN,
 	CollectibleType.COLLECTIBLE_KIDNEY_BEAN, CollectibleType.COLLECTIBLE_WAIT_WHAT
+}
+PST.boneItems = {
+	CollectibleType.COLLECTIBLE_BONE_SPURS, CollectibleType.COLLECTIBLE_SLIPPED_RIB, CollectibleType.COLLECTIBLE_POINTY_RIB,
+	CollectibleType.COLLECTIBLE_JAW_BONE, CollectibleType.COLLECTIBLE_BRITTLE_BONES, CollectibleType.COLLECTIBLE_COMPOUND_FRACTURE
 }
 -- Generated when relevant
 PST.ultraSecretPool = {}
@@ -1061,7 +1055,7 @@ function PST:resetMods()
 		warLocustDamage = 0,
 		reverseAnnihilation = false,
 		reverseAnnihilationProcs = 0,
-		---- The Forgotten's Tree ----
+		---- The Forgotten's Tree (OLD) ----
 		soulful = false,
 		spiritEbb = false,
 		innerFlare = false,
@@ -1072,6 +1066,23 @@ function PST:resetMods()
 		theSoulBoneDamage = 0,
 		theSoulBoneTears = 0,
 		innerFlareSlowDuration = 2,
+		---- The Forgotten's Tree ----
+		soulWispOnClear = 0,
+		redFullToBone = 0,
+		redFullToBoneProc = false,
+		treasureBoneItem = 0,
+		treasureBoneItemProcs = 0,
+		forgCarrionPrincess = 0,
+		soulWispTears = 0,
+		spiritBringer = false,
+		spiritTaker = false,
+		spiritReaper = false,
+		spiritProtector = false,
+		spiritGambler = false,
+		osteomancy = false,
+		osteomancyDouble = false,
+		osteomancyItems = {},
+		necromancy = false,
 		---- Bethany's Tree ----
 		willOTheWisp = false,
 		willOTheWispDmgBuff = 0,

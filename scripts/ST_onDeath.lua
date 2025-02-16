@@ -1050,6 +1050,11 @@ function PST:onDeath(entity)
                         end
                     end
                 end
+
+                -- Mod: % tears per active wisp
+                if PST:getTreeSnapshotMod("soulWispTears", 0) > 0 then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                end
             end
         end
     end

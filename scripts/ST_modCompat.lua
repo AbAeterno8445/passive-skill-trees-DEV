@@ -210,12 +210,6 @@ function PST:initModCompat()
             end
         end
 
-        -- Book items
-        table.insert(PST.bookItems, Isaac.GetItemIdByName("Blank Book"))
-        table.insert(PST.bookItems, Isaac.GetItemIdByName("Bedtime Story"))
-        table.insert(PST.bookItems, Isaac.GetItemIdByName("The Fiend Folio"))
-        table.insert(PST.bookItems, Isaac.GetItemIdByName("Hedonist's Cookbook"))
-
         -- Regular chests
         table.insert(PST.regularChests, Isaac.GetEntityVariantByName("Dire Chest"))
 
@@ -365,13 +359,8 @@ function PST:initModCompat()
 		-- Poop trinkets
         table.insert(PST.poopTrinkets, Isaac.GetTrinketIdByName("Night Soil"))
 
-		-- Book Items
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Book of Judges"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Book of Leviathan"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("The Book of Genesis"))
-
 		-- Locked Chests
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Scarlet Chest"))
+		table.insert(PST.lockedChests, Isaac.GetItemIdByName("Scarlet Chest"))
 
 		-- Runes
         table.insert(PST.allRunes, Isaac.GetCardIdByName("Red Rune"))
@@ -445,13 +434,6 @@ function PST:initModCompat()
                 PST.heartUpItems[tmpItemID] = tmpItem[2]
             end
         end
-
-		-- Book Items
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Grimoire of Patchouli"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Book of Years"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Empty Book"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Zhou Interprets Dreams"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Captain's Log"))
 
 		-- Progression Items
 		table.insert(PST.progressionItems, Isaac.GetItemIdByName("Reverie Music"))
@@ -588,12 +570,6 @@ function PST:initModCompat()
                 PST.heartUpItems[tmpItemID] = tmpItem[2]
             end
         end
-
-		--Book Items
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("The Book of Love"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("How to Jump 2.0"))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("Book of Virtues "))
-		table.insert(PST.bookItems, Isaac.GetItemIdByName("The Book of Sorrow"))
 
 		-- Blue Gambit Cards
 		local tmpCards = {

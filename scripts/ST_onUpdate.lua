@@ -627,6 +627,67 @@ function PST:frameUpdate()
 				end
 				PST:addModifiers({ redStewBoonRooms = { value = 0, set = true } }, true)
 			end
+
+			-- Spirit-gambler node (Forgotten's tree)
+			if PST:getTreeSnapshotMod("spiritGambler", false) then
+				local spiritNodes = {"spiritBringer", "spiritTaker", "spiritReaper", "spiritProtector"}
+				local newNode = spiritNodes[math.random(#spiritNodes)]
+				-- New node application
+				if not PST:getTreeSnapshotMod(newNode, false) then
+					-- Old node removal
+					for _, tmpNode in ipairs(spiritNodes) do
+						if tmpNode ~= newNode and PST:getTreeSnapshotMod(tmpNode, false) then
+							if tmpNode == "spiritBringer" then
+								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS, -1)
+								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, -1)
+							elseif tmpNode == "spiritTaker" then
+								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, -1)
+							elseif tmpNode == "spiritReaper" then
+								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PURGATORY, -1)
+								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HUNGRY_SOUL, -1)
+							elseif tmpNode == "spiritProtector" then
+								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL, -1)
+								player:TryRemoveTrinket(TrinketType.TRINKET_YOUR_SOUL)
+								player:TryRemoveTrinket(TrinketType.TRINKET_FOUND_SOUL)
+							end
+							PST:addModifiers({ [tmpNode] = false }, true)
+						end
+					end
+					PST:addModifiers({ [newNode] = true }, true)
+				end
+				PST:createFloatTextFX("Spirit-gambler", Vector.Zero, Color(0.75, 0.75, 0.2, 1), 0.13, 120, true)
+			end
+
+			-- Osteomancy node (Forgotten's tree)
+			if PST:getTreeSnapshotMod("osteomancy", false) then
+				local osteoItems = PST:getTreeSnapshotMod("osteomancyItems", {})
+				if #osteoItems > 0 then
+					for _, tmpItem in ipairs(osteoItems) do
+						player:AddInnateCollectible(tmpItem, -1)
+					end
+					PST.modData.treeModSnapshot.osteomancyItems = {}
+				end
+
+				local availableItems = {}
+				for _, tmpBoneItem in ipairs(PST.boneItems) do
+					if not player:HasCollectible(tmpBoneItem) then
+						table.insert(availableItems, tmpBoneItem)
+					end
+				end
+				local maxItems = 1
+				if PST:getTreeSnapshotMod("osteomancyDouble", false) then
+					maxItems = 2
+					PST:addModifiers({ osteomancyDouble = false }, true)
+				end
+				for _=1,maxItems do
+					if #availableItems > 0 then
+						local newItem = math.random(#availableItems)
+						player:AddInnateCollectible(availableItems[newItem])
+						table.remove(availableItems, newItem)
+					end
+				end
+				PST:createFloatTextFX("Osteomancy", Vector.Zero, Color(1, 1, 1, 1), 0.13, 120, true)
+			end
 		end
 	end
 
@@ -781,6 +842,12 @@ function PST:frameUpdate()
 				PST:addModifiers({ keepThemAtBayFails = 1 }, true)
 			end
 		end
+
+		-- Mod: % tears per active wisp
+        tmpMod = PST:getTreeSnapshotMod("soulWispTears", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("totalFamiliars", 0) > 0 then
+            PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+        end
 	end
 
 	-- First heart-related functions update
@@ -1337,18 +1404,27 @@ function PST:frameUpdate()
 		end
 	end
 
-	-- Inner Flare node (The Forgotten's tree)
-	if PST:getTreeSnapshotMod("innerFlare", false) then
-		-- Slow room enemies when switching to The Soul
-		if not PST:getTreeSnapshotMod("innerFlareProc", false) and updateTrackers.playerTypeTracker == PlayerType.PLAYER_THEFORGOTTEN and
-		player:GetPlayerType() == PlayerType.PLAYER_THESOUL then
-			for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
-				if tmpEntity:IsActiveEnemy() and tmpEntity:IsVulnerableEnemy() then
-					tmpEntity:AddSlowing(EntityRef(player), math.floor(PST:getTreeSnapshotMod("innerFlareSlowDuration", 2) * 30), 0.7, Color(0.7, 0.7, 1, 1, 0, 0))
+	-- Player type changes
+	if updateTrackers.playerTypeTracker ~= player:GetPlayerType() then
+		-- Inner Flare node (The Forgotten's tree)
+		if PST:getTreeSnapshotMod("innerFlare", false) then
+			-- Slow room enemies when switching to The Soul
+			if not PST:getTreeSnapshotMod("innerFlareProc", false) and updateTrackers.playerTypeTracker == PlayerType.PLAYER_THEFORGOTTEN and
+			player:GetPlayerType() == PlayerType.PLAYER_THESOUL then
+				for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
+					if tmpEntity:IsActiveEnemy() and tmpEntity:IsVulnerableEnemy() then
+						tmpEntity:AddSlowing(EntityRef(player), math.floor(PST:getTreeSnapshotMod("innerFlareSlowDuration", 2) * 30), 0.7, Color(0.7, 0.7, 1, 1, 0, 0))
+					end
 				end
+				PST:addModifiers({ innerFlareProc = true }, true)
 			end
-			PST:addModifiers({ innerFlareProc = true }, true)
 		end
+
+		-- Spirit-taker node (Forgotten's tree)
+		if PST:getTreeSnapshotMod("spiritTaker", false) and updateTrackers.playerTypeTracker ~= player:GetPlayerType() then
+			player:UseActiveItem(CollectibleType.COLLECTIBLE_VADE_RETRO, UseFlag.USE_NOANIM)
+		end
+
 		updateTrackers.playerTypeTracker = player:GetPlayerType()
 	end
 
@@ -3060,6 +3136,50 @@ function PST:frameUpdate()
 		PST.specialNodes.beanSpeedTimer = PST.specialNodes.beanSpeedTimer - 1
 		if PST.specialNodes.beanSpeedTimer == 0 then
 			PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		end
+	end
+
+	-- Spirit-bringer node (Forgotten's tree)
+	if PST:getTreeSnapshotMod("spiritBringer", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS)
+		end
+		if player:GetPlayerType() == PlayerType.PLAYER_THESOUL and not player:HasCollectible(CollectibleType.COLLECTIBLE_QUINTS) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS)
+		elseif player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL and player:HasCollectible(CollectibleType.COLLECTIBLE_QUINTS) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, -1)
+		end
+	end
+
+	-- Spirit-taker node (Forgotten's tree)
+	if PST:getTreeSnapshotMod("spiritTaker", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO) and not PST:getTreeSnapshotMod("spiritTakerProc", false) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO)
+		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO) and PST:getTreeSnapshotMod("spiritTakerProc", false) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, -1)
+		end
+	end
+
+	-- Spirit-reaper node (Forgotten's tree)
+	if PST:getTreeSnapshotMod("spiritReaper", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_PURGATORY) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PURGATORY)
+		end
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_HUNGRY_SOUL) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HUNGRY_SOUL)
+		end
+	end
+
+	-- Spirit-protector node (Forgotten's tree)
+	if PST:getTreeSnapshotMod("spiritProtector", false) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL)
+		end
+		if not player:HasTrinket(TrinketType.TRINKET_FOUND_SOUL) then
+			player:AddSmeltedTrinket(TrinketType.TRINKET_FOUND_SOUL)
+		end
+		if not player:HasTrinket(TrinketType.TRINKET_YOUR_SOUL) then
+			player:AddSmeltedTrinket(TrinketType.TRINKET_YOUR_SOUL)
 		end
 	end
 

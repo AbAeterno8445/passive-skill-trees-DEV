@@ -1431,6 +1431,33 @@ function PST:onNewRoom()
         }, true)
     end
 
+	-- Mod: % chance to replace dropped full red hearts into bone hearts while The Forgotten has less than 2 bone hearts (reset)
+	if PST:getTreeSnapshotMod("redFullToBoneProc", false) then
+		PST:addModifiers({ redFullToBoneProc = false }, true)
+	end
+
+	-- Mod: % chance to replace the treasure room item with a random Bone item
+	tmpMod = PST:getTreeSnapshotMod("treasureBoneItem", 0)
+	if tmpMod > 0 and room:IsFirstVisit() and roomType == RoomType.ROOM_TREASURE and PST:getTreeSnapshotMod("treasureBoneItemProcs", 0) < 2 and
+	100 * math.random() < tmpMod then
+		local roomItems = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
+		for _, tmpItem in ipairs(roomItems) do
+			if not PST:arrHasValue(PST.progressionItems, tmpItem.SubType) then
+				local newItem = PST.boneItems[math.random(#PST.boneItems)]
+				local failsafe = 0
+				while player:HasCollectible(newItem) and failsafe < 200 do
+					newItem = PST.boneItems[math.random(#PST.boneItems)]
+					failsafe = failsafe + 1
+				end
+				if failsafe < 200 then
+					tmpItem:ToPickup():Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem)
+					PST:addModifiers({ treasureBoneItemProcs = 1 }, true)
+				end
+				break
+			end
+		end
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

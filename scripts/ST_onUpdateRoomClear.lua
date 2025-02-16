@@ -688,6 +688,25 @@ function PST:onRoomClear(level, room)
 			if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
 				PST:addModifiers({ redStewBoonRooms = 1 }, true)
 			end
+
+			-- Mod: While The Soul has at least 4 soul hearts, % chance to spawn a Wisp when clearing rooms
+			tmpMod = PST:getTreeSnapshotMod("soulWispOnClear", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
+				local tmpSoul = player:GetPlayerType() == PlayerType.PLAYER_THESOUL and player or player:GetSubPlayer()
+				if tmpSoul and tmpSoul:GetSoulHearts() >= 8 then
+					player:AddWisp(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES, player.Position + RandomVector() * 10)
+				end
+			end
+
+			-- Mod: While The Forgotten has at least 2 bone hearts, % chance to spawn a friendly Carrion Princess when clearing rooms
+			tmpMod = PST:getTreeSnapshotMod("forgCarrionPrincess", 0)
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
+				local tmpForg = player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN and player or player:GetSubPlayer()
+				if tmpForg and tmpForg:GetBoneHearts() >= 2 and #Isaac.FindByType(EntityType.ENTITY_CHARGER, 3) < 4 then
+					local newCarrion = Isaac.Spawn(EntityType.ENTITY_CHARGER, 3, 0, player.Position, Vector.Zero, player)
+					newCarrion:AddCharmed(EntityRef(player), -1)
+				end
+			end
 		end
 
 		-- Starcursed modifier: static hovering tears when killing mobs (unfreeze)

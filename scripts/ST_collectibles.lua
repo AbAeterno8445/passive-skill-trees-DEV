@@ -166,8 +166,11 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
 
         -- Ancient starcursed jewel: Chronicler Stone (halve debuff when first grabbing a book item)
         tmpMod = PST:getTreeSnapshotMod("SC_chroniclerDebuff", 0)
-        if tmpMod > 0 and PST:arrHasValue(PST.bookItems, itemType) then
-            PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_chroniclerDebuff = -tmpMod / 2 }, true)
+        if tmpMod > 0 then
+            local tmpCfg = Isaac.GetItemConfig():GetCollectible(itemType)
+            if tmpCfg and tmpCfg:HasTags(ItemConfig.TAG_BOOK) then
+                PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_chroniclerDebuff = -tmpMod / 2 }, true)
+            end
         end
     end
 

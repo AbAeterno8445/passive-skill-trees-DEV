@@ -693,6 +693,12 @@ function PST:onNewLevel()
     -- Floor player got-hit proc
     if PST:getTreeSnapshotMod("floorGotHit", false) then
         PST:addModifiers({ floorGotHit = false }, true)
+    -- Cleared floor without getting hit
+    elseif not PST:isFirstOrigStage() then
+        -- Osteomancy node (Forgotten's tree)
+        if PST:getTreeSnapshotMod("osteomancy", false) then
+            PST:addModifiers({ osteomancyDouble = true }, true)
+        end
     end
 	if PST:getTreeSnapshotMod("floorHitsReceived", 0) > 0 then
 		PST:addModifiers({ floorHitsReceived = { value = 0, set = true } }, true)

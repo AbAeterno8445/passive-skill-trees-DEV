@@ -660,6 +660,14 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 end
             end
         end
+
+        -- Necromancy node (Forgotten's tree)
+        if PST:getTreeSnapshotMod("necromancy", false) and itemType ~= CollectibleType.COLLECTIBLE_BOOK_OF_THE_DEAD and isNormalCharge then
+            local tmpChance = 7 * player:GetActiveMaxCharge(slot)
+            if tmpChance > 0 and 100 * math.random() < tmpChance then
+                player:UseActiveItem(CollectibleType.COLLECTIBLE_BOOK_OF_THE_DEAD)
+            end
+        end
     end
 
     -- Cosmic Realignment tainted unlock on red key home

@@ -546,6 +546,13 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.astralwep_whipTearTimer > 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + PST.specialNodes.astralwep_whipTearBuff
         end
+
+        -- Mod: % tears per active wisp
+        tmpTreeMod = PST:getTreeSnapshotMod("soulWispTears", 0)
+        if tmpTreeMod > 0 and PST:getTreeSnapshotMod("totalFamiliars", 0) > 0 then
+            local wispCount = PST:getRoomFamiliars(FamiliarVariant.WISP)
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod * wispCount
+        end
     -- RANGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- Mod: range while dead bird is active

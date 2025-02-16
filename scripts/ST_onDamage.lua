@@ -617,6 +617,17 @@ function PST:onDamage(target, damage, flag, source)
         local dmgMult = 1
         local dmgExtra = 0
 
+        -- Friendly monster
+        if EntityRef(target).IsFriendly then
+            -- Necromancy node (Forgotten's tree)
+            if PST:getTreeSnapshotMod("necromancy", false) then
+                local tmpForg = srcPlayer:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN and srcPlayer or srcPlayer:GetSubPlayer()
+                if tmpForg and tmpForg:GetBoneHearts() >= 3 and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+                    return { Damage = 0 }
+                end
+            end
+        end
+
         -- Valid enemy
         if target:IsVulnerableEnemy() and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
             -- Starcursed mod: Damage reduction
@@ -1900,7 +1911,7 @@ function PST:onDamage(target, damage, flag, source)
                                     end
                                 end
                             end
-                            
+
                             if bossProc then PST.specialNodes.darkArtsBossHitProc = true end
 
                             -- Annihilation node (T. Judas' tree)

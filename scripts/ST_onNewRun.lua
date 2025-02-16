@@ -942,6 +942,11 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_MORE_OPTIONS)
     end
 
+    -- Necromancy node (Forgotten's tree)
+    if PST:getTreeSnapshotMod("necromancy", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_THE_DEAD)
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then

@@ -1188,6 +1188,17 @@ function PST:onPickupInit(pickup, firstSpawn)
             PST:getPlayer():GetPlayerType() == PlayerType.PLAYER_JACOB2_B and 100 * math.random() < PST:getTreeSnapshotMod("heartEternalConv", 0) then
                 pickup:Morph(pickup.Type, variant, HeartSubType.HEART_ETERNAL)
             end
+
+            -- Mod: chance to convert dropped full hearts into bone hearts while The Forgotten has less than 2 bone hearts
+            tmpMod = PST:getTreeSnapshotMod("redFullToBone", 0)
+            if tmpMod > 0 and firstSpawn and not pickupGone and subtype == HeartSubType.HEART_FULL and not PST:getTreeSnapshotMod("redFullToBoneProc", false) and
+            100 * math.random() < tmpMod then
+                local tmpForg = PST:getPlayer():GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN and PST:getPlayer() or PST:getPlayer():GetSubPlayer()
+                if tmpForg:GetBoneHearts() <= 2 then
+                    pickup:Morph(pickup.Type, variant, HeartSubType.HEART_BONE, true)
+                    PST:addModifiers({ redFullToBoneProc = true }, true)
+                end
+            end
         -- Coins
         elseif variant == PickupVariant.PICKUP_COIN then
             -- Mod: chance to replace pennies with lucky pennies
