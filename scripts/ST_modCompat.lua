@@ -301,6 +301,9 @@ function PST:initModCompat()
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Vending Machine (Fiend Folio)"))
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Golden Slot Machine"))
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Midarizer"))
+
+        -- Bone items
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Spare Ribs"))
     end
 
     -- Last Judgement
@@ -407,6 +410,9 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Enoch"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Enoch (Tainted)"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Friendly Sack"))
+
+        -- Bone items
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Dead Weight"))
 	end
 
 	-- Reverie
@@ -544,6 +550,9 @@ function PST:initModCompat()
 
         -- Coin machines
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Revending Machine"))
+
+        -- Bone items
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Death Mask"))
 	end
 
 	-- Community Remix
@@ -606,10 +615,14 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Boner Baby"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burnt Baby"))
 
-        -- Bean items (double check whether these are active items)
+        -- Bean items
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Spring Bean"))
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Chilly Bean"))
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Bowl o' Beans"))
+
+        -- Bone items
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Adam's Rib"))
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Donkey's Jawbone"))
 	end
 
     -- God's Gambit (TODO: review interactions with effects such as Challenger's Starpiece + check if GetEntityTypeByName works instead)

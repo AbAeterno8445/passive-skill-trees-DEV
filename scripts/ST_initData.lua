@@ -524,7 +524,8 @@ PST.beanActives = {
 }
 PST.boneItems = {
 	CollectibleType.COLLECTIBLE_BONE_SPURS, CollectibleType.COLLECTIBLE_SLIPPED_RIB, CollectibleType.COLLECTIBLE_POINTY_RIB,
-	CollectibleType.COLLECTIBLE_JAW_BONE, CollectibleType.COLLECTIBLE_BRITTLE_BONES, CollectibleType.COLLECTIBLE_COMPOUND_FRACTURE
+	CollectibleType.COLLECTIBLE_JAW_BONE, CollectibleType.COLLECTIBLE_BRITTLE_BONES, CollectibleType.COLLECTIBLE_COMPOUND_FRACTURE,
+	CollectibleType.COLLECTIBLE_HOST_HAT, CollectibleType.COLLECTIBLE_DRY_BABY
 }
 -- Generated when relevant
 PST.ultraSecretPool = {}
