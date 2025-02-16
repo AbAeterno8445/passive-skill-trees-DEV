@@ -653,7 +653,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             end
 
             PST:addModifiers({ tenetBelialProcs = 1 }, true)
-            if PST:getTreeSnapshotMod("tenetBelialProcs", 0) >= 20 then
+            if PST:getTreeSnapshotMod("tenetBelialProcs", 0) >= 15 then
                 PST:addModifiers({ tenetBelial = false }, true)
                 if not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
                     player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)

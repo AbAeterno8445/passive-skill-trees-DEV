@@ -157,7 +157,7 @@ function PST:onCache(player, cacheFlag)
 
         -- Hearty node (Samson's tree)
         if PST:getTreeSnapshotMod("hearty", false) then
-            dynamicMods.damagePerc = dynamicMods.damagePerc - 1.5 * player:GetHearts()
+            dynamicMods.damagePerc = dynamicMods.damagePerc + 1.5 * (player:GetMaxHearts() - player:GetHearts())
         end
 
         -- Mod: +% damage per active Incubus familiar

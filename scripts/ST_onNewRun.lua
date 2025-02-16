@@ -917,6 +917,12 @@ function PST:onNewRun(isContinued)
         player:AddBlackHearts(1)
     end
 
+    -- Growing Contrition node (Lazarus' tree)
+    if PST:getTreeSnapshotMod("growingContrition", false) then
+        player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+    end
+
     -- Spaghettification node (Eden's tree)
     if PST:getTreeSnapshotMod("spaghettification", false) then
         player:AddCollectible(CollectibleType.COLLECTIBLE_3_DOLLAR_BILL)

@@ -202,6 +202,13 @@ function PST:onRoomClear(level, room)
 
 					-- Sidereal Artifact objective: clear boss rooms without taking damage
 					PST:sideArtiObjProgress("giantseekerSeptentrion", 1)
+
+					-- Growing Contrition node (Lazarus' tree)
+					if PST:getTreeSnapshotMod("growingContritionProcs", 0) >= 3 and not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and
+					100 * math.random() < 10 then
+						player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+						PST:addModifiers({ growingContritionProcs = { value = 0, set = true } }, true)
+					end
 				end
 
 				-- Boss room + took no damage in floor

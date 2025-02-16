@@ -313,7 +313,7 @@ local descriptionBoxesModule = {
 
 local nonDynamicNodes = {
     "Boss Rush Door Timer Increase", "Beast-hunter's Rush", "Hush Door Timer Increase", "More Boss Rush Waves",
-    "Less Boss Rush Waves"
+    "Less Boss Rush Waves", "Sidereal Artifact", "Crimson Convergence"
 }
 
 ---@param tScreen PST.treeScreen

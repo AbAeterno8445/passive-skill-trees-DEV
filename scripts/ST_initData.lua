@@ -960,6 +960,8 @@ function PST:resetMods()
 		luckyAllStatsActive = false,
 		momPlanC = 0,
 		lazarusClearHearts = 0,
+		growingContrition = false,
+		growingContritionProcs = 0,
 		---- Eden's Tree ----
 		chaoticTreasury = false,
 		sporadicGrowth = false,

@@ -36,7 +36,8 @@ end
 
 local function PST_isNodeVisible(node, charData)
     -- Crimson nodes, hide if char below level 60
-    if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and charData.level < 60)) then
+    if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and charData.level < 60)) and
+    not PST:isNodeNameAllocated(PST.treeScreen.currentTree, node.name) then
         return false
     end
     -- Save Backups Addon node, remove if addon detected

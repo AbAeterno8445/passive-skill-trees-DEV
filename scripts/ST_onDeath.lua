@@ -15,6 +15,7 @@ function PST:onDeath(entity)
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     -- Player death
     if player ~= nil then
+        -- Lazarus death
         if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
             cosmicRCache.lazarusHasDied = true
             PST:save()
@@ -25,6 +26,15 @@ function PST:onDeath(entity)
             local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
             PST:addModifiers({ luck = -0.5 }, true)
+        end
+
+        -- Growing Contrition node (Lazarus' tree)
+        if PST:getTreeSnapshotMod("growingContrition", false) and PST:getTreeSnapshotMod("growingContritionProcs", 0) < 3 then
+            PST:addModifiers({ growingContritionProcs = 1 }, true)
+            if PST:getTreeSnapshotMod("growingContritionProcs", false) == 3 then
+                player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+                PST:createFloatTextFX("Growing Contrition", Vector.Zero, Color(0.85, 0.35, 0.35, 1), 0.12, 100, true)
+            end
         end
 
         -- Dark Apotheosis node (Judas' tree)
