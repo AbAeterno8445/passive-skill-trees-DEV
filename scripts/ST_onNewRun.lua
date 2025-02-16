@@ -272,6 +272,18 @@ function PST:onNewRun(isContinued)
         if PST:SC_getSnapshotMod("mistlestone", false) then
             PST:addModifiers({ devilChance = 25 }, true)
         end
+        -- Ancient starcursed jewel: Blazing Carnelian
+        if PST:SC_getSnapshotMod("blazingCarnelian", false) then
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_HOT_BOMBS)
+            itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_PYROMANIAC)
+        end
+        -- Ancient starcursed jewel: Cat's-Eye Prism
+        if PST:SC_getSnapshotMod("catseyePrism", false) then
+            player:AddSmeltedTrinket(TrinketType.TRINKET_KIDS_DRAWING)
+            player:AddSmeltedTrinket(TrinketType.TRINKET_KIDS_DRAWING)
+            player:AddCollectible(CollectibleType.COLLECTIBLE_GUPPYS_EYE)
+            PST:addModifiers({ damagePerc = -50 }, true)
+        end
 
         if next(tmpSCMods) ~= nil then
             PST:addModifiers(tmpSCMods, true)

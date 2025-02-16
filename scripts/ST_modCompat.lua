@@ -304,6 +304,11 @@ function PST:initModCompat()
 
         -- Bone items
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Spare Ribs"))
+
+        -- Special sacks
+        table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Blood Sack"))
+        table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Trash Bag"))
+        table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("52 Deck"))
     end
 
     -- Last Judgement
@@ -413,6 +418,11 @@ function PST:initModCompat()
 
         -- Bone items
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Dead Weight"))
+
+        -- Special sacks
+        table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("White Sack"))
+        table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Stomack"))
+        table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Golden Sack"))
 	end
 
 	-- Reverie

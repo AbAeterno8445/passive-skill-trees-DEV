@@ -39,6 +39,25 @@ end
 
 ---@param npc EntityNPC
 function PST:postNPCInit(npc)
+    -- Fireplace init
+    if npc.Type == EntityType.ENTITY_FIREPLACE then
+        -- Normal fireplace
+        if npc.Variant == 0 then
+            -- Ancient starcursed jewel: Blazing Carnelian
+            if PST:SC_getSnapshotMod("blazingCarnelian", false) then
+                npc:Remove()
+                Isaac.Spawn(EntityType.ENTITY_FIREPLACE, 1, 0, npc.Position, Vector.Zero, nil)
+            end
+        -- Blue fireplace
+        elseif npc.Variant == 2 then
+            -- Ancient starcursed jewel: Blazing Carnelian
+            if PST:SC_getSnapshotMod("blazingCarnelian", false) then
+                npc:Remove()
+                Isaac.Spawn(EntityType.ENTITY_FIREPLACE, 3, 0, npc.Position, Vector.Zero, nil)
+            end
+        end
+    end
+
     -- Mod: Greed has lower health
     if npc.Type == EntityType.ENTITY_GREED then
         npc.HitPoints = npc.HitPoints - math.min(npc.HitPoints / 2, npc.MaxHitPoints * (PST:getTreeSnapshotMod("greedLowerHealth", 0) / 100))

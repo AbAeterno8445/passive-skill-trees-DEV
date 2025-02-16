@@ -129,61 +129,74 @@ function PST:gridEntityPoopUpdate(entityParam)
 end
 
 function PST:gridEntityRockUpdate(entityParam)
-    -- Tinted rocks
-    if entityParam.Desc.Type == GridEntityType.GRID_ROCKT then
-        local entityID = PST:initStaticEntity(entityParam)
-        if entityID then
-            local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
-            if staticEntCache[entityID] ~= entityParam.State then
-                local noXP = staticEntCache[entityID] == -1
-                staticEntCache[entityID] = entityParam.State
-                -- Tinted rock destroyed
-                if staticEntCache[entityID] >= 2 and not noXP then
-                    -- Mod: +xp when destroying tinted rocks
-                    local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
-                    if tmpMod ~= 0 then
-                        PST:addTempXP(tmpMod, true)
-                    end
-
-                    -- Mod: +all stats when destroying tinted rocks
-                    tmpMod = PST:getTreeSnapshotMod("tintedRockAllstats", 0)
-                    if tmpMod ~= 0 then
-                        PST:addModifiers({ allstats = tmpMod }, true)
-                    end
-
-                    -- Expedition objective: destroy tinted rocks
-			        PST:expedAddProgInRun("tintedRocks", 1)
-
-                    -- Obols from tinted rocks
-                    if PST:getTreeSnapshotMod("isExpedRun", false) then
-                        local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1), 0.15)
-                        if tmpObols > 0 then PST:expedDropObolsAt(entityParam.Position, tmpObols) end
-                    end
-                end
-            end
+    local convertedRock = false
+    if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 then
+        -- Ancient starcursed jewel: Blazing Carnelian
+        if PST:SC_getSnapshotMod("blazingCarnelian", false) and entityParam.Desc.Type == GridEntityType.GRID_ROCK and 100 * math.random() < 15 then
+            local tmpPos = Vector(entityParam.Position.X, entityParam.Position.Y)
+            PST:getRoom():RemoveGridEntityImmediate(entityParam:GetGridIndex(), 0, false)
+            Isaac.Spawn(EntityType.ENTITY_FIREPLACE, 1, 0, tmpPos, Vector.Zero, nil)
+            convertedRock = true
         end
-    elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK then
-        if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 and not PST:inMineshaftPuzzle() then
-            -- Ancient starcursed jewel: Tellurian Splinter
-            if PST:SC_getSnapshotMod("tellurianSplinter", false) and 100 * math.random() < 20 then
-                local room = PST:getRoom()
-                local gridIdx = entityParam:GetGridIndex()
-                room:GetGridEntity(gridIdx):ToRock():Destroy(true)
-                room:SpawnGridEntity(gridIdx, GridEntityType.GRID_ROCK_BOMB)
-            end
-        end
-    elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK_BOMB and entityParam.State == 2 then
-        -- Ancient starcursed jewel: Tellurian Splinter
-        if PST:SC_getSnapshotMod("tellurianSplinter", false) then
+    end
+
+    if not convertedRock then
+        -- Tinted rocks
+        if entityParam.Desc.Type == GridEntityType.GRID_ROCKT then
             local entityID = PST:initStaticEntity(entityParam)
             if entityID then
                 local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
                 if staticEntCache[entityID] ~= entityParam.State then
-                    -- Bomb rock destroyed
-                    if PST:getTreeSnapshotMod("SC_tellurianBuff", 0) < 35 then
-                        PST:addModifiers({ speedPerc = 1, SC_tellurianBuff = 1 }, true)
-                    end
+                    local noXP = staticEntCache[entityID] == -1
                     staticEntCache[entityID] = entityParam.State
+                    -- Tinted rock destroyed
+                    if staticEntCache[entityID] >= 2 and not noXP then
+                        -- Mod: +xp when destroying tinted rocks
+                        local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
+                        if tmpMod ~= 0 then
+                            PST:addTempXP(tmpMod, true)
+                        end
+
+                        -- Mod: +all stats when destroying tinted rocks
+                        tmpMod = PST:getTreeSnapshotMod("tintedRockAllstats", 0)
+                        if tmpMod ~= 0 then
+                            PST:addModifiers({ allstats = tmpMod }, true)
+                        end
+
+                        -- Expedition objective: destroy tinted rocks
+                        PST:expedAddProgInRun("tintedRocks", 1)
+
+                        -- Obols from tinted rocks
+                        if PST:getTreeSnapshotMod("isExpedRun", false) then
+                            local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1), 0.15)
+                            if tmpObols > 0 then PST:expedDropObolsAt(entityParam.Position, tmpObols) end
+                        end
+                    end
+                end
+            end
+        elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK then
+            if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 and not PST:inMineshaftPuzzle() then
+                -- Ancient starcursed jewel: Tellurian Splinter
+                if PST:SC_getSnapshotMod("tellurianSplinter", false) and 100 * math.random() < 20 then
+                    local room = PST:getRoom()
+                    local gridIdx = entityParam:GetGridIndex()
+                    room:GetGridEntity(gridIdx):ToRock():Destroy(true)
+                    room:SpawnGridEntity(gridIdx, GridEntityType.GRID_ROCK_BOMB)
+                end
+            end
+        elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK_BOMB and entityParam.State == 2 then
+            -- Ancient starcursed jewel: Tellurian Splinter
+            if PST:SC_getSnapshotMod("tellurianSplinter", false) then
+                local entityID = PST:initStaticEntity(entityParam)
+                if entityID then
+                    local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
+                    if staticEntCache[entityID] ~= entityParam.State then
+                        -- Bomb rock destroyed
+                        if PST:getTreeSnapshotMod("SC_tellurianBuff", 0) < 35 then
+                            PST:addModifiers({ speedPerc = 1, SC_tellurianBuff = 1 }, true)
+                        end
+                        staticEntCache[entityID] = entityParam.State
+                    end
                 end
             end
         end

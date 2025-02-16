@@ -943,6 +943,38 @@ PST.SCAncients = {
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
         }
+    },
+    blazingCarnelian = {
+        weight = 100,
+        spriteFrame = 36,
+        name = "Blazing Carnelian",
+        description = {
+            "Orange fireplaces are replaced with red fireplaces.",
+            "Blue fireplaces are replaced with purple fireplaces.",
+            "Rocks have a 15% chance to be replaced with a red fireplace when first entering a room.",
+            "Hot Bombs and Pyromaniac can no longer show up."
+        },
+        rewards = {
+            xpgain = 40,
+            halveXPFirstFloor = true,
+            deliriumRewards = {1, 4},
+            beastRewards = {1, 4}
+        }
+    },
+    catseyePrism = {
+        weight = 100,
+        spriteFrame = 37,
+        name = "Cat's-Eye Prism",
+        description = {
+            "Start with 2 smelted Kid's Drawings and Guppy's Eye.",
+            "-50% damage.",
+            "Monsters take 90% reduced damage from sources other than blue flies."
+        },
+        rewards = {
+            xpgain = 60,
+            deliriumRewards = {1, 5},
+            beastRewards = {1, 5}
+        }
     }
 }
 

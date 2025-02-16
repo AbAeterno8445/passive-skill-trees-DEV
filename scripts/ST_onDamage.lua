@@ -954,7 +954,7 @@ function PST:onDamage(target, damage, flag, source)
                         if mobripper then
                             scytheDmg = damage * (mobripper[1] / 100)
                         end
-                        local slashSpr = PST:createAnimFXAt("gfx/effect_wepslash.anm2", "Spin", target.Position, {
+                        PST:createAnimFXAt("gfx/effect_wepslash.anm2", "Spin", target.Position, {
                             [3] = PST_tmpDmgTick(scytheDmg)
                         })
                         SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.7, 2, false, 0.9 + 0.2 * math.random())
@@ -2209,6 +2209,11 @@ function PST:onDamage(target, damage, flag, source)
                     if tmpMod ~= 0 then
                         dmgMult = dmgMult + tmpMod / 100
                     end
+                end
+
+                -- Ancient starcursed jewel: Cat's-Eye Prism
+                if PST:SC_getSnapshotMod("catseyePrism", false) and (not tmpFamiliar or (tmpFamiliar and tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY)) then
+                    dmgMult = dmgMult - 0.9
                 end
             end
         -- Misc hits

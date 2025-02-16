@@ -3,8 +3,9 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
-        "v0.4.28",
+        "v1.0.0",
         "- Added support for Community Remix items.",
+        "- Added 2 new Ancient Jewels: Blazing Carnelian and Cat's-Eye Prism.",
         "- Introduced a new astral weapon type: Whips. Comes with 4 ancients: Snakebite, Devil's Tongue, Azurebinder",
         "and Sacred Scourge.",
         "- New Sidereal Tree feature: Sidereal Artifacts. These allow choosing between many artifact nodes that grant a",
