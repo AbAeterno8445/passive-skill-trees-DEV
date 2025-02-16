@@ -1416,6 +1416,14 @@ function PST:onPickupInit(pickup, firstSpawn)
                 local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
                 newPickup:GetData().PST_duped = true
             end
+
+            -- Mod: % chance to convert dropped sacks into a special variant
+            tmpMod = PST:getTreeSnapshotMod("specialSacks", 0)
+            if tmpMod > 0 and firstSpawn and variant == PickupVariant.PICKUP_GRAB_BAG and subtype == SackSubType.SACK_NORMAL and
+            100 * math.random() < tmpMod then
+                local newBag = PST.specialSacks[math.random(#PST.specialSacks)]
+                pickup:Morph(pickup.Type, pickup.Variant, newBag)
+            end
         end
     end
 end

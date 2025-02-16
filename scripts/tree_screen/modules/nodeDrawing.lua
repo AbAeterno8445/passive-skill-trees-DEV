@@ -35,8 +35,8 @@ function nodeDrawingModule:Update(tScreen)
 end
 
 local function PST_isNodeVisible(node, charData)
-    -- Crimson nodes, hide if no crimson starcores on character yet
-    if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and not charData.crimsonStarcores)) then
+    -- Crimson nodes, hide if char below level 60
+    if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and charData.level < 60)) then
         return false
     end
     -- Save Backups Addon node, remove if addon detected

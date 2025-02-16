@@ -527,6 +527,9 @@ PST.boneItems = {
 	CollectibleType.COLLECTIBLE_JAW_BONE, CollectibleType.COLLECTIBLE_BRITTLE_BONES, CollectibleType.COLLECTIBLE_COMPOUND_FRACTURE,
 	CollectibleType.COLLECTIBLE_HOST_HAT, CollectibleType.COLLECTIBLE_DRY_BABY
 }
+PST.specialSacks = {
+	SackSubType.SACK_BLACK
+}
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}
@@ -715,6 +718,7 @@ function PST:resetMods()
 		fortuneMachineXPmax = 0,
 		fortuneMachineFloorUses = 0,
 		flawlessXP = 0,
+		specialSacks = 0,
 
 		openedChests = {},
 
