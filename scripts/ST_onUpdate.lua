@@ -352,6 +352,36 @@ function PST:frameUpdate()
 			PST:addModifiers({ myosotisOnClearProc = false }, true)
 		end
 
+		-- Spirit-gambler node (Forgotten's tree)
+		if PST:getTreeSnapshotMod("spiritGambler", false) then
+			local spiritNodes = {"spiritBringer", "spiritTaker", "spiritReaper", "spiritProtector"}
+			local newNode = spiritNodes[math.random(#spiritNodes)]
+			-- New node application
+			if not PST:getTreeSnapshotMod(newNode, false) then
+				-- Old node removal
+				for _, tmpNode in ipairs(spiritNodes) do
+					if tmpNode ~= newNode and PST:getTreeSnapshotMod(tmpNode, false) then
+						if tmpNode == "spiritBringer" then
+							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS, -1)
+							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, -1)
+						elseif tmpNode == "spiritTaker" then
+							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, -1)
+						elseif tmpNode == "spiritReaper" then
+							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PURGATORY, -1)
+							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HUNGRY_SOUL, -1)
+						elseif tmpNode == "spiritProtector" then
+							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL, -1)
+							player:TryRemoveTrinket(TrinketType.TRINKET_YOUR_SOUL)
+							player:TryRemoveTrinket(TrinketType.TRINKET_FOUND_SOUL)
+						end
+						PST:addModifiers({ [tmpNode] = false }, true)
+					end
+				end
+				PST:addModifiers({ [newNode] = true }, true)
+			end
+			PST:createFloatTextFX("Spirit-gambler", Vector.Zero, Color(0.75, 0.75, 0.2, 1), 0.13, 120, true)
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -626,36 +656,6 @@ function PST:frameUpdate()
 					Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_RED_STEW, tmpPos, Vector.Zero, nil)
 				end
 				PST:addModifiers({ redStewBoonRooms = { value = 0, set = true } }, true)
-			end
-
-			-- Spirit-gambler node (Forgotten's tree)
-			if PST:getTreeSnapshotMod("spiritGambler", false) then
-				local spiritNodes = {"spiritBringer", "spiritTaker", "spiritReaper", "spiritProtector"}
-				local newNode = spiritNodes[math.random(#spiritNodes)]
-				-- New node application
-				if not PST:getTreeSnapshotMod(newNode, false) then
-					-- Old node removal
-					for _, tmpNode in ipairs(spiritNodes) do
-						if tmpNode ~= newNode and PST:getTreeSnapshotMod(tmpNode, false) then
-							if tmpNode == "spiritBringer" then
-								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS, -1)
-								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, -1)
-							elseif tmpNode == "spiritTaker" then
-								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, -1)
-							elseif tmpNode == "spiritReaper" then
-								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PURGATORY, -1)
-								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HUNGRY_SOUL, -1)
-							elseif tmpNode == "spiritProtector" then
-								player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL, -1)
-								player:TryRemoveTrinket(TrinketType.TRINKET_YOUR_SOUL)
-								player:TryRemoveTrinket(TrinketType.TRINKET_FOUND_SOUL)
-							end
-							PST:addModifiers({ [tmpNode] = false }, true)
-						end
-					end
-					PST:addModifiers({ [newNode] = true }, true)
-				end
-				PST:createFloatTextFX("Spirit-gambler", Vector.Zero, Color(0.75, 0.75, 0.2, 1), 0.13, 120, true)
 			end
 
 			-- Osteomancy node (Forgotten's tree)

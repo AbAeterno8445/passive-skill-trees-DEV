@@ -584,6 +584,11 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
     end
 
+    -- Tenet of Belial node (Judas' tree)
+    if PST:getTreeSnapshotMod("tenetbelial", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+    end
+
     -- Brown Blessing node (Blue Baby's tree)
     if PST:getTreeSnapshotMod("brownBlessing", false) then
         player:AddTrinket(TrinketType.TRINKET_PETRIFIED_POOP)

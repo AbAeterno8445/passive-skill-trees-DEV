@@ -568,6 +568,16 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2002
     },
+    boonOrdinary = {
+        str = {
+            "Boon Of The Ordinary:",
+            "    While you have at least 25 coins, your minimum speed is 1.33",
+            "    While you have at least 12 bombs, your hits gain a 10%% chance to deal double damage",
+            "    While you have at least 12 keys, gain Eye Drops",
+            "    Eye Drops can no longer show up naturally"
+        },
+        category = "charTree", sort = 2002
+    },
     allstatsBirthright = {
         str = "%s%.2f all stats while holding Birthright",
         addPlus = true,
@@ -584,6 +594,23 @@ PST.treeModDescriptions = {
     d6HalfCharge = {
         str = "%d%% chance when using any dice active to keep half of its charge",
         category = "charTree", sort = 2004
+    },
+    pickupDupe = {
+        str = "%d%% chance to duplicate dropped coins/keys/bombs",
+        category = "charTree", sort = 2005
+    },
+    pickupBoons = {
+        str = {
+            "For the current floor:",
+            "   +%d%% damage per bomb picked up, up to 10%%",
+            "   +%d%% tears per key picked up, up to 10%%",
+            "   +%d%% speed per coin picked up, up to 10%%"
+        },
+        category = "charTree", sort = 2006
+    },
+    chestReclose = {
+        str = "%d%% chance for opened chests to close again 1 second after opened, up to twice per room",
+        category = "charTree", sort = 2007
     },
 
     ---- MAGDALENE'S TREE ----
@@ -607,6 +634,22 @@ PST.treeModDescriptions = {
             "Blood Donor:",
             "    Blood donation machines grant 1 charge to your active item",
             "    If using Yum Heart, 50%% chance to gain 2 charges instead"
+        },
+        category = "charTree", sort = 2052
+    },
+    blesserHeart = {
+        str = {
+            "Blesser Heart:",
+            "    Using Yum Heart while at full health turns up to 3 chests in the room into",
+            "    Heart-blessed chests"
+        },
+        category = "charTree", sort = 2052
+    },
+    innerGlow = {
+        str = {
+            "Inner Glow:",
+            "    When using an active item with at least 3 charges, 33%% chance to additionally trigger",
+            "    Yum Heart's effect"
         },
         category = "charTree", sort = 2052
     },
@@ -642,6 +685,27 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2056
     },
+    heartblessedChests = {
+        str = {
+            "%s%.2f%% chance for chests to become Heart-blessed when appearing",
+            "Heart-blessed chests drop an additional 1-2 random hearts, each having a 70%% chance",
+            "of being red"
+        },
+        addPlus = true,
+        category = "charTree", sort = 2057
+    },
+    heartblessedSpeed = {
+        str = "%s%d%% speed for the current floor when opening a Heart-blessed chest, up to 12%%",
+        addPlus = true,
+        category = "charTree", sort = 2058
+    },
+    fullHealthCharge = {
+        str = {
+            "When using an active item, %.2f%% chance to keep 1 charge per red heart container if",
+            "you're at full health"
+        },
+        category = "charTree", sort = 2059
+    },
 
     ---- CAIN'S TREE ----
     impromptuGambler = {
@@ -669,6 +733,24 @@ PST.treeModDescriptions = {
             "    Minimum luck is 1 while holding a trinket",
             "    7%% chance when hit for your trinket to be dropped",
             "    7%% chance for dropped trinkets to vanish"
+        },
+        category = "charTree", sort = 2102
+    },
+    goldenGimmick = {
+        str = {
+            "Golden Gimmick:",
+            "    When entering a floor, 15%% chance to spawn a random Gilded machine, up to twice per run",
+            "    Every 4 uses of a Gilded machine consumes an additional coin and grants +2%% damage",
+            "    for the current floor, up to 12%%"
+        },
+        category = "charTree", sort = 2102
+    },
+    wealthsmith = {
+        str = {
+            "Wealthsmith:",
+            "    While you have at least 20 coins and less than 10 keys, gain Pay to Play",
+            "    +0.2%% tears per difference between coins and keys, up to 15%%",
+            "    Pay to Play no longer shows up naturally"
         },
         category = "charTree", sort = 2102
     },
@@ -702,12 +784,21 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2107
     },
+    gildedMachines = {
+        str = {
+            "%d%% chance for machines that use coins to become Gilded when first found",
+            "Gilded machines have a 50%% chance to be free on use, and grant +0.5%% luck for the",
+            "current floor on use"
+        },
+        category = "charTree", sort = 2108
+    },
 
     ---- JUDAS' TREE ----
     darkHeart = {
         str = {
             "Dark Heart:",
             "    Start with an additional black heart",
+            "    Soul hearts count as Black Hearts for tree effects' purposes",
             "    -6%% damage and speed while you have no black hearts",
             "    Book of Belial removes this reduction for the current room"
         },
@@ -731,6 +822,26 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2152
     },
+    tenetBelial = {
+        str = {
+            "Tenet of Belial:",
+            "    Using an active item with at least 4 charges additionally triggers Book of",
+            "    Belial's effect",
+            "    After triggering this effect 15 times, it becomes inactive and you gain Birthright,",
+            "    if you don't already have it",
+            "    Triggering Book of Belial's effect has a 50%% chance to remove overcharges"
+        },
+        category = "charTree", sort = 2152
+    },
+    darkApotheosis = {
+        str = {
+            "Dark Apotheosis:",
+            "    Using Book of Belial turns you into Dark Judas for the current room",
+            "    When this effect is triggered, red heart containers are converted to black hearts",
+            "    Judas' Shadow can no longer show up naturally"
+        },
+        category = "charTree", sort = 2152
+    },
     darkJudasSpeed = {
         str = "%s%.2f%% speed as Dark Judas",
         addPlus = true,
@@ -743,7 +854,7 @@ PST.treeModDescriptions = {
     },
     belialBossHitCharge = {
         str = {
-            "%.2f%% chance for the Book of Belial to gain a charge when hitting a boss",
+            "%.2f%% chance for active items to gain a charge when hitting a boss while you have black hearts",
             "    Generates a maximum of 12 charges per room"
         },
         category = "charTree", sort = 2154
@@ -752,6 +863,15 @@ PST.treeModDescriptions = {
         str = "%s%.2f luck whenever you lose black hearts",
         addPlus = true,
         category = "charTree", sort = 2155
+    },
+    blackHeartLuckDrop = {
+        str = {
+            "%.2f%% chance every 0.5 luck for monsters with at least 50 HP to drop a black heart",
+            "on death",
+            "    If you have at least 5 luck, reduce the HP threshold to 30",
+            "    This effect can trigger up to 3 times per floor"
+        },
+        category = "charTree", sort = 2156
     },
 
     ---- BLUE BABY'S TREE ----
@@ -778,6 +898,14 @@ PST.treeModDescriptions = {
             "Slipping Essence:",
             "    Losing a soul heart has a 40%% chance to spawn a full soul heart",
             "    When this happens, halve this chance and receive -0.6 luck"
+        },
+        category = "charTree", sort = 2202
+    },
+    beanDiet = {
+        str = {
+            "Bean Diet:",
+            "    Start with a smelted Gigante Bean",
+            "    When using The Poop, additionally trigger the effect of a random Bean active"
         },
         category = "charTree", sort = 2202
     },
@@ -810,6 +938,15 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 2206
     },
+    cardPillPoop = {
+        str = "%d%% chance to trigger The Poop's effect when using any card/pill",
+        category = "charTree", sort = 2207
+    },
+    beanActiveSpeed = {
+        str = "%s%.2f%% speed for 5 seconds after using any Bean active",
+        addPlus = true,
+        category = "charTree", sort = 2208
+    },
 
     ---- EVE'S TREE ----
     heartless = {
@@ -833,6 +970,15 @@ PST.treeModDescriptions = {
             "Carrion Avian:",
             "    +0.15 damage when dead bird kills an enemy, up to +3. Resets every floor",
             "    If dead bird kills a boss, gain a permanent +0.6 damage instead"
+        },
+        category = "charTree", sort = 2252
+    },
+    phantomcrows = {
+        str = {
+            "Phantomcrows:",
+            "    Start with a smelted Eve's Bird Foot",
+            "    0.5%% chance to gain an additional smelted Eve's Bird Foot for the current room whenever",
+            "    a dead bird deals damage, once per room"
         },
         category = "charTree", sort = 2252
     },
@@ -879,6 +1025,10 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 2257
     },
+    eveMascaraChamp = {
+        str = "%d%% chance to gain Eve's Mascara for the current room when killing a champion monster",
+        category = "charTree", sort = 2258
+    },
 
     ---- SAMSON'S TREE ----
     hasted = {
@@ -902,7 +1052,16 @@ PST.treeModDescriptions = {
         str = {
             "Hearty:",
             "    Start with an additional red heart",
-            "    -3%% damage per remaining red heart"
+            "    +1.5%% damage per missing 1/2 red heart"
+        },
+        category = "charTree", sort = 2302
+    },
+    bloodcrowned = {
+        str = {
+            "Blood-Crowned:",
+            "    Start with a smelted Bloody Crown",
+            "    When entering a new floor, 2%% chance to lose the Bloody Crown per missing 1/2 red heart",
+            "    Entering a chapter 4 floor with full health and a Bloody Crown spawns a Devil's Crown"
         },
         category = "charTree", sort = 2302
     },
@@ -941,6 +1100,10 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 2306
     },
+    treasureDoubleHeart = {
+        str = "%d%% chance for treasure rooms to additionally contain a double red heart pickup",
+        category = "charTree", sort = 2307
+    },
 
     ---- AZAZEL'S TREE ----
     demonicSouvenirs = {
@@ -960,6 +1123,23 @@ PST.treeModDescriptions = {
             "    a demon familiar",
             "    5%% chance to spawn a Devil Beggar at the beginning of a floor, starting from the second",
             "    This chance doubles every floor up to 40%%, and resets when one spawns"
+        },
+        category = "charTree", sort = 2351
+    },
+    demonicAmbition = {
+        str = {
+            "Demonic Ambition:",
+            "    Gain Goat's Head while you have 4 black hearts or more",
+            "    Goat's Head can no longer show up naturally"
+        },
+        category = "charTree", sort = 2351
+    },
+    earlyBird = {
+        str = {
+            "Early Bird:",
+            "    Start with an additional black heart",
+            "    When exiting the first floor, lose a black/soul heart if you have more than 1 total heart container",
+            "    of any type"
         },
         category = "charTree", sort = 2351
     },
@@ -1019,6 +1199,17 @@ PST.treeModDescriptions = {
             "A True Ending?:",
             "    First floor's boss, Mom and Mom's Heart drop a Suicide King card when defeated",
             "    +2%% all stats as Lazarus Risen per Suicide King card used"
+        },
+        category = "charTree", sort = 2402
+    },
+    growingContrition = {
+        str = {
+            "Growing Contrition:",
+            "    Start with Birthright.",
+            "    Lose Birthright after dying 3 times.",
+            "    If you don't have Birthright, clearing a boss room without taking damage has a 10% chance",
+            "    to grant you Birthright",
+            "    Birthright can no longer show up"
         },
         category = "charTree", sort = 2402
     },
@@ -1090,6 +1281,28 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2452
     },
+    spaghettification = {
+        str = {
+            "Spaghettification:",
+            "    Start with 3 Dollar Bill, which gets removed once you get hit",
+            "    When you get hit:",
+            "       - For 5 seconds, innately gain Fruit Cake's effect",
+            "       - Afterwards, for 5 seconds, innately gain Playdough Cookie's effect",
+            "    20%% chance to trigger this effect when clearing a room without taking damage"
+        },
+        category = "charTree", sort = 2452
+    },
+    clayshaping = {
+        str = {
+            "Clayshaping:",
+            "    Start with a smelted Modeling Clay"
+        },
+        category = "charTree", sort = 2452
+    },
+    edenHairdo = {
+        str = "Eden Hairdo: lookin fresh",
+        category = "charTree", sort = 2453
+    },
     treasureShopItemStat = {
         str = "%s%.2f to a random stat when first obtaining a treasure room or shop item",
         addPlus = true,
@@ -1111,15 +1324,15 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 2454
     },
     itemRandLuck = {
-        str = "-%.2f to +%.2f luck when first obtaining any passive item",
+        str = "-%.2f / 2 to +%.2f luck when first obtaining any passive item",
         category = "charTree", sort = 2455
     },
     itemRandLuckPerc = {
-        str = "-%d%% to +%d%% luck when first obtaining any passive item",
+        str = "-%d%% / 2 to +%d%% luck when first obtaining any passive item",
         category = "charTree", sort = 2455
     },
     trinketRandLuck = {
-        str = "-%.2f to +%.2f luck when first obtaining any trinket",
+        str = "-%.2f / 2 to +%.2f luck when first obtaining any trinket",
         category = "charTree", sort = 2456
     },
     startCoinKeyBomb = {
@@ -1132,6 +1345,25 @@ PST.treeModDescriptions = {
             "from the second floor. Can only happen once per run"
         },
         category = "charTree", sort = 2458
+    },
+    treasureItemCEpiphany = {
+        str = "%d%% chance to trigger Chaotic Epiphany when first obtaining a treasure or shop room item",
+        category = "charTree", sort = 2459
+    },
+    devilItemCEpiphany = {
+        str = "%d%% chance to trigger Chaotic Epiphany when first obtaining a devil, angel or boss room item",
+        category = "charTree", sort = 2460
+    },
+    curseRoomCEpiphany = {
+        str = "%d%% chance to trigger Chaotic Epiphany when entering a Curse Room",
+        category = "charTree", sort = 2461
+    },
+    myosotisOnClear = {
+        str = {
+            "%.2f%% chance to gain a smelted Myosotis when clearing a room without taking damage,",
+            "if you don't already have one"
+        },
+        category = "charTree", sort = 2462
     },
 
     ---- THE LOST'S TREE ----
@@ -1162,6 +1394,15 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2502
     },
+    vagrantSoul = {
+        str = {
+            "Vagrant Soul:",
+            "    Start with The Soul",
+            "    When entering a floor, 10%% chance to lose The Soul",
+            "    The Soul can no longer show up naturally"
+        },
+        category = "charTree", sort = 2502
+    },
     killingHitNegation = {
         str = "%d%% chance to negate an incoming hit if it would've killed you",
         category = "charTree", sort = 2503
@@ -1189,6 +1430,13 @@ PST.treeModDescriptions = {
         str = "%d%% chance to drop an additional soul heart when clearing a room",
         category = "charTree", sort = 2507
     },
+    pennyToBlessed = {
+        str = {
+            "%.2f%% chance to convert dropped pennies into a Blessed Penny if you don't currently have one,",
+            "once per floor"
+        },
+        category = "charTree", sort = 2508
+    },
 
     ---- LILITH'S TREE ----
     minionManeuvering = {
@@ -1215,6 +1463,13 @@ PST.treeModDescriptions = {
             "    Mom drops an additional Incubus on defeat if you took no damage throughout the run",
             "    until this point",
             "    Baby familiar items other than Incubus no longer show up"
+        },
+        category = "charTree", sort = 2552
+    },
+    companionshipGravitas = {
+        str = {
+            "Companionship Gravitas:",
+            "    Start with a smelted Friendship Necklace"
         },
         category = "charTree", sort = 2552
     },
@@ -1246,6 +1501,13 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "charTree", sort = 2556
     },
+    monsterManualOnClear = {
+        str = {
+            "%.2f%% chance to trigger Monster Manual's effect when clearing a room without taking",
+            "damage within 7 seconds of entering, up to 3 times per floor"
+        },
+        category = "charTree", sort = 2557
+    },
 
     ---- KEEPER'S TREE ----
     keeperBlessing = {
@@ -1271,7 +1533,15 @@ PST.treeModDescriptions = {
             "Avid Shopper:",
             "    Start with Steam Sale",
             "    Start with an additional 5 coins",
-            "    Lose 1-3 coins when hit"
+            "    Lose 1-3 coins when hit, up to 5 times per floor"
+        },
+        category = "charTree", sort = 2602
+    },
+    blueKin = {
+        str = {
+            "Blue Kin:",
+            "    Start with Infestation",
+            "    When hit, 30%% chance to gain The Mulligan for the current room"
         },
         category = "charTree", sort = 2602
     },
@@ -1343,6 +1613,13 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2652
     },
+    reverseAnnihilation = {
+        str = {
+            "Reverse Annihilation:",
+            "    When erasing a monster, trigger Friend Finder's effect, up to 3 times per floor"
+        },
+        category = "charTree", sort = 2653
+    },
     voidBlueFlies = {
         str = "%d%% chance for Void to spawn 4 blue flies on use",
         category = "charTree", sort = 2653
@@ -1356,7 +1633,7 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 2654
     },
     eraserSecondFloor = {
-        str = "%d%% chance for the second floor's treasure room to additionally contain an Eraser",
+        str = "%d%% chance for the second and fifth floor's treasure room to additionally contain an Eraser",
         category = "charTree", sort = 2655
     },
     locustHeldLuck = {
@@ -1395,7 +1672,7 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 2657
     },
 
-    ---- THE FORGOTTEN'S TREE ----
+    ---- THE FORGOTTEN'S TREE (OLD) ----
     soulful = {
         str = {
             "Soulful:",
@@ -1454,6 +1731,97 @@ PST.treeModDescriptions = {
         category = "charTree", sort = 2706
     },
 
+    ---- THE FORGOTTEN'S TREE (NEW) ----
+    spiritBringer = {
+        str = {
+            "Spirit-bringer:",
+            "    Gain Ghost Bombs as an innate effect",
+            "    While The Soul is out, innately gain Quints' effect"
+        },
+        category = "charTree", sort = 2720
+    },
+    spiritTaker = {
+        str = {
+            "Spirit-taker:",
+            "    Gain Vade Retro as an innate effect",
+            "    Switching characters triggers Vade Retro"
+        },
+        category = "charTree", sort = 2721
+    },
+    spiritReaper = {
+        str = {
+            "Spirit-reaper:",
+            "    Gain Purgatory and Hungry Soul as innate effects"
+        },
+        category = "charTree", sort = 2722
+    },
+    spiritProtector = {
+        str = {
+            "Spirit-protector:",
+            "    Gain Lost Soul as an innate effect",
+            "    Gain a smelted Found Soul and Your Soul"
+        },
+        category = "charTree", sort = 2723
+    },
+    spiritGambler = {
+        str = {
+            "Spirit-gambler:",
+            "    When entering a floor, apply a random Spiritful node"
+        },
+        category = "charTree", sort = 2724
+    },
+    osteomancy = {
+        str = {
+            "Osteomancy:",
+            "    When entering a floor, innately gain the effect of a random Bone item if you don't",
+            "currently have it",
+            "    Entering a new floor replaces the old item(s)",
+            "    If you took no damage in the previous floor, apply 2 random Bone items instead"
+        },
+        category = "charTree", sort = 2725
+    },
+    necromancy = {
+        str = {
+            "Necromancy:",
+            "    Start with Book of the Dead",
+            "    Using an active item that isn't Book of the Dead has a 7%% chance to trigger the",
+            "    latter's effect per used charge",
+            "    While you have 3 or more bone hearts, friendly monsters become immune to explosions"
+        },
+        category = "charTree", sort = 2726
+    },
+    soulWispOnClear = {
+        str = "While The Soul has at least 4 soul hearts, %.2f%% chance to spawn a Wisp when clearing rooms",
+        category = "charTree", sort = 2727
+    },
+    soulWispTears = {
+        str = "%s%.2f%% tears per active Wisp",
+        addPlus = true,
+        category = "charTree", sort = 2728
+    },
+    redFullToBone = {
+        str = {
+            "%.2f%% chance to convert dropped full red hearts into bone hearts if you have 2 bone hearts",
+            "or less",
+            "    This effect can only trigger once per room"
+        },
+        category = "charTree", sort = 2729
+    },
+    treasureBoneItem = {
+        str = {
+            "When entering the treasure room, %d%% chance to replace the item with a random Bone Item, up to",
+            "twice per run"
+        },
+        category = "charTree", sort = 2730
+    },
+    forgCarrionPrincess = {
+        str = {
+            "While The Forgotten has at least 2 bone hearts, %d%% chance to spawn a friendly Carrion Princess",
+            "when clearing rooms, up to 4"
+        },
+        category = "charTree", sort = 2731
+    },
+
     ---- BETHANY'S TREE ----
     willOTheWisp = {
         str = {
@@ -1478,6 +1846,14 @@ PST.treeModDescriptions = {
             "Fate Pendulum:",
             "    Start with Metronome",
             "    -50%% all stats while not holding Metronome"
+        },
+        category = "charTree", sort = 2752
+    },
+    chaoticWisps = {
+        str = {
+            "Chaotic Wisps:",
+            "    Whenever a regular wisp spawns, 50%% chance for it to be converted to a random active",
+            "    item's wisp"
         },
         category = "charTree", sort = 2752
     },
@@ -1543,6 +1919,24 @@ PST.treeModDescriptions = {
         },
         category = "charTree", sort = 2802
     },
+    keepThemAtBay = {
+        str = {
+            "Keep Them At Bay:",
+            "    When entering a room with monsters, if either brother has at least 3 red heart containers,",
+            "    15%% chance to trigger The Hourglass' effect",
+            "    If the effect isn't triggered, double the chance for the next room"
+        },
+        category = "charTree", sort = 2802
+    },
+    JEChoices = {
+        str = {
+            "Choices?:",
+            "    Start with There's Options (Jacob) and More Options (Esau)",
+            "    When a brother gets hit, 15%% chance to lose the options item corresponding to them",
+            "    Chance increases by 5%% per floor advanced",
+            "    There's Options and More Options can no longer show up naturally"
+        }
+    },
     brotherHitNegation = {
         str = {
             "%d%% chance to negate a killing hit if the opposing brother has more than 1 red heart remaining",
@@ -1577,6 +1971,20 @@ PST.treeModDescriptions = {
         str = "%s%.2f%% all stats per item obtained by the opposing brother, up to 15%%",
         addPlus = true,
         category = "charTree", sort = 2807
+    },
+    slowParaExtension = {
+        str = {
+            "Hitting enemies affected by slow or paralysis extends the status by %.2f seconds, up to 4 times",
+            "per enemy"
+        },
+        category = "charTree", sort = 2808
+    },
+    redStewBoon = {
+        str = {
+            "When entering a floor, %.2f%% chance to spawn a Red Stew per room cleared in the previous",
+            "floor without taking damage"
+        },
+        category = "charTree", sort = 2809
     },
 
     ---- SIREN'S TREE ----
@@ -3082,21 +3490,19 @@ PST.treeModDescriptions = {
     harmonizedSpecters = {
         str = {
             "Harmonized Specters:",
-            "    +12%% damage dealt by Tainted Forgotten while on the floor",
-            "    +12%% damage dealt by Tainted Forgotten to enemies near Tainted Soul",
-            "    -20%% damage dealt if neither of the above conditions is fulfilled"
+            "    +8%% damage dealt by Tainted Forgotten while on the floor",
+            "    +8%% damage dealt by Tainted Forgotten to enemies near Tainted Soul",
+            "    +8%% damage dealt by Tainted Forgotten while a friendly Bony (any variant) is present"
         },
         category = "charTree", sort = 3701
     },
     ballistosseous = {
         str = {
             "Ballistosseous:",
-            "    Tainted Forgotten shoots bone tears towards Tainted Soul while on the ground, if there are",
+            "    Tainted Forgotten shoots homing bone tears towards Tainted Soul while on the ground, if there are",
             "    enemies in the room",
-            "    While holding Tainted Forgotten, fire bone tears towards nearby enemies instead",
-            "    Bone tears' rate of fire is based on your tears stat",
+            "    While holding Tainted Forgotten, fire bone tears towards nearby enemies instead, at 40%% fire rate",
             "    Bone tears deal 50%% of your damage on hit",
-            "    Fired bone tears have a 50%% chance of gaining homing if Tainted Forgotten is on the ground"
         },
         category = "charTree", sort = 3702
     },
@@ -3163,11 +3569,11 @@ PST.treeModDescriptions = {
     bloodHarvest = {
         str = {
             "Blood Harvest:",
-            "    Killing an enemy has a 25%% chance of dropping a 1/2 red heart, which vanishes after 3",
-            "    seconds, up to 6 per room",
+            "    Killing an enemy with at least 12 HP has a 25%% chance of dropping a 1/2 red heart,",
+            "    which vanishes after 3 seconds, up to 6 per room",
             "    Hitting a boss has a 7%% chance of dropping a 1/2 red heart, which vanishes after 3",
             "    seconds, up to 4 per room",
-            "    -1%% damage and speed per blood charge past 20, up to -25%%"
+            "    These chances are reduced by 0.3%% per blood charge past 30"
         },
         category = "charTree", sort = 3750
     },

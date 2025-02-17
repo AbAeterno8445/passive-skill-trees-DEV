@@ -388,9 +388,13 @@ function PST:onDeath(entity)
                 PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill(levelStage).ancient)
             end
 
-            -- Mod: % chance for monsters with at least 50 HP to drop a black heart on death based on luck
+            -- Mod: % chance for monsters with at least X HP to drop a black heart on death based on luck
             local tmpMod = PST:getTreeSnapshotMod("blackHeartLuckDrop", 0)
-            if tmpMod > 0 and tmpNPC.MaxHitPoints >= 50 and PST:getTreeSnapshotMod("blackHeartLuckProcs", 0) < 3 and
+            local tmpThreshold = 50
+            if PST:getPlayer().Luck >= 5 then
+                tmpThreshold = 30
+            end
+            if tmpMod > 0 and tmpNPC.MaxHitPoints >= tmpThreshold and PST:getTreeSnapshotMod("blackHeartLuckProcs", 0) < 3 and
             100 * math.random() < ((PST:getPlayer().Luck / 0.5) * tmpMod) then
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, tmpNPC.Position, 2 * RandomVector(), nil)
                 PST:addModifiers({ blackHeartLuckProcs = 1 }, true)
@@ -929,7 +933,7 @@ function PST:onDeath(entity)
         end
 
         -- Blood Harvest node (T. Bethany's tree)
-        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestDrops", 0) < 6 and entity.MaxHitPoints >= 15 then
+        if PST:getTreeSnapshotMod("bloodHarvest", false) and PST:getTreeSnapshotMod("bloodHarvestDrops", 0) < 6 and entity.MaxHitPoints >= 12 then
             local tmpChance = 25 - math.max(0, 0.3 * (PST:getPlayer():GetEffectiveBloodCharge() - 30))
             if 100 * math.random() < tmpChance then
                 local tmpHeart = Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, entity.Position, RandomVector() * 3, nil, HeartSubType.HEART_HALF, Random() + 1):ToPickup()
