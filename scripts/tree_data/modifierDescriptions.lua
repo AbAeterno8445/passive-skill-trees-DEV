@@ -526,6 +526,15 @@ PST.treeModDescriptions = {
         addPlus = true,
         category = "extra", sort = 1156
     },
+    sacRoomBuff = {
+        str = "%s%.2f%% all stats for the current floor when using a sacrifice room, up to 20 times per floor",
+        addPlus = true,
+        category = "extra", sort = 1157
+    },
+    specialSacks = {
+        str = "%d%% chance to convert dropped sacks into a special variant",
+        category = "extra", sort = 1158
+    },
 
     -- Starcursed jewels enabled
     enableSCJewels = {
