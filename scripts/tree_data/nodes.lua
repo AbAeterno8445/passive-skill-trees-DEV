@@ -343,8 +343,14 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                     end
                 end
             end
+
             -- Sidereal tree: non-travel nodes require 1 global SP
             if tree == "sidereal" and not PST:arrHasValue(siderealTravelNodes, nodeData.name) and PST.modData.skillPoints <= 0 and not noSP then
+                return false
+            end
+
+            -- Forgotten tree: Spiritful nodes
+            if tree == "The Forgotten" and PST:strStartsWith(nodeData.name, "Spirit-") and PST:spiritfulNodesAllocated(false) > 0 then
                 return false
             end
         end

@@ -136,6 +136,9 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
                 else
                     tmpColor = PST.kcolors.GRAY2
                 end
+            -- Spiritful mods color (Forgotten's tree)
+            elseif PST:strStartsWith(tmpStr, "[Spiritful]") then
+                tmpColor = PST.kcolors.LIGHTBLUE1
             end
         end
         tmpFont:DrawStringScaled(tmpStr, drawX + 6 * tmpScale, drawY + 14 * tmpScale * i, tmpScale, tmpScale, tmpColor)

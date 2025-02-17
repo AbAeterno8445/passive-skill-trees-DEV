@@ -490,6 +490,25 @@ function PST:songNodesAllocated(checkSnapshot)
 	return tmpCount
 end
 
+-- For Forgotten tree, checks how many "Spiritful" nodes you currently have allocated
+function PST:spiritfulNodesAllocated(checkSnapshot)
+	local tmpCount = 0
+	if not checkSnapshot then
+		for nodeID, node in pairs(PST.trees["The Forgotten"]) do
+			if PST:strStartsWith(node.name, "Spirit-") and PST:isNodeAllocated("The Forgotten", nodeID) then
+				tmpCount = tmpCount + 1
+			end
+		end
+	else
+		if PST:getTreeSnapshotMod("spiritBringer", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("spiritTaker", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("spiritReaper", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("spiritProtector", false) then tmpCount = tmpCount + 1 end
+		if PST:getTreeSnapshotMod("spiritGambler", false) then tmpCount = tmpCount + 1 end
+	end
+	return tmpCount
+end
+
 -- For T. Cain tree, checks how many "Grand Ingredient" nodes you currently have allocated
 function PST:grandIngredientNodes(checkSnapshot)
 	local tmpCount = 0

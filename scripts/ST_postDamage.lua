@@ -815,7 +815,7 @@ function PST:postDamage(target, damage, flag, source)
                     if PST.specialNodes.ancwep_stormAdvanceHits >= tmpMod[1] then
                         for i=-2,2 do
                             local tmpVel = (target.Position - PST:getPlayer().Position):Normalized():Rotated(24 * i) * 10
-                            local tmpTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, PST:getPlayer().Position, tmpVel, source.Entity, 0, Random() + 1)
+                            local tmpTear = Game():Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, PST:getPlayer().Position, tmpVel, PST:getPlayer(), 0, Random() + 1)
                             tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_JACOBS)
                             tmpTear:ToTear().Height = PST:getPlayer().TearHeight
                             tmpTear:ToTear().FallingSpeed = -PST:getPlayer().TearFallingSpeed * 2

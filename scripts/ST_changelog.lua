@@ -27,6 +27,7 @@ function PST:getChangelogList()
         "- Fixed error when first loading a savefile while having Epiphany.",
         "- Fixed Cause Converter incorrectly spawning Chub and variants.",
         "- Fixed Mistlestone turning progression items into mystery gifts.",
+        "- Potential fix for Storm's Advance weapon occasionally causing self damage.",
         "",
 
         "v0.4.27",
