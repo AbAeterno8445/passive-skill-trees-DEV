@@ -24,6 +24,8 @@ function PST:getChangelogList()
         "Martian Ultimatum and Crimson Warpstone ancient jewels.",
         "- Bosses can no longer be turned into champions with tree/jewel effects.",
         "- Increased the cooldown between Nimble Twins (ancient quickblade) tear shots.",
+        "- Eve's Bird Foot familiars should now trigger effects related to Dead Bird.",
+        "- Adjusted how Sidereal Tree weapon type drop nodes are checked, and should now be more effective.",
         "- Fixed error when first loading a savefile while having Epiphany.",
         "- Fixed Cause Converter incorrectly spawning Chub and variants.",
         "- Fixed Mistlestone turning progression items into mystery gifts.",
