@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.0.0",
+        "- No longer BETA status (really it was mostly figurative, updates may still come in the future).",
         "- Added support for Community Remix items.",
         "- Added 2 new Ancient Jewels: Blazing Carnelian and Cat's-Eye Prism.",
         "- Added a new large node in Eden's tree that allows you to freely pick a hairstyle to apply to the runs.",
