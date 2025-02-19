@@ -4,7 +4,10 @@ function PST:getChangelogList()
         "",
 
         "v1.0.1",
-        "- Fixed \"Eve's Mascara\" nodes not removing the item when entering a new room",
+        "- Added a \"Multi-Deconstruction\" button to the Astral Forge, which allows you to select multiple weapons before",
+        "deconstructing them at once. Also allows selecting all currently filtered weapons.",
+        "- Added honing filter buttons to the Astral Forge.",
+        "- Fixed \"Eve's Mascara\" nodes not removing the item when entering a new room.",
         "",
 
         "v1.0.0",

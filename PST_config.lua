@@ -79,6 +79,10 @@ PST.config = {
             controllerAction = ButtonAction.ACTION_MENUCONFIRM,
             actionItem = true
         },
+        ctrlAllocateNode = {
+            keyboardButton = Keyboard.KEY_E,
+            ctrl = true,
+        },
         respecNode = {
             keyboardButton = Keyboard.KEY_R,
             controllerAction = ButtonAction.ACTION_MENUCONFIRM,
@@ -176,6 +180,7 @@ PSTKeybind = {
     CLOSE_TREE = "closeTree",
     ALLOCATE_NODE = "allocateNode",
     SHIFT_ALLOCATE_NODE = "shiftAllocateNode",
+    CTRL_ALLOCATE_NODE = "ctrlAllocateNode",
     RESPEC_NODE = "respecNode",
     TREE_PAN_LEFT = "treePanLeft",
     TREE_PAN_RIGHT = "treePanRight",

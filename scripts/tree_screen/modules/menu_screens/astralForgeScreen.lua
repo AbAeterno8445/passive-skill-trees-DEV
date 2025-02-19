@@ -27,6 +27,10 @@ local astralForgeScreen = {
     deconHovered = false,
     deconTimer = 0,
 
+    multiDeconHovered = false,
+    multiDecon = false,
+    deconSelected = {},
+
     -- Forge actions
     ---@type table|nil
     hoveredForgeButton = nil,
@@ -37,8 +41,10 @@ local astralForgeScreen = {
     hoveredFilter = nil,
     appliedFilters = {
         weaponType = {},
-        weaponRarity = {}
+        weaponRarity = {},
+        honing = 0
     },
+    filteredWeps = {},
 
     -- Inventory pagination
     rowsPerPage = 5,
@@ -79,8 +85,11 @@ end
 
 function astralForgeScreen:OnClose()
     self.deconMode = false
+    self.multiDecon = false
     self.imprintMode = false
     self.selectedWeapon = nil
+    self.deconSelected = {}
+    self.filteredWeps = {}
     self.invPage = 1
 end
 
@@ -138,14 +147,48 @@ function astralForgeScreen:OnInput()
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 self.invPage = 1
             end
+            -- Honing filters
+            if self.hoveredFilter.honing then
+                if self.hoveredFilter.honing ~= self.appliedFilters.honing then
+                    self.appliedFilters.honing = self.hoveredFilter.honing
+                else
+                    self.appliedFilters.honing = 0
+                end
+                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                self.invPage = 1
+            end
         -- Hovered decon button, toggle mode
         elseif self.deconHovered then
             self.deconMode = not self.deconMode
-            if self.deconMode then self.imprintMode = false end
+            self.imprintMode = false
+            if not self.deconMode then
+                self.multiDecon = false
+            end
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+        -- Hovered multi-decon button, toggle multi decon mode
+        elseif self.multiDeconHovered then
+            self.multiDecon = not self.multiDecon
+            self.deconSelected = {}
+            self.imprintMode = false
+            if self.multiDecon and not self.deconMode then
+                self.deconMode = true
+            end
             SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
         -- Hovered weapon
         elseif self.hoveredWeapon then
-            if not self.imprintMode then
+            if self.multiDecon and not self.hoveredWeapon.equipped then
+                -- Multi-decon weapon selection
+                if not PST:arrHasValue(self.deconSelected, self.hoveredWeapon) then
+                    table.insert(self.deconSelected, self.hoveredWeapon)
+                else
+                    for i, tmpWep in ipairs(self.deconSelected) do
+                        if tmpWep == self.hoveredWeapon then
+                            table.remove(self.deconSelected, i)
+                            break
+                        end
+                    end
+                end
+            elseif not self.imprintMode then
                 -- Select hovered weapon
                 if self.selectedWeapon ~= self.hoveredWeapon then
                     self.selectedWeapon = self.hoveredWeapon
@@ -233,6 +276,18 @@ function astralForgeScreen:OnInput()
         end
     end
 
+    -- Input: Ctrl + Allocate
+    if PST:isKeybindActive(PSTKeybind.CTRL_ALLOCATE_NODE) then
+        -- Multi-decon, select all filtered weapons
+        if self.deconMode and self.multiDecon and (self.hoveredFilter or self.hoveredWeapon) and #self.filteredWeps > 0 then
+            for _, tmpWep in ipairs(self.filteredWeps) do
+                if not tmpWep.equipped and not PST:arrHasValue(self.deconSelected, tmpWep) then
+                    table.insert(self.deconSelected, tmpWep)
+                end
+            end
+        end
+    end
+
     -- Input: Shift + Allocate
     if PST:isKeybindActive(PSTKeybind.SHIFT_ALLOCATE_NODE) then
         -- Equip hovered weapon
@@ -266,7 +321,7 @@ function astralForgeScreen:OnInput()
         -- Input: Respec (once)
         if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
             -- Deconstruct weapon
-            if self.deconMode and self.hoveredWeapon and self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
+            if not self.multiDecon and self.deconMode and self.hoveredWeapon and self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
                 if not self.hoveredWeapon.equipped then
                     SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE)
                     if self.selectedWeapon == self.hoveredWeapon then
@@ -276,6 +331,13 @@ function astralForgeScreen:OnInput()
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN)
                 end
+            -- Multi-deconstruction
+            elseif self.multiDecon and self.deconMode and #self.deconSelected > 0 then
+                SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE, 1, 2, false, math.max(0.7, 1 - 0.01 * #self.deconSelected))
+                for _, tmpWep in ipairs(self.deconSelected) do
+                    PSTDeconstructWeapon(tmpWep)
+                end
+                self.deconSelected = {}
             end
         end
     end

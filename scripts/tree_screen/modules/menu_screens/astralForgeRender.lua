@@ -19,7 +19,10 @@ local invFilters = {
     { weaponType = PSTAstralWepType.WHIP },
     { weaponRarity = PSTAstralWepRarity.NORMAL },
     { weaponRarity = PSTAstralWepRarity.MAGIC },
-    { weaponRarity = PSTAstralWepRarity.ANCIENT }
+    { weaponRarity = PSTAstralWepRarity.ANCIENT },
+    { honing = 1 },
+    { honing = 2 },
+    { honing = 3 }
 }
 local wepRarityStr = {"Normal", "Magic", "Ancient"}
 local matsData = {
@@ -146,6 +149,9 @@ local forgingButtons = {
     }]]
 }
 
+local tmpColWhite = Color(1, 1, 1, 1)
+local tmpColRed = Color(1, 1, 1, 1, 0.25, 0, 0)
+
 ---@param tScreen PST.treeScreen
 local function astralForgeScreenRender(self, tScreen)
     local baseDrawX = self.camCenterX - self.camera.X
@@ -155,7 +161,7 @@ local function astralForgeScreenRender(self, tScreen)
     local startY = baseDrawY - 80
     -- Draw inventory
     local tmpX, tmpY = startX, startY
-    self:DrawUIBox(tmpX, tmpY, 170, 250)
+    self:DrawUIBox(tmpX, tmpY, 170, 268)
     -- Inventory title
     local tmpTitle = "Weapon Inventory"
     if self.deconMode then tmpTitle = tmpTitle .. " (Decon)"
@@ -226,8 +232,9 @@ local function astralForgeScreenRender(self, tScreen)
         local filterX = tmpX + 3 + 18 * ((i - 1) % 9)
         local filterY = tmpY + 18 * math.floor((i - 1) / 9)
 
-        if tmpFilter.weaponType ~= nil and PST:arrHasValue(self.appliedFilters.weaponType, tmpFilter.weaponType) or
-        tmpFilter.weaponRarity ~= nil and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpFilter.weaponRarity) then
+        if (tmpFilter.weaponType ~= nil and PST:arrHasValue(self.appliedFilters.weaponType, tmpFilter.weaponType)) or
+        (tmpFilter.weaponRarity ~= nil and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpFilter.weaponRarity)) or
+        (tmpFilter.honing and self.appliedFilters.honing == tmpFilter.honing) then
             self.forgeUISprite.Color.RO = 0.4
             self.forgeUISprite.Color.GO = 0.4
             self.forgeUISprite.Color.BO = 0.4
@@ -258,7 +265,25 @@ local function astralForgeScreenRender(self, tScreen)
         local tmpSprite = tScreen.modules.nodeDrawingModule.nodesExtraSprite
         local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
         tmpSprite.Scale = Vector.One
-        tmpSprite.Color = Color(1, 1, 1, 1)
+        tmpSprite.Color = tmpColWhite
+        tmpSprite:SetFrame("Allocated Small", 0)
+        tmpSprite:Render(Vector(deconX, deconY))
+        tmpSprite.Scale.X = oldScaleX
+        tmpSprite.Scale.Y = oldScaleY
+    end
+
+    -- Multi-deconstruction button
+    deconY = deconY + 36
+    self.forgeUISprite.Color = tmpColRed
+    self.forgeUISprite:Render(Vector(deconX, deconY))
+    self.forgeUISprite.Color = tmpColWhite
+    self.multiDeconHovered = self.camCenterX >= deconX - 16 and self.camCenterX <= deconX + 16 and
+                             self.camCenterY >= deconY - 16 and self.camCenterY <= deconY + 16
+    if self.multiDecon then
+        local tmpSprite = tScreen.modules.nodeDrawingModule.nodesExtraSprite
+        local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
+        tmpSprite.Scale = Vector.One
+        tmpSprite.Color = tmpColWhite
         tmpSprite:SetFrame("Allocated Small", 0)
         tmpSprite:Render(Vector(deconX, deconY))
         tmpSprite.Scale.X = oldScaleX
@@ -274,17 +299,22 @@ local function astralForgeScreenRender(self, tScreen)
     else
         local hasTypeFilter = #self.appliedFilters.weaponType > 0
         local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
+        local hasHoningFilter = self.appliedFilters.honing > 0
         -- Create filtered list
-        if hasTypeFilter or hasRarityFilter then
+        if hasTypeFilter or hasRarityFilter or hasHoningFilter then
             for _, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
                 if (not hasTypeFilter or (hasTypeFilter and PST:arrHasValue(self.appliedFilters.weaponType, tmpWeapon.type))) and
-                (not hasRarityFilter or (hasRarityFilter and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpWeapon.rarity))) then
+                (not hasRarityFilter or (hasRarityFilter and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpWeapon.rarity))) and
+                (not hasHoningFilter or (hasHoningFilter and (self.appliedFilters.honing == 1 and not tmpWeapon.honing) or
+                (self.appliedFilters.honing == 2 and tmpWeapon.honing and tmpWeapon.honing > 1 and tmpWeapon.honing < 49) or
+                (self.appliedFilters.honing == 3 and tmpWeapon.honing and tmpWeapon.honing >= 50))) then
                     table.insert(drawnWeps, tmpWeapon)
                 end
             end
         else
             drawnWeps = PST.modData.astralWepInventory
         end
+        self.filteredWeps = drawnWeps
         -- Draw weapons
         local startVal = 1 + 5 * self.rowsPerPage * (self.invPage - 1)
         local endVal = startVal + 5 * self.rowsPerPage - 1
@@ -306,6 +336,10 @@ local function astralForgeScreenRender(self, tScreen)
                 -- Selected weapon
                 if self.selectedWeapon == tmpWeapon then
                     self:DrawUIBox(wepX - 16, wepY - 16, 32, 32)
+                end
+                -- Multi-decon selection
+                if self.multiDecon and PST:arrHasValue(self.deconSelected, tmpWeapon) then
+                    self.weaponSprite.Color.RO = self.weaponSprite.Color.RO + 0.4
                 end
                 PST:renderAstralWepAt(tmpWeapon, self.weaponSprite, wepX, wepY)
 
@@ -376,7 +410,7 @@ local function astralForgeScreenRender(self, tScreen)
                     local tmpSprite = tScreen.modules.nodeDrawingModule.nodesExtraSprite
                     local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
                     tmpSprite.Scale = Vector.One
-                    tmpSprite.Color = Color(1, 1, 1, 1)
+                    tmpSprite.Color = tmpColWhite
                     tmpSprite:SetFrame("Allocated Small", 0)
                     tmpSprite:Render(Vector(tmpButtonX, selWepY))
                     tmpSprite.Scale.X = oldScaleX
@@ -403,7 +437,7 @@ local function astralForgeScreenRender(self, tScreen)
     -- Inventory pagination
     local invPageAmt = math.ceil(#drawnWeps / (self.rowsPerPage * 5))
     tmpX = startX + 24
-    tmpY = startY + 227
+    tmpY = startY + 247
     local tmpColor = PST.kcolors.WHITE
     -- Prev button
     if self.invPage == 1 then
@@ -440,14 +474,15 @@ local function astralForgeScreenRender(self, tScreen)
 
     -- Control hints
     if not self.selectedWeapon then
-        tmpY = startY + 250
+        tmpY = startY + 270
         PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 12
         PST.luaminiFont:DrawString("Shift + Allocate to equip hovered weapon.", startX, tmpY, PST.kcolors.WHITE)
     end
 
     -- Cursor
-    if hoveredMat or self.hoveredWeapon or self.hoveredFilter or self.deconHovered or self.hoveredForgeButton or self.hoveredPageButton ~= "" then
+    if hoveredMat or self.hoveredWeapon or self.hoveredFilter or self.deconHovered or self.multiDeconHovered or self.hoveredForgeButton or
+    self.hoveredPageButton ~= "" then
         tScreen.cursorSprite:Play("Clicked", true)
     else
         tScreen.cursorSprite:Play("Idle", true)
@@ -463,6 +498,12 @@ local function astralForgeScreenRender(self, tScreen)
             hoverStr = hoverStr .. PST.astralWepData[self.hoveredFilter.weaponType].name .. "s"
         elseif self.hoveredFilter.weaponRarity then
             hoverStr = hoverStr .. wepRarityStr[self.hoveredFilter.weaponRarity + 1]
+        elseif self.hoveredFilter.honing == 1 then
+            hoverStr = hoverStr .. "No Honing"
+        elseif self.hoveredFilter.honing == 2 then
+            hoverStr = hoverStr .. "Some Honing"
+        elseif self.hoveredFilter.honing == 3 then
+            hoverStr = hoverStr .. "Maxed Honing"
         end
         tScreen:DrawNodeBox(hoverStr, {"Press the Allocate button to apply this filter."})
     -- Hovered material description
@@ -522,6 +563,17 @@ local function astralForgeScreenRender(self, tScreen)
             "forging materials, destroying it in the process."
         }
         tScreen:DrawNodeBox("Toggle Deconstruction Mode", deconDesc)
+    -- Hovered multi-deconstruction button description
+    elseif self.multiDeconHovered then
+        local deconDesc = {
+            "Press the Allocate button to toggle Multi-Deconstruction Mode.",
+            "While in this mode, you may select multiple weapons with the Allocate button before mass-deconstructing",
+            "them at once.",
+            "Press Ctrl + Allocate while hovering a filter or a weapon to select all currently filtered weapons.",
+            "Press Respec on a weapon to deconstruct all selected weapons.",
+            {"Use with care! Make sure not to select weapons you might wish to keep.", PST.kcolors.STAR_ORANGE}
+        }
+        tScreen:DrawNodeBox("Toggle Multi-Deconstruction", deconDesc)
     -- Hovered forge action button description
     elseif self.hoveredForgeButton then
         local forgeDesc = {table.unpack(self.hoveredForgeButton.description)}
