@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.0.1",
+        "- Fixed \"Eve's Mascara\" nodes not removing the item when entering a new room",
+        "",
+
         "v1.0.0",
         "- No longer BETA status (really it was mostly figurative, updates may still come in the future).",
         "- Added support for Community Remix items.",

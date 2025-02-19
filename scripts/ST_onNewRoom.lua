@@ -1397,6 +1397,7 @@ function PST:onNewRoom()
 
 	-- Mod: % chance to gain Eve's Mascara for the current room when killing champion monsters
 	if PST:getTreeSnapshotMod("eveMascaraChampProc", false) then
+		player:RemoveCollectible(CollectibleType.COLLECTIBLE_EVES_MASCARA)
 		PST:addModifiers({ eveMascaraChampProc = false }, true)
 	end
 
