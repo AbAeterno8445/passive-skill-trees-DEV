@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.0.2",
+        "- Added Whips as a selectable weapon type for Ancient Weapon Bounties.",
+        "",
+
         "v1.0.1",
         "- Added a \"Multi-Deconstruction\" button to the Astral Forge, which allows you to select multiple weapons before",
         "deconstructing them at once. Also allows selecting all currently filtered weapons.",
