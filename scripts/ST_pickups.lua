@@ -1422,7 +1422,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             if tmpMod > 0 and firstSpawn and variant == PickupVariant.PICKUP_GRAB_BAG and subtype == SackSubType.SACK_NORMAL and
             100 * math.random() < tmpMod then
                 local newBag = PST.specialSacks[math.random(#PST.specialSacks)]
-                pickup:Morph(pickup.Type, pickup.Variant, newBag)
+                pickup:Morph(pickup.Type, pickup.Variant, newBag, true)
             end
         end
     end
