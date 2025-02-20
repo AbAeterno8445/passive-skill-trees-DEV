@@ -2769,7 +2769,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Lost Coral Trident
-	if PST:getSnapAstralWepMod("lostCoralTrident") and not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) then
+	if PST:getSnapAstralWepMod("lostCoralTrident") and not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) and not PST:inMineshaftPuzzle() then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS)
 	end
 
@@ -2779,7 +2779,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Oceanic Might
-	if PST:getSnapAstralWepMod("oceanicMight") and not player:HasCollectible(CollectibleType.COLLECTIBLE_AQUARIUS) then
+	if PST:getSnapAstralWepMod("oceanicMight") and not player:HasCollectible(CollectibleType.COLLECTIBLE_AQUARIUS) and not PST:inMineshaftPuzzle() then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS)
 	end
 	if PST.specialNodes.ancwep_oceanicMightCD > 0 then
@@ -2800,7 +2800,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Storm's Advance
-	if PST:getSnapAstralWepMod("stormAdvance") and not player:HasCollectible(CollectibleType.COLLECTIBLE_120_VOLT) then
+	if PST:getSnapAstralWepMod("stormAdvance") and not player:HasCollectible(CollectibleType.COLLECTIBLE_120_VOLT) and not PST:inMineshaftPuzzle() then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT)
 	end
 	if PST.specialNodes.ancwep_stormAdvanceCD > 0 then
@@ -2808,12 +2808,12 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Quill Rain
-	if PST:getSnapAstralWepMod("quillRain") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+	if PST:getSnapAstralWepMod("quillRain") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) and not PST:inMineshaftPuzzle() then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
 	end
 
 	-- Ancient weapon mod: Gilded Seeker
-	if PST:getSnapAstralWepMod("gildedSeeker") and not player:HasCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER) then
+	if PST:getSnapAstralWepMod("gildedSeeker") and not player:HasCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER) and not PST:inMineshaftPuzzle() then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
 	end
 
@@ -2905,12 +2905,12 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Glowing Moonblade
-	if PST:getSnapAstralWepMod("glowingMoonblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUNA) then
+	if PST:getSnapAstralWepMod("glowingMoonblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUNA) and not PST:inMineshaftPuzzle() then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA)
 	end
 
 	-- Ancient weapon mod: Glowing Sunblade
-	if PST:getSnapAstralWepMod("glowingSunblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOL) then
+	if PST:getSnapAstralWepMod("glowingSunblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOL) and not PST:inMineshaftPuzzle() then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL)
 	end
 
@@ -2965,7 +2965,7 @@ function PST:frameUpdate()
 
 	-- Ancient weapon mod: Tolling Bell
 	if PST:getSnapAstralWepMod("tollingBell") then
-		if not player:HasCollectible(CollectibleType.COLLECTIBLE_LEO) then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_LEO) and not PST:inMineshaftPuzzle() then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO)
 		end
 		if PST.specialNodes.ancwep_tollBellSpeedTimer > 0 then
@@ -3091,29 +3091,35 @@ function PST:frameUpdate()
 
 	-- Boon of the Ordinary node (Isaac's tree)
 	if PST:getTreeSnapshotMod("boonOrdinary", false) then
-		if player:GetNumKeys() >= 12 and not PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
-			player:AddCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
-		elseif player:GetNumKeys() < 12 and PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
-			player:RemoveCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
+		if not PST:inMineshaftPuzzle() then
+			if player:GetNumKeys() >= 12 and not PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
+				player:AddCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
+			elseif player:GetNumKeys() < 12 and PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
+				player:RemoveCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
+			end
 		end
 	end
 
 	-- Wealthsmith node (Cain's tree)
 	if PST:getTreeSnapshotMod("wealthsmith", false) then
-		local hasCoinKeys = (player:GetNumCoins() >= 20 and player:GetNumKeys() < 10)
-		if hasCoinKeys and not player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
-			player:AddCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
-		elseif not hasCoinKeys and player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
-			player:RemoveCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
+		if not PST:inMineshaftPuzzle() then
+			local hasCoinKeys = (player:GetNumCoins() >= 20 and player:GetNumKeys() < 10)
+			if hasCoinKeys and not player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
+				player:AddCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
+			elseif not hasCoinKeys and player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
+				player:RemoveCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
+			end
 		end
 	end
 
 	-- Demonic Ambition node (Azazel's tree)
 	if PST:getTreeSnapshotMod("demonicAmbition", false) then
-		if PST:GetBlackHeartCount(player) >= 4 and not player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
-			player:AddCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
-		elseif PST:GetBlackHeartCount(player) < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
-			player:RemoveCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
+		if not PST:inMineshaftPuzzle() then
+			if PST:GetBlackHeartCount(player) >= 4 and not player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
+				player:AddCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
+			elseif PST:GetBlackHeartCount(player) < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
+				player:RemoveCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
+			end
 		end
 	end
 

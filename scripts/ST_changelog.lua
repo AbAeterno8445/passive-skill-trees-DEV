@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.0.2",
         "- Added Whips as a selectable weapon type for Ancient Weapon Bounties.",
+        "- Fixed effects that conditionally grant you passive items triggering repeatedly during the mineshaft chase sequence.",
         "",
 
         "v1.0.1",
