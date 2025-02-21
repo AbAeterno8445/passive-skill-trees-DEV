@@ -1780,6 +1780,7 @@ function PST:resetMods()
 		arti_gildedProc = false,
 		arti_smelterProcs = 0,
 		arti_siderealProcs = 0,
+		arti_snakeyeProcs = 0,
 
 		infMeridionStatus = "",
 		--#endregion

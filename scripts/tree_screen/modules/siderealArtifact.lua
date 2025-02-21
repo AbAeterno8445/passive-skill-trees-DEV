@@ -144,13 +144,13 @@ PST.sideArtiData = {
         type = "septentrion",
         desc = {
             {"Condition: Use an active item.", PST.kcolors.BLUE1},
-            {"Generates 2 energy per used charge.", PST.kcolors.TEAL1}
+            {"Generates 4 energy per used charge.", PST.kcolors.TEAL1}
         },
         objective = {
             desc = "Use an active item with at least 1 charge in rooms with monsters {{progress}}/30 times.",
             req = 30
         },
-        energy = 2
+        energy = 4
     },
     solarSeptentrion = {
         name = "Solar Septentrion",
@@ -423,6 +423,20 @@ PST.sideArtiData = {
         },
         energyReq = 200,
         cooldown = 3
+    },
+    snakeyeMeridion = {
+        name = "Snake-Eye Meridion",
+        type = "meridion",
+        desc = {
+            {"250 energy: Spawn a Dice Shard, up to 3 times per floor.", PST.kcolors.TEAL1},
+            "5 second artifact cooldown."
+        },
+        objective = {
+            desc = "Use dice active items {{progress}}/40 times.",
+            req = 40
+        },
+        energyReq = 250,
+        cooldown = 5
     }
 }
 
@@ -657,6 +671,14 @@ function PST:sideArtiAddEnergy(energy)
                         Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
                         SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
                         PST:addModifiers({ arti_siderealProcs = 1 }, true)
+                    end
+
+                -- Snake-Eye Meridion
+                elseif tmpArti == "snakeyeMeridion" then
+                    if PST:getTreeSnapshotMod("arti_snakeyeProcs", 0) < 3 then
+                        local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
+                        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_DICE_SHARD, tmpPos, Vector.Zero, nil)
+                        PST:addModifiers({ arti_snakeyeProcs = 1 }, true)
                     end
                 end
                 break

@@ -584,6 +584,9 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
                 player:AddActiveCharge(math.ceil(player:GetActiveMaxCharge(slot) / 2), slot, true, true, false)
             end
         end
+
+        -- Sidereal Artifact objective: Use dice active items
+        PST:sideArtiObjProgress("snakeyeMeridion", 1)
     -- Bean items
     elseif PST:arrHasValue(PST.beanActives, itemType) then
         -- Mod: +% speed for 5 seconds after using a Bean active

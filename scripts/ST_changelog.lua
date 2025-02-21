@@ -4,7 +4,9 @@ function PST:getChangelogList()
         "",
 
         "v1.0.2",
+        "- Added a new Meridional Artifact to the Sidereal Tree: Snake-Eye Meridion.",
         "- Added Whips as a selectable weapon type for Ancient Weapon Bounties.",
+        "- Magic Septentrion now generates 4 energy per used item charge (from 2).",
         "- Fixed effects that conditionally grant you passive items triggering repeatedly during the mineshaft chase sequence.",
         "- Fixed 'Special Sacks' nodes making shop sacks free.",
         "- Fixed Snakebite ancient weapon upgrading.",

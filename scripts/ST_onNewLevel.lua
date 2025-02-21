@@ -906,6 +906,10 @@ function PST:onNewLevel()
     if PST:getTreeSnapshotMod("arti_siderealProcs", 0) > 0 then
         PST:addModifiers({ arti_siderealProcs = { value = 0, set = true } }, true)
     end
+    -- Sidereal Artifact: Snake-Eye Meridion reset
+    if PST:getTreeSnapshotMod("arti_snakeyeProcs", 0) > 0 then
+        PST:addModifiers({ arti_snakeyeProcs = { value = 0, set = true } }, true)
+    end
 
     -- Mod: % stats when picking up coins/keys/bombs (reset)
     tmpMod = PST:getTreeSnapshotMod("pickupBoonsCoinBuff", 0)
