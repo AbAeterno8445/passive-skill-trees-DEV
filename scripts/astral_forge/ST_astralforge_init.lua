@@ -939,7 +939,7 @@ PST.astralWepMods = {
         ancient = true,
         minRolls = {0.2},
         maxRolls = {1.5},
-        upgIncrements = {0, 0.1}
+        upgIncrements = {0.1}
     },
     ironhand = {
         serial = 75,

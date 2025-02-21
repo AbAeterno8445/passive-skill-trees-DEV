@@ -3,6 +3,9 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.0.3",
+        "- Fixed Magefist (gauntlet) ancient weapon upgrading.",
+
         "v1.0.2",
         "- Added a new Meridional Artifact to the Sidereal Tree: Snake-Eye Meridion.",
         "- Added Whips as a selectable weapon type for Ancient Weapon Bounties.",
