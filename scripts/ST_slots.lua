@@ -13,9 +13,7 @@ end
 
 ---@param slot EntitySlot
 function PST:onSlotUpdate(slot)
-    local isBeggar = slot.Variant == SlotVariant.BEGGAR or slot.Variant == SlotVariant.BATTERY_BUM or
-    slot.Variant == SlotVariant.ROTTEN_BEGGAR or slot.Variant == SlotVariant.DEVIL_BEGGAR or
-    slot.Variant == SlotVariant.KEY_MASTER or slot.Variant == SlotVariant.BOMB_BUM
+    local isBeggar = PST:arrHasValue(PST.beggarTypes, slot.Variant)
 
     -- Gilded machines
     local tmpMod = PST:getTreeSnapshotMod("gildedMachines", 0)

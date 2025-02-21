@@ -262,7 +262,10 @@
         "RepentancePlusMod",
         "Reverie",
         "communityRemix",
-        "GodsGambit"
+        "GodsGambit",
+        "Retribution",
+        "ReverieMGO",
+        "TheFuture"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

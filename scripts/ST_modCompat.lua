@@ -112,6 +112,14 @@ function PST:initModCompat()
         -- Coin machines
         table.insert(PST.coinMachines, Epiphany.Slot.DICE_MACHINE)
         table.insert(PST.coinMachines, Epiphany.Slot.PAIN_O_MATIC)
+
+		-- Dice Items
+		table.insert(PST.diceItems, Epiphany.Item.D5)
+		table.insert(PST.diceItems, Epiphany.Item.BLIGHTED_DICE)
+		table.insert(PST.diceItems, Epiphany.Item.CHANCE_CUBE)
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Epiphany.Slot.CONVERTER_BEGGAR)
 	end
 
     -- Fiend Folio
@@ -309,6 +317,55 @@ function PST:initModCompat()
         table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Blood Sack"))
         table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Trash Bag"))
         table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("52 Deck"))
+
+		-- Dice Items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("D2"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Eternal D12"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Eternal D10"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Loaded D6"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Dusty D10"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Azurite Spindown"))
+
+		-- Wisp Actives -- todo: figure out how to get them to work
+		--[[
+		table.insert(PST.wispActives, FiendFolio.ITEM.MARIAS_IPAD) -- it's a joke item but the wisp is perfectly legit - wooky
+		table.insert(PST.wispActives, FiendFolio.ITEM.GOLEMS_ROCK)
+		table.insert(PST.wispActives, FiendFolio.ITEM.SANGUINE_HOOK)
+		table.insert(PST.wispActives, FiendFolio.ITEM.AVGM)
+		table.insert(PST.wispActives, FiendFolio.ITEM.BEDTIME_STORY)
+		table.insert(PST.wispActives, FiendFolio.ITEM.PURPLE_PUTTY)
+		table.insert(PST.wispActives, FiendFolio.ITEM.FIEND_MIX)
+		table.insert(PST.wispActives, FiendFolio.ITEM.WHITE_PEPPER)
+		
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_1) -- listed multiple times, as these are actually multiple different items with the same name) - wooky
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_2)
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_3)
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_4)
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_5)
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_6)
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_8)
+		table.insert(PST.wispActives, FiendFolio.ITEM.PERFECTLY_GENERIC_OBJECT_12)
+
+		table.insert(PST.wispActives, FiendFolio.ITEM.ETERNAL_D10)
+		table.insert(PST.wispActives, FiendFolio.ITEM.ETERNAL_D12)
+		table.insert(PST.wispActives, FiendFolio.ITEM.CHERRY_BOMB)
+		table.insert(PST.wispActives, FiendFolio.ITEM.ASTROPULVIS)
+		table.insert(PST.wispActives, FiendFolio.ITEM.GAMMA_GLOVES)
+		table.insert(PST.wispActives, FiendFolio.ITEM.SHREDDER)
+		table.insert(PST.wispActives, FiendFolio.ITEM.DUSTY_D10)
+		table.insert(PST.wispActives, FiendFolio.ITEM.ERRORS_CRAZY_SLOTS)
+		]]
+
+		-- Beggars
+		table.insert(PST.beggarTypes, FiendFolio.FF.PokerTable)
+		table.insert(PST.beggarTypes, FiendFolio.FF.Blacksmith)
+		table.insert(PST.beggarTypes, FiendFolio.FF.EvilBeggar)
+		table.insert(PST.beggarTypes, FiendFolio.FF.ZodiacBeggar)
+		table.insert(PST.beggarTypes, FiendFolio.FF.FakeBeggar)
+		table.insert(PST.beggarTypes, FiendFolio.FF.HugBeggar)
+		table.insert(PST.beggarTypes, FiendFolio.FF.CosplayBeggar)
+		table.insert(PST.beggarTypes, FiendFolio.FF.Sweetpuss)
+		table.insert(PST.beggarTypes, FiendFolio.FF.Midarizer) -- not quite a machine, not quite a beggar... i'll just say beggar for them - wooky
     end
 
     -- Last Judgement
@@ -423,6 +480,13 @@ function PST:initModCompat()
         table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("White Sack"))
         table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Stomack"))
         table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("Golden Sack"))
+
+		-- Dice Items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Magic Cube"))
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Stargazer"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Stargazer (Christmas)"))
 	end
 
 	-- Reverie
@@ -518,6 +582,24 @@ function PST:initModCompat()
 
         -- Segmented bosses
         table.insert(PST.segmentBosses, Isaac.GetEntityTypeByName("The Centipede"))
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Eika", "Soul of Eika"}, {"Satori", "Soul of Satori"}, {"Seija", "Soul of Seija"}, {"Hourai", "Soul of Hourai"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Dice items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("D-Flip"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("D-Cheat"))
 	end
 
     -- Revelations
@@ -563,6 +645,9 @@ function PST:initModCompat()
 
         -- Bone items
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Death Mask"))
+
+		-- Dice items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Hyper Dice"))
 	end
 
 	-- Community Remix
@@ -633,6 +718,14 @@ function PST:initModCompat()
         -- Bone items
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Adam's Rib"))
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Donkey's Jawbone"))
+
+		-- Dice items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("D3"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Snake Eyes"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Moldy D6"))
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Fat Beggar"))
 	end
 
     -- God's Gambit (TODO: review interactions with effects such as Challenger's Starpiece + check if GetEntityTypeByName works instead)
@@ -646,6 +739,200 @@ function PST:initModCompat()
         table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Temperance"))
         table.insert(PST.deadlySinBosses, Isaac.GetEntityVariantByName("Patience"))
     end]]
+
+	-- Retribution 
+	if Retribution then
+		-- Baby Familiars
+		table.insert(PST.babyFamiliarItems, Retribution.Item.AXOLOTL)
+
+		-- Poop items
+		table.insert(PST.poopItems, Retribution.Item.CHOLERA)
+		table.insert(PST.poopItems, Retribution.Item.BROWNIE)
+		table.insert(PST.poopItems, Retribution.Item.MELENA)
+
+		-- Poop Trinkets
+		table.insert(PST.poopTrinkets, Retribution.Trinket.RUSTED_PIPE) -- not a poop itself, but affects poops so im counting it - wooky
+		table.insert(PST.poopTrinkets, Retribution.Trinket.TRAINING_SEAT)
+
+		-- Evil Trinkets
+		-- I'm tempted to just say the entire set of Tainted Mammon's Cursed Trinkets, but I think there'd need to be a specific synergy to make it remotely worth it - wooky
+
+		--HP Ups
+        if Retribution.Item.BLEEDING_HEART then
+            PST.heartUpItems[Retribution.Item.BLEEDING_HEART] = 1
+        end
+		if Retribution.Item.PACKAGED_HAM then
+            PST.heartUpItems[Retribution.Item.PACKAGED_HAM] = 1
+        end
+		if Retribution.Item.BAR_OF_SOAP then
+            PST.heartUpItems[Retribution.Item.BAR_OF_SOAP] = 1
+        end
+		if Retribution.Item.BUCKET_OF_BLOOD then
+            PST.heartUpItems[Retribution.Item.BUCKET_OF_BLOOD] = 3
+        end
+		if Retribution.Item.CHIMERISM then
+            PST.heartUpItems[Retribution.Item.CHIMERISM] = 2
+        end
+		if Retribution.Item.HUNDRED_DOLLAR_STEAK then
+            PST.heartUpItems[Retribution.Item.HUNDRED_DOLLAR_STEAK] = 1
+			-- TODO: Make it grant an extra stats up every thirty minutes - wooky
+        end
+		if Retribution.Item.MUSTARD_SEED then
+            PST.heartUpItems[Retribution.Item.MUSTARD_SEED] = 1
+        end
+		if Retribution.Item.PEASHY then
+            PST.heartUpItems[Retribution.Item.PEASHY] = 1
+        end
+		if Retribution.Item.PHILOSOPHERS_STONE then
+            PST.heartUpItems[Retribution.Item.PHILOSOPHERS_STONE] = 1
+        end
+		if Retribution.Item.HAM then
+            PST.heartUpItems[Retribution.Item.HAM] = 1
+        end
+		if Retribution.Item.BRUNCH then
+            PST.heartUpItems[Retribution.Item.BRUNCH] = 1
+        end
+		if Retribution.Item.MILK_OF_BAPHOMET then
+            PST.heartUpItems[Retribution.Item.MILK_OF_BAPHOMET] = 1
+        end
+		if Retribution.Item.BOOTLICKER then
+            PST.heartUpItems[Retribution.Item.BOOTLICKER] = 1
+        end
+		if Retribution.Item.SCULPTED_SOAPSTONE then
+            PST.heartUpItems[Retribution.Item.SCULPTED_SOAPSTONE] = 0
+			-- TODO: Make it grant the stats up at the start of every floor - wooky
+        end
+
+		-- No splitting
+        local noDupeMobs = {"Drowned Grub"}
+        for _, tmpMobName in ipairs(noDupeMobs) do
+            table.insert(PST.noSplitMobsSpec, PST_getCustomMobTable(tmpMobName))
+            -- Just in case, include no-duplication mobs into no-champion mobs
+            table.insert(PST.noChampionMobs, PST_getCustomMobTable(tmpMobName))
+        end
+
+		-- Runes
+        table.insert(PST.allRunes, Retribution.Rune.WUNJO) -- I wunjo, you wunjo, he, she, me WUNJO? Wunjology, the study of Wunjo? It's first grade, Spongebob! - wooky
+		table.insert(PST.allRunes, Retribution.Rune.THURISAZ)
+		table.insert(PST.allRunes, Retribution.Rune.MANNAZ)
+		table.insert(PST.allRunes, Retribution.Rune.NAUDIZ)
+
+		-- Penny Trinkets
+		table.insert(PST.pennyTrinkets, Retribution.Trinket.GRUBBY_PENNY)
+		table.insert(PST.pennyTrinkets, Retribution.Trinket.RAINBOW_PENNY)
+		table.insert(PST.pennyTrinkets, Retribution.Trinket.YEN_PENNY)
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Mammon", "Soul of Mammon"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.AXOLOTL)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.BARON_FLY)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.BEDBUG)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.BOBS_HEART)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.CACTUS)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.CHUNK_OF_TOFU)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.COIL)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.FRAIL_FLY)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.FRIENDLY_MONSTER)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.GUPPYS_PRIDE)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.FRIEND_FOLIO)
+		table.insert(PST.songOfTheFewFamiliars, Retribution.Item.DOMINICUS)
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Retribution.FamiliarVariant.GUPPYS_PRIDE)
+		table.insert(PST.grandConsonanceWhitelist, Retribution.FamiliarVariant.FALSE_IDOL)
+		table.insert(PST.grandConsonanceWhitelist, Retribution.FamiliarVariant.FRIEND)
+		table.insert(PST.grandConsonanceWhitelist, Retribution.FamiliarVariant.FRIENDLY_MONSTER)
+
+		-- Undead
+		local tmpUndead = {
+            "Spirit", "Lifeseed Spirit", "Bloated Fly", "Drowned Grub", "Drowned Maggot", "Drowned Spitty", "Drowned Conjoined Spitty", 
+			"Huskie", "Pinprick", "Walking Blue Boil", "Stumbling Blue Boil", "Samael", "Samael Angel", "Hogma"
+        }
+        PST_addUndeadMobs(tmpUndead)
+
+		-- Coin Machines
+		table.insert(PST.coinMachines, Retribution.SlotVariant.GASHAPON)
+		table.insert(PST.coinMachines, Retribution.SlotVariant.RESTOCK_MACHINE)
+
+		-- Bone Items
+		table.insert(PST.boneItems, Retribution.Item.HEEL_SPUR)
+		table.insert(PST.boneItems, Retribution.Item.BANDAGE_BINDER)
+		table.insert(PST.boneItems, Retribution.Item.FOP)
+
+		-- Special Sacks
+		table.insert(PST.specialSacks, Retribution.PickupVariant.WOODEN_BOX)
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Retribution.SlotVariant.SWINE_BEGGAR)
+		table.insert(PST.beggarTypes, Retribution.SlotVariant.ANGEL_SWINE)
+		table.insert(PST.beggarTypes, Retribution.SlotVariant.DEMON_SWINE)
+		table.insert(PST.beggarTypes, Retribution.SlotVariant.CURSE_TRADER)
+	end
+
+	-- Reverie: Make Good Omissions
+	if ReverieMGO then
+		-- Dice items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("D58"))
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Flandre", "Soul of Flandre"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Shion Beggar"))
+	end
+
+	-- THE FUTURE
+	if TheFuture then
+		-- Cause converter blacklist
+        table.insert(PST.causeConverterBossBlacklist, TheFuture.Monsters.Nevermore)
+		table.insert(PST.causeConverterBossBlacklist, TheFuture.Monsters.Anguish)
+		table.insert(PST.causeConverterBossBlacklist, TheFuture.Monsters.Gloom)
+		table.insert(PST.causeConverterBossBlacklist, TheFuture.Monsters.Blight)
+		table.insert(PST.causeConverterBossBlacklist, TheFuture.Monsters.Ruin)
+		table.insert(PST.causeConverterBossBlacklist, TheFuture.Monsters.Acceptance)
+		table.insert(PST.causeConverterBossBlacklist, TheFuture.Monsters.Mother)
+
+		-- Undead enemies
+		local tmpUndead = {
+			"Rubber", "Spookie", "Wicked Spookie", "Ol' Spookie", "Future Tumor", "Future Tumor Small", "Kuko", "Kuko Jr.",
+			"Wailer (The Future)", "Family Baby", "Mongrel", "Betus", "Metabolite", "Metabulon", "Pile o' Bones", "Ferryman",
+			"Monger", "Half Monger", "Anchorfish", "Sisyphus", "Carcinoma Heart", "Carcinoma Mask", "Nevermore", "Anguish", "Gloom",
+			"Blight", "Ruin", "Acceptance", "Mother (The Future)"
+        }
+        PST_addUndeadMobs(tmpUndead)
+
+		-- HP up items
+		if TheFuture.Items.IronCart then
+            PST.heartUpItems[TheFuture.Items.IronCart] = 1
+        end
+
+		-- Beggars
+		table.insert(PST.beggarTypes, TheFuture.Monsters.HungrySteven) -- it's listed as a monster for some reason even though it's a beggar /shrug - wooky
+	end
 end
 
 -- Add mod items to the 'blue' item pool
@@ -736,5 +1023,26 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Twin Candles"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Power Ball"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Holy Glaive"))
+	end
+
+	-- Retribution Blue Items
+	if Retribution then
+		table.insert(PST.blueItemPool, Retribution.Item.BOOK_OF_MORMON)
+		table.insert(PST.blueItemPool, Retribution.Item.FALSE_IDOL)
+		table.insert(PST.blueItemPool, Retribution.Item.LIFEBLOOD_SYRINGE)
+		table.insert(PST.blueItemPool, Retribution.Item.BYGONE_ARM)
+		table.insert(PST.blueItemPool, Retribution.Item.BEDBUG)
+		table.insert(PST.blueItemPool, Retribution.Item.HYPEROPIA)
+		table.insert(PST.blueItemPool, Retribution.Item.OLD_BELL)
+		table.insert(PST.blueItemPool, Retribution.Item.RAPTURE)
+		table.insert(PST.blueItemPool, Retribution.Item.SUNKEN_FLY)
+		table.insert(PST.blueItemPool, Retribution.Item.TOY_DRUM)
+		table.insert(PST.blueItemPool, Retribution.Item.CARAPACE)
+	end
+
+	-- Reverie: Make Good Omissions blue items
+	if ReverieMGO then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Positive Singyoku"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Fantasy Talisman"))
 	end
 end
