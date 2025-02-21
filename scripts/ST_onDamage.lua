@@ -564,7 +564,7 @@ function PST:onDamage(target, damage, flag, source)
                 end
 
                 -- Blue Kin node (Keeper's tree)
-                if PST:getTreeSnapshotMod("blueKin", 0) and not player:HasCollectible(CollectibleType.COLLECTIBLE_MULLIGAN) and 100 * math.random() < 30 then
+                if PST:getTreeSnapshotMod("blueKin", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_MULLIGAN) and 100 * math.random() < 30 then
                     player:AddCollectible(CollectibleType.COLLECTIBLE_MULLIGAN)
                     PST:addModifiers({ blueKinProc = true }, true)
                 end

@@ -5,6 +5,7 @@ PST.saveManager.Init(PST)
 include("scripts.ST_colorsEnum")
 include("scripts.ST_initData")
 include("PST_config")
+include("scripts.ST_saveData")
 PST:resetData()
 
 local oldLoadFlag = false
@@ -115,6 +116,8 @@ function PST:save(forceSave)
 	local settingsSave = PST.saveManager.GetSettingsSave()
 	if settingsSave then
 		settingsSave.config = PST:copyTable(PST.config)
+		-- Remove keybinds until modifiable
+		settingsSave.config.keybinds = nil
 		tmpSaved = true
 	end
 
@@ -126,6 +129,9 @@ function PST:save(forceSave)
 		end
 
 		modSave.modData = PST:copyTable(PST.modData)
+		modSave.modData.serialized = false
+		PST:serializeSave(modSave.modData)
+
 		tmpSaved = true
 	end
 
@@ -138,6 +144,8 @@ end
 -- Load mod data
 function PST:processLoadedData(loadedData)
 	if not loadedData then return end
+
+	PST:deserializeData(loadedData)
 
 	-- Add missing fields (old save)
 	for k, v in pairs(PST.modData) do

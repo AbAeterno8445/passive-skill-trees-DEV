@@ -49,6 +49,7 @@ PST.astralWepBossBaseRate = 12
 PST.astralWepMods = {
     ---- GENERIC MODS ----
     dmgStatus = {
+        serial = 1,
         description = "+{{roll1}}% damage dealt to enemies affected by status effects.",
         color = {145, 203, 196},
         rollsFunc = function(wepTier, rollPerc)
@@ -58,6 +59,7 @@ PST.astralWepMods = {
         end
     },
     dmgStatusSlow = {
+        serial = 2,
         description = "+{{roll1}}% damage dealt to slowed enemies.",
         color = {185, 223, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -67,6 +69,7 @@ PST.astralWepMods = {
         end
     },
     dmgStatusCharm = {
+        serial = 3,
         description = "+{{roll1}}% damage dealt to charmed enemies.",
         color = {249, 185, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -76,6 +79,7 @@ PST.astralWepMods = {
         end
     },
     dmgStatusPara = {
+        serial = 4,
         description = "+{{roll1}}% damage dealt to paralyzed enemies.",
         color = {72, 77, 92},
         rollsFunc = function(wepTier, rollPerc)
@@ -85,6 +89,7 @@ PST.astralWepMods = {
         end
     },
     dmgStatusFear = {
+        serial = 5,
         description = "+{{roll1}}% damage dealt to feared enemies.",
         color = {135, 60, 185},
         rollsFunc = function(wepTier, rollPerc)
@@ -94,6 +99,7 @@ PST.astralWepMods = {
         end
     },
     dmgStatusBleed = {
+        serial = 6,
         description = "+{{roll1}}% damage dealt to bleeding enemies.",
         color = {185, 60, 93},
         rollsFunc = function(wepTier, rollPerc)
@@ -103,6 +109,7 @@ PST.astralWepMods = {
         end
     },
     dmgStatusPoison = {
+        serial = 7,
         description = "+{{roll1}}% damage dealt to poisoned enemies.",
         color = {55, 172, 50},
         rollsFunc = function(wepTier, rollPerc)
@@ -112,6 +119,7 @@ PST.astralWepMods = {
         end
     },
     dmgStatusBurn = {
+        serial = 8,
         description = "+{{roll1}}% damage dealt to burning enemies.",
         color = {255, 137, 20},
         rollsFunc = function(wepTier, rollPerc)
@@ -122,6 +130,7 @@ PST.astralWepMods = {
     },
 
     consecFireDmg = {
+        serial = 9,
         description = "+{{roll1}}% damage dealt after firing consecutively for 2 seconds. Resets when you stop firing.",
         color = {235, 167, 90},
         rollsFunc = function(wepTier, rollPerc)
@@ -131,6 +140,7 @@ PST.astralWepMods = {
         end
     },
     consecFireDmg2 = {
+        serial = 10,
         description = {
             "+{{roll1}}% damage dealt after firing consecutively for 3 seconds.",
             "Resets 1 second after you stop firing."
@@ -144,6 +154,7 @@ PST.astralWepMods = {
     },
 
     farEnemyDmg = {
+        serial = 11,
         description = "+{{roll1}}% damage dealt to enemies beyond 2 tiles of you.",
         color = {127, 107, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -153,6 +164,7 @@ PST.astralWepMods = {
         end
     },
     closeEnemyDmg = {
+        serial = 12,
         description = "+{{roll1}}% damage dealt to enemies within 2 tiles of you.",
         color = {255, 107, 107},
         rollsFunc = function(wepTier, rollPerc)
@@ -163,6 +175,7 @@ PST.astralWepMods = {
     },
 
     baseDmg = {
+        serial = 13,
         description = "+{{roll1}} base damage.",
         color = {175, 0, 0},
         rollsFunc = function(wepTier, rollPerc)
@@ -172,6 +185,7 @@ PST.astralWepMods = {
         end
     },
     baseDmg2 = {
+        serial = 14,
         description = "+{{roll1}} base damage, removed for {{roll2}} seconds when you get hit.",
         color = {200, 20, 20},
         rollsFunc = function(wepTier, rollPerc)
@@ -183,6 +197,7 @@ PST.astralWepMods = {
     },
 
     redHealDmg = {
+        serial = 15,
         description = {
             "When healing red hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 red heart recovered,",
             "which stacks up to {{roll2}}%."
@@ -196,6 +211,7 @@ PST.astralWepMods = {
         end
     },
     soulHealDmg = {
+        serial = 16,
         description = {
             "When gaining soul hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 soul heart gained,",
             "which stacks up to {{roll2}}%."
@@ -209,6 +225,7 @@ PST.astralWepMods = {
         end
     },
     blackHealDmg = {
+        serial = 17,
         description = {
             "When gaining black hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 black heart gained,",
             "which stacks up to {{roll2}}%."
@@ -223,6 +240,7 @@ PST.astralWepMods = {
     },
 
     purchaseDmg = {
+        serial = 18,
         description = {
             "+{{roll1}}% damage dealt for {{roll2}} seconds after purchasing an item, which stacks",
             "up to {{roll3}}%."
@@ -238,6 +256,7 @@ PST.astralWepMods = {
     },
 
     coinPickupDmg = {
+        serial = 19,
         description = {
             "+{{roll1}}% damage dealt for {{roll2}} seconds after picking up any coin, which stacks",
             "up to {{roll3}}%."
@@ -252,6 +271,7 @@ PST.astralWepMods = {
         end
     },
     coinPermDmg = {
+        serial = 20,
         description = "+{{roll1}}% permanent damage after picking up any coin worth at least 5, up to {{roll2}}%.",
         color = {183, 172, 5},
         rollsFunc = function(wepTier, rollPerc)
@@ -263,6 +283,7 @@ PST.astralWepMods = {
     },
 
     onHitEnemyDmgTaken = {
+        serial = 21,
         description = "All enemies take {{roll1}}% more damage for {{roll2}} seconds after you get hit.",
         color = {186, 113, 113},
         rollsFunc = function(wepTier, rollPerc)
@@ -274,6 +295,7 @@ PST.astralWepMods = {
     },
 
     flyGroundDmg = {
+        serial = 22,
         description = {
             "+{{roll1}}% damage dealt to flying enemies if you're on the ground.",
             "+{{roll1}}% damage dealt to ground enemies if you're flying."
@@ -287,6 +309,7 @@ PST.astralWepMods = {
     },
 
     activeFamDmg = {
+        serial = 23,
         description = "+{{roll1}}% damage dealt per active familiar, up to 40%",
         color = {177, 225, 129},
         rollsFunc = function(wepTier, rollPerc)
@@ -296,6 +319,7 @@ PST.astralWepMods = {
         end
     },
     famKillDmg = {
+        serial = 24,
         description = "+{{roll1}}% damage dealt for {{roll2}} seconds after a familiar kills an enemy.",
         color = {182, 255, 108},
         rollsFunc = function(wepTier, rollPerc)
@@ -307,6 +331,7 @@ PST.astralWepMods = {
     },
 
     holyMantleDmg = {
+        serial = 25,
         description = "+{{roll1}}% damage dealt while you have a holy mantle shield.",
         color = {223, 253, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -317,6 +342,7 @@ PST.astralWepMods = {
     },
 
     eternalDmg = {
+        serial = 26,
         description = "+{{roll1}}% damage dealt while you have an eternal heart.",
         color = {255, 255, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -327,6 +353,7 @@ PST.astralWepMods = {
     },
 
     activeDmg = {
+        serial = 27,
         description = "+{{roll1}}% damage dealt for {{roll2}} seconds after using an active item.",
         color = {0, 213, 192},
         rollsFunc = function(wepTier, rollPerc)
@@ -338,6 +365,7 @@ PST.astralWepMods = {
     },
 
     healthyMobDmg = {
+        serial = 28,
         description = "+{{roll1}}% damage dealt to enemies above 90% HP.",
         color = {255, 0, 145},
         rollsFunc = function(wepTier, rollPerc)
@@ -347,6 +375,7 @@ PST.astralWepMods = {
         end
     },
     injuredMobDmg = {
+        serial = 29,
         description = "+{{roll1}}% damage dealt to enemies below 15% HP.",
         color = {150, 0, 85},
         rollsFunc = function(wepTier, rollPerc)
@@ -357,6 +386,7 @@ PST.astralWepMods = {
     },
 
     creepDmg = {
+        serial = 30,
         description = "+{{roll1}}% damage dealt while standing on creep.",
         color = {150, 200, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -366,6 +396,7 @@ PST.astralWepMods = {
         end
     },
     playerCreepDmg = {
+        serial = 31,
         description = "+{{roll1}}% damage dealt by player creep.",
         color = {130, 150, 255},
         rollsFunc = function(wepTier, rollPerc)
@@ -376,6 +407,7 @@ PST.astralWepMods = {
     },
 
     laserDmg = {
+        serial = 32,
         description = "+{{roll1}}% damage dealt with lasers.",
         color = {240, 140, 110},
         rollsFunc = function(wepTier, rollPerc)
@@ -385,6 +417,7 @@ PST.astralWepMods = {
         end
     },
     explosionDmg = {
+        serial = 33,
         description = "+{{roll1}}% damage dealt with explosions.",
         color = {111, 111, 111},
         rollsFunc = function(wepTier, rollPerc)
@@ -395,6 +428,7 @@ PST.astralWepMods = {
     },
 
     injuredDmg = {
+        serial = 34,
         description = "+{{roll1}}% damage dealt while half or more of your total red heart containers are empty.",
         color = {235, 140, 140},
         rollsFunc = function(wepTier, rollPerc)
@@ -407,6 +441,7 @@ PST.astralWepMods = {
     ---- ANCIENT MODS ----
     -- Ancient Longswords
     greyWind = {
+        serial = 35,
         description = {
             "{{roll1}}% chance on hit to slash all enemies within 2 tiles of the target, dealing {{roll2}}%",
             "of the hit's damage. This effect has a 2 second cooldown.",
@@ -420,6 +455,7 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 4}
     },
     executioner = {
+        serial = 36,
         description = {
             "+{{roll1}}% damage.",
             "{{roll2}}% chance on hit to instantly kill enemies that are left with {{roll3}}% or less HP."
@@ -430,6 +466,7 @@ PST.astralWepMods = {
         upgIncrements = {0.4, 1, 0.25}
     },
     swordOfSong = {
+        serial = 37,
         description = {
             "{{roll1}}% chance on hit to cause an area pulse at the hit's location that charms nearby enemies for 4 seconds.",
             "+1% damage whenever you kill a charmed monster.",
@@ -441,6 +478,7 @@ PST.astralWepMods = {
         upgIncrements = {0.2, -1}
     },
     redbeak = {
+        serial = 38,
         description = {
             "If half or more of your total red heart containers are empty:",
             "    +{{roll1}}% damage dealt.",
@@ -453,6 +491,7 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 0.5, 0.2}
     },
     glowingMoonblade = {
+        serial = 39,
         description = {
             "Start with innate Luna.",
             "-{{roll1}}% damage and tears.",
@@ -465,6 +504,7 @@ PST.astralWepMods = {
         upgIncrements = {-0.5, 0.005}
     },
     maxwellEngine = {
+        serial = 40,
         description = {
             "+0.5% damage for 3 seconds when hitting an enemy, which stacks up to {{roll1}}%.",
             "While the buff is maxed:",
@@ -478,6 +518,7 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 1}
     },
     glowingSunblade = {
+        serial = 41,
         description = {
             "Start with innate Sol.",
             "-{{roll1}}% damage and tears.",
@@ -491,6 +532,7 @@ PST.astralWepMods = {
     },
     -- Ancient Estocs
     arcingNeedle = {
+        serial = 42,
         description = {
             "Every 0.5 seconds spent firing, {{roll1}}% chance to gain Jacob's Ladder as an innate effect for {{roll2}} seconds.",
             "Chance goes up in 1% increments as you keep firing, and resets once you stop firing.",
@@ -502,6 +544,7 @@ PST.astralWepMods = {
         upgIncrements = {0.25, 0.1}
     },
     auricPersecutor = {
+        serial = 43,
         description = {
             "Half of your coin count now acts as a tears multiplier, up to {{roll1}}%.",
             "+{{roll2}}% damage for the current floor when picking up a coin worth at least 5, up to {{roll3}}%."
@@ -513,6 +556,7 @@ PST.astralWepMods = {
     },
     -- Ancient Daggers
     scrambler = {
+        serial = 44,
         description = {
             "3% chance on hit to confuse enemies for 4 seconds. Triple the chance against targets within 1.5 tiles.",
             "Increase this chance by 1% when entering a new floor.",
@@ -525,6 +569,7 @@ PST.astralWepMods = {
         upgIncrements = {1, -2}
     },
     adriftBlade = {
+        serial = 45,
         description = "{{roll1}}% chance on hit to deal between {{roll2}}% and {{roll3}}% of the original damage.",
         ancient = true,
         minRolls = {25, 40, 200},
@@ -532,6 +577,7 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 1, 5}
     },
     ivoryVampire = {
+        serial = 46,
         description = {
             "Red hearts can be picked up regardless of health status.",
             "Every 1/2 red heart picked up grants you {{roll1}}% speed, tears and damage for {{roll2}} seconds,",
@@ -545,6 +591,7 @@ PST.astralWepMods = {
     },
     -- Ancient Quickblades
     nimbleTwins = {
+        serial = 47,
         description = {
             "+{{roll1}}% tears.",
             "When hitting an enemy, additionally fire a slow-moving red tear and a quick blue tear towards them.",
@@ -558,6 +605,7 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 3, 0.5}
     },
     crimsonAltruist = {
+        serial = 48,
         description = {
             "+{{roll1}}% damage when using a blood donation machine, up to 100%.",
             "+{{roll2}} tears every {{roll3}} blood donation machine uses.",
@@ -569,6 +617,7 @@ PST.astralWepMods = {
         upgIncrements = {0.25, 0.02, -1}
     },
     quicksilver = {
+        serial = 49,
         description = {
             "Press the Drop button to briefly perform a Parry. Parrying blocks up to 1 incoming hit if timed right.",
             "Parrying has a {{roll1}} second cooldown. You can only parry monster hits.",
@@ -583,6 +632,7 @@ PST.astralWepMods = {
     },
     -- Ancient Spears
     beastbane = {
+        serial = 50,
         description = {
             "+{{roll1}}% damage dealt to bosses.",
             "Defeating a boss grants you a permanent +{{roll2}}% damage, once every 2 floors."
@@ -593,6 +643,7 @@ PST.astralWepMods = {
         upgIncrements = {0.5, 0.1}
     },
     gravitas = {
+        serial = 51,
         description = {
             "When hitting enemies beyond 2 tiles from you, {{roll1}}% chance to additionally fire",
             "3 homing tears dealing {{roll2}}% of your damage. 0.5 seconds cooldown.",
@@ -605,6 +656,7 @@ PST.astralWepMods = {
         upgIncrements = {0.25, 2, -0.5}
     },
     borealSpear = {
+        serial = 52,
         description = {
             "{{roll1}}% chance on hit to slow enemies for 3 seconds.",
             "When you hit a slowed enemy beyond {{roll2}} tiles of you, +1% chance to freeze that enemy.",
@@ -617,6 +669,7 @@ PST.astralWepMods = {
         upgIncrements = {0.2, -0.1}
     },
     viperStinger = {
+        serial = 53,
         description = {
             "{{roll1}}% chance to paralyze enemies on hit for 2 seconds.",
             "Double the chance and duration against poisoned enemies.",
@@ -630,6 +683,7 @@ PST.astralWepMods = {
     },
     -- Ancient Tridents
     consecrator = {
+        serial = 54,
         description = {
             "Gain +{{roll1}}% damage when entering a devil room, up to {{roll2}}%.",
             "Gain +{{roll1}}% tears when entering an angel room, up to {{roll2}}%.",
@@ -642,6 +696,7 @@ PST.astralWepMods = {
         upgIncrements = {0.25, 1, 0.25}
     },
     verdantGreen = {
+        serial = 55,
         description = {
             "{{roll1}}% chance on hit to create a poison cloud.",
             "This chance receives a flat increase from your tears stat, up to +5%.",
@@ -654,6 +709,7 @@ PST.astralWepMods = {
         upgIncrements = {0.2, 1}
     },
     lostCoralTrident = {
+        serial = 56,
         description = {
             "Start with innate Neptunus.",
             "-{{roll1}}% damage."
@@ -664,6 +720,7 @@ PST.astralWepMods = {
         upgIncrements = {-0.8}
     },
     oceanicMight = {
+        serial = 57,
         description = {
             "Start with innate Aquarius.",
             "Player creep deals {{roll1}}% more damage to enemies.",
@@ -678,6 +735,7 @@ PST.astralWepMods = {
     },
     -- Ancient Scythes
     taleEnder = {
+        serial = 58,
         description = {
             "+{{roll1}}% damage dealt to full health enemies.",
             "{{roll2}}% chance to instantly kill the first non-boss enemy you hit in each room.",
@@ -689,6 +747,7 @@ PST.astralWepMods = {
         upgIncrements = {3, 2}
     },
     crimsonReaper = {
+        serial = 59,
         description = {
             "When hitting a full health enemy, apply bleed to them for {{roll1}} seconds.",
             "Double this duration against bosses.",
@@ -700,6 +759,7 @@ PST.astralWepMods = {
         upgIncrements = {0.2, 2}
     },
     mobripper = {
+        serial = 60,
         description = {
             "Circular slashes from the implicit modifier now deal {{roll1}}% of the hit's damage instead.",
             "If the circular slash kills any enemy or hits a boss, fear all enemies hit by it for 3 seconds.",
@@ -712,6 +772,7 @@ PST.astralWepMods = {
     },
     -- Ancient Axes
     starsteelBroadaxe = {
+        serial = 61,
         description = {
             "+2% tears for the current room when hitting bleeding enemies, up to {{roll1}}%.",
             "Hitting a boss reduces their status effect cooldown by 0.5 seconds."
@@ -722,6 +783,7 @@ PST.astralWepMods = {
         upgIncrements = {1}
     },
     ancientRunicChopper = {
+        serial = 62,
         description = {
             "+{{roll1}}% permanent damage whenever you use a full rune, up to {{roll2}}%.",
             "+{{roll3}}% tears for 10 seconds whenever you use a rune or rune shard."
@@ -732,6 +794,7 @@ PST.astralWepMods = {
         upgIncrements = {0.1, 0.8, 0.4}
     },
     circuitSplitter = {
+        serial = 63,
         description = {
             "Hitting a bleeding enemy creates a laser ring that follows them, damaging nearby enemies",
             "for {{roll1}}% of your damage per tick, capped at 5.",
@@ -745,6 +808,7 @@ PST.astralWepMods = {
     },
     -- Ancient Greataxes
     berserkerWrath = {
+        serial = 64,
         description = {
             "Trigger Berserk! when first entering a room with monsters, once per floor.",
             "Entering the boss room causes Berserk! to stop.",
@@ -756,6 +820,7 @@ PST.astralWepMods = {
         upgIncrements = {0.1, 0.5, 1}
     },
     frozenTerror = {
+        serial = 65,
         description = {
             "When hitting bleeding enemies, {{roll1}}% chance to slow them for 3 seconds.",
             "When hitting slowed enemies within {{roll2}} tile(s) of you, perform a circular slash",
@@ -769,6 +834,7 @@ PST.astralWepMods = {
     },
     -- Ancient Shortbows
     stormAdvance = {
+        serial = 66,
         description = {
             "Start with innate 120 Volt.",
             "Every {{roll1}} hits against enemies, launch a fan of electrified tears towards the last target hit.",
@@ -781,6 +847,7 @@ PST.astralWepMods = {
         upgIncrements = {-0.25, 4}
     },
     quillRain = {
+        serial = 67,
         description = {
             "Start with innate Soy Milk.",
             "-{{roll2}}% damage dealt to enemies within {{roll1}} tiles of you."
@@ -792,6 +859,7 @@ PST.astralWepMods = {
     },
     -- Ancient Bows
     gildedSeeker = {
+        serial = 68,
         description = {
             "Start with innate Head of the Keeper.",
             "+1% damage when collecting any coin while there are monsters in the room, up to {{roll1}}%.",
@@ -803,6 +871,7 @@ PST.astralWepMods = {
         upgIncrements = {1, 1}
     },
     twistedOakstring = {
+        serial = 69,
         description = {
             "When hitting enemies beyond {{roll1}} tiles of you, create an additional homing, spectral and",
             "fearing tear at their position. 0.5 second cooldown.",
@@ -814,6 +883,7 @@ PST.astralWepMods = {
         upgIncrements = {-0.1, 4}
     },
     bruteOnslaught = {
+        serial = 70,
         description = {
             "When using an active item, for each charge used, boost the next 5 hits' damage by {{roll1}}%.",
             "+{{roll2}}% tears for 5 seconds after using an active item."
@@ -825,6 +895,7 @@ PST.astralWepMods = {
     },
     -- Ancient Crossbows
     volatileArbalest = {
+        serial = 71,
         description = {
             "{{roll1}}% chance to cause a small explosion when hitting enemies beyond 2.5 tiles of you,",
             "dealing {{roll2}}% of your damage. 1 second cooldown."
@@ -835,6 +906,7 @@ PST.astralWepMods = {
         upgIncrements = {0.2, 10}
     },
     avelyn = {
+        serial = 72,
         description = {
             "Every {{roll1}} total seconds spent firing, shoot 3 tears towards a nearby enemy, each dealing {{roll2}}%",
             "of your damage."
@@ -845,6 +917,7 @@ PST.astralWepMods = {
         upgIncrements = {-0.1, 1}
     },
     preciseSeeker = {
+        serial = 73,
         description = {
             "Every second, mark a random enemy if available, prioritizing bosses.",
             "Every {{roll1}} seconds, fire a very quick piercing and spectral tear towards the marked enemy.",
@@ -857,6 +930,7 @@ PST.astralWepMods = {
     },
     -- Ancient Gauntlets
     magefist = {
+        serial = 74,
         description = {
             "Can imprint up to 3 modifiers on this weapon.",
             "Imprinting cost is halved.",
@@ -868,6 +942,7 @@ PST.astralWepMods = {
         upgIncrements = {0, 0.1}
     },
     ironhand = {
+        serial = 75,
         description = {
             "Rolls 3 random weapon implicits.",
             "Cannot imprint modifiers into this weapon.",
@@ -879,6 +954,7 @@ PST.astralWepMods = {
         upgIncrements = {0.05}
     },
     metamorphicClaw = {
+        serial = 76,
         description = {
             "Mimics the effect of a random non-Gauntlet ancient weapon.",
             "Effect changes every floor.",
@@ -891,6 +967,7 @@ PST.astralWepMods = {
     },
     -- Ancient Great Maces
     mightyPurifier = {
+        serial = 77,
         description = {
             "Paralyze undead enemies for {{roll1}} second(s) when first hitting them.",
             "{{roll2}}% chance to block hits from undead enemies.",
@@ -902,6 +979,7 @@ PST.astralWepMods = {
         upgIncrements = {0.1, 0.5, 1}
     },
     chaoticTumult = {
+        serial = 78,
         description = {
             "The implicit shockwave now triggers a random status effect on hit for twice as long, instead of paralysis.",
             "When hitting an enemy affected by a status effect, 15% chance to spread the effect to a",
@@ -914,6 +992,7 @@ PST.astralWepMods = {
         upgIncrements = {0.1, 0.5}
     },
     firestarter = {
+        serial = 79,
         description = {
             "{{roll1}}% chance to inflict burning for 5 seconds on hit.",
             "Chance is tripled for explosion hits.",
@@ -927,6 +1006,7 @@ PST.astralWepMods = {
         upgIncrements = {0.2, 6}
     },
     colossalMaul = {
+        serial = 80,
         description = {
             "Double the implicit shockwave's damage.",
             "+{{roll3}}% implicit shockwave size.",
@@ -940,6 +1020,7 @@ PST.astralWepMods = {
         upgIncrements = {-0.1, -0.5, 1}
     },
     tollingBell = {
+        serial = 81,
         description = {
             "Start with innate Leo.",
             "When certain sounds play, gain a temporary buff:",
@@ -954,6 +1035,7 @@ PST.astralWepMods = {
     },
     -- Ancient Whips
     snakebite = {
+        serial = 82,
         description = {
             "Implicit instead fires 3 tears that poison on hit.",
             "These deal {{roll1}}% increased damage to already poisoned enemies."
@@ -961,9 +1043,10 @@ PST.astralWepMods = {
         ancient = true,
         minRolls = {250},
         maxRolls = {400},
-        upgIncrements = {0.25, 10}
+        upgIncrements = {10}
     },
     devilTongue = {
+        serial = 83,
         description = {
             "Implicit tears petrify enemies for {{roll1}} second(s) on hit.",
             "Already petrified enemies are inflicted with burning for 3 seconds on hit.",
@@ -976,6 +1059,7 @@ PST.astralWepMods = {
         upgIncrements = {0.05, 0.5}
     },
     azurebinder = {
+        serial = 84,
         description = {
             "Implicit tears gain Lost Contact and Tiny Planet's effects.",
             "Implicit tears fly for longer.",
@@ -987,6 +1071,7 @@ PST.astralWepMods = {
         upgIncrements = {0.2, 0.2, 0.4}
     },
     sacredScourge = {
+        serial = 85,
         description = {
             "After killing an undead enemy, for {{roll1}} seconds gain the following:",
             "   - Implicit fires an additional 2 tears.",

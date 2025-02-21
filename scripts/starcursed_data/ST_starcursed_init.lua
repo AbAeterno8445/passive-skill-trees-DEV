@@ -15,6 +15,7 @@ PST.SCMods = {
     -- Crimson Starcursed Jewel modifiers
     Crimson = {
         mobHP = {
+            serial = 1,
             weight = 100,
             rolls = {{3, 10}},
             mightyRolls = {{20, 30}},
@@ -23,6 +24,7 @@ PST.SCMods = {
             description = "Normal monsters have an additional %d HP."
         },
         bossHP = {
+            serial = 2,
             weight = 100,
             rolls = {{30, 60}},
             mightyRolls = {{120, 200}},
@@ -31,6 +33,7 @@ PST.SCMods = {
             description = "Boss monsters have an additional %d HP."
         },
         mobHPPerc = {
+            serial = 3,
             weight = 100,
             rolls = {{5, 12}},
             mightyRolls = {{25, 40}},
@@ -39,6 +42,7 @@ PST.SCMods = {
             description = "Normal monsters have %d%% increased HP."
         },
         champHPPerc = {
+            serial = 4,
             weight = 100,
             rolls = {{7, 11}},
             mightyRolls = {{25, 40}},
@@ -47,6 +51,7 @@ PST.SCMods = {
             description = "Champion monsters have %d%% increased HP."
         },
         bossHPPerc = {
+            serial = 5,
             weight = 100,
             rolls = {{8, 15}},
             mightyRolls = {{25, 40}},
@@ -55,6 +60,7 @@ PST.SCMods = {
             description = "Boss monsters have %d%% increased HP."
         },
         mobDmgReduction = {
+            serial = 6,
             weight = 100,
             rolls = {{5, 12}},
             mightyRolls = {{20, 30}},
@@ -63,6 +69,7 @@ PST.SCMods = {
             description = "Monsters have %d%% damage reduction."
         },
         statusCleanse = {
+            serial = 7,
             weight = 100,
             rolls = {{8, 10}},
             mightyRolls = {{3, 4}},
@@ -71,6 +78,7 @@ PST.SCMods = {
             description = "Every %d seconds in a room, status effects are cleansed from monsters."
         },
         mobBlock = {
+            serial = 8,
             weight = 100,
             rolls = {{1, 4}},
             mightyRolls = {{7, 12}},
@@ -79,6 +87,7 @@ PST.SCMods = {
             description = "%d%% chance for monsters to block incoming damage."
         },
         mobRegen = {
+            serial = 9,
             weight = 100,
             rolls = {{1, 3}, {8, 10}},
             mightyRolls = {{5, 7}, {6, 7}},
@@ -88,6 +97,7 @@ PST.SCMods = {
             disabled = true
         },
         bossRegen = {
+            serial = 10,
             weight = 100,
             rolls = {{10, 18}, {10, 14}},
             mightyRolls = {{30, 40}, {6, 7}},
@@ -97,6 +107,7 @@ PST.SCMods = {
             disabled = true
         },
         championHealers = {
+            serial = 11,
             weight = 100,
             rolls = {{9, 10}},
             mightyRolls = {{6, 7}},
@@ -105,6 +116,7 @@ PST.SCMods = {
             description = "Champion monsters heal 15%% of nearby non-champion monsters' HP every %d seconds."
         },
         mobOneShotProt = {
+            serial = 12,
             weight = 100,
             rolls = {},
             mightyRolls = {},
@@ -112,6 +124,7 @@ PST.SCMods = {
             description = "Monsters have one-shot protection."
         },
         mobExplosionDR = {
+            serial = 13,
             weight = 100,
             rolls = {{8, 14}},
             mightyRolls = {{16, 22}},
@@ -120,6 +133,7 @@ PST.SCMods = {
             description = "Monsters receive %d%% less damage from explosions."
         },
         mobFirstBlock = {
+            serial = 14,
             weight = 100,
             rolls = {{1, 3}},
             mightyOnly = true,
@@ -128,6 +142,7 @@ PST.SCMods = {
             description = "Monsters block the first %d hits they receive."
         },
         mobPeriodicShield = {
+            serial = 15,
             weight = 100,
             rolls = {},
             mightyOnly = true,
@@ -137,6 +152,7 @@ PST.SCMods = {
     },
     Azure = {
         mobTurnChampion = {
+            serial = 1,
             weight = 100,
             rolls = {{15, 25}},
             mightyRolls = {{35, 50}},
@@ -145,6 +161,7 @@ PST.SCMods = {
             description = "Normal monsters have a %d%% chance to become champions when entering a room."
         },
         mobExtraHitDmg = {
+            serial = 2,
             weight = 100,
             rolls = {{5, 9}},
             mightyRolls = {{12, 18}},
@@ -153,6 +170,7 @@ PST.SCMods = {
             description = "Normal non-champion monsters have a %d%% chance to deal an additional 1/2 heart damage when hitting."
         },
         champExtraHitDmg = {
+            serial = 3,
             weight = 100,
             rolls = {{8, 12}},
             mightyRolls = {{15, 18}},
@@ -161,6 +179,7 @@ PST.SCMods = {
             description = "Champion monsters have a %d%% chance to deal an additional 1/2 heart damage when hitting."
         },
         bossExtraHitDmg = {
+            serial = 4,
             weight = 100,
             rolls = {{10, 15}},
             mightyRolls = {{20, 25}},
@@ -169,6 +188,7 @@ PST.SCMods = {
             description = "Boss monsters have a %d%% chance to deal an additional 1/2 heart damage when hitting."
         },
         soulHeartsOnHit = {
+            serial = 5,
             weight = 100,
             rolls = {{7, 12}},
             mightyRolls = {{15, 20}},
@@ -177,6 +197,7 @@ PST.SCMods = {
             description = "Monsters have a %d%% chance to remove 1/2 soul/black hearts when hitting players."
         },
         hoveringTearsOnDeath = {
+            serial = 6,
             weight = 100,
             rolls = {1, {3, 4}},
             mightyRolls = {3, {6, 7}},
@@ -185,6 +206,7 @@ PST.SCMods = {
             description = "Non-boss monsters spawn %d static hovering tear(s) on death that last %d seconds."
         },
         tearExplosionOnDeath = {
+            serial = 7,
             weight = 100,
             rolls = {{5, 9}, {3, 5}},
             mightyRolls = {{12, 18}, {6, 8}},
@@ -193,6 +215,7 @@ PST.SCMods = {
             description = "Monsters have a %d%% chance to release %d tears on death."
         },
         mobDuplicate = {
+            serial = 8,
             weight = 100,
             rolls = {{4, 8}},
             mightyRolls = {{12, 16}},
@@ -201,6 +224,7 @@ PST.SCMods = {
             description = "Non-boss monsters have a %d%% chance of being duplicated when entering a room."
         },
         mobSlowOnHit = {
+            serial = 9,
             weight = 100,
             rolls = {{10, 15}},
             mightyRolls = {{20, 30}},
@@ -209,6 +233,7 @@ PST.SCMods = {
             description = "Monsters have a %d%% chance to slow you on hit for 2 seconds."
         },
         mobReduceDmgOnHit = {
+            serial = 10,
             weight = 100,
             rolls = {{10, 15}},
             mightyRolls = {{20, 30}},
@@ -217,6 +242,7 @@ PST.SCMods = {
             description = "Monsters have a %d%% chance on hit to reduce your damage by 20%% for 3 seconds."
         },
         roomMobExtraDmgOnHit = {
+            serial = 11,
             weight = 100,
             rolls = {{1, 2}},
             mightyOnly = true,
@@ -227,6 +253,7 @@ PST.SCMods = {
     },
     Viridian = {
         floorCurse = {
+            serial = 1,
             weight = 100,
             rolls = {{6, 10}},
             mightyRolls = {{15, 25}},
@@ -235,6 +262,7 @@ PST.SCMods = {
             description = "%d%% additional chance to receive a random curse when entering a floor."
         },
         trollBombOnClear = {
+            serial = 2,
             weight = 100,
             rolls = {{10, 16}},
             mightyRolls = {{20, 30}},
@@ -243,6 +271,7 @@ PST.SCMods = {
             description = "%d%% chance to spawn an additional troll bomb at the center of the room on clear."
         },
         loseCoinsOnSpend = {
+            serial = 3,
             weight = 100,
             rolls = {{8, 12}, {1, 3}},
             mightyRolls = {{15, 22}, {4, 6}},
@@ -251,6 +280,7 @@ PST.SCMods = {
             description = "Whenever you lose or spend coins, %d%% chance to lose an additional %d coin(s)."
         },
         lessDevilRoomChance = {
+            serial = 4,
             weight = 100,
             rolls = {{5, 10}},
             mightyRolls = {{15, 20}},
@@ -259,6 +289,7 @@ PST.SCMods = {
             description = "-%d%% additional chance to find the devil/angel room."
         },
         lessSpeed = {
+            serial = 5,
             weight = 100,
             rolls = {{0.05, 0.08}},
             mightyRolls = {{0.1, 0.13}},
@@ -267,6 +298,7 @@ PST.SCMods = {
             description = "-%.2f speed."
         },
         lessDamage = {
+            serial = 6,
             weight = 100,
             rolls = {{0.08, 0.15}},
             mightyRolls = {{0.3, 0.5}},
@@ -275,6 +307,7 @@ PST.SCMods = {
             description = "-%.2f damage."
         },
         lessLuck = {
+            serial = 7,
             weight = 100,
             rolls = {{0.3, 0.7}},
             mightyRolls = {{0.9, 1.5}},
@@ -283,6 +316,7 @@ PST.SCMods = {
             description = "-%.2f luck."
         },
         pickupsVanish = {
+            serial = 8,
             weight = 100,
             rolls = {{3, 7}},
             mightyRolls = {{10, 15}},
@@ -292,6 +326,7 @@ PST.SCMods = {
             disabled = true
         },
         pickupScarcity = {
+            serial = 9,
             weight = 100,
             rolls = {{3, 7}},
             mightyRolls = {{10, 15}},
@@ -300,6 +335,7 @@ PST.SCMods = {
             description = "%d%% coin, key and bomb scarcity."
         },
         heartsVanish = {
+            serial = 10,
             weight = 100,
             rolls = {{3, 7}},
             mightyRolls = {{10, 15}},
@@ -309,6 +345,7 @@ PST.SCMods = {
             disabled = true
         },
         heartScarcity = {
+            serial = 11,
             weight = 100,
             rolls = {{3, 7}},
             mightyRolls = {{10, 15}},
@@ -317,6 +354,7 @@ PST.SCMods = {
             description = "%d%% heart pickup scarcity.",
         },
         shopExpensive = {
+            serial = 12,
             weight = 100,
             rolls = {{2, 5}},
             mightyRolls = {{8, 12}},
@@ -325,6 +363,7 @@ PST.SCMods = {
             description = "Shop items cost %d more coins. Doesn't affect pickups."
         },
         itemPoolRemoval = {
+            serial = 13,
             weight = 90,
             rolls = {{1, 4}, {3, 4}},
             mightyOnly = true,
@@ -333,6 +372,7 @@ PST.SCMods = {
             description = "When starting a run, remove %d random item(s) of quality %d from all item pools."
         },
         shopExpensivePickups = {
+            serial = 14,
             weight = 90,
             rolls = {{2, 5}},
             mightyOnly = true,
@@ -353,6 +393,7 @@ PST.SCAncientRewardsSorted = {
 }
 PST.SCAncients = {
     circadianDestructor = {
+        serial = 1,
         weight = 100,
         spriteFrame = 0,
         name = "Circadian Destructor",
@@ -370,6 +411,7 @@ PST.SCAncients = {
         }
     },
     umbra = {
+        serial = 2,
         weight = 100,
         spriteFrame = 1,
         name = "Umbra",
@@ -388,6 +430,7 @@ PST.SCAncients = {
         }
     },
     gazeAverter = {
+        serial = 3,
         weight = 100,
         spriteFrame = 2,
         name = "Gaze Averter",
@@ -404,6 +447,7 @@ PST.SCAncients = {
         }
     },
     cursedStarpiece = {
+        serial = 4,
         weight = 100,
         spriteFrame = 3,
         name = "Cursed Starpiece",
@@ -423,6 +467,7 @@ PST.SCAncients = {
         }
     },
     opalescentPurity = {
+        serial = 5,
         weight = 100,
         spriteFrame = 4,
         name = "Opalescent Purity",
@@ -438,6 +483,7 @@ PST.SCAncients = {
         }
     },
     iridescentPurity = {
+        serial = 6,
         weight = 100,
         spriteFrame = 5,
         name = "Iridescent Purity",
@@ -453,6 +499,7 @@ PST.SCAncients = {
         }
     },
     challengerStarpiece = {
+        serial = 7,
         weight = 100,
         spriteFrame = 6,
         name = "Challenger's Starpiece",
@@ -471,6 +518,7 @@ PST.SCAncients = {
         }
     },
     soulWatcher = {
+        serial = 8,
         weight = 100,
         spriteFrame = 7,
         name = "Soul Watcher",
@@ -487,6 +535,7 @@ PST.SCAncients = {
         }
     },
     luminescentDie = {
+        serial = 9,
         weight = 100,
         spriteFrame = 8,
         name = "Luminescent Die",
@@ -504,6 +553,7 @@ PST.SCAncients = {
         }
     },
     baubleseeker = {
+        serial = 10,
         weight = 100,
         spriteFrame = 9,
         name = "Baubleseeker",
@@ -522,6 +572,7 @@ PST.SCAncients = {
         }
     },
     chroniclerStone = {
+        serial = 11,
         weight = 100,
         spriteFrame = 11,
         name = "Chronicler Stone",
@@ -539,6 +590,7 @@ PST.SCAncients = {
         }
     },
     sanguinis = {
+        serial = 12,
         weight = 100,
         spriteFrame = 12,
         name = "Sanguinis",
@@ -557,6 +609,7 @@ PST.SCAncients = {
         }
     },
     martianUltimatum = {
+        serial = 13,
         weight = 100,
         spriteFrame = 14,
         name = "Martian Ultimatum",
@@ -573,6 +626,7 @@ PST.SCAncients = {
         }
     },
     crimsonWarpstone = {
+        serial = 14,
         weight = 100,
         spriteFrame = 13,
         name = "Crimson Warpstone",
@@ -592,6 +646,7 @@ PST.SCAncients = {
         }
     },
     glace = {
+        serial = 15,
         weight = 100,
         spriteFrame = 15,
         name = "Glace",
@@ -606,6 +661,7 @@ PST.SCAncients = {
         }
     },
     saturnianLuminite = {
+        serial = 16,
         weight = 100,
         spriteFrame = 16,
         name = "Saturnian Luminite",
@@ -622,6 +678,7 @@ PST.SCAncients = {
         }
     },
     nullstone = {
+        serial = 17,
         weight = 100,
         spriteFrame = 17,
         name = "Nullstone",
@@ -638,6 +695,7 @@ PST.SCAncients = {
         }
     },
     nightmareProjector = {
+        serial = 18,
         weight = 100,
         spriteFrame = 18,
         name = "Nightmare Projector",
@@ -652,6 +710,7 @@ PST.SCAncients = {
         }
     },
     twistedEmperorHeirloom = {
+        serial = 19,
         weight = 100,
         spriteFrame = 19,
         name = "Twisted Emperor's Heirloom",
@@ -669,6 +728,7 @@ PST.SCAncients = {
         }
     },
     cursedAuricShard = {
+        serial = 20,
         weight = 100,
         spriteFrame = 20,
         name = "Cursed Auric Shard",
@@ -685,6 +745,7 @@ PST.SCAncients = {
         }
     },
     unusuallySmallStarstone = {
+        serial = 21,
         weight = 100,
         spriteFrame = 21,
         name = "Unusually Small Starstone",
@@ -700,6 +761,7 @@ PST.SCAncients = {
         }
     },
     primordialKaleidoscope = {
+        serial = 22,
         weight = 100,
         spriteFrame = 22,
         name = "Primordial Kaleidoscope",
@@ -718,6 +780,7 @@ PST.SCAncients = {
         }
     },
     teprucordTenicanEljwe = {
+        serial = 23,
         weight = 40,
         spriteFrame = 23,
         name = "Teprucord Tenican Eljwe",
@@ -731,6 +794,7 @@ PST.SCAncients = {
         }
     },
     causeConverter = {
+        serial = 24,
         weight = 90,
         spriteFrame = 24,
         name = "Cause Converter",
@@ -759,6 +823,7 @@ PST.SCAncients = {
         }
     },
     glowingGlassPiece = {
+        serial = 25,
         weight = 100,
         spriteFrame = 25,
         name = "Glowing Glass Piece",
@@ -777,6 +842,7 @@ PST.SCAncients = {
         }
     },
     tellurianSplinter = {
+        serial = 26,
         weight = 100,
         spriteFrame = 26,
         name = "Tellurian Splinter",
@@ -795,6 +861,7 @@ PST.SCAncients = {
         }
     },
     astralInsignia = {
+        serial = 27,
         weight = 100,
         spriteFrame = 27,
         name = "Astral Insignia",
@@ -813,6 +880,7 @@ PST.SCAncients = {
         }
     },
     mightstone = {
+        serial = 28,
         weight = 100,
         spriteFrame = 28,
         name = "Mightstone",
@@ -830,6 +898,7 @@ PST.SCAncients = {
         }
     },
     crystallizedAnamnesis = {
+        serial = 29,
         weight = 60,
         spriteFrame = 29,
         name = "Crystallized Anamnesis",
@@ -851,6 +920,7 @@ PST.SCAncients = {
         }
     },
     emberedAzurite = {
+        serial = 30,
         weight = 100,
         spriteFrame = 30,
         name = "Embered Azurite",
@@ -866,6 +936,7 @@ PST.SCAncients = {
         }
     },
     glitteringStarstone = {
+        serial = 31,
         weight = 90,
         spriteFrame = 31,
         name = "Glittering Starstone",
@@ -883,6 +954,7 @@ PST.SCAncients = {
         }
     },
     shiftstone = {
+        serial = 32,
         weight = 100,
         spriteFrame = 32,
         name = "Shiftstone",
@@ -897,6 +969,7 @@ PST.SCAncients = {
         }
     },
     phantasmPrism = {
+        serial = 33,
         weight = 100,
         spriteFrame = 33,
         name = "Phantasm Prism",
@@ -913,6 +986,7 @@ PST.SCAncients = {
         }
     },
     arachnite = {
+        serial = 34,
         weight = 100,
         spriteFrame = 34,
         name = "Arachnite",
@@ -928,6 +1002,7 @@ PST.SCAncients = {
         }
     },
     mistlestone = {
+        serial = 35,
         weight = 100,
         spriteFrame = 35,
         name = "Mistlestone",
@@ -945,6 +1020,7 @@ PST.SCAncients = {
         }
     },
     blazingCarnelian = {
+        serial = 36,
         weight = 100,
         spriteFrame = 36,
         name = "Blazing Carnelian",
@@ -962,6 +1038,7 @@ PST.SCAncients = {
         }
     },
     catseyePrism = {
+        serial = 37,
         weight = 100,
         spriteFrame = 37,
         name = "Cat's-Eye Prism",

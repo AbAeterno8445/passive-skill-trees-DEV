@@ -54,6 +54,11 @@ function PST:onNewRun(isContinued)
 
     if treeActive then
         PST.modData.treeModSnapshot = PST:copyTable(PST.treeMods)
+
+        -- Remove Cosmic Realignment cache if not allocated
+        if not PST:getTreeSnapshotMod("cosmicRealignment", false) then
+            PST.modData.treeModSnapshot.cosmicRCache = nil
+        end
     else
         PST.modData.treeModSnapshot = {}
     end
