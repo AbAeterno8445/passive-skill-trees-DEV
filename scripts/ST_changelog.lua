@@ -4,7 +4,6 @@ function PST:getChangelogList()
         "",
 
         "v1.0.2",
-        "- Optimized savedata size, improving performance when saving/loading.",
         "- Added Whips as a selectable weapon type for Ancient Weapon Bounties.",
         "- Fixed effects that conditionally grant you passive items triggering repeatedly during the mineshaft chase sequence.",
         "- Fixed 'Special Sacks' nodes making shop sacks free.",

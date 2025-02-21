@@ -1,4 +1,8 @@
+local enableSerialization = false
+
 function PST:serializeSave(modData)
+    if not enableSerialization then return end
+
     ---- Serialize data: Tree node allocation
     for tmpTree, treeNodes in pairs(PST.modData.treeNodes) do
         modData.treeNodes[tmpTree] = {}
@@ -178,6 +182,7 @@ function PST:serializeSave(modData)
 end
 
 function PST:deserializeData(loadedData)
+    if not enableSerialization then return end
     if not loadedData.serialized then return end
 
     -- Deserialize: Tree node allocation
