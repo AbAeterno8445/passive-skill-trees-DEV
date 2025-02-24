@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.0.3",
+        "- Fixed error on update for Tarnished Judas (Epiphany).",
         "- Fixed Magefist (gauntlet) ancient weapon upgrading.",
 
         "v1.0.2",
