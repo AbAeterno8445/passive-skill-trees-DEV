@@ -265,7 +265,15 @@
         "GodsGambit",
         "Retribution",
         "ReverieMGO",
-        "TheFuture"
+        "TheFuture",
+        "ANDROMEDA",
+        "SamaelMod",
+        "MASTEMA",
+        "dedith",
+        "RedBaby",
+        "dukeMod",
+        "Sheriff",
+        "ARACHNAMOD"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

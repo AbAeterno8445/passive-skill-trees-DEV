@@ -1099,6 +1099,20 @@ function PST:onNewRun(isContinued)
         itemPool:RemoveTrinket(TrinketType.TRINKET_MISSING_POSTER)
     end
 
+    -- Samael mod compat
+    if player:GetPlayerType() == Isaac.GetPlayerTypeByName("Samael") or player:GetPlayerType() == Isaac.GetPlayerTypeByName("Samael", true) then
+        if not PST:arrHasValue(PST.progressionItems, CollectibleType.COLLECTIBLE_FATES_REWARD) then
+            table.insert(PST.progressionItems, CollectibleType.COLLECTIBLE_FATES_REWARD)
+        end
+    elseif PST:arrHasValue(PST.progressionItems, CollectibleType.COLLECTIBLE_FATES_REWARD) then
+        for i, tmpItem in ipairs(PST.progressionItems) do
+            if tmpItem == CollectibleType.COLLECTIBLE_FATES_REWARD then
+                table.remove(PST.progressionItems, i)
+                break
+            end
+        end
+    end
+
     PST:closeTreeMenu(true)
     PST.player = player
     PST.gameInit = true

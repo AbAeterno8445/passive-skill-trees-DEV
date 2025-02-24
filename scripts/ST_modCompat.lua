@@ -154,6 +154,15 @@ function PST:initModCompat()
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Mr. Bones"))
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Mr. Gob"))
 
+		-- No, really, no champions!
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Fishaac"))
+        table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Horf"))
+        table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Red Horf"))
+        table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Sub Horf"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Gurgle"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Gob"))
+
         -- Segmented bosses
         table.insert(PST.segmentBosses, Isaac.GetEntityTypeByName("Kingpin"))
 
@@ -222,8 +231,8 @@ function PST:initModCompat()
         table.insert(PST.regularChests, Isaac.GetEntityVariantByName("Dire Chest"))
 
         -- Locked chests
-        table.insert(PST.regularChests, Isaac.GetEntityVariantByName("Shop Chest"))
-        table.insert(PST.regularChests, Isaac.GetEntityVariantByName("Glass Chest"))
+        table.insert(PST.lockedChests, Isaac.GetEntityVariantByName("Shop Chest"))
+        table.insert(PST.lockedChests, Isaac.GetEntityVariantByName("Glass Chest"))
 
         -- Runes
         table.insert(PST.allRunes, Isaac.GetCardIdByName("Ansus"))
@@ -472,6 +481,12 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Enoch"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Enoch (Tainted)"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Friendly Sack"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Fighting Siblings"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Toy Tank 1"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Toy Tank 2"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Toy Helicopter 1"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Toy Helicopter 2"))
+		-- possible synergies: Bag-O-Trash (has a chance to break on damage) - wooky
 
         -- Bone items
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Dead Weight"))
@@ -560,6 +575,7 @@ function PST:initModCompat()
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Queen of the Clan"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("The Eel"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Weaver's Needle"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lightning Orb"))
 
 		-- Grand Consonance Familiars
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Koakuma Baby"))
@@ -571,6 +587,13 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Jelly the Rock"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Possessed Qin"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Possessed Pipa"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Lightning Orb"))
+		--[[interested in seeing synergies for:
+		
+			- Thunder Drum (activates its effect when taking damage probably)
+			- Mobile Satellite (Spelunker Hat map reveal effect?)
+		
+		]] -- wooky
 
         -- Undead mobs
 		local tmpUndead = {
@@ -709,6 +732,7 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cousin Cletus"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Boner Baby"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burnt Baby"))
+		-- Interested in seeing synergies for: Conqueror Baby (like dry baby), 
 
         -- Bean items
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Spring Bean"))
@@ -718,6 +742,7 @@ function PST:initModCompat()
         -- Bone items
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Adam's Rib"))
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Donkey's Jawbone"))
+		table.insert(PST.boneItems, Isaac.GetItemIdByName("Boner Baby"))
 
 		-- Dice items
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("D3"))
@@ -855,6 +880,7 @@ function PST:initModCompat()
 		table.insert(PST.grandConsonanceWhitelist, Retribution.FamiliarVariant.FALSE_IDOL)
 		table.insert(PST.grandConsonanceWhitelist, Retribution.FamiliarVariant.FRIEND)
 		table.insert(PST.grandConsonanceWhitelist, Retribution.FamiliarVariant.FRIENDLY_MONSTER)
+		-- Interested in seeing synergies for: Bob's Heart/Intestine (like a stronger version of bobs brain?), Cactus, Coil, Dominicus - wooky
 
 		-- Undead
 		local tmpUndead = {
@@ -932,6 +958,399 @@ function PST:initModCompat()
 
 		-- Beggars
 		table.insert(PST.beggarTypes, TheFuture.Monsters.HungrySteven) -- it's listed as a monster for some reason even though it's a beggar /shrug - wooky
+
+		-- Final Bosses
+		-- table.insert(PST.finalBosses, TheFuture.Monsters.Nevermore)
+	end
+
+	-- The Siren (wait how did i not do this one first - wooky)
+	if Isaac.GetPlayerTypeByName("Siren") ~= -1 then
+		-- Baby Familiars
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Little Siren"))
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Little Little Horn"))
+
+		-- Poop Items
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Poo Bum"))
+
+		-- Demon familiars
+        table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Little Siren"))
+        table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Little Little Horn"))
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Little Siren"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Little Little Horn"))
+
+		-- Grand Consonance
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetEntityVariantByName("Little Siren"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetEntityVariantByName("Little Little Horn"))
+		-- TODO: Poo Bum synergy (like regular bum synergies, but poop, can probably just have the same number of poops as non-consonance) - wooky
+	end
+
+	-- Andromeda
+	if ANDROMEDA then
+		-- Baby Familiars
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Baby Pluto"))
+
+		--HP Ups
+        local tmpHPUpItems = {
+            {"Chiron", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+		-- Runes
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Betelgeuse"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Alpha Centauri"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Sirius"))
+
+		local tmpCards = {
+            "XXII - The Unknown"
+        }
+        for _, tmpCard in ipairs(tmpCards) do
+            local tmpCardID = Isaac.GetCardIdByName(tmpCard)
+            if tmpCardID then
+                table.insert(PST.blueGambitCards, tmpCardID)
+            end
+        end
+
+		-- Planetarium items
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Juno"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Pallas"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Ceres"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Vesta"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Chiron"))
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Andromeda", "Soul of Andromeda"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Luminary Flare"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Baby Pluto"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Plutonium"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Mega Plutonium"))
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Luminary Flare"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Baby Pluto"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Plutonium"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Mega Plutonium"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Charon"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Nix"))
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Wisp Wizard"))
+	end
+
+	-- Samael
+	if SamaelMod then
+		-- Blue Gambit
+		local tmpCards = {
+            "XIII", "XIII?"
+        }
+        for _, tmpCard in ipairs(tmpCards) do
+            local tmpCardID = Isaac.GetCardIdByName(tmpCard)
+            if tmpCardID then
+                table.insert(PST.blueGambitCards, tmpCardID)
+            end
+        end
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Samael", "Soul of Samael"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Bone items
+		table.insert(PST.boneItems, Isaac.GetItemIdByName("Thanatophobia"))
+		table.insert(PST.boneItems, Isaac.GetItemIdByName("Thanatophilia"))
+
+		-- Sacks
+		table.insert(PST.specialSacks, Isaac.GetEntityVariantByName("(Samael) Bag o' Bones"))
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("(Samael) Ferryman Beggar"))
+	end
+
+	-- Bertran
+	if Isaac.GetPlayerTypeByName("Bertran") ~= -1 then
+		-- Progression items
+        table.insert(PST.progressionItems, Isaac.GetItemIdByName("Bert's Homemade Cake")) -- technically not a plot item, but Bertran cant access his alternate bonus mode without it - wooky
+	end
+
+	-- Mastema
+	if MASTEMA then
+		-- Dice items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Broken Dice"))
+
+		-- Runes
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Sanguine Jewel"))
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Mastema", "Soul of Mastema"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+	end
+
+	-- D!Edith
+	if dedith then
+		print("D!Edith mod compat loaded!")
+
+		-- Baby Familiars
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Salty Baby"))
+
+		--HP Ups
+        local tmpHPUpItems = {
+            {"Epic Bacon", 3}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+		-- Song of the Few
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Salty Baby"))
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Salty Baby (D!Edith)"))
+	end
+
+	-- Red Baby
+	if RedBaby then
+		-- Baby Familiars
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Jester Baby"))
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Scarlet Infant"))
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil !!!"))
+
+		-- Poop items
+		table.insert(PST.poopItems, Isaac.GetItemIdByName("Lemon Brownie Bombs"))
+
+		--HP Ups
+        local tmpHPUpItems = {
+            {"Pig's Heart", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+		-- Dice items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Fudge Dice"))
+
+		-- Planetarium items
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Phobos"))
+
+		-- Penny trinkets
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Pissed Penny"))
+
+		-- Song of the Few
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Jester Baby"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Scarlet Infant"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil !!!"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Isaac's Skin"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("!!!'s Last Friend"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("The Fistuloids"))
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Jester Baby"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("The Fistuloids"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Lil' Red Baby"))
+
+		-- Coin machines
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Wheel of Life"))
+
+		-- Bone items
+		table.insert(PST.boneItems, Isaac.GetItemIdByName("Hush's Scythe"))
+		table.insert(PST.boneItems, Isaac.GetItemIdByName("...'s Spine"))
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Piss Beggar"))
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"!!!", "Soul of !!!"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+	end
+
+	-- The Sheriff
+	if Sheriff then
+		-- Soul stones
+        local tmpSoulstones = {
+            {"The Sheriff", "Soul of the Sheriff"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Spirit of the West"))
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Spirit of the West"))
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Rancher"))
+	end
+
+	-- Duke
+	if dukeMod then
+		-- Blue Gambit
+		local tmpCards = {
+            "Tapeworm Card", "Red Tapeworm Card"
+        }
+        for _, tmpCard in ipairs(tmpCards) do
+            local tmpCardID = Isaac.GetCardIdByName(tmpCard)
+            if tmpCardID then
+                table.insert(PST.blueGambitCards, tmpCardID)
+            end
+        end
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Duke", "Soul of Duke"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Duke"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Sharty McFly"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Husk"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("The Invader"))
+	end
+
+	-- Martha of Bethany
+	if Isaac.GetPlayerTypeByName("Martha") ~= -1 then
+		-- Baby Familiars
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Ragged Baby"))
+
+		-- Demon familiars
+		table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Tarasque"))
+
+		-- Locked chests
+		table.insert(PST.lockedChests, Isaac.GetEntityVariantByName("Tithe Chest"))
+
+		-- Blue Gambit
+		table.insert(PST.blueGambitCards, Isaac.GetCardIdByName("Year of Plenty"))
+		table.insert(PST.blueGambitCards, Isaac.GetCardIdByName("China Card"))
+		if REVEL then -- oh boy time for martha's Weird Compatability Exclusive Stuff:tm:
+			table.insert(PST.blueGambitCards, Isaac.GetCardIdByName("Kremlin Flu"))
+			table.insert(PST.blueGambitCards, Isaac.GetCardIdByName("&quot;We will bury you...&quot;"))
+		end
+		if Retribution then
+			table.insert(PST.blueGambitCards, Isaac.GetCardIdByName("Che Guevara"))
+			table.insert(PST.blueGambitCards, Isaac.GetCardIdByName("&quot;One small step...&quot;"))
+		end
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Martha", "Soul of Martha"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Ragged Baby"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Tarasque"))
+	end
+
+	-- Arachna
+	if ARACHNAMOD then
+		-- Baby familiars
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Arachna"))
+
+		-- Blue Gambit
+		table.insert(PST.blueGambitCards, Isaac.GetCardIdByName("Merged Card"))
+
+		-- Penny trinkets
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Infested Penny"))
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Arachna", "Soul of Arachna"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Arachna"))
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Lil Arachna"))
+
+		-- Beggars
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Spiderboi (beggar)"))
 	end
 end
 
@@ -1044,5 +1463,51 @@ function PST:initModBlueItems()
 	if ReverieMGO then
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Positive Singyoku"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Fantasy Talisman"))
+	end
+
+	-- Andromeda blue items
+	if ANDROMEDA then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Gravity Shift"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Sporepedia"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Juno"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Pallas"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Ceres"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Vesta"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Chiron"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Ophiuchus"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Harmonic Convergence"))
+	end
+
+	-- Samael blue items
+	if SamaelMod then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Spirit of Depression"))
+	end
+
+	-- D!Edith blue items
+	if dedith then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Cool Aid"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Blue Berry"))
+	end
+
+	-- Red Baby blue items
+	if RedBaby then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Phobos"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Fudge Dice")) -- hey the entire reason we have the blue item pool to begin with is finally in here
+	end
+
+	-- The Sheriff blue items
+	if Sheriff then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Spirit of the West"))
+	end
+
+	-- Duke blue items
+	if dukeMod then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Queen Fly"))
+	end
+
+	-- Martha of Bethany blue items
+	if Isaac.GetPlayerTypeByName("Martha") ~= -1 then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Faith"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Tarasque"))
 	end
 end

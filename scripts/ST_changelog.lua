@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v1.0.3",
+        "- Additional compatibility for items/entities of the following mods: (thanks wookywok!)",
+        "Siren (character), Andromeda, Samael, Bertran, Mastema, D!Edith, Red Baby, Sheriff, Duke, Martha of Bethany, Arachna.",
         "- Adjusted Timeless Bazaar refresh button info when spent for the current cycle.",
         "- Fixed error on update for Tarnished Judas (Epiphany).",
         "- Fixed Magefist (gauntlet) ancient weapon upgrading.",
