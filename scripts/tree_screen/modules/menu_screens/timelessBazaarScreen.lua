@@ -242,7 +242,12 @@ function timelessBazaarScreen:Render(tScreen)
     drawY = drawY + 12
 
     if not canRefresh then
-        PST.luaminiFont:DrawString("Allocate the 'Bazaar Refresh' node to unlock.", drawX, drawY, PST.kcolors.WHITE)
+        local tmpMsg = "Allocate the 'Bazaar Refresh' node to unlock."
+        local charData = PST:getCurrentCharData()
+        if charData and charData.bazaarDone then
+            tmpMsg = "Refresh has been spent for this bazaar cycle."
+        end
+        PST.luaminiFont:DrawString(tmpMsg, drawX, drawY, PST.kcolors.WHITE)
         drawY = drawY + 11
     else
         PST.luaminiFont:DrawString("Hold Respec for 1 second to refresh the item selection.", drawX, drawY, PST.kcolors.WHITE)
