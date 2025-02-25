@@ -144,7 +144,7 @@ function PST:serializeSave(modData)
             elseif (arg == "equipped") and not tmpWep[arg] then
                 newArg = ""
             elseif arg == "mods" then
-                newArg = {}
+                local newModArg = {}
                 for _, tmpMod in ipairs(tmpWep.mods) do
                     local newMod = {}
                     local tmpWepModData = PST.astralWepMods[tmpMod.name]
@@ -157,17 +157,19 @@ function PST:serializeSave(modData)
                     if tmpMod.rolls then
                         table.insert(newMod, tmpMod.rolls)
                     end
-                    table.insert(newArg, newMod)
+                    table.insert(newModArg, newMod)
                 end
+                newArg = newModArg
             -- Serialize multi-implicits
             elseif arg == "multiImplicits" then
-                newArg = {}
+                local newModArg = {}
                 for _, tmpImp in ipairs(tmpWep.multiImplicits) do
                     local newImp = {}
                     table.insert(newImp, tmpImp.type)
                     table.insert(newImp, tmpImp.rolls)
-                    table.insert(newArg, newImp)
+                    table.insert(newModArg, newImp)
                 end
+                newArg = newModArg
             end
             table.insert(tmpEntry, newArg)
         end
