@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v1.0.3",
+        "- Added a new Septentrional Artifact to the Sidereal Tree: Superstitious Septentrion.",
+        "- Added a new Meridional Artifact to the Sidereal Tree: Bloodmoon Meridion.",
         "- Additional compatibility for items/entities of the following mods: (thanks wookywok!)",
         "Siren (character), Andromeda, Samael, Bertran, Mastema, D!Edith, Red Baby, Sheriff, Duke, Martha of Bethany, Arachna.",
         "- Adjusted Timeless Bazaar refresh button info when spent for the current cycle.",

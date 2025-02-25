@@ -178,6 +178,19 @@ PST.sideArtiData = {
         },
         energy = 4
     },
+    superstitiousSeptentrion = {
+        name = "Superstitious Septentrion",
+        type = "septentrion",
+        desc = {
+            {"Condition: Use any consumable pocket item.", PST.kcolors.BLUE1},
+            {"Generates 15 energy.", PST.kcolors.TEAL1}
+        },
+        objective = {
+            desc = "Use consumable pocket items {{progress}}/40 times.",
+            req = 40
+        },
+        energy = 15
+    },
 
     ---- MERIDIONS ----
     galvanicMeridion = {
@@ -437,6 +450,20 @@ PST.sideArtiData = {
         },
         energyReq = 250,
         cooldown = 5
+    },
+    bloodmoonMeridion = {
+        name = "Bloodmoon Meridion",
+        type = "meridion",
+        desc = {
+            {"350 energy: Spawn a Cracked Key. 6% chance to reveal the Ultra Secret Room on trigger.", PST.kcolors.TEAL1},
+            "5 second artifact cooldown."
+        },
+        objective = {
+            desc = "Enter the Ultra Secret Room {{progress}}/5 times.",
+            req = 5
+        },
+        energyReq = 350,
+        cooldown = 5
     }
 }
 
@@ -679,6 +706,24 @@ function PST:sideArtiAddEnergy(energy)
                         local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
                         Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_DICE_SHARD, tmpPos, Vector.Zero, nil)
                         PST:addModifiers({ arti_snakeyeProcs = 1 }, true)
+                    end
+
+                -- Bloodmoon Meridion
+                elseif tmpArti == "bloodmoonMeridion" then
+                    local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, tmpPos, Vector.Zero, nil)
+                    if 100 * math.random() < 6 then
+                        -- Reveal Ultra Secret Room
+                        local level = PST:getLevel()
+                        local roomIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ULTRASECRET, false, RNG())
+                        local ultraSecretRoom = level:GetRoomByIdx(roomIdx)
+                        if ultraSecretRoom and ultraSecretRoom.Data.Type == RoomType.ROOM_ULTRASECRET then
+                            ultraSecretRoom.DisplayFlags = 1 << 2
+                            level:UpdateVisibility()
+                            if PST.config.sideArtiText then
+                                PST:createFloatTextFX("The Blood Moon Reveals...", Vector(0, 8), PST:RGBColor(200, 55, 55), 0.12, 180, true)
+                            end
+                        end
                     end
                 end
                 break

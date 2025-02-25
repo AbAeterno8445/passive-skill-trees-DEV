@@ -1118,6 +1118,11 @@ function PST:onNewRoom()
 
 			-- Expedition objective: enter secret, super secret or ultra secret rooms
 			PST:expedAddProgInRun("secretRooms", 1)
+
+			-- Sidereal Artifact objective: Enter Ultra Secret Rooms
+			if roomType == RoomType.ROOM_ULTRASECRET then
+				PST:sideArtiObjProgress("bloodmoonMeridion", 1)
+			end
 		-- Devil/Angel rooms
 		elseif roomType == RoomType.ROOM_DEVIL or roomType == RoomType.ROOM_ANGEL then
 			local randomStat = PST:getRandomStat()

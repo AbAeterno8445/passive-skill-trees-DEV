@@ -360,6 +360,12 @@ function PST:onUseCard(card, player, useFlags)
     if tmpMod > 0 and 100 * math.random() < tmpMod then
         player:UseActiveItem(CollectibleType.COLLECTIBLE_POOP, UseFlag.USE_NOANIM)
     end
+
+    -- Sidereal Artifact objective/condition: Use consumable pocket items
+    PST:sideArtiObjProgress("superstitiousSeptentrion", 1)
+    if PST:getTreeSnapshotMod("superstitiousSeptentrion", false) then
+        PST:sideArtiAddEnergy(PST.sideArtiData.superstitiousSeptentrion.energy)
+    end
 end
 
 function PST:blueGambitPillSwap(oldColor, oldEffect, newColor)
@@ -439,5 +445,11 @@ function PST:onUsePill(pillEffect, player, useFlags)
     tmpMod = PST:getTreeSnapshotMod("cardPillPoop", 0)
     if tmpMod > 0 and 100 * math.random() < tmpMod then
         player:UseActiveItem(CollectibleType.COLLECTIBLE_POOP, UseFlag.USE_NOANIM)
+    end
+
+    -- Sidereal Artifact objective/condition: Use consumable pocket items
+    PST:sideArtiObjProgress("superstitiousSeptentrion", 1)
+    if PST:getTreeSnapshotMod("superstitiousSeptentrion", false) then
+        PST:sideArtiAddEnergy(PST.sideArtiData.superstitiousSeptentrion.energy)
     end
 end
