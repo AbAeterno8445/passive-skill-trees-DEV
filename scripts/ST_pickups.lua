@@ -1137,7 +1137,7 @@ function PST:onPickupInit(pickup, firstSpawn)
         tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
         -- Deep-Space Distortion mod: pickup scarcity
         if PST:getTreeSnapshotMod("dsdMod_pickupScarcity", false) then
-            tmpMod = tmpMod + 66
+            tmpMod = tmpMod + 50
         end
 
         if firstSpawn and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
@@ -1161,7 +1161,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
             -- Deep-Space Distortion mod: heart scarcity
             if PST:getTreeSnapshotMod("dsdMod_heartScarcity", false) then
-                tmpMod = tmpMod + 66
+                tmpMod = tmpMod + 50
             end
 
             if firstSpawn and tmpMod > 0 and 100 * math.random() < tmpMod then

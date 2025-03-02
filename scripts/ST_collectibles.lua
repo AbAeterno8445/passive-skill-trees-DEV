@@ -313,6 +313,11 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         PST:addModifiers({ tearsPerc = 15 }, true)
     end
 
+    -- Mod: +% melee damage with The Forgotten per obtained Bone item
+    if PST:getTreeSnapshotMod("boneItemMelee", 0) > 0 and PST:arrHasValue(PST.boneItems, itemType) then
+        PST:addModifiers({ boneItems = 1 }, true)
+    end
+
     -- Cosmic Realignment node
     local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     if PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON) then
@@ -358,22 +363,27 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
     end
 end
 
-function PST:onRemoveCollectible(player, type)
+function PST:onRemoveCollectible(player, itemType)
     -- Mod: +luck per held poop item - update player
     local tmpMod = PST:getTreeSnapshotMod("poopItemLuck", 0)
-    if tmpMod > 0 and PST:arrHasValue(PST.poopItems, type) then
+    if tmpMod > 0 and PST:arrHasValue(PST.poopItems, itemType) then
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
     end
 
     -- Uber expedition entropy mod
     if PST:getTreeSnapshotMod("expedEnt_activeSwap", false) then
-        local itemCfg = Isaac.GetItemConfig():GetCollectible(type)
+        local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
         if itemCfg and itemCfg.Type == ItemType.ITEM_ACTIVE then
             PST:expedAddEntropy(
                 PST:getTreeSnapshotMod("expedDepth", 1),
                 PST.expedEntropyMods.expedEnt_activeSwap.entropy
             )
         end
+    end
+
+    -- Mod: +% melee damage with The Forgotten per obtained Bone item
+    if PST:getTreeSnapshotMod("boneItems", 0) > 0 and PST:arrHasValue(PST.boneItems, itemType) then
+        PST:addModifiers({ boneItems = -1 }, true)
     end
 end
 

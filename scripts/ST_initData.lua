@@ -1078,6 +1078,8 @@ function PST:resetMods()
 		theSoulBoneTears = 0,
 		innerFlareSlowDuration = 2,
 		---- The Forgotten's Tree ----
+		boneItemMelee = 0,
+		boneItems = 0,
 		soulWispOnClear = 0,
 		redFullToBone = 0,
 		redFullToBoneProc = false,

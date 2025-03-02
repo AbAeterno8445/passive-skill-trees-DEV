@@ -1052,20 +1052,7 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
-    },
-    --[[archangelOpal = {
-        serial = 38,
-        weight = 80,
-        spriteFrame = 38,
-        name = "Archangel's Opal",
-        description = {
-            "Take on an angelic visage. Start with flight and Spirit Sword.",
-            ""
-        },
-        rewards = {
-            xpgain = 20
-        }
-    }]]
+    }
 }
 
 PST.SCDropRates = {

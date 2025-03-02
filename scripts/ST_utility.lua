@@ -814,8 +814,11 @@ function PST:getRandRuneWeighted()
 	end
 end
 
-function PST:NPCChampionAvailable(npc)
+function PST:NPCChampionAvailable(npc, jewelList)
 	local tmpBlacklist = PST.noChampionMobs
+	if jewelList then
+		tmpBlacklist = PST.noChampionMobsJewel
+	end
 	if npc:IsBoss() then
 		return false
 	end

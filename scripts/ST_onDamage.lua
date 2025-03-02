@@ -2000,6 +2000,12 @@ function PST:onDamage(target, damage, flag, source)
                                 PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
                             end
                         end
+
+                        -- Mod: +% melee damage per bone item
+                        tmpMod = PST:getTreeSnapshotMod("boneItemMelee", 0)
+                        if tmpMod > 0 and PST:getTreeSnapshotMod("boneItems", 0) > 0 then
+                            dmgMult = dmgMult + (tmpMod / 100) * PST:getTreeSnapshotMod("boneItems", 0)
+                        end
                     end
 
                     -- Mod: +% non-melee damage
