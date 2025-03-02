@@ -301,6 +301,12 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                     return false
                 end
 
+                -- Uber expedition depth requirement
+                local uberReq = reqs.uberDepth
+                if uberReq and PST.modData.uberExpedDepth <= uberReq then
+                    return false
+                end
+
                 -- Character level requirement
                 local charlvlReq = reqs.charLevel
                 if charlvlReq and currentChar and currentChar.level < charlvlReq then
@@ -341,6 +347,11 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                             end
                         end
                     end
+                end
+
+                -- Deep-Space nodes
+                if reqs.deepSpaceNode and PST.modData.deepSpaceSP == 0 then
+                    return false
                 end
             end
 
@@ -449,7 +460,7 @@ function PST:isNodeReachable(tree, targetNodeID, exclude, start, visited)
                 if tmpNodeID == targetNodeID then
                     return true
                 elseif PST:isNodeAllocated(tree, tmpNodeID) then
-                    return PST:isNodeReachable(tree, targetNodeID, exclude, tmpNodeID, tmpVisited)
+                    PST:isNodeReachable(tree, targetNodeID, exclude, tmpNodeID, tmpVisited)
                 end
             end
         end

@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v1.0.3"
+PST.modVersion = "v1.1.0"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -1640,6 +1640,7 @@ function PST:resetMods()
 
 		--#region ASTRAL EXPEDITIONS --
 		isExpedRun = false,
+		isExpedUber = false,
 		expedDepth = 0,
 		-- Implicits
 		expedImp_mobHP = 0,
@@ -1712,6 +1713,21 @@ function PST:resetMods()
 
 		bossObolDrops = 0,
 
+		-- Deep-Space nodes
+		finalBossGSP = 0,
+		expedChoiceAdd = 0,
+		obolsFoundUber = 0,
+		obolsFoundEntropy = 0,
+		xpgainUber = 0,
+		orderGain = 0,
+		entropyGainRed = 0,
+		entropicTradeoff = false,
+		entropyGained = 0,
+		bringTheChaos = false,
+		bringTheOrder = false,
+		eldritchExchange = false,
+		obsBazaarDiscount = 0,
+
 		-- Sidereal Caches
 		sideCacheChallenge = 0,
 		sideCacheBoss = 0,
@@ -1774,7 +1790,6 @@ function PST:resetMods()
 		-- Sidereal Artifacts
 		sideArtiEnergy = 0,
 		artiObj_runBossKills = 0,
-		artiObj_finalBossKills = 0,
 		artiObj_itemPurchases = 0,
 
 		arti_virtuousWisps = 0,
@@ -1788,6 +1803,8 @@ function PST:resetMods()
 
 		infMeridionStatus = "",
 		--#endregion
+
+		finalBossKills = 0,
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
 	-- Holds temporary data for allocated special nodes
@@ -1994,6 +2011,8 @@ function PST:resetMods()
 		arti_lunarBuffTimer = 0,
 
 		explosionImmunityTimer = 0,
+
+		dsdMod_finalImmTimer = 0,
 	}
 	-- Temporary data for misc custom effects
 	PST.specialFX = {
@@ -2080,6 +2099,14 @@ function PST:resetData()
 		expedLastDepth = 1, -- Remember last visited depth for menu
 		expedEnabled = false,
 
+		-- Uber expeditions
+		uberExpeditionsData = { [0] = {} },
+		uberExpedSelDepth = 1,
+		uberExpedDepth = 1,
+		uberExpedLastDepth = 1,
+		expedUberMode = false,
+		deepSpaceSP = 0,
+
 		-- Astral forge - astral weapon inventory
 		---@type PSTAstralWeapon[]
 		astralWepInventory = {},
@@ -2091,6 +2118,7 @@ function PST:resetData()
 		mundaneStardust = 0,
 		sparkStardust = 0,
 		ancientStardust = 0,
+		starblessPrism = 0,
 
 		-- Sidereal Artifact unlock progress
 		sideArtiUnlockProg = {},

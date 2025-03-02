@@ -28,11 +28,19 @@ function PST:onRunOver(isGameOver)
         if tmpTrinkets >= 4 then
             PST:sideArtiObjProgress("smelterMeridion", 1)
         end
+
+        if PST:getTreeSnapshotMod("isExpedRun", false) then
+            -- Expedition objective: Win a run having killed at least 1 final boss
+            if PST:getTreeSnapshotMod("finalBossKills", 0) > 0 then
+                PST:expedAddProgress(PST:getTreeSnapshotMod("expedDepth", 0), 1, "winRun", PST:getTreeSnapshotMod("isExpedUber", false))
+            end
+        end
     else
         -- Astral Expeditions, subtract attempts on run loss
         if PST:getTreeSnapshotMod("isExpedRun", false) then
             local depth = PST:getTreeSnapshotMod("expedDepth", 0)
             if depth > 0 then
+                local loseAttempt = true
                 -- Boon: lose no attempts when dying to final bosses, or past womb II (upgraded)
                 local tmpMod = PST:getTreeSnapshotMod("boonLastGasp", 0)
                 local noAttemptStage = 0
@@ -44,9 +52,26 @@ function PST:onRunOver(isGameOver)
                     else noAttemptStage = 4 end
                 end
 
-                if noAttemptStage == 0 or PST:getLevel():GetStage() < noAttemptStage then
+                -- Uber expedition mods
+                if PST:getTreeSnapshotMod("isExpedUber", false) then
+                    -- Bring The Order node (Deep-Space tree)
+                    local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
+                    if expData and expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order >= 10 then
+                        loseAttempt = false
+                    end
+                end
+
+                if loseAttempt and noAttemptStage == 0 or PST:getLevel():GetStage() < noAttemptStage then
                     PST:expedLoseAttempt(depth)
                 end
+            end
+
+            -- Uber expedition entropy mod
+            if PST:getTreeSnapshotMod("expedEnt_loseRun", false) then
+                PST:expedAddEntropy(
+                    PST:getTreeSnapshotMod("expedDepth", 1),
+                    PST.expedEntropyMods.expedEnt_loseRun.entropy
+                )
             end
         end
 

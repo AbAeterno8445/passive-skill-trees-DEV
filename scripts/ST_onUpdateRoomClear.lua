@@ -307,6 +307,17 @@ function PST:onRoomClear(level, room)
 				end
 			end
 
+			-- Regular room
+			if room:GetType() == RoomType.ROOM_DEFAULT then
+				-- Uber expedition entropy mod
+				if PST:getTreeSnapshotMod("expedEnt_clearTime", false) and room:GetFrameCount() >= 300 then
+					PST:expedAddEntropy(
+						PST:getTreeSnapshotMod("expedDepth", 1),
+						PST.expedEntropyMods.expedEnt_clearTime.entropy
+					)
+				end
+			end
+
 			-- Starcursed jewel drop
 			if not jewelDrop and not PST:isFirstOrigStage() then
 				tmpMod = PST:getTreeSnapshotMod("SC_jewelDropOnClear", 0)

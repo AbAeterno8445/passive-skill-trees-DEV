@@ -125,7 +125,14 @@ function PST:save(forceSave)
 	if modSave then
 		-- Save expeditions
 		for depth, expData in pairs(PST.expeditionsData) do
-			PST.modData.expeditionsData[depth] = PST:getExpedSave(expData)
+			if depth > 0 then
+				PST.modData.expeditionsData[depth] = PST:getExpedSave(expData)
+			end
+		end
+		for depth, expData in pairs(PST.uberExpeditionsData) do
+			if depth > 0 then
+				PST.modData.uberExpeditionsData[depth] = PST:getExpedSave(expData)
+			end
 		end
 
 		modSave.modData = PST:copyTable(PST.modData)

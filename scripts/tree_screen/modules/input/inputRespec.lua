@@ -87,6 +87,11 @@ function PST.treeScreen:InputRespec()
                                     end
                                 end
                             end
+
+                            -- Deep-Space node
+                            if self.hoveredNode.reqs.deepSpaceNode then
+                                PST.modData.deepSpaceSP = PST.modData.deepSpaceSP + 1
+                            end
                         end
 
                         submenusModule:CloseSubmenu()

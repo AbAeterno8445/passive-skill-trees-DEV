@@ -256,7 +256,11 @@ function PST:Render()
 	if hudVisible then
 		-- Expedition run UI icon
 		if PST:getTreeSnapshotMod("isExpedRun", false) then
-			expedUISprite:SetFrame("UI", 0)
+			local tmpFrame = 0
+			if PST:getTreeSnapshotMod("isExpedUber", false) then
+				tmpFrame = 2
+			end
+			expedUISprite:SetFrame("UI", tmpFrame)
 			if PST:isKeybindActive(PSTKeybind.TREE_TAB, true) and expedUISprite.Color.A < 1 then
 				expedUISprite.Color.A = expedUISprite.Color.A + 0.05
 			elseif expedUISprite.Color.A > 0.25 then

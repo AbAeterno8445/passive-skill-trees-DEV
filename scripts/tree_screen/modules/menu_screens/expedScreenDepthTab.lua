@@ -4,9 +4,14 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
     local baseDrawX = expedScreen.camCenterX - expedScreen.camera.X
     local baseDrawY = expedScreen.camCenterY - expedScreen.camera.Y
 
+    local farthestDepth = PST.modData.expeditionDepth
+    if expData.uber then
+        farthestDepth = PST.modData.uberExpedDepth
+    end
+
     local flip = false
     local flipC = 0
-    for i=1,PST.modData.expeditionDepth + 1 do
+    for i=1,farthestDepth + 1 do
         local drawX = baseDrawX + flipC * 40
         local drawY = baseDrawY + math.floor((i - 1) / bubbleCols) * 40
 
@@ -14,9 +19,9 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
         local tmpColor = PST.kcolors.WHITE
         if i == expedScreen.currentDepth then
             tmpColor = PST.kcolors.GREEN1
-        elseif i > PST.modData.expeditionDepth then
+        elseif i > farthestDepth then
             tmpColor = PST.kcolors.LIGHTGRAY2
-        elseif PST.expeditionsData[i] then
+        elseif (not expData.uber and PST.expeditionsData[i]) or (expData.uber and PST.uberExpeditionsData[i]) then
             tmpColor = PST.kcolors.EXPED_BLUE
         end
         PST.miniFont:DrawString(tostring(i), drawX - PST.miniFont:GetStringWidth(tostring(i)) / 2, drawY - 7, tmpColor)
@@ -43,7 +48,7 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
         expedScreen.boonSprite.Scale = Vector.One
 
         -- Locked icon
-        if i > PST.modData.expeditionDepth then
+        if i > farthestDepth then
             PST.cosmicRData.charSprite:Play("Locked", true)
             PST.cosmicRData.charSprite:Render(Vector(drawX + 3, drawY + 3))
         end

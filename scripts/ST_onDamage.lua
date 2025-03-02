@@ -578,6 +578,35 @@ function PST:onDamage(target, damage, flag, source)
                     end
                 end
 
+                -- Uber expedition entropy mods
+				if PST:getTreeSnapshotMod("expedEnt_bossDmg", false) and (tmpSource:IsChampion() or tmpSource:IsBoss()) then
+					PST:expedAddEntropy(
+						PST:getTreeSnapshotMod("expedDepth", 1),
+						PST.expedEntropyMods.expedEnt_bossDmg.entropy
+					)
+				end
+                if PST:getTreeSnapshotMod("expedEnt_specialDmg", false) and ((flag & DamageFlag.DAMAGE_EXPLOSION) > 0 or (flag & DamageFlag.DAMAGE_LASER) > 0) then
+					PST:expedAddEntropy(
+						PST:getTreeSnapshotMod("expedDepth", 1),
+						PST.expedEntropyMods.expedEnt_specialDmg.entropy
+					)
+				elseif PST:getTreeSnapshotMod("expedEnt_tearDmg", false) and source.Type == EntityType.ENTITY_PROJECTILE or source.Type == EntityType.ENTITY_TEAR then
+                    PST:expedAddEntropy(
+						PST:getTreeSnapshotMod("expedDepth", 1),
+						PST.expedEntropyMods.expedEnt_tearDmg.entropy
+					)
+                elseif PST:getTreeSnapshotMod("expedEnt_finalBossDmg", false) and PST:entityIsFinalBoss(tmpSource) then
+                    PST:expedAddEntropy(
+						PST:getTreeSnapshotMod("expedDepth", 1),
+						PST.expedEntropyMods.expedEnt_finalBossDmg.entropy
+					)
+                end
+
+                -- Deep-Space Distortion mod: While <= 12% HP, final boss hits kill you
+                if PST:getTreeSnapshotMod("dsdMod_finalLastStand", false) and PST:entityIsFinalBoss(tmpSource) and (tmpSource.HitPoints / tmpSource.MaxHitPoints) <= 0.12 then
+                    player:Kill()
+                end
+
                 -- Chance for normal monsters to deal an extra 1/2 heart damage
                 tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                 if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then
@@ -807,6 +836,16 @@ function PST:onDamage(target, damage, flag, source)
                 if tmpNPC and tmpNPC:IsChampion() then
                     dmgMult = dmgMult - tmpMod / 100
                 end
+            end
+
+            -- Deep-Space Distortion mod: Final boss damage reduction
+            if PST:getTreeSnapshotMod("dsdMod_finalDmgRed", false) and PST:entityIsFinalBoss(target) then
+                dmgMult = dmgMult - 0.4
+            end
+
+            -- Deep-Space Distortion mod: Final boss temporary immunity
+            if PST:getTreeSnapshotMod("dsdMod_finalDmgImm", false) and PST:entityIsFinalBoss(target) and PST.specialNodes.dsdMod_finalImmTimer > 0 then
+                blockedDamage = true
             end
 
             if blockedDamage or PST.specialNodes.mobPeriodicShield then

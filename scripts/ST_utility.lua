@@ -154,6 +154,18 @@ function PST:addTempXP(xp, showText, noMult)
 	local roomType = room:GetType()
     local xpMult = (PST.config.xpMult or 1) + PST:getTreeSnapshotMod("xpgain", 0) / 100
 
+	-- Uber expedition mods
+	if PST:getTreeSnapshotMod("isExpedUber", false) then
+		-- Mod: Uber expedition run xp gain
+		xpMult = xpMult + PST:getTreeSnapshotMod("xpgainUber", 0) / 100
+
+		-- Bring The Chaos node (Deep-Space tree)
+		local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
+		if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 100 then
+			xpMult = xpMult + 0.25
+		end
+	end
+
 	-- -40% xp gain outside hard mode
 	if not Game():IsHardMode() then
 		xpMult = xpMult - 0.4

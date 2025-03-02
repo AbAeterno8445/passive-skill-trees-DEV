@@ -4,7 +4,7 @@ function PST:getExpeditionImplicits(depth)
     local implicits = {}
 
     -- Starmight requirement
-    implicits.starmightReq = math.min(800, depth * 30)
+    implicits.starmightReq = math.min(600, depth * 30)
     -- Depths 2+ monster HP
     if depth >= 2 then
         implicits.expedImp_mobHP = 5 + depth * 3
@@ -48,22 +48,48 @@ end
 -- Include generator versions
 include("scripts.expedition_data.generators.ST_expedition_generator_v1")
 include("scripts.expedition_data.generators.ST_expedition_generator_v2")
+include("scripts.expedition_data.generators.ST_uber_generator_v1")
 
 PST.expedGeneratorVersion = 2
+PST.uberExpedGeneratorVersion = 1
+
+-- List of expedition-altering mods present in the Deep-Space skill tree's nodes (within Star Tree)
+local deepSpaceTreeMods = {
+    "expedChoiceAdd", "orderGain", "entropicTradeoff", "bringTheOrder", "eldritchExchange"
+}
 
 -- Generate expedition, using either the given version or the latest one for generation
-function PST:generateExpedition(depth, seed, version)
+function PST:generateExpedition(depth, seed, version, uber, modifiers)
     local expedGenerators = {
         PST.generateExpeditionV1,
         PST.generateExpeditionV2,
     }
     local expedVer = version or PST.expedGeneratorVersion
-    return expedGenerators[expedVer](PST, depth, seed)
+    if uber then
+        expedGenerators = {
+            PST.generateUberExpeditionV1
+        }
+        expedVer = version or PST.uberExpedGeneratorVersion
+
+        -- Add Deep-Space skill tree mods
+        if not modifiers then
+            modifiers = {}
+            for tmpModName, tmpModVal in pairs(PST:getAllTreeMods("starTree")) do
+                if PST:arrHasValue(deepSpaceTreeMods, tmpModName) then
+                    modifiers[tmpModName] = tmpModVal
+                end
+            end
+        end
+    end
+    return expedGenerators[expedVer](PST, depth, seed, modifiers)
 end
 
 -- Update nodes' accessibility in expedition
-function PST:updateExpedAccess(depth)
+function PST:updateExpedAccess(depth, uber)
     local tmpExpedition = PST.expeditionsData[depth]
+    if uber then
+        tmpExpedition = PST.uberExpeditionsData[depth]
+    end
     if tmpExpedition then
         -- Set all incomplete nodes as inaccessible, and track completed nodes
         local completed = 0

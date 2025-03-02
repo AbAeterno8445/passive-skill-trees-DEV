@@ -40,6 +40,7 @@ local targetColors = {
     default = Color(),
     starTree = Color(0, 1, 1, 1),
     sidereal = Color(0.3, 0.3, 1, 1),
+    uber = Color(1, 0.2, 0.2, 2),
     character = Color(1, 0.5, 1, 1)
 }
 
@@ -48,7 +49,9 @@ function spaceBGModule:Update(tScreen)
     -- Determine target background color based on tree status
     local openMenu = tScreen.modules.menuScreensModule.currentMenu
     self.targetSpaceColor = targetColors.default
-    if tScreen.currentTree == "starTree" then
+    if openMenu == PSTTreeScreenMenu.EXPEDITION and PST.modData.expedUberMode then
+        self.targetSpaceColor = targetColors.uber
+    elseif tScreen.currentTree == "starTree" then
         self.targetSpaceColor = targetColors.starTree
     elseif tScreen.currentTree == "sidereal" or openMenu == PSTTreeScreenMenu.ASTRAL_FORGE then
         self.targetSpaceColor = targetColors.sidereal

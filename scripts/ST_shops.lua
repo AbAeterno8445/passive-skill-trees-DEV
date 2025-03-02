@@ -106,6 +106,17 @@ function PST:onShopPurchase(pickup, player, spent)
         if roomType == RoomType.ROOM_DEVIL then
 		    PST:expedAddProgInRun("devilDeals", 1)
         end
+
+        -- Uber expedition entropy mod
+        if PST:getTreeSnapshotMod("expedEnt_purchases", false) then
+            PST:addModifiers({ expedEnt_purchaseCounter = 1 }, true)
+            if PST:getTreeSnapshotMod("expedEnt_purchaseCounter", 0) > 3 then
+                PST:expedAddEntropy(
+                    PST:getTreeSnapshotMod("expedDepth", 1),
+                    PST.expedEntropyMods.expedEnt_purchases.entropy
+                )
+            end
+        end
     end
 
     -- Helping Hands node (T. Lost's tree)

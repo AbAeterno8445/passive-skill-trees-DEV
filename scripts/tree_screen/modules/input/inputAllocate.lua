@@ -11,6 +11,7 @@ function PST.treeScreen:InputAllocate()
         local infMeridionSubmenu = submenusModule.submenus[PSTSubmenu.INFECTIOUS_MERIDION]
         local crimConvSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_CONVERGENCE]
         local edenHairSubmenu = submenusModule.submenus[PSTSubmenu.EDEN_HAIR]
+        local obsBazaarSubmenu = submenusModule.submenus[PSTSubmenu.OBSCURE_BAZAAR]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -102,6 +103,11 @@ function PST.treeScreen:InputAllocate()
                     local crimsonStarcoreReq = reqs.crimsonStarcore
                     if crimsonStarcoreReq and currentChar and currentChar.crimsonStarcores and not PST.debugOptions.infSP then
                         currentChar.crimsonStarcores = math.max(0, currentChar.crimsonStarcores - crimsonStarcoreReq)
+                    end
+
+                    -- Deep-Space node
+                    if reqs.deepSpaceNode then
+                        PST.modData.deepSpaceSP = math.max(0, PST.modData.deepSpaceSP - 1)
                     end
                 end
 
@@ -215,6 +221,14 @@ function PST.treeScreen:InputAllocate()
                 elseif self.hoveredNode.name == "Eden Hairdo" then
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     submenusModule:SwitchSubmenu(PSTSubmenu.EDEN_HAIR, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+
+                -- Obscure Bazaar node, open shop submenu
+                elseif self.hoveredNode.name == "Obscure Bazaar" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.OBSCURE_BAZAAR, {
                         menuX = self.hoveredNode.pos.X * 38,
                         menuY = self.hoveredNode.pos.Y * 38
                     })
@@ -339,7 +353,7 @@ function PST.treeScreen:InputAllocate()
             end
         -- Infectious Meridion submenu
         elseif submenusModule.currentSubmenu == PSTSubmenu.INFECTIOUS_MERIDION then
-            local tmpStatus = infMeridionSubmenu.hoveredStatus
+            local tmpStatus = infMeridionSubmenu.hoveredItem
             if tmpStatus ~= nil then
                 local charData = PST:getCurrentCharData()
                 if charData then
@@ -373,6 +387,20 @@ function PST.treeScreen:InputAllocate()
                         charData.hairdo = 0
                     end
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                end
+            end
+        -- Obscure Bazaar submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.OBSCURE_BAZAAR then
+            local tmpItem = obsBazaarSubmenu.hoveredItem
+            if tmpItem then
+                local charData = PST:getCurrentCharData()
+                local itemPrice = PST:getObsBazaarPrice(tmpItem.price)
+                if charData and charData.arcaneObols >= itemPrice and tmpItem.purchaseFunc then
+                    tmpItem.purchaseFunc(charData)
+                    charData.arcaneObols = charData.arcaneObols - itemPrice
+                    SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+                else
+                    SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
                 end
             end
         end

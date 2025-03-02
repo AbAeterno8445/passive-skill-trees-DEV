@@ -159,15 +159,33 @@ function PST:onDeath(entity)
 
         -- Regular final boss kill
         if isFinalBoss then
+            PST:addModifiers({ finalBossKills = 1 }, true)
             -- Sidereal Artifact objective: defeat a final boss without taking damage more than once
             if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
                 PST:sideArtiObjProgress("titanseekerSeptentrion", 1)
             end
             -- Sidereal Artifact objective: defeat 2 final bosses within the same run
             if not PST:isSideArtiUnlocked("executionerMeridion") then
-                PST:addModifiers({ artiObj_finalBossKills = 1 }, true)
-                if PST:getTreeSnapshotMod("artiObj_finalBossKills", 0) == 2 then
+                if PST:getTreeSnapshotMod("finalBossKills", 0) == 2 then
                     PST:sideArtiObjProgress("executionerMeridion", 1)
+                end
+            end
+
+            -- Mod: % chance to gain a global SP when defeating a final boss without taking damage
+            local tmpMod = PST:getTreeSnapshotMod("finalBossGSP", 0)
+            if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and 100 * math.random() < tmpMod then
+                PST.modData.skillPoints = PST.modData.skillPoints + 1
+                PST:createFloatTextFX("+1 Global SP", Vector.Zero, Color(0.1, 0.4, 1, 1), 0.13, 100, true)
+            end
+
+            -- Uber expedition mods
+            if PST:getTreeSnapshotMod("isExpedUber", false) then
+                -- Bring The Chaos node (Deep-Space tree)
+                local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
+                if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 200 and
+                math.random() < 0.2 then
+                    PST:addCurrentCharCrimsonStarcores(1)
+                    PST:createFloatTextFX("+1 Crimson Starcore", Vector.Zero, Color(1, 0.3, 0.3, 1), 0.1, 150, true)
                 end
             end
         end

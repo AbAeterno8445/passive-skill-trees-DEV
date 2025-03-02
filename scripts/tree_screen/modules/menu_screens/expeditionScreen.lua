@@ -36,6 +36,11 @@ local expeditionScreen = {
     ---@type number|nil
     hoveredDepth = nil,
 
+    -- Uber expeditions
+    hoveredUberToggle = false,
+    hoveredUberInfo = false,
+    uberMode = false,
+
     tabs = {
         "Expedition",
         "Effects",
@@ -81,8 +86,12 @@ end
 function expeditionScreen:OnOpen(openData)
     self.currentTab = 1
 
-    if PST.modData.expedLastDepth ~= self.currentDepth then
+    self.uberMode = PST.modData.expedUberMode or false
+
+    if not self.uberMode and PST.modData.expedLastDepth ~= self.currentDepth then
         self.currentDepth = PST.modData.expedLastDepth
+    elseif self.uberMode and PST.modData.uberExpedLastDepth ~= self.currentDepth then
+        self.currentDepth = PST.modData.uberExpedLastDepth
     end
 
     -- Make sure selected character has arcane obols defined
@@ -91,11 +100,11 @@ function expeditionScreen:OnOpen(openData)
         currentChar.arcaneObols = 0
     end
 
-    if PST.expeditionsData[self.currentDepth] == nil then
-        PST:resetExpedition(self.currentDepth)
+    if PST:getExpedData(self.currentDepth, self.uberMode) == nil then
+        PST:resetExpedition(self.currentDepth, self.uberMode)
         PST.treeScreen.treeHasChanges = true
     end
-    PST:updateExpedAccess(self.currentDepth)
+    PST:updateExpedAccess(self.currentDepth, self.uberMode)
 end
 
 function expeditionScreen:OnSwitchTab()
@@ -157,19 +166,19 @@ function expeditionScreen:OnInput()
 
     -- Input: Allocate
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
-        local expData = PST.expeditionsData[self.currentDepth]
+        local expData = PST:getExpedData(self.currentDepth, self.uberMode)
         if expData then
             -- Hovered node
             if self.hoveredNode then
                 -- Attempt to complete if pending
                 if expData.selectedNode and self.hoveredNode.col == expData.selectedNode.col and self.hoveredNode.row == expData.selectedNode.row and
-                PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode) then
+                PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode, self.uberMode) then
                     -- Final node: center camera since expedition resets
                     if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
                         self:CenterCamera()
                         SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
                     end
-                    PST:completeExpedNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, true)
+                    PST:completeExpedNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, true, self.uberMode)
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
                     PST.treeScreen.treeHasChanges = true
                 -- Attempt to select selectable node
@@ -184,7 +193,7 @@ function expeditionScreen:OnInput()
                         -- Remove other node's curse if present
                         local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
                         if selNode and selNode.curse and selNode.curse > 0 then
-                            PST:expedRemoveCurse(self.currentDepth, selNode.curse)
+                            PST:expedRemoveCurse(self.currentDepth, selNode.curse, self.uberMode)
                         end
                     end
                     expData.selectedNode = {
@@ -198,7 +207,7 @@ function expeditionScreen:OnInput()
                         -- Add selected node curse if present
                         local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
                         if selNode and selNode.curse and selNode.curse > 0 then
-                            PST:expedAddCurse(self.currentDepth, selNode.curse)
+                            PST:expedAddCurse(self.currentDepth, selNode.curse, self.uberMode)
                         end
                     end
                     SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
@@ -217,18 +226,41 @@ function expeditionScreen:OnInput()
             -- Hovered depth, attempt to switch to it
             elseif self.hoveredDepth then
                 if self.hoveredDepth ~= self.currentDepth then
-                    if self.hoveredDepth <= PST.modData.expeditionDepth then
-                        if not PST.expeditionsData[self.hoveredDepth] then
-                            PST:resetExpedition(self.hoveredDepth)
+                    local lastDepth = PST.modData.expeditionDepth
+                    if self.uberMode then
+                        lastDepth = PST.modData.uberExpedDepth
+                    end
+                    if self.hoveredDepth <= lastDepth then
+                        if not PST:getExpedData(self.hoveredDepth, self.uberMode) then
+                            PST:resetExpedition(self.hoveredDepth, self.uberMode)
                         end
                         self.currentDepth = self.hoveredDepth
-                        PST.modData.expedLastDepth = self.hoveredDepth
+                        if not self.uberMode then
+                            PST.modData.expedLastDepth = self.hoveredDepth
+                        else
+                            PST.modData.uberExpedSelDepth = self.hoveredDepth
+                        end
                         SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
                         PST.treeScreen.treeHasChanges = true
                     else
                         SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
                     end
                 end
+            -- Hovered Uber Expedition toggle button, switch uber mode
+            elseif self.hoveredUberToggle then
+                self.uberMode = not self.uberMode
+                PST.modData.expedUberMode = self.uberMode
+                if self.uberMode then
+                    self.currentDepth = PST.modData.uberExpedLastDepth
+                    if not PST:getExpedData(self.currentDepth, self.uberMode) then
+                        PST:resetExpedition(self.currentDepth, self.uberMode)
+                    end
+                    SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.4, 2, false, 1.3)
+                    PST.treeScreen.treeHasChanges = true
+                else
+                    self.currentDepth = PST.modData.expedLastDepth
+                end
+                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7)
             end
         end
     end
@@ -239,14 +271,14 @@ function expeditionScreen:OnInput()
         if self.hoveredNode and self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
             self.resetTimer = self.resetTimer + 1
             if self.resetTimer == 180 then
-                local obolCost = PST:getExpedResetCost(self.currentDepth)
+                local obolCost = PST:getExpedResetCost(self.currentDepth, self.uberMode)
                 local currentChar = PST:getCurrentCharData()
                 if currentChar and ((PST.modData.skillPoints >= 1 and currentChar.arcaneObols >= obolCost) or PST.debugOptions.infSP) then
                     if not PST.debugOptions.infSP then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
                         currentChar.arcaneObols = currentChar.arcaneObols - obolCost
                     end
-                    PST:resetExpedition(self.currentDepth)
+                    PST:resetExpedition(self.currentDepth, self.uberMode)
                     SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
                     PST.treeScreen.treeHasChanges = true
                 else
@@ -296,20 +328,26 @@ function expeditionScreen:Update(tScreen)
     self.hoveredCurse = nil
     self.hoveredItem = nil
     self.hoveredDepth = nil
+    self.hoveredUberToggle = false
+    self.hoveredUberInfo = false
 
-    if PST.expeditionsData[self.currentDepth] == nil then
-        PST:resetExpedition(self.currentDepth)
+    if PST:getExpedData(self.currentDepth, self.uberMode) == nil then
+        PST:resetExpedition(self.currentDepth, self.uberMode)
     end
 
     self.camCenterX = Isaac.GetScreenWidth() / 2
     self.camCenterY = Isaac.GetScreenHeight() / 2
 
-    PST.modData.expedSelDepth = self.currentDepth
+    if not self.uberMode then
+        PST.modData.expedSelDepth = self.currentDepth
+    else
+        PST.modData.uberExpedSelDepth = self.currentDepth
+    end
 end
 
 ---@param tScreen PST.treeScreen
 function expeditionScreen:Render(tScreen)
-    local expData = PST.expeditionsData[self.currentDepth]
+    local expData = PST:getExpedData(self.currentDepth, self.uberMode)
     if not expData then
         return
     end
@@ -326,7 +364,8 @@ function expeditionScreen:Render(tScreen)
     end
 
     -- Cursor
-    if self.hoveredNode or self.hoveredBoon or self.hoveredCurse or self.hoveredItem or self.hoveredDepth then
+    if self.hoveredNode or self.hoveredBoon or self.hoveredCurse or self.hoveredItem or self.hoveredDepth or self.hoveredUberToggle or
+    self.hoveredUberInfo then
         tScreen.cursorSprite:Play("Clicked", true)
     else
         tScreen.cursorSprite:Play("Idle", true)
@@ -341,12 +380,14 @@ function expeditionScreen:Render(tScreen)
             -- Arcane Astrolabe description
             nodeName = "Arcane Astrolabe"
             -- Depth
-            table.insert(nodeDesc, "Expedition Depth: " .. tostring(self.currentDepth))
+            local uberExtra = ""
+            if expData.uber then uberExtra = " (Uber)" end
+            table.insert(nodeDesc, "Expedition Depth: " .. tostring(self.currentDepth) .. uberExtra)
             -- Expedition enabled/disabled
             if PST.modData.expedEnabled then
                 local tmpColor = PST.kcolors.GREEN1
                 local tmpStr = "Expedition Run Enabled"
-                if not PST:expedMeetsRequirements(self.currentDepth) then
+                if not PST:expedMeetsRequirements(self.currentDepth, self.uberMode) then
                     tmpColor = PST.kcolors.RED1
                     tmpStr = tmpStr .. " (Reqs not met!)"
                 end
@@ -356,7 +397,7 @@ function expeditionScreen:Render(tScreen)
             end
             -- Respec for reset
             table.insert(nodeDesc, "Hold the Respec button for 3 seconds to reset and reroll this expedition.")
-            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth)) .. " Arcane Obols.", PST.kcolors.PURPLE1})
+            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth, expData.uber)) .. " Arcane Obols.", PST.kcolors.PURPLE1})
         else
             -- Normal expedition node description
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
@@ -364,7 +405,7 @@ function expeditionScreen:Render(tScreen)
         if expData.selectedNode then
             if expData.selectedNode.col == self.hoveredNode.col and expData.selectedNode.row == self.hoveredNode.row then
                 nodeName = nodeName .. " (Selected)"
-                if PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode) then
+                if PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode, expData.uber) then
                     table.insert(nodeDesc, "Press the Allocate button to complete this node and claim its rewards.")
                     -- Final node
                     if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
@@ -460,15 +501,19 @@ function expeditionScreen:Render(tScreen)
     -- Hovered depth description
     elseif self.hoveredDepth then
         local depthDesc = {}
-        local tgtExped = PST.expeditionsData[self.hoveredDepth]
+        local tgtExped = PST:getExpedData(self.hoveredDepth, self.uberMode)
+
+        local farthestDepth = PST.modData.expeditionDepth
+        if self.uberMode then farthestDepth = PST.modData.uberExpedDepth end
+
         -- Locked depth
-        if self.hoveredDepth > PST.modData.expeditionDepth then
+        if self.hoveredDepth > farthestDepth then
             table.insert(depthDesc, "Complete the previous depth level to unlock.")
         -- Unvisited depth
         elseif not tgtExped then
             table.insert(depthDesc, "Not visited yet.")
         -- Depth info
-        elseif self.hoveredDepth <= PST.modData.expeditionDepth then
+        elseif self.hoveredDepth <= farthestDepth then
             local compNodes = 0
             for _, tmpCol in ipairs(tgtExped.nodes) do
                 for _, tmpNode in ipairs(tmpCol) do
@@ -476,6 +521,10 @@ function expeditionScreen:Render(tScreen)
                         compNodes = compNodes + 1
                     end
                 end
+            end
+            -- Uber
+            if tgtExped.uber then
+                table.insert(depthDesc, {"(Uber)", PST.kcolors.RED2})
             end
             -- Attempts
             table.insert(depthDesc, {"Attempts: " .. tostring(tgtExped.attempts) .. "/" .. tostring(tgtExped.startAttempts), PST.kcolors.BLUE2})
@@ -486,11 +535,63 @@ function expeditionScreen:Render(tScreen)
                 table.insert(depthDesc, {"Items: " .. tostring(#tgtExped.items), PST.kcolors.EXPED_PURPLE})
             end
             -- Boons
-            table.insert(depthDesc, {"Boons: " .. tostring(#tgtExped.boons), PST.kcolors.DARKGREEN1})
+            if not tgtExped.uber then
+                table.insert(depthDesc, {"Boons: " .. tostring(#tgtExped.boons), PST.kcolors.DARKGREEN1})
+            end
             -- Curses
             table.insert(depthDesc, {"Curses: " .. tostring(#tgtExped.curses), PST.kcolors.RED2})
+            if tgtExped.uber then
+                -- Order (uber)
+                table.insert(depthDesc, {"Order: " .. tostring(tgtExped.order or 0), PST.kcolors.TEAL1})
+                -- Entropy (uber)
+                table.insert(depthDesc, {"Entropy: " .. tostring(tgtExped.entropy or 0), PST.kcolors.RED1})
+            end
         end
         tScreen:DrawNodeBox("Depth " .. tostring(self.hoveredDepth), depthDesc)
+    -- Hovered uber toggle description
+    elseif self.hoveredUberToggle then
+        local uberDesc = {
+            "Press Allocate to toggle Uber Expeditions.",
+            "These are significantly more difficult expeditions with separate progress."
+        }
+        tScreen:DrawNodeBox("Uber Expeditions", uberDesc)
+    -- Hovered uber info
+    elseif self.hoveredUberInfo then
+        local uberInfoDesc
+        if not PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
+            uberInfoDesc = {
+                "Hold Shift to get info about these stats.",
+                {"Order: " .. tostring(expData.order or 0), PST.kcolors.TEAL1},
+                {"Entropy: " .. tostring(expData.entropy or 0), PST.kcolors.RED1},
+            }
+            if expData.depth < 5 then
+                table.insert(uberInfoDesc, "At uber depths 5+, node columns are reduced to 7, and final reward is guaranteed")
+                table.insert(uberInfoDesc, "to be a choice between rewards.")
+            end
+            if expData.dsMods and #expData.dsMods > 0 then
+                table.insert(uberInfoDesc, {"Deep-Space Distortion Mods:", PST.kcolors.RED2})
+                for _, tmpModID in ipairs(expData.dsMods) do
+                    local tmpModName = PST.expedDeepSpaceMods[tmpModID]
+                    local tmpModDesc = PST.expedDescriptions[tmpModName]
+                    if tmpModDesc then
+                        table.insert(uberInfoDesc, {"  " .. tmpModDesc, PST.kcolors.RED2})
+                    end
+                end
+            end
+        else
+            uberInfoDesc = {
+                {"Order acts as a shield against Entropy. Whenever you gain Entropy, it is first deducted", PST.kcolors.TEAL1},
+                {"from your Order instead, if you have any.", PST.kcolors.TEAL1},
+                {"Entropy increases the difficulty of the expedition at certain intervals, and is gained through", PST.kcolors.RED1},
+                {"modifiers within the expedition nodes.", PST.kcolors.RED1},
+                {"Every 24 entropy: increase the magnitude of the expedition's implicit modifiers, up to 10 times.", PST.kcolors.RED2},
+                {"Every 30 entropy: add a random curse to the expedition, up to 5 times.", PST.kcolors.RED2},
+                {"Every 50 entropy: add a random Deep-Space Distortion modifier to the expedition, up to 3 times.", PST.kcolors.RED2},
+                {"Deep-Space Distortion mods add a significant amount of challenge to the runs.", PST.kcolors.RED2},
+                {"At 100 entropy, max attempts for the expedition is lowered by 1.", PST.kcolors.RED2}
+            }
+        end
+        tScreen:DrawNodeBox("Uber Info", uberInfoDesc)
     end
 
     -- HUD: Tabs
@@ -533,13 +634,24 @@ function expeditionScreen:Render(tScreen)
     end
     -- Expedition attempts
     PST.miniFont:DrawString("Attempts: " .. tostring(expData.attempts) .. "/" .. tostring(expData.startAttempts), tmpX, tmpY, PST.kcolors.EXPED_BLUE)
+    -- Order/Entropy (uber)
+    if expData.uber then
+        tmpY = tmpY + 14
+        PST.miniFont:DrawString("Order: " .. tostring(expData.order or 0), tmpX, tmpY, PST.kcolors.TEAL1)
+        tmpY = tmpY + 14
+        PST.miniFont:DrawString("Entropy: " .. tostring(expData.entropy or 0), tmpX, tmpY, PST.kcolors.RED1)
+    end
     tmpY = tmpY + 28
     if self.currentTab == 1 then
         -- Expedition enabled/disabled
         if PST.modData.expedEnabled then
             local tmpColor = PST.kcolors.GREEN1
-            local tmpStr = "Expedition Run Enabled"
-            if not PST:expedMeetsRequirements(self.currentDepth) then
+            local uberExtra = ""
+            if expData.uber then
+                uberExtra = " (Uber)"
+            end
+            tmpStr = "Expedition Run Enabled" .. uberExtra
+            if not PST:expedMeetsRequirements(self.currentDepth, self.uberMode) then
                 tmpColor = PST.kcolors.RED1
                 tmpStr = tmpStr .. " (Reqs not met!)"
             end
@@ -554,7 +666,7 @@ function expeditionScreen:Render(tScreen)
         -- In run - Progress enabled/disabled (for selected objective)
         local runDepth = PST:getTreeSnapshotMod("expedDepth", 0)
         if Isaac.IsInGame() and runDepth > 0 then
-            if PST:expedCanProgress(runDepth) then
+            if PST:expedCanProgress(runDepth, PST:getTreeSnapshotMod("isExpeduber", false)) then
                 PST.miniFont:DrawString("In run - Progress enabled", tmpX, tmpY, PST.kcolors.GREEN1)
             else
                 PST.miniFont:DrawString("In run - Progress disabled", tmpX, tmpY, PST.kcolors.RED1)

@@ -53,14 +53,26 @@ function PST:getExpedSave(expData)
     if #expData.curses > 0 then
         tmpExpSave.curses = expData.curses
     end
+    -- Uber flag
+    if expData.uber then tmpExpSave.uber = true end
+    -- Order/Entropy
+    if expData.order then tmpExpSave.order = expData.order end
+    if expData.entropy then tmpExpSave.entropy = expData.entropy end
+    if expData.entropyEffects then tmpExpSave.entropyEffects = expData.entropyEffects end
+    -- Deep-Space distortion mods
+    if expData.dsMods then tmpExpSave.dsMods = expData.dsMods end
+    -- Expedition modifiers
+    if expData.modifiers then tmpExpSave.modifiers = expData.modifiers end
+    -- End rewards created
+    if expData.endRewards then tmpExpSave.endRewards = expData.endRewards end
     return tmpExpSave
 end
 
 -- Load an expedition from its save data
 ---@param expSave PSTExpeditionSave
-function PST:loadExpedition(depth, expSave)
+function PST:loadExpedition(depth, expSave, uber)
     ---@type PSTExpedition
-    local tmpExped = PST:generateExpedition(depth, expSave.seed, expSave.version or 1)
+    local tmpExped = PST:generateExpedition(depth, expSave.seed, expSave.version or 1, uber, expSave.modifiers)
 
     -- Completed nodes
     if expSave.compNodes then
@@ -145,7 +157,25 @@ function PST:loadExpedition(depth, expSave)
             end
         end
     end
+    -- Order/Entropy
+    if expSave.order then tmpExped.order = expSave.order end
+    if expSave.entropy then tmpExped.entropy = expSave.entropy end
+    if expSave.entropyEffects then tmpExped.entropyEffects = expSave.entropyEffects end
+    -- Deep-Space distortion mods
+    if expSave.dsMods then tmpExped.dsMods = expSave.dsMods end
 
-    PST.expeditionsData[depth] = tmpExped
-    PST:updateExpedAccess(depth)
+    -- Regenerate end rewards if created
+    if expSave.endRewards then
+        PST:expedCreateEndRewards(depth, uber)
+    end
+
+    if not uber then
+        PST.expeditionsData[depth] = tmpExped
+    else
+        PST.uberExpeditionsData[depth] = tmpExped
+        if tmpExped.entropyEffects then
+            PST:expedApplyEntropy(depth)
+        end
+    end
+    PST:updateExpedAccess(depth, uber)
 end

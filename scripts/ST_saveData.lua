@@ -122,7 +122,7 @@ function PST:serializeSave(modData)
     modData.astralWepInventory = {}
 
     -- Order of modifiers roughly from most to least frequent
-    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits"}
+    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits", "starblessed"}
 
     for _, tmpWep in ipairs(PST.modData.astralWepInventory) do
         local tmpEntry = {}
@@ -137,12 +137,14 @@ function PST:serializeSave(modData)
             local arg = argOrder[i]
             local newArg = tmpWep[arg]
             -- Serialize modifiers
-            if arg == "implicitMod" and not tmpWep[arg] then
+            if arg == "implicitMod" and not newArg then
                 newArg = {}
-            elseif (arg == "honing" or arg == "ancientUpg") and not tmpWep[arg] then
+            elseif (arg == "honing" or arg == "ancientUpg") and not newArg then
                 newArg = 0
-            elseif (arg == "equipped") and not tmpWep[arg] then
+            elseif (arg == "equipped") and not newArg then
                 newArg = ""
+            elseif arg == "starblessed" then
+                if not newArg then newArg = 0 else newArg = 1 end
             elseif arg == "mods" then
                 local newModArg = {}
                 for _, tmpMod in ipairs(tmpWep.mods) do
@@ -307,7 +309,7 @@ function PST:deserializeData(loadedData)
 
     -- Deserialize: Astral weapon inventory
     local wepInv = {}
-    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits"}
+    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits", "starblessed"}
     for tmpType, weaponList in pairs(loadedData.astralWepInventory) do
         for _, tmpWeapon in ipairs(weaponList) do
             local newWeapon = {}
@@ -340,12 +342,15 @@ function PST:deserializeData(loadedData)
                             table.insert(newMod, { type = tmpImp[1], rolls = tmpImp[2] })
                         end
                         newArg = newMod
+                    elseif arg == "starblessed" and newArg then
+                        newArg = true
                     end
                     -- Modifier exclusions
                     local exclude = false
                     if arg == "honing" and newArg == 0 then exclude = true
                     elseif arg == "equipped" and newArg == "" then exclude = true
-                    elseif arg == "implicitMod" and #newArg == 0 then exclude = true end
+                    elseif arg == "implicitMod" and #newArg == 0 then exclude = true
+                    elseif arg == "starblessed" and newArg == 0 then exclude = true end
 
                     if not exclude then
                         newWeapon[arg] = newArg

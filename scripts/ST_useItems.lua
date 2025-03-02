@@ -684,9 +684,18 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         end
     end
 
-    -- Expedition objective: use active item with at least 3 charges
+    -- Use active item with at least 3 charges
     if slot ~= -1 and isNormalCharge and player:GetActiveMaxCharge(slot) >= 3 then
+        -- Expedition objective
 	    PST:expedAddProgInRun("activeItems", 1)
+
+        -- Uber expedition entropy mod
+        if PST:getTreeSnapshotMod("expedEnt_actives", false) then
+            PST:expedAddEntropy(
+                PST:getTreeSnapshotMod("expedDepth", 1),
+                PST.expedEntropyMods.expedEnt_actives.entropy
+            )
+        end
     end
 
     -- Boon: when using active with at least 2 charges, become invulnerable for X seconds

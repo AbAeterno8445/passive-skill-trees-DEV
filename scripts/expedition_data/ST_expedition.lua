@@ -14,10 +14,27 @@ function PST:loadExpeditionsData()
 		end
 	end
 	PST.modData.expeditionsData = tmpExpeditionsData
+
+    -- Uber expeditions
+    local tmpUbersData = { [0] = {} }
+    for k, v in pairs(PST.modData.uberExpeditionsData) do
+        tmpUbersData[tonumber(k)] = v
+    end
+    for depth, tmpExpedSave in pairs(tmpUbersData) do
+        if depth > 0 then
+            PST:loadExpedition(depth, tmpExpedSave, true)
+        end
+    end
 end
 
-function PST:expedGetNodeAt(depth, col, row)
+function PST:getExpedData(depth, uber)
     local tmpExpedition = PST.expeditionsData[depth]
+    if uber then tmpExpedition = PST.uberExpeditionsData[depth] end
+    return tmpExpedition
+end
+
+function PST:expedGetNodeAt(depth, col, row, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition then
         local tmpCol = tmpExpedition.nodes[col]
         if tmpCol then
@@ -30,25 +47,20 @@ end
 
 ---@param depth number
 ---@param nodeData PSTExpNode
-function PST:expedNodeIsObjectiveDone(depth, nodeData)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:expedNodeIsObjectiveDone(depth, nodeData, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition and nodeData and tmpExpedition.selectedNode and nodeData.objective then
         return tmpExpedition.selectedNode.objProgress >= nodeData.objective.req
     end
     return false
 end
 
-function PST:resetExpedition(depth)
-    PST.expeditionsData[depth] = PST:generateExpedition(depth)
-    PST:updateExpedAccess(depth)
-    return PST.expeditionsData[depth]
-end
-
--- For testing - reset expedition depth and switch to it in the expedition screen menu
-function PST:resetExpeditionDebug(depth)
-    PST:resetExpedition(depth)
-    PST.modData.expedLastDepth = depth
-    PST.treeScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.EXPEDITION].currentDepth = depth
+function PST:resetExpedition(depth, uber)
+    local targetTable = PST.expeditionsData
+    if uber then targetTable = PST.uberExpeditionsData end
+    targetTable[depth] = PST:generateExpedition(depth, nil, nil, uber)
+    PST:updateExpedAccess(depth, uber)
+    return PST:getExpedData(depth, uber)
 end
 
 -- Add obols to the currently selected/player character
@@ -91,8 +103,8 @@ function PST:expedRemoveBoon(depth, boonID)
 end
 
 -- Add curse to expedition
-function PST:expedAddCurse(depth, curseID)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:expedAddCurse(depth, curseID, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition and curseID <= #PST.expeditionCurses and not PST:arrHasValue(tmpExpedition.curses, curseID) then
         table.insert(tmpExpedition.curses, curseID)
 
@@ -110,8 +122,8 @@ function PST:expedAddCurse(depth, curseID)
 end
 
 -- Remove curse from expedition
-function PST:expedRemoveCurse(depth, curseID)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:expedRemoveCurse(depth, curseID, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition then
         PST:tableRemoveFirst(tmpExpedition.curses, curseID)
 
@@ -130,16 +142,16 @@ end
 
 -- Add item to expedition
 ---@param itemID CollectibleType
-function PST:expedAddItem(depth, itemID)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:expedAddItem(depth, itemID, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition and not PST:arrHasValue(tmpExpedition.items, itemID) then
         table.insert(tmpExpedition.items, itemID)
     end
 end
 
 -- Remove item from expedition
-function PST:expedRemoveItem(depth, itemID)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:expedRemoveItem(depth, itemID, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition then
         PST:tableRemoveFirst(tmpExpedition.items, itemID)
     end
@@ -148,9 +160,27 @@ end
 -- Drop obols at the given position
 function PST:expedDropObolsAt(position, amount)
     local tmpAmount = amount
+    local tmpMult = 1
+    -- Obols found mods
     if PST:getTreeSnapshotMod("obolsFound", 0) > 0 then
-        tmpAmount = math.ceil(tmpAmount * (1 + PST:getTreeSnapshotMod("obolsFound", 0) / 100))
+        tmpMult = tmpMult + PST:getTreeSnapshotMod("obolsFound", 0) / 100
     end
+    if PST:getTreeSnapshotMod("isExpedUber", false) then
+        local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
+        -- Mod: +% obols found in uber expedition runs
+        if PST:getTreeSnapshotMod("obolsFoundUber", 0) > 0 then
+            tmpMult = tmpMult + PST:getTreeSnapshotMod("obolsFoundUber", 0) / 100
+        end
+        -- Mod: +% obols found per entropy
+        if expData and PST:getTreeSnapshotMod("obolsFoundEntropy", 0) > 0 then
+            tmpMult = tmpMult + PST:getTreeSnapshotMod("obolsFoundEntropy", 0) * expData.entropy
+        end
+        -- Bring The Chaos node (Deep-Space tree)
+        if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 100 then
+            tmpMult = tmpMult + 0.25
+        end
+    end
+    tmpAmount = math.ceil(tmpAmount * tmpMult)
 
     local obolDrops = {}
     for i=#PST.expedObolDropValues,1,-1 do
@@ -169,9 +199,9 @@ function PST:expedDropObolsAt(position, amount)
 end
 
 -- Returns whether the current run can progress towards the current expedition's objective, based on selected node
-function PST:expedCanProgress(depth)
-    -- Dynamic tree mode, always progress-able
-    if PST:getTreeSnapshotMod("dynamicMode", false) and PST:getTreeSnapshotMod("isExpedRun", false) then
+function PST:expedCanProgress(depth, uber)
+    -- Dynamic tree mode or uber, always progress-able
+    if (PST:getTreeSnapshotMod("dynamicMode", false) and PST:getTreeSnapshotMod("isExpedRun", false) or uber) then
         return true
     end
 
@@ -195,8 +225,8 @@ end
 ---@param depth number
 ---@param prog number
 ---@param objName? string -- If provided, will check whether this objective name matches the currently selected one in the expedition
-function PST:expedAddProgress(depth, prog, objName)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:expedAddProgress(depth, prog, objName, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition and tmpExpedition.selectedNode then
         local tgtCol = tmpExpedition.nodes[tmpExpedition.selectedNode.col]
         if tgtCol then
@@ -237,9 +267,10 @@ function PST:expedAddProgInRun(objName, prog)
     if Isaac.IsInGame() then
         if PST:getTreeSnapshotMod("isExpedRun", false) then
             local expDepth = PST:getTreeSnapshotMod("expedDepth", 0)
-            local expData = PST.expeditionsData[expDepth]
-            if expData and PST:expedCanProgress(expDepth) then
-                PST:expedAddProgress(expDepth, prog, objName)
+            local expUber = PST:getTreeSnapshotMod("isExpedUber", false)
+            local expData = PST:getExpedData(expDepth, expUber)
+            if expData and PST:expedCanProgress(expDepth, expUber) then
+                PST:expedAddProgress(expDepth, prog, objName, expUber)
             end
         end
 
@@ -257,14 +288,16 @@ function PST:expedAddProgInRun(objName, prog)
     end
 end
 
-function PST:expedMeetsRequirements(depth)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:expedMeetsRequirements(depth, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition then
         -- Selected node
         if not tmpExpedition.selectedNode then return false end
         -- Selected character level requirement
         local currentChar = PST:getCurrentCharData()
-        if not currentChar or (currentChar and currentChar.level < PST.expedMinLevel) then return false end
+        local levelReq = PST.expedMinLevel
+        if uber then levelReq = PST.uberExpedMinLevel end
+        if not currentChar or (currentChar and currentChar.level < levelReq) then return false end
         -- Starmight requirement
         if tmpExpedition.implicits then
             local tmpReq = tmpExpedition.implicits.starmightReq
@@ -283,8 +316,8 @@ function PST:expedMeetsRequirements(depth)
     return false
 end
 
-function PST:completeExpedNode(depth, col, row, giveReward)
-    local tmpExpedition = PST.expeditionsData[depth]
+function PST:completeExpedNode(depth, col, row, giveReward, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     local tmpNode = PST:expedGetNodeAt(depth, col, row)
     if tmpExpedition and tmpNode then
         -- Give node reward
@@ -311,6 +344,27 @@ function PST:completeExpedNode(depth, col, row, giveReward)
             -- Crimson starcore
             elseif tmpNode.rewardType == PSTExpNodeRewardType.C_STARCORE then
                 PST:addCurrentCharCrimsonStarcores(1)
+            -- Order (uber expeditions)
+            elseif tmpNode.rewardType == PSTExpNodeRewardType.ORDER then
+                tmpExpedition.order = tmpExpedition.order + tmpNode.rewardData
+            -- Random Starblessed ancient weapon
+            elseif tmpNode.rewardType == PSTExpNodeRewardType.STARBLESS_WEP then
+                local newType = PST:astralWepPickRandType(false)
+                local wepTypeData = PST.astralWepData[newType]
+                while newType == PSTAstralWepType.GAUNTLET or not wepTypeData or (wepTypeData and #wepTypeData.ancients == 0) do
+                    newType = PST:astralWepPickRandType(false)
+                end
+
+                local ancientID = math.random(#wepTypeData.ancients)
+                local newWep = PST:createAstralWep(newType, PSTAstralWepRarity.ANCIENT, 5, ancientID)
+                newWep.starblessed = true
+                table.insert(PST.modData.astralWepInventory, newWep)
+            -- Starblessed prism
+            elseif tmpNode.rewardType == PSTExpNodeRewardType.STARBLESS_PRISM then
+                PST.modData.starblessPrism = PST.modData.starblessPrism + (tmpNode.rewardData or 1)
+            -- Global Skill Points
+            elseif tmpNode.rewardType == PSTExpNodeRewardType.GLOBAL_SP then
+                PST.modData.skillPoints = PST.modData.skillPoints + (tmpNode.rewardData or 1)
             end
             -- Boon upgrade point reward
             if tmpNode.nodeType == PSTExpNodeType.BOONUPGRADE then
@@ -318,14 +372,49 @@ function PST:completeExpedNode(depth, col, row, giveReward)
             end
         end
 
+        -- Uber expedition node
+        if tmpExpedition.uber then
+            -- Deep-Space skill point every 3 cols or final
+            if (col % 3) == 0 or tmpNode.nodeType == PSTExpNodeType.FINAL then
+                PST.modData.deepSpaceSP = PST.modData.deepSpaceSP + 1
+            end
+
+            -- Entropy completion mod
+            if tmpNode.entropyMods then
+                for _, tmpEntModID in ipairs(tmpNode.entropyMods) do
+                    local tmpEntModName = PST.expedEntropyModList[tmpEntModID]
+                    if tmpEntModName == "expedEnt_compNode" then
+                        PST:expedAddEntropy(depth, PST.expedEntropyMods.expedEnt_compNode.entropy)
+                    end
+                end
+            end
+        end
+
         -- Final node completion
         local resetExped = false
         if tmpNode.nodeType == PSTExpNodeType.FINAL or not tmpExpedition.nodes[col + 1] then
             -- Unlock next depth
-            if depth + 1 > PST.modData.expeditionDepth then
-                PST.modData.expeditionDepth = depth + 1
+            if not uber then
+                if depth + 1 > PST.modData.expeditionDepth then
+                    PST.modData.expeditionDepth = depth + 1
+                end
+                resetExped = true
+            elseif not tmpNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
+                if depth + 1 > PST.modData.uberExpedDepth then
+                    PST.modData.uberExpedDepth = depth + 1
+                end
+                resetExped = true
             end
-            resetExped = true
+        elseif tmpNode.nodeType == PSTExpNodeType.FINAL and not tmpExpedition.nodes[col + 1] and tmpNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
+            PST:expedCreateEndRewards(depth, uber)
+        end
+
+        -- Reward node completion
+        if tmpNode.nodeType == PSTExpNodeType.REWARD then
+            if uber and not tmpExpedition.nodes[col + 1] then
+                -- Uber reward nodes, complete expedition when picked
+                resetExped = true
+            end
         end
 
         tmpNode.nodeType = PSTExpNodeType.COMPLETED
@@ -334,15 +423,45 @@ function PST:completeExpedNode(depth, col, row, giveReward)
         end
 
         if resetExped then
-            PST:resetExpedition(depth)
+            PST:resetExpedition(depth, uber)
         else
-            PST:updateExpedAccess(depth)
+            PST:updateExpedAccess(depth, uber)
         end
     end
 end
 
-function PST:expedLoseAttempt(depth)
-    local tmpExpedition = PST.expeditionsData[depth]
+-- Creates a new final column of reward nodes, if the final node's reward is a choice
+function PST:expedCreateEndRewards(depth, uber)
+    local expData = PST:getExpedData(depth, uber)
+    if expData then
+        local lastCol = #expData.nodes
+        if expData.nodes[lastCol] then
+            local finalNode = expData.nodes[lastCol][1]
+            if finalNode and finalNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
+                local rwNodes = 0
+                for rwType, rwData in pairs(finalNode.rewardData) do
+                    rwNodes = rwNodes + 1
+                    ---@type PSTExpNode
+                    local newRwNode = {
+                        nodeType = PSTExpNodeType.REWARD,
+                        rewardType = rwType,
+                        rewardData = rwData,
+                        col = lastCol + 1,
+                        row = rwNodes,
+                        connections = {}
+                    }
+                    table.insert(expData.nodes[lastCol + 1], newRwNode)
+                    table.insert(finalNode.connections, rwNodes)
+                end
+                PST:updateExpedAccess(depth, uber)
+                expData.endRewards = true
+            end
+        end
+    end
+end
+
+function PST:expedLoseAttempt(depth, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition then
         tmpExpedition.attempts = math.max(0, tmpExpedition.attempts - 1)
         if tmpExpedition.attempts == 0 then
@@ -360,7 +479,7 @@ function PST:expedLoseAttempt(depth)
                 end
             end
 
-            local newExpedition = PST:generateExpedition(depth, tmpExpedition.seed)
+            local newExpedition = PST:generateExpedition(depth, tmpExpedition.seed, nil, uber)
             for _, tmpColNum in ipairs(compCols) do
                 local tmpCol = newExpedition.nodes[tmpColNum]
                 if tmpCol then
@@ -380,8 +499,12 @@ function PST:expedLoseAttempt(depth)
                 end
             end
 
-            PST.expeditionsData[depth] = newExpedition
-            PST:updateExpedAccess(depth)
+            if not uber then
+                PST.expeditionsData[depth] = newExpedition
+            else
+                PST.uberExpeditionsData[depth] = newExpedition
+            end
+            PST:updateExpedAccess(depth, uber)
         end
     end
 end
@@ -429,7 +552,10 @@ function PST:getExpNodeObjectiveDesc(nodeData, expData)
     return tmpDescription
 end
 
-function PST:getExpedResetCost(depth)
+function PST:getExpedResetCost(depth, uber)
+    if uber then
+        return math.min(3000, (15 + depth) * 120)
+    end
     return math.min(500, depth * 40)
 end
 
@@ -471,12 +597,32 @@ function PST:getExpNodeDescription(nodeData, expData)
         end
     end
 
+    -- Entropy modifiers
+    if nodeData.entropyMods and #nodeData.entropyMods > 0 then
+        table.insert(tmpDescription, {"Entropy modifier(s):", PST.kcolors.RED1})
+
+        for _, tmpModID in ipairs(nodeData.entropyMods) do
+            local tmpModName = PST.expedEntropyModList[tmpModID]
+            local tmpEntMod = PST.expedEntropyMods[tmpModName]
+            if tmpEntMod then
+                if type(tmpEntMod.desc) == "table" then
+                    ---@diagnostic disable-next-line: param-type-mismatch
+                    for _, tmpLine in ipairs(tmpEntMod.desc) do
+                        table.insert(tmpDescription, {"   " .. tmpLine, PST.kcolors.RED1})
+                    end
+                else
+                    table.insert(tmpDescription, {"   " .. tmpEntMod.desc, PST.kcolors.RED1})
+                end
+            end
+        end
+    end
+
     -- Reward
     if nodeData.rewardType ~= PSTExpNodeRewardType.NONE or nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then
         local tmpColor = PST.kcolors.GREEN1
         if nodeData.accessible == false then tmpColor = PST.kcolors.GRAY1 end
 
-        if not hasShrouding then
+        if not hasShrouding or nodeData.nodeType == PSTExpNodeType.FINAL then
             table.insert(tmpDescription, {"Reward:", tmpColor})
 
             -- Reward: Boon
@@ -520,10 +666,29 @@ function PST:getExpNodeDescription(nodeData, expData)
             -- Reward: Crimson starcore
             elseif nodeData.rewardType == PSTExpNodeRewardType.C_STARCORE then
                 table.insert(tmpDescription, {"   +1 Crimson Starcore with " .. (PST:getCurrentCharName() or "the current character"), tmpColor})
+            -- Reward: Order
+            elseif nodeData.rewardType == PSTExpNodeRewardType.ORDER then
+                table.insert(tmpDescription, {"   +" .. tostring(nodeData.rewardData) .. " Order", tmpColor})
+            -- Reward: Starblessed Weapon
+            elseif nodeData.rewardType == PSTExpNodeRewardType.STARBLESS_WEP then
+                table.insert(tmpDescription, {"   Random Starblessed Ancient Weapon", tmpColor})
+            -- Reward: Starblessed Prism
+            elseif nodeData.rewardType == PSTExpNodeRewardType.STARBLESS_PRISM then
+                table.insert(tmpDescription, {"   +1 Starblessed Prism", tmpColor})
+            -- Reward: Global skill points
+            elseif nodeData.rewardType == PSTExpNodeRewardType.GLOBAL_SP then
+                table.insert(tmpDescription, {"   +" .. tostring(nodeData.rewardData or 1) .. " Global Skill Point(s)", tmpColor})
+            -- Reward choice (uber expeditions)
+            elseif nodeData.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
+                table.insert(tmpDescription, {"   Choice between various rewards", tmpColor})
             end
             -- Boon Upgrade node
             if nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then
                 table.insert(tmpDescription, {"   +1 Boon upgrade point", tmpColor})
+            end
+            -- Deep-Space skill point (uber expeditions)
+            if expData.uber and ((nodeData.col % 3 == 0) or nodeData.nodeType == PSTExpNodeType.FINAL) then
+                table.insert(tmpDescription, {"   +1 Deep-Space skill point", tmpColor})
             end
         else
             local tmpShroudColor = PST.kcolors.PINK1
@@ -556,6 +721,132 @@ function PST:getExpedCurseMods(expData)
         end
     end
     return curseMods
+end
+
+-- Add Entropy to an uber expedition (capped at 500), and add associated effects
+function PST:expedAddEntropy(depth, entropy)
+    local expData = PST:getExpedData(depth, true)
+    if expData then
+        -- If in-game, apply only if in an uber expedition run
+        if Isaac.IsInGame() and not PST:getTreeSnapshotMod("isExpedRun", false) and not PST:getTreeSnapshotMod("isExpedUber", false) then
+            return
+        end
+
+        -- Check for Order
+        if expData.order and expData.order > 0 then
+            local origEnt = entropy
+            entropy = entropy - expData.order
+            expData.order = math.max(0, expData.order - origEnt)
+        end
+
+        -- Bring the Order node (Deep-Space tree)
+        if expData.modifiers and expData.modifiers.bringTheOrder and math.random() < 0.25 then
+            return
+        end
+
+        -- Mod: % chance to reduce gained entropy by 1
+        local tmpMod = PST:getTreeSnapshotMod("entropyGainRed", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            entropy = entropy - 1
+        end
+
+        -- Entropic tradeoff node (Deep-Space tree)
+        if entropy > 0 and expData.modifiers and expData.modifiers.entropicTradeoff then
+            local tmpAdd = math.min(20 - PST:getTreeSnapshotMod("entropyGained", 0), entropy)
+            if tmpAdd > 0 then
+                entropy = tmpAdd
+                PST:addModifiers({ entropyGained = tmpAdd }, true)
+            end
+        end
+
+        -- Eldritch Exchange node (Deep-Space tree)
+        if expData.modifiers and expData.modifiers.eldritchExchange then
+            entropy = entropy * 2
+        end
+
+        if entropy > 0 then
+            if not expData.entropy then expData.entropy = 0 end
+            expData.entropy = math.min(500, expData.entropy + entropy)
+
+            -- In-game text display
+            if Isaac.IsInGame() then
+                PST:createFloatTextFX("+" .. tostring(entropy) .. "ent", Vector.Zero, Color(0.8, 0.2, 0.2, 1), 0, 80, true)
+            end
+
+            if not expData.entropyEffects then expData.entropyEffects = {} end
+
+            -- Every 24 entropy, increase expedition implicits, up to 10 times
+            expData.entropyEffects.expedImp = math.min(10, math.floor(expData.entropy / 24))
+
+            -- Every 30 entropy, add a curse to the expedition, up to 5 times
+            local tmpAdd = math.min(5, math.floor(expData.entropy / 30))
+            if expData.entropyEffects.curses then
+                local addCurses = tmpAdd - expData.entropyEffects.curses
+                while addCurses > 0 do
+                    local newCurse = math.random(#PST.expeditionCurses)
+                    local failsafe = 0
+                    while PST:arrHasValue(expData.curses, newCurse) and failsafe < 200 do
+                        newCurse = math.random(#PST.expeditionCurses)
+                        failsafe = failsafe + 1
+                    end
+                    if failsafe < 200 then
+                        table.insert(expData.curses, newCurse)
+                    end
+                    addCurses = addCurses - 1
+                end
+            end
+            expData.entropyEffects.curses = tmpAdd
+
+            -- Every 50 entropy, add a Deep-Space Distortion modifier, up to 3 times
+            tmpAdd = math.min(3, math.floor(expData.entropy / 50))
+            if expData.entropyEffects.deepSpaceMods then
+                local addMods = tmpAdd - expData.entropyEffects.deepSpaceMods
+                while addMods > 0 do
+                    if not expData.dsMods then expData.dsMods = {} end
+
+                    local newMod = math.random(#PST.expedDeepSpaceMods)
+                    local failsafe = 0
+                    while PST:arrHasValue(expData.dsMods, newMod) and failsafe < 200 do
+                        newMod = math.random(#PST.expedDeepSpaceMods)
+                        failsafe = failsafe + 1
+                    end
+                    if failsafe < 200 then
+                        table.insert(expData.dsMods, newMod)
+                    end
+                    addMods = addMods - 1
+                end
+            end
+            expData.entropyEffects.deepSpaceMods = tmpAdd
+
+            -- At 100 entropy, reduce max attempts (if Eldritch Exchange isn't allocated)
+            if expData.entropy >= 100 and (not expData.modifiers or (expData.modifiers and not expData.modifiers.eldritchExchange)) then
+                expData.entropyEffects.lessAttempts = 1
+            end
+
+            -- Apply effects if not in-game
+            if not Isaac.IsInGame() then
+                PST:expedApplyEntropy(depth)
+            end
+        end
+    end
+end
+
+-- Apply the effects of entropy to an expedition
+function PST:expedApplyEntropy(depth)
+    local expData = PST:getExpedData(depth, true)
+    if expData and expData.entropyEffects then
+        -- Implicits
+        if expData.entropyEffects.expedImp then
+            local uberDepth = (15 + depth) * 2
+            local impDepth = uberDepth + expData.entropyEffects.expedImp * 2
+            expData.implicits = PST:getExpeditionImplicits(impDepth)
+        end
+        -- Attempts
+        if expData.entropyEffects.lessAttempts then
+            expData.startAttempts = 4 - expData.entropyEffects.lessAttempts
+            expData.attempts = math.min(expData.attempts, expData.startAttempts)
+        end
+    end
 end
 
 include("scripts.expedition_data.ST_expedition_save")

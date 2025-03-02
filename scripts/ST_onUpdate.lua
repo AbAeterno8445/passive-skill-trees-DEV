@@ -688,6 +688,20 @@ function PST:frameUpdate()
 				end
 				PST:createFloatTextFX("Osteomancy", Vector.Zero, Color(1, 1, 1, 1), 0.13, 120, true)
 			end
+
+			-- Uber expedition entropy mod
+			if PST:getTreeSnapshotMod("expedEnt_noPickups", false) then
+				local zeroPickups = 0
+				if player:GetNumCoins() == 0 then zeroPickups = zeroPickups + 1 end
+				if player:GetNumKeys() == 0 then zeroPickups = zeroPickups + 1 end
+				if player:GetNumBombs() == 0 then zeroPickups = zeroPickups + 1 end
+				if zeroPickups > 0 then
+					PST:expedAddEntropy(
+						PST:getTreeSnapshotMod("expedDepth", 1),
+						PST.expedEntropyMods.expedEnt_noPickups.entropy * zeroPickups
+					)
+				end
+			end
 		end
 	end
 
@@ -1553,6 +1567,10 @@ function PST:frameUpdate()
 			end
 			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 		end
+		-- Deep-Space Distortion mod: Limit coins
+		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumCoins() > 25 then
+			player:AddCoins(25 - player:GetNumCoins())
+		end
 		updateTrackers.coinTracker = player:GetNumCoins()
 	end
 
@@ -1570,7 +1588,16 @@ function PST:frameUpdate()
 				player:AddKeys(-tmpMod)
 			end
 		end
+		-- Deep-Space Distortion mod: Limit keys
+		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumCoins() > 4 then
+			player:AddCoins(4 - player:GetNumKeys())
+		end
 		updateTrackers.keyTracker = player:GetNumKeys()
+	end
+
+	-- Deep-Space Distortion mod: Limit bombs
+	if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumBombs() > 4 then
+		player:AddBombs(4 - player:GetNumBombs())
 	end
 
 	-- Level curse changes
@@ -3187,6 +3214,11 @@ function PST:frameUpdate()
 		if not player:HasTrinket(TrinketType.TRINKET_YOUR_SOUL) then
 			player:AddSmeltedTrinket(TrinketType.TRINKET_YOUR_SOUL)
 		end
+	end
+
+	-- Deep-Space Distortion mod: Final boss temporary immunity on hp thresholds
+	if PST.specialNodes.dsdMod_finalImmTimer > 0 then
+		PST.specialNodes.dsdMod_finalImmTimer = PST.specialNodes.dsdMod_finalImmTimer - 1
 	end
 
 	-- Room clear update check

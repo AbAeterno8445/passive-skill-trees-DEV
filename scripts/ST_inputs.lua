@@ -11,7 +11,7 @@ function PST:onInput(entity, inputHook, buttonAction)
         local player = entity:ToPlayer()
         if player then
             -- Statue Pilgrimage node (Jacob & Esau's tree)
-            if PST:getTreeSnapshotMod("statuePilgrimage", false) then
+            --[[if PST:getTreeSnapshotMod("statuePilgrimage", false) then
                 -- Cancel Esau shooting inputs while he's transformed with Gnawed Leaf
                 if player:GetPlayerType() == PlayerType.PLAYER_ESAU and PST.specialNodes.esauIsStatue then
                     if buttonAction == ButtonAction.ACTION_SHOOTUP or buttonAction == ButtonAction.ACTION_SHOOTDOWN or
@@ -19,7 +19,7 @@ function PST:onInput(entity, inputHook, buttonAction)
                         cancelInput = true
                     end
                 end
-            end
+            end]]
 
             -- Shadowmeld item - Disable inputs during transition
             if PST.specialFX.shadowmeldTransition then

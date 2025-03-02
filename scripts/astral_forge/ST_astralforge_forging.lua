@@ -4,7 +4,7 @@ function PST:getAstralWepCraftCosts(weaponData)
     local costs = {
         honing = {}, reroll = {}, addition = {}, removal = {},
         imprinting = {}, ancUpgrade = {}, alteration = {}, transmutation = {},
-        --ascension = {}
+        starbless = {}, --ascension = {}
     }
     -- Honing
     costs.honing.mundaneEssence = 3 + math.ceil((weaponData.honing or 0) * 1.2)
@@ -62,6 +62,10 @@ function PST:getAstralWepCraftCosts(weaponData)
         costs.transmutation.sparkEssence = math.floor(costs.transmutation.sparkEssence / 2)
         costs.transmutation.sparkStardust = math.floor(costs.transmutation.sparkStardust / 2)
     end
+    -- Starblessing
+    costs.starbless.ancientEssence = 1
+    costs.starbless.ancientStardust = 1
+    costs.starbless.starblessPrism = 1
     --[[ Ascension: upgrade the weapon's tier
     costs.ascension.mundaneEssence = 10 * weaponData.tier
     costs.ascension.sparkEssence = 8 * weaponData.tier
@@ -140,6 +144,9 @@ function PST:astralWepForgeImprint(weaponData, targetWeapon)
             return false
         end
     end
+    if weaponData.starblessed then
+        imprintLimit = imprintLimit + 1
+    end
 
     if weaponData.rarity == PSTAstralWepRarity.ANCIENT and targetWeapon.rarity == PSTAstralWepRarity.MAGIC and
     weaponData.mods and #weaponData.mods < imprintLimit + 1 and targetWeapon.mods and (#targetWeapon.mods == 2 or
@@ -200,5 +207,15 @@ function PST:astralWepForgeTransmute(weaponData)
     if weaponData.rarity ~= PSTAstralWepRarity.NORMAL then return false end
     weaponData.rarity = PSTAstralWepRarity.MAGIC
     PST:astralWepAddMod(weaponData)
+    return true
+end
+
+-- Apply a Starblessed Prism to an ancient weapon, turning it Starblessed
+---@param weaponData PSTAstralWeapon
+function PST:astralWepForgeStarbless(weaponData)
+    if weaponData.starblessed or weaponData.rarity ~= PSTAstralWepRarity.ANCIENT then
+        return false
+    end
+    weaponData.starblessed = true
     return true
 end

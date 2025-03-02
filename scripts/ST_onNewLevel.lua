@@ -992,6 +992,14 @@ function PST:onNewLevel()
         PST:addModifiers({ reverseAnnihilationProcs = { value = 0, set = true } }, true)
     end
 
+    -- Uber expedition entropy mods (reset)
+    if PST:getTreeSnapshotMod("expedEnt_purchaseCounter", 0) > 0 then
+        PST:addModifiers({ expedEnt_purchaseCounter = { value = 0, set = true } }, true)
+    end
+    if PST:getTreeSnapshotMod("expedEnt_chestCounter", 0) > 0 then
+        PST:addModifiers({ expedEnt_chestCounter = { value = 0, set = true } }, true)
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

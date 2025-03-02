@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.0",
+        "- Expedition \"Curse of Shrouding\" no longer affects final nodes.",
+        "- Starmight requirement for expeditions is now capped at 600 (from 800).",
+        "- Fixed heart scarcity jewel modifier not being applied properly.",
+        "",
+
         "v1.0.3",
         "- Added a new Septentrional Artifact to the Sidereal Tree: Superstitious Septentrion.",
         "- Added a new Meridional Artifact to the Sidereal Tree: Bloodmoon Meridion.",
@@ -11,6 +17,7 @@ function PST:getChangelogList()
         "- Adjusted Timeless Bazaar refresh button info when spent for the current cycle.",
         "- Fixed error on update for Tarnished Judas (Epiphany).",
         "- Fixed Magefist (gauntlet) ancient weapon upgrading.",
+        "",
 
         "v1.0.2",
         "- Added a new Meridional Artifact to the Sidereal Tree: Snake-Eye Meridion.",

@@ -18,7 +18,11 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     baseDrawX = tScreen.screenW * 0.2 - expedScreen.camera.X
     baseDrawY = 20 + drawLineHeight - expedScreen.camera.Y
 
-    tmpRenderText("Expedition depth " .. tostring(expData.depth), PST.kcolors.WHITE, drawLineHeight * 2)
+    local uberExtra = ""
+    if expData.uber then
+        uberExtra = " (Uber)"
+    end
+    tmpRenderText("Expedition depth " .. tostring(expData.depth) .. uberExtra, PST.kcolors.WHITE, drawLineHeight * 2)
 
     -- Requirement values are tables: {requirement description string, true/false whether req is met}
     local tmpRequirements = {}
@@ -28,11 +32,13 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
 
     -- Character level requirement
     local currentChar = PST:getCurrentCharData()
-    local tmpStr = "Selected character level " .. tostring(PST.expedMinLevel) .. "+"
+    local reqLvl = PST.expedMinLevel
+    if expData.uber then reqLvl = PST.uberExpedMinLevel end
+    local tmpStr = "Selected character level " .. tostring(reqLvl) .. "+"
     if currentChar then
         tmpStr = tmpStr .. " (" .. PST:getCurrentCharName() .. " level: " .. tostring(currentChar.level) .. ")"
     end
-    table.insert(tmpRequirements, {tmpStr, currentChar and currentChar.level >= PST.expedMinLevel})
+    table.insert(tmpRequirements, {tmpStr, currentChar and currentChar.level >= reqLvl})
 
     -- Starmight requirement
     if expData.implicits then
@@ -113,6 +119,26 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
         if firstDraw then
             tmpRenderText("")
         end
+    end
+
+    -- Uber effects
+    if expData.uber then
+        tmpRenderText("Order: " .. tostring(expData.order or 0), PST.kcolors.TEAL1, drawLineHeight + 4)
+        tmpRenderText("Entropy: " .. tostring(expData.entropy or 0), PST.kcolors.RED1, drawLineHeight + 4)
+
+        tmpRenderText("Deep-Space Distortion modifiers:", PST.kcolors.RED2, drawLineHeight + 4)
+        if expData.dsMods and #expData.dsMods > 0 then
+            for _, dsModID in ipairs(expData.dsMods) do
+                local dsModName = PST.expedDeepSpaceMods[dsModID]
+                local dsModDesc = PST.expedDescriptions[dsModName]
+                if dsModDesc then
+                    tmpRenderText("    " .. dsModDesc, PST.kcolors.RED2, drawLineHeight + 4)
+                end
+            end
+        else
+            tmpRenderText("    None", PST.kcolors.RED2)
+        end
+        tmpRenderText("")
     end
 
     -- Items

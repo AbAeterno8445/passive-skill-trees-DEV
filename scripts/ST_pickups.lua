@@ -889,6 +889,18 @@ function PST:onPickup(pickup, collider, low, forced)
 
             -- Expedition objective: pick up hearts of any type
             PST:expedAddProgInRun("hearts", 1)
+
+            -- Uber expedition entropy mod
+            if PST:getTreeSnapshotMod("expedEnt_hearts", false) and not (subtype == HeartSubType.HEART_FULL or subtype == HeartSubType.HEART_HALF or subtype == HeartSubType.HEART_DOUBLEPACK or
+            subtype == HeartSubType.HEART_SCARED) then
+                local totalHearts = player:GetMaxHearts() / 2 + player:GetSoulHearts() / 2 + player:GetRottenHearts() + player:GetBoneHearts()
+                if totalHearts >= 5 then
+                    PST:expedAddEntropy(
+						PST:getTreeSnapshotMod("expedDepth", 1),
+						PST.expedEntropyMods.expedEnt_hearts.entropy
+					)
+                end
+            end
         -- On pickup poops
         elseif variant == PickupVariant.PICKUP_POOP then
             -- Mod: chance to transmute a random poop in your bar to a different one when obtaining a poop pickup
@@ -971,6 +983,17 @@ local function PST_expedOpenChest(pickup)
         if PST:getTreeSnapshotMod("isExpedRun", false) then
             local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1))
             if tmpObols > 0 then PST:expedDropObolsAt(pickup.Position, tmpObols) end
+        end
+    end
+
+    -- Uber expedition entropy mod
+    if PST:getTreeSnapshotMod("expedEnt_chests", false) then
+        PST:addModifiers({ expedEnt_chestCounter = 1 }, true)
+        if PST:getTreeSnapshotMod("expedEnt_chestCounter", 0) > 5 then
+            PST:expedAddEntropy(
+                PST:getTreeSnapshotMod("expedDepth", 1),
+                PST.expedEntropyMods.expedEnt_chests.entropy
+            )
         end
     end
 end
@@ -1112,6 +1135,10 @@ function PST:onPickupInit(pickup, firstSpawn)
         tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
         -- Expedition implicit: pickup scarcity
         tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
+        -- Deep-Space Distortion mod: pickup scarcity
+        if PST:getTreeSnapshotMod("dsdMod_pickupScarcity", false) then
+            tmpMod = tmpMod + 66
+        end
 
         if firstSpawn and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
         variant == PickupVariant.PICKUP_KEY) and tmpMod > 0 and 100 * math.random() < tmpMod then
@@ -1129,9 +1156,13 @@ function PST:onPickupInit(pickup, firstSpawn)
         -- Hearts
         if variant == PickupVariant.PICKUP_HEART then
             -- Starcursed mod: heart scarcity
-            tmpMod = PST:SC_getSnapshotMod("pickupScarcity", 0)
+            tmpMod = PST:SC_getSnapshotMod("heartScarcity", 0)
             -- Expedition implicit: pickup scarcity
             tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
+            -- Deep-Space Distortion mod: heart scarcity
+            if PST:getTreeSnapshotMod("dsdMod_heartScarcity", false) then
+                tmpMod = tmpMod + 66
+            end
 
             if firstSpawn and tmpMod > 0 and 100 * math.random() < tmpMod then
                 pickup:Remove()
@@ -1595,6 +1626,14 @@ function PST:onTrinketRemove(player, type)
     -- Mod: +luck while holding an evil trinket
     if PST:getTreeSnapshotMod("evilTrinketLuck", 0) > 0 then
         PST:addModifiers({ luck = -PST:getTreeSnapshotMod("evilTrinketLuck", 0) }, true)
+    end
+
+    -- Uber expedition entropy mod
+    if PST:getTreeSnapshotMod("expedEnt_trinketSwap", false) then
+        PST:expedAddEntropy(
+            PST:getTreeSnapshotMod("expedDepth", 1),
+            PST.expedEntropyMods.expedEnt_trinketSwap.entropy
+        )
     end
 
     PST:updateCacheDelayed()

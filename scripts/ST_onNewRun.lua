@@ -10,7 +10,6 @@ function PST:onNewRun(isContinued)
     local playerTwin = player:GetOtherTwin()
     local itemPool = Game():GetItemPool()
 
-    PST:resetMods()
     local isChallenge = Isaac.GetChallenge() ~= 0
     local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and not isChallenge) or PST.config.treeOnChallenges)
     if treeActive then
@@ -329,21 +328,55 @@ function PST:onNewRun(isContinued)
     end
 
     -- Astral Expeditions
-    if treeActive and PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth) then
-        local expData = PST.expeditionsData[PST.modData.expedSelDepth]
+    local isUber = PST.modData.expedUberMode
+    if treeActive and PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth, isUber) then
+        local selDepth = PST.modData.expedSelDepth
+        if isUber then
+            selDepth = PST.modData.uberExpedSelDepth
+            PST:expedApplyEntropy(selDepth)
+        end
+        local expData = PST:getExpedData(selDepth, isUber)
         if expData and expData.selectedNode then
             PST.modData.treeModSnapshot.isExpedRun = true
-            PST.modData.treeModSnapshot.expedDepth = PST.modData.expedSelDepth
+            if isUber then
+                PST.modData.treeModSnapshot.isExpedUber = true
+
+                -- Bring The Order node (Deep-Space tree)
+                if expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order > 0 then
+                    PST:addModifiers({ luck = -0.05 * expData.order }, true)
+                end
+            end
+            PST.modData.treeModSnapshot.expedDepth = selDepth
 
             -- Astral weapon drop tiers (starts at 1, +1 every 10 depths until tier 5 max)
             PST.modData.treeModSnapshot.astralWepTierDrops = math.min(5, 1 + math.floor(PST.modData.expedSelDepth / 10))
 
-            -- Set objective
             local origNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
             if origNode then
+                -- Set objective
                 PST.modData.treeModSnapshot.expedSelNodeCol = expData.selectedNode.col
                 PST.modData.treeModSnapshot.expedSelNodeRow = expData.selectedNode.row
                 PST.modData.treeModSnapshot.expedSelNodeObjName = origNode.objective.name
+
+                -- Entropy modifiers (uber expeditions)
+                if origNode.entropyMods and #origNode.entropyMods > 0 then
+                    for _, tmpEntModID in ipairs(origNode.entropyMods) do
+                        local entModName = PST.expedEntropyModList[tmpEntModID]
+                        if entModName then
+                            PST:addModifiers({ [entModName] = true }, true)
+                        end
+                    end
+                end
+            end
+
+            -- Deep-Space Distortion modifiers (uber expeditions)
+            if expData.dsMods then
+                for _, tmpDSModID in ipairs(expData.dsMods) do
+                    local dsModName = PST.expedDeepSpaceMods[tmpDSModID]
+                    if dsModName then
+                        PST:addModifiers({ [dsModName] = true }, true)
+                    end
+                end
             end
 
             -- Expedition items

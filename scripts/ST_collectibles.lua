@@ -172,6 +172,22 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
                 PST:addModifiers({ allstatsPerc = tmpMod / 2, SC_chroniclerDebuff = -tmpMod / 2 }, true)
             end
         end
+
+        -- Uber expedition entropy mod
+        if PST:getTreeSnapshotMod("expedEnt_passiveItems", false) and firstTime then
+            local itmCount = 0
+            for tmpType, tmpItemCount in pairs(player:GetCollectiblesList()) do
+                if not PST:arrHasValue(PST.progressionItems, tmpType) then
+                    itmCount = itmCount + tmpItemCount
+                end
+            end
+            if itmCount > 12 then
+                PST:expedAddEntropy(
+                    PST:getTreeSnapshotMod("expedDepth", 1),
+                    PST.expedEntropyMods.expedEnt_passiveItems.entropy
+                )
+            end
+        end
     end
 
     -- Spectral Advantage node (The Lost's tree)
@@ -347,6 +363,17 @@ function PST:onRemoveCollectible(player, type)
     local tmpMod = PST:getTreeSnapshotMod("poopItemLuck", 0)
     if tmpMod > 0 and PST:arrHasValue(PST.poopItems, type) then
         player:AddCacheFlags(CacheFlag.CACHE_LUCK, true)
+    end
+
+    -- Uber expedition entropy mod
+    if PST:getTreeSnapshotMod("expedEnt_activeSwap", false) then
+        local itemCfg = Isaac.GetItemConfig():GetCollectible(type)
+        if itemCfg and itemCfg.Type == ItemType.ITEM_ACTIVE then
+            PST:expedAddEntropy(
+                PST:getTreeSnapshotMod("expedDepth", 1),
+                PST.expedEntropyMods.expedEnt_activeSwap.entropy
+            )
+        end
     end
 end
 

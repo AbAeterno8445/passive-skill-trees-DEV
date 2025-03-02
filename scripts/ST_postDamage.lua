@@ -888,6 +888,15 @@ function PST:postDamage(target, damage, flag, source)
                     local tmpPlayer = srcPlayer or PST:getPlayer()
                     Isaac.Explode(target.Position, PST:getPlayer(), math.min(50, tmpPlayer.Damage * (tmpMod[2] / 100)))
                 end
+
+                -- Deep-Space Distortion mod: Final boss damage immunity on HP thresholds
+                if PST:getTreeSnapshotMod("dsdMod_finalDmgImm", false) and not isKillingHit and PST:entityIsFinalBoss(target) then
+                    local hpThreshold = 1 - 0.25 * (1 + PST:getTreeSnapshotMod("dsdMod_finalImmProcs", 0))
+                    if hpThreshold > 0 and (target.HitPoints / target.MaxHitPoints) <= hpThreshold then
+                        PST.specialNodes.dsdMod_finalImmTimer = 150
+                        PST:addModifiers({ dsdMod_finalImmProcs = 1 }, true)
+                    end
+                end
             end
 
             -- Ancient weapon mod: Nimble Twins (special tear hits)

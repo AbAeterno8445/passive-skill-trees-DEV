@@ -30,9 +30,10 @@ local matsData = {
     sparkEssence = {"Sparkling Essence", PST.kcolors.LIGHTBLUE1},
     ancientEssence = {"Ancient Essence", PST.kcolors.ANCIENT_ORANGE},
     sparkStardust = {"Sparkling Stardust", PST.kcolors.LIGHTBLUE1},
-    ancientStardust = {"Ancient Stardust", PST.kcolors.ANCIENT_ORANGE}
+    ancientStardust = {"Ancient Stardust", PST.kcolors.ANCIENT_ORANGE},
+    starblessPrism = {"Starblessed Prism", PST.kcolors.TEAL1}
 }
-local matsOrder = {"mundaneEssence", "sparkEssence", "sparkStardust", "ancientEssence", "ancientStardust"}
+local matsOrder = {"mundaneEssence", "sparkEssence", "sparkStardust", "ancientEssence", "ancientStardust", "starblessPrism"}
 local UIMats = {
     {
         -- Mundane Essence
@@ -52,6 +53,9 @@ local UIMats = {
         -- Ancient Stardust
         {name = "Ancient Stardust", frame = 2, targetVal = "ancientStardust", color = PST.kcolors.ANCIENT_ORANGE,
         source = {"    Killing final bosses."}},
+        -- Starblessed Prisms
+        {name = "Starblessed Prism", frame = 6, targetVal = "starblessPrism", color = PST.kcolors.TEAL1,
+        source = {"    Uber Expedition rewards."}},
     }
 }
 local forgingButtons = {
@@ -112,8 +116,8 @@ local forgingButtons = {
         name = "Ancient Imprinting",
         description = {
             "Imprint a random modifier from another magic weapon into this Ancient weapon.",
-            "Target magic weapon must have 2 modifiers.",
-            "Can only imprint 1 modifier per Ancient weapon.",
+            "Target magic weapon must have more than 1 modifier.",
+            "Can only imprint 1 modifier per Ancient weapon, or 2 if Starblessed.",
             "Imprinted modifiers can no longer be altered once applied."
         },
         imprintDescription = {
@@ -133,6 +137,18 @@ local forgingButtons = {
         frame = 6,
         reqRarity = PSTAstralWepRarity.ANCIENT
     },
+    {
+        name = "Starblessing",
+        description = {
+            "Apply a Starblessed Prism to this weapon, allowing an additional modifier to be imprinted on it.",
+            "Applicable once per ancient weapon, if not already Starblessed."
+        },
+        targetAction = "starbless",
+        actionFunc = PST.astralWepForgeStarbless,
+        soundFunc = function() SFXManager():Play(SoundEffect.SOUND_POWERUP3, 0.6, 2, false, 1 + 0.2 * math.random()) end,
+        frame = 11,
+        reqRarity = PSTAstralWepRarity.ANCIENT
+    }
     --[[{
         name = "Ascension",
         description = {

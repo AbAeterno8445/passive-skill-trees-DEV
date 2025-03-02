@@ -114,8 +114,13 @@ function PST.treeScreen:Render()
         if PST.modData.treeDisabled then
             Isaac.RenderText("Tree effects disabled", tmpX, tmpY, 1, 0.4, 0.4, 1)
             tmpY = tmpY + 16
-        elseif PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth) then
-            Isaac.RenderText("Expedition run enabled", tmpX, tmpY, 0.5, 1, 0.5, 1)
+        elseif PST.modData.expedEnabled and ((not PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.expedSelDepth)) or
+        (PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.uberExpedSelDepth, true))) then
+            local uberExtra = ""
+            if PST.modData.expedUberMode then
+                uberExtra = " (Uber)"
+            end
+            Isaac.RenderText("Expedition run enabled" .. uberExtra, tmpX, tmpY, 0.5, 1, 0.5, 1)
             tmpY = tmpY + 16
         end
 

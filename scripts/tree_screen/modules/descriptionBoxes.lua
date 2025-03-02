@@ -307,6 +307,23 @@ local descriptionBoxesModule = {
                 end
             end
             return { name = descName, description = nodeDesc }
+        end,
+
+        -- Deep-Space Astrolabe, Deep-Space SP display
+        ["Deep-Space Astrolabe"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {table.unpack(tmpDescription)}
+            table.insert(nodeDesc, {"Deep-Space Skill Points: " .. tostring(PST.modData.deepSpaceSP or 0), PST.kcolors.STAR_ORANGE})
+            return { name = descName, description = nodeDesc }
+        end,
+
+        -- Obscure Bazaar, display arcane obols
+        ["Obscure Bazaar"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {table.unpack(tmpDescription)}
+            local charData = PST:getCurrentCharData()
+            if charData then
+                table.insert(nodeDesc, {PST:getCurrentCharName() .. " obols: " .. tostring(charData.arcaneObols), PST.kcolors.PURPLE1})
+            end
+            return { name = descName, description = nodeDesc }
         end
     }
 }
@@ -422,6 +439,16 @@ function descriptionBoxesModule:Render(tScreen)
                 table.insert(tmpDescription, {"Requires completing expedition depth " .. tostring(expReq) .. ".", tmpColor})
             end
 
+            -- Uber expedition depth requirement
+            local uberReq = hoveredNode.reqs.uberDepth
+            if uberReq then
+                local tmpColor = PST.kcolors.RED2
+                if PST.modData.uberExpedDepth > uberReq then
+                    tmpColor = PST.kcolors.GREEN1
+                end
+                table.insert(tmpDescription, {"Requires completing uber expedition depth " .. tostring(uberReq) .. ".", tmpColor})
+            end
+
             -- Character level requirement
             local currentChar = PST:getCurrentCharData()
             local charlvlReq = hoveredNode.reqs.charLevel
@@ -441,6 +468,11 @@ function descriptionBoxesModule:Render(tScreen)
                 if currentChar then
                     table.insert(tmpDescription, {PST:getCurrentCharName() .. " crimson starcores: " .. tostring(currentChar.crimsonStarcores or 0), tmpColor})
                 end
+            end
+
+            -- Deep-Space SP requirement
+            if hoveredNode.reqs.deepSpaceNode then
+                table.insert(tmpDescription, {"Requires 1 Deep-Space Skill Point. (You have " .. tostring(PST.modData.deepSpaceSP or 0) .. ")", PST.kcolors.STAR_ORANGE})
             end
         end
         if not isAllocated and not noSP and PST:arrHasValue(tScreen.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
@@ -497,7 +529,7 @@ function descriptionBoxesModule:Render(tScreen)
         -- Infectious Meridion submenu, hovered status
         elseif submenusModule.currentSubmenu == PSTSubmenu.INFECTIOUS_MERIDION then
             local infMeridionSubmenu = submenusModule.submenus[PSTSubmenu.INFECTIOUS_MERIDION]
-            local tmpStatus = infMeridionSubmenu.hoveredStatus
+            local tmpStatus = infMeridionSubmenu.hoveredItem
             if tmpStatus then
                 local tmpName = tmpStatus:gsub("^[a-z]", string.upper)
                 local tmpDesc = {"Pulse will inflict " .. tmpStatus .. "."}
@@ -510,6 +542,24 @@ function descriptionBoxesModule:Render(tScreen)
             if tmpBuff and PST.crimConvergenceBuffs[tmpBuff] then
                 local buffData = PST.crimConvergenceBuffs[tmpBuff]
                 tScreen:DrawNodeBox(buffData.name, buffData.desc)
+            end
+        -- Obscure Bazaar submenu, hovered item
+        elseif submenusModule.currentSubmenu == PSTSubmenu.OBSCURE_BAZAAR then
+            local obsBazaarSubmenu = submenusModule.submenus[PSTSubmenu.OBSCURE_BAZAAR]
+            local tmpItem = obsBazaarSubmenu.hoveredItem
+            if tmpItem then
+                local itemPrice = tostring(PST:getObsBazaarPrice(tmpItem.price))
+                local itemDesc = {}
+                if tmpItem.type == PSTExpNodeRewardType.C_STARCORE or tmpItem.type == PSTExpNodeRewardType.GLOBAL_SP then
+                    table.insert(itemDesc, tmpItem.name .. " for " .. (PST:getCurrentCharName() or "the current character") .. ".")
+                end
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    table.insert(itemDesc, {PST:getCurrentCharName() .. " obols: " .. tostring(charData.arcaneObols), PST.kcolors.PURPLE1})
+                end
+                table.insert(itemDesc, {"Costs " .. itemPrice .. " arcane obols.", PST.kcolors.LEVEL_PURPLE})
+                table.insert(itemDesc, "Press Allocate to purchase.")
+                tScreen:DrawNodeBox(tmpItem.name, itemDesc)
             end
         end
     end

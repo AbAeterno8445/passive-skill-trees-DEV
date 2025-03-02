@@ -200,6 +200,15 @@ function PST:generateAstralWep(wepTier, factorMods)
     if factorMods then
         magicChance = magicChance + PST:getTreeSnapshotMod("astralWepMagicRate", 0) / 100
         ancientChance = ancientChance + PST:getTreeSnapshotMod("astralWepAncientRate", 0) / 100
+
+        -- Uber expedition mods (in-game)
+        if Isaac.IsInGame() and PST:getTreeSnapshotMod("isExpedUber", false) then
+            -- Bring The Chaos node (Deep-Space tree)
+            local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
+            if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 150 then
+                ancientChance = ancientChance + 0.12
+            end
+        end
     end
     if math.random() < ancientChance and #wepData.ancients > 0 then
         wepRarity = PSTAstralWepRarity.ANCIENT
@@ -321,6 +330,13 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
         wepSprite.Color = Color()
         wepSprite.Scale = Vector(oldScaleX, oldScaleY)
     end
+
+    -- Starblessed weapon icon
+    if wepData.starblessed then
+        local blessIconSprite = PST.treeScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.ASTRAL_FORGE].forgeUISprite
+        blessIconSprite:SetFrame("UI", 12)
+        blessIconSprite:Render(Vector(x - 12, y - 12))
+    end
 end
 
 function PST:getEquippedAstralWep()
@@ -360,6 +376,11 @@ function PST:getAstralWepDeconMats(weaponData)
     if weaponData.rarity == PSTAstralWepRarity.ANCIENT then
         mats.ancient = 1 + math.floor(((weaponData.ancientUpg or 0) + weaponData.tier) / 3)
     end
+    if weaponData.starblessed then
+        mats.mundane = mats.mundane + 14
+        mats.spark = mats.spark + 8
+        mats.ancient = mats.ancient + 4
+    end
     return mats
 end
 
@@ -373,7 +394,11 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     -- Ancient name
     if weaponData.ancientID ~= nil and wepTypeData.ancients[weaponData.ancientID] then
-        table.insert(tmpDescription, {wepTypeData.ancients[weaponData.ancientID].name, PST.kcolors.ANCIENT_ORANGE})
+        local tmpName = wepTypeData.ancients[weaponData.ancientID].name
+        if weaponData.starblessed then
+            tmpName = tmpName .. " *"
+        end
+        table.insert(tmpDescription, {tmpName, PST.kcolors.ANCIENT_ORANGE})
     end
 
     -- Rarity + type

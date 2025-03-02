@@ -1,6 +1,9 @@
 ---@type PSTExpedition[]
-PST.expeditionsData = {}
+PST.expeditionsData = { [0] = {} }
 PST.expedMinLevel = 60
+
+PST.uberExpeditionsData = { [0] = {} }
+PST.uberExpedMinLevel = 90
 
 PST.expedObolDropValues = {2, 5, 10, 25, 50, 100, 500, 1000}
 
@@ -21,7 +24,12 @@ PSTExpNodeRewardType = {
     ITEM = 3,
     ATTEMPTS = 4,
     BOON = 5,
-    C_STARCORE = 6
+    C_STARCORE = 6,
+    ORDER = 7,
+    STARBLESS_WEP = 8,
+    STARBLESS_PRISM = 9,
+    GLOBAL_SP = 10,
+    UBER_CHOICE = 11
 }
 
 ---@enum PSTExpNodeType
@@ -31,7 +39,8 @@ PSTExpNodeType = {
     FINAL = 2,
     BOONUPGRADE = 3,
     ASTROLABE = 4,
-    COMPLETED = 6
+    COMPLETED = 6,
+    REWARD = 9
 }
 
 -- Expedition node class
@@ -47,6 +56,7 @@ PSTExpNodeType = {
 ---@field rewardData? any
 ---@field deathState? number -- 1: inaccessible - for 'dead' nodes when losing and resetting expedition
 ---@field connections number[]
+---@field entropyMods? number[]
 
 -- Selected node class
 ---@class PSTSelectedExpNode
@@ -69,6 +79,13 @@ PSTExpNodeType = {
 ---@field boonUpgradePoints number
 ---@field curses number[]
 ---@field items CollectibleType[]
+---@field uber? boolean
+---@field entropy? number
+---@field order? number
+---@field entropyEffects? table
+---@field dsMods? number[] -- Deep-Space distortion modifiers (uber)
+---@field modifiers? table
+---@field endRewards? boolean -- Whether reward nodes were placed at the end for choice rewards
 
 -- Expedition save class (expedition data that gets stored in savefile)
 ---@class PSTExpeditionSave
@@ -84,6 +101,12 @@ PSTExpNodeType = {
 ---@field curses? number[]
 ---@field usedAttempts? number
 ---@field modifiers? table
+---@field uber? boolean
+---@field entropy? number
+---@field order? number
+---@field entropyEffects? table
+---@field dsMods? number[]
+---@field endRewards? boolean
 
 -- Expedition items pool
 PST.expeditionItems = {
@@ -918,6 +941,10 @@ PST.expeditionObjectives = {
             local req = 4 + math.floor(depth / 4) + math.floor(column / 4)
             return req
         end
+    },
+    winRun = {
+        description = "Win a run having defeated at least 1 final boss.",
+        reqFunc = function() return 1 end
     }
 }
 -- Objective names list, make sure order is consistent as seeded generation depends on it
@@ -1023,6 +1050,11 @@ PST.expeditionRewardData = {
         end
         return atts
     end,
+    -- Order (uber expeditions)
+    [PSTExpNodeRewardType.ORDER] = function(RNG, depth, column)
+        local baseAmt = 4 + RNG:RandomInt(1, 7)
+        return math.min(20, baseAmt + column)
+    end
 }
 
 -- Expedition-specific modifier descriptions
@@ -1037,7 +1069,101 @@ PST.expedDescriptions = {
         "Heartbreak can no longer show up."
     },
     lessAttempts = "-%d max expedition attempt(s).",
-    expedImp_mobDmgRed = "+%d%% monster damage reduction."
+    expedImp_mobDmgRed = "+%d%% monster damage reduction.",
+
+    -- Deep-Space Distortion modifier descriptions
+    dsdMod_finalDmgRed = "+40%% final boss damage reduction.",
+    dsdMod_finalDmgImm = "Final bosses gain damage immunity for 5 seconds every 25%% HP lost.",
+    dsdMod_finalLastStand = "While final bosses are at 12%% HP or less, all their hits instantly kill you.",
+    dsdMod_pickupLimit = "You cannot have more than 25 coins, 4 keys or 4 bombs.",
+    dsdMod_treeEffect = "Tree effects on stats are 35%% as effective.",
+    dsdMod_heartScarcity = "+66%% heart scarcity.",
+    dsdMod_pickupScarcity = "+66%% coin, key and bomb scarcity."
+}
+
+-- List of Deep-Space Distortion modifiers (for uber expeditions)
+PST.expedDeepSpaceMods = {
+    "dsdMod_finalDmgRed", "dsdMod_finalDmgImm", "dsdMod_finalLastStand", "dsdMod_pickupLimit",
+    "dsdMod_treeEffect", "dsdMod_heartScarcity", "dsdMod_pickupScarcity"
+}
+
+-- Uber expedition entropy modifiers
+PST.expedEntropyMods = {
+    expedEnt_actives = { -- 1 TEST
+        desc = "Use active items with at least 3 charges: +2 entropy.",
+        entropy = 2
+    },
+    expedEnt_clearTime = { -- 2 TEST
+        desc = "Take longer than 10 seconds to clear a regular room past floor 4: +1 entropy.",
+        entropy = 1
+    },
+    expedEnt_bossDmg = { -- 3 TEST
+        desc = "Take damage from a champion or boss monster: +3 entropy.",
+        entropy = 3
+    },
+    expedEnt_purchases = { -- 4 TEST
+        desc = "Purchase items or make devil deals more than 3 times within a floor: +7 entropy per item/deal.",
+        entropy = 7
+    },
+    expedEnt_passiveItems = { -- 5 TEST
+        desc = {
+            "Acquire passive items while having at least 12 passive items, excluding progression items:",
+            "+4 entropy per new item."
+        },
+        entropy = 4
+    },
+    expedEnt_hearts = { -- 6 TEST
+        desc = "Pick up non-red hearts while having a total of at least 5 hearts of any type: +3 entropy.",
+        entropy = 3
+    },
+    expedEnt_trinketSwap = { -- 7 TEST
+        desc = "After obtaining a trinket, lose or swap it: +4 entropy.",
+        entropy = 4
+    },
+    expedEnt_activeSwap = { -- 8 TEST
+        desc = "After obtaining an active item (excluding starter items), lose or swap it: +6 entropy.",
+        entropy = 6
+    },
+    expedEnt_chests = { -- 9 TEST
+        desc = {
+            "Open a chest after having opened 5 chests within the floor, excluding Sidereal Caches:",
+            "+3 entropy per chest."
+        },
+        entropy = 3
+    },
+    expedEnt_specialDmg = { -- 10 TEST
+        desc = "Take damage from explosions or lasers: +3 entropy.",
+        entropy = 3
+    },
+    expedEnt_tearDmg = { -- 11 TEST
+        desc = "Take damage from tears: +2 entropy.",
+        entropy = 2
+    },
+    expedEnt_finalBossDmg = { -- 12 TEST
+        desc = "Take damage from a final boss: +4 entropy.",
+        entropy = 4
+    },
+    -- AUXILIARY
+    expedEnt_loseRun = { -- 13 TEST
+        desc = "Lose a run: +12 entropy.",
+        auxiliary = true,
+        entropy = 12
+    },
+    expedEnt_noPickups = { -- 14 TEST
+        desc = "Enter a floor past the first with 0 coins, 0 keys or 0 bombs: +5 entropy per pickup at 0.",
+        auxiliary = true,
+        entropy = 5
+    },
+    expedEnt_compNode = { -- 15 TEST
+        desc = "Complete this expedition node: +10 entropy.",
+        auxiliary = true,
+        entropy = 10
+    }
+}
+PST.expedEntropyModList = {
+    "expedEnt_actives", "expedEnt_clearTime", "expedEnt_bossDmg", "expedEnt_purchases", "expedEnt_passiveItems",
+    "expedEnt_hearts", "expedEnt_trinketSwap", "expedEnt_activeSwap", "expedEnt_chests", "expedEnt_specialDmg",
+    "expedEnt_tearDmg", "expedEnt_finalBossDmg", "expedEnt_loseRun", "expedEnt_noPickups", "expedEnt_compNode"
 }
 
 local obolStageFactor = 0.002

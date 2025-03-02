@@ -3,7 +3,12 @@ local expNodeRewardFrame = {
     [PSTExpNodeRewardType.OBOLS] = 1,
     [PSTExpNodeRewardType.BOON] = 2,
     [PSTExpNodeRewardType.ATTEMPTS] = 3,
-    [PSTExpNodeRewardType.C_STARCORE] = 5
+    [PSTExpNodeRewardType.C_STARCORE] = 5,
+    [PSTExpNodeRewardType.ORDER] = 6,
+    [PSTExpNodeRewardType.STARBLESS_WEP] = 7,
+    [PSTExpNodeRewardType.STARBLESS_PRISM] = 8,
+    [PSTExpNodeRewardType.GLOBAL_SP] = 9,
+    [PSTExpNodeRewardType.UBER_CHOICE] = 10
 }
 local nodeSpacing = Vector(80, 60)
 
@@ -127,7 +132,9 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             if tmpNode.nodeType == PSTExpNodeType.ASTROLABE then
                 local depthNum = tostring(expData.depth)
                 local tmpWidth = PST.miniFont:GetStringWidth(depthNum)
-                PST.miniFont:DrawStringScaled(depthNum, drawPos.X + (13 - tmpWidth) * expedScreen.zoomScale, drawPos.Y + 3, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.WHITE)
+                local tmpColor = PST.kcolors.WHITE
+                if expData.uber then tmpColor = PST.kcolors.RED2 end
+                PST.miniFont:DrawStringScaled(depthNum, drawPos.X + (13 - tmpWidth) * expedScreen.zoomScale, drawPos.Y + 3, expedScreen.zoomScale, expedScreen.zoomScale, tmpColor)
             end
 
             -- Hovered node
@@ -136,6 +143,51 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             expedScreen.camCenterY >= drawPos.Y - nodeHalf and expedScreen.camCenterY <= drawPos.Y + nodeHalf then
                 expedScreen.hoveredNode = tmpNode
             end
+        end
+    end
+
+    -- Uber expedition toggle button
+    if PST:isNodeNameAllocated("starTree", "Deep-Space Astrolabe") then
+        local drawPos = PST_getNodePos(0, 1, 1)
+        expedScreen.expNodeSprite:SetFrame("Nodes", 7)
+        expedScreen.expNodeSprite:Render(drawPos)
+
+        if expedScreen.uberMode then
+            local tmpSprite = tScreen.modules.nodeDrawingModule.nodesExtraSprite
+            local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
+            tmpSprite.Scale = Vector.One
+            tmpSprite.Color = Color(1, 1, 1, 1)
+            tmpSprite:SetFrame("Allocated Large", 0)
+            tmpSprite:Render(drawPos)
+            tmpSprite.Scale.X = oldScaleX
+            tmpSprite.Scale.Y = oldScaleY
+        end
+
+        local nodeHalf = 16 * expedScreen.zoomScale
+        if expedScreen.camCenterX >= drawPos.X - nodeHalf and expedScreen.camCenterX <= drawPos.X + nodeHalf and
+        expedScreen.camCenterY >= drawPos.Y - nodeHalf and expedScreen.camCenterY <= drawPos.Y + nodeHalf then
+            expedScreen.hoveredUberToggle = true
+        end
+    end
+
+    -- Uber expedition info button
+    if expData.uber then
+        local drawPos = PST_getNodePos(1, 1, 0)
+        expedScreen.expNodeSprite:SetFrame("Nodes", 8)
+        expedScreen.expNodeSprite:Render(drawPos)
+
+        -- Draw order
+        local textX = drawPos.X - 13 * expedScreen.zoomScale
+        local textY = drawPos.Y - 22 * expedScreen.zoomScale
+        PST.miniFont:DrawStringScaled(tostring(expData.order or 0), textX, textY, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.TEAL1, math.floor(26 * expedScreen.zoomScale), true)
+        -- Draw entropy
+        textY = drawPos.Y + 7 * expedScreen.zoomScale
+        PST.miniFont:DrawStringScaled(tostring(expData.entropy or 0), textX, textY, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.RED1, math.floor(26 * expedScreen.zoomScale), true)
+
+        local nodeHalf = 16 * expedScreen.zoomScale
+        if expedScreen.camCenterX >= drawPos.X - nodeHalf and expedScreen.camCenterX <= drawPos.X + nodeHalf and
+        expedScreen.camCenterY >= drawPos.Y - nodeHalf and expedScreen.camCenterY <= drawPos.Y + nodeHalf then
+            expedScreen.hoveredUberInfo = true
         end
     end
 end
