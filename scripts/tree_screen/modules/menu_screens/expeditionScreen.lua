@@ -240,7 +240,7 @@ function expeditionScreen:OnInput()
                         if not self.uberMode then
                             PST.modData.expedLastDepth = self.hoveredDepth
                         else
-                            PST.modData.uberExpedSelDepth = self.hoveredDepth
+                            PST.modData.uberExpedLastDepth = self.hoveredDepth
                         end
                         SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
                         PST.treeScreen.treeHasChanges = true
