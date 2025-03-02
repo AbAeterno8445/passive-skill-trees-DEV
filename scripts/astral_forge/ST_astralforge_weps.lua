@@ -335,7 +335,7 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
     if wepData.starblessed then
         local blessIconSprite = PST.treeScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.ASTRAL_FORGE].forgeUISprite
         blessIconSprite:SetFrame("UI", 12)
-        blessIconSprite:Render(Vector(x - 12, y - 12))
+        blessIconSprite:Render(Vector(x - 12 * scale, y - 12 * scale))
     end
 end
 

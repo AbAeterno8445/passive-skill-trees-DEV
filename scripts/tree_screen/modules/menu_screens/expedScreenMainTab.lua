@@ -155,7 +155,7 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
         if expedScreen.uberMode then
             local tmpSprite = tScreen.modules.nodeDrawingModule.nodesExtraSprite
             local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
-            tmpSprite.Scale = Vector.One
+            tmpSprite.Scale = Vector(expedScreen.zoomScale, expedScreen.zoomScale)
             tmpSprite.Color = Color(1, 1, 1, 1)
             tmpSprite:SetFrame("Allocated Large", 0)
             tmpSprite:Render(drawPos)

@@ -375,8 +375,11 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
         -- Uber expedition node
         if tmpExpedition.uber then
             -- Deep-Space skill point every 3 cols or final
-            if (col % 3) == 0 or tmpNode.nodeType == PSTExpNodeType.FINAL then
+            if (col % 3) == 0 and tmpNode.nodeType ~= PSTExpNodeType.FINAL then
                 PST.modData.deepSpaceSP = PST.modData.deepSpaceSP + 1
+            end
+            if tmpNode.nodeType == PSTExpNodeType.FINAL then
+                PST.modData.deepSpaceSP = PST.modData.deepSpaceSP + 2
             end
 
             -- Entropy completion mod
@@ -691,7 +694,9 @@ function PST:getExpNodeDescription(nodeData, expData)
             end
             -- Deep-Space skill point (uber expeditions)
             if expData.uber and ((nodeData.col % 3 == 0) or nodeData.nodeType == PSTExpNodeType.FINAL) then
-                table.insert(tmpDescription, {"   +1 Deep-Space skill point", tmpColor})
+                local tmpSP = 1
+                if nodeData.nodeType == PSTExpNodeType.FINAL then tmpSP = 2 end
+                table.insert(tmpDescription, {"   +" .. tostring(tmpSP) .. " Deep-Space skill point(s)", tmpColor})
             end
         else
             local tmpShroudColor = PST.kcolors.PINK1
