@@ -173,7 +173,11 @@ function PST:frameUpdate()
 		-- Expedition run first popup
 		if PST:isFirstOrigStage() and PST:getTreeSnapshotMod("isExpedRun", false) then
 			local depth = PST:getTreeSnapshotMod("expedDepth", 1)
-			PST:createFloatTextFX("Beginning Expedition Run: Depth " .. tostring(depth), player.Position - Vector(0, 10), Color(0, 0.57, 1, 1), 0.13, 300, false)
+			if not PST:getTreeSnapshotMod("isExpedUber", false) then
+				PST:createFloatTextFX("Beginning Expedition Run: Depth " .. tostring(depth), player.Position - Vector(0, 10), Color(0, 0.57, 1, 1), 0.13, 300, false)
+			else
+				PST:createFloatTextFX("Beginning Uber Expedition: Depth " .. tostring(depth), player.Position - Vector(0, 10), Color(1, 0.2, 0.2, 1), 0.13, 300, false)
+			end
 		end
 
 		-- Mod: chance to reveal the arcade room's location if it is present

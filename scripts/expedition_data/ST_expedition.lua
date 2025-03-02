@@ -318,7 +318,7 @@ end
 
 function PST:completeExpedNode(depth, col, row, giveReward, uber)
     local tmpExpedition = PST:getExpedData(depth, uber)
-    local tmpNode = PST:expedGetNodeAt(depth, col, row)
+    local tmpNode = PST:expedGetNodeAt(depth, col, row, uber)
     if tmpExpedition and tmpNode then
         -- Give node reward
         if giveReward then
@@ -399,19 +399,19 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
                     PST.modData.expeditionDepth = depth + 1
                 end
                 resetExped = true
-            elseif not tmpNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
+            elseif tmpNode.rewardType ~= PSTExpNodeRewardType.UBER_CHOICE then
                 if depth + 1 > PST.modData.uberExpedDepth then
                     PST.modData.uberExpedDepth = depth + 1
                 end
                 resetExped = true
+            elseif tmpNode.nodeType == PSTExpNodeType.FINAL and not tmpExpedition.nodes[col + 1] and tmpNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
+                PST:expedCreateEndRewards(depth, uber)
             end
-        elseif tmpNode.nodeType == PSTExpNodeType.FINAL and not tmpExpedition.nodes[col + 1] and tmpNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
-            PST:expedCreateEndRewards(depth, uber)
         end
 
         -- Reward node completion
         if tmpNode.nodeType == PSTExpNodeType.REWARD then
-            if uber and not tmpExpedition.nodes[col + 1] then
+            if not tmpExpedition.nodes[col + 1] then
                 -- Uber reward nodes, complete expedition when picked
                 resetExped = true
             end
@@ -439,6 +439,9 @@ function PST:expedCreateEndRewards(depth, uber)
             local finalNode = expData.nodes[lastCol][1]
             if finalNode and finalNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
                 local rwNodes = 0
+                if not expData.nodes[lastCol + 1] then
+                    expData.nodes[lastCol + 1] = {}
+                end
                 for rwType, rwData in pairs(finalNode.rewardData) do
                     rwNodes = rwNodes + 1
                     ---@type PSTExpNode
@@ -726,42 +729,61 @@ end
 -- Add Entropy to an uber expedition (capped at 500), and add associated effects
 function PST:expedAddEntropy(depth, entropy)
     local expData = PST:getExpedData(depth, true)
+    PST:expedObjAddEntropy(expData, entropy)
+end
+
+---@param expData PSTExpedition
+function PST:expedObjAddEntropy(expData, entropy, noMods)
     if expData then
         -- If in-game, apply only if in an uber expedition run
         if Isaac.IsInGame() and not PST:getTreeSnapshotMod("isExpedRun", false) and not PST:getTreeSnapshotMod("isExpedUber", false) then
             return
         end
 
-        -- Check for Order
-        if expData.order and expData.order > 0 then
-            local origEnt = entropy
-            entropy = entropy - expData.order
-            expData.order = math.max(0, expData.order - origEnt)
-        end
+        if not noMods then
+            -- Check for Order
+            if expData.order and expData.order > 0 then
+                local origEnt = entropy
+                local origOrder = expData.order
+                entropy = entropy - expData.order
+                expData.order = math.max(0, expData.order - origEnt)
 
-        -- Bring the Order node (Deep-Space tree)
-        if expData.modifiers and expData.modifiers.bringTheOrder and math.random() < 0.25 then
-            return
-        end
-
-        -- Mod: % chance to reduce gained entropy by 1
-        local tmpMod = PST:getTreeSnapshotMod("entropyGainRed", 0)
-        if tmpMod > 0 and 100 * math.random() < tmpMod then
-            entropy = entropy - 1
-        end
-
-        -- Entropic tradeoff node (Deep-Space tree)
-        if entropy > 0 and expData.modifiers and expData.modifiers.entropicTradeoff then
-            local tmpAdd = math.min(20 - PST:getTreeSnapshotMod("entropyGained", 0), entropy)
-            if tmpAdd > 0 then
-                entropy = tmpAdd
-                PST:addModifiers({ entropyGained = tmpAdd }, true)
+                local orderDiff = origOrder - expData.order
+                if expData.order > 0 and Isaac.IsInGame() and not noMods then
+                    PST:createFloatTextFX("-" .. tostring(orderDiff) .. "ord", Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 80, true)
+                end
             end
-        end
 
-        -- Eldritch Exchange node (Deep-Space tree)
-        if expData.modifiers and expData.modifiers.eldritchExchange then
-            entropy = entropy * 2
+            -- Bring the Order node (Deep-Space tree)
+            if expData.modifiers and expData.modifiers.bringTheOrder and math.random() < 0.25 then
+                return
+            end
+
+            -- Mod: % chance to reduce gained entropy by 1
+            local tmpMod = PST:getTreeSnapshotMod("entropyGainRed", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                entropy = entropy - 1
+            end
+
+            -- Eldritch Exchange node (Deep-Space tree)
+            if expData.modifiers and expData.modifiers.eldritchExchange then
+                entropy = entropy * 2
+            end
+
+            -- Entropic tradeoff node (Deep-Space tree)
+            if entropy > 0 and expData.modifiers and expData.modifiers.entropicTradeoff then
+                local maxEnt = 20
+                if expData.modifiers.eldritchExchange then
+                    maxEnt = 40
+                end
+                local tmpAdd = math.min(maxEnt - PST:getTreeSnapshotMod("entropyGained", 0), entropy)
+                if tmpAdd > 0 then
+                    entropy = tmpAdd
+                    PST:addModifiers({ entropyGained = tmpAdd }, true)
+                else
+                    entropy = 0
+                end
+            end
         end
 
         if entropy > 0 then
@@ -769,7 +791,7 @@ function PST:expedAddEntropy(depth, entropy)
             expData.entropy = math.min(500, expData.entropy + entropy)
 
             -- In-game text display
-            if Isaac.IsInGame() then
+            if Isaac.IsInGame() and not noMods then
                 PST:createFloatTextFX("+" .. tostring(entropy) .. "ent", Vector.Zero, Color(0.8, 0.2, 0.2, 1), 0, 80, true)
             end
 
@@ -825,19 +847,19 @@ function PST:expedAddEntropy(depth, entropy)
 
             -- Apply effects if not in-game
             if not Isaac.IsInGame() then
-                PST:expedApplyEntropy(depth)
+                PST:expedApplyEntropy(expData)
             end
         end
     end
 end
 
 -- Apply the effects of entropy to an expedition
-function PST:expedApplyEntropy(depth)
-    local expData = PST:getExpedData(depth, true)
+---@param expData PSTExpedition
+function PST:expedApplyEntropy(expData)
     if expData and expData.entropyEffects then
         -- Implicits
         if expData.entropyEffects.expedImp then
-            local uberDepth = (15 + depth) * 2
+            local uberDepth = (15 + expData.depth) * 2
             local impDepth = uberDepth + expData.entropyEffects.expedImp * 2
             expData.implicits = PST:getExpeditionImplicits(impDepth)
         end

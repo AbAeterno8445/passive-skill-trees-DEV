@@ -1072,13 +1072,13 @@ PST.expedDescriptions = {
     expedImp_mobDmgRed = "+%d%% monster damage reduction.",
 
     -- Deep-Space Distortion modifier descriptions
-    dsdMod_finalDmgRed = "+40%% final boss damage reduction.",
-    dsdMod_finalDmgImm = "Final bosses gain damage immunity for 5 seconds every 25%% HP lost.",
-    dsdMod_finalLastStand = "While final bosses are at 12%% HP or less, all their hits instantly kill you.",
+    dsdMod_finalDmgRed = "+40% final boss damage reduction.",
+    dsdMod_finalDmgImm = "Final bosses gain damage immunity for 5 seconds every 25% HP lost.",
+    dsdMod_finalLastStand = "While final bosses are at 12% HP or less, all their hits instantly kill you.",
     dsdMod_pickupLimit = "You cannot have more than 25 coins, 4 keys or 4 bombs.",
-    dsdMod_treeEffect = "Tree effects on stats are 35%% as effective.",
-    dsdMod_heartScarcity = "+66%% heart scarcity.",
-    dsdMod_pickupScarcity = "+66%% coin, key and bomb scarcity."
+    dsdMod_treeEffect = "Tree effects on stats are 35% as effective.",
+    dsdMod_heartScarcity = "+66% heart scarcity.",
+    dsdMod_pickupScarcity = "+66% coin, key and bomb scarcity."
 }
 
 -- List of Deep-Space Distortion modifiers (for uber expeditions)

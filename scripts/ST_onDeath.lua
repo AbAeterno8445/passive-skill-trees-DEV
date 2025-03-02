@@ -313,8 +313,8 @@ function PST:onDeath(entity)
                         PST:expedAddProgInRun("defeatBosses", 1)
                     end
 
-                    -- Proc up to 5 times within this room
-                    if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 then
+                    -- Proc up to 5 times within this room, or always on final bosses
+                    if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 or isFinalBoss then
                         -- Obols on boss kill
                         local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
                         if tmpObols > 0 then

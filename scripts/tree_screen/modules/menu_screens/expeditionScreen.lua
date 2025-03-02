@@ -171,14 +171,16 @@ function expeditionScreen:OnInput()
             -- Hovered node
             if self.hoveredNode then
                 -- Attempt to complete if pending
-                if expData.selectedNode and self.hoveredNode.col == expData.selectedNode.col and self.hoveredNode.row == expData.selectedNode.row and
-                PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode, self.uberMode) then
+                if (expData.selectedNode and self.hoveredNode.col == expData.selectedNode.col and self.hoveredNode.row == expData.selectedNode.row and
+                PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode, self.uberMode)) or
+                self.hoveredNode.nodeType == PSTExpNodeType.REWARD then
                     -- Final node: center camera since expedition resets
-                    if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
+                    if (self.hoveredNode.nodeType == PSTExpNodeType.FINAL and self.hoveredNode.rewardType ~= PSTExpNodeRewardType.UBER_CHOICE) or
+                    (self.hoveredNode.nodeType == PSTExpNodeType.REWARD and not expData.nodes[self.hoveredNode.col + 1]) then
                         self:CenterCamera()
                         SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE)
                     end
-                    PST:completeExpedNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, true, self.uberMode)
+                    PST:completeExpedNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, true, expData.uber)
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
                     PST.treeScreen.treeHasChanges = true
                 -- Attempt to select selectable node
@@ -375,6 +377,11 @@ function expeditionScreen:Render(tScreen)
     -- Hovered node description
     if self.hoveredNode then
         local nodeName = "Expedition Node"
+        local isRewardNode = (self.hoveredNode.nodeType == PSTExpNodeType.REWARD)
+        if isRewardNode then
+            nodeName = "Reward Node"
+        end
+
         local nodeDesc = {}
         if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
             -- Arcane Astrolabe description
@@ -402,23 +409,30 @@ function expeditionScreen:Render(tScreen)
             -- Normal expedition node description
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
         end
-        if expData.selectedNode then
-            if expData.selectedNode.col == self.hoveredNode.col and expData.selectedNode.row == self.hoveredNode.row then
-                nodeName = nodeName .. " (Selected)"
-                if PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode, expData.uber) then
-                    table.insert(nodeDesc, "Press the Allocate button to complete this node and claim its rewards.")
-                    -- Final node
-                    if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
-                        table.insert(nodeDesc, "Final Node: completing it will reset this expedition and unlock the next depth.")
+        if not isRewardNode then
+            if expData.selectedNode then
+                if expData.selectedNode.col == self.hoveredNode.col and expData.selectedNode.row == self.hoveredNode.row then
+                    nodeName = nodeName .. " (Selected)"
+                    if PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode, expData.uber) then
+                        table.insert(nodeDesc, "Press the Allocate button to complete this node and claim its rewards.")
+                        -- Final node
+                        if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
+                            table.insert(nodeDesc, "Final Node: completing it will reset this expedition and unlock the next depth.")
+                        end
                     end
+                elseif self.hoveredNode.selectable then
+                    table.insert(nodeDesc, "Press the Allocate button to switch selected node to this one.")
+                    table.insert(nodeDesc, {"  > Switching node selection costs 1 global SP and 5 respec points.", PST.kcolors.RED2})
                 end
             elseif self.hoveredNode.selectable then
-                table.insert(nodeDesc, "Press the Allocate button to switch selected node to this one.")
-                table.insert(nodeDesc, {"  > Switching node selection costs 1 global SP and 5 respec points.", PST.kcolors.RED2})
+                table.insert(nodeDesc, "Press the Allocate button to select this node.")
+                table.insert(nodeDesc, {"  > Switching the selection to a different node will cost 1 global SP and 5 respec points.", PST.kcolors.RED2})
             end
-        elseif self.hoveredNode.selectable then
-            table.insert(nodeDesc, "Press the Allocate button to select this node.")
-            table.insert(nodeDesc, {"  > Switching the selection to a different node will cost 1 global SP and 5 respec points.", PST.kcolors.RED2})
+        else
+            table.insert(nodeDesc, "Press the Allocate button to claim this reward.")
+            if not expData.nodes[self.hoveredNode.col + 1] then
+                table.insert(nodeDesc, "Once claimed, this expedition depth will be reset.")
+            end
         end
         tScreen:DrawNodeBox(nodeName, nodeDesc)
 

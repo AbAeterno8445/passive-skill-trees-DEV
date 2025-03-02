@@ -114,7 +114,7 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
 
             -- 'Pending completion' node effect
             if expData.selectedNode and expData.selectedNode.col == tmpNode.col and expData.selectedNode.row == tmpNode.row and
-            PST:expedNodeIsObjectiveDone(expedScreen.currentDepth, tmpNode) then
+            PST:expedNodeIsObjectiveDone(expedScreen.currentDepth, tmpNode, expData.uber) then
                 local flashAlpha = tScreen.modules.nodeDrawingModule.alphaFlash
                 expedScreen.expNodeSprite.Color.A = flashAlpha
                 expedScreen.expNodeSprite:SetFrame("Nodes", 5)

@@ -29,12 +29,6 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
     local expLength = 8
     if depth >= 5 then expLength = 7 end
 
-    local startEntropy = 0
-    -- Entropic Tradeoff node (Deep-Space tree)
-    if expModifiers and expModifiers.entropicTradeoff then
-        startEntropy = 40
-    end
-
     local startOrder = 0
     -- Bring The Order node (Deep-Space tree)
     if expModifiers and expModifiers.bringTheOrder then
@@ -157,7 +151,7 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
             -- Entropy modifiers
             local entropyMods = {}
             local maxEntropyMods = 1
-            if col >= 6 then maxEntropyMods = 2 end
+            if col >= 5 then maxEntropyMods = 2 end
             if col == expLength then maxEntropyMods = 3 end
 
             for i=1,maxEntropyMods do
@@ -186,8 +180,8 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
                 else
                     local rewardList = {
                         [PSTExpNodeRewardType.C_STARCORE] = 0.25,
+                        [PSTExpNodeRewardType.UBER_CHOICE] = 0.25,
                         [PSTExpNodeRewardType.STARBLESS_WEP] = 0.2,
-                        [PSTExpNodeRewardType.UBER_CHOICE] = 0.15,
                         [PSTExpNodeRewardType.STARBLESS_PRISM] = 0.1
                     }
                     PST:shuffleList(rewardList, rewardRNG)
@@ -230,10 +224,10 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
             if newNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
                 newNode.rewardData = {}
                 local avChoices = {
-                    [PSTExpNodeRewardType.C_STARCORE] = {0.25, 1},
-                    [PSTExpNodeRewardType.GLOBAL_SP] = {0.3, 4},
-                    [PSTExpNodeRewardType.STARBLESS_PRISM] = {0.2, 1},
-                    [PSTExpNodeRewardType.OBOLS] = {0.3, 400 + depth * 50},
+                    { type = PSTExpNodeRewardType.C_STARCORE, chance = 0.25, amt = 1 },
+                    { type = PSTExpNodeRewardType.GLOBAL_SP, chance = 0.3, amt = 4 },
+                    { type = PSTExpNodeRewardType.STARBLESS_PRISM, chance = 0.2, amt = 1 },
+                    { type = PSTExpNodeRewardType.OBOLS, chance = 0.3, amt = 400 + depth * 50 }
                 }
                 local totalChoices = 3
                 -- Mod: % chance to add an additional choice
@@ -241,15 +235,17 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
                     totalChoices = totalChoices + 1
                 end
 
-                while totalChoices > 0 do
+                local failsafe = 0
+                while totalChoices > 0 and failsafe < 1000 do
                     PST:shuffleList(avChoices, rewardRNG)
-                    for rwType, rwData in ipairs(avChoices) do
-                        if rewardRNG:RandomFloat() < rwData[1] then
-                            newNode.rewardData[rwType] = rwData[2]
+                    for _, rwData in ipairs(avChoices) do
+                        if rewardRNG:RandomFloat() < rwData.chance then
+                            newNode.rewardData[rwData.type] = rwData.amt
                             totalChoices = totalChoices - 1
                             if totalChoices == 0 then break end
                         end
                     end
+                    failsafe = failsafe + 1
                 end
             end
 
@@ -348,7 +344,7 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
 
     -- Eldritch Exchange node (Deep-Space tree)
     if expModifiers and expModifiers.eldritchExchange then
-        expAttempts = expAttempts + 1
+        expAttempts = expAttempts + 2
     end
 
     ---@type PSTExpedition
@@ -368,7 +364,12 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
         uber = true,
         modifiers = expModifiers
     }
-    if startEntropy > 0 then newExped.entropy = startEntropy end
     if startOrder > 0 then newExped.order = startOrder end
+
+    -- Entropic Tradeoff node (Deep-Space tree)
+    if expModifiers and expModifiers.entropicTradeoff then
+        PST:expedObjAddEntropy(newExped, 40, true)
+    end
+
     return newExped
 end

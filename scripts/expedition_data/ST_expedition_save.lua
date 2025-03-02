@@ -164,18 +164,19 @@ function PST:loadExpedition(depth, expSave, uber)
     -- Deep-Space distortion mods
     if expSave.dsMods then tmpExped.dsMods = expSave.dsMods end
 
-    -- Regenerate end rewards if created
-    if expSave.endRewards then
-        PST:expedCreateEndRewards(depth, uber)
-    end
-
     if not uber then
         PST.expeditionsData[depth] = tmpExped
     else
         PST.uberExpeditionsData[depth] = tmpExped
         if tmpExped.entropyEffects then
-            PST:expedApplyEntropy(depth)
+            PST:expedApplyEntropy(tmpExped)
         end
     end
+
+    -- Regenerate end rewards if created
+    if expSave.endRewards then
+        PST:expedCreateEndRewards(depth, uber)
+    end
+
     PST:updateExpedAccess(depth, uber)
 end

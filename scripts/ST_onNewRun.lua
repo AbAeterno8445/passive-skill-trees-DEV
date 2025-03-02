@@ -329,11 +329,14 @@ function PST:onNewRun(isContinued)
 
     -- Astral Expeditions
     local isUber = PST.modData.expedUberMode
-    if treeActive and PST.modData.expedEnabled and PST:expedMeetsRequirements(PST.modData.expedSelDepth, isUber) then
+    local expedMeetsReqs = PST:expedMeetsRequirements(PST.modData.expedSelDepth)
+    if isUber then
+        expedMeetsReqs = PST:expedMeetsRequirements(PST.modData.uberExpedSelDepth, true)
+    end
+    if treeActive and PST.modData.expedEnabled and expedMeetsReqs then
         local selDepth = PST.modData.expedSelDepth
         if isUber then
             selDepth = PST.modData.uberExpedSelDepth
-            PST:expedApplyEntropy(selDepth)
         end
         local expData = PST:getExpedData(selDepth, isUber)
         if expData and expData.selectedNode then
@@ -345,6 +348,8 @@ function PST:onNewRun(isContinued)
                 if expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order > 0 then
                     PST:addModifiers({ luck = -0.05 * expData.order }, true)
                 end
+
+                PST:expedApplyEntropy(expData)
             end
             PST.modData.treeModSnapshot.expedDepth = selDepth
 
