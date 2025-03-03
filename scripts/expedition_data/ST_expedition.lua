@@ -25,6 +25,7 @@ function PST:loadExpeditionsData()
             PST:loadExpedition(depth, tmpExpedSave, true)
         end
     end
+    PST.modData.uberExpeditionsData = tmpUbersData
 end
 
 function PST:getExpedData(depth, uber)

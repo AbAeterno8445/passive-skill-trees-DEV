@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.1",
+        "- Potential fix for Uber Expeditions internally loading incorrectly when first generated.",
+        "",
+
         "v1.1.0",
         "- Introduced Uber Expeditions, a more difficult version of astral expeditions with their own set of rewards.",
         "You can begin these by allocating the 'Deep-Space Astrolabe' in the Star Tree, and pressing the uber toggle",
