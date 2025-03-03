@@ -295,6 +295,7 @@ end
 ---@param wepData PSTAstralWeapon
 ---@param wepSprite Sprite
 function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
+    scale = scale or 1
     local wepTypeData = PST.astralWepData[wepData.type]
     local anim = "Normal"
     local frame = wepTypeData.spriteFrames[wepData.rarity]
@@ -305,9 +306,7 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
         frame = wepTypeData.ancients[wepData.ancientID].spriteFrame
     end
     local oldScaleX, oldScaleY = wepSprite.Scale.X, wepSprite.Scale.Y
-    if scale then
-        wepSprite.Scale = Vector(scale, scale)
-    end
+    wepSprite.Scale = Vector(scale, scale)
     wepSprite:SetFrame(anim, frame)
     wepSprite:Render(Vector(x, y))
     wepSprite.Scale = Vector(oldScaleX, oldScaleY)
@@ -322,9 +321,7 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
                 table.insert(tmpColors, PST:RGBColor(table.unpack(tmpModData.color)))
             end
         end
-        if scale then
-            wepSprite.Scale = Vector(scale, scale)
-        end
+        wepSprite.Scale = Vector(scale, scale)
         wepSprite.Color = PST:mixColors(tmpColors[1], tmpColors[2])
         wepSprite:Render(Vector(x, y))
         wepSprite.Color = Color()

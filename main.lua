@@ -152,7 +152,12 @@ end
 function PST:processLoadedData(loadedData)
 	if not loadedData then return end
 
-	PST:deserializeData(loadedData)
+	if loadedData.serialized then
+		local deserializationCall = pcall(PST.deserializeData, PST, loadedData)
+		if not deserializationCall then
+			print("[PST] WARNING: Could not deserialize data from savefile - data might be corrupted!")
+		end
+	end
 
 	-- Add missing fields (old save)
 	for k, v in pairs(PST.modData) do

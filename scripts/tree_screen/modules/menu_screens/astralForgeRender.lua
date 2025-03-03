@@ -405,7 +405,8 @@ local function astralForgeScreenRender(self, tScreen)
         -- Forge action buttons
         local drawnButtons = 0
         for _, tmpButton in ipairs(forgingButtons) do
-            if not tmpButton.reqRarity or (tmpButton.reqRarity and self.selectedWeapon.rarity == tmpButton.reqRarity) then
+            if (not tmpButton.reqRarity or (tmpButton.reqRarity and self.selectedWeapon.rarity == tmpButton.reqRarity)) and not
+            (tmpButton.targetAction == "starbless" and self.selectedWeapon.starblessed) then
                 local tmpButtonX = selWepX + 34 + 30 * drawnButtons
                 self.forgeUISprite:SetFrame("UI", tmpButton.frame)
 

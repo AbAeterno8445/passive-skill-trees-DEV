@@ -147,29 +147,33 @@ function PST:serializeSave(modData)
                 if not newArg then newArg = 0 else newArg = 1 end
             elseif arg == "mods" then
                 local newModArg = {}
-                for _, tmpMod in ipairs(tmpWep.mods) do
-                    local newMod = {}
-                    local tmpWepModData = PST.astralWepMods[tmpMod.name]
-                    ---@type integer|string
-                    local modSerial = tmpMod.name
-                    if tmpWepModData and tmpWepModData.serial then
-                        modSerial = tmpWepModData.serial
+                if newArg then
+                    for _, tmpMod in ipairs(tmpWep.mods) do
+                        local newMod = {}
+                        local tmpWepModData = PST.astralWepMods[tmpMod.name]
+                        ---@type integer|string
+                        local modSerial = tmpMod.name
+                        if tmpWepModData and tmpWepModData.serial then
+                            modSerial = tmpWepModData.serial
+                        end
+                        table.insert(newMod, modSerial)
+                        if tmpMod.rolls then
+                            table.insert(newMod, tmpMod.rolls)
+                        end
+                        table.insert(newModArg, newMod)
                     end
-                    table.insert(newMod, modSerial)
-                    if tmpMod.rolls then
-                        table.insert(newMod, tmpMod.rolls)
-                    end
-                    table.insert(newModArg, newMod)
                 end
                 newArg = newModArg
             -- Serialize multi-implicits
             elseif arg == "multiImplicits" then
                 local newModArg = {}
-                for _, tmpImp in ipairs(tmpWep.multiImplicits) do
-                    local newImp = {}
-                    table.insert(newImp, tmpImp.type)
-                    table.insert(newImp, tmpImp.rolls)
-                    table.insert(newModArg, newImp)
+                if newArg then
+                    for _, tmpImp in ipairs(tmpWep.multiImplicits) do
+                        local newImp = {}
+                        table.insert(newImp, tmpImp.type)
+                        table.insert(newImp, tmpImp.rolls)
+                        table.insert(newModArg, newImp)
+                    end
                 end
                 newArg = newModArg
             end
@@ -186,7 +190,6 @@ function PST:serializeSave(modData)
 end
 
 function PST:deserializeData(loadedData)
-    if not enableSerialization then return end
     if not loadedData.serialized then return end
 
     -- Deserialize: Tree node allocation
