@@ -1097,3 +1097,15 @@ function PST:mixColors(col1, col2)
 
     return mixedColor
 end
+
+function PST:forceLoadBackup(backupID)
+	if type(backupID) ~= "integer" then return end
+	-- Load given backup
+	if PST_BackupReplace and PST_BackupReplace(PST.saveSlot, backupID) then
+		SFXManager():Play(SoundEffect.SOUND_1UP)
+		PST.saveManager.Load(false)
+		PST:closeTreeMenu()
+	else
+		SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.7)
+	end
+end
