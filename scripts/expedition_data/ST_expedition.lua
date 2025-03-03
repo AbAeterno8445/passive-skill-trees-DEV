@@ -730,9 +730,9 @@ function PST:getExpedCurseMods(expData)
 end
 
 -- Add Entropy to an uber expedition (capped at 500), and add associated effects
-function PST:expedAddEntropy(depth, entropy)
+function PST:expedAddEntropy(depth, entropy, noMods)
     local expData = PST:getExpedData(depth, true)
-    PST:expedObjAddEntropy(expData, entropy)
+    PST:expedObjAddEntropy(expData, entropy, noMods)
 end
 
 ---@param expData PSTExpedition
