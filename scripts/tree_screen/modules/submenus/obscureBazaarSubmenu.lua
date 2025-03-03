@@ -8,7 +8,7 @@ local obsBazaarSubmenu = {
 local obsBazaarItems = {
     {
         name = "Crimson Starcore",
-        price = 3500,
+        price = 2500,
         type = PSTExpNodeRewardType.C_STARCORE,
         purchaseFunc = function(charData)
             if not charData then return end
@@ -17,7 +17,7 @@ local obsBazaarItems = {
     },
     {
         name = "Starblessed Prism",
-        price = 5000,
+        price = 4000,
         type = PSTExpNodeRewardType.STARBLESS_PRISM,
         purchaseFunc = function(charData)
             PST.modData.starblessPrism = PST.modData.starblessPrism + 1
@@ -25,7 +25,7 @@ local obsBazaarItems = {
     },
     {
         name = "Character Skill Point",
-        price = 1500,
+        price = 1200,
         type = PSTExpNodeRewardType.GLOBAL_SP,
         purchaseFunc = function(charData)
             if not charData then return end
