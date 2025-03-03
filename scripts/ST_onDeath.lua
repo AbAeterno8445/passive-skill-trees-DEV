@@ -90,7 +90,7 @@ function PST:onDeath(entity)
             if isFrozen and mult > 0.08 then mult = 0.08 end
 
             -- Sidereal Artifact condition: kill monsters (count only xp granting mobs)
-            if PST:getTreeSnapshotMod("bloodSeptentrion", false) then
+            if PST:getTreeSnapshotMod("bloodSeptentrion", false) and not isFrozen then
                 PST:sideArtiAddEnergy(PST.sideArtiData.bloodSeptentrion.energy)
             end
             -- Sidereal Artifact objective/condition: kill monsters affected by any status effect
@@ -109,7 +109,7 @@ function PST:onDeath(entity)
             end
             if tmpNPC then
                 -- Sidereal Artifact objective: kill monsters that have at least 10 HP
-                if tmpNPC.MaxHitPoints >= 10 then
+                if tmpNPC.MaxHitPoints >= 10 and not isFrozen then
                     PST:sideArtiObjProgress("assassinSeptentrion", 1)
 
                     -- Sidereal Artifact objective: kill undead monsters with at least 10 HP
@@ -118,7 +118,7 @@ function PST:onDeath(entity)
                     end
                 end
                 -- Sidereal Artifact objective/condition: kill champion monsters
-                if tmpNPC:IsChampion() then
+                if tmpNPC:IsChampion() and not isFrozen then
                     PST:sideArtiObjProgress("slayerSeptentrion", 1)
                     if PST:getTreeSnapshotMod("slayerSeptentrion", false) then
                         PST:sideArtiAddEnergy(PST.sideArtiData.slayerSeptentrion.energy)
@@ -138,7 +138,8 @@ function PST:onDeath(entity)
                 PST:sideArtiObjProgress("infernalMeridion", 1)
             end
             -- Sidereal Artifact objective: kill Bonys or its variants
-            if entity:GetType() == EntityType.ENTITY_BONY or entity:GetType() == EntityType.ENTITY_BLACK_BONY or entity:GetType() == EntityType.ENTITY_REVENANT then
+            if (entity:GetType() == EntityType.ENTITY_BONY or entity:GetType() == EntityType.ENTITY_BLACK_BONY or entity:GetType() == EntityType.ENTITY_REVENANT) and
+            not isFrozen then
                 PST:sideArtiObjProgress("osseousMeridion", 1)
             end
 
