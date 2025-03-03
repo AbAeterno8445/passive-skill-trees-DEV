@@ -489,7 +489,7 @@ function PST:sideArtiObjProgress(artiName, prog, set)
 end
 
 function PST:sideArtiAddEnergy(energy)
-    if PST.specialNodes.sideArtiCD == 0 then
+    if PST:isRunSidereal() and PST.specialNodes.sideArtiCD == 0 then
         PST:addModifiers({ sideArtiEnergy = energy }, true)
         local newEnergy = PST:getTreeSnapshotMod("sideArtiEnergy", 0)
 

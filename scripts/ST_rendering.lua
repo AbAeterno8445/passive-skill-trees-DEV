@@ -270,7 +270,7 @@ function PST:Render()
 		end
 
 		-- Sidereal Artifact UI
-		if PST.config.sideArtiUI then
+		if PST:isRunSidereal() and PST.config.sideArtiUI then
 			local charData = PST:getCurrentCharData()
 			if charData and #charData.northArtis > 0 and #charData.southArtis > 0 then
 				expedUISprite:SetFrame("UI", 1)
