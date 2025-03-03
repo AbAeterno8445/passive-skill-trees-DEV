@@ -10,6 +10,7 @@ function PST:onNewRun(isContinued)
     local playerTwin = player:GetOtherTwin()
     local itemPool = Game():GetItemPool()
 
+    PST:resetMods()
     local isChallenge = Isaac.GetChallenge() ~= 0
     local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and not isChallenge) or PST.config.treeOnChallenges)
     if treeActive then
@@ -460,7 +461,7 @@ function PST:onNewRun(isContinued)
     end
 
     -- Apply Sidereal tree nodes
-    if treeActive and (PST:getTreeSnapshotMod("isExpedRun", false) or PST:isNodeNameAllocated("sidereal", "Sidereal Universalization")) then
+    if treeActive and PST:isRunSidereal() then
         -- Get snapshot of tree modifiers
         for nodeID, node in pairs(PST.trees["sidereal"]) do
             if PST:isNodeAllocated("sidereal", nodeID) then
