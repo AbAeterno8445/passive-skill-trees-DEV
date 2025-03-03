@@ -753,7 +753,7 @@ function PST:expedObjAddEntropy(expData, entropy, noMods)
 
                 local orderDiff = origOrder - expData.order
                 if expData.order > 0 and Isaac.IsInGame() and not noMods then
-                    PST:createFloatTextFX("-" .. tostring(orderDiff) .. "ord", Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 80, true)
+                    PST:createFloatTextFX("-" .. tostring(orderDiff) .. " order", Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 100, true)
                 end
             end
 
@@ -795,7 +795,7 @@ function PST:expedObjAddEntropy(expData, entropy, noMods)
 
             -- In-game text display
             if Isaac.IsInGame() and not noMods then
-                PST:createFloatTextFX("+" .. tostring(entropy) .. "ent", Vector.Zero, Color(0.8, 0.2, 0.2, 1), 0, 80, true)
+                PST:createFloatTextFX("+" .. tostring(entropy) .. " entropy", Vector.Zero, Color(0.8, 0.2, 0.2, 1), 0, 100, true)
             end
 
             if not expData.entropyEffects then expData.entropyEffects = {} end
