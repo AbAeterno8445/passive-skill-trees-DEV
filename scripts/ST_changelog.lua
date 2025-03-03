@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.2",
+        "- Fixed % tear modifiers being inverted on stat update.",
+        "",
+
         "v1.1.1",
         "- Potential fix for Uber Expeditions internally loading incorrectly when first generated.",
         "",

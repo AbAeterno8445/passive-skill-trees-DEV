@@ -1013,17 +1013,16 @@ function PST:onCache(player, cacheFlag)
     if cacheFlag == CacheFlag.CACHE_DAMAGE then
         -- DAMAGE
         local tmpMod = PST:getTreeSnapshotMod("damage", 0) + dynamicMods.damage + allstats
-        local tmpMult = allstatsPerc / 100
+        local tmpMult = dsdMult + allstatsPerc / 100
         tmpMult = tmpMult + PST:getTreeSnapshotMod("damagePerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.damagePerc / 100
-        tmpMult = tmpMult * dsdMult
 
         local baseDmg = player.Damage
         -- Ancient starcursed jewel: Saturnian Luminite
         if PST:SC_getSnapshotMod("saturnianLuminite", false) then
             baseDmg = 0.25
         end
-        player.Damage = (baseDmg + tmpMod * dsdMult) * math.max(0.05, 1 + tmpMult)
+        player.Damage = (baseDmg + tmpMod * dsdMult) * math.max(0.05, tmpMult)
 
         -- Entanglement node (T. Lazarus' tree)
         if PST:getTreeSnapshotMod("entanglement", false) then
@@ -1053,11 +1052,10 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- TEARS (MaxFireDelay)
         local tmpMod = PST:getTreeSnapshotMod("tears", 0) + dynamicMods.tears + allstats
-        local tmpMult = allstatsPerc / 100
+        local tmpMult = dsdMult - allstatsPerc / 100
         tmpMult = tmpMult - PST:getTreeSnapshotMod("tearsPerc", 0) / 100
         tmpMult = tmpMult - dynamicMods.tearsPerc / 100
-        tmpMult = tmpMult * dsdMult
-        player.MaxFireDelay = tearsUp(player.MaxFireDelay, tmpMod * dsdMult) * math.max(0.05, 1 - tmpMult)
+        player.MaxFireDelay = tearsUp(player.MaxFireDelay, tmpMod * dsdMult) * math.max(0.05, tmpMult)
 
         -- Entanglement node (T. Lazarus' tree)
         if PST:getTreeSnapshotMod("entanglement", false) then
@@ -1070,9 +1068,8 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         -- LUCK
         local tmpMod = PST:getTreeSnapshotMod("luck", 0) + dynamicMods.luck
-        local tmpMult = PST:getTreeSnapshotMod("luckPerc", 0) / 100
+        local tmpMult = dsdMult + PST:getTreeSnapshotMod("luckPerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.luckPerc / 100
-        tmpMult = tmpMult * dsdMult
         player.Luck = player.Luck + tmpMod * dsdMult
         player.Luck = player.Luck + math.abs(player.Luck) * tmpMult
 
@@ -1100,11 +1097,10 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_RANGE then
         -- RANGE
         local tmpMod = PST:getTreeSnapshotMod("range", 0) + dynamicMods.range + allstats
-        local tmpMult = allstatsPerc / 100
+        local tmpMult = dsdMult + allstatsPerc / 100
         tmpMult = tmpMult + PST:getTreeSnapshotMod("rangePerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.rangePerc / 100
-        tmpMult = tmpMult * dsdMult
-        player.TearRange = (player.TearRange + tmpMod * 40 * dsdMult) * math.max(0.05, 1 + tmpMult)
+        player.TearRange = (player.TearRange + tmpMod * 40 * dsdMult) * math.max(0.05, tmpMult)
 
         -- Entanglement node (T. Lazarus' tree)
         if PST:getTreeSnapshotMod("entanglement", false) then
@@ -1117,11 +1113,10 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_SHOTSPEED then
         -- SHOT SPEED
         local tmpMod = PST:getTreeSnapshotMod("shotSpeed", 0) + dynamicMods.shotSpeed + allstats
-        local tmpMult = allstatsPerc / 200
+        local tmpMult = dsdMult + allstatsPerc / 200
         tmpMult = tmpMult + PST:getTreeSnapshotMod("shotSpeedPerc", 0) / 200
         tmpMult = tmpMult + dynamicMods.shotSpeedPerc / 200
-        tmpMult = tmpMult * dsdMult
-        player.ShotSpeed = (player.ShotSpeed + (tmpMod * dsdMult) / 2) * math.max(0.05, 1 + tmpMult)
+        player.ShotSpeed = (player.ShotSpeed + (tmpMod * dsdMult) / 2) * math.max(0.05, tmpMult)
 
         -- Entanglement node (T. Lazarus' tree)
         if PST:getTreeSnapshotMod("entanglement", false) then
@@ -1134,10 +1129,9 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- MOVEMENT SPEED
         local tmpMod = PST:getTreeSnapshotMod("speed", 0) + dynamicMods.speed + allstats
-        local tmpMult = allstatsPerc / 100
+        local tmpMult = dsdMult + allstatsPerc / 100
         tmpMult = tmpMult + PST:getTreeSnapshotMod("speedPerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.speedPerc / 100
-        tmpMult = tmpMult * dsdMult
         local baseSpeed = player.MoveSpeed
 
         -- Cosmic Realignment node
@@ -1145,7 +1139,7 @@ function PST:onCache(player, cacheFlag)
             -- Magdalene, set base movement speed to 0.85
             baseSpeed = 0.85
         end
-        player.MoveSpeed = (baseSpeed + (tmpMod * dsdMult) / 2) * math.max(0.05, 1 + tmpMult)
+        player.MoveSpeed = (baseSpeed + (tmpMod * dsdMult) / 2) * math.max(0.05, tmpMult)
 
         -- Entanglement node (T. Lazarus' tree)
         if PST:getTreeSnapshotMod("entanglement", false) then
