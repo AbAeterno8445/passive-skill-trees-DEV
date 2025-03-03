@@ -273,7 +273,9 @@
         "RedBaby",
         "dukeMod",
         "Sheriff",
-        "ARACHNAMOD"
+        "ARACHNAMOD",
+        "EclipsedMod",
+        "Diepio"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

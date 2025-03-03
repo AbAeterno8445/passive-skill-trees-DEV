@@ -426,7 +426,7 @@ PST.grandConsonanceWhitelist = {
 	FamiliarVariant.FRUITY_PLUM, FamiliarVariant.LIL_ABADDON, FamiliarVariant.LIL_PORTAL, FamiliarVariant.TWISTED_BABY,
 	131 -- My Shadow
 }
--- Familiars for T. Siren's Chromatic Dissonance node
+-- Familiars for T. Siren's Chromatic Dissonance node (excluding ones present in songOfTheFewFamiliars as these are included later)
 PST.sirenDissonanceFamiliars = {
 	CollectibleType.COLLECTIBLE_MULTIDIMENSIONAL_BABY, CollectibleType.COLLECTIBLE_SISSY_LONGLEGS, CollectibleType.COLLECTIBLE_LIL_DELIRIUM,
 	CollectibleType.COLLECTIBLE_HUSHY, CollectibleType.COLLECTIBLE_BUMBO, CollectibleType.COLLECTIBLE_TINYTOMA,
@@ -439,7 +439,6 @@ PST.sirenDissonanceFamiliars = {
 	CollectibleType.COLLECTIBLE_MYSTERY_EGG, CollectibleType.COLLECTIBLE_JAW_BONE, CollectibleType.COLLECTIBLE_SAMSONS_CHAINS,
 	CollectibleType.COLLECTIBLE_KEY_BUM,
 	131, -- My Shadow
-	table.unpack(PST.songOfTheFewFamiliars)
 }
 PST.undeadEnemies = {
 	EntityType.ENTITY_HUSH_GAPER, EntityType.ENTITY_WRAITH, EntityType.ENTITY_DEEP_GAPER,
