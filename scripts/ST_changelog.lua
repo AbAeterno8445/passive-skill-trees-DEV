@@ -15,6 +15,7 @@ function PST:getChangelogList()
         "amounts of obols for unique items, such as Crimson Starcores or Starblessed Prisms.",
         "- Expedition \"Curse of Shrouding\" no longer affects final nodes.",
         "- Starmight requirement for expeditions is now capped at 600 (from 800).",
+        "- Added a new large node to T. Siren: \"Chromatic Dissonance\".",
         "- Fixed jewel champion-turning modifier still affecting blacklisted mod enemies.",
         "- Fixed heart scarcity jewel modifier not being applied properly.",
         "- Fixed Respec logic sometimes preventing valid nodes from being respecced.",

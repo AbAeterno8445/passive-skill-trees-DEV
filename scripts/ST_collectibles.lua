@@ -27,6 +27,27 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
     end
 end
 
+function PST:preGrabCollectible(itemType, charge, firstTime, slot, varData, player)
+    if not PST.gameInit then return end
+
+    -- Chromatic Dissonance node (T. Siren's tree)
+    if firstTime and PST:getTreeSnapshotMod("chromaticDissonance", false) then
+        local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
+        if itemCfg and PST:arrHasValue(PST.sirenDissonanceFamiliars, itemType) then
+            local tmpFamList = PST:copyTable(PST.sirenDissonanceFamiliars)
+            PST:shuffleList(tmpFamList)
+            for _, newFam in ipairs(tmpFamList) do
+                local newCfg = Isaac.GetItemConfig():GetCollectible(newFam)
+                if newCfg and newCfg.Quality == itemCfg.Quality and not player:HasCollectible(newFam) then
+                    SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_DEAD, 0.7, 2, false, 1.2)
+                    PST:createFloatTextFX("Chromatic Dissonance", Vector.Zero, Color(math.random(), math.random(), math.random(), 1), 0.13, 100, true)
+                    return newFam
+                end
+            end
+        end
+    end
+end
+
 ---@param player EntityPlayer
 function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, player)
     if not PST.gameInit then return end

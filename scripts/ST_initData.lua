@@ -401,7 +401,8 @@ PST.songOfTheFewFamiliars = {
 	CollectibleType.COLLECTIBLE_BLOODSHOT_EYE, CollectibleType.COLLECTIBLE_7_SEALS, CollectibleType.COLLECTIBLE_LIL_SPEWER,
 	CollectibleType.COLLECTIBLE_HALLOWED_GROUND, CollectibleType.COLLECTIBLE_BOILED_BABY, CollectibleType.COLLECTIBLE_FREEZER_BABY,
 	CollectibleType.COLLECTIBLE_BOT_FLY, CollectibleType.COLLECTIBLE_FRUITY_PLUM, CollectibleType.COLLECTIBLE_LIL_ABADDON,
-	CollectibleType.COLLECTIBLE_LIL_PORTAL, CollectibleType.COLLECTIBLE_TWISTED_PAIR, CollectibleType.COLLECTIBLE_BIRD_CAGE
+	CollectibleType.COLLECTIBLE_LIL_PORTAL, CollectibleType.COLLECTIBLE_TWISTED_PAIR, CollectibleType.COLLECTIBLE_BIRD_CAGE,
+	CollectibleType.COLLECTIBLE_BUDDY_IN_A_BOX
 }
 PST.grandConsonanceWhitelist = {
 	FamiliarVariant.BROTHER_BOBBY, FamiliarVariant.SISTER_MAGGY, FamiliarVariant.LITTLE_CHUBBY, FamiliarVariant.SACK_OF_PENNIES,
@@ -424,6 +425,21 @@ PST.grandConsonanceWhitelist = {
 	FamiliarVariant.BOILED_BABY, FamiliarVariant.FREEZER_BABY, FamiliarVariant.BOT_FLY,
 	FamiliarVariant.FRUITY_PLUM, FamiliarVariant.LIL_ABADDON, FamiliarVariant.LIL_PORTAL, FamiliarVariant.TWISTED_BABY,
 	131 -- My Shadow
+}
+-- Familiars for T. Siren's Chromatic Dissonance node
+PST.sirenDissonanceFamiliars = {
+	CollectibleType.COLLECTIBLE_MULTIDIMENSIONAL_BABY, CollectibleType.COLLECTIBLE_SISSY_LONGLEGS, CollectibleType.COLLECTIBLE_LIL_DELIRIUM,
+	CollectibleType.COLLECTIBLE_HUSHY, CollectibleType.COLLECTIBLE_BUMBO, CollectibleType.COLLECTIBLE_TINYTOMA,
+	CollectibleType.COLLECTIBLE_BIG_FAN, CollectibleType.COLLECTIBLE_PSY_FLY, CollectibleType.COLLECTIBLE_BEST_BUD,
+	CollectibleType.COLLECTIBLE_SMART_FLY, CollectibleType.COLLECTIBLE_FRIEND_ZONE, CollectibleType.COLLECTIBLE_WORM_FRIEND,
+	CollectibleType.COLLECTIBLE_FOREVER_ALONE, CollectibleType.COLLECTIBLE_ANGRY_FLY, CollectibleType.COLLECTIBLE_BUM_FRIEND,
+	CollectibleType.COLLECTIBLE_GUARDIAN_ANGEL, CollectibleType.COLLECTIBLE_BLOOD_PUPPY, CollectibleType.COLLECTIBLE_DISTANT_ADMIRATION,
+	CollectibleType.COLLECTIBLE_DARK_BUM, CollectibleType.COLLECTIBLE_LIL_DUMPY, CollectibleType.COLLECTIBLE_CUBE_BABY,
+	CollectibleType.COLLECTIBLE_GUPPYS_HAIRBALL, CollectibleType.COLLECTIBLE_HOLY_WATER, CollectibleType.COLLECTIBLE_CENSER,
+	CollectibleType.COLLECTIBLE_MYSTERY_EGG, CollectibleType.COLLECTIBLE_JAW_BONE, CollectibleType.COLLECTIBLE_SAMSONS_CHAINS,
+	CollectibleType.COLLECTIBLE_KEY_BUM,
+	131, -- My Shadow
+	table.unpack(PST.songOfTheFewFamiliars)
 }
 PST.undeadEnemies = {
 	EntityType.ENTITY_HUSH_GAPER, EntityType.ENTITY_WRAITH, EntityType.ENTITY_DEEP_GAPER,
@@ -1565,6 +1581,7 @@ function PST:resetMods()
 		fearedKillLuckBuff = 0,
 		soulOfTheSiren = false,
 		sirenOldMelody = -1,
+		chromaticDissonance = false,
 		--#endregion
 
 		--#region STAR TREE --
