@@ -59,11 +59,13 @@ function submenusModule:DrawNodeSubMenu(tScreen, menuRows, centerX, centerY, men
         tScreen.hoveredNode = nil
     end
 
-    Isaac.RenderText(
+    PST.normalFont:DrawString(
         title,
-        menuX * tScreen.zoomScale - 54 - tScreen.treeCamera.X - tScreen.camZoomOffset.X,
+        tmpBGX - tScreen.treeCamera.X - tScreen.camZoomOffset.X,
         menuY * tScreen.zoomScale + 20 - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y,
-        1, 1, 1, 1
+        PST.kcolors.WHITE,
+        self.BGSprite.Scale.X,
+        true
     )
 
     if pagination then
