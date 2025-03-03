@@ -10,7 +10,7 @@ function PST:getChangelogList()
         "- Introduced the 'Deep-Space Skill Tree', a set of nodes in the Star Tree that use Deep-Space skill points,",
         "obtainable from Uber Expeditions.",
         "- Introduced Starblessed Prisms, a new resource that allows you to 'Starbless' an Ancient Weapon. Starblessed",
-        "weapons can have an additional modifier imprinted into them.",
+        "weapons can have an additional modifier imprinted into them. You can apply these in the Astral Forge.",
         "- Introduced the 'Obscure Bazaar', present in the Deep-Space Skill Tree, which allows you to exchange large",
         "amounts of obols for unique items, such as Crimson Starcores or Starblessed Prisms.",
         "- Expedition \"Curse of Shrouding\" no longer affects final nodes.",
