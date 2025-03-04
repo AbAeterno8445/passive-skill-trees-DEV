@@ -27,6 +27,7 @@ function PST:onRollCollectible(selected, itemPoolType, decrease, seed)
     end
 end
 
+---@param player EntityPlayer
 function PST:preGrabCollectible(itemType, charge, firstTime, slot, varData, player)
     if not PST.gameInit then return end
 
@@ -38,9 +39,24 @@ function PST:preGrabCollectible(itemType, charge, firstTime, slot, varData, play
             PST:shuffleList(tmpFamList)
             for _, newFam in ipairs(tmpFamList) do
                 local newCfg = Isaac.GetItemConfig():GetCollectible(newFam)
-                if newCfg and newCfg.Quality == itemCfg.Quality and not player:HasCollectible(newFam) then
+                if newCfg and newCfg.Quality == itemCfg.Quality and not player:HasCollectible(newFam) and newFam ~= itemType then
+                    PST:addModifiers({ chromaticDissonanceProcs = 1 }, true)
+                    local procs = PST:getTreeSnapshotMod("chromaticDissonanceProcs", 0)
+                    if procs > 10 then
+                        -- Remove a random familiar of the same quality if possible
+                        for i=#tmpFamList,1,-1 do
+                            local removeFam = tmpFamList[i]
+                            local removeCfg = Isaac.GetItemConfig():GetCollectible(removeFam)
+                            if player:HasCollectible(removeFam) and removeCfg and removeCfg.Quality == newCfg.Quality then
+                                player:RemoveCollectible(removeFam)
+                                break
+                            end
+                        end
+                    end
+
                     SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_DEAD, 0.7, 2, false, 1.2)
-                    PST:createFloatTextFX("Chromatic Dissonance", Vector.Zero, Color(math.random(), math.random(), math.random(), 1), 0.13, 100, true)
+                    local tmpColor = Color(math.random(), math.random(), math.random(), 1)
+                    PST:createFloatTextFX("Chromatic Dissonance " .. tostring(math.min(7, procs)) .. "/7", Vector.Zero, tmpColor, 0.13, 100, true)
                     return newFam
                 end
             end
