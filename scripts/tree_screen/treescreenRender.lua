@@ -49,12 +49,14 @@ function PST.treeScreen:Render()
     self.modules.submenusModule:Render(self)
 
     -- Cursor
-    if self.hoveredNode or self.cursorHighlight then
-        self.cursorSprite:Play("Clicked")
-    else
-        self.cursorSprite:Play("Idle")
+    if not self.disableCursor then
+        if self.hoveredNode or self.cursorHighlight then
+            self.cursorSprite:Play("Clicked")
+        else
+            self.cursorSprite:Play("Idle")
+        end
+        self.cursorSprite:Render(Vector(self.screenW / 2, self.screenH / 2))
     end
-    self.cursorSprite:Render(Vector(self.screenW / 2, self.screenH / 2))
 
     -- Description boxes
     self.modules.descriptionBoxes:Render(self)
@@ -120,7 +122,7 @@ function PST.treeScreen:Render()
             if PST.modData.expedUberMode then
                 uberExtra = " (Uber)"
             end
-            Isaac.RenderText("Expedition run enabled" .. uberExtra, tmpX, tmpY, 0.5, 1, 0.5, 1)
+            Isaac.RenderText("Exp. run ON" .. uberExtra, tmpX, tmpY, 0.5, 1, 0.5, 1)
             tmpY = tmpY + 16
         end
 

@@ -25,6 +25,7 @@ PST.treeScreen = {
     UILinkSprite = Sprite("gfx/ui/skilltrees/nodes/expedition_node_link.anm2", true),
     cursorSprite = Sprite("gfx/ui/cursor.anm2", true),
     cursorHighlight = false,
+    disableCursor = false,
 
     -- Currently displayed tree or character name for character trees
     currentTree = "global",

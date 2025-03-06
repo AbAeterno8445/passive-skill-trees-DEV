@@ -15,6 +15,8 @@ function PST.treeScreen:Update()
 
     self.cameraSpeed = 3 * (1 + 1 - self.zoomScale)
 
+    self.disableCursor = false
+
     -- Space BG
     self.modules.spaceBGModule:Update(self)
 

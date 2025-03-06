@@ -3,6 +3,18 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.4",
+        "- Adjusted some expedition implicit modifiers, such as monster HP % and damage reduction, particularly at",
+        "greater depths (15+).",
+        "- Adjusted 'expedition enabled/disabled' text display.",
+        "- Cosmic Realignment now requires less nodes to reach.",
+        "",
+
+        "v1.1.3",
+        "- Adjusted T. Siren's Chromatic Dissonance effect.",
+        "- Fixed T. Siren's Chromatic Dissonance being able to reroll into the same obtained familiar.",
+        "",
+
         "v1.1.2",
         "- Fixed % tear modifiers being inverted on stat update.",
         "",

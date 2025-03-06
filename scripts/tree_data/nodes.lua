@@ -31,7 +31,7 @@ function PST:isNodeNameAllocated(tree, nodeName)
     if tree == "sidereal" then
         tmpNodes = PST:getCurrentSiderealNodes()
     end
-    if not tmpNodes then return false end
+    if not tmpNodes or not PST.trees[tree] then return false end
     for nodeID, _ in pairs(tmpNodes) do
         local targetNode = PST.trees[tree][nodeID]
         if PST:isNodeAllocated(tree, nodeID) and targetNode and targetNode.name == nodeName then

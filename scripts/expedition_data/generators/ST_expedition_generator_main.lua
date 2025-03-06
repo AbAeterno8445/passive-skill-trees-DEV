@@ -7,11 +7,15 @@ function PST:getExpeditionImplicits(depth)
     implicits.starmightReq = math.min(600, depth * 30)
     -- Depths 2+ monster HP
     if depth >= 2 then
-        implicits.expedImp_mobHP = 5 + depth * 3
+        implicits.expedImp_mobHP = math.min(50, 5 + depth * 3)
+
+        if depth > 15 then
+            implicits.expedImp_mobHP = math.min(120, implicits.expedImp_mobHP + (depth - 15))
+        end
     end
     -- Depths 3+ monster speed
     if depth >= 3 then
-        implicits.expedImp_mobSpeed = math.min(30, math.floor(depth / 3) * 2)
+        implicits.expedImp_mobSpeed = math.min(25, math.floor(depth / 3) * 2)
     end
     -- Depths 4+ chance to receive a curse when entering a floor
     if depth >= 4 then
@@ -40,7 +44,7 @@ function PST:getExpeditionImplicits(depth)
     end
     -- Depths 15+ monster damage reduction
     if depth >= 15 then
-        implicits.expedImp_mobDmgRed = math.min(60, math.floor((depth - 14) * 1.5))
+        implicits.expedImp_mobDmgRed = math.min(40, math.floor((depth - 14) * 1.25))
     end
     return implicits
 end

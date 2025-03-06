@@ -393,14 +393,14 @@ function expeditionScreen:Render(tScreen)
             -- Expedition enabled/disabled
             if PST.modData.expedEnabled then
                 local tmpColor = PST.kcolors.GREEN1
-                local tmpStr = "Expedition Run Enabled"
+                local tmpStr = "Exp. Run ON"
                 if not PST:expedMeetsRequirements(self.currentDepth, self.uberMode) then
                     tmpColor = PST.kcolors.RED1
-                    tmpStr = tmpStr .. " (Reqs not met!)"
+                    tmpStr = tmpStr .. " (Reqs!)"
                 end
                 table.insert(nodeDesc, {tmpStr, tmpColor})
             else
-                table.insert(nodeDesc, {"Expedition Run Disabled", PST.kcolors.RED1})
+                table.insert(nodeDesc, {"Exp. Run OFF", PST.kcolors.RED1})
             end
             -- Respec for reset
             table.insert(nodeDesc, "Hold the Respec button for 3 seconds to reset and reroll this expedition.")
@@ -664,17 +664,17 @@ function expeditionScreen:Render(tScreen)
             if expData.uber then
                 uberExtra = " (Uber)"
             end
-            tmpStr = "Expedition Run Enabled" .. uberExtra
+            tmpStr = "Exp. Run ON" .. uberExtra
             if not PST:expedMeetsRequirements(self.currentDepth, self.uberMode) then
                 tmpColor = PST.kcolors.RED1
-                tmpStr = tmpStr .. " (Reqs not met!)"
+                tmpStr = tmpStr .. " (Reqs!)"
             end
             PST.miniFont:DrawString(tmpStr, tmpX, tmpY, tmpColor)
         else
-            PST.miniFont:DrawString("Expedition Run Disabled", tmpX, tmpY, PST.kcolors.RED1)
+            PST.miniFont:DrawString("Exp. Run OFF", tmpX, tmpY, PST.kcolors.RED1)
         end
         tmpY = tmpY + 14
-        PST.miniFont:DrawString("(Q / Menu Tab to toggle)", tmpX, tmpY, PST.kcolors.WHITE)
+        PST.miniFont:DrawStringScaled("(Q / Menu Tab to toggle)", tmpX, tmpY, 0.5, 0.5, PST.kcolors.WHITE)
         tmpY = tmpY + 28
 
         -- In run - Progress enabled/disabled (for selected objective)
