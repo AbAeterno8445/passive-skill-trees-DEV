@@ -1068,7 +1068,7 @@ function PST:onCache(player, cacheFlag)
     elseif cacheFlag == CacheFlag.CACHE_LUCK then
         -- LUCK
         local tmpMod = PST:getTreeSnapshotMod("luck", 0) + dynamicMods.luck
-        local tmpMult = dsdMult + PST:getTreeSnapshotMod("luckPerc", 0) / 100
+        local tmpMult = (dsdMult - 1) + PST:getTreeSnapshotMod("luckPerc", 0) / 100
         tmpMult = tmpMult + dynamicMods.luckPerc / 100
         player.Luck = player.Luck + tmpMod * dsdMult
         player.Luck = player.Luck + math.abs(player.Luck) * tmpMult

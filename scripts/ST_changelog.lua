@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.5",
+        "- Fixed effects involving Ultra Secret rooms not triggering, such as Bloodmoon Meridion.",
+        "- Fixed Luck stat calculation.",
+        "",
+
         "v1.1.4",
         "- Adjusted some expedition implicit modifiers, such as monster HP % and damage reduction, particularly at",
         "greater depths (15+).",

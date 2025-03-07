@@ -715,13 +715,16 @@ function PST:sideArtiAddEnergy(energy)
                     if 100 * math.random() < 6 then
                         -- Reveal Ultra Secret Room
                         local level = PST:getLevel()
-                        local roomIdx = level:QueryRoomTypeIndex(RoomType.ROOM_ULTRASECRET, false, RNG())
-                        local ultraSecretRoom = level:GetRoomByIdx(roomIdx)
-                        if ultraSecretRoom and ultraSecretRoom.Data.Type == RoomType.ROOM_ULTRASECRET then
-                            ultraSecretRoom.DisplayFlags = 1 << 2
-                            level:UpdateVisibility()
-                            if PST.config.sideArtiText then
-                                PST:createFloatTextFX("The Blood Moon Reveals...", Vector(0, 8), PST:RGBColor(200, 55, 55), 0.12, 180, true)
+                        local tmpRooms = level:GetRooms()
+                        for i=1,tmpRooms.Size-1 do
+                            local tmpRoom = tmpRooms:Get(i)
+                            if tmpRoom.Data.Type == RoomType.ROOM_ULTRASECRET then
+                                tmpRoom.DisplayFlags = 1 << 2
+                                level:UpdateVisibility()
+                                if PST.config.sideArtiText then
+                                    PST:createFloatTextFX("The Blood Moon Reveals...", Vector(0, 8), PST:RGBColor(200, 55, 55), 0.12, 180, true)
+                                end
+                                break
                             end
                         end
                     end

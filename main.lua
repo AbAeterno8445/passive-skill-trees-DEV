@@ -309,6 +309,7 @@ function PST:onSaveSlot(slot, isSlotSelected)
 		PST:resetSaveData()
 	end
 	PST.saveSlot = slot
+	PST.fileLoaded = true
 end
 
 -- On player init

@@ -9,7 +9,7 @@ PST.SkillTreesAPI = {
         if PST.trees[charName] ~= nil and not replace then
             Console.PrintWarning("Passive Skill Trees: could not initialize tree for " .. charName ..", character name already initialized!")
             return false
-        elseif not PST.loadingBaseTrees then
+        elseif not PST.loadingBaseTrees and PST.fileLoaded then
             -- Reload if custom char tree
             reloadMod = true
         end
