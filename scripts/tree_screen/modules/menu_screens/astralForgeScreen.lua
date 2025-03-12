@@ -13,7 +13,8 @@ local astralForgeScreen = {
     inputOverrides = {
         PSTKeybind.TREE_PAN_DOWN, PSTKeybind.TREE_PAN_LEFT, PSTKeybind.TREE_PAN_RIGHT, PSTKeybind.TREE_PAN_UP,
         PSTKeybind.CENTER_CAMERA, PSTKeybind.PAN_FASTER, PSTKeybind.TREE_TAB,
-        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE, PSTKeybind.SWITCH_TREE
+        PSTKeybind.ALLOCATE_NODE, PSTKeybind.RESPEC_NODE, PSTKeybind.SWITCH_TREE,
+        PSTKeybind.TOGGLE_TOTAL_MODS
     },
 
     -- Currently hovered/selected weapon
@@ -42,7 +43,8 @@ local astralForgeScreen = {
     appliedFilters = {
         weaponType = {},
         weaponRarity = {},
-        honing = 0
+        honing = 0,
+        favorite = false
     },
     filteredWeps = {},
 
@@ -157,6 +159,12 @@ function astralForgeScreen:OnInput()
                 SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 self.invPage = 1
             end
+            -- Favorite filter
+            if self.hoveredFilter.favorite then
+                self.appliedFilters.favorite = not self.appliedFilters.favorite
+                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                self.invPage = 1
+            end
         -- Hovered decon button, toggle mode
         elseif self.deconHovered then
             self.deconMode = not self.deconMode
@@ -176,7 +184,7 @@ function astralForgeScreen:OnInput()
             SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
         -- Hovered weapon
         elseif self.hoveredWeapon then
-            if self.multiDecon and not self.hoveredWeapon.equipped then
+            if self.multiDecon and not self.hoveredWeapon.equipped and not self.hoveredWeapon.favorite then
                 -- Multi-decon weapon selection
                 if not PST:arrHasValue(self.deconSelected, self.hoveredWeapon) then
                     table.insert(self.deconSelected, self.hoveredWeapon)
@@ -276,12 +284,21 @@ function astralForgeScreen:OnInput()
         end
     end
 
+    -- Input: Toggle Total Mods Key (Shift + H)
+    if PST:isKeybindActive(PSTKeybind.TOGGLE_TOTAL_MODS) then
+        if self.hoveredWeapon then
+            if not self.hoveredWeapon.favorite then self.hoveredWeapon.favorite = true
+            else self.hoveredWeapon.favorite = nil end
+            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7, 2, false, 1.15)
+        end
+    end
+
     -- Input: Ctrl + Allocate
     if PST:isKeybindActive(PSTKeybind.CTRL_ALLOCATE_NODE) then
         -- Multi-decon, select all filtered weapons
         if self.deconMode and self.multiDecon and (self.hoveredFilter or self.hoveredWeapon) and #self.filteredWeps > 0 then
             for _, tmpWep in ipairs(self.filteredWeps) do
-                if not tmpWep.equipped and not PST:arrHasValue(self.deconSelected, tmpWep) then
+                if not tmpWep.equipped and not tmpWep.favorite and PST:arrHasValue(self.deconSelected, tmpWep) then
                     table.insert(self.deconSelected, tmpWep)
                 end
             end
@@ -303,7 +320,7 @@ function astralForgeScreen:OnInput()
         if self.deconMode and self.hoveredWeapon and self.hoveredWeapon.rarity == PSTAstralWepRarity.ANCIENT then
             self.deconTimer = self.deconTimer + 1
             if self.deconTimer == 60 then
-                if not self.hoveredWeapon.equipped then
+                if not self.hoveredWeapon.equipped and not self.hoveredWeapon.favorite then
                     SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE)
                     if self.selectedWeapon == self.hoveredWeapon then
                         self.selectedWeapon = nil
@@ -322,7 +339,7 @@ function astralForgeScreen:OnInput()
         if PST:isKeybindActive(PSTKeybind.RESPEC_NODE) then
             -- Deconstruct weapon
             if not self.multiDecon and self.deconMode and self.hoveredWeapon and self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
-                if not self.hoveredWeapon.equipped then
+                if not self.hoveredWeapon.equipped and not self.hoveredWeapon.favorite then
                     SFXManager():Play(SoundEffect.SOUND_ROCK_CRUMBLE)
                     if self.selectedWeapon == self.hoveredWeapon then
                         self.selectedWeapon = nil

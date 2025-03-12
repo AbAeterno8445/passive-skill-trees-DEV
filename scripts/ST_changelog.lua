@@ -4,6 +4,10 @@ function PST:getChangelogList()
         "",
 
         "v1.1.6",
+        "- You can now favorite weapons in the Astral Forge menu. Press Shift + H while hovering a weapon to favorite it.",
+        "Favorited weapons cannot be deconstructed and have a sun icon at the bottom left.",
+        "- Added a favorite weapon filter to the Astral Forge.",
+        "- Weapon stats now remain displayed while in the Astral Forge's deconstruction mode.",
         "- Monsters blacklisted from getting health modifiers no longer receive damage reduction mods either.",
         "- Fix error when first completing Uber Expedition nodes that grant Order.",
         "",

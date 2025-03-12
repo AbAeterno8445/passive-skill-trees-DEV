@@ -122,7 +122,7 @@ function PST:serializeSave(modData)
     modData.astralWepInventory = {}
 
     -- Order of modifiers roughly from most to least frequent
-    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits", "starblessed"}
+    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits", "starblessed", "favorite"}
 
     for _, tmpWep in ipairs(PST.modData.astralWepInventory) do
         local tmpEntry = {}
@@ -143,7 +143,7 @@ function PST:serializeSave(modData)
                 newArg = 0
             elseif (arg == "equipped") and not newArg then
                 newArg = ""
-            elseif arg == "starblessed" then
+            elseif arg == "starblessed" or arg == "favorite" then
                 if not newArg then newArg = 0 else newArg = 1 end
             elseif arg == "mods" then
                 local newModArg = {}
@@ -312,7 +312,7 @@ function PST:deserializeData(loadedData)
 
     -- Deserialize: Astral weapon inventory
     local wepInv = {}
-    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits", "starblessed"}
+    local argOrder = {"tier", "rarity", "implicitMod", "mods", "honing", "equipped", "ancientID", "ancientUpg", "multiImplicits", "starblessed", "favorite"}
     for tmpType, weaponList in pairs(loadedData.astralWepInventory) do
         for _, tmpWeapon in ipairs(weaponList) do
             local newWeapon = {}
@@ -345,7 +345,7 @@ function PST:deserializeData(loadedData)
                             table.insert(newMod, { type = tmpImp[1], rolls = tmpImp[2] })
                         end
                         newArg = newMod
-                    elseif arg == "starblessed" and newArg then
+                    elseif (arg == "starblessed" or arg == "favorite") and newArg then
                         newArg = true
                     end
                     -- Modifier exclusions
@@ -353,7 +353,7 @@ function PST:deserializeData(loadedData)
                     if arg == "honing" and newArg == 0 then exclude = true
                     elseif arg == "equipped" and newArg == "" then exclude = true
                     elseif arg == "implicitMod" and #newArg == 0 then exclude = true
-                    elseif arg == "starblessed" and newArg == 0 then exclude = true end
+                    elseif (arg == "starblessed" or arg == "favorite") and newArg == 0 then exclude = true end
 
                     if not exclude then
                         newWeapon[arg] = newArg

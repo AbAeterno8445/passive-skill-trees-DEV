@@ -39,6 +39,7 @@ PST.astralWepBossBaseRate = 12
 ---@field ancientID? integer
 ---@field ancientUpg? number
 ---@field starblessed? boolean
+---@field favorite? boolean
 -- Weapon mods are stored as tables with {mod name (string), mod rolls (table)}, e.g. {consecFireDmg, {14}}
 ---@field mods? PSTAstralWepModEntry[]
 ---@field honing? number

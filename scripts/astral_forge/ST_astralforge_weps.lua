@@ -334,6 +334,13 @@ function PST:renderAstralWepAt(wepData, wepSprite, x, y, scale)
         blessIconSprite:SetFrame("UI", 12)
         blessIconSprite:Render(Vector(x - 12 * scale, y - 12 * scale))
     end
+
+    -- Favorite weapon icon
+    if wepData.favorite then
+        local favIconSprite = PST.treeScreen.modules.menuScreensModule.menus[PSTTreeScreenMenu.ASTRAL_FORGE].forgeUISprite
+        favIconSprite:SetFrame("UI", 13)
+        favIconSprite:Render(Vector(x - 12 * scale, y + 12 * scale))
+    end
 end
 
 function PST:getEquippedAstralWep()

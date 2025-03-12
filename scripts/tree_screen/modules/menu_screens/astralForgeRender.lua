@@ -22,7 +22,8 @@ local invFilters = {
     { weaponRarity = PSTAstralWepRarity.ANCIENT },
     { honing = 1 },
     { honing = 2 },
-    { honing = 3 }
+    { honing = 3 },
+    { favorite = true }
 }
 local wepRarityStr = {"Normal", "Magic", "Ancient"}
 local matsData = {
@@ -250,7 +251,8 @@ local function astralForgeScreenRender(self, tScreen)
 
         if (tmpFilter.weaponType ~= nil and PST:arrHasValue(self.appliedFilters.weaponType, tmpFilter.weaponType)) or
         (tmpFilter.weaponRarity ~= nil and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpFilter.weaponRarity)) or
-        (tmpFilter.honing and self.appliedFilters.honing == tmpFilter.honing) then
+        (tmpFilter.honing and self.appliedFilters.honing == tmpFilter.honing) or
+        (tmpFilter.favorite and self.appliedFilters.favorite) then
             self.forgeUISprite.Color.RO = 0.4
             self.forgeUISprite.Color.GO = 0.4
             self.forgeUISprite.Color.BO = 0.4
@@ -316,14 +318,16 @@ local function astralForgeScreenRender(self, tScreen)
         local hasTypeFilter = #self.appliedFilters.weaponType > 0
         local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
         local hasHoningFilter = self.appliedFilters.honing > 0
+        local hasFavFilter = self.appliedFilters.favorite
         -- Create filtered list
-        if hasTypeFilter or hasRarityFilter or hasHoningFilter then
+        if hasTypeFilter or hasRarityFilter or hasHoningFilter or hasFavFilter then
             for _, tmpWeapon in ipairs(PST.modData.astralWepInventory) do
                 if (not hasTypeFilter or (hasTypeFilter and PST:arrHasValue(self.appliedFilters.weaponType, tmpWeapon.type))) and
                 (not hasRarityFilter or (hasRarityFilter and PST:arrHasValue(self.appliedFilters.weaponRarity, tmpWeapon.rarity))) and
                 (not hasHoningFilter or (hasHoningFilter and (self.appliedFilters.honing == 1 and not tmpWeapon.honing) or
                 (self.appliedFilters.honing == 2 and tmpWeapon.honing and tmpWeapon.honing > 1 and tmpWeapon.honing < 49) or
-                (self.appliedFilters.honing == 3 and tmpWeapon.honing and tmpWeapon.honing >= 50))) then
+                (self.appliedFilters.honing == 3 and tmpWeapon.honing and tmpWeapon.honing >= 50))) and
+                (not hasFavFilter or (hasFavFilter and tmpWeapon.favorite)) then
                     table.insert(drawnWeps, tmpWeapon)
                 end
             end
@@ -495,6 +499,8 @@ local function astralForgeScreenRender(self, tScreen)
         PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 12
         PST.luaminiFont:DrawString("Shift + Allocate to equip hovered weapon.", startX, tmpY, PST.kcolors.WHITE)
+        tmpY = tmpY + 12
+        PST.luaminiFont:DrawString("Shift + H to favorite hovered weapon.", startX, tmpY, PST.kcolors.WHITE)
     end
 
     -- Cursor
@@ -521,6 +527,8 @@ local function astralForgeScreenRender(self, tScreen)
             hoverStr = hoverStr .. "Some Honing"
         elseif self.hoveredFilter.honing == 3 then
             hoverStr = hoverStr .. "Maxed Honing"
+        elseif self.hoveredFilter.favorite then
+            hoverStr = hoverStr .. "Favorited"
         end
         tScreen:DrawNodeBox(hoverStr, {"Press the Allocate button to apply this filter."})
     -- Hovered material description
@@ -538,16 +546,8 @@ local function astralForgeScreenRender(self, tScreen)
         end
 
         local wepDesc = {}
-        if not self.deconMode then
-            wepDesc = PST:getAstralWepDesc(self.hoveredWeapon, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))
-
-            -- Imprinting mode description extras
-            if self.imprintMode and self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
-                table.insert(wepDesc, 1, {"NOTE: Imprinting will destroy this weapon!", PST.kcolors.DARKORANGE1})
-                table.insert(wepDesc, 1, {"Press Allocate to imprint this weapon into the currently selected Ancient weapon.", PST.kcolors.FORGE_ORANGE})
-                table.insert(wepDesc, 1, {"* Imprinting Weapon *", PST.kcolors.FORGE_ORANGE})
-            end
-        else
+        -- Decon mode extras
+        if self.deconMode then
             -- Deconstruction mode description
             table.insert(wepDesc, {"* Deconstructing Weapon *", PST.kcolors.RED1})
             -- Get deconstruction materials
@@ -566,9 +566,26 @@ local function astralForgeScreenRender(self, tScreen)
             else
                 table.insert(wepDesc, "Hold the Respec button for 1 second to deconstruct this weapon and gain these materials.")
             end
+            table.insert(wepDesc, "")
         end
-        if not self.hoveredWeapon.equipped then
-            table.insert(wepDesc, "Press Shift + Allocate to equip this weapon with " .. PST:getCurrentCharName() .. ".")
+        for _, tmpLine in ipairs(PST:getAstralWepDesc(self.hoveredWeapon, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))) do
+            table.insert(wepDesc, tmpLine)
+        end
+
+        if not self.deconMode then
+            -- Imprinting mode description extras
+            if self.imprintMode and self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
+                table.insert(wepDesc, 1, {"NOTE: Imprinting will destroy this weapon!", PST.kcolors.DARKORANGE1})
+                table.insert(wepDesc, 1, {"Press Allocate to imprint this weapon into the currently selected Ancient weapon.", PST.kcolors.FORGE_ORANGE})
+                table.insert(wepDesc, 1, {"* Imprinting Weapon *", PST.kcolors.FORGE_ORANGE})
+            end
+
+            if not self.hoveredWeapon.equipped then
+                table.insert(wepDesc, "Press Shift + Allocate to equip this weapon with " .. PST:getCurrentCharName() .. ".")
+            end
+            if not self.hoveredWeapon.favorite then
+                table.insert(wepDesc, "Press Shift + H to favorite this weapon.")
+            end
         end
 
         tScreen:DrawNodeBox(tmpTitle, wepDesc)
