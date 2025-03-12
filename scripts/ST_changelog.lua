@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.6",
+        "- Fix error when first completing Uber Expedition nodes that grant Order.",
+        "",
+
         "v1.1.5",
         "- Fixed effects involving Ultra Secret rooms not triggering, such as Bloodmoon Meridion.",
         "- Fixed Luck stat calculation.",
