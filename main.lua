@@ -135,6 +135,17 @@ function PST:save(forceSave)
 			end
 		end
 
+		-- Hack to prevent tree allocation data from becoming ordered arrays or having mixed key types (breaking everything)
+		for k, tmpNodes in pairs(PST.modData.treeNodes) do
+			PST.modData.treeNodes[k][0] = 0
+			for n, v in pairs(tmpNodes) do
+				if type(n) == "string" and tonumber(n) ~= nil then
+					tmpNodes[tonumber(n)] = v
+					tmpNodes[n] = nil
+				end
+			end
+		end
+
 		modSave.modData = PST:copyTable(PST.modData)
 		modSave.modData.serialized = false
 		PST:serializeSave(modSave.modData)
@@ -288,6 +299,7 @@ function PST:load()
 		oldLoadFlag = false
 		PST:save(true)
 	end
+	PST.fileLoaded = true
 end
 
 function PST:resetSaveData()
@@ -309,7 +321,6 @@ function PST:onSaveSlot(slot, isSlotSelected)
 		PST:resetSaveData()
 	end
 	PST.saveSlot = slot
-	PST.fileLoaded = true
 end
 
 -- On player init
