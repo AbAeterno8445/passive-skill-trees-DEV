@@ -333,6 +333,16 @@ local nonDynamicNodes = {
     "Less Boss Rush Waves", "Sidereal Artifact", "Crimson Convergence"
 }
 
+-- Additional functions that provide special/dynamic node descriptions
+-- Functions are run with the same parameters as above: (descName, tmpDescription, isAllocated, tScreen, extraData)
+-- extraData.node also contains node data
+local extraNodeDescFuncs = {}
+---@param funcName string
+---@param func function
+function PST:addExtraNodeDescFunc(funcName, func)
+    extraNodeDescFuncs[funcName] = func
+end
+
 ---@param tScreen PST.treeScreen
 function descriptionBoxesModule:Render(tScreen)
     local hoveredNode = tScreen.hoveredNode
@@ -369,6 +379,19 @@ function descriptionBoxesModule:Render(tScreen)
                     extraData.artifact = tmpMod
                     extraData.available = hoveredNode.available
                     nodeDescFunc = self.dynamicNodeDescriptions["Sidereal Artifact Individual"]
+                    break
+                end
+            end
+        end
+        -- Extra funcs
+        if not nodeDescFunc then
+            for _, tmpFunc in pairs(extraNodeDescFuncs) do
+                if not extraData.node then extraData.node = hoveredNode end
+
+                local newData = tmpFunc(descName, tmpDescription, isAllocated, tScreen, extraData)
+                if newData and newData.name and newData.description then
+                    descName = newData.name
+                    tmpDescription = newData.description
                     break
                 end
             end

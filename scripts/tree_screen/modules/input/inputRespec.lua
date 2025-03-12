@@ -47,10 +47,14 @@ function PST.treeScreen:InputRespec()
                                 PST.modData.respecPoints = math.max(0, PST.modData.respecPoints - 1)
                             end
                             if not PST.debugOptions.infSP then
+                                local charAlias = self.currentTree
+                                if self.treeAliases[self.currentTree] then
+                                    charAlias = self.treeAliases[self.currentTree]
+                                end
                                 if PST:arrHasValue(self.globalTrees, self.currentTree) then
                                     PST.modData.skillPoints = PST.modData.skillPoints + 1
-                                elseif PST.modData.charData[self.currentTree] then
-                                    PST.modData.charData[self.currentTree].skillPoints = PST.modData.charData[self.currentTree].skillPoints + 1
+                                elseif PST.modData.charData[charAlias] then
+                                    PST.modData.charData[charAlias].skillPoints = PST.modData.charData[charAlias].skillPoints + 1
                                 end
                             end
                         end

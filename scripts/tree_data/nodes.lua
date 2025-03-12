@@ -263,11 +263,26 @@ local respecBans = {
     "Sidereal Universalization", "Additional Septentrional Choice"
 }
 
+-- Additional functions for special node requirements. Functions are given a node data table as first param
+local extraNodeReqFuncs = {}
+---@param funcName string
+---@param func function
+function PST:addExtraNodeReqFunc(funcName, func)
+    extraNodeReqFuncs[funcName] = func
+end
+
 -- Check if node can be allocated/unallocated, checks for skill/respec point availability of the given tree
 function PST:isNodeAllocatable(tree, nodeID, allocation)
     local infSP = PST.debugOptions.infSP
     local infRespec = PST.debugOptions.infRespec
-    local nodeData = PST.trees[tree][nodeID]
+
+    -- Use base char data for trees with alias
+    local origTree = tree
+    if PST.treeScreen.treeAliases[tree] then
+        tree = PST.treeScreen.treeAliases[tree]
+    end
+
+    local nodeData = PST.trees[origTree][nodeID]
     if not nodeData then return false end
 
     if allocation then
@@ -353,6 +368,11 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                 if reqs.deepSpaceNode and PST.modData.deepSpaceSP == 0 then
                     return false
                 end
+
+                -- Extra requirement functions
+                for _, tmpFunc in pairs(extraNodeReqFuncs) do
+                    if not tmpFunc(nodeData) then return false end
+                end
             end
 
             -- Sidereal tree: non-travel nodes require 1 global SP
@@ -368,10 +388,10 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         if nodeData.name == "Star Tree" and not PST:SC_isStarTreeUnlocked() then
             return false
         end
-        return nodeData.available and not PST:isNodeAllocated(tree, nodeID)
+        return nodeData.available and not PST:isNodeAllocated(origTree, nodeID)
     else
         -- Deallocation (e.g. respec)
-        if not PST:isNodeAllocated(tree, nodeID) or
+        if not PST:isNodeAllocated(origTree, nodeID) or
         (PST.modData.respecPoints <= 0 and not infRespec) then
             return false
         end
@@ -385,8 +405,8 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         if adjacentNodes ~= nil then
             local adjacentReachable = true
             for _, adjacentID in ipairs(adjacentNodes) do
-                if PST:isNodeAllocated(tree, adjacentID) then
-                    if nodeData.alwaysAvailable or not PST:isNodeReachable(tree, adjacentID, {nodeID}) then
+                if PST:isNodeAllocated(origTree, adjacentID) then
+                    if nodeData.alwaysAvailable or not PST:isNodeReachable(origTree, adjacentID, {nodeID}) then
                         adjacentReachable = false
                         break
                     end
@@ -398,6 +418,19 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
         end
     end
     return true
+end
+
+-- Functions to run on node allocation/deallocation
+local allocCallbacks = {}
+
+-- Add a callback function to be triggered when a node is allocated/deallocated
+-- Alloc 1 means on allocation, 0 on deallocation, and 2 is either
+-- Function receives 'node' with target node data
+---@param funcName string
+---@param alloc number
+---@param func function
+function PST:addNodeAllocCallback(funcName, alloc, func)
+    allocCallbacks[funcName] = {alloc, func}
 end
 
 -- Allocates a node in the given tree
@@ -421,6 +454,13 @@ function PST:allocateNodeID(tree, nodeID, allocation)
             else
                 PST:addModifiers(tmpMods, true)
             end
+        end
+    end
+    -- Allocation callbacks
+    for _, tmpAllocFunc in pairs(allocCallbacks) do
+        if tmpAllocFunc[1] == allocation or tmpAllocFunc[1] >= 2 then
+            local node = PST.trees[tree][nodeID]
+            tmpAllocFunc[2](node)
         end
     end
 

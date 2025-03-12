@@ -67,8 +67,12 @@ function totalmodsScreen:OnOpen(openData)
         if categorySwitch and tmpCharName and PST.trees[tmpCharName] ~= nil then
             local tmpName = PST.treeModDescriptionCategories[lastCategory].name
             if lastCategory == "charTree" then
+                local charAlias = PST.treeScreen.currentTree
+                if PST.treeScreen.treeAliases[PST.treeScreen.currentTree] then
+                    charAlias = PST.treeScreen.treeAliases[PST.treeScreen.currentTree]
+                end
                 local tmpPossessive = "s"
-                if string.sub(PST.treeScreen.currentTree, -1) == "s" then
+                if string.sub(charAlias, -1) == "s" then
                     tmpPossessive = ""
                 end
                 tmpName = tmpCharName .. "'" .. tmpPossessive .. " tree:"

@@ -9,6 +9,7 @@ function PST:getChangelogList()
         "- Added a favorite weapon filter to the Astral Forge.",
         "- Weapon stats now remain displayed while in the Astral Forge's deconstruction mode.",
         "- Monsters blacklisted from getting health modifiers no longer receive damage reduction mods either.",
+        "- Internal support for easier addition of special node descriptions and requirements, particularly for other mods.",
         "- Fix error when first completing Uber Expedition nodes that grant Order.",
         "",
 

@@ -33,6 +33,12 @@ PST.treeScreen = {
         "global", "starTree", "sidereal"
     },
 
+    -- Trees that are tied to specific character names
+    treeAliases = {},
+
+    -- Tree name aliases for display
+    treeNameAliases = {},
+
     -- For controls help popups
     helpPopup = "",
 

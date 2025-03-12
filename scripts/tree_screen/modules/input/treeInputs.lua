@@ -22,6 +22,7 @@ function PST.treeScreen:Inputs()
 
     -- Input: Close tree
     if PST:isKeybindActive(PSTKeybind.CLOSE_TREE) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.CLOSE_TREE) then
+        local charAlias = self.treeAliases[self.currentTree]
         if self.backupsPopup then
             self.backupsPopup = false
         elseif currentMenu ~= PSTTreeScreenMenu.NONE then
@@ -30,6 +31,8 @@ function PST.treeScreen:Inputs()
             self:switchCurrentTree("starTree")
         elseif self.currentTree == "starTree" then
             self:switchCurrentTree("global")
+        elseif charAlias then
+            self:switchCurrentTree(charAlias)
         else
             PST:closeTreeMenu()
         end
@@ -113,10 +116,13 @@ function PST.treeScreen:Inputs()
     if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) and not PST:arrHasValue(self.disabledInputs, PSTKeybind.SWITCH_TREE) then
         local selectedCharName = PST.charNames[1 + PST.selectedMenuChar]
         if selectedCharName and PST.trees[selectedCharName] ~= nil then
+            local charAlias = self.treeAliases[self.currentTree]
             if self.currentTree == "global" then
                 self.currentTree = selectedCharName
             elseif self.currentTree == "sidereal" then
                 self.currentTree = "starTree"
+            elseif charAlias then
+                self:switchCurrentTree(charAlias)
             else
                 self.currentTree = "global"
             end

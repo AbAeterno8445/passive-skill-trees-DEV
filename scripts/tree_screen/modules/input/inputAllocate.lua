@@ -37,10 +37,14 @@ function PST.treeScreen:InputAllocate()
                 local reqs = self.hoveredNode.reqs
                 local noSP = (reqs and reqs.noSP)
                 if not PST.debugOptions.infSP and not noSP and not PST:arrHasValue(PST.nodeSPExceptions, self.hoveredNode.name) then
+                    local charAlias = self.currentTree
+                    if self.treeAliases[self.currentTree] then
+                        charAlias = self.treeAliases[self.currentTree]
+                    end
                     if PST:arrHasValue(self.globalTrees, self.currentTree) then
                         PST.modData.skillPoints = math.max(0, PST.modData.skillPoints - 1)
-                    elseif PST.modData.charData[self.currentTree] then
-                        PST.modData.charData[self.currentTree].skillPoints = math.max(0, PST.modData.charData[self.currentTree].skillPoints - 1)
+                    elseif PST.modData.charData[charAlias] then
+                        PST.modData.charData[charAlias].skillPoints = math.max(0, PST.modData.charData[charAlias].skillPoints - 1)
                     end
                 end
 

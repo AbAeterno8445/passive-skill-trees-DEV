@@ -61,9 +61,14 @@ function PST.treeScreen:Render()
     -- Description boxes
     self.modules.descriptionBoxes:Render(self)
 
+    -- Tree name display
     local skPoints = PST.modData.skillPoints
     local treeName = "Global Tree - LV " .. PST.modData.level
     if self.currentTree ~= "global" then
+        local charAlias = self.currentTree
+        if self.treeAliases[self.currentTree] then
+            charAlias = self.treeAliases[self.currentTree]
+        end
         if self.currentTree == "starTree" then
             local tmpStarmight = 0
             if self.starcursedTotalMods then
@@ -74,13 +79,18 @@ function PST.treeScreen:Render()
             treeName = "Sidereal Tree"
             local curName = PST:getCurrentCharName()
             if curName then treeName = treeName .. " (" .. curName .. ")" end
-        else
-            skPoints = PST.modData.charData[self.currentTree].skillPoints
+        elseif PST.modData.charData[charAlias] then
+            skPoints = PST.modData.charData[charAlias].skillPoints
             local tmpPossessive = "s"
-            if string.sub(self.currentTree, -1) == "s" then
+            if string.sub(charAlias, -1) == "s" then
                 tmpPossessive = ""
             end
-            treeName = self.currentTree .. "'" .. tmpPossessive .. " Tree"
+            treeName = charAlias .. "'" .. tmpPossessive .. " Tree"
+        else
+            treeName = self.currentTree
+        end
+        if self.treeNameAliases[self.currentTree] then
+            treeName = self.treeNameAliases[self.currentTree]
         end
     end
 
