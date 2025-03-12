@@ -116,17 +116,7 @@ function PST:onNPCUpdate(npc)
         if not npc:GetData().PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
             npc:GetData().PST_mobInit = true
 
-            local noHPMods = false
-            for _, tmpMob in ipairs(PST.mobHPBlacklist) do
-                if type(tmpMob) == "table" then
-                    if npc.Type == tmpMob[1] and npc.Variant == tmpMob[2] then
-                        noHPMods = true
-                    end
-                elseif npc.Type == tmpMob then
-                    noHPMods = true
-                end
-                if noHPMods then break end
-            end
+            local noHPMods = PST:entityIsHPModBlacklisted(npc)
 
             ---- HP modifiers ----
             if not noHPMods then

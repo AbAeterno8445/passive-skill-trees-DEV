@@ -388,6 +388,22 @@ function PST:entityIsFinalBoss(entity)
 	return isFinalBoss
 end
 
+---@param entity Entity
+function PST:entityIsHPModBlacklisted(entity)
+	local noHPMods = false
+	for _, tmpMob in ipairs(PST.mobHPBlacklist) do
+		if type(tmpMob) == "table" then
+			if entity.Type == tmpMob[1] and entity.Variant == tmpMob[2] then
+				noHPMods = true
+			end
+		elseif entity.Type == tmpMob then
+			noHPMods = true
+		end
+		if noHPMods then break end
+	end
+	return noHPMods
+end
+
 --- Get the amount of familiars in the room
 ---@param specificType? FamiliarVariant Check for a specific familiar type instead, and return the amount of those
 function PST:getRoomFamiliars(specificType)

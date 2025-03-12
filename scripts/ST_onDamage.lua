@@ -661,7 +661,9 @@ function PST:onDamage(target, damage, flag, source)
         if target:IsVulnerableEnemy() and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
             -- Starcursed mod: Damage reduction
             local tmpMod = PST:SC_getSnapshotMod("mobDmgReduction", 0)
-            dmgMult = dmgMult - tmpMod / 100
+            if not PST:entityIsHPModBlacklisted(target) then
+                dmgMult = dmgMult - tmpMod / 100
+            end
 
             -- Starcursed mod: Damage reduction from explosions
             tmpMod = PST:SC_getSnapshotMod("mobExplosionDR", 0)
@@ -2295,7 +2297,7 @@ function PST:onDamage(target, damage, flag, source)
 
         -- Expedition implicit: monster damage reduction
         local tmpMod = PST:getTreeSnapshotMod("expedImp_mobDmgRed", 0)
-        if tmpMod > 0 and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
+        if tmpMod > 0 and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly and not PST:entityIsHPModBlacklisted(target) then
             damage = damage * (1 - tmpMod / 100)
         end
 

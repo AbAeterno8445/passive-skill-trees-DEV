@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.1.6",
+        "- Monsters blacklisted from getting health modifiers no longer receive damage reduction mods either.",
         "- Fix error when first completing Uber Expedition nodes that grant Order.",
         "",
 
