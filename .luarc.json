@@ -275,7 +275,10 @@
         "Sheriff",
         "ARACHNAMOD",
         "EclipsedMod",
-        "Diepio"
+        "Diepio",
+        "LNF",
+        "TaintedTreasure",
+        "MilkshakeVol1"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

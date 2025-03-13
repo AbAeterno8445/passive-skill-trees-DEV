@@ -1555,6 +1555,171 @@ function PST:initModCompat()
         end
 	end
 
+	-- Lost and Forgotten
+	if LNF then
+        -- Baby familiars
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Followers"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Guardian"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Divided Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Munitus Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Robo-Baby X"))
+
+        -- Poop items
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Colitis"))
+
+        --HP Ups
+        local tmpHPUpItems = {
+            {"Gray Fruit", 1}, {"Cuisine", 1}, {"Wealthy Heart", 1}, 
+            {"Rotten Potato", 1}, {"Carrot Sticks", 1}, {"Dry Biscuit", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+        -- Dice items
+        table.insert(PST.diceItems, Isaac.GetItemIdByName("Cursed Dice"))
+
+        -- Runes
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Tenebris"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Caecus"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Perdita"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Miserere"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Gigas"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Blank Cursed Rune"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Hagalaz"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Ehwaz"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Berkano"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Perthro"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Jera"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Dagaz"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Algiz"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Glyph Of Ansuz"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Blank Glyph"))
+        table.insert(PST.allRunes, Isaac.GetCardIdByName("Moon Shard"))
+
+        -- Soul stones
+        local tmpSoulstones = {
+            {"Joseph", "Soul of Joseph"}, {"Robot", "Soul of Robot"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+        -- Song of the Few familiars
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Followers"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Guardian"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Divided Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Munitus Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Robo-Baby X"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Blood Ball"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Forsaken"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Maw"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Dry Bones"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Ladygrub"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Mashy"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Drizzle Maker"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Revenant's Head"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Fruit of Eden"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Low Priest"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Mark I"))
+
+        -- Grand Consonance
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Lil Guardian"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Follower"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Munitus Baby"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Munitus Protector"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Drizzle Maker"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Revenant's Head"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Robo-Baby X"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Low Priest"))
+
+        -- Coin Machines
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Stat Wheel"))
+
+        -- Bone items
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Dry Bones"))
+
+        -- Beggar
+        table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Weird Beggar"))
+
+        -- No HP modifier mobs
+        table.insert(PST.mobHPBlacklist, PST_getCustomMobTable("Nightmare Gaper"))
+	end
+
+	-- Reshaken Vol. 1
+	if MilkshakeVol1 then
+		-- Baby familiars
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Spirit Bum"))
+
+		-- Poop items
+		table.insert(PST.poopItems, Isaac.GetItemIdByName("Doggy Bag"))
+
+		-- HP ups
+        local tmpHPUpItems = {
+            {"Milkshake!", 1}, {"Spoiled Breakfast", 1}, {"Balanced Breakfast", 1},
+			{"Hearty Breakfast", 1}, {"Golden Breakfast", 12}, {"Saataa Andagii", 0.5} -- yes really - wooky
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+		-- Dice items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Prismatic Dice"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Dice Dice"))
+
+        -- Planetarium items
+        table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Lyra"))
+
+        -- Penny trinkets
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Acid Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Crystal Penny"))	
+
+		-- Song of the Few familiars
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Sharp Cursor"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Celestial Mirror")) -- OST: Mirror Magic B-side mix (Celeste) - wooky
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Scripulous Fingore"))
+	end
+
+	-- Tainted Treasure Rooms
+	if TaintedTreasure then
+		-- Baby familiars
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("The Basilisk"))
+
+		-- Poop items
+		table.insert(PST.poopItems, Isaac.GetItemIdByName("Salt of Magnesium"))
+		table.insert(PST.poopItems, Isaac.GetItemIdByName("The Leviathan"))
+
+		-- Demon familiars
+		table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("The Basilisk"))
+
+        -- Progression items
+        table.insert(PST.progressionItems, Isaac.GetItemIdByName("Finale"))
+
+		-- Song of the Few familiars
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("The Sword"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("The Basilisk"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Abyss"))
+
+        -- Bone items
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Cricket's Cranium"))
+		table.insert(PST.boneItems, Isaac.GetItemIdByName("Crystal Skull"))
+
+		-- Beggar types
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Tainted Beggar"))
+	end
+
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list
     if not initMods.songOfTheFew then
         initMods.songOfTheFew = true
@@ -1745,5 +1910,32 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Haumea"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Monstromagnetic Energy Drink"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Lewis's Replica Headband"))
+	end
+
+	-- Lost and Forgotten blue items
+	if LNF then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Conscience"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Hydrosis"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Fire And Ice"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Sugared Cereal"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Dissolving Cat"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Tube Milk"))
+	end
+
+	-- Reshaken Vol. 1 blue items
+	if MilkshakeVol1 then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Lyra"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Shattered Orb"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Spirit Bum"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Glass Idol"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Leviticus"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Scripulous Fingore"))
+	end
+
+	-- Tainted Treasure Rooms blue items
+	if TaintedTreasure then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Steamy Surprise"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Whore of Galilee"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blue Canary"))
 	end
 end

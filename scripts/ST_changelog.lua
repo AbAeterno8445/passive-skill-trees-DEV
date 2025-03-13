@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.7",
+        "- Added compatibility for items/entities from the following mods: (thanks wookywok!)",
+        "Lost and Forgotten, Reshaken Vol. 1, Tainted Treasure Rooms.",
+        "- Fixed Ctrl + Allocate not working for the Astral Forge's Multi-Deconstruction mode.",
+        "",
+
         "v1.1.6",
         "- You can now favorite weapons in the Astral Forge menu. Press Shift + H while hovering a weapon to favorite it.",
         "Favorited weapons cannot be deconstructed and have a sun icon at the bottom left.",

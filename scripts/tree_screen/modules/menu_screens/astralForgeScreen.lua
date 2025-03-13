@@ -298,7 +298,7 @@ function astralForgeScreen:OnInput()
         -- Multi-decon, select all filtered weapons
         if self.deconMode and self.multiDecon and (self.hoveredFilter or self.hoveredWeapon) and #self.filteredWeps > 0 then
             for _, tmpWep in ipairs(self.filteredWeps) do
-                if not tmpWep.equipped and not tmpWep.favorite and PST:arrHasValue(self.deconSelected, tmpWep) then
+                if not tmpWep.equipped and not tmpWep.favorite and not PST:arrHasValue(self.deconSelected, tmpWep) then
                     table.insert(self.deconSelected, tmpWep)
                 end
             end
