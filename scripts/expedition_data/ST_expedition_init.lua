@@ -572,17 +572,18 @@ PST.expeditionCurses = {
     { -- 8
         name = "Power Demand",
         description = {
-            "+{{cursePowerDemandCharges}} required charges to non-timed active items.",
-            "+{{cursePowerDemandCD}} cooldown seconds to timed active items."
+            "When clearing a room, {{cursePowerDemandCharges}}% chance to lose a charge from active items.",
+            "Double this chance if you took damage within the room.",
+            "+{{cursePowerDemandScarcity}}% battery scarcity."
         },
         spriteFrame = 7,
         modsFunc = function(depth)
-            local reqCharges, CDsecs = 2, 4
-            if depth >= 12 then
-                reqCharges = 3
-                CDsecs = 5
+            local tmpCharges, tmpScarcity = 25, 35
+            if depth >= 15 then
+                tmpCharges = 35
+                tmpScarcity = 45
             end
-            return { cursePowerDemandCharges = reqCharges, cursePowerDemandCD = CDsecs }
+            return { cursePowerDemandCharges = tmpCharges, cursePowerDemandScarcity = tmpScarcity }
         end
     },
     { -- 9

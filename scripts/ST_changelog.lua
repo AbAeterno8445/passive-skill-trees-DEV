@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.9",
+        "- Reworked the effect of Expeditions' Curse of Power Demand.",
+        "",
+
         "v1.1.8",
         "- Added an in-game warning when the sudden death on final boss Uber Expedition mod becomes active.",
         "- Further fix attempt for error when claiming Uber Expedition nodes that reward order.",

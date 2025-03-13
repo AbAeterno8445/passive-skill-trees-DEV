@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v1.1.8"
+PST.modVersion = "v1.1.9"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -1709,7 +1709,7 @@ function PST:resetMods()
 		curseResilience = 0,
 		curseEphPieces = 0,
 		cursePowerDemandCharges = 0,
-		cursePowerDemandCD = 0,
+		cursePowerDemandScarcity = 0,
 		curseGiantsFort = 0,
 		curseGreaterExpenses = 0,
 		curseFlimGadgDrop = 0,

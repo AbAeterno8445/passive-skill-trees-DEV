@@ -1,6 +1,14 @@
 -- Nodes that are just informative, pressing Allocate won't do anything on these
 local passiveNodes = {"Save Backups Addon"}
 
+function PST:addPassiveInfoNode(nodeName)
+    if not PST:arrHasValue(passiveNodes, nodeName) then
+        table.insert(passiveNodes, nodeName)
+        table.insert(PST.nodeSPExceptions, nodeName)
+        table.insert(PST.noFlashingNodes, nodeName)
+    end
+end
+
 function PST.treeScreen:InputAllocate()
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then

@@ -1280,6 +1280,14 @@ function PST:onPickupInit(pickup, firstSpawn)
                     end
                 end
             end
+        -- Batteries
+        elseif variant == PickupVariant.PICKUP_LIL_BATTERY then
+            -- Mod: Battery scarcity
+            tmpMod = PST:getTreeSnapshotMod("cursePowerDemandScarcity", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                pickup:Remove()
+                pickupGone = true
+            end
         end
 
         -- Sinistral Runemaster node (T. Isaac's tree) - Jera effect

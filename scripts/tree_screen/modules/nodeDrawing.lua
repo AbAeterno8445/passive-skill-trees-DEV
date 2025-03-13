@@ -47,7 +47,7 @@ local function PST_isNodeVisible(node, charData)
     return true
 end
 
-local noFlashingNodes = {"Description Box Style", "Save Backups Addon"}
+PST.noFlashingNodes = {"Description Box Style", "Save Backups Addon"}
 
 ---@param tScreen PST.treeScreen
 function nodeDrawingModule:Render(tScreen)
@@ -96,7 +96,7 @@ function nodeDrawingModule:Render(tScreen)
 
         if tScreen:IsSpriteVisibleAt(finalDrawX, finalDrawY, 38, 38) and PST_isNodeVisible(node, charData) then
             local nodeAllocated = PST:isNodeAllocated(tScreen.currentTree, node.id)
-            if node.available and not nodeAllocated and not PST:arrHasValue(noFlashingNodes, node.name) then
+            if node.available and not nodeAllocated and not PST:arrHasValue(PST.noFlashingNodes, node.name) then
                 if not PST.debugOptions.infSP and PST:isNodeAllocatable(tScreen.currentTree, node.id, true) then
                     self.nodesExtraSprite:SetFrame("Available " .. node.size, 0)
                     self.nodesExtraSprite.Color = Color(0.4, 0.4, 0.4, 1)

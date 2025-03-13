@@ -457,18 +457,5 @@ function PST:getActiveMaxCharge(itemType, player, varData, currentMaxCharge)
         end
     end
 
-    -- Expedition curse: power demand
-    local tmpMod = PST:getTreeSnapshotMod("cursePowerDemandCharges", 0)
-    if tmpMod > 0 then
-        local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
-        if itemCfg then
-            if itemCfg.ChargeType == 0 then
-                extraCharge = extraCharge + tmpMod
-            elseif itemCfg.ChargeType == 1 then
-                extraCharge = extraCharge + math.floor(PST:getTreeSnapshotMod("cursePowerDemandCD", 0) * 30)
-            end
-        end
-    end
-
     return currentMaxCharge + extraCharge
 end

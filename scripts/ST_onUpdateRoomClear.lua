@@ -652,7 +652,7 @@ function PST:onRoomClear(level, room)
 				end
 			end
 
-			-- Expedition curse: punishment
+			-- Expedition curse: Punishment
 			tmpMod = PST:getTreeSnapshotMod("cursePunishment", 0)
 			if tmpMod > 0 and PST:getTreeSnapshotMod("roomKills", 0) > 0 then
 				PST:addModifiers({ cursePunishmentCount = 1 }, true)
@@ -660,6 +660,17 @@ function PST:onRoomClear(level, room)
 					player:TakeDamage(1, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_NO_PENALTIES, EntityRef(player), 0)
 					PST:addModifiers({ cursePunishmentCount = { value = 0, set = true } }, true)
 				end
+			end
+
+			-- Expedition curse: Power Demand
+			tmpMod = PST:getTreeSnapshotMod("cursePowerDemandCharges", 0)
+			if PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+				tmpMod = tmpMod * 2
+			end
+			if tmpMod > 0 and 100 * math.random() < tmpMod then
+				player:AddActiveCharge(-1, ActiveSlot.SLOT_PRIMARY, false, false, false)
+				player:AddActiveCharge(-1, ActiveSlot.SLOT_POCKET, false, false, false)
+				SFXManager():Play(SoundEffect.SOUND_BATTERYDISCHARGE)
 			end
 
 			-- Ancient weapon mod: Gilded Seeker
