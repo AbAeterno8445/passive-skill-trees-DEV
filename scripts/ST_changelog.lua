@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.8",
+        "- Added an in-game warning when the sudden death on final boss Uber Expedition mod becomes active.",
+        "- Further fix attempt for error when claiming Uber Expedition nodes that reward order.",
+        "",
+
         "v1.1.7",
         "- Added compatibility for items/entities from the following mods: (thanks wookywok!)",
         "Lost and Forgotten, Reshaken Vol. 1, Tainted Treasure Rooms.",

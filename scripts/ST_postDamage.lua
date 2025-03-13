@@ -963,6 +963,14 @@ function PST:postDamage(target, damage, flag, source)
                     end
                 end
             end
+
+            -- Deep-Space Distortion mod: Warning for sudden-death
+            if PST:getTreeSnapshotMod("dsdMod_finalLastStand", false) and PST:entityIsFinalBoss(target) and not isKillingHit and (target.HitPoints / target.MaxHitPoints) <= 0.12 and
+            not target:GetData().PST_dsdLastStandWarn then
+                PST:createFloatTextFX("!!SUDDEN DEATH!!", Vector.Zero, Color(1, 0.1, 0.1, 1), 0.1, 180, true)
+                SFXManager():Play(SoundEffect.SOUND_SATAN_ROOM_APPEAR, 1, 2, false, 0.8)
+                target:GetData().PST_dsdLastStandWarn = true
+            end
         end
 
         -- Generic checks
