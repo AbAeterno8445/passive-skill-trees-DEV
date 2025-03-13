@@ -347,7 +347,7 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
                 PST:addCurrentCharCrimsonStarcores(1)
             -- Order (uber expeditions)
             elseif tmpNode.rewardType == PSTExpNodeRewardType.ORDER then
-                if not tmpExpedition then tmpExpedition.order = 0 end
+                if not tmpExpedition.order then tmpExpedition.order = 0 end
                 tmpExpedition.order = tmpExpedition.order + tmpNode.rewardData
             -- Random Starblessed ancient weapon
             elseif tmpNode.rewardType == PSTExpNodeRewardType.STARBLESS_WEP then
