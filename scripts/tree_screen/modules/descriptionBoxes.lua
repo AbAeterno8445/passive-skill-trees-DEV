@@ -502,7 +502,7 @@ function descriptionBoxesModule:Render(tScreen)
             tmpDescription = {table.unpack(tmpDescription)}
             table.insert(tmpDescription, {"Requires 1 Global SP to allocate.", PST.kcolors.BLUE1})
         end
-        if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) and PST:arrHasValue(nonDynamicNodes, hoveredNode.name) then
+        if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) and (PST:arrHasValue(nonDynamicNodes, hoveredNode.name) or (hoveredNode.reqs and hoveredNode.reqs.nonDynamic)) then
             tmpDescription = {table.unpack(tmpDescription)}
             table.insert(tmpDescription, {"This node does not support Dynamic Tree Mode, and is only applied on run start.", PST.kcolors.RED2})
         end

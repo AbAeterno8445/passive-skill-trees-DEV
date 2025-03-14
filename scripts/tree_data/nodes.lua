@@ -447,7 +447,7 @@ function PST:allocateNodeID(tree, nodeID, allocation)
     -- Dynamic Tree Mode - update tree snapshot
     if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) then
         local tmpNode = PST.trees[tree][nodeID]
-        if tmpNode and tmpNode.modifiers and tmpNode.name ~= "Dynamic Tree Mode" then
+        if tmpNode and tmpNode.modifiers and tmpNode.name ~= "Dynamic Tree Mode" and not (tmpNode.reqs and tmpNode.reqs.nonDynamic) then
             local tmpMods = tmpNode.modifiers
             if allocation == 0 then
                 PST:subtractModifiers(tmpMods)
