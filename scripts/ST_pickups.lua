@@ -1139,6 +1139,8 @@ function PST:onPickupInit(pickup, firstSpawn)
         if PST:getTreeSnapshotMod("dsdMod_pickupScarcity", false) then
             tmpMod = tmpMod + 50
         end
+        -- Disable scarcity mods in mineshaft sequence
+        if PST:inMineshaftPuzzle() then tmpMod = 0 end
 
         if firstSpawn and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
         variant == PickupVariant.PICKUP_KEY) and tmpMod > 0 and 100 * math.random() < tmpMod then
@@ -1163,6 +1165,8 @@ function PST:onPickupInit(pickup, firstSpawn)
             if PST:getTreeSnapshotMod("dsdMod_heartScarcity", false) then
                 tmpMod = tmpMod + 50
             end
+            -- Disable scarcity mods in mineshaft sequence
+            if PST:inMineshaftPuzzle() then tmpMod = 0 end
 
             if firstSpawn and tmpMod > 0 and 100 * math.random() < tmpMod then
                 pickup:Remove()
@@ -1284,6 +1288,10 @@ function PST:onPickupInit(pickup, firstSpawn)
         elseif variant == PickupVariant.PICKUP_LIL_BATTERY then
             -- Mod: Battery scarcity
             tmpMod = PST:getTreeSnapshotMod("cursePowerDemandScarcity", 0)
+            -- Disable scarcity mods in mineshaft sequence
+            if PST:inMineshaftPuzzle() then
+                tmpMod = 0
+            end
             if tmpMod > 0 and 100 * math.random() < tmpMod then
                 pickup:Remove()
                 pickupGone = true

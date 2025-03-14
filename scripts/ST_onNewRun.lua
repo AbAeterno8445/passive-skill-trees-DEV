@@ -355,7 +355,11 @@ function PST:onNewRun(isContinued)
             PST.modData.treeModSnapshot.expedDepth = selDepth
 
             -- Astral weapon drop tiers (starts at 1, +1 every 10 depths until tier 5 max)
-            PST.modData.treeModSnapshot.astralWepTierDrops = math.min(5, 1 + math.floor(PST.modData.expedSelDepth / 10))
+            local projDepth = PST.modData.expedSelDepth
+            if isUber then
+                projDepth = (15 + PST.modData.uberExpedSelDepth) * 2
+            end
+            PST.modData.treeModSnapshot.astralWepTierDrops = math.min(5, 1 + math.floor(projDepth / 10))
 
             local origNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
             if origNode then
@@ -416,7 +420,7 @@ function PST:onNewRun(isContinued)
             for _, curseID in ipairs(expData.curses) do
                 local curseData = PST.expeditionCurses[curseID]
                 if curseData and curseData.modsFunc then
-                    PST:addModifiers(curseData.modsFunc(PST.modData.expedSelDepth), true)
+                    PST:addModifiers(curseData.modsFunc(projDepth), true)
                 end
             end
 

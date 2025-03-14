@@ -4,7 +4,10 @@ function PST:getChangelogList()
         "",
 
         "v1.1.9",
+        "- Scarcity modifiers no longer apply during the mineshaft sequence.",
         "- Reworked the effect of Expeditions' Curse of Power Demand.",
+        "- Fixed Uber Expeditions dropping low tier weapons.",
+        "- Fixed Uber Expeditions applying some curses with lower modifiers.",
         "",
 
         "v1.1.8",
