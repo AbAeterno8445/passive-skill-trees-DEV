@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.10",
+        "- Fixed error whenever obols dropped in Uber Expeditions without entropy.",
+        "",
+
         "v1.1.9",
         "- Scarcity modifiers no longer apply during the mineshaft sequence.",
         "- Reworked the effect of Expeditions' Curse of Power Demand.",

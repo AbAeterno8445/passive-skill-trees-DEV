@@ -174,7 +174,7 @@ function PST:expedDropObolsAt(position, amount)
         end
         -- Mod: +% obols found per entropy
         if expData and PST:getTreeSnapshotMod("obolsFoundEntropy", 0) > 0 then
-            tmpMult = tmpMult + PST:getTreeSnapshotMod("obolsFoundEntropy", 0) * expData.entropy
+            tmpMult = tmpMult + PST:getTreeSnapshotMod("obolsFoundEntropy", 0) * (expData.entropy or 0)
         end
         -- Bring The Chaos node (Deep-Space tree)
         if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 100 then
