@@ -1575,10 +1575,14 @@ function PST:onDamage(target, damage, flag, source)
                 dmgMult = dmgMult + tmpMod[1] / 100
             end
 
-            -- Astral weapon mod: +% damage dealt with explosions
+            -- Mod/Astral weapon mod: +% damage dealt with explosions
             tmpMod = PST:getSnapAstralWepMod("explosionDmg")
-            if tmpMod and (flag & DamageFlag.DAMAGE_EXPLOSION) then
+            if tmpMod and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
                 dmgMult = dmgMult + tmpMod[1] / 100
+            end
+            tmpMod = PST:getTreeSnapshotMod("explosionDmg", 0)
+            if tmpMod > 0 and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+                dmgMult = dmgMult + tmpMod / 100
             end
 
             -- Astral weapon mod: +% damage dealt while half or more of your red heart containers are empty
