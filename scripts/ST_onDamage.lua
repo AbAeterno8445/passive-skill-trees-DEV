@@ -1357,6 +1357,12 @@ function PST:onDamage(target, damage, flag, source)
                     PST:sideArtiAddEnergy(PST.sideArtiData.deathseekerSeptentrion.energy)
                 end
 
+                -- Mod: +% damage dealt to undead monsters
+                tmpMod = PST:getTreeSnapshotMod("undeadDmg", 0)
+                if tmpMod > 0 and PST:isMobUndead(target) then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
+
                 local charData = PST:getCurrentCharData()
                 local tmpNPC = target:ToNPC()
                 if charData and tmpNPC then
