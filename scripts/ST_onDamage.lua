@@ -1576,10 +1576,14 @@ function PST:onDamage(target, damage, flag, source)
                 end
             end
 
-            -- Astral weapon mod: +% damage dealt with lasers
+            -- Mod/Astral weapon mod: +% damage dealt with lasers
             tmpMod = PST:getSnapAstralWepMod("laserDmg")
-            if tmpMod and (flag & DamageFlag.DAMAGE_LASER) then
+            if tmpMod and (flag & DamageFlag.DAMAGE_LASER) > 0 then
                 dmgMult = dmgMult + tmpMod[1] / 100
+            end
+            tmpMod = PST:getTreeSnapshotMod("laserDmg", 0)
+            if tmpMod > 0 and (flag & DamageFlag.DAMAGE_LASER) > 0 then
+                dmgMult = dmgMult + tmpMod / 100
             end
 
             -- Mod/Astral weapon mod: +% damage dealt with explosions
