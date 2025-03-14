@@ -1018,6 +1018,36 @@ function PST:onNewRun(isContinued)
         player:AddCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_THE_DEAD)
     end
 
+    -- Starting coin mods
+    tmpMod = PST:getTreeSnapshotMod("startingCoin", 0)
+    if tmpMod > 0 then player:AddCoins(tmpMod) end
+
+    tmpMod = PST:getTreeSnapshotMod("startingCoinChance", 0)
+    while tmpMod > 0 do
+        if 100 * math.random() < tmpMod then player:AddCoins(1) end
+        tmpMod = tmpMod - 100
+    end
+
+    -- Starting key mods
+    tmpMod = PST:getTreeSnapshotMod("startingKey", 0)
+    if tmpMod > 0 then player:AddKeys(tmpMod) end
+
+    tmpMod = PST:getTreeSnapshotMod("startingKeyChance", 0)
+    while tmpMod > 0 do
+        if 100 * math.random() < tmpMod then player:AddKeys(1) end
+        tmpMod = tmpMod - 100
+    end
+
+    -- Starting bomb mods
+    tmpMod = PST:getTreeSnapshotMod("startingBomb", 0)
+    if tmpMod > 0 then player:AddBombs(tmpMod) end
+
+    tmpMod = PST:getTreeSnapshotMod("startingBombChance", 0)
+    while tmpMod > 0 do
+        if 100 * math.random() < tmpMod then player:AddBombs(1) end
+        tmpMod = tmpMod - 100
+    end
+
     -- Update familiars
     local tmpFamiliars = PST:getRoomFamiliars()
     if tmpFamiliars > 0 then
