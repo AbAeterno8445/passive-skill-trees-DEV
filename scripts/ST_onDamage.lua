@@ -249,6 +249,13 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
 
+        -- Mod: % chance to block explosion hits
+        tmpTreeMod = PST:getTreeSnapshotMod("explosionBlock", 0)
+        if tmpTreeMod > 0 and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 and 100 * math.random() < tmpTreeMod then
+            SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.75)
+            return { Damage = 0 }
+        end
+
         -- Monster hits specifically
         if source and source.Entity then
             local tmpDmg = 0
