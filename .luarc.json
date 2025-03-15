@@ -280,7 +280,8 @@
         "TaintedTreasure",
         "MilkshakeVol1",
         "HeavensCall",
-        "MorePennyTrinketsMod"
+        "MorePennyTrinketsMod",
+        "SewnMod"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

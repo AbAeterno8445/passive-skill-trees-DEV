@@ -1824,6 +1824,17 @@ function PST:initModCompat()
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Playdough Penny"))
     end
 
+    -- Sewing Machine
+    if SewnMod and not initMods.sewing then
+        initMods.sewing = true
+
+        -- Coin machines
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine (Shop)"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine (Angelic)"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine (Evil)"))
+    end
+
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list
     if not initMods.songOfTheFew then
         initMods.songOfTheFew = true
@@ -2042,4 +2053,9 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Whore of Galilee"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blue Canary"))
 	end
+
+    -- Sewing Machine blue items
+    if SewnMod then
+        table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Doll's Pure Body"))
+    end
 end
