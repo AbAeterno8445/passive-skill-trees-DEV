@@ -1156,7 +1156,7 @@ function PST:initModCompat()
         initMods.dedith = true
 
 		-- Baby Familiars
-        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Salty Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("​​​Salty Baby"))
 
 		--HP Ups
         local tmpHPUpItems = {
@@ -1170,7 +1170,7 @@ function PST:initModCompat()
         end
 
 		-- Song of the Few
-        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Salty Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("​​​Salty Baby"))
 
 		-- Grand Consonance
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Salty Baby (D!Edith)"))
@@ -1718,6 +1718,82 @@ function PST:initModCompat()
 
 		-- Beggar types
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Tainted Beggar"))
+	end
+
+	-- Heaven's Call
+	if HeavensCall and not initMods.HeavensCall then
+		-- Poop items
+		table.insert(PST.poopItems, Isaac.GetItemIdByName("Uranus?"))
+
+		-- Planetarium items
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Mercurius?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Venus?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Terra?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Mars?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Jupiter?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Saturnus?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Uranus?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Neptunus?"))
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Venus?"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Neptunus?"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Jupiter"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Saturn"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Uranus"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Neptune"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Mercury"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Venus"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Terra"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Mars"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Luna"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Errant"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Ceres"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Io"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Europa"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Ganymede"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Callisto"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Titan"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Titania"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Oberon"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Triton"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Pluto"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Charon"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Eris"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Makemake"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Haumea"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Iris"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil End"))
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Mercury (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Venus (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Terra (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Mars (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Jupiter (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Saturn (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Uranus (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Neptune (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Errant (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Luna (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Ceres (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Io (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Europa (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Ganymede (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Callisto (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Titan (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Titania (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Triton (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Pluto (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Charon (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Eris (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Makemake (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Haumea (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon Iris (HC)"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Moon End (HC)"))
+
+		-- Coin machines
+		table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Telescope (HC)"))
 	end
 
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list

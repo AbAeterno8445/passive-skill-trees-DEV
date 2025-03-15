@@ -278,7 +278,8 @@
         "Diepio",
         "LNF",
         "TaintedTreasure",
-        "MilkshakeVol1"
+        "MilkshakeVol1",
+        "HeavensCall"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

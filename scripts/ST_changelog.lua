@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.11",
+        "- Added support for items/entities from the Heaven's Call mod + latest D!Edith update (thanks wookywok!).",
+        "",
+
         "v1.1.10",
         "- Fixed error whenever obols dropped in Uber Expeditions without entropy.",
         "",
