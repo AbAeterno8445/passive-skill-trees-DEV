@@ -4,7 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v1.1.11",
-        "- Added support for items/entities from the Heaven's Call mod + latest D!Edith update (thanks wookywok!).",
+        "- Added support for items/entities for the following mods: (thanks wookywok!)",
+        "Heaven's Call mod, latest D!Edith update, More Penny Trinkets.",
         "",
 
         "v1.1.10",

@@ -1556,7 +1556,9 @@ function PST:initModCompat()
 	end
 
 	-- Lost and Forgotten
-	if LNF then
+	if LNF and not initMods.lnf then
+        initMods.lnf = true
+
         -- Baby familiars
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Followers"))
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Guardian"))
@@ -1656,7 +1658,9 @@ function PST:initModCompat()
 	end
 
 	-- Reshaken Vol. 1
-	if MilkshakeVol1 then
+	if MilkshakeVol1 and not initMods.reshaken then
+        initMods.reshaken = true
+
 		-- Baby familiars
 		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Spirit Bum"))
 
@@ -1693,7 +1697,9 @@ function PST:initModCompat()
 	end
 
 	-- Tainted Treasure Rooms
-	if TaintedTreasure then
+	if TaintedTreasure and not initMods.taintedTreasure then
+        initMods.taintedTreasure = true
+
 		-- Baby familiars
 		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("The Basilisk"))
 
@@ -1722,6 +1728,8 @@ function PST:initModCompat()
 
 	-- Heaven's Call
 	if HeavensCall and not initMods.HeavensCall then
+        initMods.HeavensCall = true
+
 		-- Poop items
 		table.insert(PST.poopItems, Isaac.GetItemIdByName("Uranus?"))
 
@@ -1795,6 +1803,26 @@ function PST:initModCompat()
 		-- Coin machines
 		table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Telescope (HC)"))
 	end
+
+    -- More Penny Trinkets
+    if MorePennyTrinketsMod and not initMods.morePennyTrinkets then
+        initMods.morePennyTrinkets = true
+
+        -- Penny trinkets (shocking, i know - wooky)
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Wisp Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Sharp Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Boosted Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Crystalized Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Angelic Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Wrapped Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Glitched Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Moonstone Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Rectangular Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Experimental Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Shadow Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Fractal Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Playdough Penny"))
+    end
 
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list
     if not initMods.songOfTheFew then

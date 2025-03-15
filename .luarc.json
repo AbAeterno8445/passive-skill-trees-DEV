@@ -279,7 +279,8 @@
         "LNF",
         "TaintedTreasure",
         "MilkshakeVol1",
-        "HeavensCall"
+        "HeavensCall",
+        "MorePennyTrinketsMod"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }
