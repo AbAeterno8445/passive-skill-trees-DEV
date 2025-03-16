@@ -1161,15 +1161,12 @@ function PST:onNewRun(isContinued)
 
     -- Extra life items pool removal
     if remove1UPItems then
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_1UP)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_DEAD_CAT)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_INNER_CHILD)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_GUPPYS_COLLAR)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_LAZARUS_RAGS)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_ANKH)
-        itemPool:RemoveTrinket(TrinketType.TRINKET_BROKEN_ANKH)
-        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_JUDAS_SHADOW)
-        itemPool:RemoveTrinket(TrinketType.TRINKET_MISSING_POSTER)
+        for _, tmpItem in ipairs(PST.extraLifeItems) do
+            itemPool:RemoveCollectible(tmpItem)
+        end
+        for _, tmpTrinket in ipairs(PST.extraLifeTrinkets) do
+            itemPool:RemoveTrinket(tmpTrinket)
+        end
     end
 
     -- Samael mod compat

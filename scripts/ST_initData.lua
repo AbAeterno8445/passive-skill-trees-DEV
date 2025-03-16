@@ -115,6 +115,14 @@ PST.demonFamiliars = {
 	CollectibleType.COLLECTIBLE_INCUBUS, CollectibleType.COLLECTIBLE_LIL_ABADDON,
 	CollectibleType.COLLECTIBLE_TWISTED_PAIR, CollectibleType.COLLECTIBLE_SUCCUBUS
 }
+PST.extraLifeItems = {
+	CollectibleType.COLLECTIBLE_1UP, CollectibleType.COLLECTIBLE_DEAD_CAT, CollectibleType.COLLECTIBLE_INNER_CHILD,
+	CollectibleType.COLLECTIBLE_GUPPYS_COLLAR, CollectibleType.COLLECTIBLE_LAZARUS_RAGS, CollectibleType.COLLECTIBLE_ANKH,
+	CollectibleType.COLLECTIBLE_JUDAS_SHADOW
+}
+PST.extraLifeTrinkets = {
+	TrinketType.TRINKET_BROKEN_ANKH, TrinketType.TRINKET_MISSING_POSTER
+}
 PST.heartUpItems = {
 	[CollectibleType.COLLECTIBLE_IMMACULATE_HEART] = 1,
 	[CollectibleType.COLLECTIBLE_VENUS] = 1,
