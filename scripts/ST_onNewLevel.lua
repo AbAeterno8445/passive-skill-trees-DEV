@@ -1023,15 +1023,20 @@ function PST:onCurseEval(curses)
     if not PST.gameInit then return curses end
 
     local causeCurse = PST:getTreeSnapshotMod("causeCurse", false)
-    local curseChance = 0
+    local curseChance = PST:getTreeSnapshotMod("floorCurse", 0)
 
     -- Mod: chance to negate curses when entering a floor
     local tmpMod = PST:getTreeSnapshotMod("naturalCurseCleanse", 0)
-    if curses ~= 0 and tmpMod > 0 and 100 * math.random() < tmpMod then
-        curses = 0
-        PST:addModifiers({ naturalCurseCleanseProc = true }, true)
-    elseif PST:getTreeSnapshotMod("naturalCurseCleanseProc", false) then
-        PST:addModifiers({ naturalCurseCleanseProc = false }, true)
+    -- Mod: curse nullifying node inversion
+    if PST:getTreeSnapshotMod("invertCurseNull", false) then
+        curseChance = curseChance + tmpMod
+    else
+        if curses ~= 0 and tmpMod > 0 and 100 * math.random() < tmpMod then
+            curses = 0
+            PST:addModifiers({ naturalCurseCleanseProc = true }, true)
+        elseif PST:getTreeSnapshotMod("naturalCurseCleanseProc", false) then
+            PST:addModifiers({ naturalCurseCleanseProc = false }, true)
+        end
     end
 
     -- Starcursed mod: additional chance to receive a random curse when entering a floor
