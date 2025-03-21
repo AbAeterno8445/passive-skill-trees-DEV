@@ -748,6 +748,11 @@ function PST:resetMods()
 		fortuneMachineFloorUses = 0,
 		flawlessXP = 0,
 		specialSacks = 0,
+		unclick = false,
+		oldChestConv = 0,
+		oldChestConvChance = 0,
+		oldChestConvProcs = 0,
+		scaredHeartConv = 0,
 
 		openedChests = {},
 

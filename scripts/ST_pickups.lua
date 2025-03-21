@@ -794,7 +794,7 @@ function PST:onPickup(pickup, collider, low, forced)
                 end
 
                 -- Mod: chance to gain +luck when picking up red hearts, triple chance for vanishing red hearts
-                local tmpMod = PST:getTreeSnapshotMod("redHeartLuckSamson", 0)
+                tmpMod = PST:getTreeSnapshotMod("redHeartLuckSamson", 0)
                 if pickup.Timeout > 0 then
                     tmpMod = tmpMod * 3
                 end
@@ -870,6 +870,12 @@ function PST:onPickup(pickup, collider, low, forced)
                             end
                         end
                     end
+                end
+
+                -- Mod: % chance for scared hearts to heal an additional 1/2 heart
+                tmpMod = PST:getTreeSnapshotMod("scaredHeartConv", 0) * 10
+                if tmpMod > 0 and subtype == HeartSubType.HEART_SCARED and 100 * math.random() < tmpMod then
+                    player:AddHearts(1)
                 end
             end
 
@@ -1061,6 +1067,16 @@ function PST:onPickupInit(pickup, firstSpawn)
         PST:addModifiers({ sideCacheRegChest = 1 }, true)
     end
 
+    -- Mod: old chest conversion
+    tmpMod = PST:getTreeSnapshotMod("oldChestConvChance", 0)
+    if tmpMod > 0 and variant == PickupVariant.PICKUP_LOCKEDCHEST and subtype == ChestSubType.CHEST_CLOSED and firstSpawn and
+    PST:getTreeSnapshotMod("oldChestConvProcs", 0) < 5 and 100 * math.random() < tmpMod then
+        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_OLDCHEST, 0)
+        SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
+        PST:addModifiers({ oldChestConvProcs = 1 }, true)
+    end
+
     -- Chest pedestal first spawn
     local openedChests = PST:getTreeSnapshotMod("openedChests", nil)
     if not openedChests then
@@ -1233,6 +1249,12 @@ function PST:onPickupInit(pickup, firstSpawn)
                     pickup:Morph(pickup.Type, variant, HeartSubType.HEART_BONE, true)
                     PST:addModifiers({ redFullToBoneProc = true }, true)
                 end
+            end
+
+            -- Mod: chance to convert full red hearts into scared hearts
+            tmpMod = PST:getTreeSnapshotMod("scaredHeartConv", 0) / 2
+            if tmpMod > 0 and firstSpawn and not pickupGone and not isShop and subtype == HeartSubType.HEART_FULL and 100 * math.random() < tmpMod then
+                pickup:Morph(pickup.Type, variant, HeartSubType.HEART_SCARED)
             end
         -- Coins
         elseif variant == PickupVariant.PICKUP_COIN then

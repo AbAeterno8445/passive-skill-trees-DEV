@@ -209,6 +209,12 @@ function PST:onRoomClear(level, room)
 						player:AddCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
 						PST:addModifiers({ growingContritionProcs = { value = 0, set = true } }, true)
 					end
+
+					-- Mod: old chest conversion
+					tmpMod = PST:getTreeSnapshotMod("oldChestConv", 0)
+					if tmpMod > 0 then
+						PST:addModifiers({ oldChestConvChance = tmpMod }, true)
+					end
 				end
 
 				-- Boss room + took no damage in floor

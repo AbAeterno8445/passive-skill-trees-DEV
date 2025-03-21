@@ -1061,6 +1061,11 @@ function PST:onNewRun(isContinued)
         remove1UPItems = true
     end
 
+    -- Unclick node (Global tree)
+    if PST:getTreeSnapshotMod("unclick", false) then
+        itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_CLICKER)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC) then
         -- Isaac, -0.1 all stats
