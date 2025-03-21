@@ -371,6 +371,13 @@ function PST:initModCompat()
 		table.insert(PST.beggarTypes, FiendFolio.FF.CosplayBeggar)
 		table.insert(PST.beggarTypes, FiendFolio.FF.Sweetpuss)
 		table.insert(PST.beggarTypes, FiendFolio.FF.Midarizer) -- not quite a machine, not quite a beggar... i'll just say beggar for them - wooky
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("The Devil's Harvest"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Isaac.chr"))
+
+        -- Extra life trinkets
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Jesus Rock"))
     end
 
     -- Last Judgement
@@ -508,6 +515,14 @@ function PST:initModCompat()
 		-- Beggars
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Stargazer"))
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Stargazer (Christmas)"))
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("The Mark of Cain"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("A Bird of Hope"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("DNA Redactor"))
+
+        -- Extra life trinkets
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Adam's Rib"))
 	end
 
 	-- Reverie
@@ -631,6 +646,15 @@ function PST:initModCompat()
 		-- Dice items
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("D-Flip"))
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("D-Cheat"))
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Fan of the Dead"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Ash of Phoenix"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Continue?"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Hourai Doll"))
+
+        -- Extra life trinkets
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Aromatic Flower"))
 	end
 
     -- Revelations
@@ -681,6 +705,11 @@ function PST:initModCompat()
 
 		-- Dice items
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("Hyper Dice"))
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Heavenly Bell"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Ferryman's Toll"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Virgil"))
 	end
 
 	-- Community Remix
@@ -1116,6 +1145,9 @@ function PST:initModCompat()
 
 		-- Beggars
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("(Samael) Ferryman Beggar"))
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Punishment of the Grave"))
 	end
 
 	-- Bertran
@@ -1244,6 +1276,9 @@ function PST:initModCompat()
                 end
             end
         end
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("!!!'s Heart"))
 	end
 
 	-- The Sheriff
@@ -1505,6 +1540,15 @@ function PST:initModCompat()
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Meat Beggar"))
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Warlock Beggar"))
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Necromancer Beggar"))
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Limbus"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Angry Meal"))
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("False Certificate"))
+
+        -- Extra life trinkets
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Witch Paper"))
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Cartridge?"))
 	end
 
 	-- Kicks and Giggles
@@ -1553,6 +1597,13 @@ function PST:initModCompat()
                 end
             end
         end
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("​Paramedic's Medikit"))
+
+        -- Extra life trinkets
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Shuko's Severed Head"))
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("R Key Plush"))
 	end
 
 	-- Lost and Forgotten
@@ -1694,6 +1745,9 @@ function PST:initModCompat()
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Sharp Cursor"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Celestial Mirror")) -- OST: Mirror Magic B-side mix (Celeste) - wooky
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Scripulous Fingore"))
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Glass Idol"))
 	end
 
 	-- Tainted Treasure Rooms
@@ -1724,6 +1778,9 @@ function PST:initModCompat()
 
 		-- Beggar types
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Tainted Beggar"))
+
+        -- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Crystal Skull"))
 	end
 
 	-- Heaven's Call
