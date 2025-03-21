@@ -263,7 +263,7 @@ function PST:prePickup(pickup, collider, low)
                         for charName, tmpCharData in pairs(PST.modData.charData) do
                             if charName ~= currentCharName then
                                 if not tmpCharData.arcaneObols then tmpCharData.arcaneObols = 0 end
-                                tmpCharData.arcaneObols = tmpCharData.arcaneObols + math.floor(obolValue * obolShareRate)
+                                tmpCharData.arcaneObols = tmpCharData.arcaneObols + math.max(1, math.floor(obolValue * obolShareRate))
                             end
                         end
                     end
