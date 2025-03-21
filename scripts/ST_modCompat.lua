@@ -620,9 +620,9 @@ function PST:initModCompat()
 
         -- Undead mobs
 		local tmpUndead = {
-            "Necrospyder", "Pyroplume 2", "Pyroplume 3", "The Immortal", "Guppet", 
+            "Necrospyder", "Pyroplume 2", "Pyroplume 3", "The Immortal", "Guppet",
 			"Reverie Note (Sekibanki)", "Reverie Note (Flandre 1)", "Reverie Note (Flandre 2)",
-			"Reverie Note (Flandre 3)", "Reverie Note (Flandre 4)", "Yin-Yang Greed", 
+			"Reverie Note (Flandre 3)", "Reverie Note (Flandre 4)", "Yin-Yang Greed",
         }
         PST_addUndeadMobs(tmpUndead)
 
@@ -662,11 +662,11 @@ function PST:initModCompat()
         initMods.revelations = true
 
 		local tmpUndead = {
-            "Blockhead", "Cardinal Blockhead", "Yellow Blockhead", "Yellow Cardinal Blockhead", "Block Gaper", "Cardinal Block Gaper", 
-			"Yellow Block Gaper", "Yellow Cardinal Block Gaper", "Block Block Block Gaper", "Ice Hazard Brother Bloody", "Brother Bloody", 
-			"Frost Rider", "Frost Rider Phase 2", "Wendy", "Rag Tag", "Arrowhead", "Rag Gaper", "Rag Gaper (Head)", "Rag Gusher", 
-			"Cricket (boss)", "Tammy (boss)", "Guppy (boss)", "Moxie (boss)", "Pyramid Head", "Aragnid", "Aragnid Innard", "Anima", 
-			"Rag Bony", "Rag Trite", "Innard", "Necragmancer", "Wretcher", "Urny", "Rag Fatty", "Sarcophaguts", "Sarcophaguts Head", "Sarcgut", 
+            "Blockhead", "Cardinal Blockhead", "Yellow Blockhead", "Yellow Cardinal Blockhead", "Block Gaper", "Cardinal Block Gaper",
+			"Yellow Block Gaper", "Yellow Cardinal Block Gaper", "Block Block Block Gaper", "Ice Hazard Brother Bloody", "Brother Bloody",
+			"Frost Rider", "Frost Rider Phase 2", "Wendy", "Rag Tag", "Arrowhead", "Rag Gaper", "Rag Gaper (Head)", "Rag Gusher",
+			"Cricket (boss)", "Tammy (boss)", "Guppy (boss)", "Moxie (boss)", "Pyramid Head", "Aragnid", "Aragnid Innard", "Anima",
+			"Rag Bony", "Rag Trite", "Innard", "Necragmancer", "Wretcher", "Urny", "Rag Fatty", "Sarcophaguts", "Sarcophaguts Head", "Sarcgut",
 			"Rag Drifty", "Pseudo Rag Drifty", "Draugr", "Haugr", "Jaugr", "Juniaugr", "Snowst", "Ragtime", "Rag Dancer", "Ragma"
         }
         PST_addUndeadMobs(tmpUndead)
@@ -927,7 +927,7 @@ function PST:initModCompat()
 
 		-- Undead
 		local tmpUndead = {
-            "Spirit", "Lifeseed Spirit", "Bloated Fly", "Drowned Grub", "Drowned Maggot", "Drowned Spitty", "Drowned Conjoined Spitty", 
+            "Spirit", "Lifeseed Spirit", "Bloated Fly", "Drowned Grub", "Drowned Maggot", "Drowned Spitty", "Drowned Conjoined Spitty",
 			"Huskie", "Pinprick", "Walking Blue Boil", "Stumbling Blue Boil", "Samael", "Samael Angel", "Hogma"
         }
         PST_addUndeadMobs(tmpUndead)
@@ -1439,8 +1439,8 @@ function PST:initModCompat()
 
 		--HP Ups
         local tmpHPUpItems = {
-            {"Potato", 1}, {"Muscle Meat", 1}, {"Holy Ravioli", 1}, {"Angry Meal", 1}, 
-			{"Bacon Pancakes", 1}, {"Aurora", 1}, {"Wonder Waffle", 1}, {"Loaf of Bread", 1}, 
+            {"Potato", 1}, {"Muscle Meat", 1}, {"Holy Ravioli", 1}, {"Angry Meal", 1},
+			{"Bacon Pancakes", 1}, {"Aurora", 1}, {"Wonder Waffle", 1}, {"Loaf of Bread", 1},
 			{"Jelly-Filled Donut", 1}, {"Onigirya", 1}
         }
         for _, tmpItem in ipairs(tmpHPUpItems) do
@@ -1470,16 +1470,16 @@ function PST:initModCompat()
 
 		-- Blue Gambit cards (the duplicates are intentional, they have spaces after them so they can work as different cards - wooky)
         local tmpCards = {
-            "Apocalypse", "Banned Card", "Ascender's Bane", "Multi-Cast", "Wish", 
-			"Offering", "Infinite Blades", "Transmutation", "Ritual Dagger", "Fusion", 
-			"Deus Ex Machina", "Adrenaline", "Corruption", "Decay", "Exploding Kitten", 
-			"Defuse Card", "See the Future Card", "Nope Card", "Skip Card", "Favor Card", 
-			"Shuffle Card", "Attack Card", "Exploding Kitten ", "Defuse Card ", "See the Future Card ", 
-			"Nope Card ", "Skip Card ", "Favor Card ", "Attack Card ", "Shuffle Card ", "Arsenal Card", 
-			"Bookery Card", "Outpost Card", "Oblivion Card", "Treasury Card", "Battlefield Card", "Blood Grove Card", 
-			"Storm Temple Card", "Zero Milestone Card", "Ancestral Crypt Card", "Ancestral Crypt Card", "Cemetery Card", 
-			"Village Card", "Grove Card", "Spider Cocoon Card", "Vampire Mansion Card", "Wheat Fields Card", "Swamp Card", 
-			"Ruins Card", "Road Lantern Card", "Smith's Forge Card", "Chrono Crystals Card", "Witch Hut Card", "Beacon Card", 
+            "Apocalypse", "Banned Card", "Ascender's Bane", "Multi-Cast", "Wish",
+			"Offering", "Infinite Blades", "Transmutation", "Ritual Dagger", "Fusion",
+			"Deus Ex Machina", "Adrenaline", "Corruption", "Decay", "Exploding Kitten",
+			"Defuse Card", "See the Future Card", "Nope Card", "Skip Card", "Favor Card",
+			"Shuffle Card", "Attack Card", "Exploding Kitten ", "Defuse Card ", "See the Future Card ",
+			"Nope Card ", "Skip Card ", "Favor Card ", "Attack Card ", "Shuffle Card ", "Arsenal Card",
+			"Bookery Card", "Outpost Card", "Oblivion Card", "Treasury Card", "Battlefield Card", "Blood Grove Card",
+			"Storm Temple Card", "Zero Milestone Card", "Ancestral Crypt Card", "Ancestral Crypt Card", "Cemetery Card",
+			"Village Card", "Grove Card", "Spider Cocoon Card", "Vampire Mansion Card", "Wheat Fields Card", "Swamp Card",
+			"Ruins Card", "Road Lantern Card", "Smith's Forge Card", "Chrono Crystals Card", "Witch Hut Card", "Beacon Card",
 			"Temporal Beacon Card"
         }
         for _, tmpCard in ipairs(tmpCards) do
@@ -1622,7 +1622,7 @@ function PST:initModCompat()
 
         --HP Ups
         local tmpHPUpItems = {
-            {"Gray Fruit", 1}, {"Cuisine", 1}, {"Wealthy Heart", 1}, 
+            {"Gray Fruit", 1}, {"Cuisine", 1}, {"Wealthy Heart", 1},
             {"Rotten Potato", 1}, {"Carrot Sticks", 1}, {"Dry Biscuit", 1}
         }
         for _, tmpItem in ipairs(tmpHPUpItems) do
@@ -1739,7 +1739,7 @@ function PST:initModCompat()
 
         -- Penny trinkets
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Acid Penny"))
-        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Crystal Penny"))	
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Crystal Penny"))
 
 		-- Song of the Few familiars
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Sharp Cursor"))
@@ -1890,6 +1890,51 @@ function PST:initModCompat()
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine (Shop)"))
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine (Angelic)"))
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine (Evil)"))
+    end
+
+    if BaelMOD and not initMods.bael then
+        initMods.bael = true
+
+        -- Poop items
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Cat's Laxative"))
+
+        --HP Ups
+        local tmpHPUpItems = {
+            {"Cat's Lunch", 1}, {"Cat's Dinner", 1}, {"Cat's Snack", 1},
+            {"Cat's Blood", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+        -- Dice items
+        table.insert(PST.diceItems, Isaac.GetItemIdByName("Cat's Polygon"))
+
+        -- Soul stones
+        local tmpSoulstones = {
+            {"Bael", "Soul of Bael"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+        -- Bone items
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Cat's Skeleton"))
+        table.insert(PST.boneItems, Isaac.GetItemIdByName("Guppy's Skeleton"))	-- basically cats skeleton as a regular unlock lol - wooky
+
+        -- Beggar
+        table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Cat Boy"))
+
+        -- CAT WUZ HERE	
     end
 
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list

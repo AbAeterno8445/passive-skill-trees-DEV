@@ -281,7 +281,8 @@
         "MilkshakeVol1",
         "HeavensCall",
         "MorePennyTrinketsMod",
-        "SewnMod"
+        "SewnMod",
+        "BaelMOD"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }
