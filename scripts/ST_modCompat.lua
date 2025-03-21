@@ -378,6 +378,10 @@ function PST:initModCompat()
 
         -- Extra life trinkets
         table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Jesus Rock"))
+
+		-- Trinket entropy blacklist
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Sand Dollar"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Brick Rock"))
     end
 
     -- Last Judgement
@@ -655,6 +659,32 @@ function PST:initModCompat()
 
         -- Extra life trinkets
         table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Aromatic Flower"))
+
+		-- Trinket entropy blacklist
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawed Ruby")) -- the chipped/flawed/etc gems are designed to merge with each other, then drop the next level of gem - wooky
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Ruby"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawless Ruby"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Perfect Ruby"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawed Sapphire"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Sapphire"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawless Sapphire"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Perfect Sapphire"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawed Topaz"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Topaz"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawless Topaz"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Perfect Topaz"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawed Emerald"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Emerald"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawless Emerald"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Perfect Emerald"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawed Amethyst"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Amethyst"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawless Amethyst"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Perfect Amethyst"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawed Diamond"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Diamond"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Flawless Diamond"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Perfect Diamond"))
 	end
 
     -- Revelations
@@ -1617,6 +1647,10 @@ function PST:initModCompat()
         -- Extra life trinkets
         table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Witch Paper"))
         table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Cartridge?"))
+
+		-- Trinket entropy blacklist
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Xmas Letter"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Fool of Hearts"))
 	end
 
 	-- Kicks and Giggles
@@ -1672,6 +1706,10 @@ function PST:initModCompat()
         -- Extra life trinkets
         table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Shuko's Severed Head"))
         table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("R Key Plush"))
+        table.insert(PST.extraLifeTrinkets, Isaac.GetTrinketIdByName("Tormented Soul"))
+
+		-- Trinket entropy blacklist
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("A Pipe Wrench"))
 	end
 
 	-- Lost and Forgotten
@@ -1816,6 +1854,9 @@ function PST:initModCompat()
 
         -- Extra life items
         table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Glass Idol"))
+
+		-- Trinket entropy blacklist
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Tungsten Cube"))
 	end
 
 	-- Tainted Treasure Rooms
