@@ -3,7 +3,7 @@ local lastResources = { hearts = 0, coins = 0, keys = 0, bombs = 0 }
 function PST:preSlotCollision(slot, collider, low)
     local player = collider:ToPlayer()
     if player then
-        local playerHearts = player:GetHearts() + player:GetSoulHearts() + player:GetEternalHearts() + player:GetBoneHearts()
+        local playerHearts = player:GetHearts() + player:GetSoulHearts() + player:GetEternalHearts() + player:GetBoneHearts() + player:GetRottenHearts()
         lastResources.hearts = playerHearts
         lastResources.coins = player:GetNumCoins()
         lastResources.keys = player:GetNumKeys()
@@ -43,7 +43,7 @@ function PST:onSlotUpdate(slot)
     -- Player collided with slot
     if slot:GetTouch() > 0 then
         local player = PST:getPlayer()
-        local playerHearts = player:GetHearts() + player:GetSoulHearts() + player:GetEternalHearts() + player:GetBoneHearts()
+        local playerHearts = player:GetHearts() + player:GetSoulHearts() + player:GetEternalHearts() + player:GetBoneHearts() + player:GetRottenHearts()
 
         local spentCoins = player:GetNumCoins() < lastResources.coins
         local spentHearts = playerHearts < lastResources.hearts
