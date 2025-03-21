@@ -7,6 +7,8 @@ function PST:getChangelogList()
         "- Added support for items/entities for the following mods: (thanks wookywok!)",
         "Heaven's Call mod, latest D!Edith update, More Penny Trinkets, Sewing Machine, Bael.",
         "- Added support for mod items that grant extra lives, for relevant effects.",
+        "- Added Deep-Space Tree nodes that allow you to additionally grant a portion of obols picked up to",
+        "all other characters, at a reduced rate.",
         "- Added 2 new global node types: 'Old Chest Conversion' and 'Scared Heart Conversion'.",
         "- Added a large global node: 'Unclick'.",
         "- Fixed Uber Expedition distortion modifier 'Tree stats are % less effective' causing base character stats to",

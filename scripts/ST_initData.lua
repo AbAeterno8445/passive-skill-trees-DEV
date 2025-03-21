@@ -1761,6 +1761,8 @@ function PST:resetMods()
 		bringTheOrder = false,
 		eldritchExchange = false,
 		obsBazaarDiscount = 0,
+		obolSharing = 0,
+		cosmicAltruism = false,
 
 		-- Sidereal Caches
 		sideCacheChallenge = 0,

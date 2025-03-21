@@ -252,6 +252,22 @@ function PST:prePickup(pickup, collider, low)
                     -- Expedition objective: collect Arcane Obols
                     PST:expedAddProgInRun("obols", obolValue)
 
+                    -- Mod: obol sharing
+                    local tmpMod = PST:getTreeSnapshotMod("obolSharing", 0)
+                    if tmpMod > 0 and 100 * math.random() < tmpMod then
+                        local obolShareRate = 0.33
+                        if PST:getTreeSnapshotMod("cosmicAltruism", false) then
+                            obolShareRate = 0.7
+                        end
+                        local currentCharName = PST:getCurrentCharName()
+                        for charName, tmpCharData in pairs(PST.modData.charData) do
+                            if charName ~= currentCharName then
+                                if not tmpCharData.arcaneObols then tmpCharData.arcaneObols = 0 end
+                                tmpCharData.arcaneObols = tmpCharData.arcaneObols + math.floor(obolValue * obolShareRate)
+                            end
+                        end
+                    end
+
                     return { Collide = false, SkipCollisionEffects = true }
                 end
             end
