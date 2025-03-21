@@ -1090,72 +1090,72 @@ PST.expedDeepSpaceMods = {
 
 -- Uber expedition entropy modifiers
 PST.expedEntropyMods = {
-    expedEnt_actives = { -- 1 TEST
+    expedEnt_actives = { -- 1
         desc = "Use active items with at least 3 charges: +2 entropy.",
         entropy = 2
     },
-    expedEnt_clearTime = { -- 2 TEST
+    expedEnt_clearTime = { -- 2
         desc = "Take longer than 10 seconds to clear a regular room past floor 4: +1 entropy.",
         entropy = 1
     },
-    expedEnt_bossDmg = { -- 3 TEST
+    expedEnt_bossDmg = { -- 3
         desc = "Take damage from a champion or boss monster: +3 entropy.",
         entropy = 3
     },
-    expedEnt_purchases = { -- 4 TEST
+    expedEnt_purchases = { -- 4
         desc = "Purchase items or make devil deals more than 3 times within a floor: +7 entropy per item/deal.",
         entropy = 7
     },
-    expedEnt_passiveItems = { -- 5 TEST
+    expedEnt_passiveItems = { -- 5
         desc = {
             "Acquire passive items while having at least 12 passive items, excluding progression items:",
             "+4 entropy per new item."
         },
         entropy = 4
     },
-    expedEnt_hearts = { -- 6 TEST
+    expedEnt_hearts = { -- 6
         desc = "Pick up non-red hearts while having a total of at least 5 hearts of any type: +3 entropy.",
         entropy = 3
     },
-    expedEnt_trinketSwap = { -- 7 TEST
+    expedEnt_trinketSwap = { -- 7
         desc = "After obtaining a trinket, lose or swap it: +4 entropy.",
         entropy = 4
     },
-    expedEnt_activeSwap = { -- 8 TEST
+    expedEnt_activeSwap = { -- 8
         desc = "After obtaining an active item (excluding starter items), lose or swap it: +6 entropy.",
         entropy = 6
     },
-    expedEnt_chests = { -- 9 TEST
+    expedEnt_chests = { -- 9
         desc = {
             "Open a chest after having opened 5 chests within the floor, excluding Sidereal Caches:",
             "+3 entropy per chest."
         },
         entropy = 3
     },
-    expedEnt_specialDmg = { -- 10 TEST
+    expedEnt_specialDmg = { -- 10
         desc = "Take damage from explosions or lasers: +3 entropy.",
         entropy = 3
     },
-    expedEnt_tearDmg = { -- 11 TEST
+    expedEnt_tearDmg = { -- 11
         desc = "Take damage from tears: +2 entropy.",
         entropy = 2
     },
-    expedEnt_finalBossDmg = { -- 12 TEST
+    expedEnt_finalBossDmg = { -- 12
         desc = "Take damage from a final boss: +4 entropy.",
         entropy = 4
     },
     -- AUXILIARY
-    expedEnt_loseRun = { -- 13 TEST
+    expedEnt_loseRun = { -- 13
         desc = "Lose a run: +12 entropy.",
         auxiliary = true,
         entropy = 12
     },
-    expedEnt_noPickups = { -- 14 TEST
+    expedEnt_noPickups = { -- 14
         desc = "Enter a floor past the first with 0 coins, 0 keys or 0 bombs: +5 entropy per pickup at 0.",
         auxiliary = true,
         entropy = 5
     },
-    expedEnt_compNode = { -- 15 TEST
+    expedEnt_compNode = { -- 15
         desc = "Complete this expedition node: +10 entropy.",
         auxiliary = true,
         entropy = 10

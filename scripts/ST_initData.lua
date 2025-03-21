@@ -558,6 +558,7 @@ PST.beggarTypes = {
 	SlotVariant.BEGGAR, SlotVariant.BATTERY_BUM, SlotVariant.ROTTEN_BEGGAR, SlotVariant.DEVIL_BEGGAR,
 	SlotVariant.KEY_MASTER, SlotVariant.BOMB_BUM
 }
+PST.expedEntropyTrinketBlacklist = {}
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}

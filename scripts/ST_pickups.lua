@@ -1645,7 +1645,7 @@ function PST:onTrinketRemove(player, type)
     end
 
     -- Uber expedition entropy mod
-    if PST:getTreeSnapshotMod("expedEnt_trinketSwap", false) then
+    if PST:getTreeSnapshotMod("expedEnt_trinketSwap", false) and not PST:arrHasValue(PST.expedEntropyTrinketBlacklist, type) then
         PST:expedAddEntropy(
             PST:getTreeSnapshotMod("expedDepth", 1),
             PST.expedEntropyMods.expedEnt_trinketSwap.entropy
