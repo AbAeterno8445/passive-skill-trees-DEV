@@ -163,6 +163,12 @@ function PST:gridEntityRockUpdate(entityParam)
                             PST:addModifiers({ allstats = tmpMod }, true)
                         end
 
+                        -- Mod +% all stats when destroying tinted rocks
+                        tmpMod = PST:getTreeSnapshotMod("tintedRockAllstatsPerc", 0)
+                        if tmpMod ~= 0 then
+                            PST:addModifiers({ allstatsPerc = tmpMod }, true)
+                        end
+
                         -- Expedition objective: destroy tinted rocks
                         PST:expedAddProgInRun("tintedRocks", 1)
 
