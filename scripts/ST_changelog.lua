@@ -11,6 +11,8 @@ function PST:getChangelogList()
         "all other characters, at a reduced rate.",
         "- Added 2 new global node types: 'Old Chest Conversion' and 'Scared Heart Conversion'.",
         "- Added a large global node: 'Unclick'.",
+        "- Deep-Space Astrolabe node now requires completing expedition depth 12 (from 15), allowing access to Uber",
+        "Expeditions a bit earlier.",
         "- Fixed Uber Expedition distortion modifier 'Tree stats are % less effective' causing base character stats to",
         "plummet as well.",
         "",
