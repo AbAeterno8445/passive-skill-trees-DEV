@@ -9,6 +9,22 @@ function PST:addPassiveInfoNode(nodeName)
     end
 end
 
+local menuOpenNodes = {}
+local treeOpenNodes = {}
+local submenuNodes = {}
+-- Add a node that opens a menu when pressing Allocate on it
+function PST:addMenuNode(nodeName, menuName)
+    menuOpenNodes[nodeName] = menuName
+end
+-- Add a node that changes the current tree when pressing Allocate on it
+function PST:addTreeOpenNode(nodeName, treeName)
+    treeOpenNodes[nodeName] = treeName
+end
+-- Add a node that opens a submenu when pressing Allocate on it
+function PST:addSubmenuOpenNode(nodeName, submenuName)
+    submenuNodes[nodeName] = submenuName
+end
+
 function PST.treeScreen:InputAllocate()
     -- Input: Allocate node
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
@@ -245,6 +261,25 @@ function PST.treeScreen:InputAllocate()
                         menuY = self.hoveredNode.pos.Y * 38
                     })
 
+                -- Extra menu-opening nodes
+                elseif menuOpenNodes[self.hoveredNode.name] then
+                    self.modules.menuScreensModule:SwitchToMenu(menuOpenNodes[self.hoveredNode.name])
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
+                -- Extra tree-opening nodes
+                elseif treeOpenNodes[self.hoveredNode.name] then
+                    local treeName = treeOpenNodes[self.hoveredNode.name]
+                    self:switchCurrentTree(treeName)
+                    PST:updateNodes(treeName, true)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
+                -- Extra submenu-opening nodes
+                elseif submenuNodes[self.hoveredNode.name] then
+                    submenusModule:SwitchSubmenu(submenuNodes[self.hoveredNode.name], {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 else
                     -- Star Tree: Open Inventories
                     for _, tmpType in pairs(PSTStarcursedType) do
