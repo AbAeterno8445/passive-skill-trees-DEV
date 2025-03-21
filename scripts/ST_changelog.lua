@@ -7,6 +7,8 @@ function PST:getChangelogList()
         "- Added support for items/entities for the following mods: (thanks wookywok!)",
         "Heaven's Call mod, latest D!Edith update, More Penny Trinkets, Sewing Machine, Bael.",
         "- Added support for mod items that grant extra lives, for relevant effects.",
+        "- Fixed Uber Expedition distortion modifier 'Tree stats are % less effective' causing base character stats to",
+        "plummet as well.",
         "",
 
         "v1.1.10",
