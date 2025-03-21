@@ -50,7 +50,7 @@ local floatIconDelay = 0
 local floatIconQueue = {}
 
 -- Create a floating fading icon (sprite)
-function PST:createFloatIconFX(sprite, position, speed, totalSteps, playerRelative)
+function PST:createFloatIconFX(sprite, position, speed, totalSteps, playerRelative, noDelay)
 	if not PST.config.floatingTexts then return end
 
 	local tmpIcon = {
@@ -61,7 +61,7 @@ function PST:createFloatIconFX(sprite, position, speed, totalSteps, playerRelati
 		playerRelative = playerRelative,
 		step = 0
 	}
-	if floatIconDelay == 0 then
+	if floatIconDelay == 0 or noDelay then
 		table.insert(floatingIcons, tmpIcon)
 		floatIconDelay = floatTextDelayDefault
 	else
