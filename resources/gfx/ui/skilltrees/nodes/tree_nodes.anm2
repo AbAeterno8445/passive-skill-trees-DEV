@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Ab Aeterno" CreatedOn="3/21/2025 1:17:36 PM" Version="167" Fps="30"/>
+	<Info CreatedBy="Ab Aeterno" CreatedOn="3/21/2025 4:08:15 PM" Version="168" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="tree_nodes.png" Id="0"/>
@@ -11,7 +11,7 @@
 		<Events/>
 	</Content>
 	<Animations DefaultAnimation="Default">
-		<Animation Name="Default" FrameNum="987" Loop="false">
+		<Animation Name="Default" FrameNum="988" Loop="false">
 			<RootAnimation>
 				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 			</RootAnimation>
@@ -1004,6 +1004,7 @@
 					<Frame XPosition="0" YPosition="0" XPivot="14" YPivot="14" XCrop="224" YCrop="3136" Width="28" Height="28" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 					<Frame XPosition="0" YPosition="0" XPivot="14" YPivot="14" XCrop="256" YCrop="3136" Width="28" Height="28" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 					<Frame XPosition="0" YPosition="0" XPivot="15" YPivot="15" XCrop="288" YCrop="3136" Width="30" Height="30" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="15" YPivot="15" XCrop="0" YCrop="3168" Width="30" Height="30" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 				</LayerAnimation>
 			</LayerAnimations>
 			<NullAnimations/>

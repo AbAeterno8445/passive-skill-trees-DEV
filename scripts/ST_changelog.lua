@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.12",
+        "- Added a large node to the sidereal tree: 'Obol Magnetism', which makes obol pickups move towards you.",
+        "",
+
         "v1.1.11",
         "- Added support for items/entities for the following mods: (thanks wookywok!)",
         "Heaven's Call mod, latest D!Edith update, More Penny Trinkets, Sewing Machine, Bael.",

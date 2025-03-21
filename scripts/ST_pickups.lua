@@ -1626,6 +1626,18 @@ function PST:onPickupUpdate(pickup)
                 end
             end
         end
+
+        -- Arcane Obols
+        if PST:getTreeSnapshotMod("obolMagnetism", false) then
+            for i, _ in ipairs(PST.expedObolDropValues) do
+                local tmpName = "Arcane Obols " .. tostring(i)
+                if pickup.SubType == Isaac.GetTrinketIdByName(tmpName) or pickup.SubType == Isaac.GetTrinketIdByName(tmpName) | TrinketType.TRINKET_GOLDEN_FLAG then
+                    local tmpMove = (PST:getPlayer().Position - pickup.Position):Normalized() * 1.5
+                    pickup.Position = pickup.Position + tmpMove
+                    break
+                end
+            end
+        end
     end
 end
 
