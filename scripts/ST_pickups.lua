@@ -1563,8 +1563,8 @@ function PST:onPickupUpdate(pickup)
                         pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true, true, true)
                         table.insert(emberAzuriteItems, pickup.InitSeed)
 
-                        local newBlueItem = Game():GetItemPool():GetCollectible(PST.ItemPoolType.POOL_BLUE, true)
-                        if newBlueItem ~= CollectibleType.COLLECTIBLE_NULL then
+                        local newBlueItem = Game():GetItemPool():GetCollectibleFromList(PST.blueItemPool)
+                        if newBlueItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
                             ---@diagnostic disable-next-line: undefined-field
                             pickup:RemoveCollectibleCycle()
                             pickup:AddCollectibleCycle(newBlueItem)

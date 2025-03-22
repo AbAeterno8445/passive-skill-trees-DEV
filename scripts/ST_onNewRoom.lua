@@ -1332,8 +1332,8 @@ function PST:onNewRoom()
 		end
 	end
 
-	-- Ancient starcursed jewel: Embered Azurite
-	if PST:SC_getSnapshotMod("emberedAzurite", false) and (#PST.ultraSecretPool == 0 or #PST.blueItemPool == 0) then
+	-- Blue and Red item pools
+	if (#PST.ultraSecretPool == 0 or #PST.blueItemPool == 0) then
 		PST.ultraSecretPool = {}
 		for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(ItemPoolType.POOL_ULTRA_SECRET)) do
 			table.insert(PST.ultraSecretPool, tmpItem.itemID)
@@ -1344,7 +1344,10 @@ function PST:onNewRoom()
 			table.insert(PST.blueItemPool, tmpItem.itemID)
 		end
 		PST:initModBlueItems()
-		PST:updateCacheDelayed(PST.allstatsCache)
+		-- Ancient Starcursed jewel: Embered Azurite
+		if PST:SC_getSnapshotMod("emberedAzurite", false) then
+			PST:updateCacheDelayed(PST.allstatsCache)
+		end
 	end
 
 	-- Ancient starcursed jewel: Phantasm Prism
