@@ -279,7 +279,7 @@ function PST:onUseCard(card, player, useFlags)
     end
 
     -- Ancient starcursed jewel: Crimson Warpstone
-    if PST:SC_getSnapshotMod("crimsonWarpstone", false) and card == Card.CARD_CRACKED_KEY and
+    if (PST:SC_getSnapshotMod("crimsonWarpstone", false) or PST:getTreeSnapshotMod("crackedKeyStacking", false)) and card == Card.CARD_CRACKED_KEY and
     PST:getTreeSnapshotMod("SC_crimsonWarpKeyStacks", 0) > 0 then
         player:AddCard(Card.CARD_CRACKED_KEY)
         PST:addModifiers({ SC_crimsonWarpKeyStacks = -1 }, true)

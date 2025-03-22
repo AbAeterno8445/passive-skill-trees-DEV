@@ -385,7 +385,7 @@ function PST:prePickup(pickup, collider, low)
             end
 
             -- Ancient starcursed jewel: Crimson Warpstone
-            if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
+            if PST:SC_getSnapshotMod("crimsonWarpstone", false) or PST:getTreeSnapshotMod("crackedKeyStacking", false) then
                 if pickup.Variant == PickupVariant.PICKUP_TAROTCARD and pickup.SubType == Card.CARD_CRACKED_KEY and not pickup:IsShopItem() and
                 (player:GetCard(0) == Card.CARD_CRACKED_KEY or player:GetCard(1) == Card.CARD_CRACKED_KEY) then
                     local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
