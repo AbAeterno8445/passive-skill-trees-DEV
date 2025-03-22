@@ -571,7 +571,7 @@ function PST:onNewRun(isContinued)
                 -- Ancient weapon mod: Ironhand
                 tmpMod = PST:getSnapAstralWepMod("ironhand")
                 if tmpMod then
-                    local tmpAllstats = math.floor(eqWeapon.honing / 10) * tmpMod[1]
+                    local tmpAllstats = math.floor((eqWeapon.honing or 0) / 10) * tmpMod[1]
                     if tmpAllstats > 0 then
                         PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
                     end

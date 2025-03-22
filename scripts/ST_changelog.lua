@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.1.12",
         "- Added a large node to the sidereal tree: 'Obol Magnetism', which makes obol pickups move towards you.",
+        "- Fixed error when starting a run using Ironhand (ancient gauntlet weapon) with no honing.",
         "",
 
         "v1.1.11",
