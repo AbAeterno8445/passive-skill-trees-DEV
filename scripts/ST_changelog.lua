@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.13",
+        "- Compatibility for locusts and blue items from the 'Malware & Spam' mod (thanks wookywok!).",
+        "- Fixed Embered Azurite not generating blue items from compatible mods.",
+        "",
+
         "v1.1.12",
         "- Added a large node to the sidereal tree: 'Obol Magnetism', which makes obol pickups move towards you.",
         "- Fixed error when starting a run using Ironhand (ancient gauntlet weapon) with no honing.",

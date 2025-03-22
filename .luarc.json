@@ -282,7 +282,8 @@
         "HeavensCall",
         "MorePennyTrinketsMod",
         "SewnMod",
-        "BaelMOD"
+        "BaelMOD",
+        "MalwareHorseman"
   ],
   "diagnostics.disable": ["lowercase-global", "inject-field"]
 }

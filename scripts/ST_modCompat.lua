@@ -2001,6 +2001,7 @@ function PST:initModCompat()
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Sewing machine (Evil)"))
     end
 
+    -- Bael
     if BaelMOD and not initMods.bael then
         initMods.bael = true
 
@@ -2044,6 +2045,16 @@ function PST:initModCompat()
         table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Cat Boy"))
 
         -- CAT WUZ HERE	
+    end
+
+    -- Malware the Forgotten Modern Horseman
+    if MalwareHorseman then
+        -- Locust trinkets
+        table.insert(PST.locustTrinkets, Isaac.GetTrinketIdByName("Locust of Malware"))
+        table.insert(PST.locustTrinkets, Isaac.GetTrinketIdByName("Locust of Malware") | TrinketType.TRINKET_GOLDEN_FLAG)
+
+        -- Locust trinkets (non-gold)
+        table.insert(PST.locustTrinketsNonGold, Isaac.GetTrinketIdByName("Locust of Malware"))
     end
 
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list
@@ -2268,5 +2279,10 @@ function PST:initModBlueItems()
     -- Sewing Machine blue items
     if SewnMod then
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Doll's Pure Body"))
+    end
+
+    -- Malware blue items
+    if MalwareHorseman then
+        table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Digital Pony"))
     end
 end
