@@ -488,8 +488,8 @@ function PST:sideArtiObjProgress(artiName, prog, set)
     end
 end
 
-function PST:sideArtiAddEnergy(energy)
-    if PST:isRunSidereal() and PST.specialNodes.sideArtiCD == 0 then
+function PST:sideArtiAddEnergy(energy, force)
+    if PST:isRunSidereal() and (PST.specialNodes.sideArtiCD == 0 or force) then
         PST:addModifiers({ sideArtiEnergy = energy }, true)
         local newEnergy = PST:getTreeSnapshotMod("sideArtiEnergy", 0)
 
@@ -501,236 +501,254 @@ function PST:sideArtiAddEnergy(energy)
                 end
                 PST:addModifiers({ sideArtiEnergy = { value = 0, set = true } }, true)
 
-                if PST.config.sideArtiText then
-                    PST:createFloatTextFX(artiData.name, Vector(0, 8), PST:RGBColor(80, 255, 255), 0.12, 90, true)
-                end
-                SFXManager():Play(SoundEffect.SOUND_REDLIGHTNING_ZAP_STRONG, 0.5, 2, false, 1.2)
-
-                -- Galvanic Meridion
-                if tmpArti == "galvanicMeridion" then
-                    if PST.specialNodes.arti_galvanicBuffTimer == 0 then
-                        PST:updateCacheDelayed()
-                    end
-                    PST.specialNodes.arti_galvanicBuffTimer = 150
-
-                -- Glacial Meridion
-                elseif tmpArti == "glacialMeridion" then
-                    PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_HOURGLASS, UseFlag.USE_NOANIM)
-
-                -- Smiting Meridion
-                elseif tmpArti == "smitingMeridion" then
-                    if PST.specialNodes.arti_smitingProcs < 4 then
-                        local tmpMobs = Isaac.GetRoomEntities()
-                        for _, tmpMob in ipairs(tmpMobs) do
-                            local tmpNPC = tmpMob:ToNPC()
-                            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
-                                local tmpDmg = 5 + PST:getLevel():GetStage() - 1 + tmpNPC.MaxHitPoints * 0.07
-                                tmpNPC:TakeDamage(tmpDmg, 0, EntityRef(PST:getPlayer()), 0)
-                            end
-                        end
-                        PST.specialNodes.arti_smitingProcs = PST.specialNodes.arti_smitingProcs + 1
-                    end
-
-                -- Infectious Meridion
-                elseif tmpArti == "infectiousMeridion" then
-                    local charData = PST:getCurrentCharData()
-                    local tmpPlayer = PST:getPlayer()
-                    local pulseSprite = PST:createAnimFXAt("gfx/1000.164_siren ring.anm2", "Idle", tmpPlayer.Position)
-                    pulseSprite.Color = Color(1, 1, 1, 1)
-                    pulseSprite.PlaybackSpeed = 1.5
-                    pulseSprite.Scale = Vector(0.8, 0.8)
-                    SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.8, 2, false, 1.3 + 0.2 * math.random())
-
-                    if charData then
-                        local nearbyEnem = Isaac.FindInRadius(tmpPlayer.Position, 200, EntityPartition.ENEMY)
-                        for _, tmpEnemy in ipairs(nearbyEnem) do
-                            if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
-                                local pickedStatus = PST:getTreeSnapshotMod("infMeridionStatus", "")
-                                if pickedStatus == "poison" then
-                                    tmpEnemy:AddPoison(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
-                                elseif pickedStatus == "fear" then
-                                    tmpEnemy:AddFear(EntityRef(tmpPlayer), 120)
-                                elseif pickedStatus == "charm" then
-                                    tmpEnemy:AddCharmed(EntityRef(tmpPlayer), 120)
-                                elseif pickedStatus == "slow" then
-                                    tmpEnemy:AddSlowing(EntityRef(tmpPlayer), 120, 0.8, Color(0.8, 0.8, 0.8, 1))
-                                elseif pickedStatus == "burn" then
-                                    tmpEnemy:AddBurn(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
-                                end
-                                local tmpDmg = 7 + PST:getLevel():GetStage() - 1
-                                tmpEnemy:TakeDamage(tmpDmg, 0, EntityRef(tmpPlayer), 0)
-                            end
-                        end
-                    end
-
-                -- Virtuous Meridion
-                elseif tmpArti == "virtuousMeridion" then
-                    if PST:getTreeSnapshotMod("arti_virtuousWisps", 0) < 5 then
-                        PST:addModifiers({ arti_virtuousWisps = 1 }, true)
-                        PST:addRandomWisp()
-                    end
-
-                -- Stone Meridion
-                elseif tmpArti == "stoneMeridion" then
-                    local tmpEnemy = nil
-                    local tmpHP = 0
-                    for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
-                        local tmpNPC = tmpMob:ToNPC()
-                        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly and
-                        tmpNPC.MaxHitPoints > tmpHP then
-                            tmpHP = tmpNPC.MaxHitPoints
-                            tmpEnemy = tmpNPC
-                        end
-                    end
-                    if tmpEnemy then
-                        tmpEnemy:AddFreeze(EntityRef(PST:getPlayer()), 210)
-                    end
-
-                -- Infernal Meridion
-                elseif tmpArti == "infernalMeridion" then
-                    for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
-                        local tmpNPC = tmpMob:ToNPC()
-                        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
-                            tmpNPC:AddBurn(EntityRef(PST:getPlayer()), 180, math.min(PST:getPlayer().Damage, 20))
-                            PST:addModifiers({ arti_infernalProc = true }, true)
-                        end
-                    end
-
-                -- Dead Sea Meridion
-                elseif tmpArti == "deadSeaMeridion" then
-                    if PST.specialNodes.arti_deadSeaProcs < 4 then
-                        PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS, UseFlag.USE_NOANIM)
-                        PST.specialNodes.arti_deadSeaProcs = PST.specialNodes.arti_deadSeaProcs + 1
-                    end
-
-                -- Flowing Meridion
-                elseif tmpArti == "flowingMeridion" then
-                    PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_ISAACS_TEARS, UseFlag.USE_NOANIM)
-
-                -- Osseous Meridion
-                elseif tmpArti == "osseousMeridion" then
-                    local tmpStage = PST:getLevel():GetStage()
-                    if tmpStage <= 6 then
-                        if PST:getTreeSnapshotMod("arti_osseousProcs", 0) < 3 then
-                            PST:addModifiers({ arti_osseousProcs = 1 }, true)
-
-                            local maxSpawns = 2
-                            if tmpStage > 3 then maxSpawns = 3 end
-                            for _=1,maxSpawns do
-                                local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 10)
-                                local newBony = Isaac.Spawn(EntityType.ENTITY_BONY, 0, 0, tmpPos, Vector.Zero, nil)
-                                newBony:AddCharmed(EntityRef(PST:getPlayer()), -1)
-                            end
-                        end
-                    else
-                        local maxProcs = 1
-                        if tmpStage >= 10 then maxProcs = 2 end
-                        if PST:getTreeSnapshotMod("arti_osseousProcs", 0) < maxProcs then
-                            PST:addModifiers({ arti_osseousProcs = 1 }, true)
-
-                            local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 10)
-                            local newBony = Isaac.Spawn(EntityType.ENTITY_BONY, 1, 0, tmpPos, Vector.Zero, nil)
-                            newBony:AddCharmed(EntityRef(PST:getPlayer()), -1)
-                        end
-                    end
-
-                -- Monstrous Meridion
-                elseif tmpArti == "monstrousMeridion" then
-                    if PST:getTreeSnapshotMod("arti_monstrousProcs", 0) < 4 then
-                        PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
-                        PST:addModifiers({ arti_monstrousProcs = 1 }, true)
-                    end
-
-                -- Brim Meridion
-                elseif tmpArti == "brimMeridion" then
-                    if not PST.specialNodes.arti_brimProc then
-                        PST.specialNodes.arti_brimProc = true
-                        for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
-                            local tmpNPC = tmpMob:ToNPC()
-                            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
-                                tmpNPC:AddBrimstoneMark(EntityRef(PST:getPlayer()), 210)
-                            end
-                        end
-                    end
-
-                -- Executioner Meridion
-                elseif tmpArti == "executionerMeridion" then
-                    SFXManager():Play(SoundEffect.SOUND_SIREN_SING_STAB, 0.4, 2, false, 1.3)
-                    PST.specialNodes.arti_executionerBuffTimer = 240
-
-                -- Blasting Meridion
-                elseif tmpArti == "blastingMeridion" then
-                    if PST:getTreeSnapshotMod("arti_blastingProcs", 0) < 2 then
-                        PST:addModifiers({ arti_blastingProcs = 1 }, true)
-                        PST:getPlayer():UseCard(Card.CARD_TOWER, UseFlag.USE_NOANIM)
-                        PST.specialNodes.explosionImmunityTimer = 120
-                    end
-
-                -- Gilded Meridion
-                elseif tmpArti == "gildedMeridion" then
-                    if not PST:getTreeSnapshotMod("arti_gildedProc", false) then
-                        PST.specialNodes.arti_gildedTimer = 210
-                        SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.4, 2, false, 1.3)
-                        PST:addModifiers({ arti_gildedProc = true }, true)
-                    end
-
-                -- Smelter Meridion
-                elseif tmpArti == "smelterMeridion" then
-                    if PST:getTreeSnapshotMod("arti_smelterProcs", 0) < 3 then
-                        local newTrinket = Game():GetItemPool():GetTrinket()
-                        local smeltedTrinkets = PST:getPlayer():GetSmeltedTrinkets()
-                        local failsafe = 0
-                        while (smeltedTrinkets[newTrinket] and (smeltedTrinkets[newTrinket].trinketAmount > 0 or smeltedTrinkets[newTrinket].goldenTrinketAmount > 0)) and failsafe < 200 do
-                            newTrinket = Game():GetItemPool():GetTrinket()
-                            failsafe = failsafe + 1
-                        end
-                        if failsafe < 200 then
-                            PST:getPlayer():AddSmeltedTrinket(newTrinket)
-                            PST:addModifiers({ arti_smelterProcs = 1 }, true)
-                        end
-                    end
-
-                -- Sidereal Meridion
-                elseif tmpArti == "siderealMeridion" then
-                    if PST:getTreeSnapshotMod("arti_siderealProcs", 0) < 5 then
-                        local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
-                        Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
-                        Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
-                        SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
-                        PST:addModifiers({ arti_siderealProcs = 1 }, true)
-                    end
-
-                -- Snake-Eye Meridion
-                elseif tmpArti == "snakeyeMeridion" then
-                    if PST:getTreeSnapshotMod("arti_snakeyeProcs", 0) < 3 then
-                        local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
-                        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_DICE_SHARD, tmpPos, Vector.Zero, nil)
-                        PST:addModifiers({ arti_snakeyeProcs = 1 }, true)
-                    end
-
-                -- Bloodmoon Meridion
-                elseif tmpArti == "bloodmoonMeridion" then
-                    local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
-                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, tmpPos, Vector.Zero, nil)
-                    if 100 * math.random() < 6 then
-                        -- Reveal Ultra Secret Room
-                        local level = PST:getLevel()
-                        local tmpRooms = level:GetRooms()
-                        for i=1,tmpRooms.Size-1 do
-                            local tmpRoom = tmpRooms:Get(i)
-                            if tmpRoom.Data.Type == RoomType.ROOM_ULTRASECRET then
-                                tmpRoom.DisplayFlags = 1 << 2
-                                level:UpdateVisibility()
-                                if PST.config.sideArtiText then
-                                    PST:createFloatTextFX("The Blood Moon Reveals...", Vector(0, 8), PST:RGBColor(200, 55, 55), 0.12, 180, true)
-                                end
-                                break
-                            end
-                        end
-                    end
-                end
+                PST:triggerMeridion(tmpArti)
                 break
             end
         end
     end
+end
+
+function PST:triggerMeridion(meridionName)
+    local artiData = PST.sideArtiData[meridionName]
+    if artiData and PST.config.sideArtiText then
+        PST:createFloatTextFX(artiData.name, Vector(0, 8), PST:RGBColor(80, 255, 255), 0.12, 90, true)
+    end
+    SFXManager():Play(SoundEffect.SOUND_REDLIGHTNING_ZAP_STRONG, 0.5, 2, false, 1.2)
+
+    -- Galvanic Meridion
+    if meridionName == "galvanicMeridion" then
+        if PST.specialNodes.arti_galvanicBuffTimer == 0 then
+            PST:updateCacheDelayed()
+        end
+        PST.specialNodes.arti_galvanicBuffTimer = 150
+
+    -- Glacial Meridion
+    elseif meridionName == "glacialMeridion" then
+        PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_HOURGLASS, UseFlag.USE_NOANIM)
+
+    -- Smiting Meridion
+    elseif meridionName == "smitingMeridion" then
+        if PST.specialNodes.arti_smitingProcs < 4 then
+            local tmpMobs = Isaac.GetRoomEntities()
+            for _, tmpMob in ipairs(tmpMobs) do
+                local tmpNPC = tmpMob:ToNPC()
+                if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                    local tmpDmg = 5 + PST:getLevel():GetStage() - 1 + tmpNPC.MaxHitPoints * 0.07
+                    tmpNPC:TakeDamage(tmpDmg, 0, EntityRef(PST:getPlayer()), 0)
+                end
+            end
+            PST.specialNodes.arti_smitingProcs = PST.specialNodes.arti_smitingProcs + 1
+        end
+
+    -- Infectious Meridion
+    elseif meridionName == "infectiousMeridion" then
+        local charData = PST:getCurrentCharData()
+        local tmpPlayer = PST:getPlayer()
+        local pulseSprite = PST:createAnimFXAt("gfx/1000.164_siren ring.anm2", "Idle", tmpPlayer.Position)
+        pulseSprite.Color = Color(1, 1, 1, 1)
+        pulseSprite.PlaybackSpeed = 1.5
+        pulseSprite.Scale = Vector(0.8, 0.8)
+        SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 0.8, 2, false, 1.3 + 0.2 * math.random())
+
+        if charData then
+            local nearbyEnem = Isaac.FindInRadius(tmpPlayer.Position, 200, EntityPartition.ENEMY)
+            for _, tmpEnemy in ipairs(nearbyEnem) do
+                if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                    local pickedStatus = PST:getTreeSnapshotMod("infMeridionStatus", "")
+                    if pickedStatus == "poison" then
+                        tmpEnemy:AddPoison(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
+                    elseif pickedStatus == "fear" then
+                        tmpEnemy:AddFear(EntityRef(tmpPlayer), 120)
+                    elseif pickedStatus == "charm" then
+                        tmpEnemy:AddCharmed(EntityRef(tmpPlayer), 120)
+                    elseif pickedStatus == "slow" then
+                        tmpEnemy:AddSlowing(EntityRef(tmpPlayer), 120, 0.8, Color(0.8, 0.8, 0.8, 1))
+                    elseif pickedStatus == "burn" then
+                        tmpEnemy:AddBurn(EntityRef(tmpPlayer), 120, math.min(tmpPlayer.Damage, 20))
+                    end
+                    local tmpDmg = 7 + PST:getLevel():GetStage() - 1
+                    tmpEnemy:TakeDamage(tmpDmg, 0, EntityRef(tmpPlayer), 0)
+                end
+            end
+        end
+
+    -- Virtuous Meridion
+    elseif meridionName == "virtuousMeridion" then
+        if PST:getTreeSnapshotMod("arti_virtuousWisps", 0) < 5 then
+            PST:addModifiers({ arti_virtuousWisps = 1 }, true)
+            PST:addRandomWisp()
+        end
+
+    -- Stone Meridion
+    elseif meridionName == "stoneMeridion" then
+        local tmpEnemy = nil
+        local tmpHP = 0
+        for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
+            local tmpNPC = tmpMob:ToNPC()
+            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly and
+            tmpNPC.MaxHitPoints > tmpHP then
+                tmpHP = tmpNPC.MaxHitPoints
+                tmpEnemy = tmpNPC
+            end
+        end
+        if tmpEnemy then
+            tmpEnemy:AddFreeze(EntityRef(PST:getPlayer()), 210)
+        end
+
+    -- Infernal Meridion
+    elseif meridionName == "infernalMeridion" then
+        for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
+            local tmpNPC = tmpMob:ToNPC()
+            if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                tmpNPC:AddBurn(EntityRef(PST:getPlayer()), 180, math.min(PST:getPlayer().Damage, 20))
+                PST:addModifiers({ arti_infernalProc = true }, true)
+            end
+        end
+
+    -- Dead Sea Meridion
+    elseif meridionName == "deadSeaMeridion" then
+        if PST.specialNodes.arti_deadSeaProcs < 4 then
+            PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS, UseFlag.USE_NOANIM)
+            PST.specialNodes.arti_deadSeaProcs = PST.specialNodes.arti_deadSeaProcs + 1
+        end
+
+    -- Flowing Meridion
+    elseif meridionName == "flowingMeridion" then
+        PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_ISAACS_TEARS, UseFlag.USE_NOANIM)
+
+    -- Osseous Meridion
+    elseif meridionName == "osseousMeridion" then
+        local tmpStage = PST:getLevel():GetStage()
+        if tmpStage <= 6 then
+            if PST:getTreeSnapshotMod("arti_osseousProcs", 0) < 3 then
+                PST:addModifiers({ arti_osseousProcs = 1 }, true)
+
+                local maxSpawns = 2
+                if tmpStage > 3 then maxSpawns = 3 end
+                for _=1,maxSpawns do
+                    local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 10)
+                    local newBony = Isaac.Spawn(EntityType.ENTITY_BONY, 0, 0, tmpPos, Vector.Zero, nil)
+                    newBony:AddCharmed(EntityRef(PST:getPlayer()), -1)
+                end
+            end
+        else
+            local maxProcs = 1
+            if tmpStage >= 10 then maxProcs = 2 end
+            if PST:getTreeSnapshotMod("arti_osseousProcs", 0) < maxProcs then
+                PST:addModifiers({ arti_osseousProcs = 1 }, true)
+
+                local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 10)
+                local newBony = Isaac.Spawn(EntityType.ENTITY_BONY, 1, 0, tmpPos, Vector.Zero, nil)
+                newBony:AddCharmed(EntityRef(PST:getPlayer()), -1)
+            end
+        end
+
+    -- Monstrous Meridion
+    elseif meridionName == "monstrousMeridion" then
+        if PST:getTreeSnapshotMod("arti_monstrousProcs", 0) < 4 then
+            PST:getPlayer():UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
+            PST:addModifiers({ arti_monstrousProcs = 1 }, true)
+        end
+
+    -- Brim Meridion
+    elseif meridionName == "brimMeridion" then
+        if not PST.specialNodes.arti_brimProc then
+            PST.specialNodes.arti_brimProc = true
+            for _, tmpMob in ipairs(Isaac.GetRoomEntities()) do
+                local tmpNPC = tmpMob:ToNPC()
+                if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                    tmpNPC:AddBrimstoneMark(EntityRef(PST:getPlayer()), 210)
+                end
+            end
+        end
+
+    -- Executioner Meridion
+    elseif meridionName == "executionerMeridion" then
+        SFXManager():Play(SoundEffect.SOUND_SIREN_SING_STAB, 0.4, 2, false, 1.3)
+        PST.specialNodes.arti_executionerBuffTimer = 240
+
+    -- Blasting Meridion
+    elseif meridionName == "blastingMeridion" then
+        if PST:getTreeSnapshotMod("arti_blastingProcs", 0) < 2 then
+            PST:addModifiers({ arti_blastingProcs = 1 }, true)
+            PST:getPlayer():UseCard(Card.CARD_TOWER, UseFlag.USE_NOANIM)
+            PST.specialNodes.explosionImmunityTimer = 120
+        end
+
+    -- Gilded Meridion
+    elseif meridionName == "gildedMeridion" then
+        if not PST:getTreeSnapshotMod("arti_gildedProc", false) then
+            PST.specialNodes.arti_gildedTimer = 210
+            SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.4, 2, false, 1.3)
+            PST:addModifiers({ arti_gildedProc = true }, true)
+        end
+
+    -- Smelter Meridion
+    elseif meridionName == "smelterMeridion" then
+        if PST:getTreeSnapshotMod("arti_smelterProcs", 0) < 3 then
+            local newTrinket = Game():GetItemPool():GetTrinket()
+            local smeltedTrinkets = PST:getPlayer():GetSmeltedTrinkets()
+            local failsafe = 0
+            while (smeltedTrinkets[newTrinket] and (smeltedTrinkets[newTrinket].trinketAmount > 0 or smeltedTrinkets[newTrinket].goldenTrinketAmount > 0)) and failsafe < 200 do
+                newTrinket = Game():GetItemPool():GetTrinket()
+                failsafe = failsafe + 1
+            end
+            if failsafe < 200 then
+                PST:getPlayer():AddSmeltedTrinket(newTrinket)
+                PST:addModifiers({ arti_smelterProcs = 1 }, true)
+            end
+        end
+
+    -- Sidereal Meridion
+    elseif meridionName == "siderealMeridion" then
+        if PST:getTreeSnapshotMod("arti_siderealProcs", 0) < 5 then
+            local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
+            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
+            SFXManager():Play(SoundEffect.SOUND_CHEST_DROP, 1, 2, false, 1.2)
+            PST:addModifiers({ arti_siderealProcs = 1 }, true)
+        end
+
+    -- Snake-Eye Meridion
+    elseif meridionName == "snakeyeMeridion" then
+        if PST:getTreeSnapshotMod("arti_snakeyeProcs", 0) < 3 then
+            local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_DICE_SHARD, tmpPos, Vector.Zero, nil)
+            PST:addModifiers({ arti_snakeyeProcs = 1 }, true)
+        end
+
+    -- Bloodmoon Meridion
+    elseif meridionName == "bloodmoonMeridion" then
+        local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
+        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, tmpPos, Vector.Zero, nil)
+        if 100 * math.random() < 6 then
+            -- Reveal Ultra Secret Room
+            local level = PST:getLevel()
+            local tmpRooms = level:GetRooms()
+            for i=1,tmpRooms.Size-1 do
+                local tmpRoom = tmpRooms:Get(i)
+                if tmpRoom.Data.Type == RoomType.ROOM_ULTRASECRET then
+                    tmpRoom.DisplayFlags = 1 << 2
+                    level:UpdateVisibility()
+                    if PST.config.sideArtiText then
+                        PST:createFloatTextFX("The Blood Moon Reveals...", Vector(0, 8), PST:RGBColor(200, 55, 55), 0.12, 180, true)
+                    end
+                    break
+                end
+            end
+        end
+    end
+end
+
+function PST:getRandomMeridion()
+    local randList = {}
+    for artiName, artiData in pairs(PST.sideArtiData) do
+        if artiData.type == "meridion" then
+            table.insert(randList, artiName)
+        end
+    end
+    if #randList > 0 then
+        return randList[math.random(#randList)]
+    end
+    return nil
 end
