@@ -1601,6 +1601,12 @@ function PST:onDamage(target, damage, flag, source)
             if tmpMod and srcPlayer:GetHearts() > 0 and srcPlayer:GetHearts() / srcPlayer:GetEffectiveMaxHearts() <= 0.5 then
                 dmgMult = dmgMult + tmpMod[1] / 100
             end
+
+            -- Mod: +% damage dealt against final bosses
+            tmpMod = PST:getTreeSnapshotMod("finalBossDmg", 0)
+            if tmpMod > 0 and PST:entityIsFinalBoss(target) then
+                dmgMult = dmgMult + tmpMod / 100
+            end
         end
 
         -- Check if a familiar got hit
