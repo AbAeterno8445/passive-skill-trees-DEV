@@ -38,7 +38,10 @@ local function PST_isNodeVisible(node, charData)
     -- Crimson nodes, hide if char below level 60
     if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and charData.level < 60)) and
     not PST:isNodeNameAllocated(PST.treeScreen.currentTree, node.name) then
-        return false
+        -- Astral Vessel special case, always show crimson nodes
+        if PST:getCurrentCharName() ~= "Astral Vessel" then
+            return false
+        end
     end
     -- Save Backups Addon node, remove if addon detected
     if node.name == "Save Backups Addon" and PST_BackupSave ~= nil then
