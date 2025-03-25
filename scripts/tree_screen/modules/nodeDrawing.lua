@@ -52,6 +52,12 @@ end
 
 PST.noFlashingNodes = {"Description Box Style", "Save Backups Addon"}
 
+-- Extra functions that can be added to render additional stuff on top of nodes. Functions are ran with params: (node, x pos, y pos, allocated)
+local nodeDrawExtraFuncs = {}
+function PST:addNodeDrawExtraFunc(funcName, func)
+    nodeDrawExtraFuncs[funcName] = func
+end
+
 ---@param tScreen PST.treeScreen
 function nodeDrawingModule:Render(tScreen)
     local charData = PST:getCurrentCharData()
@@ -207,6 +213,11 @@ function nodeDrawingModule:Render(tScreen)
                         end
                     end
                 end
+            end
+
+            -- Extra node drawing funcs
+            for _, tmpFunc in pairs(nodeDrawExtraFuncs) do
+                if tmpFunc then tmpFunc(node, finalDrawX, finalDrawY, isAllocated) end
             end
 
             -- Debug: show node IDs
