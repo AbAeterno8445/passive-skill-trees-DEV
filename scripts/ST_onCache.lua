@@ -472,7 +472,7 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Mod: % tears while berserk
-        if PST:isBerserk() then
+        if PST.gameInit and PST:isBerserk() then
             tmpTreeMod = PST:getTreeSnapshotMod("berserkTears", 0)
             if tmpTreeMod ~= 0 then
                 dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod

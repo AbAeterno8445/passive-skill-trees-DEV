@@ -3,6 +3,14 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.1.15",
+        "- Potential fix for rare crash on run start.",
+        "",
+
+        "v1.1.14",
+        "- Internal node drawing additions for mod compatibility.",
+        "",
+
         "v1.1.13",
         "- Compatibility for locusts and blue items from the 'Malware & Spam' mod (thanks wookywok!).",
         "- Fixed Embered Azurite not generating blue items from compatible mods.",
