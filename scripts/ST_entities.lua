@@ -26,7 +26,8 @@ end
 ---@param effect EntityEffect
 function PST:onEffectInit(effect)
     -- Lingering Malice node (T. Magdalene's tree)
-    if PST:getTreeSnapshotMod("lingeringMalice", false) and PST:arrHasValue(PST.playerDamagingCreep, effect.Variant) then
+    if (PST:getTreeSnapshotMod("lingeringMalice", false) or PST:getTreeSnapshotMod("creepHitFlying", false)) and
+    PST:arrHasValue(PST.playerDamagingCreep, effect.Variant) then
         table.insert(PST.specialNodes.lingMaliceCreepList, effect)
     end
 
