@@ -30,6 +30,12 @@ function PST:initStaticEntity(entity)
     return nil
 end
 
+-- Extra functions to run when a poop is destroyed
+local poopDestroyExtraFuncs = {}
+function PST:addPoopDestroyExtraFunc(funcName, func)
+    poopDestroyExtraFuncs[funcName] = func
+end
+
 function PST:gridEntityPoopUpdate(entityParam)
     local convertedPoop = false
     if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 then
@@ -121,6 +127,11 @@ function PST:gridEntityPoopUpdate(entityParam)
                         if tmpMod > 0 and 100 * math.random() < tmpMod then
                             PST:getPlayer():AddSoulHearts(2)
                         end
+                    end
+
+                    -- Extra funcs
+                    for _, tmpFunc in pairs(poopDestroyExtraFuncs) do
+                        tmpFunc(entityParam)
                     end
                 end
             end
