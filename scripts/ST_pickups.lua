@@ -1517,7 +1517,8 @@ end
 function PST:onPickupUpdate(pickup)
     -- Init pickup
     if pickup.FrameCount == 1 then
-        local isFirstSpawn = not pickup:GetData().PST_init and not pickup:GetData().PST_duped
+        local room = PST:getRoom()
+        local isFirstSpawn = not pickup:GetData().PST_init and not pickup:GetData().PST_duped and (room:IsFirstVisit() or room:GetFrameCount() > 1)
         PST:onPickupInit(pickup, isFirstSpawn)
         pickup:GetData().PST_init = true
     end
