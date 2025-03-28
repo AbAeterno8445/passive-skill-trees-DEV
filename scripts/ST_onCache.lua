@@ -69,7 +69,8 @@ function PST:onCache(player, cacheFlag)
     end
 
     -- Dark Judas mods
-    if player:GetPlayerType() == PlayerType.PLAYER_BLACKJUDAS then
+    local playerType = player:GetPlayerType()
+    if playerType == PlayerType.PLAYER_BLACKJUDAS then
         if cacheFlag == CacheFlag.CACHE_SPEED then
             -- Speed
             dynamicMods.speedPerc = dynamicMods.speedPerc + PST:getTreeSnapshotMod("darkJudasSpeed", 0)
@@ -81,6 +82,9 @@ function PST:onCache(player, cacheFlag)
             dynamicMods.rangePerc = dynamicMods.rangePerc + PST:getTreeSnapshotMod("darkJudasShotspeedRange", 0)
         end
     end
+
+    local plTrinket0 = player:GetTrinket(0)
+    local plTrinket1 = player:GetTrinket(1)
 
     local totalFamiliars = PST:getTreeSnapshotMod("totalFamiliars", 0)
     -- LUCK CACHE
@@ -102,7 +106,7 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +luck while holding a poop trinket
         tmpTreeMod = PST:getTreeSnapshotMod("poopTrinketLuck", 0)
         if tmpTreeMod ~= 0 then
-            local hasTrinket = PST:arrHasValue(PST.poopTrinkets, player:GetTrinket(0)) or PST:arrHasValue(PST.poopTrinkets, player:GetTrinket(1))
+            local hasTrinket = PST:arrHasValue(PST.poopTrinkets, plTrinket0) or PST:arrHasValue(PST.poopTrinkets, plTrinket1)
             if hasTrinket then
                 dynamicMods.luck = dynamicMods.luck + tmpTreeMod
             end
@@ -117,7 +121,7 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +luck while holding a locust (trinket)
         tmpTreeMod = PST:getTreeSnapshotMod("locustHeldLuck", 0)
         if tmpTreeMod ~= 0 then
-            local hasLocust = PST:arrHasValue(PST.locustTrinkets, player:GetTrinket(0)) or PST:arrHasValue(PST.locustTrinkets, player:GetTrinket(1))
+            local hasLocust = PST:arrHasValue(PST.locustTrinkets, plTrinket0) or PST:arrHasValue(PST.locustTrinkets, plTrinket1)
             if hasLocust then
                 dynamicMods.luck = dynamicMods.luck + tmpTreeMod
             end
@@ -170,18 +174,18 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Spirit Ebb node (The Forgotten's tree)
-        if (PST.specialNodes.spiritEbbHits.forgotten >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THESOUL) or
-        (PST.specialNodes.spiritEbbHits.soul >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN) then
+        if (PST.specialNodes.spiritEbbHits.forgotten >= 6 and playerType == PlayerType.PLAYER_THESOUL) or
+        (PST.specialNodes.spiritEbbHits.soul >= 6 and playerType == PlayerType.PLAYER_THEFORGOTTEN) then
             dynamicMods.damagePerc = dynamicMods.damagePerc + 10
         end
 
-        if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN and player:GetSubPlayer() then
+        if playerType == PlayerType.PLAYER_THEFORGOTTEN and player:GetSubPlayer() then
             -- Mod: +damage with The Forgotten per remaining soul/black hearts
             tmpTreeMod = PST:getTreeSnapshotMod("forgottenSoulDamage", 0)
             if tmpTreeMod > 0 then
                 dynamicMods.damage = dynamicMods.damage + tmpTreeMod * player:GetSubPlayer():GetSoulHearts() / 2
             end
-        elseif player:GetPlayerType() == PlayerType.PLAYER_THESOUL and player:GetSubPlayer() then
+        elseif playerType == PlayerType.PLAYER_THESOUL and player:GetSubPlayer() then
             -- Mod: +damage with The Soul per remaining soul/black hearts
             tmpTreeMod = PST:getTreeSnapshotMod("theSoulBoneDamage", 0)
             if tmpTreeMod > 0 then
@@ -190,7 +194,7 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Coordination node (Jacob & Esau's tree)
-        if PST.specialNodes.coordinationHits.esau >= 5 and player:GetPlayerType() == PlayerType.PLAYER_JACOB then
+        if PST.specialNodes.coordinationHits.esau >= 5 and playerType == PlayerType.PLAYER_JACOB then
             dynamicMods.damagePerc = dynamicMods.damagePerc + 10
         end
 
@@ -313,7 +317,7 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Spirit Ebb node (The Forgotten's tree)
-        if (PST.specialNodes.spiritEbbHits.forgotten >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THESOUL) then
+        if (PST.specialNodes.spiritEbbHits.forgotten >= 6 and playerType == PlayerType.PLAYER_THESOUL) then
             dynamicMods.speedPerc = dynamicMods.speedPerc + 10
         end
 
@@ -425,17 +429,17 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Spirit Ebb node (The Forgotten's tree)
-        if PST.specialNodes.spiritEbbHits.soul >= 6 and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN then
+        if PST.specialNodes.spiritEbbHits.soul >= 6 and playerType == PlayerType.PLAYER_THEFORGOTTEN then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + 10
         end
 
-        if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN and player:GetSubPlayer() then
+        if playerType == PlayerType.PLAYER_THEFORGOTTEN and player:GetSubPlayer() then
             -- Mod: +tears with The Forgotten per remaining soul/black hearts
             tmpTreeMod = PST:getTreeSnapshotMod("forgottenSoulTears", 0)
             if tmpTreeMod > 0 then
                 dynamicMods.tears = dynamicMods.tears + tmpTreeMod * player:GetSubPlayer():GetSoulHearts() / 2
             end
-        elseif player:GetPlayerType() == PlayerType.PLAYER_THESOUL and player:GetSubPlayer() then
+        elseif playerType == PlayerType.PLAYER_THESOUL and player:GetSubPlayer() then
             -- Mod: +tears with The Soul per remaining soul/black hearts
             tmpTreeMod = PST:getTreeSnapshotMod("theSoulBoneTears", 0)
             if tmpTreeMod > 0 then
@@ -444,7 +448,7 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Coordination node (Jacob & Esau's tree)
-        if PST.specialNodes.coordinationHits.jacob >= 5 and player:GetPlayerType() == PlayerType.PLAYER_ESAU then
+        if PST.specialNodes.coordinationHits.jacob >= 5 and playerType == PlayerType.PLAYER_ESAU then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + 10
         end
 
@@ -502,7 +506,7 @@ function PST:onCache(player, cacheFlag)
 
         -- Boon: +% tears while the trinket slot is empty
         tmpTreeMod = PST:getTreeSnapshotMod("boonEmptinessTears", 0)
-        if tmpTreeMod ~= 0 and player:GetTrinket(0) == 0 and player:GetTrinket(1) == 0 then
+        if tmpTreeMod ~= 0 and plTrinket0 == 0 and plTrinket1 == 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpTreeMod
         end
 
@@ -598,12 +602,12 @@ function PST:onCache(player, cacheFlag)
     end
 
     -- A True Ending? node (Lazarus' tree)
-    if PST:getTreeSnapshotMod("aTrueEnding", false) and player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
+    if PST:getTreeSnapshotMod("aTrueEnding", false) and playerType == PlayerType.PLAYER_LAZARUS2 then
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + PST:getTreeSnapshotMod("aTrueEndingCardUses", 0) * 2
     end
 
     -- Lazarus stat mods
-    if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
+    if playerType == PlayerType.PLAYER_LAZARUS then
         if cacheFlag == CacheFlag.CACHE_DAMAGE then
             dynamicMods.damage = dynamicMods.damage + PST:getTreeSnapshotMod("lazarusDamage", 0)
         elseif cacheFlag == CacheFlag.CACHE_SPEED then
@@ -615,7 +619,7 @@ function PST:onCache(player, cacheFlag)
         elseif cacheFlag == CacheFlag.CACHE_LUCK then
             dynamicMods.luck = dynamicMods.luck + PST:getTreeSnapshotMod("lazarusLuck", 0)
         end
-    elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2 then
+    elseif playerType == PlayerType.PLAYER_LAZARUS2 then
         if cacheFlag == CacheFlag.CACHE_DAMAGE then
             dynamicMods.damage = dynamicMods.damage + PST:getTreeSnapshotMod("lazarusDamage", 0) / 2
         elseif cacheFlag == CacheFlag.CACHE_SPEED then
@@ -630,13 +634,14 @@ function PST:onCache(player, cacheFlag)
     end
 
     -- Locust buff nodes
+    local plTrinkets
     for _, tmpLocust in ipairs(PST.locustTrinkets) do
-        local tmpLocustNum = player:GetSmeltedTrinkets()[tmpLocust &~ TrinketType.TRINKET_GOLDEN_FLAG].trinketAmount
-        for i=0,1 do
-            if player:GetTrinket(i) == tmpLocust then
-                tmpLocustNum = tmpLocustNum + 1
-            end
-        end
+        if not plTrinkets then plTrinkets = player:GetSmeltedTrinkets() end
+        local tmpLocustNum = plTrinkets[tmpLocust &~ TrinketType.TRINKET_GOLDEN_FLAG].trinketAmount
+
+        if plTrinket0 == tmpLocust then tmpLocustNum = tmpLocustNum + 1 end
+        if plTrinket1 == tmpLocust then tmpLocustNum = tmpLocustNum + 1 end
+
         if tmpLocust == TrinketType.TRINKET_LOCUST_OF_CONQUEST then
             tmpTreeMod = math.min(15, PST:getTreeSnapshotMod("conquestLocustSpeed", 0))
             if tmpTreeMod > 0 then
@@ -701,7 +706,7 @@ function PST:onCache(player, cacheFlag)
         local collectibleCount = PST:getTIsaacInvItems()
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.min(tmpMax, collectibleCount)
 
-        if player:GetTrinket(0) == 0 and player:GetTrinket(1) == 0 then
+        if plTrinket0 == 0 and plTrinket1 == 0 then
             dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 4
         end
         if player:GetActiveItem(0) == 0 and player:GetActiveItem(1) == 0 then
@@ -846,9 +851,9 @@ function PST:onCache(player, cacheFlag)
     tmpTreeMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
     if tmpTreeMod ~= 0 then
         local tmpStatCache = {}
-        if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS_B then
+        if playerType == PlayerType.PLAYER_LAZARUS_B then
             tmpStatCache = PST:getTreeSnapshotMod("lazFormStatCache", {})
-        elseif player:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
+        elseif playerType == PlayerType.PLAYER_LAZARUS2_B then
             tmpStatCache = PST:getTreeSnapshotMod("lazFormDeadStatCache", {})
         end
         for tmpStat, statVal in pairs(tmpStatCache) do
@@ -876,47 +881,49 @@ function PST:onCache(player, cacheFlag)
     end
 
     -- Cosmic Realignment node
-    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
-    local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPERB
-    if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
-        -- The Forgotten, Keeper debuff
-        if isKeeper then
-            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + cosmicRCache.forgottenKeeperDebuff
-        end
-    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB) then
-        -- Jacob & Esau, damage and tears debuff
-        if cacheFlag == CacheFlag.CACHE_DAMAGE then
-            dynamicMods.damagePerc = dynamicMods.damagePerc - 25 / (2 ^ cosmicRCache.jacobProcs)
-        elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
-            dynamicMods.tearsPerc = dynamicMods.tearsPerc - 25 / (2 ^ cosmicRCache.jacobProcs)
-        end
-    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
-        -- Tainted Isaac, -4% all stats per item obtained after the 8th one, up to 40%
-        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.max(-40, cosmicRCache.TIsaacItems * -4)
-    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
-        -- Tainted Samson, all stats buffer (-20% to 10%)
-        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.max(-20, math.min(10, cosmicRCache.TSamsonBuffer))
-    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN_B) then
-        -- Tainted Eden, shuffle stat reduction
-        for stat, val in pairs(dynamicMods) do
-            if cosmicRCache.TEdenDebuff[stat] ~= nil then
-                dynamicMods[stat] = val + cosmicRCache.TEdenDebuff[stat]
+    if PST:getTreeSnapshotMod("cosmicRealignment", false) ~= false then
+        local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
+        local isKeeper = playerType == PlayerType.PLAYER_KEEPER or playerType == PlayerType.PLAYER_KEEPERB
+        if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
+            -- The Forgotten, Keeper debuff
+            if isKeeper then
+                dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + cosmicRCache.forgottenKeeperDebuff
             end
-        end
-    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON_B) then
-        -- Tainted Apollyon, -4% damage, tears and luck per active locust, or -8% all stats if no locusts
-        if cosmicRCache.TApollyonLocusts > 0 then
-            local locustsVal = 4 * cosmicRCache.TApollyonLocusts
-            dynamicMods.damagePerc = dynamicMods.damagePerc - locustsVal
-            dynamicMods.tearsPerc = dynamicMods.tearsPerc - locustsVal
-            dynamicMods.luckPerc = dynamicMods.luckPerc - locustsVal
-        else
-            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
-        end
-    elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
-        -- Tainted Forgotten, Keeper debuff
-        if isKeeper and not cosmicRCache.TForgottenTracker.keeperCoin then
-            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JACOB) then
+            -- Jacob & Esau, damage and tears debuff
+            if cacheFlag == CacheFlag.CACHE_DAMAGE then
+                dynamicMods.damagePerc = dynamicMods.damagePerc - 25 / (2 ^ cosmicRCache.jacobProcs)
+            elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc - 25 / (2 ^ cosmicRCache.jacobProcs)
+            end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_ISAAC_B) then
+            -- Tainted Isaac, -4% all stats per item obtained after the 8th one, up to 40%
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.max(-40, cosmicRCache.TIsaacItems * -4)
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
+            -- Tainted Samson, all stats buffer (-20% to 10%)
+            dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + math.max(-20, math.min(10, cosmicRCache.TSamsonBuffer))
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_EDEN_B) then
+            -- Tainted Eden, shuffle stat reduction
+            for stat, val in pairs(dynamicMods) do
+                if cosmicRCache.TEdenDebuff[stat] ~= nil then
+                    dynamicMods[stat] = val + cosmicRCache.TEdenDebuff[stat]
+                end
+            end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_APOLLYON_B) then
+            -- Tainted Apollyon, -4% damage, tears and luck per active locust, or -8% all stats if no locusts
+            if cosmicRCache.TApollyonLocusts > 0 then
+                local locustsVal = 4 * cosmicRCache.TApollyonLocusts
+                dynamicMods.damagePerc = dynamicMods.damagePerc - locustsVal
+                dynamicMods.tearsPerc = dynamicMods.tearsPerc - locustsVal
+                dynamicMods.luckPerc = dynamicMods.luckPerc - locustsVal
+            else
+                dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
+            end
+        elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+            -- Tainted Forgotten, Keeper debuff
+            if isKeeper and not cosmicRCache.TForgottenTracker.keeperCoin then
+                dynamicMods.allstatsPerc = dynamicMods.allstatsPerc - 8
+            end
         end
     end
 
@@ -1074,7 +1081,7 @@ function PST:onCache(player, cacheFlag)
         player.Luck = player.Luck + math.abs(player.Luck) * tmpMult
 
         -- Fickle Fortune node (Cain's tree)
-        if PST:getTreeSnapshotMod("fickleFortune", false) and (player:GetTrinket(0) ~= 0 or player:GetTrinket(1) ~= 0) then
+        if PST:getTreeSnapshotMod("fickleFortune", false) and (plTrinket0 ~= 0 or plTrinket1 ~= 0) then
             -- Prevent luck from going below 1 while holding a trinket
             if player.Luck < 1 then
                 player.Luck = 1
@@ -1183,11 +1190,13 @@ function PST:onCache(player, cacheFlag)
         end
 
         -- Crimson Convergence buff: Minimum speed in cleared rooms
-        local charData = PST:getCurrentCharData()
-        if charData and PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" and PST:getRoom():GetAliveEnemiesCount() == 0 then
-            local tmpSpeed = math.min(2, 1 + 0.04 * charData.crimsonStarcores)
-            if player.MoveSpeed < tmpSpeed then
-                player.MoveSpeed = tmpSpeed
+        if PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" and PST:getRoom():GetAliveEnemiesCount() == 0 then
+            local charData = PST:getCurrentCharData()
+            if charData then
+                local tmpSpeed = math.min(2, 1 + 0.04 * charData.crimsonStarcores)
+                if player.MoveSpeed < tmpSpeed then
+                    player.MoveSpeed = tmpSpeed
+                end
             end
         end
 

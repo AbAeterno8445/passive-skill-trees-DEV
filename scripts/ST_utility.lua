@@ -281,19 +281,17 @@ end
 -- Get tree modifier (pre-run tree)
 ---@return any
 function PST:getTreeMod(modName, default)
-	if PST.treeMods[modName] == nil then
-		return default
-	end
-	return PST.treeMods[modName]
+	local modVal = PST.treeMods[modName]
+	if modVal == nil then return default end
+	return modVal
 end
 
 -- Get current snapshot tree modifier
 ---@return any
 function PST:getTreeSnapshotMod(modName, default)
-    if PST.modData.treeModSnapshot[modName] == nil then
-        return default
-    end
-    return PST.modData.treeModSnapshot[modName]
+	local modVal = PST.modData.treeModSnapshot[modName]
+    if modVal == nil then return default end
+    return modVal
 end
 
 -- Get a list of total modifiers formed from the currently allocated nodes in the given tree (currently only for non-character trees)
@@ -405,15 +403,9 @@ function PST:entityIsHPModBlacklisted(entity)
 end
 
 --- Get the amount of familiars in the room
----@param specificType? FamiliarVariant Check for a specific familiar type instead, and return the amount of those
-function PST:getRoomFamiliars(specificType)
-	local totalFamiliars = 0
-	for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
-		if tmpEntity.Type == EntityType.ENTITY_FAMILIAR and (specificType == nil or tmpEntity.Variant == specificType) then
-			totalFamiliars = totalFamiliars + 1
-		end
-	end
-	return totalFamiliars
+---@param specificVariant? FamiliarVariant Check for a specific familiar variant instead, and return the amount of those
+function PST:getRoomFamiliars(specificVariant)
+	return #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, specificVariant or -1)
 end
 
 function PST:removeRoomItems(protected)

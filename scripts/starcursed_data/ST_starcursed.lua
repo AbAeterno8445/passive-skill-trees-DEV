@@ -484,21 +484,19 @@ end
 function PST:SC_getSnapshotMod(modName, default)
     local starcursedMods = PST:getTreeSnapshotMod("starcursedMods", nil)
     -- Disable starcursed modifiers in mineshaft puzzle
-    if PST:inMineshaftPuzzle() then
-        -- Exceptions
-        if modName ~= "chroniclerStone" then
-            return default
-        end
+    if modName ~= "chroniclerStone" and PST:inMineshaftPuzzle() then
+        return default
     end
     if starcursedMods then
-        if starcursedMods[modName] == nil then return default end
-        if type(starcursedMods[modName]) == "table" then
-            if #starcursedMods[modName].rolls == 1 then
-                return starcursedMods[modName].rolls[1]
+        local modVal = starcursedMods[modName]
+        if modVal == nil then return default end
+        if type(modVal) == "table" then
+            if #modVal.rolls == 1 then
+                return modVal.rolls[1]
             end
-            return starcursedMods[modName].rolls
+            return modVal.rolls
         else
-            return starcursedMods[modName]
+            return modVal
         end
     end
     return default

@@ -5,6 +5,8 @@ function PST:getChangelogList()
 
         "v1.1.15",
         "- Potential fix for rare crash on run start.",
+        "- Optimized the player cache update function, which should improve general performance somewhat.",
+        "- Fixed error when using the 'luamod' command while in-game and having Epiphany installed (Tr. Judas check).",
         "",
 
         "v1.1.14",
