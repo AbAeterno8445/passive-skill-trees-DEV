@@ -31,6 +31,9 @@ PST.customNodeImages = {}
 -- For saving when entering a room
 PST.savePending = false
 
+-- For better GetData() usage (cache calls per entity using InitSeed index, and clean on new room)
+PST.entDataCache = {}
+
 -- Fonts
 PST.miniFont = Font()
 PST.miniFont:Load("font/cjk/lanapixel.fnt")

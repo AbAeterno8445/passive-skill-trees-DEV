@@ -468,6 +468,37 @@ function PST:getRandomStat(exclude)
 	return statsList[math.random(#statsList)]
 end
 
+---@param srcPlayer EntityPlayer
+---@param target Entity
+function PST:inflictRandomStatus(srcPlayer, target, duration)
+	local playerRef = EntityRef(srcPlayer)
+	local randStatus = math.random(10)
+	if randStatus == 1 then
+		target:AddBurn(playerRef, duration, srcPlayer.Damage)
+	elseif randStatus == 2 then
+		target:AddFear(playerRef, duration)
+	elseif randStatus == 3 then
+		target:AddBaited(playerRef, duration)
+	elseif randStatus == 4 then
+		target:AddFreeze(playerRef, duration)
+	elseif randStatus == 5 then
+		target:AddShrink(playerRef, duration)
+	elseif randStatus == 6 then
+		target:AddCharmed(playerRef, duration)
+	elseif randStatus == 7 then
+		target:AddSlowing(playerRef, duration, 0.8, Color(0.8, 0.8, 0.8, 1))
+		if math.random() < 0.3 then
+			target:AddIce(playerRef, duration * 3)
+		end
+	elseif randStatus == 8 then
+		target:AddBleeding(playerRef, duration)
+	elseif randStatus == 9 then
+		target:AddConfusion(playerRef, duration, false)
+	elseif randStatus == 10 then
+		target:AddPoison(playerRef, duration, srcPlayer.Damage)
+	end
+end
+
 function PST:onPlanetariumChance(chance)
 	if not PST.gameInit then return chance end
 
@@ -1026,6 +1057,16 @@ function PST:LJ_inMortis()
 		return LastJudgement and currentStage.Name == "Mortis"
 	end
 	return false
+end
+
+---@param entity Entity
+function PST:getEntData(entity)
+    if not PST.entDataCache[entity.InitSeed] then
+        local entData = entity:GetData()
+        PST.entDataCache[entity.InitSeed] = entData
+        return entData
+    end
+    return PST.entDataCache[entity.InitSeed]
 end
 
 function PST:getTilesDist(tiles)

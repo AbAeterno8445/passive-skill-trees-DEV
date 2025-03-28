@@ -1178,31 +1178,9 @@ function PST:onDamage(target, damage, flag, source)
                                     if not PST:getSnapAstralWepMod("chaoticTumult") then
                                         tmpMob:AddFreeze(EntityRef(srcPlayer), math.ceil(tmpMod[1] * 30))
                                     else
-                                        local tmpStatusSrc = EntityRef(srcPlayer)
                                         local tmpStatusDur = math.ceil(tmpMod[1] * 60)
                                         -- Ancient weapon mod: Chaotic Tumult
-                                        local randStatus = math.random(10)
-                                        if randStatus == 1 then
-                                            tmpMob:AddBurn(tmpStatusSrc, tmpStatusDur, srcPlayer.Damage)
-                                        elseif randStatus == 2 then
-                                            tmpMob:AddFear(tmpStatusSrc, tmpStatusDur)
-                                        elseif randStatus == 3 then
-                                            tmpMob:AddBaited(tmpStatusSrc, tmpStatusDur)
-                                        elseif randStatus == 4 then
-                                            tmpMob:AddFreeze(tmpStatusSrc, tmpStatusDur)
-                                        elseif randStatus == 5 then
-                                            tmpMob:AddShrink(tmpStatusSrc, tmpStatusDur)
-                                        elseif randStatus == 6 then
-                                            tmpMob:AddCharmed(tmpStatusSrc, tmpStatusDur)
-                                        elseif randStatus == 7 then
-                                            tmpMob:AddSlowing(tmpStatusSrc, tmpStatusDur, 0.8, Color(0.8, 0.8, 0.8, 1))
-                                        elseif randStatus == 8 then
-                                            tmpMob:AddBleeding(tmpStatusSrc, tmpStatusDur)
-                                        elseif randStatus == 9 then
-                                            tmpMob:AddConfusion(tmpStatusSrc, tmpStatusDur, false)
-                                        elseif randStatus == 10 then
-                                            tmpMob:AddPoison(tmpStatusSrc, tmpStatusDur, srcPlayer.Damage)
-                                        end
+                                        PST:inflictRandomStatus(srcPlayer, target, tmpStatusDur)
                                     end
                                 end
                                 if dmgMob or colossalMaul then

@@ -1,4 +1,5 @@
 function PST:onNewRun(isContinued)
+    Isaac.DebugString("[Passive Skill Trees] Beginning run init...")
     if isContinued then
         PST.player = Isaac.GetPlayer()
         PST.gameInit = true
@@ -1203,4 +1204,5 @@ function PST:onNewRun(isContinued)
         PST_BackupSave(PST.saveSlot, PST.config.maxBackups, PST.modData.level)
         print("PST: Created backup for slot", PST.saveSlot)
     end
+    Isaac.DebugString("[Passive Skill Trees] Run init complete.")
 end
