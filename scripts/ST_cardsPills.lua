@@ -101,20 +101,20 @@ function PST:onUseCard(card, player, useFlags)
     end
 
     -- Mod: chance to receive half a soul heart when using a card or pill
-    if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) and card ~= Card.CARD_CRACKED_KEY then
+    if 100 * math.random() < PST:getTreeSnapshotMod("soulOnCardPill", 0) and PST:arrHasValue(PST.blueGambitCards, card) then
         player:AddSoulHearts(1)
     end
 
     -- Mod: +damage when using a card, up to +3. Resets every floor
     local tmpBonus = PST:getTreeSnapshotMod("cardFloorDamage", 0)
-    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorDamageTotal", 0) < 3 and card ~= Card.CARD_CRACKED_KEY then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorDamageTotal", 0) < 3 and PST:arrHasValue(PST.blueGambitCards, card) then
         local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
         PST:addModifiers({ damage = tmpAdd, cardFloorDamageTotal = tmpAdd }, true)
     end
 
     -- Mod: +tears when using a card, up to +3. Resets every floor
     tmpBonus = PST:getTreeSnapshotMod("cardFloorTears", 0)
-    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorTearsTotal", 0) < 3 and card ~= Card.CARD_CRACKED_KEY then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("cardFloorTearsTotal", 0) < 3 and PST:arrHasValue(PST.blueGambitCards, card) then
         local tmpAdd = math.min(tmpBonus, 3 - tmpBonus)
         PST:addModifiers({ tears = tmpAdd, cardFloorTearsTotal = tmpAdd }, true)
     end
@@ -126,7 +126,7 @@ function PST:onUseCard(card, player, useFlags)
 
     -- Mod: % luck for the current floor when using a card
     tmpBonus = PST:getTreeSnapshotMod("cardFloorLuck", 0)
-    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("floorLuckPerc", 0) < 15 and card ~= Card.CARD_CRACKED_KEY then
+    if tmpBonus ~= 0 and PST:getTreeSnapshotMod("floorLuckPerc", 0) < 15 and PST:arrHasValue(PST.blueGambitCards, card) then
         PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
     end
 
