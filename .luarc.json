@@ -283,7 +283,12 @@
         "MorePennyTrinketsMod",
         "SewnMod",
         "BaelMOD",
-        "MalwareHorseman"
+        "MalwareHorseman",
+        "SEWCOL",
+        "TOYCG",
+        "CURCOL",
+        "GOLCG"
   ],
-  "diagnostics.disable": ["lowercase-global", "inject-field"]
+  "diagnostics.disable": ["lowercase-global", "inject-field",
+        "undefined-global"]
 }

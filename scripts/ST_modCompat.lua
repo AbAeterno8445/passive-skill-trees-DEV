@@ -2057,6 +2057,117 @@ function PST:initModCompat()
         table.insert(PST.locustTrinketsNonGold, Isaac.GetTrinketIdByName("Locust of Malware"))
     end
 
+    -- Restored Collection
+	if RestoredCollection then
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Checked Mate"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("​Menorah")) -- debating whether to keep this, it only can damage enemies under pretty specific circumstances - wooky
+
+		-- Grand Consonance
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("TC Menorah"))
+	end
+
+	-- Rune Rooms
+	if RuneRooms then
+		-- Runes
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Gebo"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Kenaz"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Fehu"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Othala"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Ingwaz"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Sowilo"))
+	end
+
+	---- Preyn's Collections ----
+	-- The Cursed Collection
+	if CURCOL then
+		-- Dice Items
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("Cursed dice"))
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Chained spikey"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil heretic"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Mended knife"))
+
+		-- Bone items
+		table.insert(PST.boneItems, Isaac.GetItemIdByName("Revenir"))
+	end
+
+	-- The Quarry Collection
+	if QUACOL then
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Hot wheels"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Broken shell"))
+
+	end
+
+	-- The Golden Collection
+	if GOLCG then
+		-- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Shining clicker"))
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Spinning cent"))
+	end
+
+
+	-- The Rotten Collection
+	if ROTCG then
+		--HP Ups
+        local tmpHPUpItems = {
+            {"Foul guts", 1}, {"Necrosis", 2}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Cube of rot"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Mother's spine"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Rotten gut"))
+	end
+
+	-- The Sewage Collection
+	if SEWCOL then
+		-- Poop items
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Plastic bag"))
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Slippy tooth"))
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("The pail"))
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Willo"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Driftwood"))
+
+		--HP Ups
+        local tmpHPUpItems = {
+            {"Whirling leech", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+	end
+
+	-- The Toybox Collection
+	if TOYCG then
+		--HP Ups
+        local tmpHPUpItems = {
+            {"Jar of air", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+	end
+	---- End of Preyn's Collections ----
+
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list
     if not initMods.songOfTheFew then
         initMods.songOfTheFew = true
@@ -2285,4 +2396,25 @@ function PST:initModBlueItems()
     if MalwareHorseman then
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Digital Pony"))
     end
+
+    -- Restored Collection blue items
+	if RestoredCollection then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blank Bombs"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Beth's Heart"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Pacifist"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Bowl of Tears"))
+	end
+
+	-- Sewage Collection blue items
+	if SEWCOL then
+        table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Whirling leech"))
+    end
+
+	-- Toybox Collection blue items
+	if TOYCG then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Ancestral assistance"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blood of the abyss"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Witch wand"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blank"))
+	end
 end
