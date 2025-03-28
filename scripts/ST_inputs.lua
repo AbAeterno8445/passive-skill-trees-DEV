@@ -37,6 +37,16 @@ function PST:onInput(entity, inputHook, buttonAction)
     end
 end
 
+function PST:onMenuInput(entity, inputHook, buttonAction)
+    if PST.treeScreen.open then
+        if inputHook == InputHook.IS_ACTION_PRESSED or inputHook == InputHook.IS_ACTION_TRIGGERED then
+            return false
+        elseif inputHook == InputHook.GET_ACTION_VALUE then
+            return 0
+        end
+    end
+end
+
 function PST:IsButtonTriggered(button, controllerId)
     if controllerId == 0 then return Input.IsButtonTriggered(button, controllerId)
     else

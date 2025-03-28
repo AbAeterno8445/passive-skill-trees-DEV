@@ -457,6 +457,7 @@ PST:AddCallback(ModCallbacks.MC_PLAYER_GET_ACTIVE_MAX_CHARGE, PST.getActiveMaxCh
 PST:AddCallback(ModCallbacks.MC_POST_WEAPON_FIRE, PST.postWeaponFire)
 PST:AddCallback(ModCallbacks.MC_PRE_SFX_PLAY, PST.preSFXPlay)
 PST:AddCallback(ModCallbacks.MC_POST_MODS_LOADED, PST.postModsLoaded)
+PST:AddCallback(ModCallbacks.MC_MENU_INPUT_ACTION, PST.onMenuInput)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
 -- Populate medium node lists
