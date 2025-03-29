@@ -127,9 +127,11 @@ function PST:onNPCUpdate(npc)
                 local tmpHPMult = 1
 
                 local extraHPMult = 1
-                -- Halve monster HP boosts on the very first floor
+                -- Reduce HP boosts on the first floors
                 if PST:isFirstOrigStage() then
                     extraHPMult = 0.5
+                elseif PST:getLevel():GetStage() == 2 then
+                    extraHPMult = 0.75
                 end
 
                 -- Larry Jr nerf
@@ -155,7 +157,13 @@ function PST:onNPCUpdate(npc)
 
                 -- Expedition implicit: mob hp
                 local tmpMod = PST:getTreeSnapshotMod("expedImp_mobHP", 0)
-                if tmpMod > 0 then
+                if tmpMod > 0 and not npc:IsBoss() then
+                    tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
+                end
+
+                -- Expedition implicit: boss hp
+                tmpMod = PST:getTreeSnapshotMod("expedImp_bossHP", 0)
+                if tmpMod > 0 and npc:IsBoss() then
                     tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
                 end
 

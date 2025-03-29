@@ -1567,8 +1567,8 @@ function PST:frameUpdate()
 			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 		end
 		-- Deep-Space Distortion mod: Limit coins
-		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumCoins() > 25 then
-			player:AddCoins(25 - player:GetNumCoins())
+		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumCoins() > 35 then
+			player:AddCoins(35 - player:GetNumCoins())
 		end
 		updateTrackers.coinTracker = player:GetNumCoins()
 	end
@@ -1588,15 +1588,15 @@ function PST:frameUpdate()
 			end
 		end
 		-- Deep-Space Distortion mod: Limit keys
-		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumCoins() > 4 then
-			player:AddCoins(4 - player:GetNumKeys())
+		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumCoins() > 8 then
+			player:AddCoins(8 - player:GetNumKeys())
 		end
 		updateTrackers.keyTracker = player:GetNumKeys()
 	end
 
 	-- Deep-Space Distortion mod: Limit bombs
-	if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumBombs() > 4 then
-		player:AddBombs(4 - player:GetNumBombs())
+	if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumBombs() > 8 then
+		player:AddBombs(8 - player:GetNumBombs())
 	end
 
 	-- Level curse changes

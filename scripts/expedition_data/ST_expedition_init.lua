@@ -1060,7 +1060,8 @@ PST.expeditionRewardData = {
 
 -- Expedition-specific modifier descriptions
 PST.expedDescriptions = {
-    expedImp_mobHP = "+%d%% monster HP.",
+    expedImp_mobHP = "+%d%% non-boss monster HP.",
+    expedImp_bossHP = "+%d%% boss monster HP.",
     expedImp_mobSpeed = "+%d%% monster speed.",
     expedImp_floorCurse = "+%d%% chance to receive a curse when entering a floor.",
     expedImp_pickupScarcity = "+%d%% coin, key, bomb and heart scarcity.",
@@ -1070,16 +1071,16 @@ PST.expedDescriptions = {
         "Heartbreak can no longer show up."
     },
     lessAttempts = "-%d max expedition attempt(s).",
-    expedImp_mobDmgRed = "+%d%% monster damage reduction.",
+    expedImp_mobDmgRed = "+%d%% boss monster damage reduction.",
 
     -- Deep-Space Distortion modifier descriptions
-    dsdMod_finalDmgRed = "+40% final boss damage reduction.",
+    dsdMod_finalDmgRed = "+30% final boss damage reduction.",
     dsdMod_finalDmgImm = "Final bosses gain damage immunity for 5 seconds every 25% HP lost.",
     dsdMod_finalLastStand = "While final bosses are at 12% HP or less, all their hits instantly kill you.",
-    dsdMod_pickupLimit = "You cannot have more than 25 coins, 4 keys or 4 bombs.",
+    dsdMod_pickupLimit = "You cannot have more than 35 coins, 8 keys or 8 bombs.",
     dsdMod_treeEffect = "Tree effects on stats are 35% as effective.",
-    dsdMod_heartScarcity = "+50% heart scarcity.",
-    dsdMod_pickupScarcity = "+50% coin, key and bomb scarcity."
+    dsdMod_heartScarcity = "+33% heart scarcity.",
+    dsdMod_pickupScarcity = "+33% coin, key and bomb scarcity."
 }
 
 -- List of Deep-Space Distortion modifiers (for uber expeditions)

@@ -850,7 +850,7 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Deep-Space Distortion mod: Final boss damage reduction
             if PST:getTreeSnapshotMod("dsdMod_finalDmgRed", false) and PST:entityIsFinalBoss(target) then
-                dmgMult = dmgMult - 0.4
+                dmgMult = dmgMult - 0.3
             end
 
             -- Deep-Space Distortion mod: Final boss temporary immunity
@@ -2304,7 +2304,7 @@ function PST:onDamage(target, damage, flag, source)
 
         -- Expedition implicit: monster damage reduction
         local tmpMod = PST:getTreeSnapshotMod("expedImp_mobDmgRed", 0)
-        if tmpMod > 0 and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly and not PST:entityIsHPModBlacklisted(target) then
+        if tmpMod > 0 and target:IsBoss() and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly and not PST:entityIsHPModBlacklisted(target) then
             damage = damage * (1 - tmpMod / 100)
         end
 

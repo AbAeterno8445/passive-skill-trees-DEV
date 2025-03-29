@@ -273,11 +273,13 @@ function expeditionScreen:OnInput()
         if self.hoveredNode and self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
             self.resetTimer = self.resetTimer + 1
             if self.resetTimer == 180 then
-                local obolCost = PST:getExpedResetCost(self.currentDepth, self.uberMode)
+                local obolCost = PST:getExpedResetObolCost(self.currentDepth, self.uberMode)
+                local respecCost = PST:getExpedResetCost(self.currentDepth, self.uberMode)
                 local currentChar = PST:getCurrentCharData()
-                if currentChar and ((PST.modData.skillPoints >= 1 and currentChar.arcaneObols >= obolCost) or PST.debugOptions.infSP) then
+                if currentChar and ((PST.modData.skillPoints >= 1 and PST.modData.respecPoints >= respecCost and currentChar.arcaneObols >= obolCost) or PST.debugOptions.infSP) then
                     if not PST.debugOptions.infSP then
                         PST.modData.skillPoints = PST.modData.skillPoints - 1
+                        PST.modData.respecPoints = PST.modData.respecPoints - respecCost
                         currentChar.arcaneObols = currentChar.arcaneObols - obolCost
                     end
                     PST:resetExpedition(self.currentDepth, self.uberMode)
@@ -403,8 +405,10 @@ function expeditionScreen:Render(tScreen)
                 table.insert(nodeDesc, {"Exp. Run OFF", PST.kcolors.RED1})
             end
             -- Respec for reset
+            local respecCost = PST:getExpedResetCost(self.currentDepth, self.uberMode)
+            local obolCost = PST:getExpedResetObolCost(self.currentDepth, self.uberMode)
             table.insert(nodeDesc, "Hold the Respec button for 3 seconds to reset and reroll this expedition.")
-            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP and " .. tostring(PST:getExpedResetCost(expData.depth, expData.uber)) .. " Arcane Obols.", PST.kcolors.PURPLE1})
+            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP, " .. obolCost .. " Arcane Obols, and " .. respecCost .. " Respecs.", PST.kcolors.PURPLE1})
         else
             -- Normal expedition node description
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
@@ -578,9 +582,11 @@ function expeditionScreen:Render(tScreen)
                 {"Order: " .. tostring(expData.order or 0), PST.kcolors.TEAL1},
                 {"Entropy: " .. tostring(expData.entropy or 0), PST.kcolors.RED1},
             }
-            if expData.depth < 5 then
+            if expData.version == 1 and expData.depth < 5 then
                 table.insert(uberInfoDesc, "At uber depths 5+, node columns are reduced to 7, and final reward is guaranteed")
                 table.insert(uberInfoDesc, "to be a choice between rewards.")
+            elseif expData.version == 2 and expData.depth < 4 then
+                table.insert(uberInfoDesc, "At uber depths 4+, final reward is guaranteed to be a choice between rewards.")
             end
             if expData.dsMods and #expData.dsMods > 0 then
                 table.insert(uberInfoDesc, {"Deep-Space Distortion Mods:", PST.kcolors.RED2})
@@ -593,17 +599,31 @@ function expeditionScreen:Render(tScreen)
                 end
             end
         else
-            uberInfoDesc = {
-                {"Order acts as a shield against Entropy. Whenever you gain Entropy, it is first deducted", PST.kcolors.TEAL1},
-                {"from your Order instead, if you have any.", PST.kcolors.TEAL1},
-                {"Entropy increases the difficulty of the expedition at certain intervals, and is gained through", PST.kcolors.RED1},
-                {"modifiers within the expedition nodes.", PST.kcolors.RED1},
-                {"Every 24 entropy: increase the magnitude of the expedition's implicit modifiers, up to 10 times.", PST.kcolors.RED2},
-                {"Every 30 entropy: add a random curse to the expedition, up to 5 times.", PST.kcolors.RED2},
-                {"Every 50 entropy: add a random Deep-Space Distortion modifier to the expedition, up to 3 times.", PST.kcolors.RED2},
-                {"Deep-Space Distortion mods add a significant amount of challenge to the runs.", PST.kcolors.RED2},
-                {"At 100 entropy, max attempts for the expedition is lowered by 1.", PST.kcolors.RED2}
-            }
+            if expData.version == 1 then
+                uberInfoDesc = {
+                    {"Order acts as a shield against Entropy. Whenever you gain Entropy, it is first deducted", PST.kcolors.TEAL1},
+                    {"from your Order instead, if you have any.", PST.kcolors.TEAL1},
+                    {"Entropy increases the difficulty of the expedition at certain intervals, and is gained through", PST.kcolors.RED1},
+                    {"modifiers within the expedition nodes.", PST.kcolors.RED1},
+                    {"Every 24 entropy: increase the magnitude of the expedition's implicit modifiers, up to 10 times.", PST.kcolors.RED2},
+                    {"Every 30 entropy: add a random curse to the expedition, up to 5 times.", PST.kcolors.RED2},
+                    {"Every 50 entropy: add a random Deep-Space Distortion modifier to the expedition, up to 3 times.", PST.kcolors.RED2},
+                    {"Deep-Space Distortion mods add a significant amount of challenge to the runs.", PST.kcolors.RED2},
+                    {"At 100 entropy, max attempts for the expedition is lowered by 1.", PST.kcolors.RED2}
+                }
+            elseif expData.version == 2 then
+                uberInfoDesc = {
+                    {"Order acts as a shield against Entropy. Whenever you gain Entropy, it is first deducted", PST.kcolors.TEAL1},
+                    {"from your Order instead, if you have any.", PST.kcolors.TEAL1},
+                    {"Entropy increases the difficulty of the expedition at certain intervals, and is gained through", PST.kcolors.RED1},
+                    {"modifiers within the expedition nodes.", PST.kcolors.RED1},
+                    {"Every 40 entropy: increase the magnitude of the expedition's implicit modifiers, up to 8 times.", PST.kcolors.RED2},
+                    {"Every 60 entropy: add a random curse to the expedition, up to 5 times.", PST.kcolors.RED2},
+                    {"Every 75 entropy: add a random Deep-Space Distortion modifier to the expedition, up to 3 times.", PST.kcolors.RED2},
+                    {"Deep-Space Distortion mods add a significant amount of challenge to the runs.", PST.kcolors.RED2},
+                    {"At 100 entropy, max attempts for the expedition is lowered by 1.", PST.kcolors.RED2}
+                }
+            end
         end
         tScreen:DrawNodeBox("Uber Info", uberInfoDesc)
     end

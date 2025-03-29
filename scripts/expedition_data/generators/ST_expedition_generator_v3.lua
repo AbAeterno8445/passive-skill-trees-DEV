@@ -8,54 +8,45 @@ local function reversedipairs(t)
     return reversedipairsiter, t, #t + 1
 end
 
-local generatorVersion = 1
--- Generate a set of nodes for an astral expedition
+local generatorVersion = 3
+-- Generate a set of nodes for an astral expedition (version 2)
 ---@param depth number
 ---@param seed? integer
 ---@return PSTExpedition
-function PST:generateUberExpeditionV1(depth, seed, expModifiers)
+function PST:generateExpeditionV3(depth, seed)
     local expSeed = seed or math.random(100000000)
 
-    local uberDepth = (15 + depth) * 2
-
-    -- Create RNG objects for each 'category' of randomization
+    -- V2: Create RNG objects for each 'category' of randomization
     local expRNG = RNG(expSeed) -- starter RNG
     local nodeRNG = RNG(expRNG:Next()) -- node generation RNG (node type decisions)
-    local uberRNG = RNG(expRNG:Next()) -- uber features RNG
+    local objectiveRNG = RNG(expRNG:Next()) -- node objective RNG
     local curseRNG = RNG(expRNG:Next()) -- node curse RNG
     local rewardRNG = RNG(expRNG:Next()) -- node reward RNG
-    local modsRNG = RNG(expRNG:Next()) -- modifiers RNG
 
-    -- Uber: fixed length of 8 nodes, 7 at depth 5+
-    local expLength = 8
-    if depth >= 5 then expLength = 7 end
-
-    local startOrder = 0
-    -- Bring The Order node (Deep-Space tree)
-    if expModifiers and expModifiers.bringTheOrder then
-        startOrder = 15
-    end
+    local expLength = math.min(9, 5 + math.floor(depth / 5))
 
     -- Reward type weights (starting value, addition per advanced column, min or max value)
     local rewardWeights = {
-        [PSTExpNodeRewardType.OBOLS] = { val = 100, add = 5 },
-        [PSTExpNodeRewardType.EXP] = { val = 100, add = -5 },
-        [PSTExpNodeRewardType.ATTEMPTS] = { val = 3 + depth / 5, add = 0.1 },
-        [PSTExpNodeRewardType.ORDER] = { val = 9, add = 0.2 },
-        -- Very rare
-        [PSTExpNodeRewardType.C_STARCORE] = { val = 0.6 + depth / 10, add = 0 },
-        [PSTExpNodeRewardType.GLOBAL_SP] = { val = 0.5 + depth / 10, add = 0 },
-        [PSTExpNodeRewardType.STARBLESS_WEP] = { val = 0.4 + depth / 10, add = 0 }
+        [PSTExpNodeRewardType.OBOLS] = { val = 400, add = -25, min = 200 },
+        [PSTExpNodeRewardType.EXP] = { val = 100, add = -1, min = 60 },
+        [PSTExpNodeRewardType.ITEM] = { val = 8, add = 0.1, max = 15, minDepth = 3 },
+        [PSTExpNodeRewardType.BOON] = { val = 30, add = 0.2, max = 40 },
+        [PSTExpNodeRewardType.ATTEMPTS] = { val = 15, add = 0, max = 15}
     }
     local rewardWeightVals = {
-        PSTExpNodeRewardType.OBOLS, PSTExpNodeRewardType.EXP, PSTExpNodeRewardType.ATTEMPTS,
-        PSTExpNodeRewardType.ORDER, PSTExpNodeRewardType.C_STARCORE, PSTExpNodeRewardType.GLOBAL_SP,
-        PSTExpNodeRewardType.STARBLESS_WEP
+        PSTExpNodeRewardType.OBOLS, PSTExpNodeRewardType.EXP, PSTExpNodeRewardType.ITEM,
+        PSTExpNodeRewardType.BOON, PSTExpNodeRewardType.ATTEMPTS
     }
+    local pickedItems = {}
     local pickedCurses = {}
+    local pickedBoons = {}
 
     -- Curse node chance
-    local curseChance = 0.12 + (depth - 1) / 100
+    local curseChance = 0.1
+
+    -- Boon upgrade node chance & total maximum
+    local boonUpgradeChance = 0.05
+    local boonUpgrades = 2
 
     -- Create layout of columns & nodes
     ---@type PSTExpNode[][]
@@ -64,14 +55,16 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
         ---@type PSTExpNode[]
         local expColumn = {}
         local minNodes = 3
-        local maxNodes = 6
+        local maxNodes = 5
+        if depth >= 8 then maxNodes = 6 end
 
         local nodeAmt = nodeRNG:RandomInt(minNodes, maxNodes)
         if col == 1 then nodeAmt = 3 end
         if col == expLength then nodeAmt = 1 end
 
         -- Max curse nodes per column (past second col)
-        local colCurses = 3
+        local colCurses = 2
+        if depth >= 10 then colCurses = 3 end
 
         for row=1,nodeAmt do
             ---@type PSTExpNode
@@ -89,8 +82,8 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
             -- Guarantee expedition curses in second column
             if col == 2 then newNode.nodeType = PSTExpNodeType.CURSED end
 
-            -- Guarantee curses in 6th column and every 4 columns thereafter
-            if not isFinal then
+            -- Past depth 5, guarantee curses in 6th column and every 4 columns thereafter
+            if depth >= 5 and not isFinal then
                 if ((col - 6) % 4) == 0 then
                     newNode.nodeType = PSTExpNodeType.CURSED
                 end
@@ -103,23 +96,45 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
                     if colCurses > 0 and nodeRNG:RandomFloat() < curseChance then
                         newNode.nodeType = PSTExpNodeType.CURSED
                         colCurses = colCurses - 1
+                    -- Depth 4+, Chance for boon upgrade nodes
+                    elseif boonUpgrades > 0 and depth >= 4 and nodeRNG:RandomFloat() < boonUpgradeChance then
+                        newNode.nodeType = PSTExpNodeType.BOONUPGRADE
+                        boonUpgrades = boonUpgrades - 1
                     end
                 end
             end
 
             -- Assign objective
-            local newObjective = {
-                name = "winRun",
-                req = PST.expeditionObjectives.winRun.reqFunc()
-            }
-            newNode.objective = newObjective
+            local newObjective = { name = "", req = 0, variant = "" }
+            local tmpSrcTable = PST.expeditionObjectiveList
+            local tmpTargetTable = PST.expeditionObjectives
+            if newNode.nodeType == PSTExpNodeType.FINAL then
+                tmpSrcTable = PST.expeditionObjectiveFinalList
+                tmpTargetTable = PST.expeditionObjectivesFinal
+            end
+            -- Check for min/max depth requirement
+            local tmpObjectiveName = tmpSrcTable[objectiveRNG:RandomInt(1, #tmpSrcTable)]
+            local tmpObjective = tmpTargetTable[tmpObjectiveName]
+            while (tmpObjective.minDepth and depth < tmpObjective.minDepth) or (tmpObjective.maxDepth and depth > tmpObjective.maxDepth) do
+                tmpObjectiveName = tmpSrcTable[objectiveRNG:RandomInt(1, #tmpSrcTable)]
+                tmpObjective = tmpTargetTable[tmpObjectiveName]
+            end
+
+            -- Objective requirements & assignment
+            if tmpObjective.reqFunc then
+                newObjective.req = tmpObjective.reqFunc(depth, col)
+                newObjective.name = tmpObjectiveName
+                newNode.objective = newObjective
+            end
 
             -- Assign curse
             if newNode.nodeType == PSTExpNodeType.CURSED then
                 local newCurseID = curseRNG:RandomInt(1, #PST.expeditionCurses)
+                local newCurse = PST.expeditionCurses[newCurseID]
                 local failsafe = 0
-                while (PST:arrHasValue(pickedCurses, newCurseID)) and failsafe < 400 do
+                while ((newCurse.minDepth and depth < newCurse.minDepth) or PST:arrHasValue(pickedCurses, newCurseID)) and failsafe < 400 do
                     newCurseID = curseRNG:RandomInt(1, #PST.expeditionCurses)
+                    newCurse = PST.expeditionCurses[newCurseID]
                     failsafe = failsafe + 1
                 end
                 if failsafe < 400 then
@@ -137,7 +152,7 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
                     totalWeight = totalWeight + tmpWeight.val
                 end
             end
-            local randWeight = totalWeight * rewardRNG:RandomFloat()
+            local randWeight = rewardRNG:RandomInt(math.floor(totalWeight))
             for _, rewardType in ipairs(rewardWeightVals) do
                 local tmpWeight = rewardWeights[rewardType]
                 if not tmpWeight.minDepth or (tmpWeight.minDepth and depth >= tmpWeight.minDepth) then
@@ -149,104 +164,66 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
                 end
             end
 
-            -- Entropy modifiers
-            local entropyMods = {}
-            local maxEntropyMods = 1
-            if col >= 5 then maxEntropyMods = 2 end
-            if col == expLength then maxEntropyMods = 3 end
+            -- No item rewards in first or last column
+            if (col == 1 or col == expLength) and newNode.rewardType == PSTExpNodeRewardType.ITEM then
+                newNode.rewardType = PSTExpNodeRewardType.OBOLS
+            end
+            -- No attempts reward in last column
+            if (col == expLength) and newNode.rewardType == PSTExpNodeRewardType.ATTEMPTS then
+                newNode.rewardType = PSTExpNodeRewardType.OBOLS
+            end
 
-            for i=1,maxEntropyMods do
-                local newEntMod = uberRNG:RandomInt(1, #PST.expedEntropyModList)
-                local origMod = PST.expedEntropyMods[PST.expedEntropyModList[newEntMod]]
+            -- Chance for crimson starcore on final node past depth 15
+            if depth >= 15 and (col == expLength) then
+                local starcoreChance = math.min(0.55, 0.12 + (depth - 15) * 0.02)
+                if rewardRNG:RandomFloat() < starcoreChance then
+                    newNode.rewardType = PSTExpNodeRewardType.C_STARCORE
+                end
+            end
+
+            -- Assign reward data
+            local rewardFunc = PST.expeditionRewardData[newNode.rewardType]
+            if rewardFunc ~= nil then
+                local rewardCol = col
+                -- Make final nodes more rewarding
+                if newNode.nodeType == PSTExpNodeType.FINAL then
+                    rewardCol = rewardCol + 8 + (depth - 1) * 2
+                end
+                newNode.rewardData = rewardFunc(rewardRNG, depth, col)
+            end
+
+            -- Boon reward type, pick boon
+            local rewardTypeRNG = RNG(rewardRNG:Next())
+            if newNode.rewardType == PSTExpNodeRewardType.BOON then
+                local newBoonID = rewardTypeRNG:RandomInt(1, #PST.expeditionBoons)
+                local newBoon = PST.expeditionBoons[newBoonID]
                 local failsafe = 0
-                while (PST:arrHasValue(entropyMods, newEntMod) or not origMod or (origMod and origMod.auxiliary and i == 1)) and
-                failsafe < 200 do
-                    newEntMod = uberRNG:RandomInt(1, #PST.expedEntropyModList)
-                    origMod = PST.expedEntropyMods[PST.expedEntropyModList[newEntMod]]
+                while ((newBoon.minDepth and depth < newBoon.minDepth) or PST:arrHasValue(pickedBoons, newBoonID)) and failsafe < 400 do
+                    newBoonID = rewardTypeRNG:RandomInt(1, #PST.expeditionBoons)
+                    newBoon = PST.expeditionBoons[newBoonID]
                     failsafe = failsafe + 1
                 end
-                if failsafe < 200 then
-                    table.insert(entropyMods, newEntMod)
-                end
-            end
-            if #entropyMods > 0 then
-                newNode.entropyMods = entropyMods
-            end
-
-            -- Final node rewards
-            if col == expLength then
-                -- Guarantee choice in depths 5+
-                if depth >= 5 then
-                    newNode.rewardType = PSTExpNodeRewardType.UBER_CHOICE
+                if failsafe < 400 then
+                    newNode.rewardData = newBoonID
+                    table.insert(pickedBoons, newBoonID)
                 else
-                    local rewardList = {
-                        [PSTExpNodeRewardType.C_STARCORE] = 0.25,
-                        [PSTExpNodeRewardType.UBER_CHOICE] = 0.25,
-                        [PSTExpNodeRewardType.STARBLESS_WEP] = 0.2,
-                        [PSTExpNodeRewardType.STARBLESS_PRISM] = 0.1
-                    }
-                    PST:shuffleList(rewardList, rewardRNG)
-                    local gotReward = false
-                    for rewardType, tmpChance in pairs(rewardList) do
-                        if rewardRNG:RandomFloat() <= tmpChance then
-                            newNode.rewardType = rewardType
-                            newNode.rewardData = 1
-                            gotReward = true
-                            break
-                        end
-                    end
-                    -- Global SP default reward
-                    if not gotReward then
-                        newNode.rewardType = PSTExpNodeRewardType.GLOBAL_SP
-                        newNode.rewardData = rewardRNG:RandomInt(3, 5)
-                    end
+                    newNode.rewardType = PSTExpNodeType.OBOLS
                 end
-            else
-                -- Assign reward data for non-final nodes
-                local rewardFunc = PST.expeditionRewardData[newNode.rewardType]
-                if rewardFunc ~= nil then
-                    local rewardCol = col
-                    -- Make final nodes more rewarding
-                    if newNode.nodeType == PSTExpNodeType.FINAL then
-                        rewardCol = rewardCol + 8 + (depth - 1) * 2
-                    end
-                    newNode.rewardData = rewardFunc(rewardRNG, uberDepth, col)
-
-                    -- Mod: % order gained from nodes
-                    if newNode.rewardType == PSTExpNodeRewardType.ORDER then
-                        if expModifiers and expModifiers.orderGain and expModifiers.orderGain > 0 then
-                            newNode.rewardData = math.ceil(newNode.rewardData * (1 + expModifiers.orderGain / 100))
-                        end
-                    end
-                end
-            end
-
-            -- Uber choice reward data
-            if newNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
-                newNode.rewardData = {}
-                local avChoices = {
-                    { type = PSTExpNodeRewardType.C_STARCORE, chance = 0.25, amt = 1 },
-                    { type = PSTExpNodeRewardType.GLOBAL_SP, chance = 0.3, amt = 4 },
-                    { type = PSTExpNodeRewardType.STARBLESS_PRISM, chance = 0.2, amt = 1 },
-                    { type = PSTExpNodeRewardType.OBOLS, chance = 0.3, amt = 400 + depth * 50 }
-                }
-                local totalChoices = 3
-                -- Mod: % chance to add an additional choice
-                if expModifiers and expModifiers.expedChoiceAdd and 100 * modsRNG:RandomFloat() < expModifiers.expedChoiceAdd then
-                    totalChoices = totalChoices + 1
-                end
-
+            -- Item reward type, pick an item
+            elseif newNode.rewardType == PSTExpNodeRewardType.ITEM then
+                local newItem = PST.expeditionItems[expRNG:RandomInt(1, #PST.expeditionItems)]
+                local itemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
                 local failsafe = 0
-                while totalChoices > 0 and failsafe < 1000 do
-                    PST:shuffleList(avChoices, rewardRNG)
-                    for _, rwData in ipairs(avChoices) do
-                        if rewardRNG:RandomFloat() < rwData.chance then
-                            newNode.rewardData[rwData.type] = rwData.amt
-                            totalChoices = totalChoices - 1
-                            if totalChoices == 0 then break end
-                        end
-                    end
+                while (PST:arrHasValue(pickedItems, newItem) or (itemCfg and itemCfg.Type ~= ItemType.ITEM_PASSIVE)) and failsafe < 300 do
+                    newItem = PST.expeditionItems[expRNG:RandomInt(1, #PST.expeditionItems)]
+                    itemCfg = Isaac.GetItemConfig():GetCollectible(newItem)
                     failsafe = failsafe + 1
+                end
+                if failsafe < 300 then
+                    newNode.rewardData = newItem
+                    table.insert(pickedItems, newItem)
+                else
+                    newNode.rewardType = PSTExpNodeType.OBOLS
                 end
             end
 
@@ -265,7 +242,9 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
             end
         end
         -- Node curse chance as we go deeper
-        curseChance = curseChance + 0.03
+        curseChance = curseChance + 0.01
+        -- Boon upgrade node chance as we go deeper
+        boonUpgradeChance = boonUpgradeChance + 0.005
     end
 
     -- Create shuffled list of all nodes
@@ -338,18 +317,13 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
     }})
 
     -- Expedition implicit modifiers
-    local expImplicits = PST:getExpeditionImplicits(uberDepth)
-    -- Uber expeditions: 4 attempts
-    local expAttempts = 4
-    expImplicits.lessAttempts = nil
-
-    -- Eldritch Exchange node (Deep-Space tree)
-    if expModifiers and expModifiers.eldritchExchange then
-        expAttempts = expAttempts + 2
-    end
+    local expImplicits = PST:getExpeditionImplicits(depth)
+    -- Expedition starting attempts
+    local lessAttempts = expImplicits.lessAttempts or 0
+    local expAttempts = 12 - lessAttempts
 
     ---@type PSTExpedition
-    local newExped = {
+    return {
         depth = depth,
         nodes = expNodes,
         seed = expSeed,
@@ -361,16 +335,6 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
         upgradedBoons = {},
         boonUpgradePoints = 0,
         curses = {},
-        items = {},
-        uber = true,
-        modifiers = expModifiers
+        items = {}
     }
-    if startOrder > 0 then newExped.order = startOrder end
-
-    -- Entropic Tradeoff node (Deep-Space tree)
-    if expModifiers and expModifiers.entropicTradeoff then
-        PST:expedObjAddEntropy(newExped, 40, true)
-    end
-
-    return newExped
 end

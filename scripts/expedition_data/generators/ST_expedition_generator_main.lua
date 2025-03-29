@@ -7,10 +7,16 @@ function PST:getExpeditionImplicits(depth)
     implicits.starmightReq = math.min(600, depth * 30)
     -- Depths 2+ monster HP
     if depth >= 2 then
-        implicits.expedImp_mobHP = math.min(50, 5 + depth * 3)
-
+        -- Non-boss HP
+        implicits.expedImp_mobHP = math.min(25, 4 + (depth - 2) * 2)
         if depth > 15 then
-            implicits.expedImp_mobHP = math.min(120, implicits.expedImp_mobHP + (depth - 15))
+            implicits.expedImp_mobHP = math.min(60, implicits.expedImp_mobHP + math.floor((depth - 15) / 2))
+        end
+
+        -- Boss HP
+        implicits.expedImp_bossHP = math.min(70, 10 + (depth - 2) * 3)
+        if depth > 15 then
+            implicits.expedImp_bossHP = math.min(120, implicits.expedImp_bossHP + math.floor((depth - 15) / 2))
         end
     end
     -- Depths 3+ monster speed
@@ -23,7 +29,7 @@ function PST:getExpeditionImplicits(depth)
     end
     -- Depths 6+ coin, key, bomb, heart scarcity
     if depth >= 6 then
-        implicits.expedImp_pickupScarcity = math.min(33, depth - 3)
+        implicits.expedImp_pickupScarcity = math.min(25, depth - 3)
     end
     -- Depths 8+ remove random quality 4 items from the pool when starting a run
     if depth >= 8 then
@@ -42,7 +48,7 @@ function PST:getExpeditionImplicits(depth)
             implicits.lessAttempts = implicits.lessAttempts + 1
         end
     end
-    -- Depths 15+ monster damage reduction
+    -- Depths 15+ boss damage reduction
     if depth >= 15 then
         implicits.expedImp_mobDmgRed = math.min(40, math.floor((depth - 14) * 1.25))
     end
@@ -52,10 +58,12 @@ end
 -- Include generator versions
 include("scripts.expedition_data.generators.ST_expedition_generator_v1")
 include("scripts.expedition_data.generators.ST_expedition_generator_v2")
+include("scripts.expedition_data.generators.ST_expedition_generator_v3")
 include("scripts.expedition_data.generators.ST_uber_generator_v1")
+include("scripts.expedition_data.generators.ST_uber_generator_v2")
 
-PST.expedGeneratorVersion = 2
-PST.uberExpedGeneratorVersion = 1
+PST.expedGeneratorVersion = 3
+PST.uberExpedGeneratorVersion = 2
 
 -- List of expedition-altering mods present in the Deep-Space skill tree's nodes (within Star Tree)
 local deepSpaceTreeMods = {
@@ -67,11 +75,13 @@ function PST:generateExpedition(depth, seed, version, uber, modifiers)
     local expedGenerators = {
         PST.generateExpeditionV1,
         PST.generateExpeditionV2,
+        PST.generateExpeditionV3
     }
     local expedVer = version or PST.expedGeneratorVersion
     if uber then
         expedGenerators = {
-            PST.generateUberExpeditionV1
+            PST.generateUberExpeditionV1,
+            PST.generateUberExpeditionV2
         }
         expedVer = version or PST.uberExpedGeneratorVersion
 

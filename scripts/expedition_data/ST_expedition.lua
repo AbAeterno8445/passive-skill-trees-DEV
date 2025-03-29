@@ -376,8 +376,8 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
 
         -- Uber expedition node
         if tmpExpedition.uber then
-            -- Deep-Space skill point every 3 cols or final
-            if (col % 3) == 0 and tmpNode.nodeType ~= PSTExpNodeType.FINAL then
+            -- Deep-Space skill point every 2 cols or final
+            if (col % 2) == 0 and tmpNode.nodeType ~= PSTExpNodeType.FINAL then
                 PST.modData.deepSpaceSP = PST.modData.deepSpaceSP + 1
             end
             if tmpNode.nodeType == PSTExpNodeType.FINAL then
@@ -560,9 +560,16 @@ function PST:getExpNodeObjectiveDesc(nodeData, expData)
     return tmpDescription
 end
 
+-- Expedition reset cost in Respec points
 function PST:getExpedResetCost(depth, uber)
-    if uber then return 1000 end
-    return math.min(500, depth * 40)
+    if uber then return 70 + (depth - 1) * 10 end
+    return math.min(30, depth * 5)
+end
+
+-- Expedition reset cost in obols
+function PST:getExpedResetObolCost(depth, uber)
+    if uber then return 200 end
+    return math.min(100, 40 + (depth - 1) * 20)
 end
 
 ---@param nodeData PSTExpNode
@@ -693,7 +700,7 @@ function PST:getExpNodeDescription(nodeData, expData)
                 table.insert(tmpDescription, {"   +1 Boon upgrade point", tmpColor})
             end
             -- Deep-Space skill point (uber expeditions)
-            if expData.uber and ((nodeData.col % 3 == 0) or nodeData.nodeType == PSTExpNodeType.FINAL) then
+            if expData.uber and ((nodeData.col % 2 == 0) or nodeData.nodeType == PSTExpNodeType.FINAL) then
                 local tmpSP = 1
                 if nodeData.nodeType == PSTExpNodeType.FINAL then tmpSP = 2 end
                 table.insert(tmpDescription, {"   +" .. tostring(tmpSP) .. " Deep-Space skill point(s)", tmpColor})
@@ -802,11 +809,11 @@ function PST:expedObjAddEntropy(expData, entropy, noMods)
 
             if not expData.entropyEffects then expData.entropyEffects = {} end
 
-            -- Every 24 entropy, increase expedition implicits, up to 10 times
-            expData.entropyEffects.expedImp = math.min(10, math.floor(expData.entropy / 24))
+            -- Every 40 entropy, increase expedition implicits, up to 8 times
+            expData.entropyEffects.expedImp = math.min(8, math.floor(expData.entropy / 40))
 
-            -- Every 30 entropy, add a curse to the expedition, up to 5 times
-            local tmpAdd = math.min(5, math.floor(expData.entropy / 30))
+            -- Every 60 entropy, add a curse to the expedition, up to 5 times
+            local tmpAdd = math.min(5, math.floor(expData.entropy / 60))
             if expData.entropyEffects.curses then
                 local addCurses = tmpAdd - expData.entropyEffects.curses
                 while addCurses > 0 do
@@ -824,8 +831,8 @@ function PST:expedObjAddEntropy(expData, entropy, noMods)
             end
             expData.entropyEffects.curses = tmpAdd
 
-            -- Every 50 entropy, add a Deep-Space Distortion modifier, up to 3 times
-            tmpAdd = math.min(3, math.floor(expData.entropy / 50))
+            -- Every 75 entropy, add a Deep-Space Distortion modifier, up to 3 times
+            tmpAdd = math.min(3, math.floor(expData.entropy / 75))
             if expData.entropyEffects.deepSpaceMods then
                 local addMods = tmpAdd - expData.entropyEffects.deepSpaceMods
                 while addMods > 0 do

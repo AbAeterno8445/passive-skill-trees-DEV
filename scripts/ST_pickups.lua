@@ -1174,7 +1174,7 @@ function PST:onPickupInit(pickup, firstSpawn)
         tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
         -- Deep-Space Distortion mod: pickup scarcity
         if PST:getTreeSnapshotMod("dsdMod_pickupScarcity", false) then
-            tmpMod = tmpMod + 50
+            tmpMod = tmpMod + 33
         end
         -- Disable scarcity mods in mineshaft sequence
         if PST:inMineshaftPuzzle() then tmpMod = 0 end
@@ -1200,7 +1200,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             tmpMod = tmpMod + PST:getTreeSnapshotMod("expedImp_pickupScarcity", 0)
             -- Deep-Space Distortion mod: heart scarcity
             if PST:getTreeSnapshotMod("dsdMod_heartScarcity", false) then
-                tmpMod = tmpMod + 50
+                tmpMod = tmpMod + 33
             end
             -- Disable scarcity mods in mineshaft sequence
             if PST:inMineshaftPuzzle() then tmpMod = 0 end

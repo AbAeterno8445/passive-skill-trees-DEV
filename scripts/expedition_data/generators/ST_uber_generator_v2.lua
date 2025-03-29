@@ -8,12 +8,12 @@ local function reversedipairs(t)
     return reversedipairsiter, t, #t + 1
 end
 
-local generatorVersion = 1
+local generatorVersion = 2
 -- Generate a set of nodes for an astral expedition
 ---@param depth number
 ---@param seed? integer
 ---@return PSTExpedition
-function PST:generateUberExpeditionV1(depth, seed, expModifiers)
+function PST:generateUberExpeditionV2(depth, seed, expModifiers)
     local expSeed = seed or math.random(100000000)
 
     local uberDepth = (15 + depth) * 2
@@ -26,9 +26,10 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
     local rewardRNG = RNG(expRNG:Next()) -- node reward RNG
     local modsRNG = RNG(expRNG:Next()) -- modifiers RNG
 
-    -- Uber: fixed length of 8 nodes, 7 at depth 5+
-    local expLength = 8
-    if depth >= 5 then expLength = 7 end
+    -- Expedition length
+    local expLength = 5
+    if depth >= 3 then expLength = 6 end
+    if depth >= 6 then expLength = 7 end
 
     local startOrder = 0
     -- Bring The Order node (Deep-Space tree)
@@ -64,7 +65,7 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
         ---@type PSTExpNode[]
         local expColumn = {}
         local minNodes = 3
-        local maxNodes = 6
+        local maxNodes = 5
 
         local nodeAmt = nodeRNG:RandomInt(minNodes, maxNodes)
         if col == 1 then nodeAmt = 3 end
@@ -88,13 +89,6 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
 
             -- Guarantee expedition curses in second column
             if col == 2 then newNode.nodeType = PSTExpNodeType.CURSED end
-
-            -- Guarantee curses in 6th column and every 4 columns thereafter
-            if not isFinal then
-                if ((col - 6) % 4) == 0 then
-                    newNode.nodeType = PSTExpNodeType.CURSED
-                end
-            end
 
             -- Past second column
             if col > 2 and not isFinal then
@@ -152,7 +146,7 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
             -- Entropy modifiers
             local entropyMods = {}
             local maxEntropyMods = 1
-            if col >= 5 then maxEntropyMods = 2 end
+            if col >= expLength - 2 then maxEntropyMods = 2 end
             if col == expLength then maxEntropyMods = 3 end
 
             for i=1,maxEntropyMods do
@@ -175,8 +169,8 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
 
             -- Final node rewards
             if col == expLength then
-                -- Guarantee choice in depths 5+
-                if depth >= 5 then
+                -- Guarantee choice in depths 4+
+                if depth >= 4 then
                     newNode.rewardType = PSTExpNodeRewardType.UBER_CHOICE
                 else
                     local rewardList = {
