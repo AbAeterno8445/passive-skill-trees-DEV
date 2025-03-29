@@ -4,7 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.2.2",
-        "- Astral Vessel, a new customizable character based on PST is now out! Check it out in the workshop.",
+        "- Beta for Astral Vessel, a new customizable character based on PST, is now public! Check it out in the workshop.",
         "- You can now queue expedition nodes following a selected node. When completing an objective within a run, if",
         "there are queued nodes, the current node will get automatically completed and the next node in the queue gets selected.",
         "Final node won't get automatically completed and will still require manual completion, as it resets the expedition.",
