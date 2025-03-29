@@ -9,6 +9,7 @@ function PST:getChangelogList()
         "- Added support for Community Remix's Insane difficulty (counts as hard difficulty for completion and xp purposes).",
         "- Potential fix for rare crash on run start.",
         "- Optimized the player cache update function, which should improve general performance somewhat.",
+        "- Old chest conversion global nodes can no longer trigger in the Chest/Dark Room floors.",
         "- Fixed error when using the 'luamod' command while in-game and having Epiphany installed (Tr. Judas check).",
         "- Fixed inputs propagating to the menu while the tree screen is open. This can fix issues such as unintentionally",
         "changing the difficulty with the Difficulty Library mod.",

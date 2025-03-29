@@ -1089,7 +1089,8 @@ function PST:onPickupInit(pickup, firstSpawn)
 
     -- Mod: old chest conversion
     tmpMod = PST:getTreeSnapshotMod("oldChestConvChance", 0)
-    if tmpMod > 0 and variant == PickupVariant.PICKUP_LOCKEDCHEST and subtype == ChestSubType.CHEST_CLOSED and firstSpawn and
+    local isChestStage = PST:getLevel():GetStage() == 11
+    if tmpMod > 0 and not isChestStage and variant == PickupVariant.PICKUP_LOCKEDCHEST and subtype == ChestSubType.CHEST_CLOSED and firstSpawn and
     PST:getTreeSnapshotMod("oldChestConvProcs", 0) < 5 and 100 * math.random() < tmpMod then
         Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
         pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_OLDCHEST, 0)
