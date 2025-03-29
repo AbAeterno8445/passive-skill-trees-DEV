@@ -455,11 +455,12 @@ function PST:postDamage(target, damage, flag, source)
                     -- Mod: hitting enemies affected by slow or paralysis extends the status by X seconds, up to 4 times per enemy
                     tmpMod = PST:getTreeSnapshotMod("slowParaExtension", 0)
                     if tmpMod > 0 then
-                        if not target:GetData().PST_slowParaExtension then
-                            target:GetData().PST_slowParaExtension = 0
+                        local tgData = PST:getEntData(target)
+                        if not tgData.PST_slowParaExtension then
+                            tgData.PST_slowParaExtension = 0
                         end
-                        if target:GetData().PST_slowParaExtension < 4 then
-                            target:GetData().PST_slowParaExtension = target:GetData().PST_slowParaExtension + 1
+                        if tgData.PST_slowParaExtension < 4 then
+                            tgData.PST_slowParaExtension = tgData.PST_slowParaExtension + 1
                             if target:GetSlowingCountdown() > 0 then
                                 target:SetSlowingCountdown(target:GetSlowingCountdown() + tmpMod * 30)
                             end
@@ -615,7 +616,7 @@ function PST:postDamage(target, damage, flag, source)
 					redTear:ToTear().FallingSpeed = -tearSrcPlayer.TearFallingSpeed * 2
                     redTear.CollisionDamage = tearSrcPlayer.Damage * (tmpMod[2] / 100)
                     redTear.Color = PST:RGBColor(225, 85, 85)
-                    redTear:GetData().PST_nimbleTwinsRed = true
+                    PST:getEntData(redTear).PST_nimbleTwinsRed = true
 
                     -- Fast blue tear
                     tmpVel = (target.Position - tearSrcPlayer.Position):Normalized() * 15
@@ -624,7 +625,7 @@ function PST:postDamage(target, damage, flag, source)
 					blueTear:ToTear().FallingSpeed = -tearSrcPlayer.TearFallingSpeed * 2
                     blueTear.CollisionDamage = tearSrcPlayer.Damage * (tmpMod[2] / 100)
                     blueTear.Color = PST:RGBColor(85, 85, 255)
-                    blueTear:GetData().PST_nimbleTwinsBlue = true
+                    PST:getEntData(blueTear).PST_nimbleTwinsBlue = true
 
                     PST.specialNodes.ancwep_nimbleTwinsCD = 24
                 end
@@ -643,7 +644,7 @@ function PST:postDamage(target, damage, flag, source)
                             tmpTear:ToTear().FallingSpeed = -tearSrcPlayer.TearFallingSpeed * 2
                             tmpTear.CollisionDamage = tearSrcPlayer.Damage * (tmpMod[2] / 100)
                             tmpTear.Color = PST:RGBColor(165, 45, 220)
-                            tmpTear:GetData().PST_gravitasTear = true
+                            PST:getEntData(tmpTear).PST_gravitasTear = true
                         end
                         PST.specialNodes.ancwep_gravitasCD = 15
                     end
@@ -652,14 +653,15 @@ function PST:postDamage(target, damage, flag, source)
                 -- Ancient weapon mod: Boreal Frostspear
                 tmpMod = PST:getSnapAstralWepMod("borealSpear")
                 if tmpMod then
+                    local tgData = PST:getEntData(target)
                     if target:GetSlowingCountdown() > 0 and PST:getPlayer().Position:Distance(target.Position) >= PST:getTilesDist(tmpMod[2]) then
-                        if not target:GetData().PST_borealSpearHits then target:GetData().PST_borealSpearHits = 0 end
-                        target:GetData().PST_borealSpearHits = target:GetData().PST_borealSpearHits + 1
+                        if not tgData.PST_borealSpearHits then tgData.PST_borealSpearHits = 0 end
+                        tgData.PST_borealSpearHits = tgData.PST_borealSpearHits + 1
                     end
                     if 100 * math.random() < tmpMod[1] then
                         target:AddSlowing(EntityRef(PST:getPlayer()), 90, 0.8, Color(0.6, 0.6, 0.9, 1))
                     end
-                    if target:GetData().PST_borealSpearHits and 100 * math.random() < target:GetData().PST_borealSpearHits then
+                    if tgData.PST_borealSpearHits and 100 * math.random() < tgData.PST_borealSpearHits then
                         target:AddIce(EntityRef(PST:getPlayer()), 90)
                     end
                 end
@@ -899,16 +901,18 @@ function PST:postDamage(target, damage, flag, source)
                 end
             end
 
+            local srcEntData = PST:getEntData(source.Entity)
+
             -- Ancient weapon mod: Nimble Twins (special tear hits)
             tmpMod = PST:getSnapAstralWepMod("nimbleTwins")
             if tmpMod then
-                if source.Entity:GetData().PST_nimbleTwinsRed then
+                if srcEntData.PST_nimbleTwinsRed then
                     PST.specialNodes.ancwep_nimbleRedBuff = math.min(tmpMod[3], PST.specialNodes.ancwep_nimbleRedBuff + 3)
                     if PST.specialNodes.ancwep_nimbleRedTimer == 0 then
                         PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
                     end
                     PST.specialNodes.ancwep_nimbleRedTimer = 60
-                elseif source.Entity:GetData().PST_nimbleTwinsBlue then
+                elseif srcEntData.PST_nimbleTwinsBlue then
                     PST.specialNodes.ancwep_nimbleBlueBuff = math.min(tmpMod[3], PST.specialNodes.ancwep_nimbleBlueBuff + 3)
                     if PST.specialNodes.ancwep_nimbleBlueTimer == 0 then
                         PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
@@ -920,7 +924,7 @@ function PST:postDamage(target, damage, flag, source)
             -- Astral weapon mod: Whips
             tmpMod = PST:getSnapAstralWepMod("whipImp")
             if tmpMod then
-                if source.Entity:GetData().PST_whipTear then
+                if srcEntData.PST_whipTear then
                     if math.random() <= 0.5 then
                         -- Speed buff
                         if PST.specialNodes.astralwep_whipSpeedBuff < tmpMod[2] then
@@ -940,7 +944,7 @@ function PST:postDamage(target, damage, flag, source)
             end
 
             -- Ancient weapon mod: Gravitas (tear hit)
-            if source.Entity:GetData().PST_gravitasTear and not PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER) and
+            if srcEntData.PST_gravitasTear and not PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER) and
             100 * math.random() < 3 then
                 PST:getPlayer():AddCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER)
                 PST:addModifiers({ ancwep_gravitasSpoon = true }, true)
@@ -965,11 +969,12 @@ function PST:postDamage(target, damage, flag, source)
             end
 
             -- Deep-Space Distortion mod: Warning for sudden-death
+            local tgData = PST:getEntData(target)
             if PST:getTreeSnapshotMod("dsdMod_finalLastStand", false) and PST:entityIsFinalBoss(target) and not isKillingHit and (target.HitPoints / target.MaxHitPoints) <= 0.12 and
-            not target:GetData().PST_dsdLastStandWarn then
+            not tgData.PST_dsdLastStandWarn then
                 PST:createFloatTextFX("!!SUDDEN DEATH!!", Vector.Zero, Color(1, 0.1, 0.1, 1), 0.1, 180, true)
                 SFXManager():Play(SoundEffect.SOUND_SATAN_ROOM_APPEAR, 1, 2, false, 0.8)
-                target:GetData().PST_dsdLastStandWarn = true
+                tgData.PST_dsdLastStandWarn = true
             end
         end
 

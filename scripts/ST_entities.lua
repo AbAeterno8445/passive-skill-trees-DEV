@@ -85,11 +85,12 @@ function PST:onNPCUpdate(npc)
     end
 
     -- Status effect checks
-    if not PST:entityHasAnyStatus(npc) and npc:GetData().PST_statusInflicted == nil then
-        npc:GetData().PST_statusInflicted = false
-    elseif PST:entityHasAnyStatus(npc) and npc:GetData().PST_statusInflicted == false then
+    local npcData = PST:getEntData(npc)
+    if not PST:entityHasAnyStatus(npc) and npcData.PST_statusInflicted == nil then
+        npcData.PST_statusInflicted = false
+    elseif PST:entityHasAnyStatus(npc) and npcData.PST_statusInflicted == false then
         -- Status inflicted
-        npc:GetData().PST_statusInflicted = true
+        npcData.PST_statusInflicted = true
 
         if npc:IsBoss() then
             -- Sidereal Artifact objective: inflict status effects on bosses
@@ -98,9 +99,9 @@ function PST:onNPCUpdate(npc)
             -- Sidereal Artifact objective: inflict status effects on non-boss enemies
             PST:sideArtiObjProgress("infectiousMeridion", 1)
         end
-    elseif not PST:entityHasAnyStatus(npc) and npc:GetData().PST_statusInflicted then
+    elseif not PST:entityHasAnyStatus(npc) and npcData.PST_statusInflicted then
         -- Status dropped
-        npc:GetData().PST_statusInflicted = false
+        npcData.PST_statusInflicted = false
     end
 
     -- Monster init modifiers
@@ -114,8 +115,9 @@ function PST:onNPCUpdate(npc)
                 noUpdate = true
             end
         end
-        if not npc:GetData().PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
-            npc:GetData().PST_mobInit = true
+        local npcData = PST:getEntData(npc)
+        if not npcData.PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
+            npcData.PST_mobInit = true
 
             local noHPMods = PST:entityIsHPModBlacklisted(npc)
 
@@ -294,10 +296,10 @@ function PST:familiarUpdate(familiar)
     end
 
     -- Grand Consonance node (T. Siren's tree)
-    if PST:getTreeSnapshotMod("grandConsonance", false) and PST:arrHasValue(PST.grandConsonanceWhitelist, familiar.Variant) and not familiar:GetData().PST_noConsonance then
+    if PST:getTreeSnapshotMod("grandConsonance", false) and PST:arrHasValue(PST.grandConsonanceWhitelist, familiar.Variant) and not PST:getEntData(familiar).PST_noConsonance then
         local player = PST:getPlayer()
         local hide = true
-        local famData = familiar:GetData()
+        local famData = PST:getEntData(familiar)
         local noZeroScale = false
 
         -- Launched familiars
@@ -318,9 +320,9 @@ function PST:familiarUpdate(familiar)
                     local tmpBird = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.DEAD_BIRD, 0, player.Position + RandomVector() * 5, plInput * 10, player)
                     tmpBird.CollisionDamage = tmpBird.CollisionDamage - 0.4
                     tmpBird:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
-                    tmpBird:GetData().PST_scale = Vector(0.7, 0.7)
-                    tmpBird:GetData().PST_noConsonance = true
-                    tmpBird:GetData().PST_lifespan = math.ceil(player.TearRange * 0.2)
+                    PST:getEntData(tmpBird).PST_scale = Vector(0.7, 0.7)
+                    PST:getEntData(tmpBird).PST_noConsonance = true
+                    PST:getEntData(tmpBird).PST_lifespan = math.ceil(player.TearRange * 0.2)
                     SFXManager():Play(SoundEffect.SOUND_BIRD_FLAP, 0.3)
 
                     famData.PST_fireDelay = math.max(4, math.ceil(player.MaxFireDelay))
@@ -455,14 +457,15 @@ function PST:familiarUpdate(familiar)
     end
 
     -- Scale change
-    if familiar:GetData().PST_scale ~= nil then
-        familiar.SpriteScale = familiar:GetData().PST_scale
+    local famData = PST:getEntData(familiar)
+    if famData.PST_scale ~= nil then
+        familiar.SpriteScale = famData.PST_scale
     end
 
     -- Limited lifespan
-    if familiar:GetData().PST_lifespan ~= nil then
-        if familiar:GetData().PST_lifespan > 0 then
-            familiar:GetData().PST_lifespan = familiar:GetData().PST_lifespan - 1
+    if famData.PST_lifespan ~= nil then
+        if famData.PST_lifespan > 0 then
+            famData.PST_lifespan = famData.PST_lifespan - 1
         else
             Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, familiar.Position, Vector.Zero, nil, 1, Random() + 1)
             familiar:Remove()
@@ -478,7 +481,7 @@ function PST:preFamiliarCollision(familiar, collider, low)
     if tmpEnemy and tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
         -- Grand Consonance node (T. Siren's tree)
         if PST:getTreeSnapshotMod("grandConsonance", false) then
-            local famData = familiar:GetData()
+            local famData = PST:getEntData(familiar)
 
             -- Bob's Brain collision
             if familiar.Variant == FamiliarVariant.BOBS_BRAIN then
@@ -501,7 +504,7 @@ function PST:preFamiliarCollision(familiar, collider, low)
                     return { Collide = false, SkipCollisionEffects = true }
                 end
             -- My Shadow collision
-            elseif familiar.Variant == 131 and not tmpEnemy:GetData().PST_dummy then
+            elseif familiar.Variant == 131 and not PST:getEntData(tmpEnemy).PST_dummy then
                 if famData.PST_collisionCooldowns then
                     local enemyHitCD = famData.PST_collisionCooldowns[tmpEnemy.InitSeed]
                     if not enemyHitCD or (enemyHitCD and enemyHitCD == 0) then
@@ -512,7 +515,7 @@ function PST:preFamiliarCollision(familiar, collider, low)
                         if 100 * math.random() < 15 then
                             local tmpDummyFly = Isaac.Spawn(EntityType.ENTITY_FLY, 0, 0, Vector.Zero, Vector.Zero, nil)
                             tmpDummyFly:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
-                            tmpDummyFly:GetData().PST_dummy = true
+                            PST:getEntData(tmpDummyFly).PST_dummy = true
                             familiar:ForceCollide(tmpDummyFly, false)
                             tmpDummyFly:Remove()
                         end

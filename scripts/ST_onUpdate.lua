@@ -3220,6 +3220,11 @@ function PST:frameUpdate()
 		PST.specialNodes.dsdMod_finalImmTimer = PST.specialNodes.dsdMod_finalImmTimer - 1
 	end
 
+	-- Periodically clean entity data cache
+	if roomFrame % 900 == 0 then
+		PST.entDataCache = {}
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

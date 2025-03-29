@@ -977,6 +977,10 @@ function PST:onPickup(pickup, collider, low, forced)
             end
         end
     end
+    -- Remove from entity data cache if present
+    if PST.entDataCache[pickup.InitSeed] then
+        PST.entDataCache[pickup.InitSeed] = nil
+    end
 end
 
 --- @param pickup EntityPickup
@@ -1477,7 +1481,7 @@ function PST:onPickupInit(pickup, firstSpawn)
                     if not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
                     variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpChance then
                         local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
-                        newPickup:GetData().PST_duped = true
+                        PST:getEntData(newPickup).PST_duped = true
                     end
                 end
 
@@ -1489,7 +1493,7 @@ function PST:onPickupInit(pickup, firstSpawn)
                     end
                     if not isShop and variant == PickupVariant.PICKUP_HEART and 100 * math.random() < tmpChance then
                         local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
-                        newPickup:GetData().PST_duped = true
+                        PST:getEntData(newPickup).PST_duped = true
                     end
                 end
             end
@@ -1499,7 +1503,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             if tmpMod > 0 and firstSpawn and not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
             variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpMod then
                 local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
-                newPickup:GetData().PST_duped = true
+                PST:getEntData(newPickup).PST_duped = true
             end
 
             -- Mod: % chance to convert dropped sacks into a special variant
@@ -1518,9 +1522,10 @@ function PST:onPickupUpdate(pickup)
     -- Init pickup
     if pickup.FrameCount == 1 then
         local room = PST:getRoom()
-        local isFirstSpawn = not pickup:GetData().PST_init and not pickup:GetData().PST_duped and (room:IsFirstVisit() or room:GetFrameCount() > 1)
+        local pickupData = PST:getEntData(pickup)
+        local isFirstSpawn = not pickupData.PST_init and not pickupData.PST_duped and (room:IsFirstVisit() or room:GetFrameCount() > 1)
         PST:onPickupInit(pickup, isFirstSpawn)
-        pickup:GetData().PST_init = true
+        pickupData.PST_init = true
     end
 
     if pickup.Timeout > 0 then
@@ -1543,10 +1548,11 @@ function PST:onPickupUpdate(pickup)
         end
 
         -- Re-closing chests
-        if pickup:GetData().PST_recloseProc then
+        local pickupData = PST:getEntData(pickup)
+        if pickupData.PST_recloseProc then
             if pickup.Timeout == 1 then
                 local newChest = Isaac.Spawn(pickup.Type, pickup.Variant, 0, pickup.Position, Vector.Zero, nil)
-                newChest:GetData().PST_recloseTotal = pickup:GetData().PST_recloseTotal
+                PST:getEntData(newChest).PST_recloseTotal = pickupData.PST_recloseTotal
                 pickup:Remove()
             end
         end
@@ -1584,14 +1590,15 @@ function PST:onPickupUpdate(pickup)
 
                 -- Mod: % chance for chests to re-close after opening, up to twice per room
                 local tmpMod = PST:getTreeSnapshotMod("chestReclose", 0)
-                local rTotal = pickup:GetData().PST_recloseTotal
+                local pickupData = PST:getEntData(pickup)
+                local rTotal = pickupData.PST_recloseTotal
                 if tmpMod > 0 and (not rTotal or (rTotal and rTotal < 2)) and
                 100 * math.random() < tmpMod then
-                    pickup:GetData().PST_recloseProc = true
+                    pickupData.PST_recloseProc = true
                     if not rTotal then
-                        pickup:GetData().PST_recloseTotal = 0
+                        pickupData.PST_recloseTotal = 0
                     end
-                    pickup:GetData().PST_recloseTotal = pickup:GetData().PST_recloseTotal + 1
+                    pickupData.PST_recloseTotal = pickupData.PST_recloseTotal + 1
                     pickup.Timeout = 60
                 end
 

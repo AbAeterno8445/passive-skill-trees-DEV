@@ -830,11 +830,12 @@ function PST:onDamage(target, damage, flag, source)
             -- Expedition curse: giants' fortification
             tmpMod = PST:getTreeSnapshotMod("curseGiantsFort", 0)
             if tmpMod > 0 and target:IsBoss() then
-                if not target:GetData().PST_giantFortBlocks then
-                    target:GetData().PST_giantFortBlocks = tmpMod
-                elseif target:GetData().PST_giantFortBlocks > 0 then
+                local tgData = PST:getEntData(target)
+                if not tgData.PST_giantFortBlocks then
+                    tgData.PST_giantFortBlocks = tmpMod
+                elseif tgData.PST_giantFortBlocks > 0 then
                     partialBlock = true
-                    target:GetData().PST_giantFortBlocks = target:GetData().PST_giantFortBlocks - 1
+                    tgData.PST_giantFortBlocks = tgData.PST_giantFortBlocks - 1
                 end
             end
 
@@ -1030,13 +1031,14 @@ function PST:onDamage(target, damage, flag, source)
                     end
 
                     -- Apply bleeding every X hits
-                    if not target:GetData().PST_greataxeHits then
-                        target:GetData().PST_greataxeHits = 0
+                    local tgData = PST:getEntData(target)
+                    if not tgData.PST_greataxeHits then
+                        tgData.PST_greataxeHits = 0
                     end
-                    target:GetData().PST_greataxeHits = target:GetData().PST_greataxeHits + 1
-                    if target:GetData().PST_greataxeHits >= tmpMod[1] then
+                    tgData.PST_greataxeHits = tgData.PST_greataxeHits + 1
+                    if tgData.PST_greataxeHits >= tmpMod[1] then
                         target:AddBleeding(EntityRef(srcPlayer), 120)
-                        target:GetData().PST_greataxeHits = 0
+                        tgData.PST_greataxeHits = 0
                     end
                 end
 
@@ -1141,9 +1143,9 @@ function PST:onDamage(target, damage, flag, source)
                         end
                     end
                     if isUndead then
-                        if not target:GetData().PST_mightyPurifierStun then
+                        if not PST:getEntData(target).PST_mightyPurifierStun then
                             target:AddFreeze(EntityRef(srcPlayer), math.ceil(tmpMod[1] * 30))
-                            target:GetData().PST_mightyPurifierStun = true
+                            PST:getEntData(target).PST_mightyPurifierStun = true
                         end
                         dmgMult = dmgMult + (tmpMod[3] / 100)
                     end
@@ -1202,7 +1204,7 @@ function PST:onDamage(target, damage, flag, source)
 
                 -- Astral weapon mod: Whip implicit
                 tmpMod = PST:getSnapAstralWepMod("whipImp")
-                if tmpMod and PST.specialNodes.astralwep_whipCD == 0 and not (source.Entity and source.Entity:GetData().PST_whipTear) then
+                if tmpMod and PST.specialNodes.astralwep_whipCD == 0 and not (source.Entity and PST:getEntData(source.Entity).PST_whipTear) then
                     local totalCD = 60
                     if PST:getSnapAstralWepMod("snakebite") then
                         -- Ancient weapon mod: Snakebite
@@ -1214,8 +1216,8 @@ function PST:onDamage(target, damage, flag, source)
                             tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING | TearFlags.TEAR_POISON)
                             tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.2, 15)
                             tmpTear.Color = PST:RGBColor(45, 225, 45)
-                            tmpTear:GetData().PST_whipTear = true
-                            tmpTear:GetData().PST_snakebiteTear = true
+                            PST:getEntData(tmpTear).PST_whipTear = true
+                            PST:getEntData(tmpTear).PST_snakebiteTear = true
                         end
                     else
                         local tmpMaxTears = 5
@@ -1229,14 +1231,14 @@ function PST:onDamage(target, damage, flag, source)
                             tmpTear:ToTear().FallingSpeed = 1
                             tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_HOMING)
                             tmpTear.CollisionDamage = math.min(srcPlayer.Damage * 0.2, 15)
-                            tmpTear:GetData().PST_whipTear = true
+                            PST:getEntData(tmpTear).PST_whipTear = true
 
                             -- Ancient weapon mod: Devil's Tongue
                             if PST:getSnapAstralWepMod("devilTongue") then
                                 tmpTear.Color = PST:RGBColor(120, 70, 70)
                                 tmpTear:ToTear():ChangeVariant(TearVariant.FIRE_MIND)
                                 tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_FREEZE)
-                                tmpTear:GetData().PST_devilTongueTear = true
+                                PST:getEntData(tmpTear).PST_devilTongueTear = true
                             -- Ancient weapon mod: Azurebinder
                             elseif PST:getSnapAstralWepMod("azurebinder") then
                                 tmpTear.Color = PST:RGBColor(120, 220, 220)
@@ -1262,13 +1264,13 @@ function PST:onDamage(target, damage, flag, source)
 
                 -- Ancient weapon mod: Snakebite
                 tmpMod = PST:getSnapAstralWepMod("snakebite")
-                if tmpMod and (source.Entity and source.Entity:GetData().PST_snakebiteTear) and (target:GetEntityFlags() & EntityFlag.FLAG_POISON) > 0 then
+                if tmpMod and (source.Entity and PST:getEntData(source.Entity).PST_snakebiteTear) and (target:GetEntityFlags() & EntityFlag.FLAG_POISON) > 0 then
                     dmgMult = dmgMult + tmpMod[1] / 100
                 end
 
                 -- Ancient weapon mod: Devil's Tongue
                 tmpMod = PST:getSnapAstralWepMod("devilTongue")
-                if tmpMod and (source.Entity and source.Entity:GetData().PST_devilTongueTear) then
+                if tmpMod and (source.Entity and PST:getEntData(source.Entity).PST_devilTongueTear) then
                     if target:GetFreezeCountdown() > 0 then
                         target:AddBurn(EntityRef(srcPlayer), 90, math.min(srcPlayer.Damage, 20))
                     else

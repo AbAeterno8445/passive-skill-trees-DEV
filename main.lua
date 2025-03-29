@@ -352,6 +352,8 @@ function PST:onExitGame()
 	PST.specialNodes.darkEsauChained = false
 
 	PST.specialFX.shadowmeldTransition = false
+
+	PST.entDataCache = {}
 end
 
 include("scripts.ST_modCompat")

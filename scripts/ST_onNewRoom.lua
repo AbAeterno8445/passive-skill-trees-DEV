@@ -1329,7 +1329,7 @@ function PST:onNewRoom()
 	-- Mark existing pickups as initialized
 	if not room:IsFirstVisit() then
 		for _, tmpPickup in ipairs(Isaac.FindByType(EntityType.ENTITY_PICKUP)) do
-			tmpPickup:GetData().PST_init = true
+			PST:getEntData(tmpPickup).PST_init = true
 		end
 	end
 
