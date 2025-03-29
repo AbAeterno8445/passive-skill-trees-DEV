@@ -8,7 +8,7 @@ function PST:cosmicRTryUnlock(unlockSource)
 			if tmpData[cosmicRChar].unlocks[unlockSource] ~= nil then
 				Isaac.GetPersistentGameData():TryUnlock(tmpData[cosmicRChar].unlocks[unlockSource])
 			end
-			if Game():IsHardMode() then
+			if PST:isHardMode() then
 				local tmpSource = unlockSource .. "hard"
 				if tmpData[cosmicRChar].unlocks[tmpSource] ~= nil then
 					Isaac.GetPersistentGameData():TryUnlock(tmpData[cosmicRChar].unlocks[tmpSource])
@@ -72,7 +72,7 @@ function PST:onCompletionEvent(event)
 		end
 		local pComp = tmpCompletions[tostring(pType)]
 		pComp[tostring(event)] = true
-		if Game():IsHardMode() then
+		if PST:isHardMode() then
 			pComp[event .. "hard"] = true
 		end
 
@@ -80,7 +80,7 @@ function PST:onCompletionEvent(event)
 		local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 		if pType == PlayerType.PLAYER_LAZARUS then
 			-- Lazarus, kill Mom's Heart/It Lives! without dying in hard mode -> Bethany
-			if event == CompletionType.MOMS_HEART and not cosmicRCache.lazarusHasDied and Game():IsHardMode() then
+			if event == CompletionType.MOMS_HEART and not cosmicRCache.lazarusHasDied and PST:isHardMode() then
 				Isaac.GetPersistentGameData():TryUnlock(Achievement.BETHANY)
 			end
 		end

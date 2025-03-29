@@ -70,6 +70,16 @@ function PST:updateCacheDelayed(flags)
 	end
 end
 
+-- Returns whether the current difficulty counts as 'hard'
+function PST:isHardMode()
+	local hardMode = Game():IsHardMode()
+	-- Community Remix Insane difficulty support
+	if DifficultyManager and DifficultyManager.GetDifficulty() == "Insane" then
+		hardMode = true
+	end
+	return hardMode
+end
+
 -- Get the required XP for the given level
 function PST:getLevelXPReq(level)
 	if level <= 1 then return PST.startXPRequired end
@@ -167,7 +177,7 @@ function PST:addTempXP(xp, showText, noMult)
 	end
 
 	-- -40% xp gain outside hard mode
-	if not Game():IsHardMode() then
+	if not PST:isHardMode() then
 		xpMult = xpMult - 0.4
 	else
 		-- Hard mode floor xp bonus, +2.5% per floor past first (except boss rush)
