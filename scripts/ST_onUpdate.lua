@@ -3225,6 +3225,16 @@ function PST:frameUpdate()
 		PST.entDataCache = {}
 	end
 
+	-- Apollyon locust tears mod
+	if PST.specialNodes.locustTearsTimer > 0 then
+		PST.specialNodes.locustTearsTimer = PST.specialNodes.locustTearsTimer - 1
+	end
+
+	-- Ancient Weapon: Sword of Song cooldown
+	if PST.specialNodes.ancwep_swordOfSongCD > 0 then
+		PST.specialNodes.ancwep_swordOfSongCD = PST.specialNodes.ancwep_swordOfSongCD - 1
+	end
+
 	-- Room clear update check
 	PST:onRoomClear(level, room)
 

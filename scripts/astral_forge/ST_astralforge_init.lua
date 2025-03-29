@@ -1629,7 +1629,7 @@ PST.astralWepData = {
                 return {
                     roll1 = -0.15 + PST:roundFloat(0.1 * (honing / 50), -2),
                     roll2 = 0.08 + PST:roundFloat(0.42 * (honing / 50), -2),
-                    roll3 = 30 + PST:roundFloat(20 * (honing / 50), -2)
+                    roll3 = 10 + PST:roundFloat(15 * (honing / 50), -2)
                 }
             end
         },

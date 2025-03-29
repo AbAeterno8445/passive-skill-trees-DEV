@@ -1939,6 +1939,7 @@ function PST:resetMods()
 		goldenGimmickUses = 0,
 		spaghettificationTimer = 0,
 		beanSpeedTimer = 0,
+		locustTearsTimer = 0,
 
 		consecutiveFire = 0,
 
@@ -2005,6 +2006,7 @@ function PST:resetMods()
 		ancwep_quicksilverBuff = 0,
 		ancwep_azurebinderBuff = 0,
 		ancwep_sacScourgeBuff = 0,
+		ancwep_swordOfSongCD = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

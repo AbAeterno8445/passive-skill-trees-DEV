@@ -12,7 +12,7 @@ function PST:postFireTear(tear)
     if PST:getTreeSnapshotMod("greatDevourer", false) then
         tmpMod = tmpMod * 3
     end
-    if tmpMod > 0 then
+    if tmpMod > 0 and PST.specialNodes.locustTearsTimer == 0 then
         for _, tmpLocust in ipairs(PST.specialNodes.activeLocusts) do
             if tmpLocust:Exists() and 100 * math.random() < tmpMod then
                 local nearbyEnemies = Isaac.FindInRadius(tmpLocust.Position, 120, EntityPartition.ENEMY)
@@ -59,6 +59,7 @@ function PST:postFireTear(tear)
                 end
             end
         end
+        PST.specialNodes.locustTearsTimer = 4
     end
 end
 

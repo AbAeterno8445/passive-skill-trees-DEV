@@ -548,7 +548,7 @@ function PST:postDamage(target, damage, flag, source)
                 tmpMod = PST:getSnapAstralWepMod("swordOfSong")
                 if tmpMod then
                     -- Charming pulse
-                    if 100 * math.random() < tmpMod[1] then
+                    if PST.specialNodes.ancwep_swordOfSongCD == 0 and 100 * math.random() < tmpMod[1] then
                         local pulseSprite = PST:createAnimFXAt("gfx/1000.164_siren ring.anm2", "Idle", target.Position)
                         pulseSprite.Color = Color(1, 1, 1, 1, 0, 0, 0.5)
                         pulseSprite.PlaybackSpeed = 1.5
@@ -561,6 +561,7 @@ function PST:postDamage(target, damage, flag, source)
                                 tmpEnemy:AddCharmed(EntityRef(srcPlayer or tmpFamiliar), 120)
                             end
                         end
+                        PST.specialNodes.ancwep_swordOfSongCD = 5
                     end
                     -- Damage buff + Isaac Tears proc
                     if (target:GetEntityFlags() & EntityFlag.FLAG_CHARM) > 0 and PST:getTreeSnapshotMod("ancwep_swordOfSongBuff", 0) < tmpMod[2] then
