@@ -28,7 +28,7 @@ PST.SkillTreesAPI.AddCharacterTree("Judas", false, [[
 "28": "{\"pos\":[13,-2],\"type\":85,\"size\":\"Small\",\"name\":\"Dark Judas Shot Speed and Range\",\"description\":[\"+0.5% shot speed and range as Dark Judas\"],\"modifiers\":{\"darkJudasShotspeedRange\":0.5},\"adjacent\":[27,29]}",
 "29": "{\"pos\":[14,-2],\"type\":85,\"size\":\"Small\",\"name\":\"Dark Judas Shot Speed and Range\",\"description\":[\"+0.5% shot speed and range as Dark Judas\"],\"modifiers\":{\"darkJudasShotspeedRange\":0.5},\"adjacent\":[28,30]}",
 "30": "{\"pos\":[15,-1],\"type\":85,\"size\":\"Small\",\"name\":\"Dark Judas Shot Speed and Range\",\"description\":[\"+0.5% shot speed and range as Dark Judas\"],\"modifiers\":{\"darkJudasShotspeedRange\":0.5},\"adjacent\":[29,33,222,33]}",
-"32": "{\"pos\":[17,0],\"type\":82,\"size\":\"Large\",\"name\":\"Inner Demon\",\"description\":[\"Start with Judas' Shadow.\",\"Dark Judas starts with 1 black heart instead.\",\"-35% damage as Dark Judas.\"],\"modifiers\":{\"innerDemon\":true},\"adjacent\":[33]}",
+"32": "{\"pos\":[17,0],\"type\":82,\"size\":\"Large\",\"name\":\"Inner Demon\",\"description\":[\"Start with Judas' Shadow.\",\"-45% damage as Dark Judas.\"],\"modifiers\":{\"innerDemon\":true},\"adjacent\":[33],\"reqs\":{}}",
 "33": "{\"pos\":[16,0],\"type\":30,\"size\":\"Med\",\"name\":\"Damage\",\"description\":[\"+0.05 damage\"],\"modifiers\":{\"damage\":0.05},\"adjacent\":[16,32,30,223,30]}",
 "74": "{\"pos\":[-9,-4],\"type\":30,\"size\":\"Med\",\"name\":\"Damage\",\"description\":[\"+0.05 damage\"],\"modifiers\":{\"damage\":0.05},\"adjacent\":[153]}",
 "75": "{\"pos\":[-8,-5],\"type\":30,\"size\":\"Med\",\"name\":\"Damage\",\"description\":[\"+0.05 damage\"],\"modifiers\":{\"damage\":0.05},\"adjacent\":[152]}",

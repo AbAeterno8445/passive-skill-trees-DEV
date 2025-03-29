@@ -1301,10 +1301,9 @@ function PST:frameUpdate()
 
 	-- Inner Demon node (Judas' tree)
 	if PST:getTreeSnapshotMod("innerDemon", false) then
-		-- -35% damage as Dark Judas and start with 1 black heart instead
+		-- -45% damage as Dark Judas
 		if not PST:getTreeSnapshotMod("innerDemonActive") and player:GetPlayerType() == PlayerType.PLAYER_BLACKJUDAS then
-			PST:addModifiers({ damagePerc = -35, innerDemonActive = true }, true)
-			player:AddSoulHearts(-2)
+			PST:addModifiers({ damagePerc = -45, innerDemonActive = true }, true)
 		end
 	end
 

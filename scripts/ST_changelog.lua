@@ -27,6 +27,8 @@ function PST:getChangelogList()
         "        - +33% coin, key and bomb scarcity (from 50%).",
         "- Reworked expedition reset costs. Normal expeditions cost up to 100 obols and 30 respecs, while ubers cost",
         "200 obols and 70+ respecs.",
+        "- Judas' Inner Demon node no longer has Dark Judas start with 1 black heart, and applies -45% damage as",
+        "Dark Judas (from -35%).",
         "- Optimized the player cache update function, which should improve general performance somewhat.",
         "- Old chest conversion global nodes can no longer trigger in the Chest/Dark Room floors.",
         "- Potential fix for rare crash on run start.",

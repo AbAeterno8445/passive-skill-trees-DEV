@@ -817,8 +817,7 @@ PST.treeModDescriptions = {
         str = {
             "Inner Demon:",
             "    Start with Judas' Shadow",
-            "    Dark Judas starts with 1 black heart instead",
-            "    -15%% damage as Dark Judas"
+            "    -45%% damage as Dark Judas"
         },
         category = "charTree", sort = 2151
     },
