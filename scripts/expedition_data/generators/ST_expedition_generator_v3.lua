@@ -168,8 +168,8 @@ function PST:generateExpeditionV3(depth, seed)
             if (col == 1 or col == expLength) and newNode.rewardType == PSTExpNodeRewardType.ITEM then
                 newNode.rewardType = PSTExpNodeRewardType.OBOLS
             end
-            -- No attempts reward in last column
-            if (col == expLength) and newNode.rewardType == PSTExpNodeRewardType.ATTEMPTS then
+            -- No attempts or boon reward in last column
+            if (col == expLength) and (newNode.rewardType == PSTExpNodeRewardType.ATTEMPTS or newNode.rewardType == PSTExpNodeRewardType.BOON) then
                 newNode.rewardType = PSTExpNodeRewardType.OBOLS
             end
 

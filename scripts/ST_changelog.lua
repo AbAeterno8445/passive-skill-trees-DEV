@@ -3,6 +3,14 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.2.2",
+        "- You can now queue expedition nodes following a selected node. When completing an objective within a run, if",
+        "there are queued nodes, the current node will get automatically completed and the next node in the queue gets selected.",
+        "Final node won't get automatically completed and will still require manual completion, as it resets the expedition.",
+        "- Fixed expeditions being able to roll Boon rewards in the final node.",
+        "- Fixed expedition Curse of Urgency applying the wrong time internally.",
+        "",
+
         "v1.2.1",
         "- Internal support for addition of functions when closing tree screen or submenus (needed for future compat).",
         "",

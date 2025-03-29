@@ -53,6 +53,10 @@ function PST:getExpedSave(expData)
     if #expData.curses > 0 then
         tmpExpSave.curses = expData.curses
     end
+    -- Node queue
+    if expData.nodeQueue then
+        tmpExpSave.nodeQueue = PST:copyTable(expData.nodeQueue)
+    end
     -- Uber flag
     if expData.uber then tmpExpSave.uber = true end
     -- Order/Entropy
@@ -156,6 +160,10 @@ function PST:loadExpedition(depth, expSave, uber)
                 table.insert(tmpExped.curses, tmpCurse)
             end
         end
+    end
+    -- Node queue
+    if expSave.nodeQueue then
+        tmpExped.nodeQueue = PST:copyTable(expSave.nodeQueue)
     end
     -- Order/Entropy
     if expSave.order then tmpExped.order = expSave.order end

@@ -12,7 +12,8 @@ local expNodeRewardFrame = {
 }
 local nodeSpacing = Vector(80, 60)
 
-local colGray = Color(0.4, 0.4, 0.4, 1)
+local colGray = Color(0.4, 0.4, 0.4)
+local colOrange = Color(1, 0.6, 0.15)
 local colWhite = Color()
 
 ---@param expData PSTExpedition
@@ -66,6 +67,15 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             local oldAlpha = expedScreen.expNodeSprite.Color.A
 
             local isSelected = expData.selectedNode and expData.selectedNode.col == col and expData.selectedNode.row == row
+            local isQueued = false
+            if expData.nodeQueue then
+                for _, queuePos in ipairs(expData.nodeQueue) do
+                    if queuePos[1] == col and queuePos[2] == row then
+                        isQueued = true
+                        break
+                    end
+                end
+            end
             -- Gray out inaccessible nodes
             if tmpNode.accessible == false and tmpNode.nodeType ~= PSTExpNodeType.COMPLETED then
                 expedScreen.expNodeSprite.Color = colGray
@@ -77,6 +87,16 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
                 -- Selectable node effect
                 if tmpNode.selectable and not isSelected then
                     expedScreen.expNodeSprite:SetFrame("Nodes", PSTExpNodeType.COMPLETED)
+
+                    local flashAlpha = tScreen.modules.nodeDrawingModule.alphaFlash
+                    expedScreen.expNodeSprite.Color.A = flashAlpha
+                    expedScreen.expNodeSprite.Scale = expedScreen.expNodeSprite.Scale + Vector(0.1, 0.1)
+                    expedScreen.expNodeSprite:Render(drawPos)
+                    expedScreen.expNodeSprite.Color.A = oldAlpha
+                    expedScreen.expNodeSprite.Scale = expedScreen.expNodeSprite.Scale - Vector(0.1, 0.1)
+                -- Queuable node effect
+                elseif tmpNode.queuable and not isQueued then
+                    expedScreen.expNodeSprite:SetFrame("Nodes", PSTExpNodeType.REWARD)
 
                     local flashAlpha = tScreen.modules.nodeDrawingModule.alphaFlash
                     expedScreen.expNodeSprite.Color.A = flashAlpha
@@ -126,6 +146,12 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
             if isSelected then
                 expedScreen.boonSprite:SetFrame("Bubbles", 4)
                 expedScreen.boonSprite:Render(drawPos)
+            -- Queued node bubble
+            elseif isQueued then
+                expedScreen.boonSprite:SetFrame("Bubbles", 4)
+                expedScreen.boonSprite.Color = colOrange
+                expedScreen.boonSprite:Render(drawPos)
+                expedScreen.boonSprite.Color = colWhite
             end
 
             -- Astrolabe - draw depth num txt

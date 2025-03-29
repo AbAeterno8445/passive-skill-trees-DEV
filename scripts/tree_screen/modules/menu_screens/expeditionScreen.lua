@@ -198,22 +198,38 @@ function expeditionScreen:OnInput()
                             PST:expedRemoveCurse(self.currentDepth, selNode.curse, self.uberMode)
                         end
                     end
-                    expData.selectedNode = {
-                        col = self.hoveredNode.col,
-                        row = self.hoveredNode.row,
-                        objProgress = 0
-                    }
-                    -- Boon of the Blessed Expedition (no curse application)
-                    local isBlessedExp = PST:arrHasValue(expData.boons, 24)
-                    if not isBlessedExp then
-                        -- Add selected node curse if present
-                        local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
-                        if selNode and selNode.curse and selNode.curse > 0 then
-                            PST:expedAddCurse(self.currentDepth, selNode.curse, self.uberMode)
+                    PST:expedSelectNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, self.uberMode)
+                    SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+
+                    expData.nodeQueue = nil
+                    PST:updateExpedAccess(self.currentDepth, self.uberMode)
+                    PST.treeScreen.treeHasChanges = true
+                -- Attempt to queue queuable node
+                elseif self.hoveredNode.queuable then
+                    if not expData.nodeQueue then expData.nodeQueue = {} end
+                    table.insert(expData.nodeQueue, {self.hoveredNode.col, self.hoveredNode.row})
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    PST:updateExpedAccess(self.currentDepth, self.uberMode)
+                    PST.treeScreen.treeHasChanges = true
+                else
+                    -- Attempt to remove queued (and following) nodes
+                    if expData.nodeQueue then
+                        local queueIdx
+                        for i, queuePos in ipairs(expData.nodeQueue) do
+                            if queuePos[1] == self.hoveredNode.col and queuePos[2] == self.hoveredNode.row then
+                                queueIdx = i
+                                break
+                            end
+                        end
+                        if queueIdx then
+                            for i = #expData.nodeQueue, queueIdx, -1 do
+                                table.remove(expData.nodeQueue, i)
+                            end
+                            SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                            PST:updateExpedAccess(self.currentDepth, self.uberMode)
+                            PST.treeScreen.treeHasChanges = true
                         end
                     end
-                    SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
-                    PST.treeScreen.treeHasChanges = true
                 end
             -- Hovered boon, attempt to upgrade
             elseif self.hoveredBoon then
@@ -384,6 +400,16 @@ function expeditionScreen:Render(tScreen)
             nodeName = "Reward Node"
         end
 
+        local isQueued = false
+        if expData.nodeQueue then
+            for _, queuePos in ipairs(expData.nodeQueue) do
+                if queuePos[1] == self.hoveredNode.col and queuePos[2] == self.hoveredNode.row then
+                    isQueued = true
+                    break
+                end
+            end
+        end
+
         local nodeDesc = {}
         if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
             -- Arcane Astrolabe description
@@ -412,6 +438,11 @@ function expeditionScreen:Render(tScreen)
         else
             -- Normal expedition node description
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
+        end
+        if self.hoveredNode.queuable then
+            table.insert(nodeDesc, {"Press Allocate to queue this node for automatic selection.", PST.kcolors.STAR_ORANGE})
+        elseif isQueued then
+            table.insert(nodeDesc, {"Press Allocate to remove this and following nodes from the queue.", PST.kcolors.STAR_ORANGE})
         end
         if not isRewardNode then
             if expData.selectedNode then

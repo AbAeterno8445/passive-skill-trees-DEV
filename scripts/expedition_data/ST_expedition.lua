@@ -116,6 +116,8 @@ function PST:expedAddCurse(depth, curseID, uber)
                 local curseData = PST.expeditionCurses[curseID]
                 if curseData and curseData.modsFunc then
                     PST:addModifiers(curseData.modsFunc(runDepth), true)
+
+                    PST:createFloatTextFX("Applied Expedition Curse of " .. curseData.name, Vector.Zero, Color(1, 0.4, 0.4), 0.12, 120, true)
                 end
             end
         end
@@ -238,7 +240,7 @@ function PST:expedAddProgress(depth, prog, objName, uber)
                 tmpExpedition.selectedNode.objProgress = math.min(tgtNode.objective.req, tmpExpedition.selectedNode.objProgress + prog)
 
                 -- Expedition objective progress text popups
-                if Isaac.IsInGame() and PST.config.expedProgTextThreshold ~= 0 then
+                if Isaac.IsInGame() then
                     local newVal = tmpExpedition.selectedNode.objProgress
                     local progTotalSteps = PST.config.expedProgTextThreshold
                     local lastStep = 0
@@ -249,13 +251,22 @@ function PST:expedAddProgress(depth, prog, objName, uber)
                         end
                     end
                     if lastStep > 0 then
-                        local tmpVal = math.ceil(PST:roundFloat(lastStep / progTotalSteps, -2) * 100)
+                        local progPerc = math.ceil(PST:roundFloat(lastStep / progTotalSteps, -2) * 100)
                         local tmpColor = PST:RGBColor(57, 150, 255)
-                        if tmpVal == 100 then
+                        if progPerc == 100 then
                             tmpColor = PST:RGBColor(80, 255, 255)
                             SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.5, 2, false, 1.1)
                         end
-                        PST:createFloatTextFX("Expedition objective: " .. tostring(tmpVal) .. "%", Vector.Zero, tmpColor, 0.13, 100, true)
+                        if PST.config.expedProgTextThreshold ~= 0 then
+                            PST:createFloatTextFX("Expedition objective: " .. tostring(progPerc) .. "%", Vector.Zero, tmpColor, 0.13, 100, true)
+                        end
+                    end
+
+                    -- Node queue: check for auto-completion
+                    if tmpExpedition.selectedNode.objProgress >= tgtNode.objective.req and tgtNode.nodeType ~= PSTExpNodeType.FINAL and tgtNode.nodeType ~= PSTExpNodeType.REWARD then
+                        if PST:getTreeSnapshotMod("dynamicMode", false) and tmpExpedition.nodeQueue and #tmpExpedition.nodeQueue > 0 then
+                            PST:completeExpedNode(depth, tgtNode.col, tgtNode.row, true, uber)
+                        end
                     end
                 end
             end
@@ -315,6 +326,26 @@ function PST:expedMeetsRequirements(depth, uber)
         return true
     end
     return false
+end
+
+function PST:expedSelectNode(depth, col, row, uber)
+    local expData = PST:getExpedData(depth, uber)
+    if expData then
+        expData.selectedNode = {
+            col = col,
+            row = row,
+            objProgress = 0
+        }
+        -- Boon of the Blessed Expedition (no curse application)
+        local isBlessedExp = PST:arrHasValue(expData.boons, 24)
+        if not isBlessedExp then
+            -- Add selected node curse if present
+            local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+            if selNode and selNode.curse and selNode.curse > 0 then
+                PST:expedAddCurse(depth, selNode.curse, uber)
+            end
+        end
+    end
 end
 
 function PST:completeExpedNode(depth, col, row, giveReward, uber)
@@ -430,8 +461,30 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
         if resetExped then
             PST:resetExpedition(depth, uber)
         else
+            -- Node queue, select next in queue
+            if tmpExpedition.nodeQueue then
+                local cleanup = 0
+                for i, queuePos in ipairs(tmpExpedition.nodeQueue) do
+                    if queuePos[1] == tmpNode.col + 1 then
+                        PST:expedSelectNode(depth, queuePos[1], queuePos[2], uber)
+                        table.remove(tmpExpedition.nodeQueue, i)
+
+                        if Isaac.IsInGame() then
+                            PST:createFloatTextFX("Selected queued node", Vector.Zero, Color(1, 0.6, 0.15), 0.12, 120, true)
+                        end
+                        break
+                    else
+                        cleanup = i
+                    end
+                end
+                while cleanup > 0 do
+                    table.remove(tmpExpedition.nodeQueue, 1)
+                    cleanup = cleanup - 1
+                end
+            end
             PST:updateExpedAccess(depth, uber)
         end
+        PST:save(true)
     end
 end
 

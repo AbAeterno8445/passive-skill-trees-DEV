@@ -50,6 +50,7 @@ PSTExpNodeType = {
 ---@field row number
 ---@field accessible? boolean
 ---@field selectable? boolean
+---@field queuable? boolean
 ---@field objective? table
 ---@field curse? integer
 ---@field rewardType PSTExpNodeRewardType
@@ -86,6 +87,7 @@ PSTExpNodeType = {
 ---@field dsMods? number[] -- Deep-Space distortion modifiers (uber)
 ---@field modifiers? table
 ---@field endRewards? boolean -- Whether reward nodes were placed at the end for choice rewards
+---@field nodeQueue? number[][] -- Queue of {col, row} following the currently selected node. Should be cleaned up if there's no selected node
 
 -- Expedition save class (expedition data that gets stored in savefile)
 ---@class PSTExpeditionSave
@@ -107,6 +109,7 @@ PSTExpNodeType = {
 ---@field entropyEffects? table
 ---@field dsMods? number[]
 ---@field endRewards? boolean
+---@field nodeQueue? number[]
 
 -- Expedition items pool
 PST.expeditionItems = {
@@ -759,7 +762,7 @@ PST.expeditionCurses = {
             local mins = 2
             if depth >= 10 then mins = 3 end
             if depth >= 20 then mins = 4 end
-            return { bossRushTimer = -mins, hushTimer = -mins }
+            return { bossRushTimer = -mins * 1800, hushTimer = -mins * 1800 }
         end
     }
 }

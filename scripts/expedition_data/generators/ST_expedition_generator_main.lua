@@ -119,6 +119,7 @@ function PST:updateExpedAccess(depth, uber)
                     tmpNode.accessible = nil
                 end
                 tmpNode.selectable = nil
+                tmpNode.queuable = nil
             end
         end
 
@@ -161,6 +162,27 @@ function PST:updateExpedAccess(depth, uber)
                             end
                         end
                     end
+                end
+            end
+        end
+
+        -- Queuable nodes if a selected node is present
+        local lastQueueNode = nil
+        if tmpExpedition.selectedNode and tmpExpedition.selectedNode.col < #tmpExpedition.nodes then
+            local selCol = tmpExpedition.selectedNode.col
+            local selRow = tmpExpedition.selectedNode.row
+            lastQueueNode = tmpExpedition.nodes[selCol][selRow]
+
+            if tmpExpedition.nodeQueue and #tmpExpedition.nodeQueue > 0 then
+                local queuePos = tmpExpedition.nodeQueue[#tmpExpedition.nodeQueue]
+                lastQueueNode = tmpExpedition.nodes[queuePos[1]][queuePos[2]]
+            end
+        end
+        if lastQueueNode then
+            for _, adjNode in ipairs(lastQueueNode.connections) do
+                local targetNode = tmpExpedition.nodes[lastQueueNode.col + 1][adjNode]
+                if targetNode and targetNode.nodeType ~= PSTExpNodeType.REWARD then
+                    targetNode.queuable = true
                 end
             end
         end
