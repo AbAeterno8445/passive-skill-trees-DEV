@@ -200,6 +200,11 @@ function PST:openTreeMenu()
     end
 end
 
+local closeTreeExtraFuncs = {}
+function PST:addCloseTreeExtraFunc(funcName, func)
+    closeTreeExtraFuncs[funcName] = func
+end
+
 -- Close tree
 function PST:closeTreeMenu(mute, force)
     if PST.treeScreen.treeHasChanges then
@@ -209,6 +214,11 @@ function PST:closeTreeMenu(mute, force)
             PST:updateCacheDelayed(PST.allstatsCache)
         end
         PST.treeScreen.treeHasChanges = false
+    end
+
+    -- Tree closed extra functions
+    for _, tmpFunc in pairs(closeTreeExtraFuncs) do
+        if tmpFunc then tmpFunc() end
     end
 
     if not Isaac.IsInGame() then

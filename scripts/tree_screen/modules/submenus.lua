@@ -153,9 +153,13 @@ function submenusModule:SwitchSubmenu(newSubmenu, openData, keep)
     if not tmpSubmenu then return end
 
     if self.currentSubmenu ~= newSubmenu or keep then
+        local oldSubmenu = self.submenus[self.currentSubmenu]
+        if oldSubmenu and oldSubmenu.OnClose then oldSubmenu:OnClose() end
+
         self.currentSubmenu = newSubmenu
         if tmpSubmenu.OnOpen then tmpSubmenu:OnOpen(openData) end
     elseif not keep then
+        if tmpSubmenu and tmpSubmenu.OnClose then tmpSubmenu:OnClose() end
         self.currentSubmenu = PSTSubmenu.NONE
     end
 end
