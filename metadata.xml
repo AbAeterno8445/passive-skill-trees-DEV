@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    <name>Passive Skill Trees (Repentance) [BETA]</name>
+    <name>Passive Skill Trees (Repentance)</name>
     <directory>passive skill trees</directory>
     <id>3305869734</id>
     <description>XP, leveling, skill points and skill trees. Global passive skill tree + a personal skill tree for vanilla characters. These apply modifiers that can modify your run, from simple stat ups to gameplay-changing alterations.
@@ -17,26 +17,12 @@
 [*]Can toggle tree effects on/off before a run.
 [/list]
 
-Generally the small nodes are not very impactful on their own, granting small bonuses like +0.02 damage or +2% xp gain, medium nodes will tend to grant slightly more significant boosts, and large nodes can present an upside vs downside effect or significant boosts under the right conditions, which can affect your run's choices.
-
 You can access the tree screen from the character select menu, or in-game while paused, by pressing [b]V[/b] (LT or LB on controller). Within the tree screen you can press [b]H[/b] (or Select on controller) to get the control layout. The tree menu should have controller support but I've only tested on an old PS controller.
 
 Bear in mind that making changes to the tree while in a run won't have immediate effects. Changes will be reflected in the next run you start.
+(NEW to version 0.4.0) The new &quot;Dynamic Tree Mode&quot; global node allows applying allocated nodes to runs in real time.
 
-[h2]Controls[/h2]
-While in the tree screen:
-[list]
-[*]H: open help menu for a reminder on available controls
-[*]WASD / Arrow keys: pan camera
-[*]Shift + V: re-center camera
-[*]Z / Shift + Z: zoom in/out
-[*]E: allocate hovered node, if you have the skill points
-[*]R: respec hovered node, if you have the respec points
-[*]Q: switch to the selected character's tree, if they have one
-[*]Shift + Q: enable/disable tree effects next run
-[*]Shift + H: display a list of all active modifiers affecting the next run
-[*]Shift + C: show changelog
-[/list]
+While in the tree screen, press H to open the help menu, which has explanations for the mod's different features, including controls.
 
 [h2]Important Node: Cosmic Realignment[/h2]
 A very particular large node found in the global skill tree is &quot;Cosmic Realignment&quot; (which was originally a mod I wanted to make on its own).
@@ -49,20 +35,25 @@ Once allocated, you can pick (with an UI menu) any unlocked character and earn t
 This de-incentivizes for example using a relatively easy character to go and unlock all of, say, tainted lost's stuff.
 These unlocks grant a 'pseudo' blue completion mark to the target character so you may keep track, but original marks take priority, and thus isn't exactly a shortcut for an easier 100% file per se.
 
+[h2]Mod Data Safety - Save Backups Addon[/h2]
+I've developed a small addon you can download that allows the mod to periodically create backups of its savefiles (which stores your levels, trees, etc.).
+If data loss is detected and backups are present, a popup will show up when opening the tree that allows you to pick one of the backups to attempt to load.
+You can find it [url=https://github.com/AbAeterno8445/PST-Backups-Addon]Here[/url].
+
+[h2]Version 1.0.0 Update[/h2]
+[url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/dev/docs/1.0.0-features.md]Read about the new features for 1.0.0 here.[/url]
+
+[h2]Version 0.4.0 - Sidereal Update[/h2]
+[url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/dev/docs/sidereal-update.md]Read about the new features for 0.4.0 here.[/url]
+
 [h2]Version 0.2.0 - Starcursed Update[/h2]
-[url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/dev/docs/starcursed-update.md]Read the new features for 0.2.0 here.[/url]
-
-[h2]BETA release[/h2]
-This is an early release of the mod, and with this many moving pieces, it may contain a fair few bugs and weird interactions! Let me know if you find any of these during gameplay.
-
-I'm also rather new to the Isaac modding scene, so there might be conflicts with other popular mods as I haven't tested those too extensively.
-
-Co-op hasn't been tested, but most if not all of the tree effects are applied to the main player, meaning co-op players don't get trees of their own and could have to adjust their gameplay to synergize with the host's tree.
+[url=https://github.com/AbAeterno8445/passive-skill-trees-DEV/blob/dev/docs/starcursed-update.md]Read about the new features for 0.2.0 here.[/url]
 
 [h2]Requirements[/h2]
 This mod requires installing Repentogon. You may install it from [url=https://repentogon.com/]here[/url].
 NOTE: you need to install Repentogon following the instructions in the link for the mod to work properly, it's not just a workshop install!
 Requires Repentance. Afterbirth+ unsupported.
+Repentance+ DLC is not supported.
 
 [h2]For Modders - API and Custom Skill Trees[/h2]
 I have a little visual node js app, [b]isaac-skilltreegen[/b], that lets you create skill trees, and the mod supports coding skill trees for custom characters.
@@ -77,12 +68,7 @@ I've also been playing with the [url=https://steamcommunity.com/sharedfiles/file
 You can hover over the &quot;Leveling Of Isaac&quot; node (central node in global tree), and hold the Respec Node button for 7 seconds to reset ALL tree related data for your current save. Use with care!
 
 [h2]Debugging and Config[/h2]
-The mod comes with a few debug settings which make testing its features easier. In the mod directory, main.lua file, at the top you can find a PST.debugOptions table with some variables you can set to 'true', such as:
-[list]
-[*][b]infSP:[/b] No longer spend or require skill points for nodes
-[*][b]infRespec:[/b] No longer spend or require respec points for nodes
-[*][b]allAvailable:[/b] Makes all nodes available at all times, regardless of connections
-[/list]
+The mod comes with a few debug settings which make testing its features easier. In the mod directory, main.lua file, at the top you can find a PST.debugOptions table with some variables you can set to 'true'.
 
 There's also the PST_config.lua file, where you can find some extra settings such as whether to draw the xp bar, floating texts, char info in character select, xp multiplier, as well as re-configuring the keybinds used in the tree screen, in case of conflicts.
 
@@ -92,11 +78,14 @@ Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787]
 [list]
 [*]karsiori, for the Free Pixel Art Gem Pack (used in starcursed update) - you can find it [url=https://karsiori.itch.io/free-pixel-art-gem-pack]Here[/url].
 [*]HalvedDead, for extensive testing help and feedback.
+[*]wookywok, for extensive feedback, ideas and sprite contributions.
+[*]DCSS (Dungeon Crawl Stone Soup) for many of the UI/node assets (specifically in expeditions and related content), and astral weapon sprites.
+Most modern assets for DCSS are distributed under the CC0 license, but if you're an original author for these and would like specific assets of yours to be altered/removed, please contact me.
 [/list]
 
 [h2]Support[/h2]
 I have a ko-fi if you feel like supporting me: [url=https://ko-fi.com/abaeterno42]https://ko-fi.com/abaeterno42[/url]</description>
-    <version>0.3.17</version>
+    <version>1.2.0</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Player Characters"/>
