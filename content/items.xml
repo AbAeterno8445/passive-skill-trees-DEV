@@ -4,7 +4,7 @@
     <trinket description="Ancient cosmic energy lingers on..." gfx="trinket_viridian_starcursed_jewel.png" id="3" name="Viridian Starcursed Jewel" achievement="99999" />
     <trinket description="The stars gaze back..." gfx="trinket_ancient_starcursed_jewel.png" id="4" name="Ancient Starcursed Jewel" achievement="99999" />
 
-    <active name="Shadowmeld" description="Sink into the shadows" id="5" gfx="Collectibles_Shadowmeld.png" maxcharges="360" chargetype="timed" cooldown="30" achievement="99999" />
+    <active name="Shadowmeld" description="Sink into the shadows" id="5" gfx="Collectibles_Shadowmeld.png" maxcharges="210" chargetype="timed" cooldown="30" achievement="99999" quality="1" />
 
     <!-- Awards 2 obols -->
     <trinket description="Cosmic glittering and ambition inducing coinage" gfx="trinket_arcane_obols_1.png" id="6" name="Arcane Obols 1" achievement="99999" />

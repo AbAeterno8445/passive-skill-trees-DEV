@@ -2205,6 +2205,9 @@ if EID then
 		)
 	end
 
+	-- Shadowmeld (Siren's tree / item)
+	EID:addCollectible(Isaac.GetItemIdByName("Shadowmeld"), "Creates a marked shadow at your current position.#Re-using Shadowmeld causes you to manifest The Siren's visage to sink into the shadows, then reappear at the marker's location.#You cannot be damaged while sinking and for 0.5 seconds afterwards.#Press the drop key to remove markers.")
+
 	-- Grand Consonance node (T. Siren's tree)
 	local GC_EID_Data = {
 		[CollectibleType.COLLECTIBLE_LITTLE_CHUBBY] = "Launched from you",

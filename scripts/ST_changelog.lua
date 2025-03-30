@@ -6,6 +6,8 @@ function PST:getChangelogList()
         "v1.2.3",
         "- Clearing the same room multiple times now applies a stacking xp penalty to that room.",
         "- Refactored code logic for room clears, should generally cause less jank in cases where monsters spawn on cleared rooms.",
+        "- Reduced Shadowmeld's cooldown to 7 seconds (from 12) (Siren tree).",
+        "- Shadowmeld now has quality 1 and EID description, in case it ever needs to show up as an item.",
         "",
 
         "v1.2.2",
