@@ -3234,8 +3234,14 @@ function PST:frameUpdate()
 		PST.specialNodes.ancwep_swordOfSongCD = PST.specialNodes.ancwep_swordOfSongCD - 1
 	end
 
-	-- Room clear update check
-	PST:onRoomClear(level, room)
+	-- Award pending xp whenever room becomes empty
+	if PST.modData.xpObtained > 0 and room:GetAliveEnemiesCount() == 0 then
+		-- Convert temp xp to normal xp
+		if PST.modData.xpObtained > 0 then
+			PST:addXP(PST.modData.xpObtained, false)
+			PST.modData.xpObtained = 0
+		end
+	end
 
 	-- Delayed cache update
 	if PST.delayedCacheUpdate > 0 and gameFrame > PST.delayedCacheUpdate + 1 then

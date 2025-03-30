@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.2.3",
+        "- Clearing the same room multiple times now applies a stacking xp penalty to that room.",
+        "- Refactored code logic for room clears, should generally cause less jank in cases where monsters spawn on cleared rooms.",
+        "",
+
         "v1.2.2",
         "- Beta for Astral Vessel, a new customizable character based on PST, is now public! Check it out in the workshop.",
         "- You can now queue expedition nodes following a selected node. When completing an objective within a run, if",

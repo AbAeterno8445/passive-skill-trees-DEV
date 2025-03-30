@@ -201,6 +201,13 @@ function PST:addTempXP(xp, showText, noMult)
 		xpMult = xpMult + tmpMod / 100
 	end
 
+	-- Penalty from multiple clears on the same room
+	local clearsPerRoom = PST:getTreeSnapshotMod("clearsPerRoom", {})
+	local roomIdxStr = tostring(PST:getLevel():GetCurrentRoomIndex())
+	if clearsPerRoom[roomIdxStr] then
+		xpMult = 1 - 0.15 * (clearsPerRoom[roomIdxStr] - 1)
+	end
+
 	if noMult then xpMult = 1 end
 
 	-- Victory lap XP penalty

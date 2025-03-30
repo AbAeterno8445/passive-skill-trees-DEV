@@ -21,6 +21,9 @@ function PST:onNewLevel()
         shopSavingCache = { value = {}, set = true }
     }, true)
 
+    -- Reset room clears
+    PST.modData.treeModSnapshot.clearsPerRoom = {}
+
     -- Equipped ancient starcursed jewels - 'unhalve' xp from first floor
     if not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("SC_firstFloorXPHalvedProc", false) then
         for i=1,2 do
