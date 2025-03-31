@@ -17,29 +17,59 @@ function PST:onNewRun(isContinued)
     if treeActive then
         local globalTrees = {"global", "starTree"}
         -- Get snapshot of tree modifiers
-        for _, tmpTree in ipairs(globalTrees) do
-            for nodeID, node in pairs(PST.trees[tmpTree]) do
-                if PST:isNodeAllocated(tmpTree, nodeID) then
-                    PST:addModifiers(node.modifiers)
-                end
-            end
-        end
-        local currentChar = PST.charNames[1 + PST.selectedMenuChar]
-        if currentChar == nil or isChallenge then
-            currentChar = PST.charNames[1 + player:GetPlayerType()]
-        end
-        if currentChar ~= nil then
-            if PST.trees[currentChar] ~= nil then
-                for nodeID, node in pairs(PST.trees[currentChar]) do
-                    if PST:isNodeAllocated(currentChar, nodeID) then
+        if not PST:isNodeNameAllocated("global", "CHAOSMODE") then
+            for _, tmpTree in ipairs(globalTrees) do
+                for nodeID, node in pairs(PST.trees[tmpTree]) do
+                    if PST:isNodeAllocated(tmpTree, nodeID) then
                         PST:addModifiers(node.modifiers)
                     end
                 end
             end
-        end
+            local currentChar = PST.charNames[1 + PST.selectedMenuChar]
+            if currentChar == nil or isChallenge then
+                currentChar = PST.charNames[1 + player:GetPlayerType()]
+            end
+            if currentChar ~= nil then
+                if PST.trees[currentChar] ~= nil then
+                    for nodeID, node in pairs(PST.trees[currentChar]) do
+                        if PST:isNodeAllocated(currentChar, nodeID) then
+                            PST:addModifiers(node.modifiers)
+                        end
+                    end
+                end
+            end
 
-        -- Cosmic Realignment
-        PST:addModifiers({ cosmicRealignment = PST.modData.cosmicRealignment })
+            -- Cosmic Realignment
+            PST:addModifiers({ cosmicRealignment = PST.modData.cosmicRealignment })
+        -- CHAOSMODE - apply nodes from throughout all trees at random
+        else
+            local chaosModBlacklist = {
+                "cosmicRealignment", "vesselTrinket", "spiritBringer", "spiritTaker", "spiritReaper", "spiritProtector", "chaosmode",
+                "xpgain", "challengeXP", "secretXP", "fireXP", "poopXP", "tintedRockXP", ""
+            }
+            for treeName, tmpTree in pairs(PST.trees) do
+                if treeName ~= "sidereal" and treeName ~= "starTree" and PST.trees[treeName] then
+                    local chaosChance = 0.4
+                    for nodeID, node in pairs(PST.trees[treeName]) do
+                        local blacklisted = false
+                        for modName, _ in pairs(node.modifiers) do
+                            if PST:arrHasValue(chaosModBlacklist, modName) then
+                                blacklisted = true
+                                break
+                            end
+                        end
+                        if not blacklisted and math.random() <= chaosChance then
+                            PST:addModifiers(node.modifiers)
+                            if treeName ~= "global" then
+                                chaosChance = chaosChance - 0.005
+                            end
+                        end
+                    end
+                end
+            end
+            PST:addModifiers({ chaosmode = true })
+            print("[PST] Chaosmode enabled.")
+        end
 
         -- Effects that re-enable when killing Mom's Heart
         if PST.modData.momHeartProc["isaacBlessing"] or PST.modData.momHeartProc["isaacBlessing"] == nil then

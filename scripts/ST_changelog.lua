@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.2.4",
+        "- CHAOSMODE.",
+        "",
+
         "v1.2.3",
         "- Clearing the same room multiple times now applies a stacking xp penalty to that room (such as Community Remix's hexed rooms).",
         "- Refactored code logic for room clears, should generally cause less jank in cases where monsters spawn on cleared rooms.",

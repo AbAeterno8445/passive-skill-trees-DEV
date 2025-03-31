@@ -229,6 +229,8 @@ end
 ---@param prog number
 ---@param objName? string -- If provided, will check whether this objective name matches the currently selected one in the expedition
 function PST:expedAddProgress(depth, prog, objName, uber)
+    if PST:getTreeSnapshotMod("chaosmode", false) then return end
+
     local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition and tmpExpedition.selectedNode then
         local tgtCol = tmpExpedition.nodes[tmpExpedition.selectedNode.col]

@@ -2228,7 +2228,7 @@ function PST:onDamage(target, damage, flag, source)
                         -- Mod: when hitting enemies, gain an additional % berserk charge
                         local tmpMod = PST:getTreeSnapshotMod("berserkHitChargeGain", 0)
                         if tmpMod > 0 and not PST:isBerserk() then
-                            PST:getPlayer().SamsonBerserkCharge = PST:getPlayer().SamsonBerserkCharge + 1000 * tmpMod
+                            PST:getPlayer().SamsonBerserkCharge = PST:getPlayer().SamsonBerserkCharge + math.floor(1000 * tmpMod)
                             PST:updateCacheDelayed(CacheFlag.CACHE_COLOR)
                         end
 

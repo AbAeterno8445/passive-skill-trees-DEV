@@ -462,10 +462,10 @@ function PST:postDamage(target, damage, flag, source)
                         if tgData.PST_slowParaExtension < 4 then
                             tgData.PST_slowParaExtension = tgData.PST_slowParaExtension + 1
                             if target:GetSlowingCountdown() > 0 then
-                                target:SetSlowingCountdown(target:GetSlowingCountdown() + tmpMod * 30)
+                                target:SetSlowingCountdown(target:GetSlowingCountdown() + math.ceil(tmpMod * 30))
                             end
                             if target:GetFreezeCountdown() > 0 then
-                                target:SetFreezeCountdown(target:GetFreezeCountdown() + tmpMod * 30)
+                                target:SetFreezeCountdown(target:GetFreezeCountdown() + math.ceil(tmpMod * 30))
                             end
                         end
                     end
