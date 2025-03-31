@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.2.4",
+        "- Added support for items/entities from the Rebekah mod.",
         "- CHAOSMODE.",
         "",
 

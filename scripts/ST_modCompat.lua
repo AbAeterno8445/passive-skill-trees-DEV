@@ -2168,6 +2168,63 @@ function PST:initModCompat()
 	end
 	---- End of Preyn's Collections ----
 
+	-- Rebekah
+	if yandereWaifu then -- if yandere waifu then RUN - wooky
+		-- Baby familiars
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("A Beautiful Grave"))
+
+		-- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Wishful Thinking"))
+
+		--HP Ups
+        local tmpHPUpItems = {
+            {"Candy Wedding Ring", 1}, {"Nut Water", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+		-- Dice items
+        table.insert(PST.diceItems, Isaac.GetItemIdByName("Dice of Fate"))
+        table.insert(PST.diceItems, Isaac.GetItemIdByName("God's Dice"))
+
+		        -- Soul stones
+        local tmpSoulstones = {
+            {"Red Rebekah", "Soul of Rebekah"}, {"Soul Rebekah", "Soul of Rebekah"}, {"Evil Rebekah", "Soul of Rebekah"},
+			{"Eternal Rebekah", "Soul of Rebekah"}, {"Gold Rebekah", "Soul of Rebekah"}, {"Bone Rebekah", "Soul of Rebekah"},
+			{"Rotten Rebekah", "Soul of Rebekah"}, {"Broken Rebekah", "Soul of Rebekah"}, {"Immortal Rebekah", "Soul of Rebekah"},
+			{"Cursed Rebekah", "Soul of Rebekah"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Finger Finger"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("A Beautiful Grave"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Miraculous Womb"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Eternal Bond"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Jacob's Tears"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Angel's Morningstar"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Fenrir's Leash"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Cutie Patootie"))
+
+		-- Grand Consonance
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Orbital Jacob"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Orbital Esau"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Grave Baby"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Jacob's Tears"))
+	end
+
     -- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list
     if not initMods.songOfTheFew then
         initMods.songOfTheFew = true
@@ -2416,5 +2473,14 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blood of the abyss"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Witch wand"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blank"))
+	end
+
+	-- Rebekah blue items
+	if yandereWaifu then
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Full Fat Milk"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Jacob's Tears"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Moriah Diary"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Skimmed Milk"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Defuse = Rewards"))
 	end
 end
