@@ -635,7 +635,7 @@ function PST:astralWepApplyAncientStats(player, removeMod)
 end
 
 -- Apply modifiers from the given weapon to the current run
-function PST:astralWepApplyMods(wepData)
+function PST:astralWepApplyMods(wepData, firstTime)
     local wepTypeData = PST.astralWepData[wepData.type]
 
     -- Weapon implicit mod
@@ -676,63 +676,65 @@ function PST:astralWepApplyMods(wepData)
         end
     end
 
-    -- Astral weapon mod: greataxe implicit
-    local tmpMod = PST:getSnapAstralWepMod("greataxeImp")
-    if tmpMod then
-        PST:addModifiers({ tearsPerc = tmpMod[3] }, true)
-    end
-
-    -- Astral weapon mod: shortbow implicit
-    tmpMod = PST:getSnapAstralWepMod("shortbowImp")
-    if tmpMod then
-        PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
-    end
-
-    -- Astral weapon mod: bow implicit
-    tmpMod = PST:getSnapAstralWepMod("bowImp")
-    if tmpMod then
-        PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
-    end
-
-    -- Astral weapon mod: crossbow implicit
-    tmpMod = PST:getSnapAstralWepMod("crossbowImp")
-    if tmpMod then
-        PST:addModifiers({ tears = tmpMod[1], shotSpeed = tmpMod[2] }, true)
-    end
-
-    -- Astral weapon mod: + base damage
-    tmpMod = PST:getSnapAstralWepMod("baseDmg")
-    if tmpMod then
-        PST:addModifiers({ damage = tmpMod[1] }, true)
-    end
-
-    -- Astral weapon mod: + base damage (removed for X secs when you get hit)
-    tmpMod = PST:getSnapAstralWepMod("baseDmg2")
-    if tmpMod then
-        PST:addModifiers({ damage = tmpMod[1] }, true)
-    end
-
-    -- Ancient weapon mod: Grey Wind
-    tmpMod = PST:getSnapAstralWepMod("greyWind")
-    if tmpMod then
-        PST:addModifiers({ damage = -0.6 }, true)
-    end
-
-    -- Ancient weapon mod: Magefist
-    tmpMod = PST:getSnapAstralWepMod("magefist")
-    if tmpMod then
-        local tmpAllstats = #wepData.mods * tmpMod[1]
-        if tmpAllstats > 0 then
-            PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+    if firstTime ~= false then
+        -- Astral weapon mod: greataxe implicit
+        local tmpMod = PST:getSnapAstralWepMod("greataxeImp")
+        if tmpMod then
+            PST:addModifiers({ tearsPerc = tmpMod[3] }, true)
         end
-    end
 
-    -- Ancient weapon mod: Ironhand
-    tmpMod = PST:getSnapAstralWepMod("ironhand")
-    if tmpMod then
-        local tmpAllstats = math.floor((wepData.honing or 0) / 10) * tmpMod[1]
-        if tmpAllstats > 0 then
-            PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+        -- Astral weapon mod: shortbow implicit
+        tmpMod = PST:getSnapAstralWepMod("shortbowImp")
+        if tmpMod then
+            PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+        end
+
+        -- Astral weapon mod: bow implicit
+        tmpMod = PST:getSnapAstralWepMod("bowImp")
+        if tmpMod then
+            PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+        end
+
+        -- Astral weapon mod: crossbow implicit
+        tmpMod = PST:getSnapAstralWepMod("crossbowImp")
+        if tmpMod then
+            PST:addModifiers({ tears = tmpMod[1], shotSpeed = tmpMod[2] }, true)
+        end
+
+        -- Astral weapon mod: + base damage
+        tmpMod = PST:getSnapAstralWepMod("baseDmg")
+        if tmpMod then
+            PST:addModifiers({ damage = tmpMod[1] }, true)
+        end
+
+        -- Astral weapon mod: + base damage (removed for X secs when you get hit)
+        tmpMod = PST:getSnapAstralWepMod("baseDmg2")
+        if tmpMod then
+            PST:addModifiers({ damage = tmpMod[1] }, true)
+        end
+
+        -- Ancient weapon mod: Grey Wind
+        tmpMod = PST:getSnapAstralWepMod("greyWind")
+        if tmpMod then
+            PST:addModifiers({ damage = -0.6 }, true)
+        end
+
+        -- Ancient weapon mod: Magefist
+        tmpMod = PST:getSnapAstralWepMod("magefist")
+        if tmpMod then
+            local tmpAllstats = #wepData.mods * tmpMod[1]
+            if tmpAllstats > 0 then
+                PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+            end
+        end
+
+        -- Ancient weapon mod: Ironhand
+        tmpMod = PST:getSnapAstralWepMod("ironhand")
+        if tmpMod then
+            local tmpAllstats = math.floor((wepData.honing or 0) / 10) * tmpMod[1]
+            if tmpAllstats > 0 then
+                PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+            end
         end
     end
 end
