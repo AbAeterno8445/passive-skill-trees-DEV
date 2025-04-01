@@ -634,4 +634,107 @@ function PST:astralWepApplyAncientStats(player, removeMod)
     end
 end
 
+-- Apply modifiers from the given weapon to the current run
+function PST:astralWepApplyMods(wepData)
+    local wepTypeData = PST.astralWepData[wepData.type]
+
+    -- Weapon implicit mod
+    if wepData.multiImplicits then
+        for _, tmpMod in ipairs(wepData.multiImplicits) do
+            local origWepTypeData = PST.astralWepData[tmpMod.type]
+            if origWepTypeData then
+                local tmpModName = PST.astralWepPrefix .. origWepTypeData.implicitMod.name
+                PST.modData.treeModSnapshot[tmpModName] = tmpMod.rolls
+            end
+        end
+    elseif wepData.implicitMod then
+        local tmpModName = PST.astralWepPrefix .. wepTypeData.implicitMod.name
+        PST.modData.treeModSnapshot[tmpModName] = wepData.implicitMod
+    end
+
+    -- Weapon modifiers
+    if wepData.mods then
+        for _, tmpMod in ipairs(wepData.mods) do
+            local tmpModName = PST.astralWepPrefix .. tmpMod.name
+            PST.modData.treeModSnapshot[tmpModName] = tmpMod.rolls or true
+
+            -- Ancient mod rolls
+            local tmpModData = PST.astralWepMods[tmpMod.name]
+            if tmpModData.ancient then
+                local ancRolls = {}
+                for i, tmpMinRoll in ipairs(tmpModData.minRolls) do
+                    local newRoll = tmpMinRoll
+                    if wepData.ancientUpg then
+                        local tmpMathFunc = math.min
+                        if tmpModData.upgIncrements[i] < 0 then tmpMathFunc = math.max end
+                        newRoll = tmpMathFunc(tmpModData.maxRolls[i], newRoll + tmpModData.upgIncrements[i] * wepData.ancientUpg)
+                    end
+                    table.insert(ancRolls, newRoll)
+                end
+                PST.modData.treeModSnapshot[tmpModName] = ancRolls
+            end
+        end
+    end
+
+    -- Astral weapon mod: greataxe implicit
+    local tmpMod = PST:getSnapAstralWepMod("greataxeImp")
+    if tmpMod then
+        PST:addModifiers({ tearsPerc = tmpMod[3] }, true)
+    end
+
+    -- Astral weapon mod: shortbow implicit
+    tmpMod = PST:getSnapAstralWepMod("shortbowImp")
+    if tmpMod then
+        PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+    end
+
+    -- Astral weapon mod: bow implicit
+    tmpMod = PST:getSnapAstralWepMod("bowImp")
+    if tmpMod then
+        PST:addModifiers({ shotSpeed = tmpMod[1] }, true)
+    end
+
+    -- Astral weapon mod: crossbow implicit
+    tmpMod = PST:getSnapAstralWepMod("crossbowImp")
+    if tmpMod then
+        PST:addModifiers({ tears = tmpMod[1], shotSpeed = tmpMod[2] }, true)
+    end
+
+    -- Astral weapon mod: + base damage
+    tmpMod = PST:getSnapAstralWepMod("baseDmg")
+    if tmpMod then
+        PST:addModifiers({ damage = tmpMod[1] }, true)
+    end
+
+    -- Astral weapon mod: + base damage (removed for X secs when you get hit)
+    tmpMod = PST:getSnapAstralWepMod("baseDmg2")
+    if tmpMod then
+        PST:addModifiers({ damage = tmpMod[1] }, true)
+    end
+
+    -- Ancient weapon mod: Grey Wind
+    tmpMod = PST:getSnapAstralWepMod("greyWind")
+    if tmpMod then
+        PST:addModifiers({ damage = -0.6 }, true)
+    end
+
+    -- Ancient weapon mod: Magefist
+    tmpMod = PST:getSnapAstralWepMod("magefist")
+    if tmpMod then
+        local tmpAllstats = #wepData.mods * tmpMod[1]
+        if tmpAllstats > 0 then
+            PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+        end
+    end
+
+    -- Ancient weapon mod: Ironhand
+    tmpMod = PST:getSnapAstralWepMod("ironhand")
+    if tmpMod then
+        local tmpAllstats = math.floor((wepData.honing or 0) / 10) * tmpMod[1]
+        if tmpAllstats > 0 then
+            PST:addModifiers({ allstatsPerc = tmpAllstats }, true)
+        end
+    end
+end
+
 include("scripts.astral_forge.ST_astralforge_forging")
