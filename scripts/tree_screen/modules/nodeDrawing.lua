@@ -55,7 +55,7 @@ local function PST_isNodeVisible(node, charData)
     end
     -- Extra node visibility funcs
     for _, tmpFunc in pairs(nodeVisibleExtraFuncs) do
-        if tmpFunc then tmpFunc(node) end
+        if tmpFunc and not tmpFunc(node) then return false end
     end
     return true
 end
