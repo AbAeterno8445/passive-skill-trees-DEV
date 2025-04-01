@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.2.5",
+        "- Internal support for Astral Vessel 0.2.5 functionality.",
+        "",
+
         "v1.2.4",
         "- Added support for items/entities from the Rebekah mod.",
         "- CHAOSMODE.",

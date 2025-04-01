@@ -34,6 +34,12 @@ function nodeDrawingModule:Update(tScreen)
     end
 end
 
+-- Extra functions that allow adding conditions under which certain nodes become visible/invisible
+local nodeVisibleExtraFuncs = {}
+function PST:addNodeVisibilityExtraFunc(funcName, func)
+    nodeVisibleExtraFuncs[funcName] = func
+end
+
 local function PST_isNodeVisible(node, charData)
     -- Crimson nodes, hide if char below level 60
     if PST:arrHasValue(PST.crimsonNodeNames, node.name) and (not charData or (charData and charData.level < 60)) and
@@ -46,6 +52,10 @@ local function PST_isNodeVisible(node, charData)
     -- Save Backups Addon node, remove if addon detected
     if node.name == "Save Backups Addon" and PST_BackupSave ~= nil then
         return false
+    end
+    -- Extra node visibility funcs
+    for _, tmpFunc in pairs(nodeVisibleExtraFuncs) do
+        if tmpFunc then tmpFunc(node) end
     end
     return true
 end
