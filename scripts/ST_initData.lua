@@ -587,6 +587,8 @@ PST.bannedCharMedNodes = {
 	"Shieldless Boss Speed", "Berserk Character Size", "Stat Boost On Blood Charge", "Soul Bone Damage",
 	"Red Hearts Soul Charge", "Room Clear Soul Charge", "Eternal Heart Drop Conversion"
 }
+PST.shadowmeldMarkerEffectID = Isaac.GetEntityVariantByName("Shadowmeld Marker")
+PST.holyAuraEffectID = Isaac.GetEntityVariantByName("PST Holy Aura")
 
 -- First update when entering a new floor
 PST.floorFirstUpdate = false
@@ -1826,6 +1828,7 @@ function PST:resetMods()
 		ancwep_sunbladeSpeed = false,
 		ancwep_metaClawMod = nil,
 		ancwep_quicksilverProc = false,
+		ancwep_divineMessengerProc = false,
 
 		crimConvBuff = "",
 
@@ -1942,6 +1945,7 @@ function PST:resetMods()
 		spaghettificationTimer = 0,
 		beanSpeedTimer = 0,
 		locustTearsTimer = 0,
+		inHolyAura = false,
 
 		consecutiveFire = 0,
 
@@ -2009,6 +2013,7 @@ function PST:resetMods()
 		ancwep_azurebinderBuff = 0,
 		ancwep_sacScourgeBuff = 0,
 		ancwep_swordOfSongCD = 0,
+		ancwep_divineIntCD = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianSpawnProc = false,

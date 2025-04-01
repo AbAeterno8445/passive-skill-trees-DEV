@@ -752,15 +752,14 @@ end
 ---- CUSTOM ITEMS ----
 -- Shadowmeld
 local itmShadowmeld = Isaac.GetItemIdByName("Shadowmeld")
-local shadowmeldMarkerVariant = Isaac.GetEntityVariantByName("Shadowmeld Marker")
 function PST:onUseShadowmeld(_, RNG, player, useFlags, slot, customVarData)
-    local tmpMarkerQuery = Isaac.FindByType(EntityType.ENTITY_EFFECT, shadowmeldMarkerVariant, 0)
+    local tmpMarkerQuery = Isaac.FindByType(EntityType.ENTITY_EFFECT, PST.shadowmeldMarkerEffectID, 0)
     if PST.specialFX.shadowmeldTransition then
         return { Discharge = false, ShowAnim = false }
     elseif #tmpMarkerQuery == 0 then
         local tmpPoofFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
         tmpPoofFX.Color = Color(0.1, 0.1, 0.1, 1)
-        Game():Spawn(EntityType.ENTITY_EFFECT, shadowmeldMarkerVariant, player.Position, Vector.Zero, player, 0, Random() + 1)
+        Game():Spawn(EntityType.ENTITY_EFFECT, PST.shadowmeldMarkerEffectID, player.Position, Vector.Zero, player, 0, Random() + 1)
         SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE, 0.5, 2, false, 1.1)
 
         return { Discharge = false, ShowAnim = false }

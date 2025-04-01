@@ -684,7 +684,12 @@ function PST:edenChaoticEpiphany(player)
 end
 
 function PST:isBerserk()
-	return PST:getPlayer():GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+	-- Avoids rare crash?
+	if PST:getRoom():GetFrameCount() > 1 then
+		return PST:getPlayer():GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
+	else
+		return false
+	end
 end
 
 function PST:getTLazOtherForm()

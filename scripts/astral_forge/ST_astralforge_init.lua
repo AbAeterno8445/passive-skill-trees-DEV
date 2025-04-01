@@ -532,6 +532,20 @@ PST.astralWepMods = {
         maxRolls = {8, 0.1},
         upgIncrements = {-0.5, 0.005}
     },
+    divineInterceptor = {
+        serial = 86,
+        description = {
+            "When hitting an enemy within 2 tiles, fire a spread of sword projectiles towards them.",
+            "Current upgrade level: {{roll1}}.",
+            "Upgrade level 3: sword projectiles now pierce enemies.",
+            "Upgrade level 6: sword projectiles gain homing.",
+            "5 second cooldown."
+        },
+        ancient = true,
+        minRolls = {0},
+        maxRolls = {6},
+        upgIncrements = {1}
+    },
     -- Ancient Estocs
     arcingNeedle = {
         serial = 42,
@@ -895,6 +909,19 @@ PST.astralWepMods = {
         maxRolls = {40, 16},
         upgIncrements = {2, 0.4}
     },
+    divineMessenger = {
+        serial = 87,
+        description = {
+            "When hitting an enemy beyond 3 tiles from you for the first time in a room, create a Holy Aura",
+            "at their position.",
+            "Holy Aura lasts for the rest of the room, slowly moves towards you, and grant +1 damage, +0.4 tears,",
+            "and +{{roll1}}% damage and tears while in it."
+        },
+        ancient = true,
+        minRolls = {12},
+        maxRolls = {18},
+        upgIncrements = {0.5}
+    },
     -- Ancient Crossbows
     volatileArbalest = {
         serial = 71,
@@ -1160,6 +1187,13 @@ PST.astralWepData = {
                 spriteFrame = 35,
                 weight = 100,
                 ancientMods = {"glowingSunblade"}
+            },
+            -- Divine Interceptor
+            {
+                name = "Divine Interceptor",
+                spriteFrame = 51,
+                weight = 100,
+                ancientMods = {"divineInterceptor"}
             }
         }
     },
@@ -1607,6 +1641,13 @@ PST.astralWepData = {
                 spriteFrame = 27,
                 weight = 100,
                 ancientMods = {"bruteOnslaught"}
+            },
+            -- Divine Messenger
+            {
+                name = "Divine Messenger",
+                spriteFrame = 52,
+                weight = 100,
+                ancientMods = {"divineMessenger"}
             }
         }
     },

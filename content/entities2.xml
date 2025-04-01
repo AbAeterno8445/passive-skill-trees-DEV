@@ -13,4 +13,7 @@
 	    <preload-snd id="22" /> <!-- CHEST_OPEN -->
 	    <preload-snd id="156" /> <!-- UNLOCK00 -->
     </entity>
+
+    <!-- Holy Aura -->
+    <entity anm2path="effect_pstholyaura.anm2" id="1000" variant="2101" name="PST Holy Aura" />
 </entities>

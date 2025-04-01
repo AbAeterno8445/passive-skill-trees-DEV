@@ -133,4 +133,6 @@
     <trinket description="Ancient astral weapon: Devil's Tongue (whip)" gfx="trinket_astralwep_deviltongue.png" id="92" name="Astral weapon: Devil's Tongue" achievement="99999" />
     <trinket description="Ancient astral weapon: Azurebinder (whip)" gfx="trinket_astralwep_azurebinder.png" id="93" name="Astral weapon: Azurebinder" achievement="99999" />
     <trinket description="Ancient astral weapon: Sacred Scourge (whip)" gfx="trinket_astralwep_sacredscourge.png" id="94" name="Astral weapon: Sacred Scourge" achievement="99999" />
+    <trinket description="Ancient astral weapon: Divine Interceptor (longsword)" gfx="trinket_astralwep_divine_interceptor.png" id="95" name="Astral weapon: Divine Interceptor" achievement="99999" />
+    <trinket description="Ancient astral weapon: Divine Messenger (bow)" gfx="trinket_astralwep_divine_messenger.png" id="96" name="Astral weapon: Divine Messenger" achievement="99999" />
 </items>

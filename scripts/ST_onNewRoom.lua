@@ -1468,6 +1468,11 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Ancient weapon: Divine Messenger
+	if PST:getTreeSnapshotMod("ancwep_divineMessengerProc", false) then
+		PST:addModifiers({ ancwep_divineMessengerProc = false }, true)
+	end
+
 	if PST.savePending then
 		PST:save()
 		PST.savePending = false

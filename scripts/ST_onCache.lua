@@ -1009,6 +1009,16 @@ function PST:onCache(player, cacheFlag)
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + 3
     end
 
+    -- Player in Holy Aura
+    tmpTreeMod = PST:getSnapAstralWepMod("divineMessenger")
+    if PST.specialNodes.inHolyAura then
+        local tmpBuff = tmpTreeMod[1] or 10
+        dynamicMods.damage = dynamicMods.damage + 1
+        dynamicMods.damagePerc = dynamicMods.damagePerc + tmpBuff
+        dynamicMods.tears = dynamicMods.tears + 0.4
+        dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpBuff
+    end
+
     -- Deep-Space Distortion mod: Less effective tree stats
     local dsdMult = 1
     if PST:getTreeSnapshotMod("dsdMod_treeEffect", false) then

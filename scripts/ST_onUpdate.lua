@@ -2542,7 +2542,7 @@ function PST:frameUpdate()
 			player:SetPocketActiveItem(oldMelody, shadowmeldSlot, false)
 			player:AddInnateCollectible(oldMelody, -1)
 
-			local tmpMarkers = Isaac.FindByType(EntityType.ENTITY_EFFECT, Isaac.GetEntityVariantByName("Shadowmeld Marker"))
+			local tmpMarkers = Isaac.FindByType(EntityType.ENTITY_EFFECT, PST.shadowmeldMarkerEffectID)
 			for _, marker in ipairs(tmpMarkers) do
 				marker:Remove()
 			end
@@ -3232,6 +3232,30 @@ function PST:frameUpdate()
 	-- Ancient Weapon: Sword of Song cooldown
 	if PST.specialNodes.ancwep_swordOfSongCD > 0 then
 		PST.specialNodes.ancwep_swordOfSongCD = PST.specialNodes.ancwep_swordOfSongCD - 1
+	end
+
+	-- Ancient weapon: Divine Interceptor cooldown
+	if PST.specialNodes.ancwep_divineIntCD > 0 then
+		PST.specialNodes.ancwep_divineIntCD = PST.specialNodes.ancwep_divineIntCD - 1
+	end
+
+	-- Player near Holy Aura (Divine Messenger ancient weapon)
+	if roomFrame % 10 == 0 then
+		local tmpAuras = Isaac.FindByType(EntityType.ENTITY_EFFECT, PST.holyAuraEffectID)
+		local withinAura = false
+		for _, tmpRing in ipairs(tmpAuras) do
+			if tmpRing.Position:Distance(player.Position) <= 70 then
+				withinAura = true
+				break
+			end
+		end
+		if withinAura and not PST.specialNodes.inHolyAura then
+			PST.specialNodes.inHolyAura = true
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY)
+		elseif not withinAura and PST.specialNodes.inHolyAura then
+			PST.specialNodes.inHolyAura = false
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY)
+		end
 	end
 
 	-- Award pending xp whenever room becomes empty

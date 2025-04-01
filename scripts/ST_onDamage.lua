@@ -1331,6 +1331,36 @@ function PST:onDamage(target, damage, flag, source)
                     PST:addModifiers({ ancwep_quicksilverProc = false }, true)
                 end
 
+                -- Ancient weapon mod: Divine Interceptor
+                tmpMod = PST:getSnapAstralWepMod("divineInterceptor")
+                if tmpMod and PST.specialNodes.ancwep_divineIntCD == 0 and srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(2) then
+                    local maxSwords = 7 + math.random(2 + tmpMod[1])
+                    Isaac.CreateTimer(function()
+                        local tmpVel = ((target.Position + RandomVector() * 35 * math.random()) - srcPlayer.Position):Normalized() * 12
+                        local newSword = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                        newSword:ToTear().Scale = 0.8
+                        newSword.Color = Color(0.75, 0.85, 1, 1, 0.25, 0.35, 0.75)
+                        newSword.CollisionDamage = math.min(50, srcPlayer.Damage / 2)
+                        newSword:ToTear().FallingAcceleration = -0.1
+                        newSword:ToTear().FallingSpeed = -0.1
+                        if tmpMod[1] >= 3 then
+                            newSword:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING)
+                        end
+                        if tmpMod[1] >= 6 then
+                            newSword:ToTear():AddTearFlags(TearFlags.TEAR_HOMING)
+                        end
+                    end, 1, maxSwords, false)
+                    PST.specialNodes.ancwep_divineIntCD = 150
+                end
+
+                -- Ancient weapon mod: Divine Messenger
+                tmpMod = PST:getSnapAstralWepMod("divineMessenger")
+                if tmpMod and not PST:getTreeSnapshotMod("ancwep_divineMessengerProc", false) and srcPlayer.Position:Distance(target.Position) >= PST:getTilesDist(3) then
+                    Isaac.Spawn(EntityType.ENTITY_EFFECT, PST.holyAuraEffectID, 0, target.Position, Vector.Zero, nil)
+                    SFXManager():Play(SoundEffect.SOUND_ANGEL_BEAM, 0.7, 2, false, 1.2)
+                    PST:addModifiers({ ancwep_divineMessengerProc = true }, true)
+                end
+
                 -- Sidereal Artifact condition: Hit a non-boss monster above 90% HP or below 10% HP
                 if PST:getTreeSnapshotMod("assassinSeptentrion", false) then
                     local targetHPPerc = target.HitPoints / target.MaxHitPoints

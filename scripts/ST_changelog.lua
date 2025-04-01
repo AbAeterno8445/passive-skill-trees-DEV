@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.2.5",
         "- Internal support for Astral Vessel 0.2.5 functionality.",
+        "- Added 2 new Ancient weapons: Divine Interceptor (longsword) and Divine Messenger (bow).",
         "",
 
         "v1.2.4",

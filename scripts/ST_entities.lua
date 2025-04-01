@@ -38,6 +38,31 @@ function PST:onEffectInit(effect)
 	end
 end
 
+---@param effect EntityEffect
+function PST:onEffectUpdate(effect)
+    -- Holy Aura effect
+    if effect.Variant == PST.holyAuraEffectID then
+        local effectData = PST:getEntData(effect)
+        if not effectData.PST_holyAuraInit and effect:GetSprite():IsFinished("Appear") then
+            effect:GetSprite():Play("Idle")
+            effectData.PST_holyAuraInit = true
+        else
+            local player = PST:getPlayer()
+            local plDist = effect.Position:Distance(player.Position)
+            if plDist >= 20 then
+                local tmpMove = (player.Position - effect.Position):Normalized()
+                effect.Position = effect.Position + tmpMove
+            end
+            if not effectData.PST_holyAuraDisappear and PST:getRoom():GetAliveEnemiesCount() == 0 then
+                effect:GetSprite():Play("Disappear")
+                effectData.PST_holyAuraDisappear = true
+            elseif effectData.PST_holyAuraDisappear and effect:GetSprite():IsFinished() then
+                effect:Remove()
+            end
+        end
+    end
+end
+
 ---@param npc EntityNPC
 function PST:postNPCInit(npc)
     -- Fireplace init
@@ -115,7 +140,6 @@ function PST:onNPCUpdate(npc)
                 noUpdate = true
             end
         end
-        local npcData = PST:getEntData(npc)
         if not npcData.PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
             npcData.PST_mobInit = true
 

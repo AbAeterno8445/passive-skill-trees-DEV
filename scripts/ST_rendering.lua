@@ -432,7 +432,7 @@ function PST:Render()
 	-- Shadowmeld marker removal with drop key
 	if Input.IsActionTriggered(ButtonAction.ACTION_DROP, player.ControllerIndex) and (PST:getTreeSnapshotMod("shadowmeld", false) or
 	player:HasCollectible(Isaac.GetItemIdByName("Shadowmeld"))) then
-		local tmpMarkers = Isaac.FindByType(EntityType.ENTITY_EFFECT, Isaac.GetEntityVariantByName("Shadowmeld Marker"))
+		local tmpMarkers = Isaac.FindByType(EntityType.ENTITY_EFFECT, PST.shadowmeldMarkerEffectID)
 		for _, marker in ipairs(tmpMarkers) do
 			marker:Remove()
 		end
