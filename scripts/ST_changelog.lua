@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.2.6",
         "- XP penalty for clearing the same room multiple times no longer applies in Greed mode.",
+        "- Fixed Deep-Space Distortion modifier that limits pickups unintentionally affecting keys based on coin quantity.",
         "",
 
         "v1.2.5",

@@ -1587,8 +1587,8 @@ function PST:frameUpdate()
 			end
 		end
 		-- Deep-Space Distortion mod: Limit keys
-		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumCoins() > 8 then
-			player:AddCoins(8 - player:GetNumKeys())
+		if PST:getTreeSnapshotMod("dsdMod_pickupLimit", false) and player:GetNumKeys() > 8 then
+			player:AddKeys(8 - player:GetNumKeys())
 		end
 		updateTrackers.keyTracker = player:GetNumKeys()
 	end
