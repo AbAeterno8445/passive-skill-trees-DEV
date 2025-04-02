@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.2.6",
+        "- XP penalty for clearing the same room multiple times no longer applies in Greed mode.",
+        "",
+
         "v1.2.5",
         "- Internal support for Astral Vessel 0.2.5 functionality.",
         "- Added 2 new Ancient weapons: Divine Interceptor (longsword) and Divine Messenger (bow).",

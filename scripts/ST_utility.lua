@@ -202,10 +202,12 @@ function PST:addTempXP(xp, showText, noMult)
 	end
 
 	-- Penalty from multiple clears on the same room
-	local clearsPerRoom = PST:getTreeSnapshotMod("clearsPerRoom", {})
-	local roomIdxStr = tostring(PST:getLevel():GetCurrentRoomIndex())
-	if clearsPerRoom[roomIdxStr] then
-		xpMult = 1 - 0.15 * (clearsPerRoom[roomIdxStr] - 1)
+	if not Game():IsGreedMode() then
+		local clearsPerRoom = PST:getTreeSnapshotMod("clearsPerRoom", {})
+		local roomIdxStr = tostring(PST:getLevel():GetCurrentRoomIndex())
+		if clearsPerRoom[roomIdxStr] then
+			xpMult = 1 - 0.15 * (clearsPerRoom[roomIdxStr] - 1)
+		end
 	end
 
 	if noMult then xpMult = 1 end
