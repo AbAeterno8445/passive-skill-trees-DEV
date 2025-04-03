@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.2.7",
+        "- Fixed obols not dropping when clearing challenge rooms or the boss rush in non-expedition runs with Sidereal Universalization",
+        "allocated.",
+        "",
+
         "v1.2.6",
         "- XP penalty for clearing the same room multiple times no longer applies in Greed mode.",
         "- Fixed Deep-Space Distortion modifier that limits pickups unintentionally affecting keys based on coin quantity.",

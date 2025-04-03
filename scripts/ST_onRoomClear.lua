@@ -56,7 +56,7 @@ function PST:onRoomClear(RNG)
             PST:expedAddProgInRun("challengeRooms", 1)
 
             -- Obols on challenge room clear
-            if PST:getTreeSnapshotMod("isExpedRun", false) then
+            if PST:isRunSidereal() then
                 local tmpObols = PST.obolEvents.challClear(PST:getTreeSnapshotMod("expedDepth", 1))
                 if tmpObols > 0 then PST:expedDropObolsAt(room:GetCenterPos(), tmpObols) end
             end
@@ -113,7 +113,7 @@ function PST:onRoomClear(RNG)
             PST:expedAddProgInRun("bossRush", 1)
 
             -- Obols on boss rush clear
-            if PST:getTreeSnapshotMod("isExpedRun", false) then
+            if PST:isRunSidereal() then
                 local tmpObols = PST.obolEvents.bossRush(PST:getTreeSnapshotMod("expedDepth", 1))
                 if tmpObols > 0 then PST:expedDropObolsAt(room:GetCenterPos(), tmpObols) end
             end
