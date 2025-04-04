@@ -8,6 +8,8 @@ function PST:getChangelogList()
         "- The \"Cursed Auric Shard\" ancient jewel now stops triggering its effect after clearing the floor's boss room.",
         "- Adjusted callback used for new floor events, this should fix certain effects not triggering or getting reset on new floor in greed mode.",
         "- Adjusted Eve's \"Phantomcrows\" node. It now spawns an additional phantom dead bird instead of smelting an extra Eve's Bird Foot.",
+        "- Reworked the \"Circadian Destructor\" ancient jewel. It now directly triggers XVI - The Tower's effect instead of spawning a card, and no",
+        "longer applies a stacking debuff.",
         "- Many ancient jewels can no longer be used in Greed Mode, as their effects were incompatible with it.",
         "- Fixed obols not dropping when clearing challenge rooms or the boss rush in non-expedition runs with Sidereal Universalization",
         "allocated.",

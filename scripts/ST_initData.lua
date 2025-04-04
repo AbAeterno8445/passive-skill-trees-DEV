@@ -2016,7 +2016,6 @@ function PST:resetMods()
 		ancwep_divineIntCD = 0,
 
 		SC_circadianSpawnTime = 0,
-		SC_circadianSpawnProc = false,
 		SC_circadianExplImmune = 0,
 		SC_soulEaterMobs = {},
 		SC_hoveringTears = {},
@@ -2074,6 +2073,8 @@ function PST:resetMods()
 		shadowmeldEndPos = Vector.Zero,
 		-- Soul of the Siren effect
 		sirenSoulUses = {},
+		-- Ancient jewels sprite
+		ancientJewelSpr = Sprite("gfx/items/starcursed_jewels.anm2", true),
 
 		-- Heartblessed chest FX
 		heartbless = Sprite("gfx/effect_heartbless.anm2", true)
@@ -2097,6 +2098,8 @@ function PST:resetMods()
 
 	PST.specialFX.heartbless.PlaybackSpeed = 0.5
 	PST.specialFX.heartbless:Play("Default", true)
+
+	PST.specialFX.ancientJewelSpr:Play("Ancients", true)
 
     PST.modData.firstHeartUpdate = false
 	PST.floorFirstUpdate = false

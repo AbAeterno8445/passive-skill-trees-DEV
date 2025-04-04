@@ -556,7 +556,6 @@ function PST:onNewRun(isContinued)
 
     -- Reset specialNodes that might be left over
     PST.specialNodes.SC_circadianSpawnTime = 0
-    PST.specialNodes.SC_circadianSpawnProc = false
     PST.specialNodes.SC_circadianExplImmune = 0
 
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B

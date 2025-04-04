@@ -217,16 +217,6 @@ function PST:onUseCard(card, player, useFlags)
         PST:addModifiers({ luck = tmpMod, holyCardLuckBuff = tmpMod }, true)
     end
 
-    -- Ancient starcursed jewel: Circadian Destructor
-    if PST:SC_getSnapshotMod("circadianDestructor", false) and card == Card.CARD_TOWER then
-        local tmpMod = PST:getTreeSnapshotMod("SC_circadianStatsDown", 0)
-        if tmpMod > 0 then
-            PST:addModifiers({ allstatsPerc = tmpMod, SC_circadianStatsDown = { value = 0, set = true } }, true)
-        end
-        PST.specialNodes.SC_circadianSpawnProc = false
-        PST.specialNodes.SC_circadianExplImmune = 120
-    end
-
     -- Ancient starcursed jewel: Cursed Starpiece
     if PST:SC_getSnapshotMod("cursedStarpiece", false) and card == Card.CARD_REVERSE_STARS then
         if PST:getTreeSnapshotMod("SC_cursedStarpieceDebuff", false) then

@@ -953,17 +953,18 @@ function PST:frameUpdate()
 	end
 	-- Ancient starcursed jewel: Circadian Destructor
 	if PST:SC_getSnapshotMod("circadianDestructor", false) then
-		if not PST.specialNodes.SC_circadianSpawnProc then
-			PST.specialNodes.SC_circadianSpawnTime = PST.specialNodes.SC_circadianSpawnTime + 1
-			if PST.specialNodes.SC_circadianSpawnTime >= 1440 then
-				if room:GetAliveEnemiesCount() > 0 then
-					Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, player.Position, Vector.Zero, nil, Card.CARD_TOWER, Random() + 1)
-					PST.specialNodes.SC_circadianSpawnProc = true
-				end
-				PST.specialNodes.SC_circadianSpawnTime = 0
+		PST.specialNodes.SC_circadianSpawnTime = PST.specialNodes.SC_circadianSpawnTime + 1
+		if PST.specialNodes.SC_circadianSpawnTime >= 1440 then
+			if room:GetAliveEnemiesCount() > 0 then
+				-- Special FX
+				local tmpSprite = PST.specialFX.ancientJewelSpr
+				tmpSprite:SetFrame("Ancients", 0)
+				PST:createFloatIconFX(tmpSprite, Vector.Zero, 0.1, 50, true, true)
+
+				player:UseCard(Card.CARD_TOWER, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
+				PST.specialNodes.SC_circadianExplImmune = 120
 			end
-		elseif roomFrame % 30 == 0 and PST:getTreeSnapshotMod("SC_circadianStatsDown", 0) < 20 then
-			PST:addModifiers({ allstatsPerc = -1, SC_circadianStatsDown = 1 }, true)
+			PST.specialNodes.SC_circadianSpawnTime = 0
 		end
 		if PST.specialNodes.SC_circadianExplImmune > 0 then
 			PST.specialNodes.SC_circadianExplImmune = PST.specialNodes.SC_circadianExplImmune - 1
