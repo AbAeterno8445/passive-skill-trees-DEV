@@ -481,9 +481,10 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
                         cleanup = i
                     end
                 end
-                while cleanup > 0 do
-                    table.remove(tmpExpedition.nodeQueue, 1)
-                    cleanup = cleanup - 1
+                if cleanup > 0 then
+                    for _=1,cleanup do
+                        table.remove(tmpExpedition.nodeQueue, 1)
+                    end
                 end
             end
             PST:updateExpedAccess(depth, uber)
