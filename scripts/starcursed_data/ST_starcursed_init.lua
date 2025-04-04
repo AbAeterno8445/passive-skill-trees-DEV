@@ -427,7 +427,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
-        }
+        },
+        noGreed = true
     },
     gazeAverter = {
         serial = 3,
@@ -515,7 +516,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     soulWatcher = {
         serial = 8,
@@ -532,7 +534,8 @@ PST.SCAncients = {
             xpgain = 70,
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
-        }
+        },
+        noGreed = true
     },
     luminescentDie = {
         serial = 9,
@@ -550,7 +553,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     baubleseeker = {
         serial = 10,
@@ -587,7 +591,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {0, 10},
             beastRewards = {2, 0}
-        }
+        },
+        noGreed = true
     },
     sanguinis = {
         serial = 12,
@@ -643,7 +648,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     glace = {
         serial = 15,
@@ -692,7 +698,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     nightmareProjector = {
         serial = 18,
@@ -743,7 +750,8 @@ PST.SCAncients = {
             xpgain = 55,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     unusuallySmallStarstone = {
         serial = 21,
@@ -840,7 +848,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     tellurianSplinter = {
         serial = 26,
@@ -878,7 +887,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     mightstone = {
         serial = 28,
@@ -1036,7 +1046,8 @@ PST.SCAncients = {
             halveXPFirstFloor = true,
             deliriumRewards = {1, 4},
             beastRewards = {1, 4}
-        }
+        },
+        noGreed = true
     },
     catseyePrism = {
         serial = 37,
@@ -1064,7 +1075,8 @@ PST.SCAncients = {
         },
         rewards = {
             xpgain = 45
-        }
+        },
+        noGreed = true
     }
 }
 

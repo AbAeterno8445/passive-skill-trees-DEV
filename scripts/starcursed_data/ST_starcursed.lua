@@ -141,6 +141,9 @@ function PST:SC_getJewelDescription(jewel)
                     end
                 end
             end
+            if tmpAncient.noGreed then
+                table.insert(tmpDescription, {"This jewel can't be used in Greed Mode.", PST.kcolors.YELLOW1})
+            end
         end
         if jewel.starmight ~= 0 then
             table.insert(tmpDescription, {"Starmight: " .. tostring(jewel.starmight), PST.kcolors.STAR_ORANGE})

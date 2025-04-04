@@ -111,6 +111,16 @@ function PST:onNewRun(isContinued)
         local starcursedMods = PST:SC_getTotalJewelMods()
         if next(starcursedMods.totalMods) ~= nil then
             PST.modData.treeModSnapshot.starcursedMods = starcursedMods.totalMods
+
+            -- Remove greed-incompatible ancient jewels if playing greed mode
+            if Game():IsGreedMode() then
+                for modName, _ in pairs(starcursedMods.totalMods) do
+                    local ancientData = PST.SCAncients[modName]
+                    if ancientData and ancientData.noGreed then
+                        PST.modData.treeModSnapshot.starcursedMods[modName] = nil
+                    end
+                end
+            end
         end
         PST.modData.treeModSnapshot.starmight = starcursedMods.totalStarmight
 
@@ -149,7 +159,7 @@ function PST:onNewRun(isContinued)
             local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
             if ancientJewel then
                 local ancientData = PST:SC_getAncientByName(ancientJewel.name)
-				if ancientData and ancientData.rewards then
+				if ancientData and ancientData.rewards and not (Game():IsGreedMode() and ancientData.noGreed) then
                     tmpMod = ancientData.rewards.xpgain
                     if tmpMod and tmpMod ~= 0 then
                         local tmpMult = 1
