@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.2.7",
+        "- The \"Cursed Auric Shard\" ancient jewel now stops triggering its effect after clearing the floor's boss room.",
         "- Fixed obols not dropping when clearing challenge rooms or the boss rush in non-expedition runs with Sidereal Universalization",
         "allocated.",
         "",
