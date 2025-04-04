@@ -2,30 +2,27 @@ function PST:onInput(entity, inputHook, buttonAction)
     local cancelInput = false
 
     -- Cancel restart input on tree screen while in-game
-    if Isaac.IsInGame() and buttonAction == ButtonAction.ACTION_RESTART and PST.treeScreen.open then
+    if buttonAction == ButtonAction.ACTION_RESTART and PST.treeScreen.open and Isaac.IsInGame() then
         cancelInput = true
     end
 
     -- Entity-dependant
     if entity then
-        local player = entity:ToPlayer()
-        if player then
-            -- Statue Pilgrimage node (Jacob & Esau's tree)
-            --[[if PST:getTreeSnapshotMod("statuePilgrimage", false) then
-                -- Cancel Esau shooting inputs while he's transformed with Gnawed Leaf
-                if player:GetPlayerType() == PlayerType.PLAYER_ESAU and PST.specialNodes.esauIsStatue then
-                    if buttonAction == ButtonAction.ACTION_SHOOTUP or buttonAction == ButtonAction.ACTION_SHOOTDOWN or
-                    buttonAction == ButtonAction.ACTION_SHOOTLEFT or buttonAction == ButtonAction.ACTION_SHOOTRIGHT then
-                        cancelInput = true
-                    end
-                end
-            end]]
-
-            -- Shadowmeld item - Disable inputs during transition
-            if PST.specialFX.shadowmeldTransition then
-                cancelInput = true
-            end
+        -- Shadowmeld item - Disable inputs during transition
+        if PST.specialFX.shadowmeldTransition then
+            if entity:ToPlayer() then cancelInput = true end
         end
+        -- Statue Pilgrimage node (Jacob & Esau's tree)
+        --[[if PST.specialNodes.esauIsStatue and PST:getTreeSnapshotMod("statuePilgrimage", false) then
+            local player = entity:ToPlayer()
+            -- Cancel Esau shooting inputs while he's transformed with Gnawed Leaf
+            if player and player:GetPlayerType() == PlayerType.PLAYER_ESAU then
+                if buttonAction == ButtonAction.ACTION_SHOOTUP or buttonAction == ButtonAction.ACTION_SHOOTDOWN or
+                buttonAction == ButtonAction.ACTION_SHOOTLEFT or buttonAction == ButtonAction.ACTION_SHOOTRIGHT then
+                    cancelInput = true
+                end
+            end
+        end]]
     end
 
     if cancelInput then
