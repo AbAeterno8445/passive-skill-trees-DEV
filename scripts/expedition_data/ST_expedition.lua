@@ -3,6 +3,8 @@ include("scripts.expedition_data.generators.ST_expedition_generator_main")
 
 function PST:loadExpeditionsData()
     ---- Load Astral Expeditions
+    PST.expeditionsData = {}
+    PST.uberExpeditionsData = {}
 	-- Expeditions data number indexes
 	local tmpExpeditionsData = { [0] = {} }
 	for k, v in pairs(PST.modData.expeditionsData) do

@@ -7,6 +7,8 @@ function PST:getChangelogList()
         "- The \"Cursed Auric Shard\" ancient jewel now stops triggering its effect after clearing the floor's boss room.",
         "- Fixed obols not dropping when clearing challenge rooms or the boss rush in non-expedition runs with Sidereal Universalization",
         "allocated.",
+        "- Fixed expeditions not getting reset when switching savefiles if their depth wasn't reached on the new savefile. This could cause",
+        "newly reached depths to have in-progress expeditions from a different savefile.",
         "",
 
         "v1.2.6",
