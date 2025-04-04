@@ -985,8 +985,8 @@ PST.treeModDescriptions = {
         str = {
             "Phantomcrows:",
             "    Start with a smelted Eve's Bird Foot",
-            "    0.5%% chance to gain an additional smelted Eve's Bird Foot for the current room whenever",
-            "    a dead bird deals damage, once per room"
+            "    0.5%% chance to spawn an additional phantom dead bird for the current room whenever a",
+            "    dead bird deals damage, once per room"
         },
         category = "charTree", sort = 2252
     },

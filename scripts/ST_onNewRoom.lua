@@ -1412,7 +1412,6 @@ function PST:onNewRoom()
 
 	-- Phantomcrows node (Eve's tree)
 	if PST:getTreeSnapshotMod("phantomcrowsProc", false) then
-		player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_EVES_BIRD_FOOT)
 		PST:addModifiers({ phantomcrowsProc = false }, true)
 	end
 

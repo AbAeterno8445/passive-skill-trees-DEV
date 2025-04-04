@@ -96,7 +96,7 @@ function PST:postDamage(target, damage, flag, source)
 
                     -- Phantomcrows node (Eve's tree)
                     if PST:getTreeSnapshotMod("phantomcrows", false) and not PST:getTreeSnapshotMod("phantomcrowsProc", false) and 100 * math.random() < 0.5 then
-                        PST:getPlayer():AddSmeltedTrinket(TrinketType.TRINKET_EVES_BIRD_FOOT)
+                        Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.EVES_BIRD_FOOT, 0, source.Position, RandomVector() * 4, PST:getPlayer())
                         PST:addModifiers({ phantomcrowsProc = true }, true)
                     end
                 -- Locusts / locust trinkets
