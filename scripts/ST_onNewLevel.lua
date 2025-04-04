@@ -28,13 +28,16 @@ function PST:onNewLevel()
     if not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("SC_firstFloorXPHalvedProc", false) then
         for i=1,2 do
             local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
-            if ancientJewel and ancientJewel.rewards then
-                tmpMod = ancientJewel.rewards.xpgain
-                if tmpMod and tmpMod ~= 0 and ancientJewel.rewards.halveXPFirstFloor then
-                    PST:addModifiers({
-                        xpgain = tmpMod / 2,
-                        SC_firstFloorXPHalvedProc = true
-                    }, true)
+            if ancientJewel then
+                local ancientData = PST:SC_getAncientByName(ancientJewel.name)
+				if ancientData and ancientData.rewards then
+                    tmpMod = ancientData.rewards.xpgain
+                    if tmpMod and tmpMod ~= 0 and ancientData.rewards.halveXPFirstFloor then
+                        PST:addModifiers({
+                            xpgain = tmpMod / 2,
+                            SC_firstFloorXPHalvedProc = true
+                        }, true)
+                    end
                 end
             end
         end
@@ -1023,7 +1026,17 @@ local curseIDs = {
     LevelCurse.CURSE_OF_THE_UNKNOWN
 }
 function PST:onCurseEval(curses)
-    if not PST.gameInit then return curses end
+    local level = PST:getLevel()
+
+    -- Without gameInit, curseEval is running prior to tree snapshot being generated on run start (doesn't run on continue)
+    if not PST.gameInit then
+        -- Ancient starcursed jewel: Labyrinth Stone 
+        if PST:SC_getSocketedAncient("Labyrinth Stone") and level:CanStageHaveCurseOfLabyrinth(level:GetStage()) and
+        (curses & LevelCurse.CURSE_OF_LABYRINTH) == 0 then
+            curses = curses | LevelCurse.CURSE_OF_LABYRINTH
+        end
+        return curses
+    end
 
     local causeCurse = PST:getTreeSnapshotMod("causeCurse", false)
     local curseChance = PST:getTreeSnapshotMod("floorCurse", 0)
@@ -1075,7 +1088,6 @@ function PST:onCurseEval(curses)
     if causeCurse then
         PST:addModifiers({ causeCurse = false }, true)
         if curses == LevelCurse.CURSE_NONE then
-            local level = Game():GetLevel()
             local newCurse = LevelCurse.CURSE_NONE
             while newCurse == LevelCurse.CURSE_NONE do
                 newCurse = curseIDs[math.random(#curseIDs)]
@@ -1091,6 +1103,12 @@ function PST:onCurseEval(curses)
     if PST:getTreeSnapshotMod("apollyonBlessing", false) then
         -- Curse of blind immunity
         curses = curses &~ LevelCurse.CURSE_OF_BLIND
+    end
+
+    -- Ancient starcursed jewel: Labyrinth Stone
+    if PST:SC_getSnapshotMod("labyrinthStone", false) and level:CanStageHaveCurseOfLabyrinth(level:GetStage()) and
+    (curses & LevelCurse.CURSE_OF_LABYRINTH) == 0 then
+        curses = curses | LevelCurse.CURSE_OF_LABYRINTH
     end
 
     return curses

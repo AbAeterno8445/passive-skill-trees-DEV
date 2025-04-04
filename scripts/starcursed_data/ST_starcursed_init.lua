@@ -1053,6 +1053,18 @@ PST.SCAncients = {
             deliriumRewards = {1, 5},
             beastRewards = {1, 5}
         }
+    },
+    labyrinthStone = {
+        serial = 38,
+        weight = 100,
+        spriteFrame = 38,
+        name = "Labyrinth Stone",
+        description = {
+            "Guarantee Curse of the Labyrinth on every floor if possible, along with its natural curses."
+        },
+        rewards = {
+            xpgain = 45
+        }
     }
 }
 

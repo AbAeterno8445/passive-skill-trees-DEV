@@ -147,14 +147,17 @@ function PST:onNewRun(isContinued)
         -- Equipped ancient starcursed jewels
         for i=1,2 do
             local ancientJewel = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, tostring(i))
-            if ancientJewel and ancientJewel.rewards then
-                tmpMod = ancientJewel.rewards.xpgain
-                if tmpMod and tmpMod ~= 0 then
-                    local tmpMult = 1
-                    if ancientJewel.rewards.halveXPFirstFloor then
-                        tmpMult = 0.5
+            if ancientJewel then
+                local ancientData = PST:SC_getAncientByName(ancientJewel.name)
+				if ancientData and ancientData.rewards then
+                    tmpMod = ancientData.rewards.xpgain
+                    if tmpMod and tmpMod ~= 0 then
+                        local tmpMult = 1
+                        if ancientData.rewards.halveXPFirstFloor then
+                            tmpMult = 0.5
+                        end
+                        tmpSCMods["xpgain"] = tmpMod * tmpMult
                     end
-                    tmpSCMods["xpgain"] = tmpMod * tmpMult
                 end
             end
         end
