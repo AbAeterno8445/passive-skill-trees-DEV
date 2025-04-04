@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v1.2.7",
         "- Added a new Ancient Jewel: \"Labyrinth Stone\".",
         "- The \"Cursed Auric Shard\" ancient jewel now stops triggering its effect after clearing the floor's boss room.",
+        "- Adjusted callback used for new floor events, this should fix certain effects not triggering or getting reset on new floor in greed mode.",
         "- Fixed obols not dropping when clearing challenge rooms or the boss rush in non-expedition runs with Sidereal Universalization",
         "allocated.",
         "- Fixed expeditions not getting reset when switching savefiles if their depth wasn't reached on the new savefile. This could cause",
