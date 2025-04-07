@@ -776,7 +776,11 @@ function PST:onRoomClear(RNG)
 
     -- Convert temp xp to normal xp
     if PST.modData.xpObtained > 0 then
-        PST:addXP(PST.modData.xpObtained, false)
+        local xpOverflow = false
+        if room:GetType() == RoomType.ROOM_BOSSRUSH then
+            xpOverflow = true
+        end
+        PST:addXP(PST.modData.xpObtained, false, xpOverflow)
         PST.modData.xpObtained = 0
     end
 

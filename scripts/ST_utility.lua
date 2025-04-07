@@ -190,9 +190,9 @@ function PST:addTempXP(xp, showText, noMult)
 	-- Extra challenge room XP gain mod
 	if roomType == RoomType.ROOM_CHALLENGE then
 		xpMult = xpMult + PST:getTreeSnapshotMod("challengeXPgain", 0) / 100
-	-- -40% xp gain in boss rush
+	-- Multiplicative -50% xp gain in boss rush
 	elseif roomType == RoomType.ROOM_BOSSRUSH then
-		xpMult = xpMult - 0.4
+		xpMult = xpMult * 0.5
 	end
 
 	-- Mod: +% xp gain while you haven't taken damage in the current floor
@@ -232,7 +232,7 @@ end
 -- Add XP
 ---@param xpParam number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
----@param overflow? boolean Whether XP overflow is limited
+---@param overflow? boolean Whether XP overflow limit is applied
 function PST:addXP(xpParam, showText, overflow)
 	local charData = PST:getCurrentCharData()
 	if charData then
