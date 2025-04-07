@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.2.8",
+        "- Adjusted HP modifier application on monsters, which should fix monsters that would normally spawn with missing HP but didn't.",
+        "",
+
         "v1.2.7",
         "- Added a new Ancient Jewel: \"Labyrinth Stone\".",
         "- The \"Cursed Auric Shard\" ancient jewel now stops triggering its effect after clearing the floor's boss room.",
