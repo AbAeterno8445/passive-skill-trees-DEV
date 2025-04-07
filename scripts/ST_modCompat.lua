@@ -2232,6 +2232,11 @@ function PST:initModCompat()
             table.insert(PST.sirenDissonanceFamiliars, tmpID)
         end
     end
+
+    -- CuerLib curse eval compat
+    if CuerLib then
+        PST:AddPriorityCallback(CuerLib.Callbacks.CLC_EVALUATE_CURSE, CallbackPriority.LATE, PST.onCurseEval);
+    end
 end
 
 -- Add mod items to the 'blue' item pool

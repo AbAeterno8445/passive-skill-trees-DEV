@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.2.8",
         "- Adjusted HP modifier application on monsters, which should fix monsters that would normally spawn with missing HP but didn't.",
+        "- Fixed curse evaluation not working with CuerLib. Curse-related effects should now apply properly when the latter is installed.",
         "",
 
         "v1.2.7",
