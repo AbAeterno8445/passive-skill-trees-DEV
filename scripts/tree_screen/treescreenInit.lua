@@ -29,9 +29,6 @@ PST.treeScreen = {
 
     -- Currently displayed tree or character name for character trees
     currentTree = "global",
-    globalTrees = {
-        "global", "starTree", "sidereal"
-    },
 
     -- Trees that are tied to specific character names
     treeAliases = {},

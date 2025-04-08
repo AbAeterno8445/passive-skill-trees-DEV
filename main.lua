@@ -465,24 +465,6 @@ PST:AddCallback(ModCallbacks.MC_POST_MODS_LOADED, PST.postModsLoaded)
 PST:AddCallback(ModCallbacks.MC_MENU_INPUT_ACTION, PST.onMenuInput)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
 
--- Populate medium node lists
-for _, node in pairs(PST.trees["global"]) do
-    if node.size == "Med" and PST.globalMedNodes[node.name] == nil then
-        PST.globalMedNodes[node.name] = node
-    end
-end
-
-for tmpTree, _ in pairs(PST.trees) do
-    if not PST:arrHasValue(PST.treeScreen.globalTrees, tmpTree) then
-		PST.charMedNodes[tmpTree] = {}
-        for _, node in pairs(PST.trees[tmpTree]) do
-            if node.size == "Med" and PST.charMedNodes[tmpTree][node.name] == nil and not PST:arrHasValue(PST.bannedCharMedNodes, node.name) then
-                PST.charMedNodes[tmpTree][node.name] = node
-            end
-        end
-    end
-end
-
 if Isaac.IsInGame() then
 	PST:firstRenderInit()
 

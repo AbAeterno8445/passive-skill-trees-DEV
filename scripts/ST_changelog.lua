@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "1.2.9",
+        "- Fixed Core crimson nodes not initializing modded character medium nodes properly.",
+        "",
+
         "v1.2.8",
         "- Adjusted HP modifier application on monsters, which should fix monsters that would normally spawn with missing HP but didn't.",
         "- XP gained in the boss rush can now overflow beyond the regular cap, potentially granting multiple level gains.",

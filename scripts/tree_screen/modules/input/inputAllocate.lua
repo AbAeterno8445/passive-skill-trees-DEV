@@ -65,7 +65,7 @@ function PST.treeScreen:InputAllocate()
                     if self.treeAliases[self.currentTree] then
                         charAlias = self.treeAliases[self.currentTree]
                     end
-                    if PST:arrHasValue(self.globalTrees, self.currentTree) then
+                    if PST:arrHasValue(PST.globalTrees, self.currentTree) then
                         PST.modData.skillPoints = math.max(0, PST.modData.skillPoints - 1)
                     elseif PST.modData.charData[charAlias] then
                         PST.modData.charData[charAlias].skillPoints = math.max(0, PST.modData.charData[charAlias].skillPoints - 1)

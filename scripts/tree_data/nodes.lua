@@ -523,6 +523,20 @@ function PST:isNodeReachable(tree, targetNodeID, exclude, start, visited)
     return nodeReachableFound
 end
 
+-- Character medium nodes
+function PST:updateCharMedNodes(charName)
+	if PST:arrHasValue(PST.globalTrees, charName) or PST:strStartsWith(charName, "Astral Vessel") then
+		return
+	end
+
+	PST.charMedNodes[charName] = {}
+	for _, node in pairs(PST.trees[charName]) do
+		if node.size == "Med" and PST.charMedNodes[charName][node.name] == nil and not PST:arrHasValue(PST.bannedCharMedNodes, node.name) then
+			PST.charMedNodes[charName][node.name] = node
+		end
+	end
+end
+
 -- Include Skill Trees API
 PST.loadingBaseTrees = true
 include("scripts.tree_data.SkillTreesAPI")
@@ -570,3 +584,10 @@ include("scripts.tree_data.tainted.taintedJacobTreeBank")
 include("scripts.tree_data.sirenTreeBank")
 include("scripts.tree_data.tainted.taintedSirenTreeBank")
 PST.loadingBaseTrees = false
+
+-- Populate medium node lists
+for _, node in pairs(PST.trees["global"]) do
+    if node.size == "Med" and PST.globalMedNodes[node.name] == nil then
+        PST.globalMedNodes[node.name] = node
+    end
+end

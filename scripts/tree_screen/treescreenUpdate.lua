@@ -37,7 +37,7 @@ function PST.treeScreen:Update()
         PST:updateNodes("global", true)
         PST:updateNodes("starTree", true)
         PST:updateNodes("sidereal", true)
-        if not PST:arrHasValue(self.globalTrees, self.currentTree) then
+        if not PST:arrHasValue(PST.globalTrees, self.currentTree) then
             PST:updateNodes(self.currentTree, true)
         end
         self.debugAvailableUpdate = PST.debugOptions.allAvailable

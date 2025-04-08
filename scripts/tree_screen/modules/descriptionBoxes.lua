@@ -498,7 +498,7 @@ function descriptionBoxesModule:Render(tScreen)
                 table.insert(tmpDescription, {"Requires 1 Deep-Space Skill Point. (You have " .. tostring(PST.modData.deepSpaceSP or 0) .. ")", PST.kcolors.STAR_ORANGE})
             end
         end
-        if not isAllocated and not noSP and PST:arrHasValue(tScreen.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
+        if not isAllocated and not noSP and PST:arrHasValue(PST.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
             tmpDescription = {table.unpack(tmpDescription)}
             table.insert(tmpDescription, {"Requires 1 Global SP to allocate.", PST.kcolors.BLUE1})
         end

@@ -15,10 +15,10 @@ function PST:onNewRun(isContinued)
     local isChallenge = Isaac.GetChallenge() ~= 0
     local treeActive = not PST.modData.treeDisabled and ((not PST.config.treeOnChallenges and not isChallenge) or PST.config.treeOnChallenges)
     if treeActive then
-        local globalTrees = {"global", "starTree"}
+        local tmpGlobalTrees = {"global", "starTree"}
         -- Get snapshot of tree modifiers
         if not PST:isNodeNameAllocated("global", "CHAOSMODE") then
-            for _, tmpTree in ipairs(globalTrees) do
+            for _, tmpTree in ipairs(tmpGlobalTrees) do
                 for nodeID, node in pairs(PST.trees[tmpTree]) do
                     if PST:isNodeAllocated(tmpTree, nodeID) then
                         PST:addModifiers(node.modifiers)

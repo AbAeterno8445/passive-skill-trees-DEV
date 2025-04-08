@@ -25,6 +25,7 @@ PST.SkillTreesAPI = {
 
         PST:initTreeNodes(charName)
         if reloadMod then PST:load() end
+        PST:updateCharMedNodes(charName)
         return true
     end,
 
