@@ -36,7 +36,8 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
     self.hoveredJewelID = nil
     submenusModule:DrawNodeSubMenu(
         tScreen,
-        jewelsPerPage, tScreen.camCenterX, tScreen.camCenterY,
+        jewelsPerPage,
+        tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
         tmpTitle,
         function()
@@ -121,6 +122,19 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
             maxItems = PST.SCMaxInv
         }
     )
+
+    -- Found ancient jewels counter
+    if tmpJewelType == PSTStarcursedType.ANCIENT then
+        local foundJewels = 0
+        for tmpName, _ in pairs(PST.modData.identifiedAncients) do
+            if PST.SCAncients[tmpName] then foundJewels = foundJewels + 1 end
+        end
+
+        local textX = self.menuX * tScreen.zoomScale - 80 - tScreen.treeCamera.X - tScreen.camZoomOffset.X
+        local textY = self.menuY * tScreen.zoomScale + 220 - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
+        local tmpStr = "Ancient Jewels found: " .. foundJewels .. "/" .. PST.totalAncientJewels
+        PST.normalFont:DrawString(tmpStr, textX, textY, PST.kcolors.ANCIENT_ORANGE, 160, true)
+    end
 end
 
 return starcursedInvSubmenu

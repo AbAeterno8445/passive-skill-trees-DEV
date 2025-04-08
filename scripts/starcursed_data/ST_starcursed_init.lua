@@ -1077,6 +1077,10 @@ PST.SCAncients = {
         noGreed = true
     }
 }
+PST.totalAncientJewels = 0
+for _ in pairs(PST.SCAncients) do
+    PST.totalAncientJewels = PST.totalAncientJewels + 1
+end
 
 PST.SCDropRates = {
     championKill = function(stage) return { regular = 1.5 + stage / 4, ancient = 1 } end,

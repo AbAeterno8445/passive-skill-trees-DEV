@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "1.2.9",
         "- Added an 'Ancient Weapon Compendium' node to the Sidereal Tree, connected to the Astral Forge node. The compendium allows reviewing",
         "all available ancient weapons for each weapon type, to have an idea of which ones to look for.",
+        "- Added a counter to the Ancient Jewel inventory menus displaying how many ancient jewels have been found out of the available total.",
         "- Fixed Core crimson nodes not initializing modded character medium nodes properly.",
         "",
 
