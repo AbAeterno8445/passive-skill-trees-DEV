@@ -584,6 +584,19 @@ function descriptionBoxesModule:Render(tScreen)
                 table.insert(itemDesc, "Press Allocate to purchase.")
                 tScreen:DrawNodeBox(tmpItem.name, itemDesc)
             end
+        -- Weapon Compendium submenu, hovered weapon
+        elseif submenusModule.currentSubmenu == PSTSubmenu.WEAPON_COMPENDIUM then
+            local wepCompendiumSubmenu = submenusModule.submenus[PSTSubmenu.WEAPON_COMPENDIUM]
+            local tmpItem = wepCompendiumSubmenu.hoveredID
+            if tmpItem then
+                if not wepCompendiumSubmenu.selectedType then
+                    local itemDesc = {"Press Allocate to view a list of available ancient weapons for this type."}
+                    tScreen:DrawNodeBox("Weapon Type: " .. PST.astralWepData[tmpItem].name, itemDesc)
+                else
+                    local itemDesc = PST:getAstralWepDesc(tmpItem, true)
+                    tScreen:DrawNodeBox("Ancient " .. tmpItem.typeName .. ": " .. tmpItem.name, itemDesc)
+                end
+            end
         end
     end
 end

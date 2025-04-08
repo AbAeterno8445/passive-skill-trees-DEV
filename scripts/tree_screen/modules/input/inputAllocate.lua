@@ -36,6 +36,7 @@ function PST.treeScreen:InputAllocate()
         local crimConvSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_CONVERGENCE]
         local edenHairSubmenu = submenusModule.submenus[PSTSubmenu.EDEN_HAIR]
         local obsBazaarSubmenu = submenusModule.submenus[PSTSubmenu.OBSCURE_BAZAAR]
+        local wepCompendiumSubmenu = submenusModule.submenus[PSTSubmenu.WEAPON_COMPENDIUM]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -261,6 +262,14 @@ function PST.treeScreen:InputAllocate()
                         menuY = self.hoveredNode.pos.Y * 38
                     })
 
+                -- Weapon Compendium node, open compendium submenu
+                elseif self.hoveredNode.name == "Ancient Weapon Compendium" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.WEAPON_COMPENDIUM, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+
                 -- Extra menu-opening nodes
                 elseif menuOpenNodes[self.hoveredNode.name] then
                     self.modules.menuScreensModule:SwitchToMenu(menuOpenNodes[self.hoveredNode.name])
@@ -448,6 +457,20 @@ function PST.treeScreen:InputAllocate()
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                end
+            end
+        -- Weapon Compendium submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.WEAPON_COMPENDIUM then
+            if wepCompendiumSubmenu.hoveredBackButton then
+                wepCompendiumSubmenu.selectedType = nil
+                SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+            else
+                local tmpItem = wepCompendiumSubmenu.hoveredID
+                if tmpItem then
+                    if not wepCompendiumSubmenu.selectedType then
+                        wepCompendiumSubmenu.selectedType = tmpItem
+                        SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    end
                 end
             end
         end
