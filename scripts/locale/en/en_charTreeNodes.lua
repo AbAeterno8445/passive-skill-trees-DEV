@@ -70,4 +70,65 @@ return {
         "  +{{pickupBoons}}% tears per key picked up, up to 10%.",
         "  +{{pickupBoons}}% speed per coin picked up, up to 10%."
     },
+
+
+    -- MAGDALENE'S TREE
+    ["node_magdaleneblessing_name"] = "Magdalene's Blessing",
+    ["node_magdaleneblessing"] = {
+        "+{{speed}} speed.",
+        "{{damage}} damage.",
+        "-0.02 speed and +0.2 damage for every red heart container after the 4th one."
+    },
+    ["node_crystalheart_name"] = "Crystal Heart",
+    ["node_crystalheart"] = {
+        "Yum heart heals an additional 1/2 heart.",
+        "7% chance for Yum Heart to turn a red heart into a bone heart."
+    },
+    ["node_blood_donor_name"] = "Blood Donor",
+    ["node_blood_donor"] = {
+        "Blood donation machines grant 1 charge to your active item.",
+        "If using Yum Heart, 50% chance to gain 2 charges instead."
+    },
+    ["node_blesserheart_name"] = "Blesser Heart",
+    ["node_blesserheart"] = "Using Yum Heart while at full health turns up to 3 chests in the room into Heart-blessed chests.",
+    ["node_innerglow_name"] = "Inner Glow",
+    ["node_innerglow"] = {
+        "When using an active item with at least 3 charges, 33% chance to additionally trigger",
+        "Yum Heart's effect."
+    },
+
+    ["node_yumheartheal_name"] = "Yum Heart Healing",
+    ["node_yumheartheal"] = "{{yumHeartHealHalf}}% chance for Yum Heart to heal an additional 1/2 heart.",
+    ["node_bloodmachinespawn_name"] = "Blood Donation Machine Spawn",
+    ["node_bloodmachinespawn"] = {
+        "{{bloodMachineSpawn}}% chance to spawn a Blood Donation Machine at the start of a floor.",
+        "Doesn't apply to first floor."
+    },
+    ["node_blooddonoluck_name"] = "Blood Donation Luck",
+    ["node_blooddono"] = {
+        "+{{bloodDonationLuck}} luck when using a Blood Donation Machine.",
+        "Halve this bonus when entering the next floor."
+    },
+    ["node_blooddononickel_name"] = "Blood Donation Nickel",
+    ["node_blooddononickel"] = "{{bloodDonationNickel}}% chance to spawn an additional Nickel when using a Blood Donation Machine.",
+    ["node_roomclearheal_name"] = "Room Clear Heal",
+    ["node_roomclearheal"] = {
+        "{{healOnClear}}% chance to heal 1/2 red heart when clearing a room.",
+        "Double the chance and healing on boss rooms."
+    },
+    ["node_heartblessedchests_name"] = "Heart-blessed Chests",
+    ["node_heartblessedchests"] = {
+        "+{{heartblessedChests}}% chance for chests to become Heart-blessed when appearing.",
+        "Heart-blessed chests drop an additional 1-2 random hearts, each having a 70% chance",
+        "of being red."
+    },
+    ["node_heartblessedspeed_name"] = "Heart-blessed Speed Buff",
+    ["node_heartblessedspeed"] = "+{{heartblessedSpeed}}% speed for the current floor when opening a Heart-blessed chest, up to 12%.",
+    ["node_fullhpcharging_name"] = "Full Health Charging",
+    ["node_fullhpcharging"] = {
+        "When using an active item, {{fullHealthCharge}}% chance to keep 1 charge per red heart container if",
+        "you're at full health."
+    },
+    ["node_allstatfullhp_name"] = "All Stats On Full Health",
+    ["node_allstatfullhp"] = "+{{allstatsFullRed}} all stats while you have at least 1 red heart container and are at full health."
 }
