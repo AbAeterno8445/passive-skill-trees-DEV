@@ -384,5 +384,48 @@ return {
     ["node_bossflawlessluck_name"] = "Boss Flawless Luck",
     ["node_bossflawlessluck"] = "+{{bossFlawlessLuck}} luck if you clear the boss room without getting hit, up to a total +3.",
     ["node_treasuredoubleheart_name"] = "Treasure Room Double Red Hearts",
-    ["node_treasuredoubleheart"] = "{{treasureDoubleHeart}}% chance for treasure rooms to additionally contain a double red heart pickup."
+    ["node_treasuredoubleheart"] = "{{treasureDoubleHeart}}% chance for treasure rooms to additionally contain a double red heart pickup.",
+
+
+    -- AZAZEL'S TREE --
+    ["node_bloodcharge_name"] = "Bloodcharge",
+    ["node_bloodcharge"] = {
+        "+{{range}} range.",
+        "{{tearsPerc}}% tears."
+    },
+    ["node_demonicsouvenirs_name"] = "Demonic Souvenirs",
+    ["node_demonicsouvenirs"] = {
+        "Spawn III - The Empress at the beginning of every other floor, starting from the first.",
+        "Spawn a random evil trinket at the beginning of the second floor you enter.",
+        "+6% damage and tears while holding an evil trinket."
+    },
+    ["node_demonhelpers_name"] = "Demon Helpers",
+    ["node_demonhelpers"] = {
+        "{{devilBeggarBlackHeart}}% chance to receive half a black heart back when helping a Devil Beggar.",
+        "Once a Devil Beggar gives a reward, 33% chance to additionally spawn a demon familiar.",
+        "5% chance to spawn a devil beggar at the beginning of a floor, starting from second floor.",
+        "This chance doubles every floor up to 40%, and resets when one spawns."
+    },
+    ["node_demonicambition_name"] = "Demonic Ambition",
+    ["node_demonicambition"] = {
+        "Gain Goat's Head while you have 4 black hearts or more.",
+        "Goat's Head can no longer show up naturally."
+    },
+    ["node_earlybird_name"] = "Early Bird",
+    ["node_earlybird"] = {
+        "Start with an additional black heart.",
+        "When exiting the first floor, lose a black/soul heart if you have more than 1 total heart container",
+        "of any type."
+    },
+
+    ["node_blackheartdeals_name"] = "Black Heart On Deals",
+    ["node_blackheartdeals"] = "{{blackHeartOnDeals}}% chance to gain an additional black heart when spending hearts for items, such as devil deals.",
+    ["node_eviltrinketluck_name"] = "Evil Trinket Luck",
+    ["node_eviltrinketluck"] = "+{{evilTrinketLuck}} luck while holding an evil trinket.",
+    ["node_freedevilbeggar_name"] = "Free Devil Beggar Help",
+    ["node_freedevilbeggar"] = "{{devilBeggarBlackHeart}}% chance for devil beggars to return half a black heart when helped.",
+    ["node_cardusedmg_name"] = "Card Use Damage",
+    ["node_cardusedmg"] = "+{{cardFloorDamage}} damage when using a card, up to +3. Resets every floor.",
+    ["node_cardusetears_name"] = "Card Use Tears",
+    ["node_cardusetears"] = "+{{cardFloorTears}} tears when using a card, up to +3. Resets every floor.",
 }

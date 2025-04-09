@@ -3,6 +3,9 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "1.3.0",
+        "- Fixed Azazel's \"Early Bird\" node not being applied on run start.",
+
         "1.2.9",
         "- Added an 'Ancient Weapon Compendium' node to the Sidereal Tree, connected to the Astral Forge node. The compendium allows reviewing",
         "all available ancient weapons for each weapon type, to have an idea of which ones to look for.",
