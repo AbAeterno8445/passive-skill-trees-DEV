@@ -1,6 +1,6 @@
 local locales = {
-    en = include("scripts.locale.en.en_globalTreeNodes"),
-    es = include("scripts.locale.es.es_globalTreeNodes")
+    en = include("scripts.locale.en.en_locale"),
+    es = include("scripts.locale.es.es_locale")
 }
 
 -- Fonts
