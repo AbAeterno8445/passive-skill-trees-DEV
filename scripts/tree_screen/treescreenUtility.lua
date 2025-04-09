@@ -41,6 +41,7 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
     if PST.config.descriptionBoxStyle == 1 then
         tmpFont = PST.normalFont
     end
+    --tmpFont = PST.lanaPixelFont
     paramX = paramX or self.screenW
     paramY = paramY or self.screenH
 
@@ -63,7 +64,7 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
             longestStr = tmpStr
         end
     end
-    local longestStrWidth = (8 + offX + tmpFont:GetStringWidth(longestStr)) * tmpScale
+    local longestStrWidth = (8 + offX + tmpFont:GetStringWidthUTF8(longestStr)) * tmpScale
     if longestStrWidth > paramX / 2 then
         offX = offX - (longestStrWidth - paramX / 2 + 8)
     end
@@ -121,7 +122,7 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
     linkBeam:Add(endPos, 129)
     linkBeam:Render()
 
-    tmpFont:DrawStringScaled(name, drawX, drawY, tmpScale, tmpScale, PST.kcolors.WHITE_FADED1)
+    tmpFont:DrawStringScaledUTF8(name, drawX, drawY, tmpScale, tmpScale, PST.kcolors.WHITE_FADED1)
     for i = 1, #description do
         local tmpStr = description[i]
         local tmpColor = PST.kcolors.WHITE_FADED1
@@ -141,7 +142,7 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
                 tmpColor = PST.kcolors.LIGHTBLUE1
             end
         end
-        tmpFont:DrawStringScaled(tmpStr, drawX + 6 * tmpScale, drawY + 14 * tmpScale * i, tmpScale, tmpScale, tmpColor)
+        tmpFont:DrawStringScaledUTF8(tmpStr, drawX + 6 * tmpScale, drawY + 14 * tmpScale * i, tmpScale, tmpScale, tmpColor)
     end
 end
 

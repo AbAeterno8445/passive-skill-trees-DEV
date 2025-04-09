@@ -507,6 +507,28 @@ function descriptionBoxesModule:Render(tScreen)
             table.insert(tmpDescription, {"This node does not support Dynamic Tree Mode, and is only applied on run start.", PST.kcolors.RED2})
         end
 
+        ---- Localization ----
+        -- Node name
+        if hoveredNode.nameLocale then
+            descName = PST:getLocalized(hoveredNode.nameLocale, Options.Language)
+        end
+
+        -- Node description
+        if tmpDescription[1] then
+            local tmpDescKey
+            if type(tmpDescription[1]) == "table" and tmpDescription[1][1]:sub(1, 1) == '#' then
+                tmpDescKey = tmpDescription[1][1]:sub(2)
+            elseif tmpDescription[1]:sub(1, 1) == '#' then
+                tmpDescKey = tmpDescription[1]:sub(2)
+            end
+            if tmpDescKey then
+                local localizedDesc = PST:getLocalizedFormatted(tmpDescKey, Options.Language, hoveredNode.modifiers)
+                if localizedDesc then
+                    tmpDescription = localizedDesc
+                end
+            end
+        end
+
         tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description)
     else
         -- Submenu-related description boxes

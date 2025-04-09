@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v1.2.9"
+PST.modVersion = "v1.2.10"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -37,15 +37,7 @@ PST.savePending = false
 -- For better GetData() usage (cache calls per entity using InitSeed index, and clean on new room)
 PST.entDataCache = {}
 
--- Fonts
-PST.miniFont = Font()
-PST.miniFont:Load("font/cjk/lanapixel.fnt")
-
-PST.normalFont = Font()
-PST.normalFont:Load("font/terminus8.fnt")
-
-PST.luaminiFont = Font()
-PST.luaminiFont:Load("font/luamini.fnt")
+include("scripts.ST_textRender")
 
 -- Initialization performed on the first menu render call
 function PST:firstRenderInit()

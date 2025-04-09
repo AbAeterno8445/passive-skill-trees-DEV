@@ -94,6 +94,16 @@ function PST:initTreeNodes(tree)
         node.id = tonumber(nodeID)
         node.sprite = tonumber(node.type)
 
+        -- Localization support, name init (name in english is used frequently throughout code, so keep it)
+        if node.name:sub(1, 1) == '#' then
+            local nodeOrigName = PST:getLocalized(node.name:sub(2), 'en')
+            if type(nodeOrigName) == "table" then
+                nodeOrigName = nodeOrigName[1]
+            end
+            node.nameLocale = node.name
+            node.name = nodeOrigName
+        end
+
         -- Nodes using custom images have their type set to 5000+
         if node.customID ~= nil then
             node.sprite = node.sprite % 1000
