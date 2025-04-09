@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "1.2.10",
+        "- Potential fix for game freeze when completing an expedition node requiring you to gain xp that rewarded xp on completion, while",
+        "having queued nodes ahead.",
+        "",
+
         "1.2.9",
         "- Added an 'Ancient Weapon Compendium' node to the Sidereal Tree, connected to the Astral Forge node. The compendium allows reviewing",
         "all available ancient weapons for each weapon type, to have an idea of which ones to look for.",

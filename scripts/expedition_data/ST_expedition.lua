@@ -370,7 +370,7 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
                 end
             -- Exp
             elseif tmpNode.rewardType == PSTExpNodeRewardType.EXP then
-                PST:addXP(tmpNode.rewardData, false)
+                PST:addXP(tmpNode.rewardData, false, false, true)
             -- Item
             elseif tmpNode.rewardType == PSTExpNodeRewardType.ITEM and not PST:arrHasValue(tmpExpedition.items, tmpNode.rewardData) then
                 PST:expedAddItem(depth, tmpNode.rewardData)
