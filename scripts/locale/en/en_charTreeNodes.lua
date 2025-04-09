@@ -243,5 +243,51 @@ return {
         "This effect can trigger up to 3 times per floor."
     },
     ["node_blackheartconv_name"] = "Black Heart Conversion",
-    ["node_blackheartconv"] = "{{node_blackheartconv}}% chance to replace dropped hearts of any type with black hearts."
+    ["node_blackheartconv"] = "{{node_blackheartconv}}% chance to replace dropped hearts of any type with black hearts.",
+
+
+    -- BLUE BABY'S TREE --
+    ["node_bluegambit_name"] = "Blue Gambit",
+    ["node_bluegambit"] = {
+        "The first card you find is guaranteed to be V - The Hierophant.",
+        "The first pill you find is guaranteed to be Balls of Steel.",
+        "20% chance to take 1/2 heart damage when using a card or pill that isn't either of the above.",
+        "Reverse cards do not trigger this damage effect."
+    },
+    ["node_brownblessing_name"] = "Brown Blessing",
+    ["node_brownblessing"] = {
+        "Start with Petrified Poop.",
+        "Using The Poop has a 7% chance to spawn a poop item. Doesn't apply in the first floor."
+    },
+    ["node_slippingessence_name"] = "Slipping Essence",
+    ["node_slippingessence"] = {
+        "Losing a soul heart has a 40% chance to spawn a full soul heart.",
+        "When this happens, halve this chance and receive -0.6 luck."
+    },
+    ["node_beandiet_name"] = "Bean Diet",
+    ["node_beandiet"] = {
+        "Start with a smelted Gigante Bean.",
+        "When using The Poop, additionally trigger the effect of a random Bean active."
+    },
+
+    ["node_souloncardpill_name"] = "Soul Heart On Pill/Card",
+    ["node_souloncardpill"] = "{{soulOnCardPill}}% chance to receive half a soul heart when using a pill or card.",
+    ["node_poopitemluck_name"] = "Poop Item Luck",
+    ["node_poopitemluck"] = "+{{poopItemLuck}} luck per held poop item.",
+    ["node_pooptrinketluck_name"] = "Poop Trinket Luck",
+    ["node_pooptrinketluck"] = "+{{poopTrinketLuck}} luck while holding a poop trinket.",
+    ["node_poopallstats_name"] = "The Poop All Stats",
+    ["node_poopallstats"] = {
+        "+{{thePoopAllStats}} all stats after using The Poop (once per room).",
+        "Resets every room."
+    },
+    ["node_soultearsrange_name"] = "Soul Heart Tears And Range",
+    ["node_soultearsrange"] = {
+        "+{{soulHeartTearsRange}}% tears and range whenever you gain soul hearts, up to 10%.",
+        "Resets every floor."
+    },
+    ["node_cardpillpoop_name"] = "Poop On Card/Pill Usage",
+    ["node_cardpillpoop"] = "{{cardPillPoop}}% chance to trigger The Poop's effect when using any card/pill.",
+    ["node_beanspeedbuff_name"] = "Speed Buff On Bean Use",
+    ["node_beanspeedbuff"] = "+{{beanActiveSpeed}}% speed for 5 seconds after using any Bean active."
 }
