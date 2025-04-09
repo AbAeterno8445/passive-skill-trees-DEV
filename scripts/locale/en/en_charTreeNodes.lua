@@ -188,5 +188,60 @@ return {
         "2% chance for machines that use coins to become Gilded when first found.",
         "Gilded machines have a 50% chance to be free on use, and grant +0.5% luck for the",
         "current floor on use."
-    }
+    },
+
+
+    -- JUDAS' TREE --
+    ["node_darkheart_name"] = "Dark Heart",
+    ["node_darkheart"] = {
+        "Start with an additional black heart.",
+        "Soul hearts count as black hearts for tree effects' purposes.",
+        "-6% damage and speed while you have no black hearts.",
+        "Book of belial removes this reduction for the current room."
+    },
+    ["node_innerdemon_name"] = "Inner Demon",
+    ["node_innerdemon"] = {
+        "Start with Judas' Shadow.",
+        "-45% damage as Dark Judas."
+    },
+    ["node_sacrificedarkness_name"] = "Sacrifice Darkness",
+    ["node_sacrificedarkness"] = {
+        "When collecting a black heart, trigger it and receive a soul heart instead.",
+        "+1% all stats per sacrificed black heart, up to 6%. Resets every floor.",
+        "35% chance to convert dropped soul hearts to black hearts."
+    },
+    ["node_tenetofbelial_name"] = "Tenet of Belial",
+    ["node_tenetofbelial"] = {
+        "Using an active item with at least 4 charges additionally triggers Book of",
+        "Belial's effect.",
+        "After triggering this effect 15 times, it becomes inactive and you gain Birthright,",
+        "if you don't already have it.",
+        "Triggering Book of Belial's effect has a 50% chance to remove overcharges.",
+        "Birthright can no longer show up."
+    },
+    ["node_darkapotheosis_name"] = "Dark Apotheosis",
+    ["node_darkapotheosis"] = {
+        "Using Book of Belial turns you into Dark Judas for the current room.",
+        "When this effect is triggered, red heart containers are converted to black hearts.",
+        "Judas' Shadow can no longer show up naturally."
+    },
+
+    ["node_darkjudas_speed_name"] = "Dark Judas Speed",
+    ["node_darkjudas_speed"] = "+{{darkJudasSpeed}}% speed as Dark Judas.",
+    ["node_darkjudas_shotspdrange_name"] = "Dark Judas Shot Speed and Range",
+    ["node_darkjudas_shotspdrange"] = "+{{darkJudasShotspeedRange}}% shot speed and range as Dark Judas.",
+    ["node_darkcharges_name"] = "Dark Charges",
+    ["node_darkcharges"] = {
+        "{{belialBossHitCharge}}% chance for active items to gain a charge when hitting a boss while you have black hearts.",
+        "Generates a maximum of 12 charges per room."
+    },
+    ["node_luckyblackhearts_name"] = "Lucky Black Hearts On Kill",
+    ["node_luckyblackhearts"] = {
+        "{{blackHeartLuckDrop}}% chance every 0.5 luck for monsters with at least 50 HP to drop a black heart",
+        "on death.",
+        "If you have at least 5 luck, reduce the HP threshold to 30.",
+        "This effect can trigger up to 3 times per floor."
+    },
+    ["node_blackheartconv_name"] = "Black Heart Conversion",
+    ["node_blackheartconv"] = "{{node_blackheartconv}}% chance to replace dropped hearts of any type with black hearts."
 }
