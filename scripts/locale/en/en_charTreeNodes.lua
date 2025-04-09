@@ -338,5 +338,51 @@ return {
     ["node_allstatoneheart_name"] = "All Stats - One Heart",
     ["node_allstatoneheart"] = "+{{allstatsOneRed}} all stats while you have only 1 red heart.",
     ["node_evemascarachamp_name"] = "Eve's Mascara On Champion Kill",
-    ["node_evemascarachamp"] = "{{eveMascaraChamp}}% chance to gain Eve's Mascara for the current room when killing a champion monster."
+    ["node_evemascarachamp"] = "{{eveMascaraChamp}}% chance to gain Eve's Mascara for the current room when killing a champion monster.",
+
+
+    -- SAMSON'S TREE --
+    ["node_hasted_name"] = "Hasted",
+    ["node_hasted"] = {
+        "+10% tears and shot speed",
+        "Taking damage reduces this bonus by 1.5%, up to 5 times.",
+        "Resets every floor."
+    },
+    ["node_ragebuildup_name"] = "Rage Buildup",
+    ["node_ragebuildup"] = {
+        "+0.02 damage when hitting an enemy, up to +3.",
+        "Getting hit resets the bonus."
+    },
+    ["node_hearty_name"] = "Hearty",
+    ["node_hearty"] = {
+        "Start with an additional red heart.",
+        "+1.5% damage per missing 1/2 red heart."
+    },
+    ["node_bloodcrowned_name"] = "Blood-Crowned",
+    ["node_bloodcrowned"] = {
+        "Start with a smelted Bloody Crown.",
+        "When entering a new floor, 2% chance to lose the Bloody Crown per missing 1/2 red heart.",
+        "Entering a chapter 4 floor with full health and a Bloody Crown spawns a Devil's Crown."
+    },
+
+    ["node_samsontempdmg_name"] = "Temporary Damage",
+    ["node_samsontempdmg"] = {
+        "+{{samsonTempDamage}}% damage for 2.5 seconds after killing an enemy, or after hitting a boss 8 times.",
+        "Doesn't stack."
+    },
+    ["node_samsontempspeed_name"] = "Temporary Speed",
+    ["node_samsontempspeed"] = {
+        "+{{samsonTempSpeed}}% speed for 2.5 seconds after killing an enemy, or after hitting a boss 8 times.",
+        "Doesn't stack."
+    },
+    ["node_speedwhenhit_name"] = "Speed When Hit",
+    ["node_speedwhenhit"] = "+{{speedWhenHit}}% speed when hit, up to 15%. Resets every room.",
+    ["node_bossculling_name"] = "Boss Culling",
+    ["node_bossculling"] = "{{bossCulling}}% chance on hit to deal 10x damage to bosses below 10% HP.",
+    ["node_quickbossluck_name"] = "Boss Quick Kill Luck",
+    ["node_quickbossluck"] = "+{{bossQuickKillLuck}} luck if you clear the boss room within 30 seconds of entering it, up to a total +3.",
+    ["node_bossflawlessluck_name"] = "Boss Flawless Luck",
+    ["node_bossflawlessluck"] = "+{{bossFlawlessLuck}} luck if you clear the boss room without getting hit, up to a total +3.",
+    ["node_treasuredoubleheart_name"] = "Treasure Room Double Red Hearts",
+    ["node_treasuredoubleheart"] = "{{treasureDoubleHeart}}% chance for treasure rooms to additionally contain a double red heart pickup."
 }
