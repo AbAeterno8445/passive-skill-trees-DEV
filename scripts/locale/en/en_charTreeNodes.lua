@@ -130,5 +130,63 @@ return {
         "you're at full health."
     },
     ["node_allstatfullhp_name"] = "All Stats On Full Health",
-    ["node_allstatfullhp"] = "+{{allstatsFullRed}} all stats while you have at least 1 red heart container and are at full health."
+    ["node_allstatfullhp"] = "+{{allstatsFullRed}} all stats while you have at least 1 red heart container and are at full health.",
+
+
+    -- CAIN'S TREE --
+    ["node_impromptugambler_name"] = "Impromptu Gambler",
+    ["node_impromptugambler"] = {
+        "Spawn a crane game in treasure rooms. These can draw items from the Treasure, Shop, Devil",
+        "and Angel pools, but take an additional 2 coins on use, if possible.",
+        "Interacting with the crane game removes the room's regular item.",
+        "Grabbing the room's regular item removes the crane game."
+    },
+    ["node_thievery_name"] = "Thievery",
+    ["node_thievery"] = {
+        "+{{stealChance}}% chance to steal items from the shop instead of purchasing.",
+        "If you steal an item, Greed will have a chance to show up",
+        "after the floor's boss is defeated.",
+        "Each stolen item increases Greed's chance to show up based on its price (price * 3)%."
+    },
+    ["node_ficklefortune_name"] = "Fickle Fortune",
+    ["node_ficklefortune"] = {
+        "+7% luck while holding a trinket.",
+        "Minimum luck is 1 while holding a trinket.",
+        "7% chance when hit for your trinket to be dropped.",
+        "7% chance for dropped trinkets to vanish."
+    },
+    ["node_goldengimmick_name"] = "Golden Gimmick",
+    ["node_goldengimmick"] = {
+        "When entering a floor, 15% chance to spawn a random Gilded machine, up to twice per run.",
+        "Every 4 uses of a Gilded machine consumes an additional coin and grants +2% damage",
+        "for the current floor, up to 12%."
+    },
+    ["node_wealthsmith_name"] = "Wealthsmith",
+    ["node_wealthsmith"] = {
+        "While you have at least 20 coins and less than 10 keys, gain Pay to Play.",
+        "+0.2% tears per difference between coins and keys, up to 15%.",
+        "Pay to Play no longer shows up naturally."
+    },
+
+    ["node_stealchance_name"] = "Stealing Chance",
+    ["node_stealchance"] = "+{{stealChance}}% chance to steal items from the shop instead of purchasing.",
+    ["node_randtrinketonclear_name"] = "Random Trinket On Clear",
+    ["node_randtrinketonclear"] = "{{trinketOnClear}}% chance to drop a random trinket on room clear while you're not holding one.",
+    ["node_freemachine_name"] = "Free Machine Use",
+    ["node_freemachine"] = "{{freeMachinesChance}}% chance for machines that use coins to cost nothing on use.",
+    ["node_arcadereveal_name"] = "Arcade Reveal",
+    ["node_arcadereveal"] = "{{arcadeReveal}}% chance to reveal the arcade room's location if it's present on a floor.",
+    ["node_shopreveal_name"] = "Shop Reveal",
+    ["node_shopreveal"] = "{{shopReveal}}% chance to reveal the shop room's location if it's present on a floor.",
+    ["node_roomclearnickel_name"] = "Room Clear Nickel",
+    ["node_roomclearnickel"] = {
+        "{{nickelOnClear}}% chance to spawn an additional nickel when clearing a room.",
+        "Double the chance on boss rooms."
+    },
+    ["node_gildedmachines_name"] = "Gilded Machines",
+    ["node_gildedmachines"] = {
+        "2% chance for machines that use coins to become Gilded when first found.",
+        "Gilded machines have a 50% chance to be free on use, and grant +0.5% luck for the",
+        "current floor on use."
+    }
 }
