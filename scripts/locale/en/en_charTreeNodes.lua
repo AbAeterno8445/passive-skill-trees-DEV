@@ -289,5 +289,54 @@ return {
     ["node_cardpillpoop_name"] = "Poop On Card/Pill Usage",
     ["node_cardpillpoop"] = "{{cardPillPoop}}% chance to trigger The Poop's effect when using any card/pill.",
     ["node_beanspeedbuff_name"] = "Speed Buff On Bean Use",
-    ["node_beanspeedbuff"] = "+{{beanActiveSpeed}}% speed for 5 seconds after using any Bean active."
+    ["node_beanspeedbuff"] = "+{{beanActiveSpeed}}% speed for 5 seconds after using any Bean active.",
+
+
+    -- EVE'S TREE --
+    ["node_heartless_name"] = "Heartless",
+    ["node_heartless"] = {
+        "Every room you clear grants +0.5% all stats, up to 10%.",
+        "Picking up any heart halves your current bonus."
+    },
+    ["node_darkprotection_name"] = "Dark Protection",
+    ["node_darkprotection"] = {
+        "When first reaching 1 heart or less, gain a black heart.",
+        "Resets when defeating Mom's Heart/It Lives."
+    },
+    ["node_carrionavian_name"] = "Carrion Avian",
+    ["node_carrionavian"] = {
+        "+0.15 damage when dead bird kills an enemy, up to +3. Resets every floor.",
+        "If dead bird kills a boss, gain a permanent +0.6 damage instead (up to +1.2",
+        "per room)."
+    },
+    ["node_phantomcrows_name"] = "Phantomcrows",
+    ["node_phantomcrows"] = {
+        "Start with a smelted Eve's Bird Foot.",
+        "0.5% chance to spawn an additional phantom dead bird for the current room whenever",
+        "a dead bird deals damage, once per room."
+    },
+
+    ["node_deadbirdshield_name"] = "Dead Bird Shield",
+    ["node_deadbirdshield"] = "{{deadBirdNullify}}% chance for the hit that wakes dead bird to be nullified.",
+    ["node_deadbird_dmg_name"] = "Active Dead Bird Damage",
+    ["node_deadbird_dmg"] = "+{{activeDeadBirdDamage}} damage while dead bird is active.",
+    ["node_deadbird_speed_name"] = "Active Dead Bird Speed",
+    ["node_deadbird_speed"] = "+{{activeDeadBirdSpeed}} speed while dead bird is active.",
+    ["node_deadbird_tears_name"] = "Active Dead Bird Tears",
+    ["node_deadbird_tears"] = "+{{activeDeadBirdTears}} tears while dead bird is active.",
+    ["node_deadbird_range_name"] = "Active Dead Bird Range",
+    ["node_deadbird_range"] = "+{{activeDeadBirdRange}} range while dead bird is active.",
+    ["node_deadbird_shotspeed_name"] = "Active Dead Bird Shot Speed",
+    ["node_deadbird_shotspeed"] = "+{{activeDeadBirdShotspeed}} shot speed while dead bird is active.",
+    ["node_deadbird_famdmg_name"] = "Dead Bird Damage",
+    ["node_deadbird_famdmg"] = "Dead bird deals an additional {{deadBirdInheritDamage}}% of your damage per tick.",
+    ["node_roomclearluck_belowfull_name"] = "Luck On Room Clear Below Full",
+    ["node_roomclearluck_belowfull"] = {
+        "+{{luckOnClearBelowFull}} luck when clearing a room below full red hearts.",
+        "Resets every floor.",
+    },
+    ["node_allstatoneheart_name"] = "All Stats - One Heart",
+    ["node_allstatoneheart"] = "+{{allstatsOneRed}} all stats while you have only 1 red heart.",
+    ["node_evemascarachamp_name"] = "Eve's Mascara On Champion Kill",
+    ["node_evemascarachamp"] = "{{eveMascaraChamp}}% chance to gain Eve's Mascara for the current room when killing a champion monster."
 }
