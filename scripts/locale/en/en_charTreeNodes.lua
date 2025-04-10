@@ -826,5 +826,43 @@ return {
         "{{flawlessClearPBone}}% chance to gain a smelted Polished Bone for the rest of the floor when clearing a room without",
         "taking damage.",
         "When hit by a monster, same chance to lose a smelted Polished Bone."
-    }
+    },
+
+
+    -- BETHANY'S TREE --
+    ["node_willothewisp_name"] = "Will-o-the-Wisp",
+    ["node_willothewisp"] = {
+        "Your wisps take 60% reduced damage.",
+        "+0.5 damage for the current room when a wisp is destroyed, up to +2.5."
+    },
+    ["node_soultrickle_name"] = "Soul Trickle",
+    ["node_soultrickle"] = {
+        "Collecting a soul or black heart heals 1/2 red heart.",
+        "While you are full health, 30% chance to convert red heart drops into soul hearts.",
+        "Wisps have a 5% chance to drop half a soul heart when damaged. This effect",
+        "can happen twice per room."
+    },
+    ["node_fatependulum_name"] = "Fate Pendulum",
+    ["node_fatependulum"] = {
+        "Start with Metronome.",
+        "Clearing a room has a {{chargeOnClear}}% chance to grant an additional active item charge.",
+        "Clearing a room has a {{soulChargeOnClear}}% chance to grant an additional soul charge.",
+        "-50% all stats while not holding Metronome."
+    },
+    ["node_chaoticwisps_name"] = "Chaotic Wisps",
+    ["node_chaoticwisps"] = "Whenever a regular wisp spawns, 50% chance for it to be converted to a random active item's wisp.",
+
+    ["node_activeitemwisp_name"] = "Active Item Wisp",
+    ["node_activeitemwisp"] = {
+        "{{activeItemWisp}}% chance to generate an additional regular wisp when using an active item with",
+        "at least 1 charge."
+    },
+    ["node_clearsoulcharge_name"] = "Room Clear Soul Charge",
+    ["node_clearsoulcharge"] = "{{soulChargeOnClear}}% chance to gain a Soul Charge on room clear.",
+    ["node_wispdestroyluck_name"] = "Wisp Destroyed Luck",
+    ["node_wispdestroyluck"] = "+{{wispDestroyedLuck}} luck when a wisp is destroyed, up to +2.",
+    ["node_wisporbitalboon_name"] = "Wisps Orbital Boon",
+    ["node_wisporbitalboon"] = "When entering a floor, +{{wispFloorBuff}}% all stats per wisp orbiting you, up to a total 15%.",
+    ["node_redheartsoulcharge_name"] = "Red Hearts Soul Charge",
+    ["node_redheartsoulcharge"] = "{{redHeartsSoulCharge}}% chance to gain a Soul Charge when picking up a red heart."
 }
