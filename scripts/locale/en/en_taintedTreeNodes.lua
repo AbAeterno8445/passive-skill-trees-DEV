@@ -319,5 +319,73 @@ return {
     ["node_trollbombprotect_name"] = "Troll Bomb Protection",
     ["node_trollbombprotect"] = "{{trollBombProtection}}% chance for troll bombs to deal no damage to you.",
     ["node_trollbombkill_luck_name"] = "Troll Bomb Kill Luck",
-    ["node_trollbombkill_luck"] = "+{{trollBombKillLuck}} luck whenever a troll bomb kills an enemy."
+    ["node_trollbombkill_luck"] = "+{{trollBombKillLuck}} luck whenever a troll bomb kills an enemy.",
+
+
+    -- T. BLUE BABY'S TREE --
+    ["node_alacritouspurpose_name"] = "Alacritous Purpose",
+    ["node_alacritouspurpose"] = {
+        "+0.04 tears when destroying poop, up to +0.5. Resets every floor.",
+        "+0.04 luck when destroying poop, up to +2. Resets every floor.",
+        "The first poop you destroy per room spawns 3 blue flies, if you have less than 15",
+        "active blue flies."
+    },
+    ["node_treasuredwaste_name"] = "Treasured Waste",
+    ["node_treasuredwaste"] = {
+        "Your currently held poop grants a buff based on its type:",
+        "  - Normal: +0.02 all stats.",
+        "  - Corn: +2% all stats.",
+        "  - Flaming: hitting enemies has a 5% chance of applying burning.",
+        "  - Stinky: hitting enemies has a 5% chance of poisoning.",
+        "  - Black: hitting enemies has a 5% chance of confusing.",
+        "  - White: +8% damage and tears.",
+        "  - Stone: 8% chance to receive no damage when hit.",
+        "  - Fart: 40% chance to trigger Butter Bean's effect when hit.",
+        "  - Liquid: +6% speed."
+    },
+    ["node_asceticsoul_name"] = "Ascetic Soul",
+    ["node_asceticsoul"] = {
+        "While you have 8 or more poop bombs, killing an enemy has a 7% chance of dropping a",
+        "1/2 soul heart, up to 5 per floor."
+    },
+    ["node_slothlegacy_name"] = "Sloth's Legacy",
+    ["node_slothlegacy"] = {
+        "Start with Bob's Rotten Head.",
+        "Hitting a boss with Bob's Rotten Head spawns 3 friendly chargers, once per floor.",
+        "Bob's Rotten Head deals 60% less damage."
+    },
+
+    ["node_holdpoopregain_name"] = "Hold Poop Regain",
+    ["node_holdpoopregain"] = "{{holdPoopRegain}}% chance to regain the used poop when using Hold.",
+    ["node_holdbuffs_name"] = "Hold Buffs",
+    ["node_holdbuffs"] = {
+        "+{{holdEmptySpeed}}% speed while Hold is empty.",
+        "+{{holdFullLuck}}% luck while Hold is not empty."
+    },
+    ["node_poopdmgbuff_name"] = "Poop Damage Buff",
+    ["node_poopdmgbuff"] = "Gain +{{poopDamageBuff}}% damage for 2 seconds after destroying room poops.",
+    ["node_pooptransmutation_name"] = "Poop Transmutation",
+    ["node_pooptransmutation"] = {
+        "0.5% chance to transmute a random poop in your bar to a different version when obtaining a",
+        "poop pickup, using the following order:",
+        "Poop -> Fart -> Bomb -> Corn -> Stone -> Flaming -> Stinky -> Explosive Diarrhea ->",
+        "Liquid -> Black -> White"
+    },
+    ["node_smallpoopupg_name"] = "Small Poop Pickup Upgrade",
+    ["node_smallpoopupg"] = "{{poopPickupEnlarge}}% chance to turn small poop pickups into large poops.",
+    ["node_rainbowpoopbless_name"] = "Rainbow Poop Blessing",
+    ["node_rainbowpoopbless"] = {
+        "+{{rainbowPoopLuck}}% luck when destroying a rainbow poop, up to +35%.",
+        "Luck buff gets halved when entering a new floor.",
+        "{{rainbowPoopSoul}}% chance to gain a soul heart when destroying a rainbow poop."
+    },
+    ["node_bobheadfly_name"] = "Bob's Head Fly Spawn",
+    ["node_bobheadfly"] = "{{bobHeadFlySpawn}}% chance for Bob's Rotten Head to spawn a blue fly per enemy hit, up to 8 per room.",
+    ["node_brownnuggethold_name"] = "Brown Nugget On Hold",
+    ["node_brownnuggethold"] = "{{holdBrownNugget}}% chance to trigger Brown Nugget item's effect when emptying Hold, up to 5 times per room.",
+    ["node_specialpoopfind_name"] = "Special Poop Find",
+    ["node_specialpoopfind"] = {
+        "{{specialPoopFind}}% chance for poops found in rooms to be replaced with special variants.",
+        "Can affect up to 4 poops per room."
+    }
 }
