@@ -924,5 +924,66 @@ return {
     ["node_redstewboon"] = {
         "When entering a floor, {{redStewBoon}}% chance to spawn a Red Stew per room cleared in the previous",
         "floor without taking damage."
+    },
+
+
+    -- SIREN'S TREE --
+    ["node_darksongstress_name"] = "Dark Songstress",
+    ["node_darksongstress"] = {
+        "Non-charmed enemies receive 8% less damage.",
+        "Killing a charmed enemy has an 8% chance to grant 1 charge to Siren's Song.",
+        "Using Siren's Song removes this effect and grants +8% damage and speed for the current room."
+    },
+    ["node_songofdarkness_name"] = "Song Of Darkness",
+    ["node_songofdarkness"] = {
+        "2% chance to drop an additional black heart when clearing a room.",
+        "[Harmonic] Charmed enemies you kill increase this chance by 0.4%, up to 6%.",
+        "[Harmonic] +0.1 damage per 1/2 black heart remaining.",
+        "Harmonic modifiers become inactive if you have more than 2 song nodes allocated."
+    },
+    ["node_songoffortune_name"] = "Song Of Fortune",
+    ["node_songoffortune"] = {
+        "+1 luck.",
+        "[Harmonic] Using Siren's Song has a 15% chance to grant +0.05 luck.",
+        "[Harmonic] When below 4 luck, 50% chance for charmed enemies to grant an additional 0.01 luck on kill.",
+        "[Harmonic] When above 4 luck, 25% chance for charmed enemies to grant no luck on kill.",
+        "Harmonic modifiers become inactive if you have more than 2 song nodes allocated."
+    },
+    ["node_songofcelerity_name"] = "Song Of Celerity",
+    ["node_songofcelerity"] = {
+        "+{{tearsPerc}}% tears.",
+        "[Harmonic] +7% speed.",
+        "[Harmonic] +1% tears when hitting a charmed enemy, up to 15%. Effect resets every room.",
+        "Harmonic modifiers become inactive if you have more than 2 song nodes allocated.",
+    },
+    ["node_songofawe_name"] = "Song Of Awe",
+    ["node_songofawe"] = {
+        "+4% all stats when using Siren's Song, once per room. Effect resets every room.",
+        "[Harmonic] Siren's Song additionally slows enemies by 90% for 2 seconds on use.",
+        "[Harmonic] Siren's Song gains an additional charge when clearing a room.",
+        "Harmonic modifiers become inactive if you have more than 2 song nodes allocated."
+    },
+    ["node_overwhelmingvoice_name"] = "Overwhelming Voice",
+    ["node_overwhelmingvoice"] = {
+        "Siren's Song turns friendly monsters back into hostile enemies on use.",
+        "+5% damage for the current room per monster turned this way, up to 20%.",
+        "Siren's Song deals 6 damage to charmed monsters, which increases each floor."
+    },
+
+    ["node_luckoncharmkill_name"] = "Luck On Charmed Kill",
+    ["node_luckoncharmkill"] = "{{luckOnCharmedKill}}% chance for charmed enemies to grant an additional 0.01 luck on kill.",
+    ["node_mightoffortune_name"] = "Might Of Fortune",
+    ["node_mightoffortune"] = "+{{mightOfFortune}}% all stats except luck for every 1 luck you have.",
+    ["node_charmedretaliation_name"] = "Charmed Retaliation",
+    ["node_charmedretaliation"] = "When a charmed enemy hits you, return {{charmedRetaliation}} damage.",
+    ["node_charmedhitneg_name"] = "Charmed Hit Negation",
+    ["node_charmedhitneg"] = {
+        "{{charmedHitNegation}}% chance to negate a killing hit from a charmed enemy.",
+        "This can only happen once per room."
+    },
+    ["node_charmexplosion_name"] = "Charm Explosions",
+    ["node_charmexplosion"] = {
+        "{{charmExplosions}}% chance for charmed enemies to explode in a cloud of pheromones on death, dealing 4 damage and",
+        "charming nearby enemies."
     }
 }
