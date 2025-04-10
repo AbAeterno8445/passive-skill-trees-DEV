@@ -42,7 +42,7 @@ return {
     ["node_shotspeed_name"] = "Velocidad De Disparo",
     ["node_shotspeed"] = "+{{shotSpeed}} velocidad de disparo.",
     ["node_shotspeed_neg_name"] = "Menos Velocidad De Disparo",
-    ["node_shotspeed_neg"] = "-{{shotSpeed}} velocidad de disparo.",
+    ["node_shotspeed_neg"] = "{{shotSpeed}} velocidad de disparo.",
     ["node_speed_name"] = "Velocidad",
     ["node_speed"] = "+{{speed}} velocidad.",
     ["node_damage_name"] = "Daño",
@@ -256,7 +256,7 @@ return {
         "valuado en al menos 15 monedas, si está rota."
     },
     ["node_donomachinerestore_threshold_name"] = "Restauración De Máquina De Donaciones Al Comprar",
-    ["node_donomachinerestore_threshold"] = "-{{donoPurchaseThresh}} moneda(s) necesarias en el precio del objeto a comprar para restaurar la máquina de donaciones.",
+    ["node_donomachinerestore_threshold"] = "{{donoPurchaseThresh}} moneda(s) necesarias en el precio del objeto a comprar para restaurar la máquina de donaciones.",
 
     ["node_generosityinsteps_name"] = "Generosidad Paso A Paso",
     ["node_generosityinsteps"] = {

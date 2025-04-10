@@ -511,5 +511,52 @@ return {
     ["node_berserkspeedtrade"] = {
         "+{{berserkSpdTradeoff}}% speed while not berserk.",
         "-0.0{{berserkSpdTradeoff}} maximum speed while berserk"
+    },
+
+
+    -- T. AZAZEL'S TREE --
+    ["node_curseborne_name"] = "Curseborne",
+    ["node_curseborne"] = {
+        "When entering a room with monsters, apply Hemoptysis' curse to 1 random enemy for every 0.8 tears",
+        "stat you have.",
+        "Affects at least 1 monster.",
+        "{{tears}} tears."
+    },
+    ["node_gildedregrowth_name"] = "Gilded Regrowth",
+    ["node_gildedregrowth"] = {
+        "Start with a smelted golden Bat Wing.",
+        "Gain demon wings if you kill 5 marked enemies in the current room.",
+        "-0.1 speed while you don't have flight."
+    },
+    ["node_brimsoul_name"] = "Brimsoul",
+    ["node_brimsoul"] = {
+        "Gain Brimstone while you have exactly 2 total black hearts.",
+        "Lose Brimstone while this condition is not met.",
+        "{{brimstoneDmg}}% damage while you have Brimstone.",
+        "Brimstone can no longer show up naturally."
+    },
+    ["node_darkbestowal_name"] = "Dark Bestowal",
+    ["node_darkbestowal"] = {
+        "Every 20 cursed enemies killed, gain a random passive devil pool item.",
+        "Can only trigger once per room, and stops counting kills until you lose the granted item.",
+        "Lose the granted item after clearing 3 rooms while holding it."
+    },
+
+    ["node_hemoptysis_slow_name"] = "Hemoptysis Slow Chance",
+    ["node_hemoptysis_slow"] = "{{hemoptysisSlowChance}}% chance to slow enemies for 2 seconds when hitting them with Hemoptysis.",
+    ["node_cursedkilltears_name"] = "Cursed Enemy Kill Tears",
+    ["node_cursedkilltears"] = "{{cursedKillTears}}% chance to gain +0.01 tears for the current floor when killing cursed enemies, up to +1.",
+    ["node_proximitydmg_name"] = "Proximity Damage",
+    ["node_proximitydmg"] = "+{{proximityDamage}}% damage dealt to enemies, which falls off the further they are.",
+    ["node_hemoptysis_speed_name"] = "Hemoptysis Speed",
+    ["node_hemoptysis_speed"] = "+{{hemoptysisSpeed}}% speed for 1 second after hitting enemies with Hemoptysis.",
+    ["node_brimstonedmg_name"] = "Brimstone Damage",
+    ["node_brimstonedmg"] = "+{{brimstoneDmg}}% damage while you have Brimstone.",
+    ["node_flightlessdevildeal_name"] = "Flightless Free Devil Deal Chance",
+    ["node_flightlessdevildeal"] = "{{flightlessDevilDeal}}% chance for devil deals to be free while you don't have flight.",
+    ["node_hemoptysisluck_name"] = "Hemoptysis Kill Luck",
+    ["node_hemoptysisluck"] = {
+        "{{hemoptysisKillLuck}}% chance to gain +0.03 luck when killing enemies with Hemoptysis.",
+        "Double the chance while you have flight."
     }
 }
