@@ -387,5 +387,68 @@ return {
     ["node_specialpoopfind"] = {
         "{{specialPoopFind}}% chance for poops found in rooms to be replaced with special variants.",
         "Can affect up to 4 poops per room."
-    }
+    },
+
+
+    -- T. EVE'S TREE --
+    ["node_bloodwrath_name"] = "Bloodwrath",
+    ["node_bloodwrath"] = {
+        "Start with an additional red heart container.",
+        "-1.5% damage per 1/2 remaining red heart.",
+        "Whenever you lose red hearts, turn this reduction positive for 5 seconds."
+    },
+    ["node_resilientblood_name"] = "Resilient Blood",
+    ["node_resilientblood"] = {
+        "Blood clots have a 25% chance to receive no damage when hit.",
+        "Blood clots receive 50% less damage from hits."
+    },
+    ["node_blessedblood_name"] = "Blessed Blood",
+    ["node_blessedblood"] = "When entering a floor, if you don't have an eternal blood clot, spawn one.",
+    ["node_congealedbuddy_name"] = "Congealed Buddy",
+    ["node_congealedbuddy"] = {
+        "Start with a smelted Lil Clot.",
+        "Lil Clot deals 20% more damage.",
+        "You deal 30% less damage."
+    },
+    ["node_mysticvampirism_name"] = "Mystic Vampirism",
+    ["node_mysticvampirism"] = {
+        "Start with Charm of the Vampire.",
+        "Every 13 kills, 20% chance to transform an existing red heart clot into a random different",
+        "type of clot, up to 8 times per floor."
+    },
+
+    ["node_clotheartdrop_name"] = "Blood Clot Heart Drop",
+    ["node_clotheartdrop"] = {
+        "Blood clots have a {{clotHeartDrop}}% chance to drop their respective heart type when destroyed.",
+        "Dropped heart vanishes after 3 seconds."
+    },
+    ["node_clotpulsedmg_name"] = "Blood Clot Pulse Damage",
+    ["node_clotpulsedmg"] = "Blood clot pulse gains an additional {{clotPulseDmgInherit}}% of your damage.",
+    ["node_clothitpulse_name"] = "Blood Clot On-Hit Pulse",
+    ["node_clothitpulse"] = "Blood clots release a damaging pulse when hit, dealing 3 damage to nearby enemies.",
+    ["node_lilclotdmg_name"] = "Lil Clot Damage",
+    ["node_lilclotdmg"] = "+{{lilClotDmg}}% Lil Clot damage.",
+    ["node_redclotdmgabsorb_name"] = "Red Clot Absorption Damage",
+    ["node_redclotdmgabsorb"] = {
+        "+{{redClotAbsorbDmg}}% damage for the current room per absorbed red clot.",
+        "Spawning a red clot reduces the current buff by this amount."
+    },
+    ["node_soulclotabsorbtears_name"] = "Soul Clot Absorption Tears",
+    ["node_soulclotabsorbtears"] = {
+        "+{{soulClotAbsorbTears}}% tears for the current room per absorbed soul clot.",
+        "Spawning a soul clot reduces the current buff by this amount."
+    },
+    ["node_clotdmg_name"] = "Blood Clot Damage",
+    ["node_clotdmg"] = "+{{clotDmg}}% damage dealt by all blood clots.",
+    ["node_redclotheartdmg_name"] = "Red Clot Damage Per Heart",
+    ["node_redclotheartdmg"] = "+{{redClotHeartDmg}}% damage dealt by red clots per 1/2 remaining red heart.",
+    ["node_soulclotheartdmg_name"] = "Soul Clot Damage Per Soul Heart",
+    ["node_soulclotheartdmg"] = "+{{soulClotHeartDmg}}% damage dealt by soul clots per 1/2 remaining soul heart.",
+    ["node_blackclotbabylon_name"] = "Black Clot Babylon Spawn",
+    ["node_blackclotbabylon"] = {
+        "{{blackClotBabylon}}% chance to spawn a black clot when killing enemies while Whore of Babylon is active, if you",
+        "have less than 3 active black clots."
+    },
+    ["node_clotdestroyluck_name"] = "Clot Destroyed Luck",
+    ["node_clotdestroyluck"] = "{{clotDestroyedLuck}}% chance to gain +0.03 luck when any clot is destroyed."
 }
