@@ -428,4 +428,53 @@ return {
     ["node_cardusedmg"] = "+{{cardFloorDamage}} damage when using a card, up to +3. Resets every floor.",
     ["node_cardusetears_name"] = "Card Use Tears",
     ["node_cardusetears"] = "+{{cardFloorTears}} tears when using a card, up to +3. Resets every floor.",
+
+
+    -- LAZARUS' TREE --
+    ["node_soulfulawakening_name"] = "Soulful Awakening",
+    ["node_soulfulawakening"] = {
+        "Spawn a soul heart on death.",
+        "+2 luck.",
+        "-0.5 luck on death.",
+    },
+    ["node_kingcurse_name"] = "King's Curse",
+    ["node_kingcurse"] = {
+        "Start with Damocles activated.",
+        "When entering a new floor, remove Damocles if you have it, or re-add it if you don't.",
+        "-10% all stats while not Lazarus Risen.",
+        "-1 luck while not Lazarus Risen."
+    },
+    ["node_trueending_name"] = "A True Ending?",
+    ["node_trueending"] = {
+        "First floor's boss, Mom and Mom's Heart drop a Suicide King card when defeated.",
+        "+2% all stats as Lazarus Risen per Suicide King card used."
+    },
+    ["node_growingcontrition_name"] = "Growing Contrition",
+    ["node_growingcontrition"] = {
+        "Start with Birthright.",
+        "Lose Birthright after dying 3 times.",
+        "If you don't have Birthright, clearing a boss room without taking damage has a 10% chance",
+        "to grant you Birthright.",
+        "Birthright can no longer show up."
+    },
+
+    ["node_lazdmg_name"] = "Lazarus Damage",
+    ["node_lazdmg"] = "+{{lazarusDamage}} damage. Halve this bonus as Lazarus Risen.",
+    ["node_laztears_name"] = "Lazarus Tears",
+    ["node_laztears"] = "+{{lazarusTears}} tears. Halve this bonus as Lazarus Risen.",
+    ["node_lazrange_name"] = "Lazarus Range",
+    ["node_lazrange"] = "+{{lazarusRange}} range. Halve this bonus as Lazarus Risen.",
+    ["node_lazspeed_name"] = "Lazarus Speed",
+    ["node_lazspeed"] = "+{{lazarusSpeed}} speed. Halve this bonus as Lazarus Risen.",
+    ["node_lazluck_name"] = "Lazarus Luck",
+    ["node_lazluck"] = "+{{lazarusLuck}} luck. Halve this bonus as Lazarus Risen.",
+    ["node_luckyallstat_name"] = "Lucky All Stats",
+    ["node_luckyallstat"] = "+{{luckyAllStats}} all stats while luck is positive.",
+    ["node_planc_name"] = "Plan C",
+    ["node_planc"] = "{{momPlanC}}% chance for Mom to drop Plan C when defeated.",
+    ["node_lazclearhearts_name"] = "Lazarus Hearts On Room Clear",
+    ["node_lazclearhearts"] = {
+        "{{lazarusClearHearts}}% chance to drop an additional 1/2 red heart on room clear as Lazarus.",
+        "{{lazarusClearHearts}}% chance to drop an additional 1/2 soul heart on room clear as Lazarus Risen."
+    }
 }
