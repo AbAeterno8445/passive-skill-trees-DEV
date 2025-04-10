@@ -248,5 +248,76 @@ return {
         "Above 100% total chance, roll multiple times."
     },
     ["node_randclearpickup_name"] = "Pickup On Clear",
-    ["node_randclearpickup"] = "{{randPickupOnClear}}% chance to spawn an additional coin/key/bomb/half heart when completing a room."
+    ["node_randclearpickup"] = "{{randPickupOnClear}}% chance to spawn an additional coin/key/bomb/half heart when completing a room.",
+
+
+    -- T. JUDAS' TREE --
+    ["node_agile_expertise_name"] = "Agile Expertise",
+    ["node_agile_expertise"] = {
+        "Trigger How To Jump's effect when using Dark Arts.",
+        "-2 seconds to Dark Arts' cooldown.",
+        "Reduce Dark Arts' cooldown by 1 second if it hits a boss."
+    },
+    ["node_stealthtactics_name"] = "Stealth Tactics",
+    ["node_stealthtactics"] = {
+        "Start with 9 Volt.",
+        "Speed cannot exceed 1.2 while Dark Arts is active.",
+        "{{nonDarkArtsDmg}}% damage with sources that aren't Dark Arts."
+    },
+    ["node_lightlessbounty_name"] = "Bounty For The Lightless",
+    ["node_lightlessbounty"] = {
+        "Killing an enemy with Dark Arts has a 15% chance of granting half a black heart if you have",
+        "less than 4 black hearts.",
+        "Killing an enemy with Dark Arts grants +0.03 luck, up to +1 per floor."
+    },
+    ["node_annihilation_name"] = "Annihilation",
+    ["node_annihilation"] = {
+        "The first time you hit a boss enemy with Dark Arts, deal an additional 40 damage or",
+        "10% of its HP as damage, whichever is highest.",
+        "Effect can only happen twice per room if multiple bosses are present.",
+        "25% chance to take an additional 1/2 heart damage from bosses if you have 3 or more black hearts."
+    },
+    ["node_anarchy_name"] = "Anarchy",
+    ["node_anarchy"] = {
+        "Enemies hit by Dark Arts have a 25% chance to spawn a troll bomb, up to thrice per room.",
+        "Enemies take 75% reduced damage from troll bombs.",
+        "Enemies killed by bombs reduce Dark Arts' cooldown by 0.5 seconds."
+    },
+    ["node_darkexpertise_name"] = "Dark Expertise",
+    ["node_darkexpertise"] = {
+        "Reduce Dark Arts' cooldown by 0.5 seconds per non-boss enemy hit with it.",
+        "Reduce Dark Arts' cooldown by 1 second per boss enemy hit with it.",
+        "+{{darkArtsCD}} seconds to Dark Arts' cooldown."
+    },
+
+    ["node_jumppulse_name"] = "How To Jump Pulse",
+    ["node_jumppulse"] = {
+        "{{howToJumpPulse}}% chance to trigger a dark pulse when landing with How to Jump, dealing 150% of your",
+        "damage to nearby enemies."
+    },
+    ["node_darkartscd_name"] = "Dark Arts Cooldown",
+    ["node_darkartscd"] = "{{darkArtsCD}} seconds to Dark Arts' cooldown.",
+    ["node_darkartscdreset_name"] = "Dark Arts Cooldown Reset",
+    ["node_darkartscdreset"] = "{{darkArtsCDReset}}% chance to reset Dark Arts' cooldown when a monster hits you.",
+    ["node_darkartsdmg_name"] = "Dark Arts Damage",
+    ["node_darkartsdmg"] = {
+        "+{{darkArtsDmg}}% Dark Arts damage.",
+        "+{{darkArtsCD}} seconds to Dark Arts' cooldown."
+    },
+    ["node_darkarts_tearboost_name"] = "Dark Arts Tears Boost",
+    ["node_darkarts_tearboost"] = {
+        "+{{darkArtsTears}}% tears for 2.5 seconds after using Dark Arts.",
+        "+{{darkArtsCD}} seconds to Dark Arts' cooldown."
+    },
+    ["node_nondarkartsdmg_name"] = "Non Dark Arts Damage",
+    ["node_nondarkartsdmg"] = "+{{nonDarkArtsDmg}}% damage with sources that aren't Dark Arts.",
+    ["node_darkarts_killboost_name"] = "Dark Arts Kill Stat Boost",
+    ["node_darkarts_killboost"] = {
+        "For every 10th enemy killed with Dark Arts, gain +{{darkArtsKillStat}}% to a random stat.",
+        "Resets every floor."
+    },
+    ["node_trollbombprotect_name"] = "Troll Bomb Protection",
+    ["node_trollbombprotect"] = "{{trollBombProtection}}% chance for troll bombs to deal no damage to you.",
+    ["node_trollbombkill_luck_name"] = "Troll Bomb Kill Luck",
+    ["node_trollbombkill_luck"] = "+{{trollBombKillLuck}} luck whenever a troll bomb kills an enemy."
 }
