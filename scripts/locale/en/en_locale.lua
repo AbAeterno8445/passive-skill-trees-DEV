@@ -7,5 +7,6 @@ local function includeLocaleFile(localeData)
 end
 includeLocaleFile(include("scripts.locale.en.en_globalTreeNodes"))
 includeLocaleFile(include("scripts.locale.en.en_charTreeNodes"))
+includeLocaleFile(include("scripts.locale.en.en_taintedTreeNodes"))
 
 return englishLocale
