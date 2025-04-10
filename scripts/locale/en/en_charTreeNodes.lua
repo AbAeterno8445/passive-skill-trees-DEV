@@ -476,5 +476,74 @@ return {
     ["node_lazclearhearts"] = {
         "{{lazarusClearHearts}}% chance to drop an additional 1/2 red heart on room clear as Lazarus.",
         "{{lazarusClearHearts}}% chance to drop an additional 1/2 soul heart on room clear as Lazarus Risen."
+    },
+
+
+    -- EDEN'S TREE --
+    ["node_chaotictreasury_name"] = "Chaotic Treasury",
+    ["node_chaotictreasury"] = {
+        "First floor's treasure room contains an additional Chaos item pedestal.",
+        "While you have Chaos, treasure rooms spawn an additional item.",
+        "Grabbing an item in a treasure room removes all other items in the room."
+    },
+    ["node_sporadicgrowth_name"] = "Sporadic Growth",
+    ["node_sporadicgrowth"] = {
+        "Start with a smelted Broken Syringe.",
+        "When starting a run, apply +1% to a random stat 6 times.",
+        "When entering a floor past the first, apply +1% to a random stat 2 times."
+    },
+    ["node_starblessed_name"] = "Starblessed",
+    ["node_starblessed"] = {
+        "Start with an additional random item from the treasure room pool.",
+        "First floor's boss drops an additional XVII - The Stars card."
+    },
+    ["node_edenhairdo_name"] = "Eden Hairdo",
+    ["node_edenhairdo"] = {
+        "Once allocated, press Allocate to choose a hairstyle for Eden.",
+        "Chosen hairstyle is always active.",
+        "Costs no skill points."
+    },
+    ["node_spaghettification_name"] = "Spaghettification",
+    ["node_spaghettification"] = {
+        "Start with 3 Dollar Bill, which gets removed once you get hit.",
+        "When you get hit:",
+        "   - For 5 seconds, innately gain Fruit Cake's effect.",
+        "   - Afterwards, for 5 seconds, innately gain Playdough Cookie's effect.",
+        "20% chance to trigger this effect when clearing a room without taking damage."
+    },
+    ["node_clayshaping_name"] = "Clayshaping",
+    ["node_clayshaping"] = "Start with a smelted Modeling Clay.",
+
+    ["node_treasurechaoticepi_name"] = "Treasure/Shop Item Chaotic Epiphany",
+    ["node_treasurechaoticepi"] = "{{treasureItemCEpiphany}}% chance to trigger Chaotic Epiphany when first obtaining a treasure or shop room item.",
+    ["node_specialitemchaoticepi_name"] = "Special Item Chaotic Epiphany",
+    ["node_specialitemchaoticepi"] = "{{devilItemCEpiphany}}% chance to trigger Chaotic Epiphany when first obtaining a devil, angel or boss room item.",
+    ["node_passiveitemluck_name"] = "Passive Item Luck",
+    ["node_passiveitemluck"] = "-0.01 to +{{itemRandLuck}} luck when first obtaining any passive item.",
+    ["node_passiveitemluck2"] = "-0.5% to +{{itemRandLuckPerc}}% luck when first obtaining any passive item.",
+    ["node_trinketluck_name"] = "Trinket Luck",
+    ["node_trinketluck"] = "-0.01 to +{{trinketRandLuck}} luck when first obtaining any trinket.",
+    ["node_randstartpickup_name"] = "Additional Coin/Key/Bomb",
+    ["node_randstartpickup"] = "{{startCoinKeyBomb}}% chance to start with an additional coin, key or bomb.",
+    ["node_edenblessing_name"] = "Eden's Blessing Spawn",
+    ["node_edenblessing"] = {
+        "{{edenBlessingSpawn}}% chance for Eden's Blessing to spawn at the beginning of a floor, starting from the second floor.",
+        "Can only happen once per run."
+    },
+    ["node_myosotisonclear_name"] = "Myosotis On Room Clear",
+    ["node_myosotisonclear"] = {
+        "{{myosotisOnClear}}% chance to gain a smelted Myosotis when clearing a room without taking damage,",
+        "if you don't already have one.",
+        "Lose any smelted Myosotis after entering a new floor."
+    },
+    ["node_cursechaoticepi_name"] = "Curse Room Chaotic Epiphany",
+    ["node_cursechaoticepi"] = {
+        "{{curseRoomCEpiphany}}% chance to trigger Chaotic Epiphany when entering a Curse Room.",
+        "Chaotic Epiphany:",
+        "   - 25% chance to add +2-4% to a random stat.",
+        "   - 25% chance to spawn a double coin/key/bomb.",
+        "   - 20% chance to spawn a random heart.",
+        "   - 20% chance to spawn a regular chest.",
+        "   - 10% chance to spawn a special chest."
     }
 }
