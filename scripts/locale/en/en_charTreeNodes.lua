@@ -685,5 +685,53 @@ return {
         "{{greedDimeDrop}}% chance for Greed to drop an additional dime."
     },
     ["node_blueflydeath_dmg_name"] = "Blue Fly Death Damage",
-    ["node_blueflydeath"] = "+{{blueFlyDeathDamage}} damage whenever a blue fly dies, up to +1.2. Resets every floor."
+    ["node_blueflydeath"] = "+{{blueFlyDeathDamage}} damage whenever a blue fly dies, up to +1.2. Resets every floor.",
+
+
+    -- APOLLYON'S TREE --
+    ["node_apollyonblessing_name"] = "Apollyon's Blessing",
+    ["node_apollyonblessing"] = {
+        "40% chance to keep half of the charge when using Void.",
+        "Cannot be cursed with Curse of the Blind."
+    },
+    ["node_null_name"] = "Null",
+    ["node_null"] = {
+        "When entering a floor, if Void hasn't absorbed any active items, gain +5% all stats, up to 15%.",
+        "If Void has absorbed active items, 50% chance to gain an extra charge when clearing a room.",
+        "-10% all stats while not holding Void."
+    },
+    ["node_harbingerlocusts_name"] = "Harbinger Locusts",
+    ["node_harbingerlocusts"] = {
+        "Spawn a random locust trinket in the second floor you enter.",
+        "Spawn a random locust trinket after defeating Mom.",
+        "2% chance for champion monsters to drop a random locust trinket on death, once per floor.",
+        "Using void consumes all locust trinkets dropped in the room, applying their",
+        "effects to you passively."
+    },
+    ["node_reverseannihilation_name"] = "Reverse Annihilation",
+    ["node_reverseannihilation"] = "When erasing a monster, trigger Friend Finder's effect, up to 3 times per floor.",
+
+    ["node_voidblueflies_name"] = "Void Blue Flies",
+    ["node_voidblueflies"] = "{{voidBlueFlies}}% chance for Void to spawn 4 blue flies on use.",
+    ["node_voidbluespiders_name"] = "Void Blue Spiders",
+    ["node_voidbluespiders"] = "{{voidBlueSpiders}}% chance for Void to spawn 3 blue spiders on use.",
+    ["node_voidannihilation_name"] = "Void Annihilation",
+    ["node_voidannihilation"] = "{{voidAnnihilation}}% chance for Void to instantly kill a random non-boss enemy in the room on use.",
+    ["node_eraserspawn_name"] = "Eraser Spawn",
+    ["node_eraserspawn"] = {
+        "{{eraserSecondFloor}}% chance for the second and fifth floor's treasure room to additionally contain an Eraser",
+        "item pedestal."
+    },
+    ["node_locustsluck_name"] = "Locusts Luck",
+    ["node_locustsluck"] = "+{{locustHeldLuck}} luck while holding a locust. Consuming a locust grants a permanent +{{locustConsumedLuck}} luck instead.",
+    ["node_locustconquestboon_name"] = "Locust Of Conquest Boon",
+    ["node_locustconquestboon"] = "+{{locustConquestSpeed}}% speed per Locust of Conquest held/consumed, up to 15%.",
+    ["node_locustdeathboon"] = "Locust Of Death Boon",
+    ["node_locustdeath"] = "+{{deathLocustTears}}% tears per Locust of Death held/consumed, up to 15%.",
+    ["node_locustfamineboon_name"] = "Locust Of Famine Boon",
+    ["node_locustfamineboon"] = "+{{famineLocustRangeShotspeed}}% range and shot speed per Locust of Famine held/consumed, up to 15%.",
+    ["node_locustpestilence_boon"] = "Locust Of Pestilence Boon",
+    ["node_locustpestilence"] = "+{{pestilenceLocustLuck}}% luck per Locust of Pestilence held/consumed, up to 12%.",
+    ["node_locustwarboon_name"] = "Locust Of War Boon",
+    ["node_locustwarboon"] = "+{{warLocustDamage}}% damage per Locust of War held/consumed, up to 15%."
 }
