@@ -864,5 +864,65 @@ return {
     ["node_wisporbitalboon_name"] = "Wisps Orbital Boon",
     ["node_wisporbitalboon"] = "When entering a floor, +{{wispFloorBuff}}% all stats per wisp orbiting you, up to a total 15%.",
     ["node_redheartsoulcharge_name"] = "Red Hearts Soul Charge",
-    ["node_redheartsoulcharge"] = "{{redHeartsSoulCharge}}% chance to gain a Soul Charge when picking up a red heart."
+    ["node_redheartsoulcharge"] = "{{redHeartsSoulCharge}}% chance to gain a Soul Charge when picking up a red heart.",
+
+
+    -- JACOB & ESAU'S TREE --
+    ["node_heartlink_name"] = "Heart Link",
+    ["node_heartlink"] = {
+        "Red heart ups are applied to both brothers.",
+        "-1% damage, tears and range per 1/2 red heart difference for the brother with",
+        "the lower remaining red hearts."
+    },
+    ["node_coordination_name"] = "Coordination",
+    ["node_coordination"] = {
+        "Landing 5 hits as Jacob grants Esau +10% tears.",
+        "Landing 5 hits as Esau grants Jacob +10% damage.",
+        "Effect resets every room."
+    },
+    ["node_keepthematbay_name"] = "Keep Them At Bay",
+    ["node_keepthematbay"] = {
+        "When entering a room with monsters, if either brother has at least 3 red heart containers,",
+        "15% chance to trigger The Hourglass' effect.",
+        "If the effect isn't triggered, double the chance for the next room."
+    },
+    ["node_choices_name"] = "Choices?",
+    ["node_choices"] = {
+        "Start with There's Options (Jacob) and More Options (Esau).",
+        "When a brother gets hit, 15% chance to lose the options item corresponding to them.",
+        "Chance increases by 5% per floor advanced.",
+        "There's Options and More Options can no longer show up naturally."
+    },
+
+    ["node_brotherhitneg_name"] = "Brother Hit Negation",
+    ["node_brotherhitneg"] = {
+        "{{brotherHitNegation}}% chance to negate a killing hit if the opposing brother has more than 1 red heart remaining.",
+        "When this happens, set the opposing brother's remaining red hearts to 1."
+    },
+    ["node_heartluck_name"] = "Heart Luck",
+    ["node_heartluck"] = {
+        "+0.01 luck per full heart of any type with the brother that has the lower remaining hearts.",
+        "Bonus is given to both brothers."
+    },
+    ["node_brotheritemallstat_name"] = "Brother Items All Stats",
+    ["node_brotheritemallstat"] = "+{{jacobItemAllstats}}% all stats per item obtained by the opposing brother, up to 15%.",
+    ["node_birthright_name"] = "Birthright",
+    ["node_jacob_birthright"] = {
+        "{{jacobBirthright}}% chance for Mom to additionally drop Birthright when defeated.",
+        "If Mom doesn't drop Birthright, roll for half the chance again when defeating Mom's heart/It Lives."
+    },
+    ["node_jacobheartonkill_name"] = "Jacob Heart On Kill",
+    ["node_jacobheartonkill"] = "{{jacobHeartOnKill}}% chance for enemies killed by Jacob to drop an additional 1/2 red heart, once per room.",
+    ["node_esausoulonkill_name"] = "Esau Soul On Kill",
+    ["node_esausoulonkill"] = "{{esauSoulOnKill}}% chance for enemies killed by Esau to drop an additional 1/2 soul heart, once per room.",
+    ["node_slowparaext_name"] = "Slow/Paralysis Extension",
+    ["node_slowparaext"] = {
+        "Hitting enemies affected by slow or paralysis extends the status by {{slowParaExtension}} seconds, up to 4 times",
+        "per enemy."
+    },
+    ["node_redstewboon_name"] = "Red Stew Boon",
+    ["node_redstewboon"] = {
+        "When entering a floor, {{redStewBoon}}% chance to spawn a Red Stew per room cleared in the previous",
+        "floor without taking damage."
+    }
 }
