@@ -450,5 +450,66 @@ return {
         "have less than 3 active black clots."
     },
     ["node_clotdestroyluck_name"] = "Clot Destroyed Luck",
-    ["node_clotdestroyluck"] = "{{clotDestroyedLuck}}% chance to gain +0.03 luck when any clot is destroyed."
+    ["node_clotdestroyluck"] = "{{clotDestroyedLuck}}% chance to gain +0.03 luck when any clot is destroyed.",
+
+
+    -- T. SAMSON'S TREE --
+    ["node_balancedapproach_name"] = "Balanced Approach",
+    ["node_balancedapproach"] = "Start with Libra.",
+    ["node_tempered_name"] = "Tempered",
+    ["node_tempered"] = {
+        "When you enter a room with monsters, lose 30% of the current berserk charge.",
+        "Gain tears for the current room based on the lost charge.",
+        "If Absolute Rage is allocated, +30% tears while berserk."
+    },
+    ["node_violentmarauder_name"] = "Violent Marauder",
+    ["node_violentmarauder"] = {
+        "Start with Suplex!.",
+        "Suplex! can only be used while berserk.",
+        "Using Suplex! while berserk is about to end removes it for the rest of the current floor."
+    },
+    ["node_absoluterage_name"] = "Absolute Rage",
+    ["node_absoluterage"] = {
+        "You are now berserk by default, and dealing damage reduces berserk's duration.",
+        "Once berserk runs out, passively gain berserk charge.",
+        "{{berserkDmg}}% damage while berserk.",
+        "{{berserkSpeed}}% speed while berserk.",
+        "-30% tears while berserk.",
+        "If you obtain Birthright, halve the damage and speed reduction while berserk, and halve",
+        "the rate at which berserk's duration runs out on hit."
+    },
+
+    ["node_tsamsonmeleedmg_name"] = "Melee Damage",
+    ["node_tsamsonmeleedmg"] = {
+        "+{{meleeDmg}}% melee damage.",
+        "{{nonMeleeDmg}}% non-melee damage."
+    },
+    ["node_berserkonhitcharge_name"] = "Berserk On-Hit Charge Gain",
+    ["node_berserkonhitcharge"] = "When hitting enemies, gain an additional {{berserkHitChargeGain}}% berserk charge.",
+    ["node_berserkdur_name"] = "Berserk Duration",
+    ["node_berserkdur"] = "+{{berserkDuration}} seconds to total berserk duration.",
+    ["node_berserkdmgvsdur_name"] = "Berserk Damage Vs Duration",
+    ["node_berserkdmgvsdur"] = {
+        "+{{berserkDmg}}% damage during berserk.",
+        "{{berserkDuration}} seconds to berserk duration."
+    },
+    ["node_suplexcd_name"] = "Suplex Cooldown",
+    ["node_suplexcd"] = "{{suplexCooldown}} seconds to Suplex's cooldown.",
+    ["node_berserkcharsize_name"] = "Berserk Character Size",
+    ["node_berserkcharsize"] = {
+        "+{{berserkSize}}% character size while berserk.",
+        "(Suplex! damage increases with character size)"
+    },
+    ["node_berserkkilltempheart_name"] = "Berserk Kill Vanishing Heart Drop",
+    ["node_berserkkilltempheart"] = "{{berserkKillTempHeart}}% chance for enemies to drop a 1/2 red heart on kill while berserk, which vanishes after 2 seconds.",
+    ["node_redheartpickupluck_name"] = "Red Heart Pickup Luck",
+    ["node_redheartpickupluck"] = {
+        "{{redHeartLuckSamson}}% chance to gain +0.03 luck when picking up red hearts, up to +1 per floor.",
+        "Triple the chance for vanishing red hearts."
+    },
+    ["node_berserkspeedtrade_name"] = "Berserk Speed Tradeoff",
+    ["node_berserkspeedtrade"] = {
+        "+{{berserkSpdTradeoff}}% speed while not berserk.",
+        "-0.0{{berserkSpdTradeoff}} maximum speed while berserk"
+    }
 }
