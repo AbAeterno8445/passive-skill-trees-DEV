@@ -157,5 +157,96 @@ return {
     ["node_blooddono_temphearts"] = {
         "{{bloodDonoTempHearts}}% chance to drop a 1/2 red heart when using a Blood Donation Machine, which vanishes",
         "after 2 seconds."
-    }
+    },
+
+
+    -- T. CAIN'S TREE --
+    ["node_ransacking_name"] = "Ransacking",
+    ["node_ransacking"] = {
+        "Bag of Crafting's melee attack gains an additional {{craftBagMeleeDmgInherit}}% of your damage.",
+        "Killing an enemy with Bag of Crafting's melee attack has a 10% chance to spawn a",
+        "coin/key/bomb/half heart, up to 5 per room.",
+        "+0.02 luck when killing an enemy with Bag of Crafting's melee attack."
+    },
+    ["node_magicbag_name"] = "Magic Bag",
+    ["node_magicbag"] = {
+        "When crafting an item, additionally drop one of the pickups used to craft it.",
+        "+0.5% all stats per pickup in the crafting bag."
+    },
+    ["node_opportunist_name"] = "Opportunist",
+    ["node_opportunist"] = {
+        "When grabbing a pickup with the Bag of Crafting, trigger an effect based on the pickup:",
+        "  - Red hearts: 30% chance to heal 1/2 red heart.",
+        "  - Soul/black hearts: 15% chance to add 1/2 of the grabbed heart.",
+        "  - Coins/keys/bombs: 15% chance to grant the grabbed pickup as if collected normally.",
+        "  - Batteries: 15% chance to add 2 charges to your active items.",
+        "  - Runes: triggers Rune Shard's effect.",
+        "  - Cards: permanent +0.5% luck."
+    },
+    ["node_grandingredient_coins_name"] = "Grand Ingredient: Coins",
+    ["node_grandingredient_coins"] = {
+        "If the first pickup in the bag is a coin, gain an effect based on its type:",
+        "  - Penny: +3% luck and range.",
+        "  - Lucky Penny: +7% luck.",
+        "  - Nickel: gain 5 coins when crafting an item.",
+        "  - Dime: gain 10 coins when crafting an item.",
+        "  - Golden: +7% all stats.",
+        "Having more than 2 Grand Ingredient nodes allocated nullifies these effects."
+    },
+    ["node_grandingredient_keys_name"] = "Grand Ingredient: Keys",
+    ["node_grandingredient_keys"] = {
+        "If the first pickup in the bag is a key, gain an effect based on its type:",
+        "  - Normal: +3% tears.",
+        "  - Golden: grants you 4 keys and triggers Dad's Key's effect when crafting an item.",
+        "  - Charged: grants an additional charge to your active items when clearing a room.",
+        "Having more than 2 Grand Ingredient nodes allocated nullifies these effects."
+    },
+    ["node_grandingredient_bombs_name"] = "Grand Ingredient: Bombs",
+    ["node_grandingredient_bombs"] = {
+        "If the first pickup in the bag is a bomb, gain an effect based on its type:",
+        "  - Normal: +5% damage.",
+        "  - Golden: permanent +10% damage when crafting an item.",
+        "  - Giga: +30% damage.",
+        "Having more than 2 Grand Ingredient nodes allocated nullifies these effects."
+    },
+    ["node_grandingredient_hearts_name"] = "Grand Ingredient: Hearts",
+    ["node_grandingredient_hearts"] = {
+        "If the first pickup in the bag is a heart, gain an effect based on its type:",
+        "  - Red: heal 1 red heart when crafting an item.",
+        "  - Soul: gain a soul heart when crafting an item.",
+        "  - Black: gain a black heart when crafting an item.",
+        "  - Eternal: fully heals you when crafting an item.",
+        "  - Golden: gain 7 coins when crafting an item.",
+        "  - Bone: gain an empty bone heart when crafting an item.",
+        "  - Rotten: spawn 2-4 blue spiders and 2-4 blue flies when crafting an item.",
+        "Having more than 2 Grand Ingredient nodes allocated nullifies these effects."
+    },
+
+    ["node_craftbagmeleedmg_name"] = "Bag Of Crafting Melee Damage",
+    ["node_craftbagmeleedmg"] = "Bag of Crafting's melee attack gains an additional {{craftBagMeleeDmgInherit}}% of your damage.",
+    ["node_craftpickuprecovery_name"] = "Crafting Pickup Recovery",
+    ["node_craftpickuprecovery"] = "{{craftPickupRecovery}}% chance to spawn one of the consumed pickups when crafting an item.",
+    ["node_droppedspecialpickups_name"] = "Dropped Special Pickups",
+    ["node_droppedspecialpickups"] = {
+        "{{droppedSpecialPickups}}% chance for dropped pickups to be a special variant, such as golden/charged keys, golden",
+        "bombs, etc."
+    },
+    ["node_itemcraftluck_name"] = "Item Crafting Luck",
+    ["node_itemcraftluck"] = "+{{itemCraftingLuck}} luck when crafting an item.",
+    ["node_bagbombpickupbuff_name"] = "Bag Bomb Pickup Buff",
+    ["node_bagbombpickupbuff"] = "+{{bagBombDamage}}% damage per bomb pickup in the crafting bag.",
+    ["node_bagkeypickupbuff_name"] = "Bag Key Pickup Buff",
+    ["node_bagkeypickupbuff"] = "+{{bagKeyTears}}% tears per key pickup in the crafting bag.",
+    ["node_bagcoinpickupbuff_name"] = "Bag Coin Pickup Buff",
+    ["node_bagcoinpickupbuff"] = "+{{bagCoinRangeLuck}}% range and luck per coin pickup in the crafting bag.",
+    ["node_bagheartpickupbuff_name"] = "Bag Heart Pickup Buff",
+    ["node_bagheartpickupbuff"] = "+{{bagHeartSpeed}}% speed per heart pickup in the crafting bag.",
+    ["node_addpedestalpickup_name"] = "Additional Pedestal Pickup",
+    ["node_addpedestalpickup"] = {
+        "{{additionalPedestalPickup}}% chance to spawn an additional coin/key/bomb/half heart pickup when collecting an",
+        "item pedestal.",
+        "Above 100% total chance, roll multiple times."
+    },
+    ["node_randclearpickup_name"] = "Pickup On Clear",
+    ["node_randclearpickup"] = "{{randPickupOnClear}}% chance to spawn an additional coin/key/bomb/half heart when completing a room."
 }
