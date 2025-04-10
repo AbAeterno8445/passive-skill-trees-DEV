@@ -635,5 +635,55 @@ return {
     ["node_monstermanualclear"] = {
         "{{monsterManualOnClear}}% chance to trigger Monster Manual's effect when clearing a room without taking",
         "damage within 7 seconds of entering, up to 3 times per floor."
-    }
+    },
+
+
+    -- KEEPER'S TREE --
+    ["node_keeperblessing_name"] = "Keeper's Blessing",
+    ["node_keeperblessing"] = {
+        "Healing from a coin grants you an additional coin, up to 4 times per room.",
+        "20% chance for Wooden Nickel to spawn an additional penny when used."
+    },
+    ["node_gulp_name"] = "Gulp!",
+    ["node_gulp"] = {
+        "Spawn a Swallowed Penny at the start of every other floor, starting from the first.",
+        "+1.5 luck while holding Swallowed Penny.",
+        "30% chance to lose the Swallowed Penny when hit, if held.",
+        "Gain 1-4 coins when losing the Swallowed Penny this way."
+    },
+    ["node_avidshopper_name"] = "Avid Shopper",
+    ["node_avidshopper"] = {
+        "Start with Steam Sale.",
+        "Start with an additional 5 coins.",
+        "Lose 1-3 coins when hit, up to 5 times per floor."
+    },
+    ["node_bluekin_name"] = "Blue Kin",
+    ["node_bluekin"] = {
+        "Start with Infestation.",
+        "When hit, 30% chance to gain The Mulligan for the current room."
+    },
+
+    ["node_coinshield_name"] = "Coin Shield",
+    ["node_coinshield"] = {
+        "{{coinShield}}% chance to negate a hit that would've killed you, if you have more than 0 coins.",
+        "Negating a hit removes all your coins and fully discharges your active item."
+    },
+    ["node_purchaseluck_name"] = "Item Purchase Luck",
+    ["node_purchaseluck"] = {
+        "+{{itemPurchaseLuck}} luck when you purchase an item.",
+        "When entering a floor, halve your current bonus."
+    },
+    ["node_purchasekeepcoins_name"] = "Keep Coins On Purchase",
+    ["node_purchasekeepcoins"] = "{{purchaseKeepCoins}}% chance to keep 1-3 coins when purchasing an item.",
+    ["node_greedboss_name"] = "Greed Boss",
+    ["node_greedboss"] = "{{firstBossGreed}}% chance for Greed to spawn after defeating the first floor's boss.",
+    ["node_greedlesshp_name"] = "Greed Lower Health",
+    ["node_greedlesshp"] = "Greed has {{greedLowerHealth}}% lower health.",
+    ["node_greedcoins_name"] = "Greed Additional Coin Drops",
+    ["node_greedcoins"] = {
+        "{{greedNickelDrop}}% chance for Greed to drop an additional nickel.",
+        "{{greedDimeDrop}}% chance for Greed to drop an additional dime."
+    },
+    ["node_blueflydeath_dmg_name"] = "Blue Fly Death Damage",
+    ["node_blueflydeath"] = "+{{blueFlyDeathDamage}} damage whenever a blue fly dies, up to +1.2. Resets every floor."
 }
