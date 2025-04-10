@@ -558,5 +558,65 @@ return {
     ["node_hemoptysisluck"] = {
         "{{hemoptysisKillLuck}}% chance to gain +0.03 luck when killing enemies with Hemoptysis.",
         "Double the chance while you have flight."
+    },
+
+
+    -- T. LAZARUS' TREE --
+    ["node_ephemeralbond_name"] = "Ephemeral Bond",
+    ["node_ephemeralbond"] = {
+        "+{{ephemeralBond}} Ephemeral Bond.",
+        "When entering a floor, for each Ephemeral Bond, copy a random passive item you",
+        "currently have to your opposite form.",
+        "Copied items are removed when entering the next floor."
+    },
+    ["node_greatoverlap_name"] = "Great Overlap",
+    ["node_greatoverlap"] = {
+        "Clearing a room without taking damage restores an additional charge of Flip.",
+        "30% chance to keep 2 charges of Flip on use. If charges aren't kept by this, roll a 50%",
+        "chance to keep 1 charge instead.",
+        "Taking damage has a 50% chance to remove 1 charge from Flip."
+    },
+    ["node_entanglement_name"] = "Entanglement",
+    ["node_entanglement"] = {
+        "Tainted Lazarus and Dead Tainted Lazarus' stats become the average between the two.",
+        "+{{allstatsPerc}}% all stats.",
+        "When you receive fatal damage, trigger Flip instead of dying, and set the resulting form's",
+        "health to a 1/2 soul heart. This can only trigger once per run."
+    },
+    ["node_spiritus_name"] = "Spiritus",
+    ["node_spiritus"] = {
+        "Completing a floor without taking damage grants you Birthright for the next floor.",
+        "Birthright can no longer show up naturally."
+    },
+
+    ["node_ephemeralbondboss_name"] = "Ephemeral Bond On Hitless Boss",
+    ["node_ephemeralbondboss"] = {
+        "When entering a floor, {{ephBondBossHitless}}% chance to gain 1 Ephemeral Bond if you defeated the last floor's",
+        "boss without taking damage.",
+        "Gained Ephemeral Bond lasts until next floor."
+    },
+    ["node_floorephbond_name"] = "Floor Ephemeral Bond",
+    ["node_floorephbond"] = "When entering a floor, {{ephBondFloor}}% chance to gain 1 Ephemeral Bond for the current floor.",
+    ["node_flipbosshitcharge_name"] = "Flip Boss Hit Charge Recovery",
+    ["node_flipbosshitcharge"] = "{{flipBossHitCharge}}% chance to recover 1 charge of Flip when hitting a Boss.",
+    ["node_flipspecialroomcharge_name"] = "Flip Special Room Charge",
+    ["node_flipspecialroomcharge"] = "{{flipSpecialRoomCharge}}% chance to fully charge Flip when first entering a treasure, shop, devil or angel room.",
+    ["node_flipmobhpdown_name"] = "Monster HP Down On Flip",
+    ["node_flipmobhpdown"] = "-{{flipMobHPDown}}% to all room monsters' hp when using Flip, up to 4 times per room.",
+    ["node_floorwoodchest_name"] = "Wooden Chest On Floor",
+    ["node_floorwoodchest"] = {
+        "{{floorWoodenChest}}% chance to spawn a wooden chest when entering a floor.",
+        "Doesn't trigger on the first floor."
+    },
+    ["node_formstatupkill_name"] = "Form Stat Up On Kills",
+    ["node_formstatupkill"] = {
+        "+{{lazFormKillStat}}% to a random stat for the current form, every 8 kills with the current form.",
+        "Resets every floor.",
+        "Triggers up to 8 times per floor."
+    },
+    ["node_formhpdiffluck_name"] = "Form Heart Difference Luck",
+    ["node_formhpdiffluck"] = {
+        "+{{formHeartDiffLuck}} luck for every 1/2 heart difference between the two forms, up to +2.",
+        "Counts total hearts of any type."
     }
 }
