@@ -594,5 +594,46 @@ return {
     ["node_blessedpennyconv"] = {
         "{{pennyToBlessed}}% chance to convert dropped pennies into a Blessed Penny if you don't currently have one,",
         "once per floor."
+    },
+
+
+    -- LILITH'S TREE --
+    ["node_minionmaneuver_name"] = "Minion Maneuvering",
+    ["node_minionmaneuver"] = {
+        "+3% speed per active familiar, up to 15%.",
+        "Using the box of friends doubles the maximum bonus for the current room."
+    },
+    ["node_heavyfriends_name"] = "Heavy Friends",
+    ["node_heavyfriends"] = {
+        "Start with BFFS!",
+        "{{speedPerc}}% speed.",
+        "{{damagePerc}}% damage."
+    },
+    ["node_daemonarmy_name"] = "Daemon Army",
+    ["node_daemonarmy"] = {
+        "Start with an additional Incubus.",
+        "Mom drops an additional Incubus on defeat if you took no damage throughout the run until",
+        "this point.",
+        "Baby familiar items other than Incubus no longer show up."
+    },
+    ["node_companionshipgravitas_name"] = "Companionship Gravitas",
+    ["node_companionshipgravitas"] = "Start with a smelted Friendship Necklace.",
+
+    ["node_famkillsoul_name"] = "Familiar Kill Soul Heart",
+    ["node_famkillsoul"] = "{{familiarKillSoulHeart}}% chance for enemies killed by familiars to drop an additional 1/2 soul heart.",
+    ["node_activefamluck_name"] = "Active Familiars Luck",
+    ["node_activefamluck"] = "+{{activeFamiliarsLuck}} luck per currently active familiar.",
+    ["node_incubusdmg_name"] = "Incubus Damage",
+    ["node_incubusdmg"] = "+{{activeIncubusDamage}}% damage per active incubus.",
+    ["node_incubustears_name"] = "Incubus Tears",
+    ["node_incubustears"] = "+{{activeIncubusTears}}% tears per active incubus.",
+    ["node_boxfriendcharge_name"] = "Box Of Friends Charge",
+    ["node_boxfriendcharge"] = "{{boxOfFriendsCharge}}% chance for box of friends to keep 1 charge on use.",
+    ["node_boxfriendstats_name"] = "Box Of Friends All Stats",
+    ["node_boxfriendstats"] = "+{{boxOfFriendsAllStats}} all stats after using box of friends. Resets every room.",
+    ["node_monstermanualclear_name"] = "Monster Manual On Clear",
+    ["node_monstermanualclear"] = {
+        "{{monsterManualOnClear}}% chance to trigger Monster Manual's effect when clearing a room without taking",
+        "damage within 7 seconds of entering, up to 3 times per floor."
     }
 }
