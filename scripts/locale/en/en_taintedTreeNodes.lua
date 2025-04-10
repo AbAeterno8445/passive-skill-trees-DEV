@@ -95,5 +95,67 @@ return {
     ["node_runeshardassemblystacks_name"] = "Rune Shard Assembly Stacks",
     ["node_runeshardassemblystacks"] = "{{runeshardStacksReq}} required rune shard stacks to assemble a rune.",
     ["node_blackruneassembly_name"] = "Black Rune Assembly",
-    ["node_blackruneassembly"] = "{{blackRuneAssembly}}% chance for the random rune assembled from rune shards to be a Black Rune."
+    ["node_blackruneassembly"] = "{{blackRuneAssembly}}% chance for the random rune assembled from rune shards to be a Black Rune.",
+
+
+    -- T. MAGDALENE'S TREE --
+    ["node_taintedhealth_name"] = "Tainted Health",
+    ["node_taintedhealth"] = {
+        "+0.1 damage per 1/2 remaining red heart above 2 hearts.",
+        "+3% tears per 1/2 remaining soul heart.",
+        "-15% speed while you have 3 or less remaining red hearts."
+    },
+    ["node_testoftemperance_name"] = "Test Of Temperance",
+    ["node_testoftemperance"] = {
+        "5% chance to drop a 1/2 red heart pickup when hitting a boss, which vanishes after 2 seconds.",
+        "This effect has a 0.5 second cooldown once triggered.",
+        "If you have more than 2 remaining red hearts, receive an additional 1/2 heart",
+        "damage when hit in boss rooms."
+    },
+    ["node_bloodful_name"] = "Bloodful",
+    ["node_bloodful"] = {
+        "Start with Blood Oath.",
+        "+1% all stats per red heart collected in the current room, up to +10%.",
+        "-5% all stats while you haven't collected any red hearts in the current room."
+    },
+    ["node_lingeringmalice_name"] = "Lingering Malice",
+    ["node_lingeringmalice"] = {
+        "Start with a smelted Lost Cork.",
+        "Creep left by you can damage flying enemies.",
+        "+{{creepDamage}}% damage dealt by creep."
+    },
+
+    ["node_remaininghpspeed_name"] = "Remaining Hearts Speed",
+    ["node_remaininghpspeed"] = "+{{remainingHeartsSpeed}} speed per 1/2 remaining red heart past 2.",
+    ["node_remaininghpdmg_name"] = "Remaining Hearts Damage",
+    ["node_remaininghpdmg"] = "+{{remainingHeartsDmg}} damage per 1/2 remaining red heart past 2.",
+    ["node_remaininghptears_name"] = "Remaining Hearts Tears",
+    ["node_remaininghptears"] = "+{{remainingHeartsTears}} tears per 1/2 remaining red heart past 2.",
+    ["node_tempheart_time_name"] = "Temporary Heart Time",
+    ["node_tempheart_time"] = "+{{temporaryHeartTime}} seconds to temporary red heart pickups before they vanish.",
+    ["node_tempheartdmg_name"] = "Temporary Heart Damage",
+    ["node_tempheartdmg"] = {
+        "+{{temporaryHeartDmg}}% damage for 2 seconds after picking up a temporary red heart.",
+        "Modifiers that increase temporary heart duration also affect this buff's time.",
+    },
+    ["node_tempheart_tears_name"] = "Temporary Heart Tears",
+    ["node_tempheart_tears"] = {
+        "+{{temporaryHeartTears}}% tears for 2 seconds after picking up a temporary red heart.",
+        "Modifiers that increase temporary heart duration also affect this buff's time."
+    },
+    ["node_creepdmg_name"] = "Creep Damage",
+    ["node_creepdmg"] = "+{{creepDamage}}% damage dealt by creep.",
+    ["node_halfheartconv_name"] = "Half Heart Pickup Conversion",
+    ["node_halfheartconv"] = "{{halfHeartPickupToFull}}% chance to convert dropped 1/2 red heart pickups into full red hearts.",
+    ["node_tempheartluck_name"] = "Temporary Heart Luck",
+    ["node_tempheartluck"] = {
+        "{{temporaryHeartLuck}}% chance to gain 0.01 luck when picking up a temporary red heart while its lifetime has 1.8",
+        "seconds or more remaining.",
+        "Total bonus gets halved when entering a new floor."
+    },
+    ["node_blooddono_temphearts_name"] = "Blood Donation Temporary Hearts",
+    ["node_blooddono_temphearts"] = {
+        "{{bloodDonoTempHearts}}% chance to drop a 1/2 red heart when using a Blood Donation Machine, which vanishes",
+        "after 2 seconds."
+    }
 }
