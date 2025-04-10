@@ -685,5 +685,84 @@ return {
         "Requires allocating the \"Base Minimum Luck\" node to have any effect."
     },
     ["node_baseminluck_name"] = "Base Minimum Luck",
-    ["node_baseminluck"] = "Your minimum luck is now {{minLuck}}."
+    ["node_baseminluck"] = "Your minimum luck is now {{minLuck}}.",
+
+
+    -- T. LOST'S TREE --
+    ["node_glass_specter_name"] = "Glass Specter",
+    ["node_glass_specter"] = {
+        "+{{damage}} speed and damage.",
+        "Your speed becomes a damage multiplier when above 1.",
+        "Halve the damage bonus while having a shield.",
+        "Every 4 rooms cleared while having any type of shield, remove all shields.",
+        "You no longer start with a Holy Card."
+    },
+    ["node_helpinghands_name"] = "Helping Hands",
+    ["node_helpinghands"] = {
+        "Devil/Angel rooms have a 50% chance of containing an additional Holy Card if you're not",
+        "currently holding one.",
+        "Picking up a Holy Card removes all other items in Devil/Angel rooms.",
+        "Picking up an item or deal in Devil/Angel rooms removes all dropped Holy Cards.",
+        "When defeating Mom, spawn a Holy Card if you're not currently holding one.",
+        "You can now stack Holy Cards by picking more up while holding one."
+    },
+    ["node_deferredaegis_name"] = "Deferred Aegis",
+    ["node_deferredaegis"] = {
+        "Completing an entire floor without using more than 1 Holy Card grants you a holy mantle shield.",
+        "If Glass Specter is allocated, increase its shield removal delay by another 4 rooms."
+    },
+    ["node_spindown_name"] = "Spin-down",
+    ["node_spindown"] = {
+        "Start with Spindown Dice.",
+        "Remove Spindown Dice after using it twice.",
+        "-0.05 speed for each affected item in the room when using Spindown Dice, up to a total -0.35."
+    },
+
+    ["node_qual0upg_name"] = "Quality 0 Upgrade",
+    ["node_qual0upg"] = {
+        "When first entering a room, {{quality0Upgrade}}% chance to reroll quality 0 items into a random quality 1 item",
+        "of the same pool.",
+        "Quality upgrade nodes only proc once depending on the item's initial quality."
+    },
+    ["node_qual1upg_name"] = "Quality 1 Upgrade",
+    ["node_qual1upg"] = {
+        "When first entering a room, {{quality1Upgrade}}% chance to reroll quality 1 items into a random quality 2 item",
+        "of the same pool.",
+        "Quality upgrade nodes only proc once depending on the item's initial quality."
+    },
+    ["node_qual2upg_name"] = "Quality 2 Upgrade",
+    ["node_qual2upg"] = {
+        "When first entering a room, {{quality2Upgrade}}% chance to reroll quality 2 items into a random quality 3 item",
+        "of the same pool.",
+        "Quality upgrade nodes only proc once depending on the item's initial quality."
+    },
+    ["node_roomenterspeed_name"] = "Room Enter Speed",
+    ["node_roomenterspeed"] = "+{{roomEnterSpd}}% speed when entering a room with monsters, which decays to 0 over 4 seconds.",
+    ["node_speed_decaydur_name"] = "Speed Decay Duration",
+    ["node_speed_decaydur"] = "+{{roomEnterSpdDecayDur}} seconds to the speed decay timer.",
+    ["node_shieldlessboss_speed_name"] = "Shieldless Boss Speed",
+    ["node_shieldlessboss_speed"] = {
+        "+{{shieldlessBossSpeed}} speed for the next floor if you clear the boss room without having or receiving shields",
+        "at any point in the fight."
+    },
+    ["node_champholycard_name"] = "Champion Holy Card Drop",
+    ["node_champholycard"] = "{{champHolyCardDrop}}% chance for champion monsters to drop a Holy Card on death, once every 2 floors.",
+    ["node_stairwayboon_name"] = "Stairway Boon",
+    ["node_stairwayboon"] = {
+        "{{stairwayBoon}}% chance to receive The Stairway when clearing a boss room.",
+        "Getting hit halves the total chance for this effect to trigger, even if shields are present.",
+        "Entering a devil/angel room halves the total chance for this effect to trigger.",
+        "Remove The Stairway once it triggers when entering a floor."
+    },
+    ["node_deathtrial_name"] = "Death's Trial",
+    ["node_deathtrial"] = {
+        "When receiving a fatal blow, 2% chance to trigger Forget Me Now's effect instead of dying.",
+        "After this happens:",
+        "  - Spawn Death.",
+        "  - Lose all holy cards and present shields.",
+        "  - Deactivate your items during this fight.",
+        "This effect can only trigger once per run.",
+    },
+    ["node_holycardluck_name"] = "Holy Card Luck",
+    ["node_holycardluck"] = "+{{holyCardLuck}} luck for the current floor when using a Holy Card."
 }
