@@ -618,5 +618,72 @@ return {
     ["node_formhpdiffluck"] = {
         "+{{formHeartDiffLuck}} luck for every 1/2 heart difference between the two forms, up to +2.",
         "Counts total hearts of any type."
-    }
+    },
+
+
+    -- T. EDEN'S TREE --
+    ["node_serendipitoussoul_name"] = "Serendipitous Soul",
+    ["node_serendipitoussoul"] = {
+        "Start with Eden's Soul.",
+        "Eden's Soul cannot be re-rolled, and you cannot grab other active items while holding it.",
+        "Empty Eden's Soul's charges when hit.",
+        "When using Eden's Soul, gain Birthright if you don't currently have it.",
+        "While holding Birthright, using any active item has a {{birthrightActiveRemoveChance}}% chance of removing it.",
+        "Birthright can no longer show up naturally."
+    },
+    ["node_blessedcrucifix_name"] = "Blessed Crucifix",
+    ["node_blessedcrucifix"] = {
+        "Start with a smelted Wooden Cross.",
+        "When you receive fatal damage while having a Wooden Cross (smelted or otherwise),",
+        "block the incoming hit and remove one Wooden Cross."
+    },
+    ["node_normalizedvitality_name"] = "Normalized Vitality",
+    ["node_normalizedvitality"] = {
+        "When entering a floor:",
+        "  - If you have less than 3 red hearts, gain a red heart container.",
+        "  - If you have more than 5 red hearts, lose a red heart container.",
+        "  - If you have less than 2 soul/black hearts, gain a soul heart.",
+        "  - If you have more than 4 soul/black hearts, lose a soul/black heart.",
+        "  - If you have broken hearts, remove one.",
+    },
+    ["node_chaostaketheworld_name"] = "Chaos Take The World",
+    ["node_chaostaketheworld"] = {
+        "Start with Chaos as an innate effect.",
+        "Getting hit triggers the effect of D10, once per room.",
+        "Using an active item with at least 2 charges additionally triggers the effect of Dead Sea Scrolls."
+    },
+
+    ["node_itemrerollavoid_name"] = "Item Reroll Avoidance",
+    ["node_itemrerollavoid"] = "{{rerollAvoidance}}% chance to not reroll items when hit by monsters.",
+    ["node_devilactiveonhit_name"] = "Devil Active On Hit",
+    ["node_devilactiveonhit"] = "{{devilActiveOnHit}}% chance to trigger a random active item effect from the Devil item pool when hit, once per room.",
+    ["node_angelactiveonhit_name"] = "Angel Active On Hit",
+    ["node_angelactiveonhit"] = "{{angelActiveOnHit}}% chance to trigger a random active item effect from the Angel item pool when hit, once per room.",
+    ["node_birthrightactiverem_name"] = "Birthright Removal Chance",
+    ["node_birthrightactiverem"] = "{{birthrightActiveRemoveChance}}% chance to remove Birthright when using an active item.",
+    ["node_shieldactivestat_name"] = "Shield Active Stat",
+    ["node_shieldactivestat"] = {
+        "+{{shieldActiveStat}}% to a random stat when using an active item while having a holy mantle or wooden cross",
+        "shield and there are monsters in the room, once per room.",
+        "Resets every floor."
+    },
+    ["node_treasureitemonhit_name"] = "Treasure Item On Hit",
+    ["node_treasureitemonhit"] = {
+        "When hit, {{treasureItemOnHit}}% chance to gain a random passive item from the treasure room pool for the current",
+        "room as an innate effect, excluding HP up items and items you already have.",
+        "This effect can only trigger once per room."
+    },
+    ["node_higherqualreroll_name"] = "Higher Quality Reroll Chance",
+    ["node_higherqualreroll"] = {
+        "When items are re-rolled, {{higherQualityReroll}}% chance to additionally reroll one of the resulting items into an item",
+        "that's 1 quality higher.",
+        "This effect can only trigger up to 5 times per floor."
+    },
+    ["node_minluck_name"] = "Minimum Luck",
+    ["node_minluck"] = {
+        "+{{minLuck}} minimum luck.",
+        "Requires allocating the \"Base Minimum Luck\" node to have any effect."
+    },
+    ["node_baseminluck_name"] = "Base Minimum Luck",
+    ["node_baseminluck"] = "Your minimum luck is now {{minLuck}}."
 }
