@@ -233,7 +233,8 @@ end
 ---@param xpParam number Amount of XP to add
 ---@param showText? boolean Whether to display the +xp floating text
 ---@param overflow? boolean Whether XP overflow limit is applied
-function PST:addXP(xpParam, showText, overflow)
+---@param noExped? boolean Whether this instance of xp addition shouldn't count for relevant expedition objectives
+function PST:addXP(xpParam, showText, overflow, noExped)
 	local charData = PST:getCurrentCharData()
 	if charData then
 		local xp = xpParam
@@ -248,7 +249,9 @@ function PST:addXP(xpParam, showText, overflow)
 		end
 
 		-- Expedition objective: earn xp within run
-		PST:expedAddProgInRun("experience", math.ceil(xp))
+		if noExped ~= true then
+			PST:expedAddProgInRun("experience", math.ceil(xp))
+		end
 
 		-- Character level up
 		if charData.xp >= charData.xpRequired then
