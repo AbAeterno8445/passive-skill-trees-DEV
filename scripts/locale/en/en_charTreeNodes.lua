@@ -545,5 +545,54 @@ return {
         "   - 20% chance to spawn a random heart.",
         "   - 20% chance to spawn a regular chest.",
         "   - 10% chance to spawn a special chest."
+    },
+
+
+    -- THE LOST'S TREE --
+    ["node_spectraladvantage_name"] = "Spectral Advantage",
+    ["node_spectraladvantage"] = {
+        "+2% damage and +0.15 luck for each heart you would've gained from items you pick up,",
+        "up to a total 40% damage, +3 luck.",
+        "If you obtain birthright, gain +8% tears.",
+        "Does not work on active items that grant hearts."
+    },
+    ["node_sacredaegis_name"] = "Sacred Aegis",
+    ["node_sacredaegis"] = {
+        "Unlock Holy Mantle with The Lost when allocating this node.",
+        "Holy mantle regenerates after 7 seconds, once per room.",
+        "-7% all stats each time you lose holy mantle, up to 2 times. Resets every room."
+    },
+    ["node_heartseekerphantasm_name"] = "Heartseeker Phantasm",
+    ["node_heartseekerphantasm"] = {
+        "Dropped red and eternal hearts are converted to soul hearts.",
+        "Collecting a soul or black heart pickup grants +0.1 luck, up to a total +3.",
+        "+1% all stats for every 3 heart pickups collected, up to a total +20%."
+    },
+    ["node_vagrantsoul_name"] = "Vagrant Soul",
+    ["node_vagrantsoul"] = {
+        "Start with The Soul.",
+        "When entering a floor, 10% chance to lose The Soul.",
+        "The Soul can no longer show up naturally."
+    },
+
+    ["node_killinghitneg_name"] = "Killing Hit Negation",
+    ["node_killinghitneg"] = "{{killingHitNegation}}% chance to negate an incoming hit if it would've killed you.",
+    ["node_inactivemantlestats_name"] = "Inactive Holy Mantle All Stats",
+    ["node_inactivemantlestats"] = "+{{noHolyMantleAllStats}} all stats while holy mantle is inactive.",
+    ["node_soulheart_tears_name"] = "Soul Hearts Tears",
+    ["node_soulheart_tears"] = "Soul hearts grant +{{soulHeartTears}} tears when collected, up to a total +1.",
+    ["node_blackheart_dmg_name"] = "Black Hearts Damage",
+    ["node_blackheart_dmg"] = "Black hearts grant +{{blackHeartDamage}} damage when collected, up to a total +3.",
+    ["node_eternald6charge_name"] = "Eternal D6 Charge",
+    ["node_eternald6charge"] = "{{eternalD6Charge}}% chance for the Eternal D6 to not consume charges on use.",
+    ["node_soulonclear_name"] = "Soul Heart On Room Clear",
+    ["node_soulonclear"] = {
+        "{{soulHeartOnClear}}% chance to drop an additional soul heart when clearing a room without taking damage,",
+        "up to 4 per floor."
+    },
+    ["node_blessedpennyconv_name"] = "Penny To Blessed Penny",
+    ["node_blessedpennyconv"] = {
+        "{{pennyToBlessed}}% chance to convert dropped pennies into a Blessed Penny if you don't currently have one,",
+        "once per floor."
     }
 }
