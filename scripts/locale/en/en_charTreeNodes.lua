@@ -733,5 +733,98 @@ return {
     ["node_locustpestilence_boon"] = "Locust Of Pestilence Boon",
     ["node_locustpestilence"] = "+{{pestilenceLocustLuck}}% luck per Locust of Pestilence held/consumed, up to 12%.",
     ["node_locustwarboon_name"] = "Locust Of War Boon",
-    ["node_locustwarboon"] = "+{{warLocustDamage}}% damage per Locust of War held/consumed, up to 15%."
+    ["node_locustwarboon"] = "+{{warLocustDamage}}% damage per Locust of War held/consumed, up to 15%.",
+
+
+    -- THE FORGOTTEN'S TREE --
+    ["node_soulful_name"] = "Soulful",
+    ["node_soulful"] = {
+        "Losing a bone heart spawns a soul heart.",
+        "-0.25 luck when you lose a bone heart."
+    },
+    ["node_innerflare_name"] = "Inner Flare",
+    ["node_innerflare"] = {
+        "The Soul deals 15% more damage against slowed enemies.",
+        "Switching to The Soul slows enemies in the room for 2 seconds. Can only happen once per room."
+    },
+    ["node_spiritbringer_name"] = "Spirit-bringer",
+    ["node_spiritbringer"] = {
+        "Gain Ghost Bombs as an innate effect.",
+        "While The Soul is out, innately gain Quints' effect.",
+        "[Spiritful] Can only allocate one Spiritful node at a time."
+    },
+    ["node_spirit_taker_name"] = "Spirit-taker",
+    ["node_spirit_taker"] = {
+        "Gain Vade Retro as an innate effect.",
+        "Switching characters triggers Vade Retro.",
+        "[Spiritful] Can only allocate one Spiritful node at a time."
+    },
+    ["node_spiritreaper_name"] = "Spirit-reaper",
+    ["node_spiritreaper"] = {
+        "Gain Purgatory and Hungry Soul as innate effects.",
+        "[Spiritful] Can only allocate one Spiritful node at a time."
+    },
+    ["node_spiritprotector_name"] = "Spirit-protector",
+    ["node_spiritprotector"] = {
+        "Gain Lost Soul as an innate effect.",
+        "Gain a smelted Found Soul and Your Soul.",
+        "[Spiritful] Can only allocate one Spiritful node at a time."
+    },
+    ["node_spiritgambler_name"] = "Spirit-gambler",
+    ["node_spiritgambler"] = {
+        "When entering a floor, apply a random Spiritful node.",
+        "[Spiritful] Can only allocate one Spiritful node at a time."
+    },
+    ["node_osteomancy_name"] = "Osteomancy",
+    ["node_osteomancy"] = {
+        "When entering a floor, innately gain the effect of a random Bone item if you don't",
+        "currently have it.",
+        "Entering a new floor replaces the old item(s).",
+        "If you took no damage in the previous floor, apply 2 random Bone items instead.",
+        "Bone items:",
+        "   Bone Spurs, Slipped Rib, Pointy Rib, Jaw Bone, Brittle Bones, Compound Fracture, Host Hat,",
+        "Dry Baby."
+    },
+    ["node_necromancy_name"] = "Necromancy",
+    ["node_necromancy"] = {
+        "Start with Book of the Dead.",
+        "Using an active item that isn't Book of the Dead has a 7% chance to trigger the",
+        "latter's effect per used charge.",
+        "While you have 3 or more bone hearts, friendly monsters become immune to explosions."
+    },
+
+    ["node_boneitemdmg_name"] = "Melee Damage Per Bone Item",
+    ["node_boneitemdmg"] = "+{{boneItemMelee}}% melee damage with The Forgotten per Bone Item obtained.",
+    ["node_innerflareslowdur_name"] = "Inner Flare Slow Duration",
+    ["node_innerflareslowdur"] = "+{{innerFlareSlowDuration}} seconds to Inner Flare slow duration.",
+    ["node_forgbirthright_name"] = "Birthright On Clear",
+    ["node_forgbirthright"] = {
+        "{{forgBirthright}}% chance to gain Birthright for the current floor when clearing a room without taking",
+        "damage within 7 seconds."
+    },
+    ["node_soulwispclear_name"] = "Soul Wisp On Clear",
+    ["node_soulwispclear"] = "While The Soul has at least 4 soul hearts, {{soulWispOnClear}}% chance to spawn a Wisp when clearing rooms.",
+    ["node_redtoboneconv_name"] = "Red Heart To Bone Conversion",
+    ["node_redtoboneconv"] = {
+        "{{redFullToBone}}% chance to convert dropped full red hearts into bone hearts if you have 2 bone hearts or less.",
+        "This effect can only trigger once per room."
+    },
+    ["node_treasureboneitem_name"] = "Treasure Room Bone Item",
+    ["node_treasureboneitem"] = {
+        "When entering the treasure room, {{treasureBoneItem}}% chance to replace the item with a random Bone Item, up to",
+        "twice per run."
+    },
+    ["node_carrionprincessclear_name"] = "Carrion Princess On Clear",
+    ["node_carrionprincessclear"] = {
+        "While The Forgotten has at least 2 bone hearts, {{forgCarrionPrincess}}% chance to spawn a friendly Carrion Princess",
+        "when clearing rooms, up to 4."
+    },
+    ["node_soultearswisp_name"] = "Soul Tears Per Wisp",
+    ["node_soultearswisp"] = "+{{soulWispTears}}% tears per active Wisp.",
+    ["node_flawlessclearpbone_name"] = "Flawless Clear Polished Bone",
+    ["node_flawlessclearpbone"] = {
+        "{{flawlessClearPBone}}% chance to gain a smelted Polished Bone for the rest of the floor when clearing a room without",
+        "taking damage.",
+        "When hit by a monster, same chance to lose a smelted Polished Bone."
+    }
 }
