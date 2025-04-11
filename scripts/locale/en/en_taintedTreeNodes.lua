@@ -1087,5 +1087,63 @@ return {
     ["node_tbethkill_luck"] = {
         "{{tBethKillLuck}}% chance to gain +0.03 luck when killing enemies while you have 1 soul/black heart or less.",
         "Triple the chance and luck gain against bosses."
+    },
+
+
+    -- T. JACOB'S TREE --
+    ["node_reaperwraiths_name"] = "Reaper Wraiths",
+    ["node_reaperwraiths"] = {
+        "Start with Holy Mantle.",
+        "Start with an additional eternal heart. Entering a floor grants you an eternal heart if",
+        "you don't have one.",
+        "When entering a floor, remove all soul/black hearts.",
+        "Tainted Jacob now starts in his dead spirit state, and entering a floor no longer revives you.",
+        "Dark Esau no longer deals contact damage to you."
+    },
+    ["node_wrathfulchains_name"] = "Wrathful Chains",
+    ["node_wrathfulchains"] = {
+        "When Dark Esau is unchained from Anima Sola, all non-boss enemies are slowed for 3 seconds.",
+        "Using Anima Sola while Dark Esau is present additionally chains another random enemy in the room.",
+        "Enemies chained by Anima Sola receive {{chainedEnemyDmg}}% more damage.",
+        "Hitting an enemy chained by Anima Sola deals 40% of the damage to other nearby enemies."
+    },
+    ["node_spiritualcovenant_name"] = "Spiritual Covenant",
+    ["node_spiritualcovenant"] = {
+        "Hitting an enemy causes Dark Esau to target it if Tainted Jacob is in the dead spirit state.",
+        "Dark Esau's base contact damage is now 200% of your damage stat, capped at 40."
+    },
+    ["node_kineticvengeance_name"] = "Kinetic Vengeance",
+    ["node_kineticvengeance"] = {
+        "Dark Esau deals 25% increased damage while charging.",
+        "Dark Esau deals 25% reduced damage while not charging."
+    },
+
+    ["node_darkesauproxbuff_name"] = "Dark Esau Proximity Buff",
+    ["node_darkesauproxbuff"] = {
+        "+{{darkEsauProxDmgSpeed}}% speed and damage when near Dark Esau.",
+        "Buff lingers for 2 seconds when the condition is no longer met."
+    },
+    ["node_darkesaudmg_name"] = "Dark Esau Damage",
+    ["node_darkesaudmg"] = "+{{darkEsauDmg}}% damage dealt by Dark Esau to monsters.",
+    ["node_animasolacd_name"] = "Anima Sola Cooldown",
+    ["node_animasolacd"] = "{{animaSolaCooldown}} seconds to Anima Sola's cooldown.",
+    ["node_animasolatears_name"] = "Anima Sola Tears Buff",
+    ["node_animasolatears"] = "+{{animaSolaKillTears}}% tears for the current floor when killing an enemy chained by Anima Sola, up to +15%.",
+    ["node_eternalheartconv_name"] = "Eternal Heart Drop Conversion",
+    ["node_eternalheartconv"] = {
+        "{{heartEternalConv}}% chance for dropped red heart pickups to be replaced with eternal hearts while Jacob is in his",
+        "dead spirit state.",
+        "While Jacob is in dead spirit state, eternal hearts act as shields, akin to Holy Cards."
+    },
+    ["node_slowedmobdmg_name"] = "Slowed Enemies Damage",
+    ["node_slowedmobdmg"] = "Slowed enemies receive {{slowEnemyDmg}}% more damage.",
+    ["node_animasoladur_name"] = "Anima Sola Duration",
+    ["node_animasoladur"] = "+{{animaSolaDuration}}% to Anima Sola's chains duration.",
+    ["node_darkesaukill_luck_name"] = "Dark Esau Kill Luck",
+    ["node_darkesaukill_luck"] = "{{darkEsauKillLuck}}% chance to gain +0.04 luck for the current floor when Dark Esau kills an enemy.",
+    ["node_animasolachains_name"] = "Anima Sola Additional Chaining",
+    ["node_animasolachains"] = {
+        "{{animaAddChains}}% chance for Anima Sola to chain an additional enemy on use.",
+        "Effect rolls multiple times above 100% chance."
     }
 }
