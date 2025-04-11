@@ -764,5 +764,75 @@ return {
         "This effect can only trigger once per run.",
     },
     ["node_holycardluck_name"] = "Holy Card Luck",
-    ["node_holycardluck"] = "+{{holyCardLuck}} luck for the current floor when using a Holy Card."
+    ["node_holycardluck"] = "+{{holyCardLuck}} luck for the current floor when using a Holy Card.",
+
+
+    -- T. LILITH'S TREE --
+    ["node_chargingbehemoth_name"] = "Charging Behemoth",
+    ["node_chargingbehemoth"] = {
+        "Deal {{whipDmg}}% increased damage with the whip attack.",
+        "Enemies hit by the whip attack are slowed for 1 second.",
+        "{{tearsPerc}}% tears.",
+        "{{nonWhipDmg}}% damage with non-whip hits."
+    },
+    ["node_mightygestation_name"] = "Mighty Gestation",
+    ["node_mightygestation"] = {
+        "Start with a smelted Baby-Bender.",
+        "+{{tearsPerc}}% tears.",
+        "+{{nonWhipDmg}}% non-whip damage.",
+        "{{whipDmg}}% damage with the whip attack."
+    },
+    ["node_coordinated_demons_name"] = "Coordinated Demons",
+    ["node_coordinated_demons"] = {
+        "While firing, periodically trigger a pulse around Gello dealing 70% of your damage to nearby enemies.",
+        "Delay between pulses is based on your tears stat.",
+        "After retracting Gello, waiting 2 seconds increases the damage of your next whip attack by 30%.",
+        "-0.15 speed while firing."
+    },
+    ["node_chimericamalgam_name"] = "Chimeric Amalgam",
+    ["node_chimericamalgam"] = {
+        "Every 2 floors, spawn Birthright in the first room if you don't currently have it.",
+        "When obtaining Birthright, turn all your current familiar items into Lil Delirium.",
+        "When obtaining Birthright, receive -40% damage.",
+        "While holding Birthright, +8% damage when entering a new floor, up to a total +50%.",
+        "Birthright can no longer show up naturally."
+    },
+
+    ["node_whipdmgvstears_name"] = "Whip Damage Vs Tears",
+    ["node_whipdmgvstears"] = {
+        "+{{whipDmg}}% whip attack damage.",
+        "{{tearsPerc}}% tears."
+    },
+    ["node_tlilith_pulsedmg_name"] = "Pulse Damage",
+    ["node_tlilith_pulsedmg"] = "Damaging pulse inherits an additional {{gelloPulseDmg}}% of your damage.",
+    ["node_pulsekillblackheart_name"] = "Black Heart On Pulse Kill",
+    ["node_pulsekillblackheart"] = {
+        "Enemies killed by the damaging pulse have a {{pulseKillBlackHeart}}% chance to drop a black heart, if you have",
+        "less than 2 black hearts, up to once per room.",
+        "Black heart dropped from this effect vanish after 3 seconds."
+    },
+    ["node_whipspeedbuff_name"] = "Whip Speed Buff",
+    ["node_whipspeedbuff"] = "+{{whipSpeed}}% speed for 1 second after using the whip attack.",
+    ["node_gellotearbonus_name"] = "Gello Tears Bonus",
+    ["node_gellotearbonus"] = {
+        "Slowly gain up to +{{gelloTearsBonus}} tears while Gello is retracted.",
+        "While firing, bonus decays to 0 over 3 seconds."
+    },
+    ["node_cord_dmg_name"] = "Cord Damage",
+    ["node_cord_dmg"] = {
+        "While Gello is held out, deal {{cordDamage}}% of your damage to enemies caught in the cord every second.",
+        "{{cordBleed}}% chance to inflict bleed for 4 seconds on caught enemies."
+    },
+    ["node_treasurefamiliar_name"] = "Treasure Room Familiar",
+    ["node_treasurefamiliar"] = {
+        "While not holding Birthright, {{tLilithTreasureBaby}}% chance to replace non-progression treasure room items",
+        "with a random baby familiar."
+    },
+    ["node_nearbykill_luck_name"] = "Nearby Kill Luck",
+    ["node_nearbykill_luck"] = {
+        "{{nearbyKillLuck}}% chance to gain +0.03 luck when killing enemies within 1.5 tiles of you.",
+        "Halve the total bonus when entering a new floor."
+    },
+    ["node_famitemallstat_name"] = "Familiar Items - All Stats",
+    ["node_famitemallstat"] = "+{{familiarItemAllstats}}% all stats per familiar item obtained."
 }
