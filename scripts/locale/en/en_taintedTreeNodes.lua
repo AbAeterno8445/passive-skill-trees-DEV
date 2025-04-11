@@ -1145,5 +1145,92 @@ return {
     ["node_animasolachains"] = {
         "{{animaAddChains}}% chance for Anima Sola to chain an additional enemy on use.",
         "Effect rolls multiple times above 100% chance."
-    }
+    },
+
+
+    -- T. SIREN'S TREE --
+    ["node_soulofthesiren_name"] = "Soul Of The Siren",
+    ["node_soulofthesiren"] = {
+        "Allocate this to unlock Soul Of The Siren as a soul stone variant.",
+        "Requires Boss Rush and Hush completion marks on Tainted Siren.",
+        "Soul of the Siren: charm monsters in the room for 10 seconds. For the next 60 seconds,",
+        "gain 3 random baby familiars, a smelted Friendship Necklace, and charm monsters for",
+        "10 seconds when entering a room."
+    },
+    ["node_shadowmeld_name"] = "Shadowmeld",
+    ["node_shadowmeld"] = {
+        "While in a room with monsters, Manifest Melody becomes Shadowmeld.",
+        "Shadowmeld creates a marked shadow at your current position.",
+        "Re-using Shadowmeld causes you to sink into the shadows then reappear at the marked shadow's",
+        "location.",
+        "While sinking or reappearing, and for 0.5 seconds afterwards, you can't be damaged.",
+        "Press the Drop key to remove placed markers."
+    },
+    ["node_darkarpeggio_name"] = "Dark Arpeggio",
+    ["node_darkarpeggio"] = {
+        "Every 4 total seconds spent firing, your Siren Minions fire a homing tear that inflicts fear",
+        "on enemies hit."
+    },
+    ["node_chromaticblessing_name"] = "Chromatic Blessing",
+    ["node_chromaticblessing"] = {
+        "When successfully summoning a familiar through Manifest Melody, gain stats based on the",
+        "used notes:",
+        "  - Left: +0.5% speed",
+        "  - Right: +0.5% tears",
+        "  - Up: +0.5% damage",
+        "  - Down: +0.5% range and luck",
+        "Each individual buff has a limit of 15%."
+    },
+    ["node_grandconsonance_name"] = "Grand Consonance",
+    ["node_grandconsonance"] = {
+        "Whenever you gain a familiar, instead absorb its power and gain an effect based on the familiar.",
+        "-4% damage dealt to enemies for each damage-dealing familiar you obtain, up to -48%."
+    },
+    ["node_songofthefew_name"] = "Song Of The Few",
+    ["node_songofthefew"] = {
+        "Start with a smelted Forgotten Lullaby.",
+        "Once you have at least 2 damage-dealing familiar items, 20% chance to lose a smelted",
+        "Forgotten Lullaby when obtaining more familiar items.",
+        "This chance increases by 15% per familiar item obtained past 3."
+    },
+    ["node_chromaticdissonance_name"] = "Chromatic Dissonance",
+    ["node_chromaticdissonance"] = {
+        "Whenever you first obtain a familiar item, replace it with a different random familiar",
+        "of the same quality instead, if possible.",
+        "After this effect has been triggered 10 times, obtaining a familiar item removes a",
+        "random different familiar item of the same quality."
+    },
+
+    ["node_fearedmobdmg_name"] = "Feared Enemy Damage",
+    ["node_fearedmobdmg"] = "Feared enemies receive {{fearedDmg}}% more damage.",
+    ["node_fearedtearburst_name"] = "Tear Burst On Feared Death",
+    ["node_fearedtearburst"] = {
+        "{{fearedTearBurst}}% chance for feared enemies to release 3-4 homing tears on death that cause fear.",
+        "These tears deal 4% of the killed monster's HP as damage on hit, minimum 3 damage."
+    },
+    ["node_acridgaze_name"] = "Acrid Gaze",
+    ["node_acridgaze"] = {
+        "Every 1.5 total seconds spent firing, unleash a pulse that damages and fears nearby enemies",
+        "for 2 seconds.",
+        "Damage dealt by the pulse is 120% of your luck stat, up to 10.",
+        "+{{acridGaze}}% pulse size."
+    },
+    ["node_sirenminiondmg_name"] = "Siren Minion Damage",
+    ["node_sirenminiondmg"] = "{{sirenMinionDmg}}% more damage dealt by your Siren Minions.",
+    ["node_darkarpeggiodelay_name"] = "Dark Arpeggio Tear Delay",
+    ["node_darkarpeggiodelay"] = "{{darkArpeggioTearDelay}} total seconds required for Siren Minions to fire the Dark Arpeggio tear.",
+    ["node_shadowmeldexplosion_name"] = "Shadowmeld Explosion",
+    ["node_shadowmeldexplosion"] = {
+        "{{shadowmeldExplosion}}% chance to cause a dark explosion when reappearing with Shadowmeld, dealing 100% of your",
+        "damage to nearby enemies and fearing them."
+    },
+    ["node_shadowmelddmg_name"] = "Shadowmeld Explosion Damage",
+    ["node_shadowmelddmg"] = "Shadowmeld explosion deals an additional {{shadowmeldExplosionDmg}}% of your damage.",
+    ["node_fearedkillblackheart_name"] = "Black Heart On Feared Kill",
+    ["node_fearedkillblackheart"] = {
+        "{{blackHeartFearKill}}% chance to receive 1/2 a black heart when killing a feared enemy, if you have less than",
+        "3 black hearts, up to twice per room."
+    },
+    ["node_fearedkill_luck_name"] = "Luck On Feared Kill",
+    ["node_fearedkill_luck"] = "{{fearedKillLuck}}% chance to gain +0.02 luck when killing a feared enemy, up to a total +3."
 }
