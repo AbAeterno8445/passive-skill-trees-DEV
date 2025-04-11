@@ -834,5 +834,73 @@ return {
         "Halve the total bonus when entering a new floor."
     },
     ["node_famitemallstat_name"] = "Familiar Items - All Stats",
-    ["node_famitemallstat"] = "+{{familiarItemAllstats}}% all stats per familiar item obtained."
+    ["node_famitemallstat"] = "+{{familiarItemAllstats}}% all stats per familiar item obtained.",
+
+
+    -- T. KEEPER'S TREE --
+    ["node_fortunatespender_name"] = "Fortunate Spender",
+    ["node_fortunatespender"] = {
+        "+1.5 luck for the current floor while you haven't purchased items.",
+        "+0.02 luck per coin spent on purchases, up to a total +3.",
+        "When entering a floor, -0.5 luck if you made less than 4 purchases in the previous floor.",
+        "Luck reduction doesn't apply during the Ascent."
+    },
+    ["node_marquessofflies_name"] = "Marquess Of Flies",
+    ["node_marquessofflies"] = {
+        "Whenever you gain coins, 50% chance to spawn a blue fly if you have less than 20 blue flies.",
+        "Whenever a coin heals you, 20% chance to gain Hive Mind for the current room if you don't",
+        "have it.",
+        "Increase damage dealt by blue flies by 1% per coin you own, up to 50%.",
+        "-1% speed and tears per active blue fly."
+    },
+    ["node_strangecoupon_name"] = "Strange Coupon",
+    ["node_strangecoupon"] = {
+        "Start with Coupon.",
+        "Whenever you gain charges with Coupon, {{couponNullifyChance}}% chance to nullify the gained charges.",
+        "After using Coupon a total of 4 times, replace it with Steam Sale.",
+        "Purchasing 4 items while holding Steam Sale removes it."
+    },
+    ["node_blessedpennies_name"] = "Blessed Pennies",
+    ["node_blessedpennies"] = {
+        "Shops have a 25% chance to sell an additional penny trinket, at twice its regular price.",
+        "When defeating a floor's boss, if you took no damage in the rest of the floor, smelt your",
+        "currently held penny trinkets, if present.",
+        "Spawn a penny when a penny trinket gets smelted this way.",
+        "When hit, 20% chance to lose held penny trinkets (not smelted)."
+    },
+    ["node_voodootrick_name"] = "Voodoo Trick",
+    ["node_voodootrick"] = {
+        "Completing a floor without getting hit more than 3 times grants you Voodoo Head for the next floor.",
+        "Voodoo Head can no longer show up naturally."
+    },
+
+    ["node_tempcointimer_name"] = "Vanishing Coins Time",
+    ["node_tempcointimer"] = "+{{vanishCoinTimer}} seconds to vanishing coins' timer.",
+    ["node_cointearchance_name"] = "Coin Tears Chance",
+    ["node_cointearchance"] = {
+        "{{coinTearsChance}}% chance for fired tears to be coin tears from Head of the Keeper.",
+        "If total chance is above 40%, Head of the Keeper can no longer show up.",
+        "Coin tears deal 10% increased damage against gilded monsters."
+    },
+    ["node_gildmobpennydrop_name"] = "Gilded Monster Penny Drop",
+    ["node_gildmobpennydrop"] = "{{gildMonsterPenny}}% chance for Gilded monsters to drop an additional non-vanishing penny on death.",
+    ["node_gildmobluck_name"] = "Gilded Monster Luck",
+    ["node_gildmobluck"] = "{{gildMonsterLuck}}% chance to gain +0.05 luck for the current floor when killing a Gilded monster.",
+    ["node_gildmobspeed_name"] = "Gilded Monster Speed Buff",
+    ["node_gildmobspeed"] = "+{{gildMonsterSpeed}}% speed for the current room when killing a Gilded monster.",
+    ["node_gildmobpennyupg_name"] = "Gilded Monster Penny Trinket Upgrade",
+    ["node_gildmobpennyupg"] = {
+        "{{gildMonsterPennyUpgrade}}% chance to upgrade 1 held penny trinket into its golden version when killing a",
+        "Gilded monster."
+    },
+    ["node_gildmobs_name"] = "Gilded Monsters",
+    ["node_gildmobs"] = "{{gildMonsters}}% chance for room monsters to be Gilded. Cannot affect bosses.",
+    ["node_voodoocursenickel_name"] = "Voodoo Curse Room Nickel",
+    ["node_voodoocursenickel"] = "While holding Voodoo Head, {{voodooCurseNickel}}% chance for curse rooms to contain an additional nickel.",
+    ["node_couponchargenull_name"] = "Coupon Charge Nullification Chance",
+    ["node_couponchargenull"] = "{{couponNullifyChance}}% chance to nullify gained charges with Coupon.",
+    ["node_blueflydmg_name"] = "Blue Fly Damage",
+    ["node_blueflydmg"] = "+{{blueFlyDamage}}% damage dealt by blue flies.",
+    ["node_steamsalekeep_name"] = "Steam Sale Keep Chance",
+    ["node_steamsalekeep"] = "{{steamSaleKeep}}% chance to keep Steam Sale when purchasing more than 4 items while holding it."
 }
