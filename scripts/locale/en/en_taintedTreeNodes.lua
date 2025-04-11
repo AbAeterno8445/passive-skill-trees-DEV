@@ -965,5 +965,55 @@ return {
     ["node_locustkill_luck"] = {
         "{{locustKillLuck}}% chance to gain +0.04 luck when a locust kills an enemy.",
         "Halve your total bonus when entering a new floor."
+    },
+
+
+    -- T. FORGOTTEN'S TREE --
+    ["node_recall_name"] = "Recall!",
+    ["node_recall"] = {
+        "Start with Birthright.",
+        "+0.4 seconds to Recall's cooldown on use, up to +4.",
+        "Reset Recall's cooldown when entering a new floor.",
+        "Birthright can no longer show up naturally."
+    },
+    ["node_harmonizedspecters_name"] = "Harmonized Specters",
+    ["node_harmonizedspecters"] = {
+        "+8% damage dealt by Tainted Forgotten while on the floor.",
+        "+8% damage dealt by Tainted Forgotten to enemies near Tainted Soul.",
+        "+8% damage dealt by Tainted Forgotten while a friendly Bony (any variant) is present."
+    },
+    ["node_ballistosseous_name"] = "Ballistosseous",
+    ["node_ballistosseous"] = {
+        "Tainted Forgotten shoots homing bone tears towards Tainted Soul while on the ground, if",
+        "there are monsters in the room.",
+        "While holding Tainted Forgotten, fire bone tears towards nearby enemies instead, at 40%",
+        "fire rate.",
+        "Bone tears deal 50% of your damage on hit."
+    },
+    ["node_magnetizedshell_name"] = "Magnetized Shell",
+    ["node_magnetizedshell"] = {
+        "Start with Strange Attractor.",
+        "{{speedPerc}}% speed.",
+        "+2% speed for the current room when killing an enemy near Tainted Forgotten, up to +20%."
+    },
+
+    ["node_forgholdspeed_name"] = "Held Forgotten Speed Boost",
+    ["node_forgholdspeed"] = "+{{forgHoldSpeed}}% speed while holding Tainted Forgotten.",
+    ["node_forgboneteardmg_name"] = "Forgotten Bone Tear Damage",
+    ["node_forgboneteardmg"] = "Tainted Forgotten's bone tears gain an additional {{forgBoneTearDmg}}% of your damage.",
+    ["node_forgbonetearpara_name"] = "Forgotten Bone Tear Paralysis",
+    ["node_forgbonetearpara"] = "{{forgBoneTearPara}}% chance for Tainted Forgotten's bone tears to paralyze enemies for 1 second on hit.",
+    ["node_forgbonetearslow_name"] = "Forgotten Bone Tear Speed Debuff",
+    ["node_forgbonetearslow"] = "{{forgBoneTearSlow}}% chance for Tainted Forgotten's bone tears to slow enemies on hit for 2 seconds.",
+    ["node_paramobdmg_name"] = "Paralyzed Enemy Damage",
+    ["node_paramobdmg"] = "+{{paraEnemyDmg}}% damage received by paralyzed enemies.",
+    ["node_recalldmg_name"] = "Recall Damage Buff",
+    ["node_recalldmg"] = "+{{recallDmg}}% damage for 2 seconds after using Recall.",
+    ["node_forgtele_name"] = "Forgotten Launch Telekinesis",
+    ["node_forgtele"] = "{{forgTelekinesis}}% chance to trigger Telekinesis' effect when launching Tainted Forgotten.",
+    ["node_forgbonetearluck_name"] = "Forgotten Bone Tear Kill Luck",
+    ["node_forgbonetearluck"] = {
+        "{{forgBoneTearKillLuck}}% chance to gain +0.03 luck when Tainted Forgotten's bone tears kill an enemy.",
+        "Halve your total bonus when entering a new floor."
     }
 }
