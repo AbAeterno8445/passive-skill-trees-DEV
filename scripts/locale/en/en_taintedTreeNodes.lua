@@ -1015,5 +1015,77 @@ return {
     ["node_forgbonetearluck"] = {
         "{{forgBoneTearKillLuck}}% chance to gain +0.03 luck when Tainted Forgotten's bone tears kill an enemy.",
         "Halve your total bonus when entering a new floor."
+    },
+
+
+    -- T. BETHANY'S TREE --
+    ["node_bloodharvest_name"] = "Blood Harvest",
+    ["node_bloodharvest"] = {
+        "Killing an enemy with at least 12 HP has a 25% chance of dropping a 1/2 red heart, which",
+        "vanishes after 3 seconds, up to 6 per room.",
+        "Hitting a boss has a 7% chance of dropping a 1/2 red heart, which vanishes after 3 seconds,",
+        "up to 4 per room.",
+        "These chances are reduced by 0.3% per blood charge past 30."
+    },
+    ["node_resilientflickers_name"] = "Resilient Flickers",
+    ["node_resilientflickers"] = {
+        "Lemegeton wisps take 60% reduced damage.",
+        "Lemegeton wisps deal 35% increased contact damage.",
+        "Fully heal a wisp when it kills an enemy with contact damage.",
+        "-0.03 luck per active wisp past 5."
+    },
+    ["node_othersideseeker_name"] = "Otherside Seeker",
+    ["node_othersideseeker"] = {
+        "Start with 3 smelted Crystal Keys.",
+        "Defeating Mom without taking damage grants you an additional smelted Crystal Key.",
+        "+1% all stats for the current floor when clearing a red room, up to +10%."
+    },
+    ["node_inheritedchaos_name"] = "Inherited Chaos",
+    ["node_inheritedchaos"] = {
+        "When entering a floor, spawn a Chaos wisp if you don't currently have one.",
+        "Chaos wisps receive 200% more damage when hit.",
+        "-3% all stats whenever a Chaos wisp is destroyed, up to -12%."
+    },
+
+    ["node_redheartroomdmg_name"] = "Red Heart Room Damage",
+    ["node_redheartroomdmg"] = "+{{redHeartRoomDmg}}% damage for the current room when picking up a red heart, up to +15%.",
+    ["node_wisptearretal_name"] = "Wisp Homing Tear Retaliation",
+    ["node_wisptearretal"] = {
+        "{{wispHomingTearRetal}}% chance for Wisps to fire a homing tear away from you when they get hit.",
+        "These tears deal 5 damage."
+    },
+    ["node_wispactivehomtears_name"] = "Wisp Active Homing Tears",
+    ["node_wispactivehomtears"] = {
+        "{{wispActiveTears}}% chance for Wisps to fire a small homing tear towards you when using an active item.",
+        "These tears deal 30% of your damage + an additional 2 damage per used charge."
+    },
+    ["node_destroywispitem_name"] = "Destroyed Wisp Item",
+    ["node_destroywispitem"] = "{{destroyedWispItem}}% chance to gain a destroyed wisp's item for the rest of the floor.",
+    ["node_bluekeyonred_name"] = "Blue Key On Red Clear",
+    ["node_bluekeyonred"] = {
+        "{{blueKeyRedClear}}% chance to gain a smelted Blue Key for the current floor when clearing a red room, if",
+        "you don't already have one."
+    },
+    ["node_bloodchargestat_name"] = "Stat Boost On Blood Charge",
+    ["node_bloodchargestat"] = "{{bloodChargeStat}}% chance to gain +0.4% to a random stat per consumed blood charge, up to 30 times per floor.",
+    ["node_wispkillsoul_name"] = "Wisp Kill Soul Heart",
+    ["node_wispkillsoul"] = {
+        "{{wispKillSoul}}% chance for enemies killed by Wisps or their tears to drop a 1/2 soul heart if you have",
+        "less than 3 soul hearts, up to 4 per room."
+    },
+    ["node_homingtearfirereq_name"] = "Homing Tear Firing Time Requirement",
+    ["node_homingtearfirereq"] = {
+        "{{tBethHomingTear}} seconds to Coalescing Homing Tear's total firing time required.",
+        "{{tBethHomingTearFear}}% chance for the shot tear to cause fear on enemies it hits."
+    },
+    ["node_coalescinghomtear_name"] = "Coalescing Homing Tear",
+    ["node_coalescinghomtear"] = {
+        "Every {{tBethHomingTear}} total seconds spent firing, shoot an additional piercing and homing tear that deals",
+        "150% of your damage."
+    },
+    ["node_tbethkill_luck_name"] = "Luck On Kill",
+    ["node_tbethkill_luck"] = {
+        "{{tBethKillLuck}}% chance to gain +0.03 luck when killing enemies while you have 1 soul/black heart or less.",
+        "Triple the chance and luck gain against bosses."
     }
 }
