@@ -902,5 +902,68 @@ return {
     ["node_blueflydmg_name"] = "Blue Fly Damage",
     ["node_blueflydmg"] = "+{{blueFlyDamage}}% damage dealt by blue flies.",
     ["node_steamsalekeep_name"] = "Steam Sale Keep Chance",
-    ["node_steamsalekeep"] = "{{steamSaleKeep}}% chance to keep Steam Sale when purchasing more than 4 items while holding it."
+    ["node_steamsalekeep"] = "{{steamSaleKeep}}% chance to keep Steam Sale when purchasing more than 4 items while holding it.",
+
+
+    -- T. APOLLYON'S TREE --
+    ["node_electrifiedswarm_name"] = "Electrified Swarm",
+    ["node_electrifiedswarm"] = {
+        "Start with a smelted Extension Cord.",
+        "Tears fired by locusts have a 33% chance to be electrified.",
+        "Extension Cord beams deal 33% less damage."
+    },
+    ["node_closekeeper_name"] = "Close Keeper",
+    ["node_closekeeper"] = {
+        "Locusts follow you much more closely.",
+        "+2% damage received by enemies per locust near it, up to 20%."
+    },
+    ["node_carrionlocusts_name"] = "Carrion Locusts",
+    ["node_carrionlocusts"] = {
+        "+1% to a random stat whenever a locust kills an enemy, up to +12% of each stat.",
+        "For every 20 enemies killed by locusts, gain a random smelted Locust trinket you",
+        "don't currently have.",
+        "Entering a floor halves your current bonuses and removes smelted Locust trinkets."
+    },
+    ["node_greatdevourer_name"] = "Great Devourer",
+    ["node_greatdevourer"] = {
+        "You can now only have up to 1 locust.",
+        "Whenever you would have gained a locust, instead add +8% damage and speed to the existing locust,",
+        "up to a total 200%.",
+        "Double extension cord beam damage if it targets a locust.",
+        "Triple your total chance for locusts to fire tears, and these inherit an additional {{locustTearDmgInherit}}%",
+        "of your damage.",
+        "If Electrified Swarm is allocated, locust tears are always electrified."
+    },
+
+    ["node_extensioncorddmg_name"] = "Extension Cord Beam Damage",
+    ["node_extensioncorddmg"] = "Extension Cord beams deal an additional {{extCordDmgInherit}}% of your damage if they target a locust.",
+    ["node_extensioncordslow_name"] = "Extension Cord Beam Slow",
+    ["node_extensioncordslow"] = "{{extCordSlow}}% chance for Extension Cord beams to slow enemies for 2 seconds on hit if they target a locust.",
+    ["node_locusttears_name"] = "Locust Tears",
+    ["node_locusttears"] = {
+        "1.5% chance for locusts to shoot a small tear towards enemies close to them whenever you shoot.",
+        "Locust tears deal a base 20% of your damage."
+    },
+    ["node_locustteardmg_name"] = "Locust Tear Damage",
+    ["node_locustteardmg"] = "Locust tears gain an additional {{locustTearDmgInherit}}% of your damage.",
+    ["node_locustlostcontact_name"] = "Locust Lost Contact Tears",
+    ["node_locustlostcontact"] = "{{locustTearSpectral}}% chance for tears fired by locusts to be spectral and piercing.",
+    ["node_locustkillpickup_name"] = "Locust Kill Pickup Drop",
+    ["node_locustkillpickup"] = {
+        "{{locustKillPickup}}% chance for enemies killed by locusts to drop an additional coin/key/bomb, up to twice",
+        "per room."
+    },
+    ["node_locustkilltears_name"] = "Locust Kill Tear Boost",
+    ["node_locustkilltears"] = "+{{locustKillTears}}% tears for 2 seconds when a locust kills an enemy.",
+    ["node_cricketlegonkill_name"] = "Cricket Leg On Kill",
+    ["node_cricketlegonkill"] = "{{killCricketLeg}}% chance to gain a smelted Cricket Leg for the current room when you kill an enemy.",
+    ["node_cricketlegspeed_name"] = "Cricket Leg Speed",
+    ["node_cricketlegspeed"] = "+{{cricketLegSpeed}}% speed while you have Cricket Leg.",
+    ["node_locustdmg_name"] = "Locust Damage",
+    ["node_locustdmg"] = "+{{locustDmg}}% damage dealt by locusts.",
+    ["node_locustkill_luck_name"] = "Locust Kill Luck",
+    ["node_locustkill_luck"] = {
+        "{{locustKillLuck}}% chance to gain +0.04 luck when a locust kills an enemy.",
+        "Halve your total bonus when entering a new floor."
+    }
 }
