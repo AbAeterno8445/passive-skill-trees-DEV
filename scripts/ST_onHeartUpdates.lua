@@ -44,10 +44,11 @@ function PST:onHeartUpdate(force)
         local tmpTwinID = (i % 2) + 1
 
         -- Max red hearts quantity updates
-        if force or player:GetMaxHearts() ~= heartTracker.redMax[i] then
+        local plMaxHearts = player:GetMaxHearts()
+        if force or plMaxHearts ~= heartTracker.redMax[i] then
             -- Heart Link (Jacob & Esau's tree)
-            if player:GetMaxHearts() > heartTracker.redMax[i] then
-                local tmpAmount = player:GetMaxHearts() - heartTracker.redMax[i]
+            if plMaxHearts > heartTracker.redMax[i] then
+                local tmpAmount = plMaxHearts - heartTracker.redMax[i]
                 if PST:getTreeSnapshotMod("heartLink", false) and tmpTwin and tmpAmount > 0 then
                     tmpTwin:AddMaxHearts(tmpAmount)
                 end
@@ -56,8 +57,8 @@ function PST:onHeartUpdate(force)
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
                 -- The Lost, limit max red hearts to 2
-                if player:GetMaxHearts() > 4 then
-                    player:AddMaxHearts(4 - player:GetMaxHearts())
+                if plMaxHearts > 4 then
+                    player:AddMaxHearts(4 - plMaxHearts)
                 end
                 if tmpTwin and tmpTwin:GetMaxHearts() > 4 then
                     tmpTwin:AddMaxHearts(4 - tmpTwin:GetMaxHearts())
@@ -65,15 +66,16 @@ function PST:onHeartUpdate(force)
             elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
                 -- Tainted Lost, limit max hearts of each type to 1
                 if not isKeeper then
-                    if player:GetMaxHearts() > 2 then
-                        player:AddMaxHearts(2 - player:GetMaxHearts())
+                    if plMaxHearts > 2 then
+                        player:AddMaxHearts(2 - plMaxHearts)
                     end
                     if tmpTwin and tmpTwin:GetMaxHearts() > 2 then
                         tmpTwin:AddMaxHearts(2 - tmpTwin:GetMaxHearts())
                     end
                 end
             end
-            heartTracker.redMax[i] = player:GetMaxHearts()
+            plMaxHearts = player:GetMaxHearts()
+            heartTracker.redMax[i] = plMaxHearts
             -- Update twin tracker - prevents extra updates from Heart Link (Jacob & Esau)
             if tmpTwin and heartTracker.redMax[tmpTwinID] ~= tmpTwin:GetMaxHearts() then
                 heartTracker.redMax[tmpTwinID] = tmpTwin:GetMaxHearts()
@@ -82,15 +84,16 @@ function PST:onHeartUpdate(force)
         end
 
         -- Remaining red hearts quantity updates
-        if force or player:GetHearts() ~= heartTracker.red[i] then
+        local plHearts = player:GetHearts()
+        if force or plHearts ~= heartTracker.red[i] then
             local tmpFlags = 0
 
             -- Mod: all stats while you have at least 1 red heart container and are at full health
             local tmpTreeMod = PST:getTreeSnapshotMod("allstatsFullRed", 0)
             if tmpTreeMod ~= 0 then
-                if player:GetMaxHearts() > 1 and player:HasFullHearts() and not PST:getTreeSnapshotMod("allstatsFullRedProc", false) then
+                if plMaxHearts > 1 and not PST:getTreeSnapshotMod("allstatsFullRedProc", false) and player:HasFullHearts() then
                     PST:addModifiers({ allstats = tmpTreeMod, allstatsFullRedProc = true }, true)
-                elseif PST:getTreeSnapshotMod("allstatsFullRedProc", false) and (player:GetMaxHearts() == 0 or not player:HasFullHearts()) then
+                elseif PST:getTreeSnapshotMod("allstatsFullRedProc", false) and (plMaxHearts == 0 or not player:HasFullHearts()) then
                     PST:addModifiers({ allstats = -tmpTreeMod, allstatsFullRedProc = false }, true)
                 end
             end
@@ -111,9 +114,9 @@ function PST:onHeartUpdate(force)
             -- Mod: all stats while you have only 1 red heart
             tmpTreeMod = PST:getTreeSnapshotMod("allstatsOneRed", 0)
             if tmpTreeMod ~= 0 then
-                if player:GetHearts() == 2 and not PST:getTreeSnapshotMod("allStatsOneRedActive", false) then
+                if plHearts == 2 and not PST:getTreeSnapshotMod("allStatsOneRedActive", false) then
                     PST:addModifiers({ allstats = tmpTreeMod, allStatsOneRedActive = true }, true)
-                elseif player:GetHearts() ~= 2 and PST:getTreeSnapshotMod("allStatsOneRedActive", false) then
+                elseif plHearts ~= 2 and PST:getTreeSnapshotMod("allStatsOneRedActive", false) then
                     PST:addModifiers({ allstats = -tmpTreeMod, allStatsOneRedActive = false }, true)
                 end
             end
@@ -129,7 +132,7 @@ function PST:onHeartUpdate(force)
             end
 
             -- Mod: +damage/speed/tears per 1/2 remaining heart past 2
-            if player:GetHearts() >= 4 then
+            if plHearts >= 4 then
                 if PST:getTreeSnapshotMod("remainingHeartsDmg", 0) ~= 0 then
                     tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
                 end
@@ -143,7 +146,7 @@ function PST:onHeartUpdate(force)
 
             -- Bloodwrath node (T. Eve's tree)
             if PST:getTreeSnapshotMod("bloodwrath", false) then
-                if player:GetHearts() < heartTracker.red[i] then
+                if plHearts < heartTracker.red[i] then
                     PST.specialNodes.bloodwrathFlipTimer = 150
                 end
                 tmpFlags = tmpFlags | CacheFlag.CACHE_DAMAGE
@@ -151,7 +154,7 @@ function PST:onHeartUpdate(force)
 
             -- Astral weapon mod: +% damage dealt for 5 seconds after healing red hearts, up to %
             local tmpMod = PST:getSnapAstralWepMod("redHealDmg")
-            if tmpMod and player:GetHearts() > heartTracker.red[i] then
+            if tmpMod and plHearts > heartTracker.red[i] then
                 PST.specialNodes.astralwep_redHealBuff = math.min(tmpMod[2], PST.specialNodes.astralwep_redHealBuff + tmpMod[1])
                 PST.specialNodes.astralwep_redHealTimer = 150
             end
@@ -159,10 +162,10 @@ function PST:onHeartUpdate(force)
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_EVE) then
                 -- Eve, -8% all stats if you have 1 remaining red heart or less
-                if not cosmicRCache.eveActive and player:GetHearts() <= 2 then
+                if not cosmicRCache.eveActive and plHearts <= 2 then
                     PST:addModifiers({ allstatsPerc = -8 }, true)
                     cosmicRCache.eveActive = true
-                elseif cosmicRCache.eveActive and player:GetHearts() > 2 then
+                elseif cosmicRCache.eveActive and plHearts > 2 then
                     PST:addModifiers({ allstatsPerc = 8 }, true)
                     cosmicRCache.eveActive = false
                 end
@@ -171,15 +174,16 @@ function PST:onHeartUpdate(force)
             if tmpFlags ~= 0 then
                 player:AddCacheFlags(tmpFlags, true)
             end
-            heartTracker.red[i] = player:GetHearts()
+            heartTracker.red[i] = plHearts
             heartUpdated = true
         end
 
         -- Black heart quantity updates
-        if force or PST:GetBlackHeartCount(player) ~= heartTracker.black[i] then
+        local plBlackHearts = PST:GetBlackHeartCount(player)
+        if force or plBlackHearts ~= heartTracker.black[i] then
             -- Mod: +luck whenever you lose black hearts
             local lostBlackHeartsLuck = PST:getTreeSnapshotMod("lostBlackHeartsLuck", 0)
-            if lostBlackHeartsLuck > 0 and PST:GetBlackHeartCount(player) < heartTracker.black[i] then
+            if lostBlackHeartsLuck > 0 and plBlackHearts < heartTracker.black[i] then
                 PST:addModifiers({ luck = lostBlackHeartsLuck, lostBlackHeartsLuckBuff = lostBlackHeartsLuck }, true)
             end
 
@@ -190,10 +194,10 @@ function PST:onHeartUpdate(force)
 
             -- Brimsoul node (T. Azazel's tree)
             if PST:getTreeSnapshotMod("brimsoul", false) then
-                if PST:GetBlackHeartCount(player) == 4 and not PST:getTreeSnapshotMod("brimsoulProc", false) then
+                if plBlackHearts == 4 and not PST:getTreeSnapshotMod("brimsoulProc", false) then
                     player:AddCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE)
                     PST:addModifiers({ brimsoulProc = true }, true)
-                elseif PST:GetBlackHeartCount(player) ~= 4 and PST:getTreeSnapshotMod("brimsoulProc", false) then
+                elseif plBlackHearts ~= 4 and PST:getTreeSnapshotMod("brimsoulProc", false) then
                     player:RemoveCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE)
                     PST:addModifiers({ brimsoulProc = false }, true)
                 end
@@ -206,16 +210,17 @@ function PST:onHeartUpdate(force)
                 PST.specialNodes.astralwep_blackHealTimer = 150
             end
 
-            heartTracker.black[i] = PST:GetBlackHeartCount(player)
+            heartTracker.black[i] = plBlackHearts
             heartUpdated = true
         end
 
         -- Soul heart quantity updates
-        if force or player:GetSoulHearts() ~= heartTracker.soul[i] then
+        local plSoulHearts = player:GetSoulHearts()
+        if force or plSoulHearts ~= heartTracker.soul[i] then
             -- Slipping Essence node (Blue Baby's tree)
             if PST:getTreeSnapshotMod("slippingEssence", false) then
                 local slippingEssenceLost = PST:getTreeSnapshotMod("slippingEssenceLost", 0)
-                if player:GetSoulHearts() < heartTracker.soul[i] and 100 * math.random() < 100 / (2 ^ slippingEssenceLost) then
+                if plSoulHearts < heartTracker.soul[i] and 100 * math.random() < 100 / (2 ^ slippingEssenceLost) then
                     PST:addModifiers({ slippingEssenceLost = 1, luck = -0.1 }, true)
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, player.Position, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
                 end
@@ -242,37 +247,40 @@ function PST:onHeartUpdate(force)
             if PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
                 -- Tainted Lost, limit max hearts of each type to 1
                 if not isKeeper then
-                    if player:GetSoulHearts() > 2 then
-                        player:AddSoulHearts(2 - player:GetSoulHearts())
+                    if plSoulHearts > 2 then
+                        player:AddSoulHearts(2 - plSoulHearts)
+                        plSoulHearts = player:GetSoulHearts()
                     end
                 end
             elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
                 -- Tainted Forgotten, cannot have more than 1 soul/black heart
                 if not isKeeper then
-                    if player:GetSoulHearts() > 2 then
-                        player:AddSoulHearts(2 - player:GetSoulHearts())
+                    if plSoulHearts > 2 then
+                        player:AddSoulHearts(2 - plSoulHearts)
+                        plSoulHearts = player:GetSoulHearts()
                     end
 
                     -- -15% range, shot speed and luck when no soul hearts
-                    if not cosmicRCache.TForgottenTracker.soul and player:GetSoulHearts() == 0 then
+                    if not cosmicRCache.TForgottenTracker.soul and plSoulHearts == 0 then
                         PST:addModifiers({ rangePerc = -15, shotSpeedPerc = -15, luckPerc = -15 }, true)
                         cosmicRCache.TForgottenTracker.soul = true
-                    elseif cosmicRCache.TForgottenTracker.soul and player:GetSoulHearts() > 0 then
+                    elseif cosmicRCache.TForgottenTracker.soul and plSoulHearts > 0 then
                         PST:addModifiers({ rangePerc = 15, shotSpeedPerc = 15, luckPerc = 15 }, true)
                         cosmicRCache.TForgottenTracker.soul = false
                     end
                 end
             end
-            heartTracker.soul[i] = player:GetSoulHearts()
+            heartTracker.soul[i] = plSoulHearts
             heartUpdated = true
         end
 
         -- Bone heart quantity updates
-        if force or player:GetBoneHearts() ~= heartTracker.bone[i] then
+        local plBoneHearts = player:GetBoneHearts()
+        if force or plBoneHearts ~= heartTracker.bone[i] then
             -- Soulful node (Therefore Forgotten's tree)
             if PST:getTreeSnapshotMod("soulful", false) then
-                if player:GetBoneHearts() < heartTracker.bone[i] and player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL then
-                    for _=1, heartTracker.bone[i] - player:GetBoneHearts() do
+                if plBoneHearts < heartTracker.bone[i] and player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL then
+                    for _=1, heartTracker.bone[i] - plBoneHearts do
                         local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
                         Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
                         PST:addModifiers({ luck = -0.25 }, true)
@@ -289,64 +297,71 @@ function PST:onHeartUpdate(force)
             if PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
                 -- Tainted Lost, limit max hearts of each type to 1
                 if not isKeeper then
-                    if player:GetBoneHearts() > 1 then
-                        player:AddBoneHearts(1 - player:GetBoneHearts())
+                    if plBoneHearts > 1 then
+                        player:AddBoneHearts(1 - plBoneHearts)
+                        plBoneHearts = player:GetBoneHearts()
                     end
                 end
             elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
                 -- Tainted Forgotten, cannot have more than 1 bone heart
                 if not isKeeper then
-                    if player:GetBoneHearts() > 1 then
-                        player:AddBoneHearts(1 - player:GetBoneHearts())
+                    if plBoneHearts > 1 then
+                        player:AddBoneHearts(1 - plBoneHearts)
+                        plBoneHearts = player:GetBoneHearts()
                     end
 
                     -- -15% damage, tears and shot speed when no bone hearts
-                    if not cosmicRCache.TForgottenTracker.bone and player:GetBoneHearts() == 0 then
+                    if not cosmicRCache.TForgottenTracker.bone and plBoneHearts == 0 then
                         PST:addModifiers({ damagePerc = -15, tearsPerc = -15, shotSpeedPerc = -15 }, true)
                         cosmicRCache.TForgottenTracker.bone = true
-                    elseif cosmicRCache.TForgottenTracker.bone and player:GetBoneHearts() > 0 then
+                    elseif cosmicRCache.TForgottenTracker.bone and plBoneHearts > 0 then
                         PST:addModifiers({ damagePerc = 15, tearsPerc = 15, shotSpeedPerc = 15 }, true)
                         cosmicRCache.TForgottenTracker.bone = false
                     end
                 end
             end
-            heartTracker.bone[i] = player:GetBoneHearts()
+            heartTracker.bone[i] = plBoneHearts
             heartUpdated = true
         end
 
         -- Broken heart quantity updates
-        if force or player:GetBrokenHearts() ~= heartTracker.broken[i] then
+        local plBrokenHearts = player:GetBrokenHearts()
+        if force or plBrokenHearts ~= heartTracker.broken[i] then
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
                 -- Tainted Lost, limit max hearts of each type to 1
                 if not isKeeper then
-                    if player:GetBrokenHearts() > 2 then
-                        player:AddBrokenHearts(2 - player:GetBrokenHearts())
+                    if plBrokenHearts > 2 then
+                        player:AddBrokenHearts(2 - plBrokenHearts)
+                        plBrokenHearts = player:GetBrokenHearts()
                     end
                 end
             end
-            heartTracker.broken[i] = player:GetBrokenHearts()
+            heartTracker.broken[i] = plBrokenHearts
             heartUpdated = true
         end
 
         -- Rotten heart quantity updates
-        if force or player:GetRottenHearts() ~= heartTracker.rotten[i] then
+        local plRottenHearts = player:GetRottenHearts()
+        if force or plRottenHearts ~= heartTracker.rotten[i] then
             -- Cosmic Realignment node
             if PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
                 -- Tainted Lost, limit max hearts of each type to 1
                 if not isKeeper then
-                    if player:GetRottenHearts() > 2 then
-                        player:AddRottenHearts(2 - player:GetRottenHearts())
+                    if plRottenHearts > 2 then
+                        player:AddRottenHearts(2 - plRottenHearts)
+                        plRottenHearts = player:GetRottenHearts()
                     end
                 end
             end
-            heartTracker.rotten[i] = player:GetRottenHearts()
+            heartTracker.rotten[i] = plRottenHearts
             heartUpdated = true
         end
 
         -- Eternal heart quantity updates
-        if force or player:GetEternalHearts() ~= heartTracker.eternal[i] then
-            heartTracker.eternal[i] = player:GetEternalHearts()
+        local plEternalHearts = player:GetEternalHearts()
+        if force or plEternalHearts ~= heartTracker.eternal[i] then
+            heartTracker.eternal[i] = plEternalHearts
             heartUpdated = true
         end
     end

@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "1.2.11",
+        "- Made slight performance optimizations to internal utility functions and entity data storage, on-hit and on-death functions.",
+        "",
+
         "1.2.10",
         "- Potential fix for game freeze when completing an expedition node requiring you to gain xp that rewarded xp on completion, while",
         "having queued nodes ahead.",

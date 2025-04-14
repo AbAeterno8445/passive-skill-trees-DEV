@@ -130,7 +130,7 @@ function PST:onNPCUpdate(npc)
     end
 
     -- Monster init modifiers
-    if npc:IsActiveEnemy(false) and npc:IsVulnerableEnemy() and not EntityRef(npc).IsFriendly then
+    if not npcData.PST_mobInit and npc:IsActiveEnemy(false) and npc:IsVulnerableEnemy() and not EntityRef(npc).IsFriendly then
         local noUpdate = false
         if npc.Type == EntityType.ENTITY_DELIRIUM then
             -- Init Delirium only once

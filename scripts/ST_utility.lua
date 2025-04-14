@@ -478,7 +478,6 @@ function PST:getRandomStat(exclude)
 	return statsList[math.random(#statsList)]
 end
 
----@param srcPlayer EntityPlayer
 ---@param target Entity
 function PST:inflictRandomStatus(srcPlayer, target, duration)
 	local playerRef = EntityRef(srcPlayer)
@@ -528,8 +527,9 @@ end
 
 function PST:isFirstOrigStage()
 	local level = PST:getLevel()
-	return level:GetStage() == LevelStage.STAGE1_1 and (level:GetStageType() == StageType.STAGETYPE_ORIGINAL or
-	level:GetStageType() == StageType.STAGETYPE_AFTERBIRTH or level:GetStageType() == StageType.STAGETYPE_WOTL) and not level:IsAscent()
+	local stageType = level:GetStageType()
+	return level:GetStage() == LevelStage.STAGE1_1 and (stageType == StageType.STAGETYPE_ORIGINAL or
+	stageType == StageType.STAGETYPE_AFTERBIRTH or stageType == StageType.STAGETYPE_WOTL) and not level:IsAscent()
 end
 
 function PST:arrHasValue(arr, value)
@@ -807,7 +807,6 @@ end
 
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
----@param player EntityPlayer
 function PST:GetBlackHeartCount(player)
     local black_count = 0
     local soul_hearts = player:GetSoulHearts()

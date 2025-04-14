@@ -1,18 +1,18 @@
 function PST:getStaticEntityID(entity)
-    local level = PST:getLevel()
-    local stage = level:GetStage()
-    local roomID = level:GetCurrentRoomDesc().SafeGridIndex
     local tmpIndex = nil
     if entity.InitSeed then
-        tmpIndex = entity.InitSeed
-    elseif entity.GetGridIndex then
-        tmpIndex = entity:GetGridIndex()
+        return tostring(entity.InitSeed)
     elseif entity.SpawnGridIndex and entity.SpawnGridIndex ~= -1 then
         tmpIndex = entity.SpawnGridIndex
+    elseif entity.GetGridIndex then
+        tmpIndex = entity:GetGridIndex()
     else
         tmpIndex = PST:getRoom():GetGridIndex(entity.Position)
     end
     if tmpIndex and tmpIndex ~= -1 then
+        local level = PST:getLevel()
+        local stage = level:GetStage()
+        local roomID = level:GetCurrentRoomDesc().SafeGridIndex
         return tostring(stage) .. "." .. tostring(roomID) .. "." .. tostring(tmpIndex)
     end
     return nil

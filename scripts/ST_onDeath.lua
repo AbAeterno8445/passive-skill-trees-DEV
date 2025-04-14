@@ -11,45 +11,50 @@ local clotHeartTypes = {
 -- On entity death
 ---@param entity Entity
 function PST:onDeath(entity)
-    local player = entity:ToPlayer()
-    local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
     -- Player death
-    if player ~= nil then
-        -- Lazarus death
-        if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
-            cosmicRCache.lazarusHasDied = true
-            PST:save()
-        end
-
-        -- Soulful Awakening node (Lazarus' tree)
-        if PST:getTreeSnapshotMod("soulfulAwakening", false) then
-            local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
-            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
-            PST:addModifiers({ luck = -0.5 }, true)
-        end
-
-        -- Growing Contrition node (Lazarus' tree)
-        if PST:getTreeSnapshotMod("growingContrition", false) and PST:getTreeSnapshotMod("growingContritionProcs", 0) < 3 then
-            PST:addModifiers({ growingContritionProcs = 1 }, true)
-            if PST:getTreeSnapshotMod("growingContritionProcs", false) == 3 then
-                player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-                PST:createFloatTextFX("Growing Contrition", Vector.Zero, Color(0.85, 0.35, 0.35, 1), 0.12, 100, true)
+    if entity.Type == EntityType.ENTITY_PLAYER then
+        local player = entity:ToPlayer()
+        if player then
+            -- Lazarus death
+            if player:GetPlayerType() == PlayerType.PLAYER_LAZARUS then
+                local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
+                cosmicRCache.lazarusHasDied = true
+                PST:save()
             end
-        end
 
-        -- Dark Apotheosis node (Judas' tree)
-        if PST:getTreeSnapshotMod("darkApotheosisProc", false) then
-            PST:addModifiers({ darkApotheosisProc = false }, true)
+            -- Soulful Awakening node (Lazarus' tree)
+            if PST:getTreeSnapshotMod("soulfulAwakening", false) then
+                local tmpPos = Isaac.GetFreeNearPosition(player.Position, 40)
+                Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, tmpPos, Vector.Zero, nil, HeartSubType.HEART_SOUL, Random() + 1)
+                PST:addModifiers({ luck = -0.5 }, true)
+            end
+
+            -- Growing Contrition node (Lazarus' tree)
+            if PST:getTreeSnapshotMod("growingContrition", false) and PST:getTreeSnapshotMod("growingContritionProcs", 0) < 3 then
+                PST:addModifiers({ growingContritionProcs = 1 }, true)
+                if PST:getTreeSnapshotMod("growingContritionProcs", false) == 3 then
+                    player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
+                    PST:createFloatTextFX("Growing Contrition", Vector.Zero, Color(0.85, 0.35, 0.35, 1), 0.12, 100, true)
+                end
+            end
+
+            -- Dark Apotheosis node (Judas' tree)
+            if PST:getTreeSnapshotMod("darkApotheosisProc", false) then
+                PST:addModifiers({ darkApotheosisProc = false }, true)
+            end
         end
     elseif entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly and
     PST:getRoom():GetFrameCount() > 1 then
         -- Enemy death
         local room = PST:getRoom()
+        local tmpNPC = entity:ToNPC()
+        local NPCisBoss = tmpNPC and tmpNPC:IsBoss()
+        local NPCisChamp = tmpNPC and tmpNPC:IsChampion()
 
         local isFrozen = entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
 
         local addXP = false
-        if not (entity:IsBoss() and entity.Parent) or entity.Type == EntityType.ENTITY_LARRYJR then
+        if not (NPCisBoss and entity.Parent) or entity.Type == EntityType.ENTITY_LARRYJR then
             if entity.SpawnerType ~= 0 then
                 local bonusKills = 0
                 if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) then
@@ -71,19 +76,20 @@ function PST:onDeath(entity)
                 mult = 0.33
             end
 
-            if entity:IsBoss() then
-                mult = mult + PST:getTreeSnapshotMod("xpgainBoss", 0) / 100
-                local roomType = room:GetType()
-                if not roomType == RoomType.ROOM_MINIBOSS and not roomType == RoomType.ROOM_BOSS then
-                    mult = mult - 0.6
+            if tmpNPC then
+                if NPCisBoss then
+                    mult = mult + PST:getTreeSnapshotMod("xpgainBoss", 0) / 100
+                    local roomType = room:GetType()
+                    if not roomType == RoomType.ROOM_MINIBOSS and not roomType == RoomType.ROOM_BOSS then
+                        mult = mult - 0.6
+                    end
+                else
+                    mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
                 end
-            else
-                mult = mult + PST:getTreeSnapshotMod("xpgainNormalMob", 0) / 100
-            end
 
-            local tmpNPC = entity:ToNPC()
-            if tmpNPC and tmpNPC:IsChampion() then
-                mult = mult + PST:getTreeSnapshotMod("championXP", 0) / 100
+                if NPCisChamp then
+                    mult = mult + PST:getTreeSnapshotMod("championXP", 0) / 100
+                end
             end
 
             -- Max 8% xp from frozen enemies
@@ -118,7 +124,7 @@ function PST:onDeath(entity)
                     end
                 end
                 -- Sidereal Artifact objective/condition: kill champion monsters
-                if tmpNPC:IsChampion() and not isFrozen then
+                if NPCisChamp and not isFrozen then
                     PST:sideArtiObjProgress("slayerSeptentrion", 1)
                     if PST:getTreeSnapshotMod("slayerSeptentrion", false) then
                         PST:sideArtiAddEnergy(PST.sideArtiData.slayerSeptentrion.energy)
@@ -138,7 +144,7 @@ function PST:onDeath(entity)
                 PST:sideArtiObjProgress("infernalMeridion", 1)
             end
             -- Sidereal Artifact objective: kill Bonys or its variants
-            if (entity:GetType() == EntityType.ENTITY_BONY or entity:GetType() == EntityType.ENTITY_BLACK_BONY or entity:GetType() == EntityType.ENTITY_REVENANT) and
+            if (entity.Type == EntityType.ENTITY_BONY or entity.Type == EntityType.ENTITY_BLACK_BONY or entity.Type == EntityType.ENTITY_REVENANT) and
             not isFrozen then
                 PST:sideArtiObjProgress("osseousMeridion", 1)
             end
@@ -241,10 +247,9 @@ function PST:onDeath(entity)
         -- Room kills
         PST:addModifiers({ roomKills = 1 }, true)
 
-        local tmpNPC = entity:ToNPC()
         if tmpNPC then
             -- Champion kill
-            if tmpNPC:IsChampion() then
+            if NPCisChamp then
                 -- Expedition objective: defeat champions
                 PST:expedAddProgInRun("defeatChampions", 1)
 
@@ -285,7 +290,7 @@ function PST:onDeath(entity)
             end
 
             -- Boss kill
-            if entity:IsBoss() then
+            if NPCisBoss then
                 -- Boss kill counters
                 PST:addModifiers({ roomBossKills = 1 }, true)
 
@@ -403,7 +408,7 @@ function PST:onDeath(entity)
 
             -- Chance for champions to drop a random starcursed jewel
             local levelStage = PST:getLevel():GetStage()
-            if tmpNPC:IsChampion() and 100 * math.random() < PST.SCDropRates.championKill(levelStage).regular then
+            if NPCisChamp and 100 * math.random() < PST.SCDropRates.championKill(levelStage).regular then
                 PST:SC_dropRandomJewelAt(entity.Position, PST.SCDropRates.championKill(levelStage).ancient)
             end
 
@@ -497,7 +502,7 @@ function PST:onDeath(entity)
         if PST:SC_getSnapshotMod("nullstone", false) then
             -- Add enemy from non-boss room to nullstone list
             if tmpNPC and not PST:getTreeSnapshotMod("SC_nullstoneProc", false) and not PST:getTreeSnapshotMod("SC_nullstoneClear", false) and
-            not entity:IsBoss() and room:GetType() ~= RoomType.ROOM_BOSS and
+            not NPCisBoss and room:GetType() ~= RoomType.ROOM_BOSS and
             ((not entity.Parent and entity.MaxHitPoints >= PST:getTreeSnapshotMod("SC_nullstoneHPThreshold", 0)) or room:GetAliveEnemiesCount() == 1) then
                 local nullstoneEnemyList = PST:getTreeSnapshotMod("SC_nullstoneEnemies", nil)
                 if nullstoneEnemyList then
@@ -540,7 +545,7 @@ function PST:onDeath(entity)
         end
         -- Ancient starcursed jewel: Cause Converter
         local tmpAncient = PST:SC_getSocketedAncient("Cause Converter")
-        if tmpAncient and tmpAncient.status == "seeking" and entity:IsBoss() and not PST:arrHasValue(PST.causeConverterBossBlacklist, entity.Type) and
+        if tmpAncient and tmpAncient.status == "seeking" and NPCisBoss and not PST:arrHasValue(PST.causeConverterBossBlacklist, entity.Type) and
         (tmpAncient.converted ~= entity.Type or tmpAncient.converted == entity.Type and tmpAncient.convertedVariant ~= entity.Variant) then
             tmpAncient.converted = entity.Type
             tmpAncient.convertedVariant = entity.Variant
@@ -548,7 +553,7 @@ function PST:onDeath(entity)
             PST:createFloatTextFX("Boss converted!", entity.Position, Color(0.7, 0.85, 1, 1), 0.12, 120, false)
         end
         -- Ancient starcursed jewel: Mightstone
-        if PST:SC_getSnapshotMod("mightstone", false) and tmpNPC and tmpNPC:IsChampion() then
+        if PST:SC_getSnapshotMod("mightstone", false) and tmpNPC and NPCisChamp then
             local foundMobs = false
             for _, tmpEntity in ipairs(Isaac.GetRoomEntities()) do
                 otherNPC = tmpEntity:ToNPC()
@@ -575,7 +580,7 @@ function PST:onDeath(entity)
         end
         -- Ancient starcursed jewel: Phantasm Prism
         if PST:SC_getSnapshotMod("phantasmPrism", false) and tmpNPC and not isFrozen and not PST:isMobUndead(tmpNPC) and entity.SpawnerType == 0 and
-        not tmpNPC:IsBoss() and PST:getTreeSnapshotMod("SC_phantasmProcs", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("SC_phantasmChance", 0) then
+        not NPCisBoss and PST:getTreeSnapshotMod("SC_phantasmProcs", 0) < 12 and 100 * math.random() < PST:getTreeSnapshotMod("SC_phantasmChance", 0) then
             local npcConfig = EntityConfig.GetEntity(tmpNPC.Type, tmpNPC.Variant, tmpNPC.SubType)
             if npcConfig then
                 local undeadMobTable = PST:getTreeSnapshotMod("SC_phantasmUndeadMobs", nil)
@@ -657,7 +662,8 @@ function PST:onDeath(entity)
 			end
 
             -- Mod: chance for mom to additionally drop Birthright
-            if 100 * math.random() < PST:getTreeSnapshotMod("jacobBirthright", 0) then
+            tmpMod = PST:getTreeSnapshotMod("jacobBirthright", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
                 local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, tmpPos, Vector.Zero, nil, CollectibleType.COLLECTIBLE_BIRTHRIGHT, Random() + 1)
                 PST:addModifiers({ jacobBirthrightProc = true }, true)
@@ -903,7 +909,7 @@ function PST:onDeath(entity)
 
         -- Mod: % chance for champions to drop a Holy Card on kill, once every 2 floors
         tmpMod = PST:getTreeSnapshotMod("champHolyCardDrop", 0)
-        if tmpMod > 0 and tmpNPC and tmpNPC:IsChampion() and PST:getTreeSnapshotMod("champHolyCardDropFloors", 0) == 0 and 100 * math.random() < tmpMod then
+        if tmpMod > 0 and tmpNPC and NPCisChamp and PST:getTreeSnapshotMod("champHolyCardDropFloors", 0) == 0 and 100 * math.random() < tmpMod then
             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, entity.Position, Vector.Zero, nil, Card.CARD_HOLY, Random() + 1)
             PST:addModifiers({ champHolyCardDropFloors = { value = 2, set = true } }, true)
         end
@@ -963,12 +969,12 @@ function PST:onDeath(entity)
 
         -- Mod: % chance to gain +luck when killing enemies while you have 1 soul/black heart or less, doubled against bosses
         tmpMod = PST:getTreeSnapshotMod("tBethKillLuck", 0)
-        if entity:IsBoss() then
+        if NPCisBoss then
             tmpMod = tmpMod * 3
         end
         if tmpMod > 0 and PST:getPlayer():GetSoulHearts() <= 2 and 100 * math.random() < tmpMod then
             local tmpLuck = 0.03
-            if entity:IsBoss() then
+            if NPCisBoss then
                 tmpLuck = 0.1
             end
             PST:addModifiers({ luck = tmpLuck }, true)
@@ -1023,6 +1029,7 @@ function PST:onDeath(entity)
 
         -- Cosmic Realignment node
         if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON_B) then
+            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
             local tmpPlayer = PST:getPlayer()
             -- Tainted Samson, +2% all stats when killing a monster, up to 10%
             if cosmicRCache.TSamsonBuffer < 10 then
@@ -1031,7 +1038,7 @@ function PST:onDeath(entity)
             end
         elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
             -- Tainted Forgotten, bosses drop an additional soul heart
-            if entity:IsBoss() then
+            if NPCisBoss then
                 local isBone = 100 * math.random() < 50
                 Game():Spawn(
                     EntityType.ENTITY_PICKUP,
@@ -1046,47 +1053,49 @@ function PST:onDeath(entity)
         end
     else
         -- Familiar death
-        local tmpFamiliar = entity:ToFamiliar()
-        if tmpFamiliar then
-            -- Blood clot death
-            if tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
-                -- Mod: chance for blood clots to drop their respective heart type on death, which vanishes after 2.5 seconds
-                local tmpMod = PST:getTreeSnapshotMod("clotHeartDrop", 0)
-                local clotType = tmpFamiliar.SubType + 1
-                if tmpMod > 0 and clotHeartTypes[clotType] ~= nil and 100 * math.random() < tmpMod then
-                    local tmpHeart = Game():Spawn(
-                        EntityType.ENTITY_PICKUP,
-                        PickupVariant.PICKUP_HEART,
-                        tmpFamiliar.Position,
-                        RandomVector() * 3,
-                        nil,
-                        clotHeartTypes[clotType],
-                        Random() + 1
-                    ):ToPickup()
-                    tmpHeart.Timeout = 90
-                end
+        if entity.Type == EntityType.ENTITY_FAMILIAR then
+            local tmpFamiliar = entity:ToFamiliar()
+            if tmpFamiliar then
+                -- Blood clot death
+                if tmpFamiliar.Variant == FamiliarVariant.BLOOD_BABY then
+                    -- Mod: chance for blood clots to drop their respective heart type on death, which vanishes after 2.5 seconds
+                    local tmpMod = PST:getTreeSnapshotMod("clotHeartDrop", 0)
+                    local clotType = tmpFamiliar.SubType + 1
+                    if tmpMod > 0 and clotHeartTypes[clotType] ~= nil and 100 * math.random() < tmpMod then
+                        local tmpHeart = Game():Spawn(
+                            EntityType.ENTITY_PICKUP,
+                            PickupVariant.PICKUP_HEART,
+                            tmpFamiliar.Position,
+                            RandomVector() * 3,
+                            nil,
+                            clotHeartTypes[clotType],
+                            Random() + 1
+                        ):ToPickup()
+                        tmpHeart.Timeout = 90
+                    end
 
-                -- Mod: chance to gain luck when a blood clot is destroyed
-                tmpMod = PST:getTreeSnapshotMod("clotDestroyedLuck", 0)
-                if tmpMod > 0 and 100 * math.random() < tmpMod then
-                    PST:addModifiers({ luck = 0.03 }, true)
-                end
-            -- Wisp death
-            elseif tmpFamiliar.Variant == FamiliarVariant.WISP then
-                -- Chaotic Wisps node (Bethany's tree)
-                if PST:getTreeSnapshotMod("chaoticWisps", false) then
-                    local chaoticWispsInit = PST:getTreeSnapshotMod("chaoticWispsInit", {})
-                    for i, tmpID in ipairs(chaoticWispsInit) do
-                        if tmpID == tmpFamiliar.InitSeed then
-                            table.remove(chaoticWispsInit, i)
-                            break
+                    -- Mod: chance to gain luck when a blood clot is destroyed
+                    tmpMod = PST:getTreeSnapshotMod("clotDestroyedLuck", 0)
+                    if tmpMod > 0 and 100 * math.random() < tmpMod then
+                        PST:addModifiers({ luck = 0.03 }, true)
+                    end
+                -- Wisp death
+                elseif tmpFamiliar.Variant == FamiliarVariant.WISP then
+                    -- Chaotic Wisps node (Bethany's tree)
+                    if PST:getTreeSnapshotMod("chaoticWisps", false) then
+                        local chaoticWispsInit = PST:getTreeSnapshotMod("chaoticWispsInit", {})
+                        for i, tmpID in ipairs(chaoticWispsInit) do
+                            if tmpID == tmpFamiliar.InitSeed then
+                                table.remove(chaoticWispsInit, i)
+                                break
+                            end
                         end
                     end
-                end
 
-                -- Mod: % tears per active wisp
-                if PST:getTreeSnapshotMod("soulWispTears", 0) > 0 then
-                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                    -- Mod: % tears per active wisp
+                    if PST:getTreeSnapshotMod("soulWispTears", 0) > 0 then
+                        PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                    end
                 end
             end
         end
