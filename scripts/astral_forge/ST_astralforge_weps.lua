@@ -49,6 +49,26 @@ function PST:astralWepPickRandType(factorMods)
     return PSTAstralWepType.LONGSWORD
 end
 
+-- Simulate 100k weapon drops in console, to review type distrib
+function PST:simWepTypeDrops(factorMods)
+    local tmpDrops = {}
+    for _=1,100000 do
+        local tmpWep = PST:astralWepPickRandType(factorMods)
+        if not tmpDrops[tmpWep] then tmpDrops[tmpWep] = 0 end
+        tmpDrops[tmpWep] = tmpDrops[tmpWep] + 1
+    end
+    for k,v in pairs(tmpDrops) do
+        local tmpTypeStr
+        for tmpName, tmpVal in pairs(PSTAstralWepType) do
+            if tmpVal == k then
+                tmpTypeStr = tmpName
+                break
+            end
+        end
+        print(tmpTypeStr or k, v)
+    end
+end
+
 ---@param weaponData PSTAstralWeapon
 function PST:astralWepAddMod(weaponData)
     local existingMods = {}
