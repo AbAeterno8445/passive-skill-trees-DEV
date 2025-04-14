@@ -16,9 +16,14 @@ function PST:postDamage(target, damage, flag, source)
             end
         end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
+        local isKillingHit = target:HasMortalDamage()
+
+        -- Blacklisted sources
+        local isBlacklistedSrc = not isKillingHit and (source.Type == EntityType.ENTITY_EFFECT and source.Variant == EffectVariant.BLACK_HOLE)
+        if isBlacklistedSrc then return nil end
+
         local targetIsVuln = target:IsVulnerableEnemy()
         local targetIsActive = target:IsActiveEnemy(false)
-        local isKillingHit = target:HasMortalDamage()
 
         -- Starcursed modifiers
         if targetIsActive then

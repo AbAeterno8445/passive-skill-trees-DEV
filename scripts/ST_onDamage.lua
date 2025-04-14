@@ -640,6 +640,10 @@ function PST:onDamage(target, damage, flag, source)
             end
         end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
+        -- Blacklisted sources
+        local isBlacklistedSrc = (source.Type == EntityType.ENTITY_EFFECT and source.Variant == EffectVariant.BLACK_HOLE)
+        if isBlacklistedSrc then return nil end
+
         local srcPlayer
         if source and (source.Type == EntityType.ENTITY_PLAYER or source.SpawnerType == EntityType.ENTITY_PLAYER) then
             srcPlayer = source.Entity:ToPlayer() or source.Entity.SpawnerEntity:ToPlayer()
