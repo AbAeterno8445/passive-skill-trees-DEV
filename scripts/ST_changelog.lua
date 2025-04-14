@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Added compatibility for items/entities from the Pudding and Wakaba mod. (thanks wookywok!)",
         "- Made slight performance optimizations to internal utility functions and entity data storage, on-hit and on-death functions.",
         "- Black hole damage ticks no longer trigger on-hit effects.",
+        "- Effects that can duplicate spawned pickups no longer affect golden pickups.",
         "",
 
         "1.2.10",

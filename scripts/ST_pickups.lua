@@ -20,6 +20,14 @@ function PST:isPickupChest(variant)
     variant == PickupVariant.PICKUP_BOMBCHEST or variant == Isaac.GetEntityVariantByName("Sidereal Cache")
 end
 
+---@param pickup EntityPickup
+function PST:isGoldenPickup(pickup)
+    return (pickup.Variant == PickupVariant.PICKUP_COIN and pickup.SubType == CoinSubType.COIN_GOLDEN or
+    pickup.Variant == PickupVariant.PICKUP_BOMB and pickup.SubType == BombSubType.BOMB_GOLDEN or
+    pickup.Variant == PickupVariant.PICKUP_KEY and pickup.SubType == KeySubType.KEY_GOLDEN)
+end
+
+---@param pickup EntityPickup
 function PST:vanishPickup(pickup)
     Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector.Zero, nil, 1, Random() + 1)
     pickup:Remove()
@@ -1482,7 +1490,7 @@ function PST:onPickupInit(pickup, firstSpawn)
                         tmpChance = tmpChance * 3
                     end
                     if not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
-                    variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpChance then
+                    variant == PickupVariant.PICKUP_BOMB) and not PST:isGoldenPickup(pickup) and 100 * math.random() < tmpChance then
                         local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
                         PST:getEntData(newPickup).PST_duped = true
                     end
@@ -1504,7 +1512,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             -- Mod: % chance to duplicate dropped coins/keys/bombs
             tmpMod = PST:getTreeSnapshotMod("pickupDupe", 0)
             if tmpMod > 0 and firstSpawn and not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
-            variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpMod then
+            variant == PickupVariant.PICKUP_BOMB) and not PST:isGoldenPickup(pickup) and 100 * math.random() < tmpMod then
                 local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
                 PST:getEntData(newPickup).PST_duped = true
             end
