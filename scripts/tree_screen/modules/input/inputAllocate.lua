@@ -398,7 +398,8 @@ function PST.treeScreen:InputAllocate()
                     else
                         charData.crimsonNodes[tostring(crimsonNodeSubmenu.crimsonNodeID)] = {
                             name = nodeData.name,
-                            sprite = nodeData.sprite
+                            sprite = nodeData.sprite,
+                            customID = nodeData.customID
                         }
                     end
                     submenusModule:CloseSubmenu()

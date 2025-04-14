@@ -173,15 +173,19 @@ function nodeDrawingModule:Render(tScreen)
                 if isChosen then
                     local crimsonNodeData = charData.crimsonNodes[tostring(node.id)]
                     if crimsonNodeData.sprite then
+                        local crimsonExtraSprite = tmpSprite
+                        if crimsonNodeData.customID and PST.customNodeImages[crimsonNodeData.customID] then
+                            crimsonExtraSprite = PST.customNodeImages[crimsonNodeData.customID]
+                        end
                         local oldScaleX, oldScaleY = tmpSprite.Scale.X, tmpSprite.Scale.Y
-                        tmpSprite.Color.RO = 0.25
-                        tmpSprite.Scale.X = tmpSprite.Scale.X / 2
-                        tmpSprite.Scale.Y = tmpSprite.Scale.Y / 2
-                        tmpSprite:SetFrame("Default", crimsonNodeData.sprite)
-                        tmpSprite:Render(Vector(finalDrawX, finalDrawY))
-                        tmpSprite.Color.RO = 0
-                        tmpSprite.Scale.X = oldScaleX
-                        tmpSprite.Scale.Y = oldScaleY
+                        crimsonExtraSprite.Color.RO = 0.25
+                        crimsonExtraSprite.Scale.X = crimsonExtraSprite.Scale.X / 2
+                        crimsonExtraSprite.Scale.Y = crimsonExtraSprite.Scale.Y / 2
+                        crimsonExtraSprite:SetFrame("Default", crimsonNodeData.sprite)
+                        crimsonExtraSprite:Render(Vector(finalDrawX, finalDrawY))
+                        crimsonExtraSprite.Color.RO = 0
+                        crimsonExtraSprite.Scale.X = oldScaleX
+                        crimsonExtraSprite.Scale.Y = oldScaleY
                     end
                 end
             end

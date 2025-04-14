@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "- Made slight performance optimizations to internal utility functions and entity data storage, on-hit and on-death functions.",
         "- Black hole damage ticks no longer trigger on-hit effects.",
         "- Effects that can duplicate spawned pickups no longer affect golden pickups.",
+        "- Fixed Core Crimson nodes displaying the wrong node images for modded character nodes.",
         "",
 
         "1.2.10",

@@ -70,17 +70,20 @@ function crimsonNodeSubmenu:Render(tScreen, submenusModule)
         self.menuX, self.menuY,
         crimsonNodeName[tmpCrimsonType] .. " Crimson Node",
         function()
-            local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
-            local oldScaleX, oldScaleY, oldAlpha = nodeSprite.Scale.X, nodeSprite.Scale.Y, nodeSprite.Color.A
-            nodeSprite.Scale.X = 1
-            nodeSprite.Scale.Y = 1
-            nodeSprite.Color.A = 1
-
             -- Draw available medium nodes
             for i=1,nodesPerPage do
                 local nodeID = i + self.invPage * nodesPerPage
                 local nodeData = medNodeTable[nodeID]
                 if nodeData then
+                    local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
+                    if nodeData.customID and PST.customNodeImages[nodeData.customID] then
+                        nodeSprite = PST.customNodeImages[nodeData.customID]
+                    end
+                    local oldScaleX, oldScaleY, oldAlpha = nodeSprite.Scale.X, nodeSprite.Scale.Y, nodeSprite.Color.A
+                    nodeSprite.Scale.X = 1
+                    nodeSprite.Scale.Y = 1
+                    nodeSprite.Color.A = 1
+
                     local nodeX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32
                     local nodeY = self.menuY * tScreen.zoomScale + 52 + math.floor((i - 1) / 5) * 32
 
@@ -99,13 +102,13 @@ function crimsonNodeSubmenu:Render(tScreen, submenusModule)
                         nodeX - tScreen.treeCamera.X - tScreen.camZoomOffset.X,
                         nodeY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
                     ))
+
+                    -- Reset node sprite
+                    nodeSprite.Scale.X = oldScaleX
+                    nodeSprite.Scale.Y = oldScaleY
+                    nodeSprite.Color.A = oldAlpha
                 end
             end
-
-            -- Reset node sprite
-            nodeSprite.Scale.X = oldScaleX
-            nodeSprite.Scale.Y = oldScaleY
-            nodeSprite.Color.A = oldAlpha
         end,
         {
             prevFunc = function()
