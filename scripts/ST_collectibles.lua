@@ -211,7 +211,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
         end
 
         -- Uber expedition entropy mod
-        if PST:getTreeSnapshotMod("expedEnt_passiveItems", false) and firstTime then
+        if PST:getTreeSnapshotMod("expedEnt_passiveItems", false) and firstTime and not PST:arrHasValue(PST.progressionItems, itemType) then
             local itmCount = 0
             for tmpType, tmpItemCount in pairs(player:GetCollectiblesList()) do
                 if not PST:arrHasValue(PST.progressionItems, tmpType) then

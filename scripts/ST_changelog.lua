@@ -9,6 +9,8 @@ function PST:getChangelogList()
         "- Black hole damage ticks no longer trigger on-hit effects.",
         "- Effects that can duplicate spawned pickups no longer affect golden pickups.",
         "- Fixed Core Crimson nodes displaying the wrong node images for modded character nodes.",
+        "- Fixed Uber Expedition entropy modifier 'Acquire passive items while having at least 12 passive items' triggering when collecting",
+        "progression items.",
         "",
 
         "1.2.10",
