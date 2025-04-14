@@ -8,6 +8,8 @@ function PST:getChangelogList()
         "- Made slight performance optimizations to internal utility functions and entity data storage, on-hit and on-death functions.",
         "- Black hole damage ticks no longer trigger on-hit effects.",
         "- Effects that can duplicate spawned pickups no longer affect golden pickups.",
+        "- Expedition 'Curse of Ephemeral Pieces' now causes non-vanishing pickups to vanish after 10 seconds (from 4), 8 seconds past",
+        "depth 10 (from 3), and 6 seconds past depth 25 (from 2).",
         "- Fixed Core Crimson nodes displaying the wrong node images for modded character nodes.",
         "- Fixed Uber Expedition entropy modifier 'Acquire passive items while having at least 12 passive items' triggering when collecting",
         "progression items.",

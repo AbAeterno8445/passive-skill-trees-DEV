@@ -566,9 +566,9 @@ PST.expeditionCurses = {
         description = "All non-vanishing pickup drops now vanish after {{curseEphPieces}} seconds.",
         spriteFrame = 6,
         modsFunc = function(depth)
-            local secs = 4
-            if depth >= 10 then secs = 3 end
-            if depth >= 25 then secs = 2 end
+            local secs = 10
+            if depth >= 10 then secs = 8 end
+            if depth >= 25 then secs = 6 end
             return { curseEphPieces = secs }
         end
     },
