@@ -642,7 +642,7 @@ function expeditionScreen:Render(tScreen)
                     {"Deep-Space Distortion mods add a significant amount of challenge to the runs.", PST.kcolors.RED2},
                     {"At 100 entropy, max attempts for the expedition is lowered by 1.", PST.kcolors.RED2}
                 }
-            elseif expData.version == 2 then
+            else
                 uberInfoDesc = {
                     {"Order acts as a shield against Entropy. Whenever you gain Entropy, it is first deducted", PST.kcolors.TEAL1},
                     {"from your Order instead, if you have any.", PST.kcolors.TEAL1},

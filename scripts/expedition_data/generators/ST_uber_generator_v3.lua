@@ -8,12 +8,12 @@ local function reversedipairs(t)
     return reversedipairsiter, t, #t + 1
 end
 
-local generatorVersion = 2
+local generatorVersion = 3
 -- Generate a set of nodes for an astral expedition
 ---@param depth number
 ---@param seed? integer
 ---@return PSTExpedition
-function PST:generateUberExpeditionV2(depth, seed, expModifiers)
+function PST:generateUberExpeditionV3(depth, seed, expModifiers)
     local expSeed = seed or math.random(100000000)
 
     local uberDepth = (15 + depth) * 2
@@ -37,16 +37,19 @@ function PST:generateUberExpeditionV2(depth, seed, expModifiers)
         startOrder = 50
     end
 
+    -- Order-granting modifiers
+    local orderMods
+
     -- Reward type weights (starting value, addition per advanced column, min or max value)
     local rewardWeights = {
         [PSTExpNodeRewardType.OBOLS] = { val = 100, add = 5 },
         [PSTExpNodeRewardType.EXP] = { val = 100, add = -5 },
         [PSTExpNodeRewardType.ATTEMPTS] = { val = 3 + depth / 5, add = 0.1 },
-        [PSTExpNodeRewardType.ORDER] = { val = 9, add = 0.2 },
+        [PSTExpNodeRewardType.ORDER] = { val = 60, add = 2 },
         -- Very rare
-        [PSTExpNodeRewardType.C_STARCORE] = { val = 0.6 + depth / 10, add = 0 },
-        [PSTExpNodeRewardType.GLOBAL_SP] = { val = 0.5 + depth / 10, add = 0 },
-        [PSTExpNodeRewardType.STARBLESS_WEP] = { val = 0.4 + depth / 10, add = 0 }
+        [PSTExpNodeRewardType.C_STARCORE] = { val = 3 + depth / 3, add = 0.7 },
+        [PSTExpNodeRewardType.GLOBAL_SP] = { val = 0.7 + depth / 10, add = 0 },
+        [PSTExpNodeRewardType.STARBLESS_WEP] = { val = 0.6 + depth / 10, add = 0 }
     }
     local rewardWeightVals = {
         PSTExpNodeRewardType.OBOLS, PSTExpNodeRewardType.EXP, PSTExpNodeRewardType.ATTEMPTS,
@@ -213,13 +216,43 @@ function PST:generateUberExpeditionV2(depth, seed, expModifiers)
                         end
                     end
                 end
+
+                -- Order modifiers
+                if newNode.rewardType == PSTExpNodeRewardType.ORDER then
+                    newNode.entropyMods = nil
+
+                    local tmpPickedOrdMods = {}
+                    for _=1,2 do
+                        local newOrdMod = PST.expedOrderModList[rewardRNG:RandomInt(1, #PST.expedOrderModList)]
+                        local failsafe = 0
+                        while (PST:arrHasValue(tmpPickedOrdMods, newOrdMod) and failsafe < 500) do
+                            newOrdMod = PST.expedOrderModList[rewardRNG:RandomInt(1, #PST.expedOrderModList)]
+                            failsafe = failsafe + 1
+                        end
+                        if failsafe < 500 then
+                            table.insert(tmpPickedOrdMods, newOrdMod)
+                        end
+                    end
+                    for _, tmpOrdMod in ipairs(tmpPickedOrdMods) do
+                        if not orderMods then orderMods = {} end
+                        if not orderMods[tostring(col)] then orderMods[tostring(col)] = {} end
+                        if not orderMods[tostring(col)][tostring(row)] then orderMods[tostring(col)][tostring(row)] = {} end
+
+                        -- Add order objective to general order mods table under current node col/row
+                        table.insert(orderMods[tostring(col)][tostring(row)], {
+                            obj = tmpOrdMod,
+                            reqProg = 0,
+                            prog = 0
+                        })
+                    end
+                end
             end
 
             -- Uber choice reward data
             if newNode.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
                 newNode.rewardData = {}
                 local avChoices = {
-                    { type = PSTExpNodeRewardType.C_STARCORE, chance = 0.25, amt = 1 },
+                    { type = PSTExpNodeRewardType.C_STARCORE, chance = 0.3, amt = 1 },
                     { type = PSTExpNodeRewardType.GLOBAL_SP, chance = 0.3, amt = 4 },
                     { type = PSTExpNodeRewardType.STARBLESS_PRISM, chance = 0.2, amt = 1 },
                     { type = PSTExpNodeRewardType.OBOLS, chance = 0.3, amt = 400 + depth * 50 }
@@ -357,7 +390,8 @@ function PST:generateUberExpeditionV2(depth, seed, expModifiers)
         curses = {},
         items = {},
         uber = true,
-        modifiers = expModifiers
+        modifiers = expModifiers,
+        orderObjs = orderMods
     }
     if startOrder > 0 then newExped.order = startOrder end
 

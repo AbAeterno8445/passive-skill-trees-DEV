@@ -61,6 +61,7 @@ function PST:getExpedSave(expData)
     if expData.uber then tmpExpSave.uber = true end
     -- Order/Entropy
     if expData.order then tmpExpSave.order = expData.order end
+    if expData.orderObjs then tmpExpSave.orderObjs = expData.orderObjs end
     if expData.entropy then tmpExpSave.entropy = expData.entropy end
     if expData.entropyEffects then tmpExpSave.entropyEffects = expData.entropyEffects end
     -- Deep-Space distortion mods
@@ -167,6 +168,7 @@ function PST:loadExpedition(depth, expSave, uber)
     end
     -- Order/Entropy
     if expSave.order then tmpExped.order = expSave.order end
+    if expSave.orderObjs then tmpExped.orderObjs = expSave.orderObjs end
     if expSave.entropy then tmpExped.entropy = expSave.entropy end
     if expSave.entropyEffects then tmpExped.entropyEffects = expSave.entropyEffects end
     -- Deep-Space distortion mods

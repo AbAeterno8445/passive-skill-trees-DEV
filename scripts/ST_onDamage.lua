@@ -610,6 +610,14 @@ function PST:onDamage(target, damage, flag, source)
                         )
                     end
 
+                    -- Expedition order objectives: damage taken resets progress
+                    if PST:getTreeSnapshotMod("isExpedRun", false) then
+                        PST:expedAddOrderProgInRun("expedOrd_defeatMonsters", -9999)
+                        PST:expedAddOrderProgInRun("expedOrd_defeatChampions", -9999)
+                        PST:expedAddOrderProgInRun("expedOrd_actives", -9999)
+                        PST:expedAddOrderProgInRun("expedOrd_defeatChampions", -9999)
+                    end
+
                     -- Deep-Space Distortion mod: While <= 12% HP, final boss hits kill you
                     if PST:getTreeSnapshotMod("dsdMod_finalLastStand", false) and PST:entityIsFinalBoss(tmpSource) and (tmpSource.HitPoints / tmpSource.MaxHitPoints) <= 0.12 then
                         player:Kill()

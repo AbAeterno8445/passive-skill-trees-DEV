@@ -698,6 +698,12 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         end
     end
 
+    -- Use active item with at least 1 charge
+    if slot ~= -1 and isNormalCharge and player:GetActiveMaxCharge(slot) >= 1 then
+        -- Expedition order objective
+        PST:expedAddOrderProgInRun("expedOrd_actives", player:GetActiveMaxCharge(slot))
+    end
+
     -- Boon: when using active with at least 2 charges, become invulnerable for X seconds
     tmpMod = PST:getTreeSnapshotMod("boonActivity", 0)
     if tmpMod > 0 and slot ~= -1 and isNormalCharge and player:GetActiveMaxCharge(slot) >= 2 then

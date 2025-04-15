@@ -86,6 +86,11 @@ function PST:onShopPurchase(pickup, player, spent)
         -- Expedition objective: purchase shop items
 		PST:expedAddProgInRun("purchases", 1)
 
+        -- Expedition order objective: purchase items worth at least 7 coins
+        if spent >= 7 then
+            PST:expedAddOrderProgInRun("expedOrd_purchase", 1)
+        end
+
         -- Sidereal Artifact objective: purchase 12 items within the same run
         if not PST:isSideArtiUnlocked("gildedMeridion") then
             PST:addModifiers({ artiObj_itemPurchases = 1 }, true)

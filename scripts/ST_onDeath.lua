@@ -201,6 +201,8 @@ function PST:onDeath(entity)
         if PST:isRunSidereal() then
             -- Expedition objective: defeat monsters
             PST:expedAddProgInRun("defeatMonsters", 1)
+            -- Expedition order modifier: defeat monsters
+            PST:expedAddOrderProgInRun("expedOrd_defeatMonsters", 1)
 
             -- Expedition objective: defeat Hush
             if entity:GetType() == EntityType.ENTITY_HUSH then
@@ -214,6 +216,11 @@ function PST:onDeath(entity)
                 -- Expedition objective: defeat hush without getting hit more than once
                 if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
                     PST:expedAddProgInRun("hushNoDmgOnce", 1)
+                end
+
+                -- Expedition order objective: defeat hush without getting hit more than 3 times
+                if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 3 then
+                    PST:expedAddOrderProgInRun("expedOrd_hush", 1)
                 end
             end
 
@@ -247,11 +254,18 @@ function PST:onDeath(entity)
         -- Room kills
         PST:addModifiers({ roomKills = 1 }, true)
 
+        -- Angel kills
+        if not PST:getTreeSnapshotMod("killedAngels", false) and (entity.Type == EntityType.ENTITY_GABRIEL or entity.Type == EntityType.ENTITY_URIEL) then
+            PST:addModifiers({ killedAngels = true }, true)
+        end
+
         if tmpNPC then
             -- Champion kill
             if NPCisChamp then
                 -- Expedition objective: defeat champions
                 PST:expedAddProgInRun("defeatChampions", 1)
+                -- Expedition order objective: defeat champions
+                PST:expedAddOrderProgInRun("expedOrd_defeatChampions", 1)
 
                 -- Obols on champion kill
                 if PST:getTreeSnapshotMod("isExpedRun", false) then

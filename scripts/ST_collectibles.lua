@@ -210,7 +210,7 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
             end
         end
 
-        -- Uber expedition entropy mod
+        -- Uber expedition entropy mod / order objective
         if PST:getTreeSnapshotMod("expedEnt_passiveItems", false) and firstTime and not PST:arrHasValue(PST.progressionItems, itemType) then
             local itmCount = 0
             for tmpType, tmpItemCount in pairs(player:GetCollectiblesList()) do
@@ -223,6 +223,9 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
                     PST:getTreeSnapshotMod("expedDepth", 1),
                     PST.expedEntropyMods.expedEnt_passiveItems.entropy
                 )
+            end
+            if itmCount > 15 then
+                PST:expedAddOrderProgInRun("expedOrd_passiveItems", 1)
             end
         end
     end

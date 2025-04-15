@@ -275,6 +275,9 @@ function PST:onSlotUpdate(slot)
         if tmpMod > 0 then
             PST:addTempXP(tmpMod, true, true)
         end
+
+        -- Expedition order objective: fully help beggar
+        PST:expedAddOrderProgInRun("expedOrd_beggars", 1)
     end
 
     -- Crane game regenerates item

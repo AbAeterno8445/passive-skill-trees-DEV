@@ -88,6 +88,7 @@ PSTExpNodeType = {
 ---@field modifiers? table
 ---@field endRewards? boolean -- Whether reward nodes were placed at the end for choice rewards
 ---@field nodeQueue? number[][] -- Queue of {col, row} following the currently selected node. Should be cleaned up if there's no selected node
+---@field orderObjs? table -- Stores objective progress for order reward nodes
 
 -- Expedition save class (expedition data that gets stored in savefile)
 ---@class PSTExpeditionSave
@@ -110,6 +111,7 @@ PSTExpNodeType = {
 ---@field dsMods? number[]
 ---@field endRewards? boolean
 ---@field nodeQueue? number[]
+---@field orderObjs? table
 
 -- Expedition items pool
 PST.expeditionItems = {
@@ -1169,6 +1171,85 @@ PST.expedEntropyModList = {
     "expedEnt_actives", "expedEnt_clearTime", "expedEnt_bossDmg", "expedEnt_purchases", "expedEnt_passiveItems",
     "expedEnt_hearts", "expedEnt_trinketSwap", "expedEnt_activeSwap", "expedEnt_chests", "expedEnt_specialDmg",
     "expedEnt_tearDmg", "expedEnt_finalBossDmg", "expedEnt_loseRun", "expedEnt_noPickups", "expedEnt_compNode"
+}
+
+-- Uber expedition order modifiers
+PST.expedOrderMods = {
+    expedOrd_defeatMonsters = { -- 1
+        desc = "Defeat 77 monsters without taking damage in-between kills: +14 order.",
+        req = 77,
+        order = 14,
+        max = 5
+    },
+    expedOrd_defeatChampions = { -- 2
+        desc = "Defeat 21 champions without taking damage in-between kills: +16 order.",
+        req = 21,
+        order = 16,
+        max = 4
+    },
+    expedOrd_actives = { -- 3
+        desc = "Use a combined total of 20 active item charges without taking damage in-between: +15 order.",
+        req = 20,
+        order = 15,
+        max = 4
+    },
+    expedOrd_floors = { -- 4
+        desc = "Clear a floor past the first two without taking damage: +16 order.",
+        order = 16,
+        max = 4
+    },
+    expedOrd_purchase = { -- 5
+        desc = "Purchase 7 items worth at least 7 coins: +14 order.",
+        req = 7,
+        order = 14,
+        max = 3
+    },
+    expedOrd_passiveItems = { -- 6
+        desc = "Acquire passive items while having at least 15 passive items, excluding progression items: +4 order per item.",
+        order = 4,
+        max = 15
+    },
+    expedOrd_roomClear = { -- 7
+        desc = "Clear a room with at least 5 monsters past floor 5 within 7 seconds: +2 order.",
+        order = 2,
+        max = 22
+    },
+    expedOrd_beggars = { -- 8
+        desc = "Fully help a beggar: +14 order.",
+        order = 14,
+        max = 3
+    },
+    expedOrd_challenge = { -- 9
+        desc = "Clear a challenge room without taking damage: +12 order.",
+        order = 12,
+        max = 5
+    },
+    expedOrd_bossRush = { -- 10
+        desc = "Clear the Boss Rush without taking damage more than 3 times: +40 order.",
+        order = 40,
+        max = 1
+    },
+    expedOrd_hush = { -- 11
+        desc = "Defeat Hush without taking damage more than 3 times: +44 order.",
+        order = 44,
+        max = 1
+    },
+    expedOrd_bossRooms = { -- 12
+        desc = "Clear 4 boss rooms: +10 order.",
+        req = 4,
+        order = 10,
+        max = 5
+    },
+    expedOrd_noAngels = { -- 13
+        desc = "Win a run without having killed any Angel bosses: +30 order.",
+        order = 30,
+        max = 1
+    }
+}
+PST.expedOrderModList = {
+    "expedOrd_defeatMonsters", "expedOrd_defeatChampions", "expedOrd_actives", "expedOrd_floors", "expedOrd_purchase",
+    "expedOrd_passiveItems", "expedOrd_roomClear", "expedOrd_beggars", "expedOrd_challenge", "expedOrd_bossRush",
+    "expedOrd_hush", "expedOrd_bossRooms", "expedOrd_noAngels"
 }
 
 local obolStageFactor = 0.002
