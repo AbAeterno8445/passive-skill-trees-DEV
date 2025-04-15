@@ -3,7 +3,7 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
-        "1.3.0",
+        "v1.3.0",
         "- Added compatibility for items/entities from the Pudding and Wakaba mod. (thanks wookywok!)",
         "- Made slight performance optimizations to internal utility functions and entity data storage, on-hit and on-death functions.",
         "- Black hole damage ticks no longer trigger on-hit effects.",
@@ -15,7 +15,7 @@ function PST:getChangelogList()
         "    - Increased the chance for normal nodes to roll a Crimson Starcore as a completion reward.",
         "- Expedition 'Curse of Ephemeral Pieces' now causes non-vanishing pickups to vanish after 10 seconds (from 4), 8 seconds past",
         "depth 10 (from 3), and 6 seconds past depth 25 (from 2).",
-        "- The 'Bring The Order' Deep-Space tree node now grants 50 order at the beginning of an uber expedition (from 15), requires 15 order to",
+        "- The 'Bring The Order' Deep-Space tree node now grants 50 order at the beginning of an uber expedition (from 15), requires 30 order to",
         "prevent attempts subtraction (from 10), and gives -0.03 luck per order (from -0.05).",
         "- Added a set of help screen pages for Uber Expeditions.",
         "- Fixed Core Crimson nodes displaying the wrong node images for modded character nodes.",
@@ -24,12 +24,12 @@ function PST:getChangelogList()
         "- Fixed Expedition objectives 'Clear floor without taking damage more than once/twice' potentially not triggering after taking damage once.",
         "",
 
-        "1.2.10",
+        "v1.2.10",
         "- Potential fix for game freeze when completing an expedition node requiring you to gain xp that rewarded xp on completion, while",
         "having queued nodes ahead.",
         "",
 
-        "1.2.9",
+        "v1.2.9",
         "- Added an 'Ancient Weapon Compendium' node to the Sidereal Tree, connected to the Astral Forge node. The compendium allows reviewing",
         "all available ancient weapons for each weapon type, to have an idea of which ones to look for.",
         "- Added a counter to the Ancient Jewel inventory menus displaying how many ancient jewels have been found out of the available total.",

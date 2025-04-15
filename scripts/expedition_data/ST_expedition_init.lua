@@ -1244,12 +1244,18 @@ PST.expedOrderMods = {
         desc = "Win a run without having killed any Angel bosses: +30 order.",
         order = 30,
         max = 1
+    },
+    expedOrd_chests = { -- 14
+        desc = "Open any 5 chests without taking damage in-between: +15 order.",
+        req = 5,
+        order = 15,
+        max = 3
     }
 }
 PST.expedOrderModList = {
     "expedOrd_defeatMonsters", "expedOrd_defeatChampions", "expedOrd_actives", "expedOrd_floors", "expedOrd_purchase",
     "expedOrd_passiveItems", "expedOrd_roomClear", "expedOrd_beggars", "expedOrd_challenge", "expedOrd_bossRush",
-    "expedOrd_hush", "expedOrd_bossRooms", "expedOrd_noAngels"
+    "expedOrd_hush", "expedOrd_bossRooms", "expedOrd_noAngels", "expedOrd_chests"
 }
 
 local obolStageFactor = 0.002

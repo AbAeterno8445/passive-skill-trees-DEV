@@ -616,6 +616,7 @@ function PST:onDamage(target, damage, flag, source)
                         PST:expedAddOrderProgInRun("expedOrd_defeatChampions", -9999)
                         PST:expedAddOrderProgInRun("expedOrd_actives", -9999)
                         PST:expedAddOrderProgInRun("expedOrd_defeatChampions", -9999)
+                        PST:expedAddOrderProgInRun("expedOrd_chests", -9999)
                     end
 
                     -- Deep-Space Distortion mod: While <= 12% HP, final boss hits kill you

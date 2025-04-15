@@ -674,6 +674,15 @@ function PST:getExpedResetObolCost(depth, uber)
     return math.min(100, 40 + (depth - 1) * 20)
 end
 
+-- Expedition cost of switching nodes once one is already selected
+function PST:getExpedNodeSwitchCost(depth, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
+    if tmpExpedition and tmpExpedition.uber then
+        return { sp = 1, respecs = 50, obols = math.min(300, 100 + 25 * (depth - 1)) }
+    end
+    return { respecs = math.min(30, 5 + (depth - 1) * 2) }
+end
+
 function PST:getExpedOrderObjDataAt(depth, uber, col, row)
     local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition and tmpExpedition.orderObjs then

@@ -61,7 +61,7 @@ function PST:onRunOver(isGameOver)
                 if PST:getTreeSnapshotMod("isExpedUber", false) then
                     -- Bring The Order node (Deep-Space tree)
                     local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
-                    if expData and expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order >= 15 then
+                    if expData and expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order >= 30 then
                         loseAttempt = false
                     end
                 end

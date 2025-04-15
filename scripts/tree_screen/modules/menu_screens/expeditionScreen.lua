@@ -185,25 +185,34 @@ function expeditionScreen:OnInput()
                     PST.treeScreen.treeHasChanges = true
                 -- Attempt to select selectable node
                 elseif self.hoveredNode.selectable and (not expData.selectedNode or (expData.selectedNode and
-                (expData.selectedNode.col ~= self.hoveredNode.col or expData.selectedNode.row ~= self.hoveredNode.row)) and
-                PST.modData.skillPoints >= 1 and PST.modData.respecPoints >= 5) then
-                    -- Switching selection costs global SP and respecs
-                    if expData.selectedNode then
-                        PST.modData.skillPoints = PST.modData.skillPoints - 1
-                        PST.modData.respecPoints = PST.modData.respecPoints - 5
+                (expData.selectedNode.col ~= self.hoveredNode.col or expData.selectedNode.row ~= self.hoveredNode.row))) then
+                    -- Switching selection costs
+                    local charData = PST:getCurrentCharData()
+                    local switchCosts = PST:getExpedNodeSwitchCost(self.currentDepth, self.uberMode)
+                    if not expData.selectedNode or PST.debugOptions.infSP or (PST.modData.skillPoints >= (switchCosts.sp or 0) and PST.modData.respecPoints >= (switchCosts.respecs or 0) and
+                    (not switchCosts.obols or (switchCosts.obols and charData and charData.arcaneObols >= switchCosts.obols))) then
+                        if expData.selectedNode then
+                            if not PST.debugOptions.infSP then
+                                PST.modData.skillPoints = PST.modData.skillPoints - (switchCosts.sp or 0)
+                                PST.modData.respecPoints = PST.modData.respecPoints - (switchCosts.respecs or 0)
+                                if charData and switchCosts.obols then
+                                    charData.arcaneObols = charData.arcaneObols - switchCosts.obols
+                                end
+                            end
 
-                        -- Remove other node's curse if present
-                        local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
-                        if selNode and selNode.curse and selNode.curse > 0 then
-                            PST:expedRemoveCurse(self.currentDepth, selNode.curse, self.uberMode)
+                            -- Remove other node's curse if present
+                            local selNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+                            if selNode and selNode.curse and selNode.curse > 0 then
+                                PST:expedRemoveCurse(self.currentDepth, selNode.curse, self.uberMode)
+                            end
                         end
-                    end
-                    PST:expedSelectNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, self.uberMode)
-                    SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                        PST:expedSelectNode(self.currentDepth, self.hoveredNode.col, self.hoveredNode.row, self.uberMode)
+                        SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
 
-                    expData.nodeQueue = nil
-                    PST:updateExpedAccess(self.currentDepth, self.uberMode)
-                    PST.treeScreen.treeHasChanges = true
+                        expData.nodeQueue = nil
+                        PST:updateExpedAccess(self.currentDepth, self.uberMode)
+                        PST.treeScreen.treeHasChanges = true
+                    end
                 -- Attempt to queue queuable node
                 elseif self.hoveredNode.queuable then
                     if not expData.nodeQueue then expData.nodeQueue = {} end
@@ -445,6 +454,14 @@ function expeditionScreen:Render(tScreen)
             table.insert(nodeDesc, {"Press Allocate to remove this and following nodes from the queue.", PST.kcolors.STAR_ORANGE})
         end
         if not isRewardNode then
+            local switchCosts = PST:getExpedNodeSwitchCost(self.currentDepth, self.uberMode)
+            local costStr = ""
+            local tmpCosts = {}
+            if switchCosts.sp then table.insert(tmpCosts, switchCosts.sp .. " global SP") end
+            if switchCosts.respecs then table.insert(tmpCosts, switchCosts.respecs .. " respecs") end
+            if switchCosts.obols then table.insert(tmpCosts, switchCosts.obols .. " obols") end
+            costStr = table.concat(tmpCosts, ", ") .. "."
+
             if expData.selectedNode then
                 if expData.selectedNode.col == self.hoveredNode.col and expData.selectedNode.row == self.hoveredNode.row then
                     nodeName = nodeName .. " (Selected)"
@@ -457,11 +474,11 @@ function expeditionScreen:Render(tScreen)
                     end
                 elseif self.hoveredNode.selectable then
                     table.insert(nodeDesc, "Press the Allocate button to switch selected node to this one.")
-                    table.insert(nodeDesc, {"  > Switching node selection costs 1 global SP and 5 respec points.", PST.kcolors.RED2})
+                    table.insert(nodeDesc, {"  > Switching node selection costs " .. costStr, PST.kcolors.RED2})
                 end
             elseif self.hoveredNode.selectable then
                 table.insert(nodeDesc, "Press the Allocate button to select this node.")
-                table.insert(nodeDesc, {"  > Switching the selection to a different node will cost 1 global SP and 5 respec points.", PST.kcolors.RED2})
+                table.insert(nodeDesc, {"  > Switching the selection to a different node afterwards will cost " .. costStr, PST.kcolors.RED2})
             end
         else
             table.insert(nodeDesc, "Press the Allocate button to claim this reward.")

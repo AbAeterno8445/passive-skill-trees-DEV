@@ -88,6 +88,8 @@ function PST:prePickup(pickup, collider, low)
 
                     -- Expedition objective: open any chest
                     PST:expedAddProgInRun("chests", 1)
+                    -- Expedition order objective: open chests without taking damage in-between
+                    PST:expedAddOrderProgInRun("expedOrd_chests", 1)
                 end
 
                 -- Start challenge room
