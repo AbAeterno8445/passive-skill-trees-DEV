@@ -134,6 +134,6 @@ PST.SkillTreesAPI.AddCharacterTree("Azazel", false, [[
 "214": "{\"pos\":[-7,2],\"type\":849,\"size\":\"Large\",\"name\":\"Divergent Crimson Node\",\"description\":[\"Allocate to choose any medium node from another character's tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[17],\"reqs\":{\"crimsonStarcore\":1}}",
 "215": "{\"pos\":[13,-2],\"type\":849,\"size\":\"Large\",\"name\":\"Divergent Crimson Node\",\"description\":[\"Allocate to choose any medium node from another character's tree.\",\"Gain the effects of the chosen node while allocated.\"],\"modifiers\":{},\"adjacent\":[56],\"reqs\":{\"crimsonStarcore\":1}}",
 "216": "{\"pos\":[-10,0],\"type\":917,\"size\":\"Large\",\"name\":\"Demonic Ambition\",\"description\":[\"Gain Goat's Head while you have 4 black hearts or more.\",\"Goat's Head can no longer show up naturally.\"],\"modifiers\":{\"demonicAmbition\":true},\"adjacent\":[156]}",
-"218": "{\"pos\":[5,0],\"type\":918,\"size\":\"Large\",\"name\":\"Early Bird\",\"description\":[\"Start with an additional black heart.\",\"When exiting the first floor, lose a black/soul heart if you have more than 1 total heart container\",\"of any type.\"],\"modifiers\":{},\"adjacent\":[66,67]}"
+"218": "{\"pos\":[5,0],\"type\":918,\"size\":\"Large\",\"name\":\"Early Bird\",\"description\":[\"Start with an additional black heart.\",\"When exiting the first floor, lose a black/soul heart if you have more than 1 total heart container\",\"of any type.\"],\"modifiers\":{\"earlyBird\":true},\"adjacent\":[66,67]}"
 }
 ]])

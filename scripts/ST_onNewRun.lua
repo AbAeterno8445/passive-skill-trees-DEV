@@ -911,7 +911,7 @@ function PST:onNewRun(isContinued)
 
     -- Early Bird node (Azazel's tree)
     if PST:getTreeSnapshotMod("earlyBird", false) then
-        player:AddBlackHearts(1)
+        player:AddBlackHearts(2)
     end
 
     -- Growing Contrition node (Lazarus' tree)

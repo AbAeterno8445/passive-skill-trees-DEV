@@ -22,6 +22,7 @@ function PST:getChangelogList()
         "- Fixed Uber Expedition entropy modifier 'Acquire passive items while having at least 12 passive items' triggering when collecting",
         "progression items.",
         "- Fixed Expedition objectives 'Clear floor without taking damage more than once/twice' potentially not triggering after taking damage once.",
+        "- Fixed Azazel's \"Early Bird\" node not being applied on run start.",
         "",
 
         "v1.2.10",
