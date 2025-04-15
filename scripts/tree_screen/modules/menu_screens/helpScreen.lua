@@ -23,7 +23,8 @@ local helpScreen = {
         "7.1", "7.2",
         "8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7",
         "9.1", "9.2", "9.3",
-        "10.1"
+        "10.1",
+        "11.1", "11.2", "11.3", "11.4", "11.5"
     },
     helpButtons = {
         {
@@ -85,6 +86,12 @@ local helpScreen = {
             number = 10,
             iconID = 9,
             targetPage = "10.1"
+        },
+        {
+            title = "Uber Exped",
+            number = 11,
+            iconID = 10,
+            targetPage = "11.1"
         }
     }
 }
@@ -239,7 +246,7 @@ function helpScreen:Render(tScreen)
         -- Decor icons for pages
         local pageName = self.pages[self.currentPage]
         if pageName then
-            local buttonID = tonumber(pageName:sub(1, 1))
+            local buttonID = tonumber(pageName:sub(1, 2))
             if buttonID then
                 local tmpButton = self.helpButtons[buttonID]
                 if tmpButton and tmpButton.iconID then

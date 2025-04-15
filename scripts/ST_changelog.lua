@@ -17,6 +17,7 @@ function PST:getChangelogList()
         "depth 10 (from 3), and 6 seconds past depth 25 (from 2).",
         "- The 'Bring The Order' Deep-Space tree node now grants 50 order at the beginning of an uber expedition (from 15), requires 15 order to",
         "prevent attempts subtraction (from 10), and gives -0.03 luck per order (from -0.05).",
+        "- Added a set of help screen pages for Uber Expeditions.",
         "- Fixed Core Crimson nodes displaying the wrong node images for modded character nodes.",
         "- Fixed Uber Expedition entropy modifier 'Acquire passive items while having at least 12 passive items' triggering when collecting",
         "progression items.",
