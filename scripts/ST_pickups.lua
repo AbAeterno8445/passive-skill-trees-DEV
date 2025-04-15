@@ -20,6 +20,14 @@ function PST:isPickupChest(variant)
     variant == PickupVariant.PICKUP_BOMBCHEST or variant == Isaac.GetEntityVariantByName("Sidereal Cache")
 end
 
+---@param pickup EntityPickup
+function PST:isGoldenPickup(pickup)
+    return (pickup.Variant == PickupVariant.PICKUP_COIN and pickup.SubType == CoinSubType.COIN_GOLDEN or
+    pickup.Variant == PickupVariant.PICKUP_BOMB and pickup.SubType == BombSubType.BOMB_GOLDEN or
+    pickup.Variant == PickupVariant.PICKUP_KEY and pickup.SubType == KeySubType.KEY_GOLDEN)
+end
+
+---@param pickup EntityPickup
 function PST:vanishPickup(pickup)
     Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, pickup.Position, Vector.Zero, nil, 1, Random() + 1)
     pickup:Remove()
@@ -30,539 +38,543 @@ local jewelCollisionTimer = 0
 ---@param collider Entity
 ---@param low boolean
 function PST:prePickup(pickup, collider, low)
-    local player = collider:ToPlayer()
     local variant = pickup.Variant
     local subtype = pickup.SubType
 
-    if player ~= nil then
-        -- Sidereal Cache opening
-        local canOpenLock = player:GetNumKeys() > 0 or player:HasGoldenKey()
+    if collider.Type == EntityType.ENTITY_PLAYER then
+        local player = collider:ToPlayer()
+        if player then
+            -- Sidereal Cache opening
+            local canOpenLock = player:GetNumKeys() > 0 or player:HasGoldenKey()
 
-        -- Epiphany multitool support for sidereal caches
-        local usedMultitool = false
-        if Epiphany then
-            local multitool = Epiphany.Pickup.MULTITOOL
-            if multitool and multitool:HasMultiTool() and Input.IsActionPressed(ButtonAction.ACTION_DROP, player.ControllerIndex) then
-                usedMultitool = true
-                canOpenLock = true
-            end
-        end
-
-        if variant == Isaac.GetEntityVariantByName("Sidereal Cache") and canOpenLock and pickup.SubType ~= 1 and
-        pickup:GetSprite():GetAnimation() == "Idle" then
-            -- Sidereal Cache opened
-            local saveKey = false
-            local tmpMod = PST:getTreeSnapshotMod("sideCacheNoKey", 0)
-            saveKey = tmpMod > 0 and 100 * math.random() < tmpMod
-            if not saveKey and not player:HasGoldenKey() then
-                player:AddKeys(-1)
-            end
-            -- Chance for sidereal caches to return 1-2 keys when opened
-            tmpMod = PST:getTreeSnapshotMod("sideCacheKeyReturn", 0)
-            if tmpMod > 0 and 100 * math.random() < tmpMod then
-                player:AddKeys(math.random(2))
-            end
-
-            pickup:GetSprite():Play("Open", true)
-            pickup.SubType = 1
-            SFXManager():Play(Isaac.GetSoundIdByName("unlock cosmic"), 1, 2, false, 0.9 + 0.2 * math.random())
-
-            if usedMultitool then
-                Epiphany.Pickup.MULTITOOL:AddMultiTool(-1)
-                Epiphany.sfxman:Play(Isaac.GetSoundIdByName("Multitool Use"))
-            end
-
-            if PST:isRunSidereal() then
-                local depth = PST:getTreeSnapshotMod("expedDepth", 1)
-                local obolsAmt = PST.obolEvents.siderealCache(depth)
-                PST:expedDropObolsAt(pickup.Position, obolsAmt)
-
-                -- Expedition objective: open any chest
-                PST:expedAddProgInRun("chests", 1)
-            end
-
-            -- Start challenge room
-            if PST:getRoom():GetType() == RoomType.ROOM_CHALLENGE and not PST:getTreeSnapshotMod("challRoomClear", false) then
-                Ambush.StartChallenge()
-            end
-
-            -- Chance for Sidereal Caches to drop 1-2 sacks
-            tmpMod = PST:getTreeSnapshotMod("sideCacheSacks", 0)
-            if tmpMod > 0 and 100 * math.random() < tmpMod then
-                local maxSacks = math.random(1, 2)
-                for _=1,maxSacks do
-                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_GRAB_BAG, 0, pickup.Position, RandomVector() * 3 * math.random(), nil)
+            -- Epiphany multitool support for sidereal caches
+            local usedMultitool = false
+            if Epiphany then
+                local multitool = Epiphany.Pickup.MULTITOOL
+                if multitool and multitool:HasMultiTool() and Input.IsActionPressed(ButtonAction.ACTION_DROP, player.ControllerIndex) then
+                    usedMultitool = true
+                    canOpenLock = true
                 end
             end
 
-            -- Chance for Sidereal Caches to drop an additional cache, once per room
-            tmpMod = PST:getTreeSnapshotMod("sideCacheReplica", 0)
-            if tmpMod > 0 and not PST:getTreeSnapshotMod("sideCacheReplicaProc", false) and 100 * math.random() < tmpMod then
-                Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, pickup.Position, Vector.Zero, nil)
-                PST:addModifiers({ sideCacheReplicaProc = true }, true)
-            end
-
-            -- Chance for Sidereal Caches to drop a random Astral Weapon - above 100% roll multiple times
-            tmpMod = PST:getTreeSnapshotMod("sideCacheAstralWep", 0)
-            while tmpMod > 0 do
-                if 100 * math.random() < tmpMod then
-                    PST:dropRandAstralWepAt(pickup.Position, PST:getTreeSnapshotMod("astralWepTierDrops", 1), true, RandomVector() * 3 * math.random())
+            if variant == Isaac.GetEntityVariantByName("Sidereal Cache") and canOpenLock and pickup.SubType ~= 1 and
+            pickup:GetSprite():GetAnimation() == "Idle" then
+                -- Sidereal Cache opened
+                local saveKey = false
+                local tmpMod = PST:getTreeSnapshotMod("sideCacheNoKey", 0)
+                saveKey = tmpMod > 0 and 100 * math.random() < tmpMod
+                if not saveKey and not player:HasGoldenKey() then
+                    player:AddKeys(-1)
                 end
-                tmpMod = tmpMod - 100
-            end
-
-            -- Chance for Sidereal Caches to drop a Starcursed Jewel
-            tmpMod = PST:getTreeSnapshotMod("sideCacheJewel", 0)
-            if tmpMod > 0 and 100 * math.random() < tmpMod then
-                PST:SC_dropRandomJewelAt(pickup.Position, PST.SCDropRates.curseRoom(PST:getLevel():GetStage()).ancient, RandomVector() * 3 * math.random())
-            end
-
-            -- Sidereal Artifact objective: open sidereal caches
-            PST:sideArtiObjProgress("siderealMeridion", 1)
-        end
-
-        -- Collectibles
-        if variant == PickupVariant.PICKUP_COLLECTIBLE and not player:IsHoldingItem() then
-            local removeOtherRoomItems = false
-            -- Ancient starcursed jewel: Opalescent Purity
-            if player ~= nil and PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
-            not pickup:IsShopItem() then
-                if variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, subtype) then
-                    removeOtherRoomItems = true
-                    PST:addModifiers({ SC_opalescentProc = true }, true)
+                -- Chance for sidereal caches to return 1-2 keys when opened
+                tmpMod = PST:getTreeSnapshotMod("sideCacheKeyReturn", 0)
+                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                    player:AddKeys(math.random(2))
                 end
-            end
 
-            -- Ancient starcursed jewel: Astral Insignia
-            if PST:SC_getSnapshotMod("astralInsignia", false) and PST:getRoom():GetType() == RoomType.ROOM_PLANETARIUM and
-            PST:arrHasValue(PST.planetariumItems, subtype) then
-                local oldItem = PST:getTreeSnapshotMod("SC_astralInsigniaItem", 0)
-                if oldItem ~= 0 then
-                    player:RemoveCollectible(oldItem)
+                pickup:GetSprite():Play("Open", true)
+                pickup.SubType = 1
+                SFXManager():Play(Isaac.GetSoundIdByName("unlock cosmic"), 1, 2, false, 0.9 + 0.2 * math.random())
+
+                if usedMultitool then
+                    Epiphany.Pickup.MULTITOOL:AddMultiTool(-1)
+                    Epiphany.sfxman:Play(Isaac.GetSoundIdByName("Multitool Use"))
                 end
-                PST:addModifiers({ SC_astralInsigniaItem = subtype }, true)
-            end
 
-            -- Ancient starcursed jewel: Crystallized Anamnesis
-            if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) and not PST:arrHasValue(PST.progressionItems, subtype) and (not pickup:IsShopItem() or
-            pickup:IsShopItem() and player:GetNumCoins() >= pickup.Price) and PST.specialNodes.SC_anamnesisItemPicked == 0 then
-                PST.specialNodes.SC_anamnesisItemPicked = subtype
-            end
+                if PST:isRunSidereal() then
+                    local depth = PST:getTreeSnapshotMod("expedDepth", 1)
+                    local obolsAmt = PST.obolEvents.siderealCache(depth)
+                    PST:expedDropObolsAt(pickup.Position, obolsAmt)
 
-            -- Impromptu Gambler node (Cain's tree)
-            if PST:getTreeSnapshotMod("impromptuGambler", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
-                local IG_roomItemsRemoved = PST:getTreeSnapshotMod("impromptuGamblerItemsRemoved", nil)
-                local roomIdx = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
-                if IG_roomItemsRemoved and not PST:arrHasValue(IG_roomItemsRemoved, roomIdx) then
-                    -- Remove crane games
-                    local craneGames = Isaac.FindByType(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME)
-                    for _, tmpCrane in ipairs(craneGames) do
-                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCrane.Position, Vector.Zero, nil, 0, Random() + 1)
-                        tmpCrane:Remove()
+                    -- Expedition objective: open any chest
+                    PST:expedAddProgInRun("chests", 1)
+                    -- Expedition order objective: open chests without taking damage in-between
+                    PST:expedAddOrderProgInRun("expedOrd_chests", 1)
+                end
+
+                -- Start challenge room
+                if PST:getRoom():GetType() == RoomType.ROOM_CHALLENGE and not PST:getTreeSnapshotMod("challRoomClear", false) then
+                    Ambush.StartChallenge()
+                end
+
+                -- Chance for Sidereal Caches to drop 1-2 sacks
+                tmpMod = PST:getTreeSnapshotMod("sideCacheSacks", 0)
+                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                    local maxSacks = math.random(1, 2)
+                    for _=1,maxSacks do
+                        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_GRAB_BAG, 0, pickup.Position, RandomVector() * 3 * math.random(), nil)
                     end
-
-                    table.insert(IG_roomItemsRemoved, roomIdx)
                 end
-            end
 
-            -- Chaotic Treasury node (Eden's tree)
-            if PST:getTreeSnapshotMod("chaoticTreasury", false) and not PST:arrHasValue(PST.progressionItems, subtype)
-            and PST:getRoom():GetType() == RoomType.ROOM_TREASURE and (not pickup:IsShopItem() or (pickup:IsShopItem() and player:GetNumCoins() >= pickup.Price)) then
-                -- When grabbing an item in a treasure room, remove all other items
-                removeOtherRoomItems = true
-            end
+                -- Chance for Sidereal Caches to drop an additional cache, once per room
+                tmpMod = PST:getTreeSnapshotMod("sideCacheReplica", 0)
+                if tmpMod > 0 and not PST:getTreeSnapshotMod("sideCacheReplicaProc", false) and 100 * math.random() < tmpMod then
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, pickup.Position, Vector.Zero, nil)
+                    PST:addModifiers({ sideCacheReplicaProc = true }, true)
+                end
 
-            -- Dextral Runemaster: Berkano innate Hive Mind
-            if PST:getTreeSnapshotMod("berkanoHivemind", false) and subtype == CollectibleType.COLLECTIBLE_HIVE_MIND then
-                player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, -1)
-                PST:addModifiers({ berkanoHivemind = false }, true)
-            end
-
-            -- Mod: chance for additional pickups when collecting an item pedestal (T. Cain)
-            local tmpMod = PST:getTreeSnapshotMod("additionalPedestalPickup", 0)
-            if subtype ~= 0 and not pickup:IsShopItem() and not PST:arrHasValue(PST.progressionItems, subtype) and tmpMod > 0 and
-            player:GetPlayerType() == PlayerType.PLAYER_CAIN_B then
+                -- Chance for Sidereal Caches to drop a random Astral Weapon - above 100% roll multiple times
+                tmpMod = PST:getTreeSnapshotMod("sideCacheAstralWep", 0)
                 while tmpMod > 0 do
                     if 100 * math.random() < tmpMod then
-                        local newPickup = PST:getTCainRandPickup()
-                        Game():Spawn(EntityType.ENTITY_PICKUP, newPickup[1], pickup.Position, RandomVector() * 3, nil, newPickup[2], Random() + 1)
+                        PST:dropRandAstralWepAt(pickup.Position, PST:getTreeSnapshotMod("astralWepTierDrops", 1), true, RandomVector() * 3 * math.random())
                     end
                     tmpMod = tmpMod - 100
                 end
-            end
 
-            if removeOtherRoomItems then
-                table.insert(PST.specialNodes.itemRemovalProtected, pickup.InitSeed)
-                PST:removeRoomItems(true)
-            end
-
-            -- Serendipitous Soul node (T. Eden's tree)
-            if PST:getTreeSnapshotMod("serendipitousSoul", false) then
-                local itemCfg = Isaac.GetItemConfig():GetCollectible(subtype)
-                if itemCfg and itemCfg.Type == ItemType.ITEM_ACTIVE and not PST:getTreeSnapshotMod("serendSoulUsed", false) then
-                    return { Collide = true, SkipCollisionEffects = true }
+                -- Chance for Sidereal Caches to drop a Starcursed Jewel
+                tmpMod = PST:getTreeSnapshotMod("sideCacheJewel", 0)
+                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                    PST:SC_dropRandomJewelAt(pickup.Position, PST.SCDropRates.curseRoom(PST:getLevel():GetStage()).ancient, RandomVector() * 3 * math.random())
                 end
+
+                -- Sidereal Artifact objective: open sidereal caches
+                PST:sideArtiObjProgress("siderealMeridion", 1)
             end
 
-            -- Helping Hands node (T. Lost's tree)
-            if PST:getTreeSnapshotMod("helpingHands", false) then
-                local roomType = PST:getRoom():GetType()
-                if variant == PickupVariant.PICKUP_COLLECTIBLE and (roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL) and not pickup:IsShopItem() then
-                    -- Remove holy cards when grabbing items in devil/angel rooms
-                    local tmpCards = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_HOLY)
-                    for _, tmpCard in ipairs(tmpCards) do
-                        if not tmpCard:ToPickup():IsShopItem() then
-                            Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCard.Position, Vector.Zero, nil, 0, Random() + 1)
-                            tmpCard:Remove()
-                        end
+            -- Collectibles
+            if variant == PickupVariant.PICKUP_COLLECTIBLE and not player:IsHoldingItem() then
+                local removeOtherRoomItems = false
+                -- Ancient starcursed jewel: Opalescent Purity
+                if player ~= nil and PST:SC_getSnapshotMod("opalescentPurity", false) and not PST:getTreeSnapshotMod("SC_opalescentProc", false) and
+                not pickup:IsShopItem() then
+                    if variant == PickupVariant.PICKUP_COLLECTIBLE and not PST:arrHasValue(PST.progressionItems, subtype) then
+                        removeOtherRoomItems = true
+                        PST:addModifiers({ SC_opalescentProc = true }, true)
                     end
                 end
-            end
 
-            -- Mod: % chance to gain a destroyed wisp's item for the rest of the floor (remove item from list so it's not lost on next floor)
-            tmpMod = PST:getTreeSnapshotMod("destroyedWispItemList", nil)
-            if tmpMod and #tmpMod > 0 then
-                for i, tmpItem in ipairs(tmpMod) do
-                    if tmpItem == subtype then
-                        table.remove(tmpMod, i)
-                        break
+                -- Ancient starcursed jewel: Astral Insignia
+                if PST:SC_getSnapshotMod("astralInsignia", false) and PST:getRoom():GetType() == RoomType.ROOM_PLANETARIUM and
+                PST:arrHasValue(PST.planetariumItems, subtype) then
+                    local oldItem = PST:getTreeSnapshotMod("SC_astralInsigniaItem", 0)
+                    if oldItem ~= 0 then
+                        player:RemoveCollectible(oldItem)
+                    end
+                    PST:addModifiers({ SC_astralInsigniaItem = subtype }, true)
+                end
+
+                -- Ancient starcursed jewel: Crystallized Anamnesis
+                if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) and not PST:arrHasValue(PST.progressionItems, subtype) and (not pickup:IsShopItem() or
+                pickup:IsShopItem() and player:GetNumCoins() >= pickup.Price) and PST.specialNodes.SC_anamnesisItemPicked == 0 then
+                    PST.specialNodes.SC_anamnesisItemPicked = subtype
+                end
+
+                -- Impromptu Gambler node (Cain's tree)
+                if PST:getTreeSnapshotMod("impromptuGambler", false) and PST:getRoom():GetType() == RoomType.ROOM_TREASURE then
+                    local IG_roomItemsRemoved = PST:getTreeSnapshotMod("impromptuGamblerItemsRemoved", nil)
+                    local roomIdx = PST:getLevel():GetCurrentRoomDesc().SafeGridIndex
+                    if IG_roomItemsRemoved and not PST:arrHasValue(IG_roomItemsRemoved, roomIdx) then
+                        -- Remove crane games
+                        local craneGames = Isaac.FindByType(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME)
+                        for _, tmpCrane in ipairs(craneGames) do
+                            Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCrane.Position, Vector.Zero, nil, 0, Random() + 1)
+                            tmpCrane:Remove()
+                        end
+
+                        table.insert(IG_roomItemsRemoved, roomIdx)
                     end
                 end
-            end
 
-            -- Spin-down node (T. Lost's tree)
-            if PST:getTreeSnapshotMod("spindown", false) and subtype == CollectibleType.COLLECTIBLE_SPINDOWN_DICE then
-                -- Set uses >2 to prevent removal
-                PST:addModifiers({ spindownUses = { value = 3, set = true } }, true)
-            end
-        -- Trinkets
-        elseif variant == PickupVariant.PICKUP_TRINKET then
-            -- Arcane Obols pickup (astral expeditions)
-            for i, obolValue in ipairs(PST.expedObolDropValues) do
-                local tmpName = "Arcane Obols " .. tostring(i)
-                if subtype == Isaac.GetTrinketIdByName(tmpName) or subtype == Isaac.GetTrinketIdByName(tmpName) | TrinketType.TRINKET_GOLDEN_FLAG then
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 1, 1, 1, 0.85, 0.35, 1)
-                    pickup:Remove()
-                    SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.6, 2, false, 0.8)
+                -- Chaotic Treasury node (Eden's tree)
+                if PST:getTreeSnapshotMod("chaoticTreasury", false) and not PST:arrHasValue(PST.progressionItems, subtype)
+                and PST:getRoom():GetType() == RoomType.ROOM_TREASURE and (not pickup:IsShopItem() or (pickup:IsShopItem() and player:GetNumCoins() >= pickup.Price)) then
+                    -- When grabbing an item in a treasure room, remove all other items
+                    removeOtherRoomItems = true
+                end
 
-                    PST:addCurrentCharObols(obolValue)
-                    PST:createFloatTextFX("+" .. tostring(obolValue) .. " Arcane Obols", Vector.Zero, Color(0.8, 0.35, 1, 1), 0.13, 70, true)
+                -- Dextral Runemaster: Berkano innate Hive Mind
+                if PST:getTreeSnapshotMod("berkanoHivemind", false) and subtype == CollectibleType.COLLECTIBLE_HIVE_MIND then
+                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, -1)
+                    PST:addModifiers({ berkanoHivemind = false }, true)
+                end
 
-                    -- Expedition objective: collect Arcane Obols
-                    PST:expedAddProgInRun("obols", obolValue)
-
-                    -- Mod: obol sharing
-                    local tmpMod = PST:getTreeSnapshotMod("obolSharing", 0)
-                    if tmpMod > 0 and 100 * math.random() < tmpMod then
-                        local obolShareRate = 0.33
-                        if PST:getTreeSnapshotMod("cosmicAltruism", false) then
-                            obolShareRate = 0.7
+                -- Mod: chance for additional pickups when collecting an item pedestal (T. Cain)
+                local tmpMod = PST:getTreeSnapshotMod("additionalPedestalPickup", 0)
+                if subtype ~= 0 and not pickup:IsShopItem() and not PST:arrHasValue(PST.progressionItems, subtype) and tmpMod > 0 and
+                player:GetPlayerType() == PlayerType.PLAYER_CAIN_B then
+                    while tmpMod > 0 do
+                        if 100 * math.random() < tmpMod then
+                            local newPickup = PST:getTCainRandPickup()
+                            Game():Spawn(EntityType.ENTITY_PICKUP, newPickup[1], pickup.Position, RandomVector() * 3, nil, newPickup[2], Random() + 1)
                         end
-                        local currentCharName = PST:getCurrentCharName()
-                        for charName, tmpCharData in pairs(PST.modData.charData) do
-                            if charName ~= currentCharName then
-                                if not tmpCharData.arcaneObols then tmpCharData.arcaneObols = 0 end
-                                tmpCharData.arcaneObols = tmpCharData.arcaneObols + math.max(1, math.floor(obolValue * obolShareRate))
-                            end
-                        end
+                        tmpMod = tmpMod - 100
                     end
-
-                    return { Collide = false, SkipCollisionEffects = true }
                 end
-            end
 
-            -- Astral weapon pickup
-            local itemCfg = Isaac.GetItemConfig():GetTrinket(subtype)
-            if itemCfg and PST:strStartsWith(itemCfg.Name, "Astral weapon") then
-                local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                tmpFX.Color = Color(1, 1, 1, 1, 0.7, 0.7, 1)
-                pickup:Remove()
-                SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.8, 2, false, 1.1 + math.random())
-                PST:createFloatTextFX("+ " .. itemCfg.Name, Vector.Zero, Color(0.6, 0.6, 1, 1), 0.13, 100, true)
-
-                PST:astralWepTrinketPickup(itemCfg.Name)
-                return { Collide = false, SkipCollisionEffects = true }
-            end
-
-            -- Starcursed jewel pickups
-            local jewelInvFull = nil
-            local isMighty = 100 * math.random() < PST:getTreeSnapshotMod("SC_SMMightyChance", 0)
-            if subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
-                if not PST:SC_isInvFull(PSTStarcursedType.AZURE) then
-                    -- Azure Starcursed Jewel pickup
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
-                    pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
-                    PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
-                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
-                    jewelCollisionTimer = 0
-                    return { Collide = false, SkipCollisionEffects = true }
-                else
-                    jewelInvFull = PSTStarcursedType.AZURE
+                if removeOtherRoomItems then
+                    table.insert(PST.specialNodes.itemRemovalProtected, pickup.InitSeed)
+                    PST:removeRoomItems(true)
                 end
-            elseif subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
-                if not PST:SC_isInvFull(PSTStarcursedType.CRIMSON) then
-                    -- Crimson Starcursed Jewel pickup
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
-                    pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
-                    PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
-                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
-                    jewelCollisionTimer = 0
-                    return { Collide = false, SkipCollisionEffects = true }
-                else
-                    jewelInvFull = PSTStarcursedType.CRIMSON
+
+                -- Serendipitous Soul node (T. Eden's tree)
+                if PST:getTreeSnapshotMod("serendipitousSoul", false) then
+                    local itemCfg = Isaac.GetItemConfig():GetCollectible(subtype)
+                    if itemCfg and itemCfg.Type == ItemType.ITEM_ACTIVE and not PST:getTreeSnapshotMod("serendSoulUsed", false) then
+                        return { Collide = true, SkipCollisionEffects = true }
+                    end
                 end
-            elseif subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
-                if not PST:SC_isInvFull(PSTStarcursedType.VIRIDIAN) then
-                    -- Viridian Starcursed Jewel pickup
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
-                    pickup:Remove()
-                    PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
-                    PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
-                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
-                    jewelCollisionTimer = 0
-                    return { Collide = false, SkipCollisionEffects = true }
-                else
-                    jewelInvFull = PSTStarcursedType.VIRIDIAN
-                end
-            elseif subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
-                -- Ancient Starcursed Jewel pickup
-                local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
-                pickup:Remove()
-                PST:SC_addJewel(PSTStarcursedType.ANCIENT, false, 0)
-                PST:createFloatTextFX("+ Ancient Starcursed Jewel", Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
-                SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
-                jewelCollisionTimer = 0
-                return { Collide = false, SkipCollisionEffects = true }
-            end
 
-            -- Jewel inventory full
-            if jewelInvFull ~= nil then
-                if jewelCollisionTimer == 0 then
-                    PST:createFloatTextFX(jewelInvFull .. " Inventory Full!", Vector.Zero, Color(0.9, 0.2, 0.2, 1), 0.12, 90, true)
-                    jewelCollisionTimer = 40
-                else
-                    jewelCollisionTimer = jewelCollisionTimer - 1
-                end
-                return { Collide = false, SkipCollisionEffects = true }
-            else
-                -- Trinket picked up
-                if not player:IsHoldingItem() then
-                    -- Mod: chance for trinkets to turn golden when first collected, if you have them unlocked
-                    if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
-                        local tmpTrinketList = PST:getTreeSnapshotMod("gildedTrinkets", nil)
-                        if tmpTrinketList and not PST:arrHasValue(tmpTrinketList, subtype) then
-                            table.insert(tmpTrinketList, subtype)
-
-                            local tmpMod = PST:getTreeSnapshotMod("goldenTrinkets", 0)
-                            if tmpMod > 0 and 100 * math.random() < tmpMod and (subtype & TrinketType.TRINKET_GOLDEN_FLAG) == 0 then
-                                pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, subtype | TrinketType.TRINKET_GOLDEN_FLAG)
-
-                                local poofFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
-                                poofFX.Color = Color(1, 1, 0.5, 1)
-                                SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.9)
-                                PST:createFloatTextFX("Trinket gilded!", Vector.Zero, Color(1, 1, 0.6, 1), 0.13, 100, true)
-
-                                return
+                -- Helping Hands node (T. Lost's tree)
+                if PST:getTreeSnapshotMod("helpingHands", false) then
+                    local roomType = PST:getRoom():GetType()
+                    if variant == PickupVariant.PICKUP_COLLECTIBLE and (roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL) and not pickup:IsShopItem() then
+                        -- Remove holy cards when grabbing items in devil/angel rooms
+                        local tmpCards = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_HOLY)
+                        for _, tmpCard in ipairs(tmpCards) do
+                            if not tmpCard:ToPickup():IsShopItem() then
+                                Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpCard.Position, Vector.Zero, nil, 0, Random() + 1)
+                                tmpCard:Remove()
                             end
                         end
                     end
                 end
-            end
-        else
-            -- Keeper's Blessing node (Keeper's tree)
-            if PST:getTreeSnapshotMod("keeperBlessing", false) then
-                if variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() and PST:getTreeSnapshotMod("keeperBlessingHeals") < 4 then
-                    player:AddCoins(1)
-                    PST:addModifiers({ keeperBlessingHeals = 1 }, true)
-                end
-            end
 
-            -- Ancient starcursed jewel: Crimson Warpstone
-            if PST:SC_getSnapshotMod("crimsonWarpstone", false) or PST:getTreeSnapshotMod("crackedKeyStacking", false) then
-                if pickup.Variant == PickupVariant.PICKUP_TAROTCARD and pickup.SubType == Card.CARD_CRACKED_KEY and not pickup:IsShopItem() and
-                (player:GetCard(0) == Card.CARD_CRACKED_KEY or player:GetCard(1) == Card.CARD_CRACKED_KEY) then
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(1, 0.2, 0.2, 1, 1, 0.2, 0.2)
-                    pickup:Remove()
-                    PST:addModifiers({ SC_crimsonWarpKeyStacks = 1 }, true)
-                    PST:createFloatTextFX("+ Cracked Key", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 100, true)
-                    SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.2)
-                    return { Collide = false, SkipCollisionEffects = true }
-                end
-            end
-
-            -- Starcursed mod: chance for coins, keys or bombs to vanish on pickup
-            local tmpMod = PST:SC_getSnapshotMod("pickupsVanish", 0)
-            if tmpMod > 0 and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
-            variant == PickupVariant.PICKUP_KEY) and 100 * math.random() < tmpMod then
-                PST:vanishPickup(pickup)
-                return false
-            end
-            -- Starcursed mod: chance for heart pickups to vanish when collected
-            tmpMod = PST:SC_getSnapshotMod("heartsVanish", 0)
-            if tmpMod > 0 and variant == PickupVariant.PICKUP_HEART and 100 * math.random() < tmpMod then
-                PST:vanishPickup(pickup)
-                return false
-            end
-
-            -- Mod: rune shards can stack + rune assembly
-            if PST:getTreeSnapshotMod("runeshardStacking", false) then
-                if variant == PickupVariant.PICKUP_TAROTCARD and subtype == Card.RUNE_SHARD and not pickup:IsShopItem() and
-                (PST:arrHasValue(PST.allRunes, player:GetCard(0)) or PST:arrHasValue(PST.allRunes, player:GetCard(1))) then
-                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
-                    tmpFX.Color = Color(0.2, 0.5, 0.8, 1, 0.2, 0.5, 0.8)
-                    pickup:Remove()
-                    PST:addModifiers({ runeshardStacks = 1 }, true)
-
-                    -- Create new random rune once collecting enough stacks
-                    local runeStacks = PST:getTreeSnapshotMod("runeshardStacks", 0) + 1
-                    local stacksReq = PST:getTreeSnapshotMod("runeshardStacksReq", 0)
-                    if stacksReq == 0 then stacksReq = 15 end
-                    local tmpColor = Color(0.7, 0.8, 1, 1)
-                    if runeStacks >= stacksReq then
-                        tmpColor = Color(0.7, 1, 0.8, 1)
-                        PST:addModifiers({ runeshardStacks = { value = 0, set = true } }, true)
-                        local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 20)
-
-                        -- Mod: chance for assembled rune to be a Black Rune
-                        local newRune = PST:getRandRuneWeighted()
-                        tmpMod = PST:getTreeSnapshotMod("blackRuneAssembly", 0)
-                        if tmpMod > 0 and 100 * math.random() < tmpMod then
-                            newRune = Card.RUNE_BLACK
+                -- Mod: % chance to gain a destroyed wisp's item for the rest of the floor (remove item from list so it's not lost on next floor)
+                tmpMod = PST:getTreeSnapshotMod("destroyedWispItemList", nil)
+                if tmpMod and #tmpMod > 0 then
+                    for i, tmpItem in ipairs(tmpMod) do
+                        if tmpItem == subtype then
+                            table.remove(tmpMod, i)
+                            break
                         end
-
-                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, newRune, Random() + 1)
-                        SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
-                    else
-                        SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.4)
                     end
-                    PST:createFloatTextFX("+ Rune Shard (" .. tostring(runeStacks) .. "/" .. tostring(stacksReq) .. ")", Vector.Zero, tmpColor, 0.12, 100, true)
-                    return { Collide = false, SkipCollisionEffects = true }
                 end
-            end
 
-            -- Helping Hands node (T. Lost's tree)
-            if PST:getTreeSnapshotMod("helpingHands", false) then
-                local roomType = PST:getRoom():GetType()
-                if variant == PickupVariant.PICKUP_TAROTCARD and subtype == Card.CARD_HOLY and not pickup:IsShopItem() then
-                    -- Remove other items in angel/devil rooms
-                    if roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL then
-                        PST:removeRoomItems()
-                    end
-
-                    -- Holy Card stacking
-                    if player:GetCard(0) == Card.CARD_HOLY or player:GetCard(1) == Card.CARD_HOLY then
-                        Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                -- Spin-down node (T. Lost's tree)
+                if PST:getTreeSnapshotMod("spindown", false) and subtype == CollectibleType.COLLECTIBLE_SPINDOWN_DICE then
+                    -- Set uses >2 to prevent removal
+                    PST:addModifiers({ spindownUses = { value = 3, set = true } }, true)
+                end
+            -- Trinkets
+            elseif variant == PickupVariant.PICKUP_TRINKET then
+                -- Arcane Obols pickup (astral expeditions)
+                for i, obolValue in ipairs(PST.expedObolDropValues) do
+                    local tmpName = "Arcane Obols " .. tostring(i)
+                    if subtype == Isaac.GetTrinketIdByName(tmpName) or subtype == Isaac.GetTrinketIdByName(tmpName) | TrinketType.TRINKET_GOLDEN_FLAG then
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 1, 1, 1, 0.85, 0.35, 1)
                         pickup:Remove()
-                        PST:addModifiers({ holyCardStacks = 1 }, true)
-                        PST:createFloatTextFX("+ Holy Card", Vector.Zero, Color(0.6, 0.9, 1, 1), 0.12, 100, true)
-                        SFXManager():Play(SoundEffect.SOUND_BOOK_PAGE_TURN_12, 0.8, 2, false, 1.3)
+                        SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.6, 2, false, 0.8)
+
+                        PST:addCurrentCharObols(obolValue)
+                        PST:createFloatTextFX("+" .. tostring(obolValue) .. " Arcane Obols", Vector.Zero, Color(0.8, 0.35, 1, 1), 0.13, 70, true)
+
+                        -- Expedition objective: collect Arcane Obols
+                        PST:expedAddProgInRun("obols", obolValue)
+
+                        -- Mod: obol sharing
+                        local tmpMod = PST:getTreeSnapshotMod("obolSharing", 0)
+                        if tmpMod > 0 and 100 * math.random() < tmpMod then
+                            local obolShareRate = 0.33
+                            if PST:getTreeSnapshotMod("cosmicAltruism", false) then
+                                obolShareRate = 0.7
+                            end
+                            local currentCharName = PST:getCurrentCharName()
+                            for charName, tmpCharData in pairs(PST.modData.charData) do
+                                if charName ~= currentCharName then
+                                    if not tmpCharData.arcaneObols then tmpCharData.arcaneObols = 0 end
+                                    tmpCharData.arcaneObols = tmpCharData.arcaneObols + math.max(1, math.floor(obolValue * obolShareRate))
+                                end
+                            end
+                        end
+
                         return { Collide = false, SkipCollisionEffects = true }
                     end
                 end
-            end
 
-            -- Marquess of Flies node (T. Keeper's tree)
-            if PST:getTreeSnapshotMod("marquessOfFlies", false) then
-                if variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() and not PST:getTreeSnapshotMod("marquessOfFliesHive", false) and
-                not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) and 100 * math.random() < 20 then
-                    player:AddCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
-                    PST:addModifiers({ marquessOfFliesHive = true }, true)
+                -- Astral weapon pickup
+                local itemCfg = Isaac.GetItemConfig():GetTrinket(subtype)
+                if itemCfg and PST:strStartsWith(itemCfg.Name, "Astral weapon") then
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(1, 1, 1, 1, 0.7, 0.7, 1)
+                    pickup:Remove()
+                    SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.8, 2, false, 1.1 + math.random())
+                    PST:createFloatTextFX("+ " .. itemCfg.Name, Vector.Zero, Color(0.6, 0.6, 1, 1), 0.13, 100, true)
+
+                    PST:astralWepTrinketPickup(itemCfg.Name)
+                    return { Collide = false, SkipCollisionEffects = true }
                 end
-            end
 
-            -- Cosmic Realignment node
-            local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
-            local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
-            if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
-                -- Blue baby, make first 2 non soul heart pickups vanish
-                if cosmicRCache.blueBabyHearts < 2 then
-                    if (variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_SOUL) or
-                    variant == PickupVariant.PICKUP_BOMB or variant == PickupVariant.PICKUP_KEY or
-                    variant == PickupVariant.PICKUP_COIN then
-                        PST:vanishPickup(pickup)
+                -- Starcursed jewel pickups
+                local jewelInvFull = nil
+                local isMighty = 100 * math.random() < PST:getTreeSnapshotMod("SC_SMMightyChance", 0)
+                if subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Azure Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
+                    if not PST:SC_isInvFull(PSTStarcursedType.AZURE) then
+                        -- Azure Starcursed Jewel pickup
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                        pickup:Remove()
+                        PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
+                        PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
+                        SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        jewelCollisionTimer = 0
+                        return { Collide = false, SkipCollisionEffects = true }
+                    else
+                        jewelInvFull = PSTStarcursedType.AZURE
+                    end
+                elseif subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Crimson Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
+                    if not PST:SC_isInvFull(PSTStarcursedType.CRIMSON) then
+                        -- Crimson Starcursed Jewel pickup
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                        pickup:Remove()
+                        PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
+                        PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
+                        SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        jewelCollisionTimer = 0
+                        return { Collide = false, SkipCollisionEffects = true }
+                    else
+                        jewelInvFull = PSTStarcursedType.CRIMSON
+                    end
+                elseif subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Viridian Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
+                    if not PST:SC_isInvFull(PSTStarcursedType.VIRIDIAN) then
+                        -- Viridian Starcursed Jewel pickup
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                        pickup:Remove()
+                        PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
+                        PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
+                        SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
+                        jewelCollisionTimer = 0
+                        return { Collide = false, SkipCollisionEffects = true }
+                    else
+                        jewelInvFull = PSTStarcursedType.VIRIDIAN
+                    end
+                elseif subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") or subtype == Isaac.GetTrinketIdByName("Ancient Starcursed Jewel") | TrinketType.TRINKET_GOLDEN_FLAG then
+                    -- Ancient Starcursed Jewel pickup
+                    local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                    tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
+                    pickup:Remove()
+                    PST:SC_addJewel(PSTStarcursedType.ANCIENT, false, 0)
+                    PST:createFloatTextFX("+ Ancient Starcursed Jewel", Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
+                    SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
+                    jewelCollisionTimer = 0
+                    return { Collide = false, SkipCollisionEffects = true }
+                end
 
-                        cosmicRCache.blueBabyHearts = cosmicRCache.blueBabyHearts + 1
-                        return false
+                -- Jewel inventory full
+                if jewelInvFull ~= nil then
+                    if jewelCollisionTimer == 0 then
+                        PST:createFloatTextFX(jewelInvFull .. " Inventory Full!", Vector.Zero, Color(0.9, 0.2, 0.2, 1), 0.12, 90, true)
+                        jewelCollisionTimer = 40
+                    else
+                        jewelCollisionTimer = jewelCollisionTimer - 1
+                    end
+                    return { Collide = false, SkipCollisionEffects = true }
+                else
+                    -- Trinket picked up
+                    if not player:IsHoldingItem() then
+                        -- Mod: chance for trinkets to turn golden when first collected, if you have them unlocked
+                        if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
+                            local tmpTrinketList = PST:getTreeSnapshotMod("gildedTrinkets", nil)
+                            if tmpTrinketList and not PST:arrHasValue(tmpTrinketList, subtype) then
+                                table.insert(tmpTrinketList, subtype)
+
+                                local tmpMod = PST:getTreeSnapshotMod("goldenTrinkets", 0)
+                                if tmpMod > 0 and 100 * math.random() < tmpMod and (subtype & TrinketType.TRINKET_GOLDEN_FLAG) == 0 then
+                                    pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, subtype | TrinketType.TRINKET_GOLDEN_FLAG)
+
+                                    local poofFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
+                                    poofFX.Color = Color(1, 1, 0.5, 1)
+                                    SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.9)
+                                    PST:createFloatTextFX("Trinket gilded!", Vector.Zero, Color(1, 1, 0.6, 1), 0.13, 100, true)
+
+                                    return
+                                end
+                            end
+                        end
                     end
                 end
-            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
-                -- The Lost, non-red hearts vanish on pickup
-                if variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_FULL and
-                subtype ~= HeartSubType.HEART_HALF and subtype ~= HeartSubType.HEART_SCARED then
+            else
+                -- Keeper's Blessing node (Keeper's tree)
+                if PST:getTreeSnapshotMod("keeperBlessing", false) then
+                    if variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() and PST:getTreeSnapshotMod("keeperBlessingHeals") < 4 then
+                        player:AddCoins(1)
+                        PST:addModifiers({ keeperBlessingHeals = 1 }, true)
+                    end
+                end
+
+                -- Ancient starcursed jewel: Crimson Warpstone
+                if PST:SC_getSnapshotMod("crimsonWarpstone", false) or PST:getTreeSnapshotMod("crackedKeyStacking", false) then
+                    if pickup.Variant == PickupVariant.PICKUP_TAROTCARD and pickup.SubType == Card.CARD_CRACKED_KEY and not pickup:IsShopItem() and
+                    (player:GetCard(0) == Card.CARD_CRACKED_KEY or player:GetCard(1) == Card.CARD_CRACKED_KEY) then
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(1, 0.2, 0.2, 1, 1, 0.2, 0.2)
+                        pickup:Remove()
+                        PST:addModifiers({ SC_crimsonWarpKeyStacks = 1 }, true)
+                        PST:createFloatTextFX("+ Cracked Key", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 100, true)
+                        SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.2)
+                        return { Collide = false, SkipCollisionEffects = true }
+                    end
+                end
+
+                -- Starcursed mod: chance for coins, keys or bombs to vanish on pickup
+                local tmpMod = PST:SC_getSnapshotMod("pickupsVanish", 0)
+                if tmpMod > 0 and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
+                variant == PickupVariant.PICKUP_KEY) and 100 * math.random() < tmpMod then
                     PST:vanishPickup(pickup)
                     return false
                 end
-            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER) then
-                -- Keeper, 25% chance for coins to vanish, 25% chance to deal 1/2 heart dmg on vanish
-                if variant == PickupVariant.PICKUP_COIN then
-                    if 100 * math.random() < 25 then
-                        PST:vanishPickup(pickup)
-                        if 100 * math.random() < 25 then
-                            player:TakeDamage(1, 0, EntityRef(player), 0)
-                        end
-                        return false
-                    else
-                        -- Track collected coins for next floor
-                        cosmicRCache.keeperFloorCoins = cosmicRCache.keeperFloorCoins + 1
-                        if cosmicRCache.keeperFloorCoins <= 5 then
-                            local tmpColor = Color()
-                            if cosmicRCache.keeperFloorCoins == 5 then
-                                tmpColor = Color(0.7, 1, 0.7, 1)
+                -- Starcursed mod: chance for heart pickups to vanish when collected
+                tmpMod = PST:SC_getSnapshotMod("heartsVanish", 0)
+                if tmpMod > 0 and variant == PickupVariant.PICKUP_HEART and 100 * math.random() < tmpMod then
+                    PST:vanishPickup(pickup)
+                    return false
+                end
+
+                -- Mod: rune shards can stack + rune assembly
+                if PST:getTreeSnapshotMod("runeshardStacking", false) then
+                    if variant == PickupVariant.PICKUP_TAROTCARD and subtype == Card.RUNE_SHARD and not pickup:IsShopItem() and
+                    (PST:arrHasValue(PST.allRunes, player:GetCard(0)) or PST:arrHasValue(PST.allRunes, player:GetCard(1))) then
+                        local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                        tmpFX.Color = Color(0.2, 0.5, 0.8, 1, 0.2, 0.5, 0.8)
+                        pickup:Remove()
+                        PST:addModifiers({ runeshardStacks = 1 }, true)
+
+                        -- Create new random rune once collecting enough stacks
+                        local runeStacks = PST:getTreeSnapshotMod("runeshardStacks", 0) + 1
+                        local stacksReq = PST:getTreeSnapshotMod("runeshardStacksReq", 0)
+                        if stacksReq == 0 then stacksReq = 15 end
+                        local tmpColor = Color(0.7, 0.8, 1, 1)
+                        if runeStacks >= stacksReq then
+                            tmpColor = Color(0.7, 1, 0.8, 1)
+                            PST:addModifiers({ runeshardStacks = { value = 0, set = true } }, true)
+                            local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 20)
+
+                            -- Mod: chance for assembled rune to be a Black Rune
+                            local newRune = PST:getRandRuneWeighted()
+                            tmpMod = PST:getTreeSnapshotMod("blackRuneAssembly", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                newRune = Card.RUNE_BLACK
                             end
-                            PST:createFloatTextFX("Keeper's curse: " .. cosmicRCache.keeperFloorCoins .. "/5", Vector.Zero, tmpColor, 0.1, 50, true)
+
+                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, newRune, Random() + 1)
+                            SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+                        else
+                            SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.4)
+                        end
+                        PST:createFloatTextFX("+ Rune Shard (" .. tostring(runeStacks) .. "/" .. tostring(stacksReq) .. ")", Vector.Zero, tmpColor, 0.12, 100, true)
+                        return { Collide = false, SkipCollisionEffects = true }
+                    end
+                end
+
+                -- Helping Hands node (T. Lost's tree)
+                if PST:getTreeSnapshotMod("helpingHands", false) then
+                    local roomType = PST:getRoom():GetType()
+                    if variant == PickupVariant.PICKUP_TAROTCARD and subtype == Card.CARD_HOLY and not pickup:IsShopItem() then
+                        -- Remove other items in angel/devil rooms
+                        if roomType == RoomType.ROOM_ANGEL or roomType == RoomType.ROOM_DEVIL then
+                            PST:removeRoomItems()
+                        end
+
+                        -- Holy Card stacking
+                        if player:GetCard(0) == Card.CARD_HOLY or player:GetCard(1) == Card.CARD_HOLY then
+                            Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
+                            pickup:Remove()
+                            PST:addModifiers({ holyCardStacks = 1 }, true)
+                            PST:createFloatTextFX("+ Holy Card", Vector.Zero, Color(0.6, 0.9, 1, 1), 0.12, 100, true)
+                            SFXManager():Play(SoundEffect.SOUND_BOOK_PAGE_TURN_12, 0.8, 2, false, 1.3)
+                            return { Collide = false, SkipCollisionEffects = true }
                         end
                     end
                 end
-            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
-                -- Tainted Judas, as Keeper: coins have a 50% chance to grant +0.2 damage for the current room instead of healing, up to +1
-                if isKeeper and variant == PickupVariant.PICKUP_COIN then
-                    if player:GetHearts() < player:GetMaxHearts() and 100 * math.random() < 50 then
-                        if cosmicRCache.TJudasDmgUps < 5 then
-                            cosmicRCache.TJudasDmgUps = cosmicRCache.TJudasDmgUps + 1
-                            PST:addModifiers({ damage = 0.2 }, true)
-                        end
-                        player:AddHearts(-2)
+
+                -- Marquess of Flies node (T. Keeper's tree)
+                if PST:getTreeSnapshotMod("marquessOfFlies", false) then
+                    if variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() and not PST:getTreeSnapshotMod("marquessOfFliesHive", false) and
+                    not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) and 100 * math.random() < 20 then
+                        player:AddCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
+                        PST:addModifiers({ marquessOfFliesHive = true }, true)
                     end
                 end
-            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
-                -- Tainted Lazarus, as Keeper: 33% chance for coins to spawn a blue fly instead of healing you
-                if isKeeper and variant == PickupVariant.PICKUP_COIN then
-                    if player:GetHearts() < player:GetMaxHearts() then
-                        if 100 * math.random() < 33 then
-                            Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector.Zero, nil, 0, Random() + 1)
+
+                -- Cosmic Realignment node
+                local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
+                local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
+                if PST:cosmicRCharPicked(PlayerType.PLAYER_BLUEBABY) then
+                    -- Blue baby, make first 2 non soul heart pickups vanish
+                    if cosmicRCache.blueBabyHearts < 2 then
+                        if (variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_SOUL) or
+                        variant == PickupVariant.PICKUP_BOMB or variant == PickupVariant.PICKUP_KEY or
+                        variant == PickupVariant.PICKUP_COIN then
+                            PST:vanishPickup(pickup)
+
+                            cosmicRCache.blueBabyHearts = cosmicRCache.blueBabyHearts + 1
+                            return false
+                        end
+                    end
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST) then
+                    -- The Lost, non-red hearts vanish on pickup
+                    if variant == PickupVariant.PICKUP_HEART and subtype ~= HeartSubType.HEART_FULL and
+                    subtype ~= HeartSubType.HEART_HALF and subtype ~= HeartSubType.HEART_SCARED then
+                        PST:vanishPickup(pickup)
+                        return false
+                    end
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_KEEPER) then
+                    -- Keeper, 25% chance for coins to vanish, 25% chance to deal 1/2 heart dmg on vanish
+                    if variant == PickupVariant.PICKUP_COIN then
+                        if 100 * math.random() < 25 then
+                            PST:vanishPickup(pickup)
+                            if 100 * math.random() < 25 then
+                                player:TakeDamage(1, 0, EntityRef(player), 0)
+                            end
+                            return false
+                        else
+                            -- Track collected coins for next floor
+                            cosmicRCache.keeperFloorCoins = cosmicRCache.keeperFloorCoins + 1
+                            if cosmicRCache.keeperFloorCoins <= 5 then
+                                local tmpColor = Color()
+                                if cosmicRCache.keeperFloorCoins == 5 then
+                                    tmpColor = Color(0.7, 1, 0.7, 1)
+                                end
+                                PST:createFloatTextFX("Keeper's curse: " .. cosmicRCache.keeperFloorCoins .. "/5", Vector.Zero, tmpColor, 0.1, 50, true)
+                            end
+                        end
+                    end
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_JUDAS_B) then
+                    -- Tainted Judas, as Keeper: coins have a 50% chance to grant +0.2 damage for the current room instead of healing, up to +1
+                    if isKeeper and variant == PickupVariant.PICKUP_COIN then
+                        if player:GetHearts() < player:GetMaxHearts() and 100 * math.random() < 50 then
+                            if cosmicRCache.TJudasDmgUps < 5 then
+                                cosmicRCache.TJudasDmgUps = cosmicRCache.TJudasDmgUps + 1
+                                PST:addModifiers({ damage = 0.2 }, true)
+                            end
                             player:AddHearts(-2)
-                        elseif player:GetNumBlueFlies() > 0 then
+                        end
+                    end
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_LAZARUS_B) then
+                    -- Tainted Lazarus, as Keeper: 33% chance for coins to spawn a blue fly instead of healing you
+                    if isKeeper and variant == PickupVariant.PICKUP_COIN then
+                        if player:GetHearts() < player:GetMaxHearts() then
+                            if 100 * math.random() < 33 then
+                                Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, player.Position, Vector.Zero, nil, 0, Random() + 1)
+                                player:AddHearts(-2)
+                            elseif player:GetNumBlueFlies() > 0 then
+                                player:AddHearts(-2)
+                            end
+                        end
+                    end
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
+                    -- Tainted Lost, as Keeper: coins will only heal you up to 3 times per floor
+                    if isKeeper and variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() then
+                        if cosmicRCache.TLostKeeperCoins < 3 then
+                            cosmicRCache.TLostKeeperCoins = cosmicRCache.TLostKeeperCoins + 1
+                        else
                             player:AddHearts(-2)
                         end
                     end
-                end
-            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THELOST_B) then
-                -- Tainted Lost, as Keeper: coins will only heal you up to 3 times per floor
-                if isKeeper and variant == PickupVariant.PICKUP_COIN and player:GetHearts() < player:GetMaxHearts() then
-                    if cosmicRCache.TLostKeeperCoins < 3 then
-                        cosmicRCache.TLostKeeperCoins = cosmicRCache.TLostKeeperCoins + 1
-                    else
-                        player:AddHearts(-2)
-                    end
-                end
-            elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
-                -- Tainted Forgotten, as Keeper: first coin per room doesn't heal you
-                if isKeeper and variant == PickupVariant.PICKUP_COIN then
-                    if not cosmicRCache.TForgottenTracker.keeperCoin then
-                        cosmicRCache.TForgottenTracker.keeperCoin = true
-                        player:AddCacheFlags(PST.allstatsCache, true)
-                    end
-                    if player:GetHearts() < player:GetMaxHearts() and not cosmicRCache.TForgottenTracker.keeperHeal then
-                        player:AddHearts(-2)
-                        cosmicRCache.TForgottenTracker.keeperHeal = true
+                elseif PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN_B) then
+                    -- Tainted Forgotten, as Keeper: first coin per room doesn't heal you
+                    if isKeeper and variant == PickupVariant.PICKUP_COIN then
+                        if not cosmicRCache.TForgottenTracker.keeperCoin then
+                            cosmicRCache.TForgottenTracker.keeperCoin = true
+                            player:AddCacheFlags(PST.allstatsCache, true)
+                        end
+                        if player:GetHearts() < player:GetMaxHearts() and not cosmicRCache.TForgottenTracker.keeperHeal then
+                            player:AddHearts(-2)
+                            cosmicRCache.TForgottenTracker.keeperHeal = true
+                        end
                     end
                 end
             end
@@ -1480,7 +1492,7 @@ function PST:onPickupInit(pickup, firstSpawn)
                         tmpChance = tmpChance * 3
                     end
                     if not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
-                    variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpChance then
+                    variant == PickupVariant.PICKUP_BOMB) and not PST:isGoldenPickup(pickup) and 100 * math.random() < tmpChance then
                         local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
                         PST:getEntData(newPickup).PST_duped = true
                     end
@@ -1502,7 +1514,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             -- Mod: % chance to duplicate dropped coins/keys/bombs
             tmpMod = PST:getTreeSnapshotMod("pickupDupe", 0)
             if tmpMod > 0 and firstSpawn and not isShop and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_KEY or
-            variant == PickupVariant.PICKUP_BOMB) and 100 * math.random() < tmpMod then
+            variant == PickupVariant.PICKUP_BOMB) and not PST:isGoldenPickup(pickup) and 100 * math.random() < tmpMod then
                 local newPickup = Isaac.Spawn(pickup.Type, variant, subtype, pickup.Position, 2 * RandomVector(), nil)
                 PST:getEntData(newPickup).PST_duped = true
             end

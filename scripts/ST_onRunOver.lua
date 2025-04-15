@@ -34,6 +34,11 @@ function PST:onRunOver(isGameOver)
             if PST:getTreeSnapshotMod("finalBossKills", 0) > 0 then
                 PST:expedAddProgress(PST:getTreeSnapshotMod("expedDepth", 0), 1, "winRun", PST:getTreeSnapshotMod("isExpedUber", false))
             end
+
+            -- Expedition order objective: Win a run without having killed any Angel bosses
+            if not PST:getTreeSnapshotMod("killedAngels", false) then
+                PST:expedAddOrderProgInRun("expedOrd_noAngels", 1)
+            end
         end
     else
         -- Astral Expeditions, subtract attempts on run loss
@@ -56,7 +61,7 @@ function PST:onRunOver(isGameOver)
                 if PST:getTreeSnapshotMod("isExpedUber", false) then
                     -- Bring The Order node (Deep-Space tree)
                     local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
-                    if expData and expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order >= 10 then
+                    if expData and expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order >= 30 then
                         loseAttempt = false
                     end
                 end

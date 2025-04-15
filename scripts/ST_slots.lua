@@ -13,8 +13,6 @@ end
 
 ---@param slot EntitySlot
 function PST:onSlotUpdate(slot)
-    local isBeggar = PST:arrHasValue(PST.beggarTypes, slot.Variant)
-
     -- Gilded machines
     local tmpMod = PST:getTreeSnapshotMod("gildedMachines", 0)
     if tmpMod > 0 and PST:arrHasValue(PST.coinMachines, slot.Variant) and slot.FrameCount == 1 then
@@ -212,7 +210,7 @@ function PST:onSlotUpdate(slot)
             end
         else
             -- Spent something helping a beggar
-            if isBeggar and (spentCoins or spentHearts or spentKeys or spentBombs) then
+            if PST:arrHasValue(PST.beggarTypes, slot.Variant) and (spentCoins or spentHearts or spentKeys or spentBombs) then
                 -- Beggar luck mod
                 local beggarLuck = PST:getTreeSnapshotMod("beggarLuck", 0)
                 local tmpTotal = PST:getTreeSnapshotMod("beggarLuckTotal", 0)
@@ -273,10 +271,13 @@ function PST:onSlotUpdate(slot)
         end
 
         -- Mod: +xp when fully helping beggar
-        local tmpMod = PST:getTreeSnapshotMod("beggarHelpXP", 0)
+        tmpMod = PST:getTreeSnapshotMod("beggarHelpXP", 0)
         if tmpMod > 0 then
             PST:addTempXP(tmpMod, true, true)
         end
+
+        -- Expedition order objective: fully help beggar
+        PST:expedAddOrderProgInRun("expedOrd_beggars", 1)
     end
 
     -- Crane game regenerates item

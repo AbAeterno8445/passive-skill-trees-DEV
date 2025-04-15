@@ -4,20 +4,29 @@
 ---@param flag DamageFlag
 ---@param source EntityRef
 function PST:postDamage(target, damage, flag, source)
-    local targetPlayer = target:ToPlayer()
-
+    local tmpMod
     -- Check if player got hit
-    if targetPlayer then
-        -- Expedition boon: chance for invulnerability frames to be 2x as long
-        tmpMod = PST:getTreeSnapshotMod("boonIntangibility", 0)
-        if tmpMod > 0 and 100 * math.random() < tmpMod then
-            targetPlayer:SetMinDamageCooldown(math.ceil(targetPlayer:GetDamageCooldown() * 2.5))
+    if target.Type == EntityType.ENTITY_PLAYER then
+        local targetPlayer = target:ToPlayer()
+        if targetPlayer then
+            -- Expedition boon: chance for invulnerability frames to be 2x as long
+            tmpMod = PST:getTreeSnapshotMod("boonIntangibility", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                targetPlayer:SetMinDamageCooldown(math.ceil(targetPlayer:GetDamageCooldown() * 2.5))
+            end
         end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
         local isKillingHit = target:HasMortalDamage()
 
+        -- Blacklisted sources
+        local isBlacklistedSrc = not isKillingHit and (source.Type == EntityType.ENTITY_EFFECT and source.Variant == EffectVariant.BLACK_HOLE)
+        if isBlacklistedSrc then return nil end
+
+        local targetIsVuln = target:IsVulnerableEnemy()
+        local targetIsActive = target:IsActiveEnemy(false)
+
         -- Starcursed modifiers
-        if target:IsActiveEnemy(false) then
+        if targetIsActive then
             -- One-shot protection: if the first and only hit this mob ever receives would've killed it, prevent damage and set its health to 10%
             tmpMod = PST:SC_getSnapshotMod("mobOneShotProt", nil)
             if tmpMod ~= nil then
@@ -32,54 +41,54 @@ function PST:postDamage(target, damage, flag, source)
         end
 
         -- Check if a familiar got hit
-        local tmpFamiliar = target:ToFamiliar()
-        if tmpFamiliar then
-            -- Wisp
-            if target.Variant == FamiliarVariant.WISP then
-                -- Will-o-the-Wisp node (Bethany's tree)
-                if PST:getTreeSnapshotMod("willOTheWisp", false) then
-                    if isKillingHit and PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0) < 2.5 then
-                        PST:addModifiers({ damage = 0.5, willOTheWispDmgBuff = 0.5 }, true)
+        if target.Type == EntityType.ENTITY_FAMILIAR then
+            local tmpFamiliar = target:ToFamiliar()
+            if tmpFamiliar then
+                -- Wisp
+                if target.Variant == FamiliarVariant.WISP then
+                    -- Will-o-the-Wisp node (Bethany's tree)
+                    if PST:getTreeSnapshotMod("willOTheWisp", false) then
+                        if isKillingHit and PST:getTreeSnapshotMod("willOTheWispDmgBuff", 0) < 2.5 then
+                            PST:addModifiers({ damage = 0.5, willOTheWispDmgBuff = 0.5 }, true)
+                        end
                     end
-                end
 
-                -- Mod: +luck when a wisp is destroyed, up to +2
-                local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
-                local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
-                if tmpBonus ~= 0 and tmpTotal < 2 and isKillingHit then
-                    local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
-                    PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
-                end
-            -- Item wisps
-            elseif target.Variant == FamiliarVariant.ITEM_WISP then
-                -- Inherited Chaos node (T. Bethany's tree)
-                if PST:getTreeSnapshotMod("inheritedChaos", false) and isKillingHit and target.SubType == CollectibleType.COLLECTIBLE_CHAOS and
-                PST:getTreeSnapshotMod("inheritedChaosDebuff", 0) < 12 then
-                    PST:addModifiers({ allstatsPerc = -3, inheritedChaosDebuff = 3 }, true)
-                end
+                    -- Mod: +luck when a wisp is destroyed, up to +2
+                    local tmpBonus = PST:getTreeSnapshotMod("wispDestroyedLuck", 0)
+                    local tmpTotal = PST:getTreeSnapshotMod("wispDestroyedLuckTotal", 0)
+                    if tmpBonus ~= 0 and tmpTotal < 2 and isKillingHit then
+                        local tmpAdd = math.min(tmpBonus, 2 - tmpTotal)
+                        PST:addModifiers({ luck = tmpAdd, wispDestroyedLuckTotal = tmpAdd }, true)
+                    end
+                -- Item wisps
+                elseif target.Variant == FamiliarVariant.ITEM_WISP then
+                    -- Inherited Chaos node (T. Bethany's tree)
+                    if PST:getTreeSnapshotMod("inheritedChaos", false) and isKillingHit and target.SubType == CollectibleType.COLLECTIBLE_CHAOS and
+                    PST:getTreeSnapshotMod("inheritedChaosDebuff", 0) < 12 then
+                        PST:addModifiers({ allstatsPerc = -3, inheritedChaosDebuff = 3 }, true)
+                    end
 
-                local tmpMod = PST:getTreeSnapshotMod("destroyedWispItem", 0)
-                if tmpMod > 0 and isKillingHit and 100 * math.random() < tmpMod then
-                    local tmpItemList = PST:getTreeSnapshotMod("destroyedWispItemList", nil)
-                    if tmpItemList then
-                        PST:getPlayer():AddCollectible(tmpFamiliar.SubType, 0, false)
-                        table.insert(tmpItemList, tmpFamiliar.SubType)
-                        PST:createFloatTextFX("Gained wisp item!", Vector.Zero, PST:RGBColor(198, 112, 251), 0.13, 90, true)
+                    tmpMod = PST:getTreeSnapshotMod("destroyedWispItem", 0)
+                    if tmpMod > 0 and isKillingHit and 100 * math.random() < tmpMod then
+                        local tmpItemList = PST:getTreeSnapshotMod("destroyedWispItemList", nil)
+                        if tmpItemList then
+                            PST:getPlayer():AddCollectible(tmpFamiliar.SubType, 0, false)
+                            table.insert(tmpItemList, tmpFamiliar.SubType)
+                            PST:createFloatTextFX("Gained wisp item!", Vector.Zero, PST:RGBColor(198, 112, 251), 0.13, 90, true)
+                        end
                     end
                 end
             end
         end
 
         if source and source.Entity and target.Type ~= EntityType.ENTITY_FIREPLACE then
-            local srcPlayer = source.Entity:ToPlayer()
-
             -- Check if a familiar hit/killed enemy
             tmpFamiliar = source.Entity:ToFamiliar()
             if tmpFamiliar == nil and source.Entity.SpawnerEntity ~= nil then
                 -- For tears shot by familiars
                 tmpFamiliar = source.Entity.SpawnerEntity:ToFamiliar()
             end
-            if tmpFamiliar and target:IsActiveEnemy(false) and target:IsVulnerableEnemy() and target.Type ~= EntityType.ENTITY_BLOOD_PUPPY then
+            if tmpFamiliar and targetIsActive and targetIsVuln and target.Type ~= EntityType.ENTITY_BLOOD_PUPPY then
                 -- Dead bird
                 if tmpFamiliar.Variant == FamiliarVariant.DEAD_BIRD or tmpFamiliar.Variant == FamiliarVariant.EVES_BIRD_FOOT then
                     -- Carrion Avian node (Eve's tree)
@@ -132,7 +141,7 @@ function PST:postDamage(target, damage, flag, source)
                         end
 
                         -- Mod: % chance for enemies killed by locusts to drop an additional coin/key/bomb, up to twice per room
-                        local tmpMod = PST:getTreeSnapshotMod("locustKillPickup", 0)
+                        tmpMod = PST:getTreeSnapshotMod("locustKillPickup", 0)
                         if tmpMod > 0 and PST:getTreeSnapshotMod("locustKillPickupProcs", 0) < 2 and 100 * math.random() < tmpMod then
                             local tmpPickups = {
                                 {PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY},
@@ -167,7 +176,7 @@ function PST:postDamage(target, damage, flag, source)
                         end
 
                         -- Mod: % chance for enemies killed by wisps or their tears to drop a 1/2 soul heart if you have less than 3 soul hearts
-                        local tmpMod = PST:getTreeSnapshotMod("wispKillSoul", 0)
+                        tmpMod = PST:getTreeSnapshotMod("wispKillSoul", 0)
                         if tmpMod > 0 and PST:getPlayer():GetSoulHearts() < 6 and PST:getTreeSnapshotMod("wispKillSoulDrops", 0) < 4 and 100 * math.random() < tmpMod then
                             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                             PST:addModifiers({ wispKillSoulDrops = 1 }, true)
@@ -176,7 +185,7 @@ function PST:postDamage(target, damage, flag, source)
                 end
 
                 -- Mod: chance for enemies killed by familiars to drop an additional 1/2 soul heart
-                local tmpMod = PST:getTreeSnapshotMod("familiarKillSoulHeart", 0)
+                tmpMod = PST:getTreeSnapshotMod("familiarKillSoulHeart", 0)
                 if tmpMod > 0 and target.SpawnerType == 0 and isKillingHit and 100 * math.random() < tmpMod then
                     Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
                 end
@@ -204,7 +213,7 @@ function PST:postDamage(target, damage, flag, source)
                 -- Troll bomb hit
                 if source.Variant == BombVariant.BOMB_TROLL or source.Variant == BombVariant.BOMB_SUPERTROLL then
                     -- Mod: +luck if troll bomb kills enemy
-                    local tmpMod = PST:getTreeSnapshotMod("trollBombKillLuck", 0)
+                    tmpMod = PST:getTreeSnapshotMod("trollBombKillLuck", 0)
                     if tmpMod > 0 and isKillingHit then
                         PST:addModifiers({ luck = tmpMod }, true)
                     end
@@ -212,260 +221,257 @@ function PST:postDamage(target, damage, flag, source)
 
                 -- Anarchy node (T. Judas' tree)
                 if PST:getTreeSnapshotMod("anarchy", false) and isKillingHit then
-                    local srcPlayer = PST:getPlayer()
-                    local tmpSlot = srcPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_DARK_ARTS)
+                    local tmpPlayer = PST:getPlayer()
+                    local tmpSlot = tmpPlayer:GetActiveItemSlot(CollectibleType.COLLECTIBLE_DARK_ARTS)
                     if tmpSlot ~= -1 then
-                        srcPlayer:SetActiveCharge(srcPlayer:GetActiveCharge(tmpSlot) + 15, tmpSlot)
+                        tmpPlayer:SetActiveCharge(tmpPlayer:GetActiveCharge(tmpSlot) + 15, tmpSlot)
                     end
                 end
             -- Dark Esau hit
             elseif source.Type == EntityType.ENTITY_DARK_ESAU then
                 if isKillingHit then
                     -- Mod: % chance to gain +luck when Dark Esau kills an enemy
-                    local tmpMod = PST:getTreeSnapshotMod("darkEsauKillLuck", 0)
+                    tmpMod = PST:getTreeSnapshotMod("darkEsauKillLuck", 0)
                     if tmpMod > 0 and 100 * math.random() < tmpMod then
                         PST:addModifiers({ luck = 0.04, darkEsauKillLuckBuff = 0.04 }, true)
                     end
                 end
             else
                 -- Player hit to enemy (direct/through tears)
-                if srcPlayer == nil then
-                    if source.Entity.Parent then
-                        srcPlayer = source.Entity.Parent:ToPlayer()
-                    end
-                    if srcPlayer == nil and source.Entity.SpawnerEntity then
-                        srcPlayer = source.Entity.SpawnerEntity:ToPlayer()
-                    end
-                end
-                if srcPlayer and target:IsVulnerableEnemy() then
-                    -- Player tear hit
-                    if source.Entity.Type == EntityType.ENTITY_TEAR then
-                        -- T. Forgotten bone tears
-                        if source.Entity.Variant == TearVariant.BONE and source.Entity.SpawnerEntity:ToPlayer():GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B and
-                        isKillingHit then
-                            -- Mod: % chance to gain +0.04 luck when T. Forgotten's bone tears kill an enemy
-                            local tmpMod = PST:getTreeSnapshotMod("forgBoneTearKillLuck", 0)
-                            if tmpMod > 0 and 100 * math.random() < tmpMod then
-                                PST:addModifiers({ luck = 0.03, forgBoneTearLuckBuff = 0.03 }, true)
-                            end
-                        end
-
-                        -- Sidereal Artifact objective: kill monsters with tears
-                        if isKillingHit then
-                            PST:sideArtiObjProgress("flowingMeridion", 1)
-                        end
-                    -- Player effect hit
-                    elseif source.Entity.Type == EntityType.ENTITY_EFFECT then
-                        -- Dark Arts
-                        if source.Entity.Variant == EffectVariant.DARK_SNARE then
-                            -- Bounty For The Lightless node (T. Judas' tree)
-                            if PST:getTreeSnapshotMod("lightlessBounty", false) and isKillingHit then
-                                if PST:GetBlackHeartCount(srcPlayer) < 8 and 100 * math.random() < 15 then
-                                    srcPlayer:AddBlackHearts(1)
-                                end
-
-                                local tmpLuck = PST:getTreeSnapshotMod("lightlessBountyLuck", 0)
-                                if tmpLuck < 1 then
-                                    local tmpAdd = math.min(0.03, 1 - tmpLuck)
-                                    PST:addModifiers({ luck = tmpAdd, lightlessBountyLuck = tmpAdd }, true)
+                if source.Type == EntityType.ENTITY_PLAYER or source.SpawnerType == EntityType.ENTITY_PLAYER then
+                    local srcPlayer = source.Entity:ToPlayer() or source.Entity.SpawnerEntity:ToPlayer()
+                    if srcPlayer and targetIsVuln then
+                        -- Player tear hit
+                        if source.Type == EntityType.ENTITY_TEAR then
+                            -- T. Forgotten bone tears
+                            if source.Entity.Variant == TearVariant.BONE and source.Entity.SpawnerEntity:ToPlayer():GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B and
+                            isKillingHit then
+                                -- Mod: % chance to gain +0.04 luck when T. Forgotten's bone tears kill an enemy
+                                tmpMod = PST:getTreeSnapshotMod("forgBoneTearKillLuck", 0)
+                                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                    PST:addModifiers({ luck = 0.03, forgBoneTearLuckBuff = 0.03 }, true)
                                 end
                             end
 
-                            -- Mod: +% random stat every 12 Dark Arts kills
-                            tmpMod = PST:getTreeSnapshotMod("darkArtsKillStat", 0)
-                            if tmpMod > 0 and isKillingHit then
-                                PST:addModifiers({ darkArtsKills = 1 }, true)
-                                if PST:getTreeSnapshotMod("darkArtsKills", 0) >= 10 then
-                                    local randStat = PST:getRandomStat()
-                                    PST:addModifiers({
-                                        [randStat .. "Perc"] = tmpMod,
-                                        darkArtsKills = { value = 0, set = true }
-                                    }, true)
-                                    local buffTable = PST:getTreeSnapshotMod("darkArtsKillStatBuffs", PST.treeMods.darkArtsKillStatBuffs)
-                                    if not buffTable[randStat .. "Perc"] then
-                                        buffTable[randStat .. "Perc"] = tmpMod
-                                    else
-                                        buffTable[randStat .. "Perc"] = buffTable[randStat .. "Perc"] + tmpMod
+                            -- Sidereal Artifact objective: kill monsters with tears
+                            if isKillingHit then
+                                PST:sideArtiObjProgress("flowingMeridion", 1)
+                            end
+                        -- Player effect hit
+                        elseif source.Type == EntityType.ENTITY_EFFECT then
+                            -- Dark Arts
+                            if source.Variant == EffectVariant.DARK_SNARE then
+                                -- Bounty For The Lightless node (T. Judas' tree)
+                                if PST:getTreeSnapshotMod("lightlessBounty", false) and isKillingHit then
+                                    if PST:GetBlackHeartCount(srcPlayer) < 8 and 100 * math.random() < 15 then
+                                        srcPlayer:AddBlackHearts(1)
+                                    end
+
+                                    local tmpLuck = PST:getTreeSnapshotMod("lightlessBountyLuck", 0)
+                                    if tmpLuck < 1 then
+                                        local tmpAdd = math.min(0.03, 1 - tmpLuck)
+                                        PST:addModifiers({ luck = tmpAdd, lightlessBountyLuck = tmpAdd }, true)
+                                    end
+                                end
+
+                                -- Mod: +% random stat every 12 Dark Arts kills
+                                tmpMod = PST:getTreeSnapshotMod("darkArtsKillStat", 0)
+                                if tmpMod > 0 and isKillingHit then
+                                    PST:addModifiers({ darkArtsKills = 1 }, true)
+                                    if PST:getTreeSnapshotMod("darkArtsKills", 0) >= 10 then
+                                        local randStat = PST:getRandomStat()
+                                        PST:addModifiers({
+                                            [randStat .. "Perc"] = tmpMod,
+                                            darkArtsKills = { value = 0, set = true }
+                                        }, true)
+                                        local buffTable = PST:getTreeSnapshotMod("darkArtsKillStatBuffs", PST.treeMods.darkArtsKillStatBuffs)
+                                        if not buffTable[randStat .. "Perc"] then
+                                            buffTable[randStat .. "Perc"] = tmpMod
+                                        else
+                                            buffTable[randStat .. "Perc"] = buffTable[randStat .. "Perc"] + tmpMod
+                                        end
+                                    end
+                                end
+                            end
+                        -- Laser hit
+                        elseif (flag & DamageFlag.DAMAGE_LASER) > 0 then
+                            if isKillingHit then
+                                -- Sidereal Artifact objective: kill enemies with lasers
+                                PST:sideArtiObjProgress("brimMeridion", 1)
+                            end
+                        -- Direct non-tear player hit to enemy (e.g. melee hits)
+                        elseif source.Type == EntityType.ENTITY_PLAYER and flag == 0 then
+                            -- Ransacking node (T. Cain's tree)
+                            if PST:getTreeSnapshotMod("ransacking", false) and isKillingHit then
+                                if PST:getTreeSnapshotMod("ransackingRoomPickups", 0) < 5 and 100 * math.random() < 10 then
+                                    local tmpNewPickup = PST:getTCainRandPickup()
+                                    Game():Spawn(EntityType.ENTITY_PICKUP, tmpNewPickup[1], target.Position, Vector.Zero, nil, tmpNewPickup[2], Random() + 1)
+                                    PST:addModifiers({ ransackingRoomPickups = 1 }, true)
+                                end
+                                PST:addModifiers({ luck = 0.02 }, true)
+                            end
+
+                            -- Hemoptysis kill
+                            if PST.specialNodes.hemoptysisFired > 0 and isKillingHit then
+                                -- Mod: % chance to gain 0.03 luck when killing enemies with Hemoptysis
+                                tmpMod = PST:getTreeSnapshotMod("hemoptysisKillLuck", 0)
+                                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                    PST:addModifiers({ luck = 0.03 }, true)
+                                end
+                            end
+                        end
+
+                        -- Mod: chance for enemies killed by Jacob to drop 1/2 red heart, once per room
+                        tmpMod = PST:getTreeSnapshotMod("jacobHeartOnKill", 0)
+                        if tmpMod > 0 and 100 * math.random() < tmpMod and not PST:getTreeSnapshotMod("jacobHeartOnKillProc", false) and
+                        isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
+                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
+                            PST:addModifiers({ jacobHeartOnKillProc = true }, true)
+                        end
+
+                        -- Mod: chance for enemies killed by Esau to drop 1/2 soul heart, once per room
+                        tmpMod = PST:getTreeSnapshotMod("esauSoulOnKill", 0)
+                        if tmpMod > 0 and 100 * math.random() < tmpMod and not PST:getTreeSnapshotMod("esauSoulOnKillProc", false) and
+                        isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
+                            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                            PST:addModifiers({ esauSoulOnKillProc = true }, true)
+                        end
+
+                        -- Mod: +% to a random stat every X kills with the current form (T. Lazarus)
+                        tmpMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
+                        if tmpMod > 0 and PST:getTreeSnapshotMod("lazFormKillStatProcs", 0) < 8 and isKillingHit then
+                            if srcPlayer:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
+                                PST:addModifiers({ lazFormDeadKills = 1 }, true)
+                                if PST:getTreeSnapshotMod("lazFormDeadKills", 0) >= 8 then
+                                    local randStat = PST:getRandomStat({"shotSpeed"})
+                                    local tmpStatCache = PST:getTreeSnapshotMod("lazFormDeadStatCache", {})
+                                    if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
+                                    tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
+                                    PST:addModifiers({ lazFormKillStatProcs = 1, lazFormDeadKills = { value = 0, set = true } }, true)
+                                    PST:updateCacheDelayed()
+                                end
+                            else
+                                PST:addModifiers({ lazFormKills = 1 }, true)
+                                if PST:getTreeSnapshotMod("lazFormKills", 0) >= 8 then
+                                    local randStat = PST:getRandomStat({"shotSpeed"})
+                                    local tmpStatCache = PST:getTreeSnapshotMod("lazFormStatCache", {})
+                                    if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
+                                    tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
+                                    PST:addModifiers({ lazFormKillStatProcs = 1, lazFormKills = { value = 0, set = true } }, true)
+                                    PST:updateCacheDelayed()
+                                end
+                            end
+                        end
+
+                        -- Mod: % chance to gain a smelted Cricket Leg when you kill an enemy
+                        tmpMod = PST:getTreeSnapshotMod("killCricketLeg", 0)
+                        if tmpMod > 0 and not srcPlayer:HasTrinket(TrinketType.TRINKET_CRICKET_LEG) and 100 * math.random() < tmpMod then
+                            srcPlayer:AddSmeltedTrinket(TrinketType.TRINKET_CRICKET_LEG)
+                            PST:addModifiers({ killCricketLegProc = true }, true)
+                        end
+
+                        -- Magnetized Shell node (T. Forgotten's tree)
+                        if PST:getTreeSnapshotMod("magnetizedShell", false) and PST:getTreeSnapshotMod("magnetizedShellBuff", 0) < 20 then
+                            if target.Position:Distance(srcPlayer.Position) <= 100 then
+                                PST:addModifiers({ speedPerc = 2, magnetizedShellBuff = 2 }, true)
+                            end
+                        end
+
+                        -- Enemies chained by Anima Sola
+                        if PST:arrHasValue(PST.specialNodes.animaChainedMobs, target.InitSeed) then
+                            -- Wrathful Chains node (T. Jacob's tree)
+                            if PST:getTreeSnapshotMod("wrathfulChains", false) then
+                                local nearbyEnemies = Isaac.FindInRadius(target.Position, 100, EntityPartition.ENEMY)
+                                if #nearbyEnemies > 0 then
+                                    for _, tmpEnemy in ipairs(nearbyEnemies) do
+                                        if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and tmpEnemy.Type ~= EntityType.ENTITY_DARK_ESAU and
+                                        tmpEnemy.InitSeed ~= target.InitSeed and not PST:arrHasValue(PST.specialNodes.animaChainedMobs, tmpEnemy.InitSeed) then
+                                            tmpEnemy:TakeDamage(damage * 0.4, 0, EntityRef(srcPlayer), 0)
+                                        end
+                                    end
+                                end
+                            end
+
+                            if isKillingHit then
+                                -- Mod: +% tears for the current floor when killing an enemy chained by Anima Sola (reset)
+                                tmpMod = PST:getTreeSnapshotMod("animaSolaKillTears", 0)
+                                if tmpMod > 0 then
+                                    local tmpTotal = PST:getTreeSnapshotMod("animaSolaKillTearsBuff", 0)
+                                    if tmpTotal < 15 then
+                                        local tmpAdd = math.min(tmpMod, 15 - tmpTotal)
+                                        PST:addModifiers({ tearsPerc = tmpAdd, animaSolaKillTearsBuff = tmpAdd }, true)
                                     end
                                 end
                             end
                         end
-                    -- Laser hit
-                    elseif (flag & DamageFlag.DAMAGE_LASER) > 0 then
-                        if isKillingHit then
-                            -- Sidereal Artifact objective: kill enemies with lasers
-                            PST:sideArtiObjProgress("brimMeridion", 1)
-                        end
-                    -- Direct non-tear player hit to enemy (e.g. melee hits)
-                    elseif source.Entity.Type == EntityType.ENTITY_PLAYER and flag == 0 then
-                        -- Ransacking node (T. Cain's tree)
-                        if PST:getTreeSnapshotMod("ransacking", false) and isKillingHit then
-                            if PST:getTreeSnapshotMod("ransackingRoomPickups", 0) < 5 and 100 * math.random() < 10 then
-                                local tmpNewPickup = PST:getTCainRandPickup()
-                                Game():Spawn(EntityType.ENTITY_PICKUP, tmpNewPickup[1], target.Position, Vector.Zero, nil, tmpNewPickup[2], Random() + 1)
-                                PST:addModifiers({ ransackingRoomPickups = 1 }, true)
-                            end
-                            PST:addModifiers({ luck = 0.02 }, true)
-                        end
 
-                        -- Hemoptysis kill
-                        if PST.specialNodes.hemoptysisFired > 0 and isKillingHit then
-                            -- Mod: % chance to gain 0.03 luck when killing enemies with Hemoptysis
-                            tmpMod = PST:getTreeSnapshotMod("hemoptysisKillLuck", 0)
-                            if tmpMod > 0 and 100 * math.random() < tmpMod then
-                                PST:addModifiers({ luck = 0.03 }, true)
-                            end
-                        end
-                    end
-
-                    -- Mod: chance for enemies killed by Jacob to drop 1/2 red heart, once per room
-                    if 100 * math.random() < PST:getTreeSnapshotMod("jacobHeartOnKill", 0) and not PST:getTreeSnapshotMod("jacobHeartOnKillProc", false) and
-                    isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_JACOB then
-                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF, Random() + 1)
-                        PST:addModifiers({ jacobHeartOnKillProc = true }, true)
-                    end
-
-                    -- Mod: chance for enemies killed by Esau to drop 1/2 soul heart, once per room
-                    if 100 * math.random() < PST:getTreeSnapshotMod("esauSoulOnKill", 0) and not PST:getTreeSnapshotMod("esauSoulOnKillProc", false) and
-                    isKillingHit and srcPlayer:GetPlayerType() == PlayerType.PLAYER_ESAU then
-                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
-                        PST:addModifiers({ esauSoulOnKillProc = true }, true)
-                    end
-
-                    -- Mod: +% to a random stat every X kills with the current form (T. Lazarus)
-                    tmpMod = PST:getTreeSnapshotMod("lazFormKillStat", 0)
-                    if tmpMod > 0 and PST:getTreeSnapshotMod("lazFormKillStatProcs", 0) < 8 and isKillingHit then
-                        if srcPlayer:GetPlayerType() == PlayerType.PLAYER_LAZARUS2_B then
-                            PST:addModifiers({ lazFormDeadKills = 1 }, true)
-                            if PST:getTreeSnapshotMod("lazFormDeadKills", 0) >= 8 then
-                                local randStat = PST:getRandomStat({"shotSpeed"})
-                                local tmpStatCache = PST:getTreeSnapshotMod("lazFormDeadStatCache", {})
-                                if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
-                                tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
-                                PST:addModifiers({ lazFormKillStatProcs = 1, lazFormDeadKills = { value = 0, set = true } }, true)
-                                PST:updateCacheDelayed()
-                            end
-                        else
-                            PST:addModifiers({ lazFormKills = 1 }, true)
-                            if PST:getTreeSnapshotMod("lazFormKills", 0) >= 8 then
-                                local randStat = PST:getRandomStat({"shotSpeed"})
-                                local tmpStatCache = PST:getTreeSnapshotMod("lazFormStatCache", {})
-                                if not tmpStatCache[randStat .. "Perc"] then tmpStatCache[randStat .. "Perc"] = 0 end
-                                tmpStatCache[randStat .. "Perc"] = tmpStatCache[randStat .. "Perc"] + tmpMod
-                                PST:addModifiers({ lazFormKillStatProcs = 1, lazFormKills = { value = 0, set = true } }, true)
-                                PST:updateCacheDelayed()
-                            end
-                        end
-                    end
-
-                    -- Mod: % chance to gain a smelted Cricket Leg when you kill an enemy
-                    tmpMod = PST:getTreeSnapshotMod("killCricketLeg", 0)
-                    if tmpMod > 0 and not srcPlayer:HasTrinket(TrinketType.TRINKET_CRICKET_LEG) and 100 * math.random() < tmpMod then
-                        srcPlayer:AddSmeltedTrinket(TrinketType.TRINKET_CRICKET_LEG)
-                        PST:addModifiers({ killCricketLegProc = true }, true)
-                    end
-
-                    -- Magnetized Shell node (T. Forgotten's tree)
-                    if PST:getTreeSnapshotMod("magnetizedShell", false) and PST:getTreeSnapshotMod("magnetizedShellBuff", 0) < 20 then
-                        if target.Position:Distance(srcPlayer.Position) <= 100 then
-                            PST:addModifiers({ speedPerc = 2, magnetizedShellBuff = 2 }, true)
-                        end
-                    end
-
-                    -- Enemies chained by Anima Sola
-                    if PST:arrHasValue(PST.specialNodes.animaChainedMobs, target.InitSeed) then
-                        -- Wrathful Chains node (T. Jacob's tree)
-                        if PST:getTreeSnapshotMod("wrathfulChains", false) then
-                            local nearbyEnemies = Isaac.FindInRadius(target.Position, 100, EntityPartition.ENEMY)
-                            if #nearbyEnemies > 0 then
-                                for _, tmpEnemy in ipairs(nearbyEnemies) do
-                                    if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and tmpEnemy.Type ~= EntityType.ENTITY_DARK_ESAU and
-                                    tmpEnemy.InitSeed ~= target.InitSeed and not PST:arrHasValue(PST.specialNodes.animaChainedMobs, tmpEnemy.InitSeed) then
-                                        tmpEnemy:TakeDamage(damage * 0.4, 0, EntityRef(srcPlayer), 0)
+                        local tmpNPC = target:ToNPC()
+                        if tmpNPC then
+                            -- Boss hit
+                            if tmpNPC:IsBoss() then
+                                -- Sidereal Artifact condition: Hit a boss 3 times
+                                if PST:getTreeSnapshotMod("beastseekerSeptentrion", false) then
+                                    PST.specialNodes.arti_beastseekerHits = PST.specialNodes.arti_beastseekerHits + 1
+                                    if PST.specialNodes.arti_beastseekerHits >= 3 then
+                                        PST.specialNodes.arti_beastseekerHits = 0
+                                        PST:sideArtiAddEnergy(PST.sideArtiData.beastseekerSeptentrion.energy)
                                     end
                                 end
-                            end
-                        end
 
-                        if isKillingHit then
-                            -- Mod: +% tears for the current floor when killing an enemy chained by Anima Sola (reset)
-                            tmpMod = PST:getTreeSnapshotMod("animaSolaKillTears", 0)
-                            if tmpMod > 0 then
-                                local tmpTotal = PST:getTreeSnapshotMod("animaSolaKillTearsBuff", 0)
-                                if tmpTotal < 15 then
-                                    local tmpAdd = math.min(tmpMod, 15 - tmpTotal)
-                                    PST:addModifiers({ tearsPerc = tmpAdd, animaSolaKillTearsBuff = tmpAdd }, true)
+                                -- Sidereal Artifact condition: Hit a boss 8 times
+                                if PST:getTreeSnapshotMod("giantseekerSeptentrion", false) then
+                                    PST.specialNodes.arti_giantseekerHits = PST.specialNodes.arti_giantseekerHits + 1
+                                    if PST.specialNodes.arti_giantseekerHits >= 8 then
+                                        PST.specialNodes.arti_giantseekerHits = 0
+                                        PST:sideArtiAddEnergy(PST.sideArtiData.giantseekerSeptentrion.energy)
+                                    end
+                                end
+
+                                -- Sidereal Artifact condition: Hit a boss affected by any status effect
+                                if PST:getTreeSnapshotMod("rotseekerSeptentrion", false) and PST:entityHasAnyStatus(tmpNPC) then
+                                    PST:sideArtiAddEnergy(PST.sideArtiData.rotseekerSeptentrion.energy)
                                 end
                             end
                         end
-                    end
 
-                    local tmpNPC = target:ToNPC()
-                    if tmpNPC then
-                        -- Boss hit
-                        if tmpNPC:IsBoss() then
-                            -- Sidereal Artifact condition: Hit a boss 3 times
-                            if PST:getTreeSnapshotMod("beastseekerSeptentrion", false) then
-                                PST.specialNodes.arti_beastseekerHits = PST.specialNodes.arti_beastseekerHits + 1
-                                if PST.specialNodes.arti_beastseekerHits >= 3 then
-                                    PST.specialNodes.arti_beastseekerHits = 0
-                                    PST:sideArtiAddEnergy(PST.sideArtiData.beastseekerSeptentrion.energy)
+                        -- Sidereal Artifact condition: Hit a final boss
+                        if PST:getTreeSnapshotMod("titanseekerSeptentrion") and PST:entityIsFinalBoss(target) then
+                            PST:sideArtiAddEnergy(PST.sideArtiData.titanseekerSeptentrion.energy)
+                        end
+
+                        -- Sidereal Artifact: Executioner Meridion
+                        if PST.specialNodes.arti_executionerBuffTimer > 0 and (target.HitPoints / target.MaxHitPoints) <= 0.15 then
+                            local function PST_tmpDmgTick()
+                                return function()
+                                    target:TakeDamage(target.MaxHitPoints, 0, EntityRef(srcPlayer), 0)
                                 end
                             end
+                            PST:createAnimFXAt("gfx/1000.176_cleaver slash.anm2", "Slash", target.Position - Vector(0, 12), {
+                                [3] = PST_tmpDmgTick()
+                            })
+                        end
 
-                            -- Sidereal Artifact condition: Hit a boss 8 times
-                            if PST:getTreeSnapshotMod("giantseekerSeptentrion", false) then
-                                PST.specialNodes.arti_giantseekerHits = PST.specialNodes.arti_giantseekerHits + 1
-                                if PST.specialNodes.arti_giantseekerHits >= 8 then
-                                    PST.specialNodes.arti_giantseekerHits = 0
-                                    PST:sideArtiAddEnergy(PST.sideArtiData.giantseekerSeptentrion.energy)
+                        -- Ancient weapon mod: Sacred Scourge
+                        tmpMod = PST:getSnapAstralWepMod("sacredScourge")
+                        if tmpMod and PST:isMobUndead(target) and isKillingHit then
+                            PST.specialNodes.ancwep_sacScourgeBuff = tmpMod[1] * 30
+                        end
+
+                        -- Mod: hitting enemies affected by slow or paralysis extends the status by X seconds, up to 4 times per enemy
+                        tmpMod = PST:getTreeSnapshotMod("slowParaExtension", 0)
+                        if tmpMod > 0 then
+                            local tgData = PST:getEntData(target)
+                            if not tgData.PST_slowParaExtension then
+                                tgData.PST_slowParaExtension = 0
+                            end
+                            if tgData.PST_slowParaExtension < 4 then
+                                tgData.PST_slowParaExtension = tgData.PST_slowParaExtension + 1
+                                if target:GetSlowingCountdown() > 0 then
+                                    target:SetSlowingCountdown(target:GetSlowingCountdown() + math.ceil(tmpMod * 30))
                                 end
-                            end
-
-                            -- Sidereal Artifact condition: Hit a boss affected by any status effect
-                            if PST:getTreeSnapshotMod("rotseekerSeptentrion", false) and PST:entityHasAnyStatus(tmpNPC) then
-                                PST:sideArtiAddEnergy(PST.sideArtiData.rotseekerSeptentrion.energy)
-                            end
-                        end
-                    end
-
-                    -- Sidereal Artifact condition: Hit a final boss
-                    if PST:getTreeSnapshotMod("titanseekerSeptentrion") and PST:entityIsFinalBoss(target) then
-                        PST:sideArtiAddEnergy(PST.sideArtiData.titanseekerSeptentrion.energy)
-                    end
-
-                    -- Sidereal Artifact: Executioner Meridion
-                    if PST.specialNodes.arti_executionerBuffTimer > 0 and (target.HitPoints / target.MaxHitPoints) <= 0.15 then
-                        local function PST_tmpDmgTick()
-                            return function()
-                                target:TakeDamage(target.MaxHitPoints, 0, EntityRef(srcPlayer), 0)
-                            end
-                        end
-                        PST:createAnimFXAt("gfx/1000.176_cleaver slash.anm2", "Slash", target.Position - Vector(0, 12), {
-                            [3] = PST_tmpDmgTick()
-                        })
-                    end
-
-                    -- Ancient weapon mod: Sacred Scourge
-                    local tmpMod = PST:getSnapAstralWepMod("sacredScourge")
-                    if tmpMod and PST:isMobUndead(target) and isKillingHit then
-                        PST.specialNodes.ancwep_sacScourgeBuff = tmpMod[1] * 30
-                    end
-
-                    -- Mod: hitting enemies affected by slow or paralysis extends the status by X seconds, up to 4 times per enemy
-                    tmpMod = PST:getTreeSnapshotMod("slowParaExtension", 0)
-                    if tmpMod > 0 then
-                        local tgData = PST:getEntData(target)
-                        if not tgData.PST_slowParaExtension then
-                            tgData.PST_slowParaExtension = 0
-                        end
-                        if tgData.PST_slowParaExtension < 4 then
-                            tgData.PST_slowParaExtension = tgData.PST_slowParaExtension + 1
-                            if target:GetSlowingCountdown() > 0 then
-                                target:SetSlowingCountdown(target:GetSlowingCountdown() + math.ceil(tmpMod * 30))
-                            end
-                            if target:GetFreezeCountdown() > 0 then
-                                target:SetFreezeCountdown(target:GetFreezeCountdown() + math.ceil(tmpMod * 30))
+                                if target:GetFreezeCountdown() > 0 then
+                                    target:SetFreezeCountdown(target:GetFreezeCountdown() + math.ceil(tmpMod * 30))
+                                end
                             end
                         end
                     end
@@ -474,9 +480,9 @@ function PST:postDamage(target, damage, flag, source)
 
             -- Hit by Gello's damaging pulse (Coordinated Demons node - T. Lilith's tree)
             if PST.specialNodes.gelloPulseDmgFlag then
-                if target:IsActiveEnemy(false) then
+                if targetIsActive then
                     -- Mod: % chance for enemies killed with Gello's damaging pulse to drop a black heart
-                    local tmpMod = PST:getTreeSnapshotMod("pulseKillBlackHeart", 0)
+                    tmpMod = PST:getTreeSnapshotMod("pulseKillBlackHeart", 0)
                     if tmpMod > 0 and isKillingHit and PST:GetBlackHeartCount(PST:getPlayer()) < 4 and
                     not PST:getTreeSnapshotMod("pulseKillBlackHeartProc", false) and 100 * math.random() < tmpMod then
                         Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, RandomVector() * 3, nil, HeartSubType.HEART_BLACK, Random() + 1)
@@ -489,12 +495,12 @@ function PST:postDamage(target, damage, flag, source)
             -- Player/Familiar hit
             if srcPlayer or tmpFamiliar then
                 -- Boon: chance on hit to execute enemies affected by any status effect, halve boss status effect CD
-                if not isKillingHit and target:IsActiveEnemy(false) then
+                if not isKillingHit and targetIsActive then
                     if target:GetBossStatusEffectCooldown() > 0 then
                         target:SetBossStatusEffectCooldown(math.floor(target:GetBossStatusEffectCooldown() / 2))
                     end
                     if PST:entityHasAnyStatus(target) then
-                        local tmpMod = PST:getTreeSnapshotMod("boonMercyChance", 0)
+                        tmpMod = PST:getTreeSnapshotMod("boonMercyChance", 0)
                         local hpPerc = target.HitPoints / target.MaxHitPoints
                         if tmpMod > 0 and hpPerc <= PST:getTreeSnapshotMod("boonMercyHP", 0) / 100 and 100 * math.random() < tmpMod then
                             SFXManager():Play(SoundEffect.SOUND_KNIFE_PULL, 0.8)
@@ -720,30 +726,32 @@ function PST:postDamage(target, damage, flag, source)
 
                 -- Ancient weapon mod: Oceanic Might
                 tmpMod = PST:getSnapAstralWepMod("oceanicMight")
-                local tmpChance = 10
-                if target:IsFlying() then
-                    tmpChance = 40
-                end
-                if tmpMod and (flag & DamageFlag.DAMAGE_EXPLOSION) == 0 and PST.specialNodes.ancwep_oceanicMightCD == 0 and
-                100 * math.random() < tmpChance then
-                    local nearbyEffects = Isaac.FindInRadius(target.Position, 60 + target.Size * 2)
-                    local creepNearby = false
-                    for _, tmpEffect in ipairs(nearbyEffects) do
-                        if tmpEffect.Type == EntityType.ENTITY_EFFECT and PST:arrHasValue(PST.playerDamagingCreep, tmpEffect.Variant) then
-                            creepNearby = true
-                            break
-                        end
+                if tmpMod then
+                    local tmpChance = 10
+                    if target:IsFlying() then
+                        tmpChance = 40
                     end
-                    if creepNearby then
-                        PST:createAnimFXAt("gfx/1000.001b_water explosion.anm2", "Explosion", target.Position)
-                        SFXManager():Play(SoundEffect.SOUND_BOSS2INTRO_WATER_EXPLOSION, 0.8)
-                        local nearbyEnem = Isaac.FindInRadius(target.Position, 80, EntityPartition.ENEMY)
-                        for _, tmpEnemy in ipairs(nearbyEnem) do
-                            if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
-                                tmpEnemy:TakeDamage(25, DamageFlag.DAMAGE_EXPLOSION, EntityRef(PST:getPlayer()), 0)
+                    if (flag & DamageFlag.DAMAGE_EXPLOSION) == 0 and PST.specialNodes.ancwep_oceanicMightCD == 0 and
+                    100 * math.random() < tmpChance then
+                        local nearbyEffects = Isaac.FindInRadius(target.Position, 60 + target.Size * 2)
+                        local creepNearby = false
+                        for _, tmpEffect in ipairs(nearbyEffects) do
+                            if tmpEffect.Type == EntityType.ENTITY_EFFECT and PST:arrHasValue(PST.playerDamagingCreep, tmpEffect.Variant) then
+                                creepNearby = true
+                                break
                             end
                         end
-                        PST.specialNodes.ancwep_oceanicMightCD = 75
+                        if creepNearby then
+                            PST:createAnimFXAt("gfx/1000.001b_water explosion.anm2", "Explosion", target.Position)
+                            SFXManager():Play(SoundEffect.SOUND_BOSS2INTRO_WATER_EXPLOSION, 0.8)
+                            local nearbyEnem = Isaac.FindInRadius(target.Position, 80, EntityPartition.ENEMY)
+                            for _, tmpEnemy in ipairs(nearbyEnem) do
+                                if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+                                    tmpEnemy:TakeDamage(25, DamageFlag.DAMAGE_EXPLOSION, EntityRef(PST:getPlayer()), 0)
+                                end
+                            end
+                            PST.specialNodes.ancwep_oceanicMightCD = 75
+                        end
                     end
                 end
 
@@ -980,7 +988,7 @@ function PST:postDamage(target, damage, flag, source)
         end
 
         -- Generic checks
-        if target:IsActiveEnemy(false) and target:IsVulnerableEnemy() then
+        if targetIsActive and targetIsVuln then
             -- Generic explosion hits enemy
             if (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
                 -- Enemy dies to explosion

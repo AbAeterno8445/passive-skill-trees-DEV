@@ -61,9 +61,10 @@ include("scripts.expedition_data.generators.ST_expedition_generator_v2")
 include("scripts.expedition_data.generators.ST_expedition_generator_v3")
 include("scripts.expedition_data.generators.ST_uber_generator_v1")
 include("scripts.expedition_data.generators.ST_uber_generator_v2")
+include("scripts.expedition_data.generators.ST_uber_generator_v3")
 
 PST.expedGeneratorVersion = 3
-PST.uberExpedGeneratorVersion = 2
+PST.uberExpedGeneratorVersion = 3
 
 -- List of expedition-altering mods present in the Deep-Space skill tree's nodes (within Star Tree)
 local deepSpaceTreeMods = {
@@ -81,7 +82,8 @@ function PST:generateExpedition(depth, seed, version, uber, modifiers)
     if uber then
         expedGenerators = {
             PST.generateUberExpeditionV1,
-            PST.generateUberExpeditionV2
+            PST.generateUberExpeditionV2,
+            PST.generateUberExpeditionV3
         }
         expedVer = version or PST.uberExpedGeneratorVersion
 

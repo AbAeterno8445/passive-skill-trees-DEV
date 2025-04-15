@@ -107,8 +107,15 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
                 end
             end
 
+            -- Draw node
+            if tmpNode.nodeType == PSTExpNodeType.NORMAL and tmpNode.rewardType == PSTExpNodeRewardType.ORDER then
+                expedScreen.expNodeSprite.Color.GO = 0.2
+                expedScreen.expNodeSprite.Color.BO = 0.2
+            end
             expedScreen.expNodeSprite:SetFrame("Nodes", tmpNode.nodeType)
             expedScreen.expNodeSprite:Render(drawPos)
+            expedScreen.expNodeSprite.Color.GO = 0
+            expedScreen.expNodeSprite.Color.BO = 0
 
             -- Draw reward icon
             if tmpNode.nodeType ~= PSTExpNodeType.COMPLETED and tmpNode.rewardType ~= PSTExpNodeRewardType.NONE then

@@ -304,6 +304,50 @@ function PST:expedAddProgInRun(objName, prog)
     end
 end
 
+-- Add progress to an order objective's internal requirement progress, if present in the expedition's currently selected node (uber expeditions)
+function PST:expedAddOrderProg(depth, objName, prog)
+    if PST:getTreeSnapshotMod("chaosmode", false) then return end
+
+    local tmpExpedition = PST:getExpedData(depth, true)
+    if tmpExpedition and tmpExpedition.selectedNode then
+        local expOrdObjData = PST:getExpedOrderObjDataAt(depth, true, tmpExpedition.selectedNode.col - 1, tmpExpedition.selectedNode.row)
+        if expOrdObjData then
+            for _, tmpOrdMod in ipairs(expOrdObjData) do
+                if tmpOrdMod.obj == objName then
+                    -- Add progress to internal mod requirement progress (e.g. killed 1 out of 77 monsters)
+                    local ordModData = PST.expedOrderMods[tmpOrdMod.obj]
+                    if ordModData and tmpOrdMod.prog < ordModData.max then
+                        tmpOrdMod.reqProg = math.max(0, tmpOrdMod.reqProg + prog)
+                        -- If internal requirement is met, reset mod and add order if below max procs
+                        if tmpOrdMod.reqProg >= (ordModData.req or 1) then
+                            tmpOrdMod.prog = tmpOrdMod.prog + 1
+                            tmpOrdMod.reqProg = 0
+
+                            local tmpOrderGain = ordModData.order
+                            if tmpExpedition.modifiers and tmpExpedition.modifiers.orderGain then
+                                tmpOrderGain = math.ceil(ordModData.order * (1 + tmpExpedition.modifiers.orderGain / 100))
+                            end
+                            PST:expedAddOrder(depth, ordModData.order)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- In-run helper function to add progress to the given order objective
+function PST:expedAddOrderProgInRun(objName, prog)
+    if Isaac.IsInGame() and PST:getTreeSnapshotMod("isExpedRun", false) then
+        local expDepth = PST:getTreeSnapshotMod("expedDepth", 0)
+        local expUber = PST:getTreeSnapshotMod("isExpedUber", false)
+        local expData = PST:getExpedData(expDepth, expUber)
+        if expData and PST:expedCanProgress(expDepth, expUber) then
+            PST:expedAddOrderProg(expDepth, objName, prog)
+        end
+    end
+end
+
 function PST:expedMeetsRequirements(depth, uber)
     local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition then
@@ -630,6 +674,39 @@ function PST:getExpedResetObolCost(depth, uber)
     return math.min(100, 40 + (depth - 1) * 20)
 end
 
+-- Expedition cost of switching nodes once one is already selected
+function PST:getExpedNodeSwitchCost(depth, uber)
+    local tmpExpedition = PST:getExpedData(depth, uber)
+    if tmpExpedition and tmpExpedition.uber then
+        return { sp = 1, respecs = 50, obols = math.min(300, 100 + 25 * (depth - 1)) }
+    end
+    return { respecs = math.min(30, 5 + (depth - 1) * 2) }
+end
+
+function PST:getExpedOrderObjDataAt(depth, uber, col, row)
+    local tmpExpedition = PST:getExpedData(depth, uber)
+    if tmpExpedition and tmpExpedition.orderObjs then
+        local tmpObjCol = tmpExpedition.orderObjs[tostring(col)]
+        if tmpObjCol then
+            return tmpExpedition.orderObjs[tostring(col)][tostring(row)]
+        end
+    end
+    return nil
+end
+
+function PST:getExpedOrderModDescLine(expModData)
+    local tmpDesc = ""
+    local ordModData = PST.expedOrderMods[expModData.obj]
+    if ordModData then
+        tmpDesc = "   " .. ordModData.desc
+        if ordModData.req and expModData.prog < ordModData.max then
+            tmpDesc = tmpDesc .. " (" .. math.min(expModData.reqProg, ordModData.req) .. "/" .. ordModData.req .. ")"
+        end
+        tmpDesc = tmpDesc .. " [" .. math.min(expModData.prog, ordModData.max) .. "/" .. ordModData.max .. "]"
+    end
+    return tmpDesc
+end
+
 ---@param nodeData PSTExpNode
 ---@param expData PSTExpedition
 function PST:getExpNodeDescription(nodeData, expData)
@@ -683,6 +760,24 @@ function PST:getExpNodeDescription(nodeData, expData)
                     end
                 else
                     table.insert(tmpDescription, {"   " .. tmpEntMod.desc, PST.kcolors.RED1})
+                end
+            end
+        end
+    end
+
+    -- Order modifiers
+    if nodeData.rewardType == PSTExpNodeRewardType.ORDER and expData.orderObjs then
+        local orderObjData = PST:getExpedOrderObjDataAt(expData.depth, expData.uber, nodeData.col - 1, nodeData.row)
+        if orderObjData then
+            table.insert(tmpDescription, {"Order modifier(s):", PST.kcolors.TEAL1})
+            for _, tmpMod in ipairs(orderObjData) do
+                local orderModData = PST.expedOrderMods[tmpMod.obj]
+                if orderModData then
+                    local tmpColor = PST.kcolors.TEAL1
+                    if tmpMod.prog >= orderModData.max then
+                        tmpColor = PST.kcolors.GREEN1
+                    end
+                    table.insert(tmpDescription, {PST:getExpedOrderModDescLine(tmpMod), tmpColor})
                 end
             end
         end
@@ -794,6 +889,16 @@ function PST:getExpedCurseMods(expData)
         end
     end
     return curseMods
+end
+
+function PST:expedAddOrder(depth, order)
+    local expData = PST:getExpedData(depth, true)
+    if not expData.order then expData.order = 0 end
+    expData.order = expData.order + order
+
+    if Isaac.IsInGame() then
+        PST:createFloatTextFX("+" .. tostring(order) .. " order", Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 100, true)
+    end
 end
 
 -- Add Entropy to an uber expedition (capped at 500), and add associated effects

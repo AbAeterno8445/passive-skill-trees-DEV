@@ -391,7 +391,7 @@ function PST:onNewRun(isContinued)
 
                 -- Bring The Order node (Deep-Space tree)
                 if expData.modifiers and expData.modifiers.bringTheOrder and expData.order and expData.order > 0 then
-                    PST:addModifiers({ luck = -0.05 * expData.order }, true)
+                    PST:addModifiers({ luck = -0.03 * expData.order }, true)
                 end
 
                 PST:expedApplyEntropy(expData)
@@ -911,7 +911,7 @@ function PST:onNewRun(isContinued)
 
     -- Early Bird node (Azazel's tree)
     if PST:getTreeSnapshotMod("earlyBird", false) then
-        player:AddBlackHearts(1)
+        player:AddBlackHearts(2)
     end
 
     -- Growing Contrition node (Lazarus' tree)

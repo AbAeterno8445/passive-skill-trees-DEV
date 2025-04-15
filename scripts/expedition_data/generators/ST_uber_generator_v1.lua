@@ -33,7 +33,7 @@ function PST:generateUberExpeditionV1(depth, seed, expModifiers)
     local startOrder = 0
     -- Bring The Order node (Deep-Space tree)
     if expModifiers and expModifiers.bringTheOrder then
-        startOrder = 15
+        startOrder = 50
     end
 
     -- Reward type weights (starting value, addition per advanced column, min or max value)

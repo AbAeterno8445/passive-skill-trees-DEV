@@ -206,26 +206,50 @@ end
 -- Post pause menu render
 function PST:postPauseRender()
     -- Expedition objective display
-    if Isaac.IsInGame() and PST.config.drawPauseText and PST:getTreeSnapshotMod("isExpedRun", false) and not PST:isKeybindActive(PSTKeybind.TREE_TAB, true) then
+    if Isaac.IsInGame() and PST.config.drawPauseText and PST:getTreeSnapshotMod("isExpedRun", false) then
         local depth = PST:getTreeSnapshotMod("expedDepth", 1)
-        local expData = PST.expeditionsData[depth]
+        local expData = PST:getExpedData(depth, PST:getTreeSnapshotMod("isExpedUber", false))
         if expData and expData.selectedNode then
             local tmpNode = expData.nodes[expData.selectedNode.col][expData.selectedNode.row]
+            local tmpOrderObjData = PST:getExpedOrderObjDataAt(depth, expData.uber, expData.selectedNode.col - 1, expData.selectedNode.row)
             if tmpNode then
                 local tmpScale = 0.5
                 local tmpY = 6
-                local tmpDesc = {table.unpack(PST:getExpNodeObjectiveDesc(tmpNode, expData))}
-                if not PST:expedCanProgress(depth) then
-                    table.insert(tmpDesc, {"(Can't progress in this run - must start a new one)", PST.kcolors.RED1})
-                end
-                for _, tmpLine in ipairs(tmpDesc) do
-                    local tmpStr = tmpLine[1]
-                    if tmpStr == "Objective:" then
-                        tmpStr = "Expedition Objective:"
+                if not PST:isKeybindActive(PSTKeybind.TREE_TAB, true) then
+                    local tmpDesc = {table.unpack(PST:getExpNodeObjectiveDesc(tmpNode, expData))}
+                    if not PST:expedCanProgress(depth) then
+                        table.insert(tmpDesc, {"(Can't progress in this run - must start a new one)", PST.kcolors.RED1})
                     end
+                    for _, tmpLine in ipairs(tmpDesc) do
+                        local tmpStr = tmpLine[1]
+                        if tmpStr == "Objective:" then
+                            tmpStr = "Expedition Objective:"
+                            if tmpOrderObjData then
+                                tmpStr = tmpStr .. " (hold TAB for order objectives)"
+                            end
+                        end
+                        local tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
+                        PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpLine[2])
+                        tmpY = tmpY + 14 * tmpScale
+                    end
+                elseif tmpOrderObjData then
+                    local tmpStr = "Expedition Order Objectives:"
                     local tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
-                    PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpLine[2])
+                    PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, PST.kcolors.TEAL1)
                     tmpY = tmpY + 14 * tmpScale
+                    for _, tmpOrdMod in ipairs(tmpOrderObjData) do
+                        local ordModData = PST.expedOrderMods[tmpOrdMod.obj]
+                        if ordModData then
+                            tmpStr = PST:getExpedOrderModDescLine(tmpOrdMod)
+                            local tmpColor = PST.kcolors.TEAL1
+                            if tmpOrdMod.prog >= ordModData.max then
+                                tmpColor = PST.kcolors.GREEN1
+                            end
+                            tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
+                            PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpColor)
+                            tmpY = tmpY + 14 * tmpScale
+                        end
+                    end
                 end
             end
         end

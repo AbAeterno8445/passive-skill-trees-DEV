@@ -42,15 +42,15 @@ function PST:onNewRoom()
 	PST.room = room
 	local roomType = room:GetType()
 
-	local roomEntities = {}
-
-	if room:GetAliveEnemiesCount() == 0 then
+	local roomAliveEnemies = room:GetAliveEnemiesCount()
+	if roomAliveEnemies == 0 then
 		PST:addModifiers({ roomClearProc = true }, true)
 	else
 		PST:addModifiers({ roomClearProc = false }, true)
 	end
 
 	-- Optimize GetRoomEntities
+	local roomEntities = {}
 	local function PST_FetchRoomEntities()
 		if #roomEntities == 0 then
 			roomEntities = Isaac.GetRoomEntities()
@@ -70,30 +70,33 @@ function PST:onNewRoom()
 	end
 
 	-- Room monster modifiers
-	if room:GetAliveEnemiesCount() > 0 then
+	if roomAliveEnemies > 0 then
 		local mobsList = {}
 		local soulEaterList = {}
 		for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 			local tmpNPC = tmpEntity:ToNPC()
 			if tmpNPC and tmpEntity:IsActiveEnemy(false) and tmpEntity:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
-				if not tmpNPC:IsBoss() then table.insert(mobsList, tmpNPC)
+				local NPCisBoss = tmpNPC:IsBoss()
+				if not NPCisBoss then table.insert(mobsList, tmpNPC)
 				else table.insert(soulEaterList, tmpNPC) end
 
 				if roomType ~= RoomType.ROOM_BOSS then
 					-- SC mod: Chance to duplicate
 					local tmpChance = PST:SC_getSnapshotMod("mobDuplicate", 0)
-					local noSplit = PST:arrHasValue(PST.noSplitMobs, tmpEntity.Type)
-					if not noSplit then
-						for _, tmpSplit in ipairs(PST.noSplitMobsSpec) do
-							if tmpEntity.Type == tmpSplit[1] and tmpEntity.Variant == tmpSplit[2] then
-								noSplit = true
-								break
+					if tmpChance > 0 then
+						local noSplit = PST:arrHasValue(PST.noSplitMobs, tmpEntity.Type)
+						if not noSplit then
+							for _, tmpSplit in ipairs(PST.noSplitMobsSpec) do
+								if tmpEntity.Type == tmpSplit[1] and tmpEntity.Variant == tmpSplit[2] then
+									noSplit = true
+									break
+								end
 							end
 						end
-					end
-					if not noSplit and not tmpNPC:IsBoss() and not tmpEntity.Parent and 100 * math.random() < tmpChance then
-						local tmpPos = Isaac.GetFreeNearPosition(tmpEntity.Position, 5)
-						Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
+						if not noSplit and not NPCisBoss and not tmpEntity.Parent and 100 * math.random() < tmpChance then
+							local tmpPos = Isaac.GetFreeNearPosition(tmpEntity.Position, 5)
+							Game():Spawn(tmpEntity.Type, tmpEntity.Variant, tmpPos, Vector.Zero, nil, tmpEntity.SubType, Random() + 1)
+						end
 					end
 
 					-- Chance to turn into champion
@@ -110,7 +113,7 @@ function PST:onNewRoom()
 						-- Expedition curse: abundant might
 						tmpChance = tmpChance + PST:getTreeSnapshotMod("curseAbundantMightChance", 0)
 
-						if jewelChampChance > 0 and not tmpNPC:IsBoss() and PST:NPCChampionAvailable(tmpNPC, true) and
+						if jewelChampChance > 0 and not NPCisBoss and PST:NPCChampionAvailable(tmpNPC, true) and
 						100 * math.random() < jewelChampChance then
 							tmpNPC:MakeChampion(Random() + 1)
 						elseif tmpChance > 0 and PST:NPCChampionAvailable(tmpNPC) and 100 * math.random() < tmpChance then
@@ -202,7 +205,7 @@ function PST:onNewRoom()
 			PST:addModifiers({ SC_nullstoneProc = false }, true)
 		end
 		-- Get highest enemy HP
-		if roomType ~= RoomType.ROOM_BOSS and room:GetAliveEnemiesCount() > 0 then
+		if roomType ~= RoomType.ROOM_BOSS and roomAliveEnemies > 0 then
 			local highestHP = 0
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				local tmpNPC = tmpEntity:ToNPC()
@@ -239,7 +242,7 @@ function PST:onNewRoom()
 
 	-- Ancient starcursed jewel: Glowing Glass Piece
 	if PST:SC_getSnapshotMod("glowingGlassPiece", false) and roomType ~= RoomType.ROOM_BOSS then
-		if room:GetAliveEnemiesCount() == 0 and PST:getLevel():GetCurrentRoomDesc().ClearCount == 1 then
+		if roomAliveEnemies == 0 and PST:getLevel():GetCurrentRoomDesc().ClearCount == 1 then
 			player:UseActiveItem(CollectibleType.COLLECTIBLE_D7, UseFlag.USE_NOANIM)
 			PST.specialNodes.SC_glowingGlassProc = true
 		end
@@ -278,7 +281,7 @@ function PST:onNewRoom()
 	-- Mod: chance to gain +4% all stats when entering a room with monsters
 	local tmpTreeMod = PST:getTreeSnapshotMod("allstatsRoom", 0)
 	if tmpTreeMod ~= 0 then
-		if room:GetAliveEnemiesCount() > 0 and 100 * math.random() < tmpTreeMod then
+		if roomAliveEnemies > 0 and 100 * math.random() < tmpTreeMod then
 			if not PST:getTreeSnapshotMod("allstatsRoomProc", false) then
 				PST:addModifiers({ allstatsPerc = 4, allstatsRoomProc = true }, true)
 				player:AddCacheFlags(PST.allstatsCache, true)
@@ -526,7 +529,7 @@ function PST:onNewRoom()
 	end
 
 	-- Curseborne node (T. Azazel's tree)
-	if PST:getTreeSnapshotMod("curseborne", false) and room:GetAliveEnemiesCount() > 0 then
+	if PST:getTreeSnapshotMod("curseborne", false) and roomAliveEnemies > 0 then
 		local enemyList = {}
 		local playerTears = 30 / (player.MaxFireDelay + 1)
 		local procs = math.max(1, math.floor(playerTears / 0.8))
@@ -645,7 +648,7 @@ function PST:onNewRoom()
 	if tmpMod > 0 then
 		PST:addModifiers({ tearsPerc = -tmpMod, temperedBuff = { value = 0, set = true } }, true)
 	end
-	if PST:getTreeSnapshotMod("tempered", false) and room:GetAliveEnemiesCount() > 0 then
+	if PST:getTreeSnapshotMod("tempered", false) and roomAliveEnemies > 0 then
 		if player.SamsonBerserkCharge > 0 then
 			local lostCharge = player.SamsonBerserkCharge * 0.3
 			player.SamsonBerserkCharge = math.ceil(player.SamsonBerserkCharge - lostCharge)
@@ -703,7 +706,7 @@ function PST:onNewRoom()
 
 	-- Mod: +% speed that decays to 0 over 4+ seconds when entering a room with monsters
 	tmpMod = PST:getTreeSnapshotMod("roomEnterSpd", 0)
-	if tmpMod > 0 and room:GetAliveEnemiesCount() > 0 then
+	if tmpMod > 0 and roomAliveEnemies > 0 then
 		PST.specialNodes.roomEnterSpdTimer = 120 + PST:getTreeSnapshotMod("roomEnterSpdDecayDur", 0) * 30
 		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
 	end
@@ -801,7 +804,7 @@ function PST:onNewRoom()
 			PST.specialNodes.consonanceLilHauntOut = false
 		end
 
-		if room:GetAliveEnemiesCount() > 0 then
+		if roomAliveEnemies > 0 then
 			-- Lil Haunt effect
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_LIL_HAUNT) then
 				local tmpColor = player:GetColor()
@@ -916,7 +919,7 @@ function PST:onNewRoom()
 
 		-- Ancient starcursed jewel: Crimson Warpstone
 		if PST:SC_getSnapshotMod("crimsonWarpstone", false) then
-			if room:GetAliveEnemiesCount() > 0 then
+			if roomAliveEnemies > 0 then
 				local tmpBonus = (level:GetStage() - 1) * 1.7
 				if PST:inRedRoom() then
 					tmpBonus = -15
@@ -1062,7 +1065,7 @@ function PST:onNewRoom()
 
 		-- Expedition curse: unexpected taxation
 		tmpMod = PST:getTreeSnapshotMod("curseUnexpectedTax", 0)
-		if tmpMod > 0 and room:GetAliveEnemiesCount() > 0 then
+		if tmpMod > 0 and roomAliveEnemies > 0 then
 			player:AddCoins(-tmpMod)
 		end
 
@@ -1300,7 +1303,7 @@ function PST:onNewRoom()
 
     -- Ancient weapon mod: Berserker's Wrath
     if PST:getSnapAstralWepMod("berserkerWrath") then
-		if room:GetAliveEnemiesCount() > 0 and not PST:getTreeSnapshotMod("ancwep_berserkerWrathProc", false) then
+		if roomAliveEnemies > 0 and not PST:getTreeSnapshotMod("ancwep_berserkerWrathProc", false) then
         	player:UseActiveItem(CollectibleType.COLLECTIBLE_BERSERK, UseFlag.USE_NOANIM)
 			PST:addModifiers({ ancwep_berserkerWrathProc = true }, true)
 		end

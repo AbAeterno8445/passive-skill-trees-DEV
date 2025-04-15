@@ -2237,6 +2237,114 @@ function PST:initModCompat()
     if CuerLib then
         PST:AddPriorityCallback(CuerLib.Callbacks.CLC_EVALUATE_CURSE, CallbackPriority.LATE, PST.onCurseEval);
     end
+
+    -- Pudding and Wakaba -- shoutout to this mod for being the only one to give its characters skill trees! - wooky
+    if _wakaba then
+        -- Baby familiars
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.LIL_MOE)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.LIL_SHIVA)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.LIL_WAKABA)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.LIL_RICHER)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.LIL_RIRA)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.LIL_MAO)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.MURASAME)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.NASA_LOVER)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.CHIMAKI)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.MAID_DUET)
+        table.insert(PST.babyFamiliarItems, wakaba.Enums.Collectibles.KYOUTAROU_LOVER)
+
+        -- Extra lives
+        table.insert(PST.extraLifeItems, wakaba.Enums.Collectibles.VINTAGE_THREAT)
+        table.insert(PST.extraLifeItems, wakaba.Enums.Collectibles.SEE_DES_BISCHOFS)
+        table.insert(PST.extraLifeItems, wakaba.Enums.Collectibles.JAR_OF_CLOVER)
+        table.insert(PST.extraLifeItems, wakaba.Enums.Collectibles.BUNNY_PARFAIT)
+        table.insert(PST.extraLifeItems, wakaba.Enums.Collectibles.CARAMELLA_PANCAKE)
+        table.insert(PST.extraLifeItems, wakaba.Enums.Collectibles.BOOK_OF_THE_GOD)
+        table.insert(PST.extraLifeItems, wakaba.Enums.Collectibles.BOOK_OF_THE_FALLEN)
+
+        -- HP Ups
+        local tmpHPUpItems = {
+            {"D-Cup Ice Cream", 1}, {"Mysterious game CD", 2}, {"Moe's Muffin", 1},
+            {"Rira's Bento", 1}, {"Clover Shard", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+        -- Dice items
+        table.insert(PST.diceItems, wakaba.Enums.Collectibles.D6_CHAOS)
+        table.insert(PST.diceItems, wakaba.Enums.Collectibles.D6_PLUS) -- it's actually a book! but it's named after dice, and acts like dice, so hmmmm....... - wooky
+
+        -- Quest items
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.WAKABAS_CURFEW)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.WAKABAS_CURFEW2)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.STICKY_NOTE)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.BOOK_OF_SHIORI_FLOOR)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.BOOK_OF_SHIORI_ROOM)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.BOOK_OF_SHIORI_MISC)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.LUNAR_DAMOCLES)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.EASTER_EGG)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.TRIAL_STEW)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.PURIFIER) -- shoutouts to creating an item that's exclusive to the skill tree mod - wooky
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.SHIFTER)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.SHIFTER_PASSIVE)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.CLOVER_SHARD)
+        table.insert(PST.progressionItems, wakaba.Enums.Collectibles.WAKABA_DUALITY)
+
+        -- Locked chests
+        table.insert(PST.lockedChests, wakaba.Enums.Pickups.CLOVER_CHEST)
+
+        -- Blue Gambit cards
+        local tmpCards = {
+            "wakaba_Black Joker", "wakaba_White Joker", "wakaba_Color Joker", "wakaba_Queen of Spades"
+        }
+        for _, tmpCard in ipairs(tmpCards) do
+            local tmpCardID = Isaac.GetCardIdByName(tmpCard)
+            if tmpCardID then
+                table.insert(PST.blueGambitCards, tmpCardID)
+            end
+        end
+
+        -- Soul stones
+        local tmpSoulstones = {
+            {"Wakaba", "Soul of Wakaba"}, {"Shiori", "Soul of Shiori"}, {"Tsukasa", "Soul of Tsukasa"}, {"Richer", "Soul of Richer"}, {"Rira", "Soul of Rira"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+        -- Song of the Few
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.LIL_MOE)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.LIL_SHIVA)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.LIL_WAKABA)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.LIL_RICHER)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.LIL_RIRA)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.LIL_MAO)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.PLUMY)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.NASA_LOVER)
+        table.insert(PST.songOfTheFewFamiliars, wakaba.Enums.Collectibles.CHIMAKI)
+
+        -- Grand Consonance
+        table.insert(PST.grandConsonanceWhitelist, wakaba.Enums.Familiars.LIL_MOE)
+        table.insert(PST.grandConsonanceWhitelist, wakaba.Enums.Familiars.LIL_SHIVA)
+        table.insert(PST.grandConsonanceWhitelist, wakaba.Enums.Familiars.LIL_WAKABA)
+        table.insert(PST.grandConsonanceWhitelist, wakaba.Enums.Familiars.LIL_RIRA)
+        table.insert(PST.grandConsonanceWhitelist, wakaba.Enums.Familiars.LIL_RICHER)
+        table.insert(PST.grandConsonanceWhitelist, wakaba.Enums.Familiars.LIL_KYOUTAROU)
+        table.insert(PST.grandConsonanceWhitelist, wakaba.Enums.Familiars.NASA_LOVER)
+
+        -- Coin Machines
+        table.insert(PST.coinMachines, wakaba.Enums.Slots.CRYSTAL_RESTOCK)
+    end
 end
 
 -- Add mod items to the 'blue' item pool
@@ -2488,4 +2596,32 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Skimmed Milk"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Defuse = Rewards"))
 	end
+
+    -- Pudding and Wakaba blue items
+    if _wakaba then
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.AZURE_RIR)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.BOOK_OF_FOCUS)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.BOOK_OF_SHIORI)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.BOOK_OF_THE_GOD)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.BUBBLE_BOMBS)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.CLENSING_FOAM)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.D6_PLUS)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.D_CUP_ICECREAM)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.EATHEART)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.EYE_OF_CLOCK)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.FIREFLY_LIGHTER)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.SEE_DES_BISCHOFS)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.LUNAR_STONE)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.MINT_CHOCO_ICECREAM)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.MOD_BLOCK)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.PHANTOM_CLOAK)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.UNIFORM)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.SECRET_CARD)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.SECRET_DOOR)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.VENOM_INCANTATION)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.VINTAGE_THREAT)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.WAKABAS_BLESSING)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.VINTAGE_THREAT)
+        table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.WAKABA_DUALITY)
+    end
 end

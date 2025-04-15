@@ -2,6 +2,7 @@
 function PST:onRoomClear(RNG)
     local level = PST:getLevel()
     local room = PST:getRoom()
+    local roomType = room:GetType()
 
     local player = PST:getPlayer()
     local isKeeper = player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B
@@ -17,7 +18,7 @@ function PST:onRoomClear(RNG)
 
     local jewelDrop = false
     -- Challenge rooms
-    if room:GetType() == RoomType.ROOM_CHALLENGE then
+    if roomType == RoomType.ROOM_CHALLENGE then
         -- Final round clear
         if not PST:getTreeSnapshotMod("challRoomClear", false) and
         (Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2)) then
@@ -55,6 +56,12 @@ function PST:onRoomClear(RNG)
             -- Expedition objective: clear challenge rooms
             PST:expedAddProgInRun("challengeRooms", 1)
 
+            -- Took no damage
+            if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+                -- Expedition order objective: clear challenge rooms without taking damage
+                PST:expedAddOrderProgInRun("expedOrd_challenge", 1)
+            end
+
             -- Obols on challenge room clear
             if PST:isRunSidereal() then
                 local tmpObols = PST.obolEvents.challClear(PST:getTreeSnapshotMod("expedDepth", 1))
@@ -69,7 +76,7 @@ function PST:onRoomClear(RNG)
             end
         end
     -- Boss rooms
-    elseif room:GetType() == RoomType.ROOM_BOSS then
+    elseif roomType == RoomType.ROOM_BOSS then
         -- Thievery node Greed proc (Cain's tree)
         -- Mod: chance for Greed to spawn after defeating the first floor's boss
         if not PST.specialNodes.bossGreedSpawned and (PST:getTreeSnapshotMod("thieveryGreedProc", false) or
@@ -95,8 +102,11 @@ function PST:onRoomClear(RNG)
             SFXManager():Play(SoundEffect.SOUND_SUMMONSOUND)
             PST.specialNodes.SC_mistleKrampusSpawn = true
         end
+
+        -- Expedition order objective: clear boss rooms
+        PST:expedAddOrderProgInRun("expedOrd_bossRooms", 1)
     -- Boss rush
-    elseif room:GetType() == RoomType.ROOM_BOSSRUSH then
+    elseif roomType == RoomType.ROOM_BOSSRUSH then
         -- Boss rush clear
         if Ambush.GetCurrentWave() == Ambush.GetMaxBossrushWaves() and not PST:getTreeSnapshotMod("bossRushClear", false) then
             PST:addModifiers({ bossRushClear = true }, true)
@@ -111,6 +121,11 @@ function PST:onRoomClear(RNG)
 
             -- Expedition objective: complete boss rush encounters
             PST:expedAddProgInRun("bossRush", 1)
+
+            -- Expedition order objective: clear the boss rush without getting hit more than 3 times
+            if PST:getTreeSnapshotMod("roomHitsReceived") <= 3 then
+                PST:expedAddOrderProgInRun("expedOrd_bossRush", 1)
+            end
 
             -- Obols on boss rush clear
             if PST:isRunSidereal() then
@@ -130,7 +145,7 @@ function PST:onRoomClear(RNG)
     -- Once-per-clear effects
     if not PST:getTreeSnapshotMod("roomClearProc", false) then
         PST:addModifiers({ roomClearProc = true }, true)
-        local isBossRoom = room:GetType() == RoomType.ROOM_BOSS
+        local isBossRoom = roomType == RoomType.ROOM_BOSS
 
         -- Boss room
         if isBossRoom and PST:getTreeSnapshotMod("roomBossKills", 0) > 0 then
@@ -219,6 +234,14 @@ function PST:onRoomClear(RNG)
                 if tmpMod > 0 then
                     PST:addModifiers({ oldChestConvChance = tmpMod }, true)
                 end
+
+                -- Expedition objective: clear floors without taking damage more than twice
+                if PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 2 then
+                    PST:expedAddProgInRun("floorNoDmgTwice", 1)
+                -- Expedition objective: clear floors without taking damage more than once
+                elseif PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 1 then
+                    PST:expedAddProgInRun("floorNoDmgOnce", 1)
+                end
             end
 
             -- Boss room + took no damage in floor
@@ -238,12 +261,9 @@ function PST:onRoomClear(RNG)
                     end
                 end
 
-                -- Expedition objective: clear floors without taking damage more than twice
-                if PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 2 then
-                    PST:expedAddProgInRun("floorNoDmgTwice", 1)
-                -- Expedition objective: clear floors without taking damage more than once
-                elseif PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 1 then
-                    PST:expedAddProgInRun("floorNoDmgOnce", 1)
+                -- Expedition order objective: clear floors past the first two without taking damage
+                if level:GetStage() > 2 or level:IsAscent() then
+                    PST:expedAddOrderProgInRun("expedOrd_floors", 1)
                 end
             end
 
@@ -318,7 +338,7 @@ function PST:onRoomClear(RNG)
         end
 
         -- Regular room
-        if room:GetType() == RoomType.ROOM_DEFAULT then
+        if roomType == RoomType.ROOM_DEFAULT then
             -- Uber expedition entropy mod
             if PST:getTreeSnapshotMod("expedEnt_clearTime", false) and room:GetFrameCount() >= 300 then
                 PST:expedAddEntropy(
@@ -368,7 +388,6 @@ function PST:onRoomClear(RNG)
 
         -- Ancient starcursed jewel: Cursed Auric Shard
         if PST:SC_getSnapshotMod("cursedAuricShard", false) then
-            local roomType = room:GetType()
             if roomType == RoomType.ROOM_BOSS then
                 PST:addModifiers({ SC_cursedAuricSpeedProc = true }, true)
             elseif not PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) and not PST.debugOptions.disableAuric and 100 * math.random() < 90 then
@@ -507,7 +526,7 @@ function PST:onRoomClear(RNG)
         if PST:getTreeSnapshotMod("fracturedRemains", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
             -- Dice shard drop
             tmpChance = 3
-            if room:GetType() == RoomType.ROOM_BOSS then
+            if roomType == RoomType.ROOM_BOSS then
                 tmpChance = 75
             end
             if 100 * math.random() < tmpChance then
@@ -515,7 +534,7 @@ function PST:onRoomClear(RNG)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, tmpPos, Vector.Zero, nil, Card.CARD_DICE_SHARD, Random() + 1)
             end
             -- Rune shard drop
-            if room:GetType() ~= RoomType.ROOM_BOSS then
+            if roomType ~= RoomType.ROOM_BOSS then
                 tmpChance = 7
                 if 100 * math.random() < tmpChance then
                     local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20)
@@ -531,7 +550,7 @@ function PST:onRoomClear(RNG)
 
         -- Mod: +luck when clearing a boss room without taking damage
         tmpMod = PST:getTreeSnapshotMod("bossFlawlessLuck", 0)
-        if tmpMod > 0 and room:GetType() == RoomType.ROOM_BOSS and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+        if tmpMod > 0 and roomType == RoomType.ROOM_BOSS and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
             PST:addModifiers({ luck = tmpMod }, true)
         end
 
@@ -777,7 +796,7 @@ function PST:onRoomClear(RNG)
     -- Convert temp xp to normal xp
     if PST.modData.xpObtained > 0 then
         local xpOverflow = false
-        if room:GetType() == RoomType.ROOM_BOSSRUSH then
+        if roomType == RoomType.ROOM_BOSSRUSH then
             xpOverflow = true
         end
         PST:addXP(PST.modData.xpObtained, false, xpOverflow)
@@ -787,6 +806,11 @@ function PST:onRoomClear(RNG)
     -- Expedition objective: clear rooms with at least 5 monsters
     if PST:getTreeSnapshotMod("roomKills", 0) >= 5 then
         PST:expedAddProgInRun("rooms", 1)
+
+        -- Expedition order objective: clear a room with at least 5 monsters past floor 5 within 7 seconds
+        if room:GetFrameCount() <= 210 and (level:GetStage() > 5 or level:IsAscent()) then
+            PST:expedAddOrderProgInRun("expedOrd_roomClear", 1)
+        end
     end
 
     -- Crimson Convergence buff: Celerity update

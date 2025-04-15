@@ -385,13 +385,9 @@ end
 -- Returns whether the given entity has any active status effects
 ---@param entity Entity
 function PST:entityHasAnyStatus(entity)
-	if entity:GetBurnCountdown() > 0 or entity:GetFearCountdown() > 0 or entity:GetBaitedCountdown() > 0 or
-	entity:GetFreezeCountdown() > 0 or entity:GetShrinkCountdown() > 0 or entity:GetCharmedCountdown() > 0 or
-	entity:GetSlowingCountdown() > 0 or entity:GetBleedingCountdown() > 0 or
-	(entity:GetEntityFlags() & (EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON)) > 0 then
-		return true
-	end
-	return false
+	return entity:HasEntityFlags(EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_POISON | EntityFlag.FLAG_BURN | EntityFlag.FLAG_FEAR |
+	EntityFlag.FLAG_BAITED | EntityFlag.FLAG_ICE | EntityFlag.FLAG_FREEZE | EntityFlag.FLAG_SHRINK | EntityFlag.FLAG_CHARM |
+	EntityFlag.FLAG_SLOW | EntityFlag.FLAG_BLEED_OUT) or entity:GetSpeedMultiplier() < 1
 end
 
 ---@param entity Entity
@@ -482,7 +478,6 @@ function PST:getRandomStat(exclude)
 	return statsList[math.random(#statsList)]
 end
 
----@param srcPlayer EntityPlayer
 ---@param target Entity
 function PST:inflictRandomStatus(srcPlayer, target, duration)
 	local playerRef = EntityRef(srcPlayer)
@@ -532,8 +527,9 @@ end
 
 function PST:isFirstOrigStage()
 	local level = PST:getLevel()
-	return level:GetStage() == LevelStage.STAGE1_1 and (level:GetStageType() == StageType.STAGETYPE_ORIGINAL or
-	level:GetStageType() == StageType.STAGETYPE_AFTERBIRTH or level:GetStageType() == StageType.STAGETYPE_WOTL) and not level:IsAscent()
+	local stageType = level:GetStageType()
+	return level:GetStage() == LevelStage.STAGE1_1 and (stageType == StageType.STAGETYPE_ORIGINAL or
+	stageType == StageType.STAGETYPE_AFTERBIRTH or stageType == StageType.STAGETYPE_WOTL) and not level:IsAscent()
 end
 
 function PST:arrHasValue(arr, value)
@@ -811,7 +807,6 @@ end
 
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
----@param player EntityPlayer
 function PST:GetBlackHeartCount(player)
     local black_count = 0
     local soul_hearts = player:GetSoulHearts()
@@ -1079,9 +1074,10 @@ function PST:LJ_inMortis()
 end
 
 ---@param entity Entity
-function PST:getEntData(entity)
+function PST:getEntData(entity, trueGetData)
     if not PST.entDataCache[entity.InitSeed] then
-        local entData = entity:GetData()
+        local entData = {}
+		if trueGetData then entData = entity:GetData() end
         PST.entDataCache[entity.InitSeed] = entData
         return entData
     end
