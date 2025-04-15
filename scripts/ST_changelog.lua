@@ -3,7 +3,7 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
-        "1.2.11",
+        "1.3.0",
         "- Added compatibility for items/entities from the Pudding and Wakaba mod. (thanks wookywok!)",
         "- Made slight performance optimizations to internal utility functions and entity data storage, on-hit and on-death functions.",
         "- Black hole damage ticks no longer trigger on-hit effects.",
