@@ -20,23 +20,23 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
 
     local uberExtra = ""
     if expData.uber then
-        uberExtra = " (Uber)"
+        uberExtra = " (" .. PST:getLocalized("ui_uber") .. ")"
     end
-    tmpRenderText("Expedition depth " .. tostring(expData.depth) .. uberExtra, PST.kcolors.WHITE, drawLineHeight * 2)
+    tmpRenderText(PST:getLocalizedFormatStr("ui_expedDepthNum", {depth = expData.depth}) .. uberExtra, PST.kcolors.WHITE, drawLineHeight * 2)
 
     -- Requirement values are tables: {requirement description string, true/false whether req is met}
     local tmpRequirements = {}
 
     -- Node selection requirement
-    table.insert(tmpRequirements, {"Selected expedition node.", expData.selectedNode ~= nil})
+    table.insert(tmpRequirements, {PST:getLocalized("ui_expedSelNode"), expData.selectedNode ~= nil})
 
     -- Character level requirement
     local currentChar = PST:getCurrentCharData()
     local reqLvl = PST.expedMinLevel
     if expData.uber then reqLvl = PST.uberExpedMinLevel end
-    local tmpStr = "Selected character level " .. tostring(reqLvl) .. "+"
+    local tmpStr = PST:getLocalizedFormatStr("ui_expReqCharSelLvl", {reqLvl = reqLvl})
     if currentChar then
-        tmpStr = tmpStr .. " (" .. PST:getCurrentCharName() .. " level: " .. tostring(currentChar.level) .. ")"
+        tmpStr = tmpStr .. " (" .. PST:getLocalizedFormatStr("ui_expReqCharSelLvlExtra", {charName = PST:getCurrentCharName(), level = currentChar.level}) .. ")"
     end
     table.insert(tmpRequirements, {tmpStr, currentChar and currentChar.level >= reqLvl})
 
@@ -44,11 +44,11 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     if expData.implicits then
         local tmpReq = expData.implicits.starmightReq
         if tmpReq and tmpReq > 0 then
-            tmpStr = "Starmight required: " .. tostring(tmpReq)
+            tmpStr = PST:getLocalized("ui_expReqStarmight") .. ": " .. tmpReq
             local totalStarmight = 0
             if tScreen.starcursedTotalMods and tScreen.starcursedTotalMods.totalStarmight then
                 totalStarmight = tScreen.starcursedTotalMods.totalStarmight
-                tmpStr = tmpStr .. " (your total: " .. tostring(totalStarmight) .. ")"
+                tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_expReqStarmightYourTotal") .. ": " .. totalStarmight .. ")"
             end
             table.insert(tmpRequirements, {tmpStr, totalStarmight >= tmpReq})
         end
@@ -58,13 +58,13 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
     -- Ancient starcursed jewel requirement
     if expCurses["curseAncientStars"] then
         local ancientSocketed = PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, "1") or PST:SC_getSocketedJewel(PSTStarcursedType.ANCIENT, "2")
-        table.insert(tmpRequirements, {"Socketed Ancient Starcursed Jewel.", ancientSocketed})
+        table.insert(tmpRequirements, {PST:getLocalized("ui_expReqSocketAncJewel"), ancientSocketed})
     end
 
     -- Requirements
     local requirementsMet = true
     if #tmpRequirements > 0 then
-        tmpRenderText("Expedition requirements:", PST.kcolors.FORGE_ORANGE)
+        tmpRenderText(PST:getLocalized("ui_expReqs"), PST.kcolors.FORGE_ORANGE)
         for _, reqData in ipairs(tmpRequirements) do
             local tmpColor = PST.kcolors.GREEN2
             if not reqData[2] then
@@ -74,7 +74,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
             tmpRenderText("    " .. reqData[1], tmpColor)
         end
         if not requirementsMet then
-            tmpRenderText("Warning: requirements not met! Next run can't be an expedition run.", PST.kcolors.RED1)
+            tmpRenderText(PST:getLocalized("ui_expReqNotMetWarn"), PST.kcolors.RED1)
         end
         tmpRenderText("")
     end
@@ -97,18 +97,18 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
         for impName, impVal in pairs(expData.implicits) do
             if impName ~= "starmightReq" then
                 if not firstDraw then
-                    tmpRenderText("Implicit modifiers:", tmpColor)
+                    tmpRenderText(PST:getLocalized("ui_impMods"), tmpColor)
                     firstDraw = true
                 end
-                local tmpDescription = PST.expedDescriptions[impName]
+                local tmpDescription = PST:getLocalized(impName)
                 if tmpDescription then
                     local formatLines = {}
                     if type(tmpDescription) == "table" then
                         for _, tmpLine in ipairs(tmpDescription) do
-                            table.insert(formatLines, string.format(tmpLine, impVal))
+                            table.insert(formatLines, PST:formatString(tmpLine, {impVal = impVal}))
                         end
                     else
-                        table.insert(formatLines, string.format(tmpDescription, impVal))
+                        table.insert(formatLines, PST:formatString(tmpDescription, {impVal = impVal}))
                     end
                     for _, tmpLine in ipairs(formatLines) do
                         tmpRenderText("    " .. tmpLine, tmpColor)
@@ -123,27 +123,27 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
 
     -- Uber effects
     if expData.uber then
-        tmpRenderText("Order: " .. tostring(expData.order or 0), PST.kcolors.TEAL1, drawLineHeight + 4)
-        tmpRenderText("Entropy: " .. tostring(expData.entropy or 0), PST.kcolors.RED1, drawLineHeight + 4)
+        tmpRenderText(PST:getLocalized("ui_Order") .. ": " .. (expData.order or 0), PST.kcolors.TEAL1, drawLineHeight + 4)
+        tmpRenderText(PST:getLocalized("ui_Entropy") .. ": " .. (expData.entropy or 0), PST.kcolors.RED1, drawLineHeight + 4)
 
-        tmpRenderText("Deep-Space Distortion modifiers:", PST.kcolors.RED2, drawLineHeight + 4)
+        tmpRenderText(PST:getLocalized("ui_dsdMods"), PST.kcolors.RED2, drawLineHeight + 4)
         if expData.dsMods and #expData.dsMods > 0 then
             for _, dsModID in ipairs(expData.dsMods) do
                 local dsModName = PST.expedDeepSpaceMods[dsModID]
-                local dsModDesc = PST.expedDescriptions[dsModName]
+                local dsModDesc = PST:getLocalized(dsModName)
                 if dsModDesc then
                     tmpRenderText("    " .. dsModDesc, PST.kcolors.RED2, drawLineHeight + 4)
                 end
             end
         else
-            tmpRenderText("    None", PST.kcolors.RED2)
+            tmpRenderText("    " .. PST:getLocalized("ui_none"), PST.kcolors.RED2)
         end
         tmpRenderText("")
     end
 
     -- Items
     local tmpColor = PST.kcolors.EXPED_PURPLE
-    tmpRenderText("Items:", tmpColor, drawLineHeight + 4)
+    tmpRenderText(PST:getLocalized("ui_items") .. ":", tmpColor, drawLineHeight + 4)
 
     ---@type Sprite
     local tmpSprite = expedScreen.itemRewardSprite
@@ -181,7 +181,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
         end
     end
     if tmpDrawn == 0 then
-        tmpRenderText("    None", tmpColor, drawLineHeight * 2)
+        tmpRenderText("    " .. PST:getLocalized("ui_none"), tmpColor, drawLineHeight * 2)
     else
         -- Offset Y drawing pos by drawn bubble heights
         baseDrawY = baseDrawY + drawLineHeight + 40 * math.ceil(tmpDrawn / boonCols)
@@ -189,7 +189,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
 
     -- Boons
     tmpColor = PST.kcolors.GREEN1
-    tmpRenderText("Boons:", tmpColor, drawLineHeight + 4)
+    tmpRenderText(PST:getLocalized("ui_boons") .. ":", tmpColor, drawLineHeight + 4)
 
     ---@type Sprite
     tmpSprite = expedScreen.boonSprite
@@ -228,19 +228,19 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
         end
     end
     if tmpDrawn == 0 then
-        tmpRenderText("    None", tmpColor)
+        tmpRenderText("    " .. PST:getLocalized("ui_none"), tmpColor)
     else
         -- Offset Y drawing pos by drawn bubble heights
         baseDrawY = baseDrawY + drawLineHeight + 40 * math.ceil(tmpDrawn / boonCols)
     end
 
     -- Boon upgrade points
-    tmpRenderText("Boon upgrade points: " .. tostring(expData.boonUpgradePoints), tmpColor)
+    tmpRenderText(PST:getLocalized("ui_boonUpgPoints") .. ": " .. tostring(expData.boonUpgradePoints), tmpColor)
     tmpRenderText("")
 
     -- Curses
     tmpColor = PST.kcolors.RED2
-    tmpRenderText("Curses:", tmpColor, drawLineHeight + 4)
+    tmpRenderText(PST:getLocalized("ui_curses") .. ":", tmpColor, drawLineHeight + 4)
 
     tmpDrawn = 0
     expedScreen.hoveredCurse = nil
@@ -273,7 +273,7 @@ local function expedScreenEffectTab(expData, expedScreen, tScreen)
         end
     end
     if tmpDrawn == 0 then
-        tmpRenderText("    None", tmpColor)
+        tmpRenderText("    " .. PST:getLocalized("ui_none"), tmpColor)
     else
         -- Offset Y drawing pos by drawn bubble heights
         baseDrawY = baseDrawY + drawLineHeight + 40 * math.ceil(tmpDrawn / boonCols)

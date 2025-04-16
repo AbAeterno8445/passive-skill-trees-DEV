@@ -291,6 +291,7 @@ PST.expeditionBoons = {
     { -- 1
         name = "Wellbeing",
         description = "+{{allstatsPerc}}% all stats.",
+        localeID = "#expboon_wellbeing",
         spriteFrame = 0,
         mods = { allstatsPerc = 7 },
         upgradedMods = { allstatsPerc = 12 }
@@ -298,6 +299,7 @@ PST.expeditionBoons = {
     { -- 2
         name = "Damage",
         description = "+{{damagePerc}}% damage.",
+        localeID = "#expboon_dmg",
         spriteFrame = 1,
         mods = { damagePerc = 10 },
         upgradedMods = { damagePerc = 16 }
@@ -305,6 +307,7 @@ PST.expeditionBoons = {
     { -- 3
         name = "Celerity",
         description = "+{{speedPerc}}% speed.",
+        localeID = "#expboon_celerity",
         spriteFrame = 2,
         mods = { speedPerc = 10 },
         upgradedMods = { speedPerc = 16 }
@@ -312,6 +315,7 @@ PST.expeditionBoons = {
     { -- 4
         name = "Tears",
         description = "+{{tearsPerc}}% tears.",
+        localeID = "#expboon_tears",
         spriteFrame = 3,
         mods = { tearsPerc = 10 },
         upgradedMods = { tearsPerc = 16 }
@@ -319,6 +323,7 @@ PST.expeditionBoons = {
     { -- 5
         name = "Distance",
         description = "+{{rangePerc}}% range.",
+        localeID = "#expboon_distance",
         spriteFrame = 4,
         mods = { rangePerc = 10 },
         upgradedMods = { rangePerc = 16 }
@@ -326,6 +331,7 @@ PST.expeditionBoons = {
     { -- 6
         name = "Fortune",
         description = "+{{luckPerc}}% luck.",
+        localeID = "#expboon_fortune",
         spriteFrame = 5,
         mods = { luckPerc = 10 },
         upgradedMods = { luckPerc = 16 }
@@ -333,6 +339,7 @@ PST.expeditionBoons = {
     { -- 7
         name = "Abundant Obols",
         description = "Obols are twice as likely to drop within runs. +{{boonAbundantObols}}% dropped obols.",
+        localeID = "#expboon_abundantObols",
         spriteFrame = 6,
         mods = { boonAbundantObols = 20 },
         upgradedMods = { boonAbundantObols = 50 }
@@ -340,6 +347,7 @@ PST.expeditionBoons = {
     { -- 8
         name = "Intangibility",
         description = "When hit by a monster, {{boonIntangibility}}% chance for the invincibility frames to last 2.5x as long.",
+        localeID = "#expboon_intangibility",
         spriteFrame = 7,
         mods = { boonIntangibility = 50 },
         upgradedMods = { boonIntangibility = 80 }
@@ -351,6 +359,7 @@ PST.expeditionBoons = {
             "their HP is below {{boonMercyHP}}%.",
             "Hitting a boss halves their current status effect cooldown."
         },
+        localeID = "#expboon_mercy",
         spriteFrame = 8,
         mods = { boonMercyChance = 12, boonMercyHP = 15 },
         upgradedMods = { boonMercyChance = 20, boonMercyHP = 20 }
@@ -358,6 +367,7 @@ PST.expeditionBoons = {
     { -- 10
         name = "the Aegis",
         description = "Block the first {{boonAegis}} hits you receive every floor.",
+        localeID = "#expboon_aegis",
         spriteFrame = 9,
         mods = { boonAegis = 2 },
         upgradedMods = { boonAegis = 3 }
@@ -366,6 +376,7 @@ PST.expeditionBoons = {
         name = "Generosity",
         description = "The first item or deal you purchase in the run costs 1 coin.",
         upgradedDescription = "The first {{boonGenerosity}} items or deals you purchase in the run cost 1 coin.",
+        localeID = "#expboon_generosity",
         spriteFrame = 10,
         mods = { boonGenerosity = 1 },
         upgradedMods = { boonGenerosity = 2 }
@@ -374,6 +385,7 @@ PST.expeditionBoons = {
         name = "Protection",
         description = "Gain a Holy Mantle shield every 2 floors. +10% speed while holy mantle is active.",
         upgradedDescription = "Gain a Holy Mantle shield every floor. +15% speed while holy mantle is active.",
+        localeID = "#expboon_protection",
         spriteFrame = 11,
         mods = { boonProtection = 2 },
         upgradedMods = { boonProtection = 1 }
@@ -384,6 +396,7 @@ PST.expeditionBoons = {
             "{{boonLethargyChance}}% chance to slow enemies for {{boonLethargyLen}} seconds on hit.",
             "Your minimum speed is now {{boonLethargyMinSpd}}."
         },
+        localeID = "#expboon_lethargy",
         spriteFrame = 12,
         mods = { boonLethargyChance = 7, boonLethargyLen = 2, boonLethargyMinSpd = 0.8 },
         upgradedMods = { boonLethargyChance = 12, boonLethargyLen = 3, boonLethargyMinSpd = 1 },
@@ -394,6 +407,7 @@ PST.expeditionBoons = {
             "{{boonHorrorChance}}% chance to fear enemies for {{boonHorrorLen}} seconds on hit.",
             "Feared enemies receive {{boonHorrorDmg}}% more damage."
         },
+        localeID = "#expboon_horror",
         spriteFrame = 13,
         mods = { boonHorrorChance = 7, boonHorrorLen = 3, boonHorrorDmg = 10 },
         upgradedMods = { boonHorrorChance = 12, boonHorrorLen = 4, boonHorrorDmg = 10 }
@@ -404,6 +418,7 @@ PST.expeditionBoons = {
             "{{boonHypnoChance}}% chance to charm enemies for {{boonHypnoLen}} seconds on hit.",
             "Charmed enemies receive {{boonHypnoDmg}}% more damage."
         },
+        localeID = "#expboon_hypnosis",
         spriteFrame = 14,
         mods = { boonHypnoChance = 7, boonHypnoLen = 3, boonHypnoDmg = 10 },
         upgradedMods = { boonHypnoChance = 12, boonHypnoLen = 4, boonHypnoDmg = 10 }
@@ -414,6 +429,7 @@ PST.expeditionBoons = {
             "{{boonParaChance}}% chance to paralyze enemies for {{boonParaLen}} seconds on hit.",
             "Paralyzed enemies take 30% more damage from explosions."
         },
+        localeID = "#expboon_paralysis",
         spriteFrame = 15,
         mods = { boonParaChance = 7, boonParaLen = 2 },
         upgradedMods = { boonParaChance = 12, boonParaLen = 3 }
@@ -421,6 +437,7 @@ PST.expeditionBoons = {
     { -- 17
         name = "Activity",
         description = "When using an active item with at least 2 charges, become invulnerable for {{boonActivity}} seconds.",
+        localeID = "#expboon_activity",
         spriteFrame = 16,
         mods = { boonActivity = 1.5 },
         upgradedMods = { boonActivity = 2.5 }
@@ -431,6 +448,7 @@ PST.expeditionBoons = {
             "+{{boonEmptinessDmg}}% damage while the active item slot is empty.",
             "+{{boonEmptinessTears}}% tears while the trinket slot is empty."
         },
+        localeID = "#expboon_plentifulEmptiness",
         spriteFrame = 17,
         mods = { boonEmptinessDmg = 20, boonEmptinessTears = 20 },
         upgradedMods = { boonEmptinessDmg = 35, boonEmptinessTears = 35 }
@@ -441,14 +459,16 @@ PST.expeditionBoons = {
             "Enemies take {{boonVolatilityDmg}}% more damage from explosions.",
             "Start with an additional {{boonVolatilityBombs}} bombs."
         },
+        localeID = "#expboon_volatility",
         spriteFrame = 18,
         mods = { boonVolatilityDmg = 30, boonVolatilityBombs = 2 },
         upgradedMods = { boonVolatilityDmg = 50, boonVolatilityBombs = 4 }
     },
     { -- 20
         name = "Improvised Charges",
-        description = "Consuming a Card, Pill or Rune on use grants all your active items 1 charge.",
-        upgradedDescription = "Consuming a Card, Pill or Rune on use grants all your active items {{boonImpCharges}} charges.",
+        description = "Consuming a Card, Pill or Rune grants all your active items 1 charge.",
+        upgradedDescription = "Consuming a Card, Pill or Rune grants all your active items {{boonImpCharges}} charges.",
+        localeID = "#expboon_improvCharges",
         spriteFrame = 19,
         mods = { boonImpCharges = 1 },
         upgradedMods = { boonImpCharges = 2 }
@@ -456,6 +476,7 @@ PST.expeditionBoons = {
     { -- 21
         name = "the Champion Slayer",
         description = "+{{boonChampSlayDmg}}% damage for the current floor when killing a champion monster, up to {{boonChampSlayMax}}%",
+        localeID = "#expboon_champSlayer",
         spriteFrame = 20,
         mods = { boonChampSlayDmg = 1, boonChampSlayMax = 15 },
         upgradedMods = { boonChampSlayDmg = 2, boonChampSlayMax = 25 }
@@ -463,6 +484,7 @@ PST.expeditionBoons = {
     { -- 22
         name = "Meek Giants",
         description = "Bosses start with {{boonMeekGiants}}% of their HP missing.",
+        localeID = "#expboon_meekGiants",
         spriteFrame = 21,
         mods = { boonMeekGiants = 12 },
         upgradedMods = { boonMeekGiants = 18 }
@@ -471,6 +493,7 @@ PST.expeditionBoons = {
         name = "the Last Gasp",
         description = "Dying in any of the final boss floors no longer consumes expedition attempts.",
         upgradedDescription = "Dying at any point at or past Womb II (or alternates) no longer consumes expedition attempts.",
+        localeID = "#expboon_lastGasp",
         spriteFrame = 22,
         mods = { boonLastGasp = 1 },
         upgradedMods = { boonLastGasp = 2 }
@@ -482,6 +505,7 @@ PST.expeditionBoons = {
             "You can no longer gain Expedition Curses.",
             "For each existing Expedition Curse you have, gain +4% all stats, up to +20%"
         },
+        localeID = "#expboon_blessedExp",
         spriteFrame = 23,
         mods = { boonBlessedExp = 1 },
         upgradedMods = { boonBlessedExp = 2 }
@@ -489,6 +513,7 @@ PST.expeditionBoons = {
     { -- 25
         name = "Wisdom",
         description = "+{{xpgain}}% XP gain within expedition runs.",
+        localeID = "#expboon_wisdom",
         spriteFrame = 24,
         mods = { xpgain = 20 },
         upgradedMods = { xpgain = 40 }
@@ -503,6 +528,7 @@ PST.expeditionBoons = {
             "A random treasure room within the first 6 you visit will contain an additional passive item",
             "from the angel or devil item pool."
         },
+        localeID = "#expboon_unexpectedGift",
         spriteFrame = 25,
         mods = { boonUnexGift = 1 },
         upgradedMods = { boonUnexGift = 2 }
@@ -514,6 +540,7 @@ PST.expeditionCurses = {
     { -- 1
         name = "Enfeeblement",
         description = "{{damagePerc}}% damage.",
+        localeID = "#expcurse_enfeeblement",
         spriteFrame = 0,
         modsFunc = function(depth)
             return { damagePerc = -math.min(70, 25 + depth) }
@@ -522,6 +549,7 @@ PST.expeditionCurses = {
     { -- 2
         name = "Lethargy",
         description = "{{speedPerc}}% speed.",
+        localeID = "#expcurse_lethargy",
         spriteFrame = 1,
         modsFunc = function(depth)
             return { speedPerc = -math.min(70, 25 + depth) }
@@ -530,6 +558,7 @@ PST.expeditionCurses = {
     { -- 3
         name = "Tear Deprivation",
         description = "{{tearsPerc}}% tears.",
+        localeID = "#expcurse_tearDepriv",
         spriteFrame = 2,
         modsFunc = function(depth)
             return { tearsPerc = -math.min(70, 25 + depth) }
@@ -538,6 +567,7 @@ PST.expeditionCurses = {
     { -- 4
         name = "the Unfortunate",
         description = "{{luckPerc}}% luck.",
+        localeID = "#expcurse_unfortunate",
         spriteFrame = 3,
         modsFunc = function(depth)
             return { luckPerc = -math.min(70, 25 + depth) }
@@ -549,6 +579,7 @@ PST.expeditionCurses = {
             "If your luck is positive, apply {{curseInvFortune}}% of it as an all stats down percentage, up to -{{curseInvFortuneMax}}%.",
             "(e.g. 4 luck would apply -12% all stats, 10 luck would apply -30%, etc.)"
         },
+        localeID = "#expcurse_invFortune",
         spriteFrame = 4,
         modsFunc = function(depth)
             return { curseInvFortune = 300, curseInvFortuneMax = 30 }
@@ -558,6 +589,7 @@ PST.expeditionCurses = {
     { -- 6
         name = "Resilience",
         description = "+{{curseResilience}}% monster HP",
+        localeID = "#expcurse_resilience",
         spriteFrame = 5,
         modsFunc = function(depth)
             return { curseResilience = math.min(60, 25 + depth) }
@@ -566,6 +598,7 @@ PST.expeditionCurses = {
     { -- 7
         name = "Ephemeral Pieces",
         description = "All non-vanishing pickup drops now vanish after {{curseEphPieces}} seconds.",
+        localeID = "#expcurse_ephPieces",
         spriteFrame = 6,
         modsFunc = function(depth)
             local secs = 10
@@ -581,6 +614,7 @@ PST.expeditionCurses = {
             "Double this chance if you took damage within the room.",
             "+{{cursePowerDemandScarcity}}% battery scarcity."
         },
+        localeID = "#expcurse_powerDemand",
         spriteFrame = 7,
         modsFunc = function(depth)
             local tmpCharges, tmpScarcity = 25, 35
@@ -594,6 +628,7 @@ PST.expeditionCurses = {
     { -- 9
         name = "Giants' Fortification",
         description = "Bosses block the first {{curseGiantsFort}} hits they receive.",
+        localeID = "#expcurse_giantFort",
         spriteFrame = 8,
         modsFunc = function(depth)
             return { curseGiantsFort = 7 + math.floor(depth / 3) }
@@ -602,6 +637,7 @@ PST.expeditionCurses = {
     { -- 10
         name = "Greater Expenses",
         description = "Non-pickup shop items are {{curseGreaterExpenses}}% more expensive.",
+        localeID = "#expcurse_greaterExpenses",
         spriteFrame = 9,
         modsFunc = function(depth)
             return { curseGreaterExpenses = 20 + depth }
@@ -611,9 +647,9 @@ PST.expeditionCurses = {
         name = "Flimsy Gadgets",
         description = {
             "When hit, {{curseFlimGadgDrop}}% chance to drop held trinkets.",
-            "{{curseFlimGadgVanish}}% chance for dropped trinkets to vanish instead. This includes",
-            "trinkets dropped manually by players."
+            "{{curseFlimGadgVanish}}% chance for dropped trinkets to vanish instead."
         },
+        localeID = "#expcurse_flimsyGadgets",
         spriteFrame = 10,
         modsFunc = function(depth)
             return {
@@ -628,6 +664,7 @@ PST.expeditionCurses = {
             "+{{curseAbundantMightChance}}% chance for monsters to be champions.",
             "Champion monsters gain {{curseAbundantMightDmgRed}}% damage reduction."
         },
+        localeID = "#expcurse_abundantMight",
         spriteFrame = 11,
         modsFunc = function(depth)
             return {
@@ -639,6 +676,7 @@ PST.expeditionCurses = {
     { -- 13
         name = "Vanishing Wealth",
         description = "When entering a floor, lose {{curseVanishingWealth}} coins.",
+        localeID = "#expcurse_vanishingWealth",
         spriteFrame = 12,
         modsFunc = function(depth)
             return { curseVanishingWealth = math.min(20, 6 + depth) }
@@ -647,6 +685,7 @@ PST.expeditionCurses = {
     { -- 14
         name = "Precariousness",
         description = "When first entering a shop room, remove {{cursePrecarious}} random sold items.",
+        localeID = "#expcurse_precariousness",
         spriteFrame = 13,
         modsFunc = function(depth)
             local rem = 2
@@ -657,6 +696,7 @@ PST.expeditionCurses = {
     { -- 15
         name = "Unexpected Taxation",
         description = "When first entering a room with monsters, lose {{curseUnexpectedTax}} coin(s).",
+        localeID = "#expcurse_unexpectedTax",
         spriteFrame = 14,
         modsFunc = function(depth)
             local tax = 1
@@ -667,6 +707,7 @@ PST.expeditionCurses = {
     { -- 16
         name = "Fading Keys",
         description = "Whenever you spend a key, spend {{curseFadingKeys}} additional key(s).",
+        localeID = "#expcurse_fadingKeys",
         spriteFrame = 15,
         modsFunc = function(depth)
             local keys = 1
@@ -677,6 +718,7 @@ PST.expeditionCurses = {
     { -- 17
         name = "Punishment",
         description = "Take 1/2 heart damage every {{cursePunishment}} rooms cleared. This cannot kill you.",
+        localeID = "#expcurse_punishment",
         spriteFrame = 16,
         modsFunc = function(depth)
             local clears = 9
@@ -688,6 +730,7 @@ PST.expeditionCurses = {
     { -- 18
         name = "Mortality",
         description = "Extra life items can no longer show up.",
+        localeID = "#expcurse_mortality",
         spriteFrame = 17,
         modsFunc = function(depth)
             return { curseMortality = true }
@@ -696,6 +739,7 @@ PST.expeditionCurses = {
     { -- 19
         name = "Ancient Stars",
         description = "Expedition runs now require an Ancient Starcursed Jewel to be socketed.",
+        localeID = "#expcurse_ancientStars",
         spriteFrame = 18,
         modsFunc = function(depth)
             return { curseAncientStars = true }
@@ -707,6 +751,7 @@ PST.expeditionCurses = {
             "Your lasers deal -{{curseDimPowerLaser}}% damage.",
             "Explosions deal -{{curseDimPowerExpl}}% damage."
         },
+        localeID = "#expcurse_diminishPower",
         spriteFrame = 19,
         modsFunc = function(depth)
             return {
@@ -718,6 +763,7 @@ PST.expeditionCurses = {
     { -- 21
         name = "Shrouding",
         description = "Expedition node rewards and curses are no longer known.",
+        localeID = "#expcurse_shrouding",
         spriteFrame = 20,
         modsFunc = function(depth)
             return { curseShrouding = true }
@@ -727,6 +773,7 @@ PST.expeditionCurses = {
     { -- 22
         name = "the Boonless",
         description = "You can no longer gain Expedition boons.",
+        localeID = "#expcurse_boonless",
         spriteFrame = 21,
         modsFunc = function(depth)
             return { curseBoonless = true }
@@ -736,6 +783,7 @@ PST.expeditionCurses = {
     { -- 23
         name = "the Heartbroken",
         description = "Start with {{curseHeartbroken}} additional broken heart(s).",
+        localeID = "#expcurse_heartbroken",
         spriteFrame = 22,
         modsFunc = function(depth)
             local broken = 1
@@ -747,6 +795,7 @@ PST.expeditionCurses = {
     { -- 24
         name = "the Witless",
         description = "{{xpgain}}% XP gain within expedition runs.",
+        localeID = "#expcurse_witless",
         spriteFrame = 23,
         modsFunc = function(depth)
             return { xpgain = -math.min(60, 40 + math.floor(depth / 2)) }
@@ -759,6 +808,7 @@ PST.expeditionCurses = {
             "{{bossRushTimer}} minutes to the Boss Rush door timer.",
             "{{hushTimer}} minutes to Hush's door timer."
         },
+        localeID = "#expcurse_urgency",
         spriteFrame = 24,
         modsFunc = function(depth)
             local mins = 2

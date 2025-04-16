@@ -42,9 +42,9 @@ local expeditionScreen = {
     uberMode = false,
 
     tabs = {
-        "Expedition",
-        "Effects",
-        "Depth"
+        PST:getLocalized("ui_expedition"),
+        PST:getLocalized("ui_effects"),
+        PST:getLocalized("ui_depth")
     },
     currentTab = 1,
     currentDepth = 1,
@@ -403,10 +403,10 @@ function expeditionScreen:Render(tScreen)
 
     -- Hovered node description
     if self.hoveredNode then
-        local nodeName = "Expedition Node"
+        local nodeName = PST:getLocalized("ui_expNode")
         local isRewardNode = (self.hoveredNode.nodeType == PSTExpNodeType.REWARD)
         if isRewardNode then
-            nodeName = "Reward Node"
+            nodeName = PST:getLocalized("ui_rewardNode")
         end
 
         local isQueued = false
@@ -422,11 +422,11 @@ function expeditionScreen:Render(tScreen)
         local nodeDesc = {}
         if self.hoveredNode.nodeType == PSTExpNodeType.ASTROLABE then
             -- Arcane Astrolabe description
-            nodeName = "Arcane Astrolabe"
+            nodeName = PST:getLocalized("node_arcaneastrolabe_name")
             -- Depth
             local uberExtra = ""
-            if expData.uber then uberExtra = " (Uber)" end
-            table.insert(nodeDesc, "Expedition Depth: " .. tostring(self.currentDepth) .. uberExtra)
+            if expData.uber then uberExtra = " (" .. PST:getLocalized("ui_uber") .. ")" end
+            table.insert(nodeDesc, PST:getLocalized("ui_expedDepth") .. ": " .. tostring(self.currentDepth) .. uberExtra)
             -- Expedition enabled/disabled
             if PST.modData.expedEnabled then
                 local tmpColor = PST.kcolors.GREEN1
@@ -442,48 +442,48 @@ function expeditionScreen:Render(tScreen)
             -- Respec for reset
             local respecCost = PST:getExpedResetCost(self.currentDepth, self.uberMode)
             local obolCost = PST:getExpedResetObolCost(self.currentDepth, self.uberMode)
-            table.insert(nodeDesc, "Hold the Respec button for 3 seconds to reset and reroll this expedition.")
-            table.insert(nodeDesc, {" > Resetting this expedition costs 1 global SP, " .. obolCost .. " Arcane Obols, and " .. respecCost .. " Respecs.", PST.kcolors.PURPLE1})
+            table.insert(nodeDesc, PST:getLocalized("ui_expRespecReset"))
+            table.insert(nodeDesc, {" > " .. PST:getLocalizedFormatStr("ui_expRespecResetCost", {respecCost = respecCost, obolCost = obolCost}), PST.kcolors.PURPLE1})
         else
             -- Normal expedition node description
             nodeDesc = PST:getExpNodeDescription(self.hoveredNode, expData)
         end
         if self.hoveredNode.queuable then
-            table.insert(nodeDesc, {"Press Allocate to queue this node for automatic selection.", PST.kcolors.STAR_ORANGE})
+            table.insert(nodeDesc, {PST:getLocalized("ui_expAllocToQueue"), PST.kcolors.STAR_ORANGE})
         elseif isQueued then
-            table.insert(nodeDesc, {"Press Allocate to remove this and following nodes from the queue.", PST.kcolors.STAR_ORANGE})
+            table.insert(nodeDesc, {PST:getLocalized("ui_expAllocToUnqueue"), PST.kcolors.STAR_ORANGE})
         end
         if not isRewardNode then
             local switchCosts = PST:getExpedNodeSwitchCost(self.currentDepth, self.uberMode)
             local costStr = ""
             local tmpCosts = {}
-            if switchCosts.sp then table.insert(tmpCosts, switchCosts.sp .. " global SP") end
-            if switchCosts.respecs then table.insert(tmpCosts, switchCosts.respecs .. " respecs") end
-            if switchCosts.obols then table.insert(tmpCosts, switchCosts.obols .. " obols") end
+            if switchCosts.sp then table.insert(tmpCosts, switchCosts.sp .. " " .. PST:getLocalized("ui_globalSP")) end
+            if switchCosts.respecs then table.insert(tmpCosts, switchCosts.respecs .. " " .. PST:getLocalized("ui_respecs")) end
+            if switchCosts.obols then table.insert(tmpCosts, switchCosts.obols .. " " .. PST:getLocalized("ui_obols")) end
             costStr = table.concat(tmpCosts, ", ") .. "."
 
             if expData.selectedNode then
                 if expData.selectedNode.col == self.hoveredNode.col and expData.selectedNode.row == self.hoveredNode.row then
-                    nodeName = nodeName .. " (Selected)"
+                    nodeName = nodeName .. " (" .. PST:getLocalized("ui_selected") .. ")"
                     if PST:expedNodeIsObjectiveDone(self.currentDepth, self.hoveredNode, expData.uber) then
-                        table.insert(nodeDesc, "Press the Allocate button to complete this node and claim its rewards.")
+                        table.insert(nodeDesc, PST:getLocalized("ui_expAllocToComp"))
                         -- Final node
                         if self.hoveredNode.nodeType == PSTExpNodeType.FINAL then
-                            table.insert(nodeDesc, "Final Node: completing it will reset this expedition and unlock the next depth.")
+                            table.insert(nodeDesc, PST:getLocalized("ui_expFinalNodeDesc"))
                         end
                     end
                 elseif self.hoveredNode.selectable then
-                    table.insert(nodeDesc, "Press the Allocate button to switch selected node to this one.")
-                    table.insert(nodeDesc, {"  > Switching node selection costs " .. costStr, PST.kcolors.RED2})
+                    table.insert(nodeDesc, PST:getLocalized("ui_expAllocToSwitch"))
+                    table.insert(nodeDesc, {"  > " .. PST:getLocalized("ui_expSwitchingCosts") .. " " .. costStr, PST.kcolors.RED2})
                 end
             elseif self.hoveredNode.selectable then
-                table.insert(nodeDesc, "Press the Allocate button to select this node.")
-                table.insert(nodeDesc, {"  > Switching the selection to a different node afterwards will cost " .. costStr, PST.kcolors.RED2})
+                table.insert(nodeDesc, PST:getLocalized("ui_expAllocToSelect"))
+                table.insert(nodeDesc, {"  > " .. PST:getLocalized("ui_expSwitchingWillCost") .. " " .. costStr, PST.kcolors.RED2})
             end
         else
-            table.insert(nodeDesc, "Press the Allocate button to claim this reward.")
+            table.insert(nodeDesc, PST:getLocalized("ui_expAllocToClaimReward"))
             if not expData.nodes[self.hoveredNode.col + 1] then
-                table.insert(nodeDesc, "Once claimed, this expedition depth will be reset.")
+                table.insert(nodeDesc, PST:getLocalized("ui_expResetOnClaim"))
             end
         end
         tScreen:DrawNodeBox(nodeName, nodeDesc)
@@ -492,15 +492,15 @@ function expeditionScreen:Render(tScreen)
     elseif self.hoveredBoon then
         local tmpColor = PST.kcolors.GREEN2
         local boonData = PST.expeditionBoons[self.hoveredBoon]
-        local boonName = "Boon of " .. boonData.name
+        local boonName = PST:getLocalized(boonData.localeID)
         local isUpgraded = PST:arrHasValue(expData.upgradedBoons, self.hoveredBoon)
-        if isUpgraded then boonName = boonName .. " (Upgraded)" end
+        if isUpgraded then boonName = boonName .. " (" .. PST:getLocalized("ui_upgraded") .. ")" end
         local boonDesc = {}
 
         -- Target description/mods based on upgrade status
-        local targetDesc = boonData.description
-        if isUpgraded and boonData.upgradedDescription then
-            targetDesc = boonData.upgradedDescription
+        local targetDesc = PST:getLocalized(boonData.localeID .. "_desc")
+        if isUpgraded and PST:localeIDExists(boonData.localeID .. "_upgdesc") then
+            targetDesc = PST:getLocalized(boonData.localeID .. "_upgdesc")
         end
         local targetMods = boonData.mods
         if isUpgraded then targetMods = boonData.upgradedMods end
@@ -515,7 +515,7 @@ function expeditionScreen:Render(tScreen)
         -- Upgrade available text
         if not isUpgraded and boonData.upgradedMods then
             local upgColor = PST.kcolors.DARKGREEN1
-            table.insert(boonDesc, {"+ Upgrade available:", upgColor})
+            table.insert(boonDesc, {"+ " .. PST:getLocalized("ui_upgAvailable") .. ":", upgColor})
 
             local upgDesc = boonData.upgradedDescription
             if not upgDesc then upgDesc = boonData.description end
@@ -528,8 +528,8 @@ function expeditionScreen:Render(tScreen)
                 local tmpFormat = PST:formatString(upgDesc, boonData.upgradedMods)
                 table.insert(boonDesc, {"   " .. tmpFormat, upgColor})
             end
-            table.insert(boonDesc, {"Press the Allocate button to upgrade this boon.", upgColor})
-            table.insert(boonDesc, {"Requires 1 boon upgrade point.", upgColor})
+            table.insert(boonDesc, {PST:getLocalized("ui_expAllocToUpgBoon"), upgColor})
+            table.insert(boonDesc, {PST:getLocalized("ui_expUpgBoonReq"), upgColor})
         end
 
         tScreen:DrawNodeBox(boonName, boonDesc)
@@ -538,16 +538,19 @@ function expeditionScreen:Render(tScreen)
     elseif self.hoveredCurse then
         local tmpColor = PST.kcolors.RED2
         local curseData = PST.expeditionCurses[self.hoveredCurse]
-        local curseName = "Curse of " .. curseData.name
+        local curseName = PST:getLocalized(curseData.localeID)
         local curseMods = curseData.modsFunc(expData.depth)
         local curseDesc = {}
 
-        if type(curseData.description) == "table" then
-            for _, tmpLine in ipairs(curseData.description) do
-                table.insert(curseDesc, {PST:formatString(tmpLine, curseMods), tmpColor})
+        local targetDesc = PST:getLocalized(curseData.localeID .. "_desc")
+        if targetDesc then
+            if type(targetDesc) == "table" then
+                for _, tmpLine in ipairs(targetDesc) do
+                    table.insert(curseDesc, {PST:formatString(tmpLine, curseMods), tmpColor})
+                end
+            else
+                table.insert(curseDesc, {PST:formatString(targetDesc, curseMods), tmpColor})
             end
-        else
-            table.insert(curseDesc, {PST:formatString(curseData.description, curseMods), tmpColor})
         end
 
         tScreen:DrawNodeBox(curseName, curseDesc)
@@ -558,10 +561,12 @@ function expeditionScreen:Render(tScreen)
         local itemCfg = Isaac.GetItemConfig():GetCollectible(self.hoveredItem)
         if itemCfg then
             local itemDesc = {}
-            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, Options.Language)
 			if itemName ~= "StringTable::InvalidKey" then
-				table.insert(itemDesc, {"Start with " .. itemName .. " in this expedition's runs", tmpColor})
-			end
+				table.insert(itemDesc, {PST:getLocalizedFormatStr("ui_expItemStart", {itemName = itemName}), tmpColor})
+            else
+                itemName = PST:getLocalized("ui_unkItem")
+            end
             tScreen:DrawNodeBox(itemName, itemDesc)
         end
     -- Hovered depth description
@@ -574,10 +579,10 @@ function expeditionScreen:Render(tScreen)
 
         -- Locked depth
         if self.hoveredDepth > farthestDepth then
-            table.insert(depthDesc, "Complete the previous depth level to unlock.")
+            table.insert(depthDesc, PST:getLocalized("ui_expCompPrevDepthUnlock"))
         -- Unvisited depth
         elseif not tgtExped then
-            table.insert(depthDesc, "Not visited yet.")
+            table.insert(depthDesc, PST:getLocalized("ui_expNotVisited"))
         -- Depth info
         elseif self.hoveredDepth <= farthestDepth then
             local compNodes = 0
@@ -590,54 +595,54 @@ function expeditionScreen:Render(tScreen)
             end
             -- Uber
             if tgtExped.uber then
-                table.insert(depthDesc, {"(Uber)", PST.kcolors.RED2})
+                table.insert(depthDesc, {"(" .. PST:getLocalized("ui_uber") .. ")", PST.kcolors.RED2})
             end
             -- Attempts
-            table.insert(depthDesc, {"Attempts: " .. tostring(tgtExped.attempts) .. "/" .. tostring(tgtExped.startAttempts), PST.kcolors.BLUE2})
+            table.insert(depthDesc, {PST:getLocalized("ui_attempts") .. ": " .. tgtExped.attempts .. "/" .. tgtExped.startAttempts, PST.kcolors.BLUE2})
             -- Completed nodes
-            table.insert(depthDesc, {"Completed nodes: " .. tostring(compNodes), PST.kcolors.BLUE2})
+            table.insert(depthDesc, {PST:getLocalized("ui_compNodes") .. ": " .. compNodes, PST.kcolors.BLUE2})
             -- Items
             if #tgtExped.items > 0 then
-                table.insert(depthDesc, {"Items: " .. tostring(#tgtExped.items), PST.kcolors.EXPED_PURPLE})
+                table.insert(depthDesc, {PST:getLocalized("ui_items") .. ": " .. #tgtExped.items, PST.kcolors.EXPED_PURPLE})
             end
             -- Boons
             if not tgtExped.uber then
-                table.insert(depthDesc, {"Boons: " .. tostring(#tgtExped.boons), PST.kcolors.DARKGREEN1})
+                table.insert(depthDesc, {PST:getLocalized("ui_boons") .. ": " .. #tgtExped.boons, PST.kcolors.DARKGREEN1})
             end
             -- Curses
-            table.insert(depthDesc, {"Curses: " .. tostring(#tgtExped.curses), PST.kcolors.RED2})
+            table.insert(depthDesc, {PST:getLocalized("ui_curses") .. ": " .. #tgtExped.curses, PST.kcolors.RED2})
             if tgtExped.uber then
                 -- Order (uber)
-                table.insert(depthDesc, {"Order: " .. tostring(tgtExped.order or 0), PST.kcolors.TEAL1})
+                table.insert(depthDesc, {PST:getLocalized("ui_Order") .. ": " .. (tgtExped.order or 0), PST.kcolors.TEAL1})
                 -- Entropy (uber)
-                table.insert(depthDesc, {"Entropy: " .. tostring(tgtExped.entropy or 0), PST.kcolors.RED1})
+                table.insert(depthDesc, {PST:getLocalized("ui_Entropy") .. ": " .. (tgtExped.entropy or 0), PST.kcolors.RED1})
             end
         end
-        tScreen:DrawNodeBox("Depth " .. tostring(self.hoveredDepth), depthDesc)
+        tScreen:DrawNodeBox(PST:getLocalized("ui_depth") .. " " .. self.hoveredDepth, depthDesc)
     -- Hovered uber toggle description
     elseif self.hoveredUberToggle then
         local uberDesc = {
-            "Press Allocate to toggle Uber Expeditions.",
-            "These are significantly more difficult expeditions with separate progress."
+            PST:getLocalized("ui_expAllocToggleUber"),
+            PST:getLocalized("ui_expAllocToggleUber2")
         }
-        tScreen:DrawNodeBox("Uber Expeditions", uberDesc)
+        tScreen:DrawNodeBox(PST:getLocalized("ui_uberExpeds"), uberDesc)
     -- Hovered uber info
     elseif self.hoveredUberInfo then
         local uberInfoDesc
         if not PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
             uberInfoDesc = {
-                "Hold Shift to get info about these stats.",
-                {"Order: " .. tostring(expData.order or 0), PST.kcolors.TEAL1},
-                {"Entropy: " .. tostring(expData.entropy or 0), PST.kcolors.RED1},
+                PST:getLocalized("ui_expHoldShiftUberInfo"),
+                {PST:getLocalized("ui_Order") .. ": " .. (expData.order or 0), PST.kcolors.TEAL1},
+                {PST:getLocalized("ui_Entropy") .. ": " .. (expData.entropy or 0), PST.kcolors.RED1},
             }
             if expData.version == 1 and expData.depth < 5 then
-                table.insert(uberInfoDesc, "At uber depths 5+, node columns are reduced to 7, and final reward is guaranteed")
-                table.insert(uberInfoDesc, "to be a choice between rewards.")
+                table.insert(uberInfoDesc, PST:getLocalized("ui_expUberInfo1_v1"))
+                table.insert(uberInfoDesc, PST:getLocalized("ui_expUberInfo2_v1"))
             elseif expData.version == 2 and expData.depth < 4 then
-                table.insert(uberInfoDesc, "At uber depths 4+, final reward is guaranteed to be a choice between rewards.")
+                table.insert(uberInfoDesc, PST:getLocalized("ui_expUberInfo_v2"))
             end
             if expData.dsMods and #expData.dsMods > 0 then
-                table.insert(uberInfoDesc, {"Deep-Space Distortion Mods:", PST.kcolors.RED2})
+                table.insert(uberInfoDesc, {PST:getLocalized("ui_dsdMods"), PST.kcolors.RED2})
                 for _, tmpModID in ipairs(expData.dsMods) do
                     local tmpModName = PST.expedDeepSpaceMods[tmpModID]
                     local tmpModDesc = PST.expedDescriptions[tmpModName]
@@ -648,32 +653,12 @@ function expeditionScreen:Render(tScreen)
             end
         else
             if expData.version == 1 then
-                uberInfoDesc = {
-                    {"Order acts as a shield against Entropy. Whenever you gain Entropy, it is first deducted", PST.kcolors.TEAL1},
-                    {"from your Order instead, if you have any.", PST.kcolors.TEAL1},
-                    {"Entropy increases the difficulty of the expedition at certain intervals, and is gained through", PST.kcolors.RED1},
-                    {"modifiers within the expedition nodes.", PST.kcolors.RED1},
-                    {"Every 24 entropy: increase the magnitude of the expedition's implicit modifiers, up to 10 times.", PST.kcolors.RED2},
-                    {"Every 30 entropy: add a random curse to the expedition, up to 5 times.", PST.kcolors.RED2},
-                    {"Every 50 entropy: add a random Deep-Space Distortion modifier to the expedition, up to 3 times.", PST.kcolors.RED2},
-                    {"Deep-Space Distortion mods add a significant amount of challenge to the runs.", PST.kcolors.RED2},
-                    {"At 100 entropy, max attempts for the expedition is lowered by 1.", PST.kcolors.RED2}
-                }
+                uberInfoDesc = PST:getLocalized("ui_expUberInfoDesc_v1")
             else
-                uberInfoDesc = {
-                    {"Order acts as a shield against Entropy. Whenever you gain Entropy, it is first deducted", PST.kcolors.TEAL1},
-                    {"from your Order instead, if you have any.", PST.kcolors.TEAL1},
-                    {"Entropy increases the difficulty of the expedition at certain intervals, and is gained through", PST.kcolors.RED1},
-                    {"modifiers within the expedition nodes.", PST.kcolors.RED1},
-                    {"Every 40 entropy: increase the magnitude of the expedition's implicit modifiers, up to 8 times.", PST.kcolors.RED2},
-                    {"Every 60 entropy: add a random curse to the expedition, up to 5 times.", PST.kcolors.RED2},
-                    {"Every 75 entropy: add a random Deep-Space Distortion modifier to the expedition, up to 3 times.", PST.kcolors.RED2},
-                    {"Deep-Space Distortion mods add a significant amount of challenge to the runs.", PST.kcolors.RED2},
-                    {"At 100 entropy, max attempts for the expedition is lowered by 1.", PST.kcolors.RED2}
-                }
+                uberInfoDesc = PST:getLocalized("ui_expUberInfoDesc_v2")
             end
         end
-        tScreen:DrawNodeBox("Uber Info", uberInfoDesc)
+        tScreen:DrawNodeBox(PST:getLocalized("ui_uberInfo"), uberInfoDesc)
     end
 
     -- HUD: Tabs
@@ -693,7 +678,7 @@ function expeditionScreen:Render(tScreen)
 
         PST.miniFont:DrawString(tmpTab, drawX, 2, tmpColor, tabW, true)
     end
-    local tmpStr = "Press TAB or 1 2 3 nums to switch tabs"
+    local tmpStr = PST:getLocalized("ui_tabNumsToSwitch")
     PST.miniFont:DrawStringScaled(tmpStr, tScreen.screenW / 2 - PST.luaminiFont:GetStringWidth(tmpStr) / 4, tabH, 0.5, 0.5, PST.kcolors.WHITE)
 
     local currentChar = PST:getCurrentCharData()
@@ -702,26 +687,26 @@ function expeditionScreen:Render(tScreen)
     local tmpX = 12
     local tmpY = tabH + 2
     -- Global SP
-    PST.miniFont:DrawString("Global SP: " .. tostring(PST.modData.skillPoints), tmpX, tmpY, PST.kcolors.LIGHTBLUE1)
+    PST.miniFont:DrawString(PST:getLocalized("ui_globalSP") .. ": " .. PST.modData.skillPoints, tmpX, tmpY, PST.kcolors.LIGHTBLUE1)
     tmpY = tmpY + 14
     -- Respecs
-    PST.miniFont:DrawString("Respecs: " .. tostring(PST.modData.respecPoints), tmpX, tmpY, PST.kcolors.WHITE)
+    PST.miniFont:DrawString(PST:getLocalized("ui_Respecs") .. ": " .. PST.modData.respecPoints, tmpX, tmpY, PST.kcolors.WHITE)
     tmpY = tmpY + 14
     -- Arcane Obols
     if currentChar then
-        PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
+        PST.miniFont:DrawString(PST:getLocalized("ui_char") .. ": " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
         tmpY = tmpY + 14
-        PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, PST.kcolors.PURPLE1)
+        PST.miniFont:DrawString(PST:getLocalized("ui_arcaneObols") .. ": " .. currentChar.arcaneObols, tmpX, tmpY, PST.kcolors.PURPLE1)
         tmpY = tmpY + 28
     end
     -- Expedition attempts
-    PST.miniFont:DrawString("Attempts: " .. tostring(expData.attempts) .. "/" .. tostring(expData.startAttempts), tmpX, tmpY, PST.kcolors.EXPED_BLUE)
+    PST.miniFont:DrawString(PST:getLocalized("ui_attempts") .. ": " .. expData.attempts .. "/" .. expData.startAttempts, tmpX, tmpY, PST.kcolors.EXPED_BLUE)
     -- Order/Entropy (uber)
     if expData.uber then
         tmpY = tmpY + 14
-        PST.miniFont:DrawString("Order: " .. tostring(expData.order or 0), tmpX, tmpY, PST.kcolors.TEAL1)
+        PST.miniFont:DrawString(PST:getLocalized("ui_Order") .. ": " .. (expData.order or 0), tmpX, tmpY, PST.kcolors.TEAL1)
         tmpY = tmpY + 14
-        PST.miniFont:DrawString("Entropy: " .. tostring(expData.entropy or 0), tmpX, tmpY, PST.kcolors.RED1)
+        PST.miniFont:DrawString(PST:getLocalized("ui_Entropy") .. ": " .. (expData.entropy or 0), tmpX, tmpY, PST.kcolors.RED1)
     end
     tmpY = tmpY + 28
     if self.currentTab == 1 then
@@ -730,7 +715,7 @@ function expeditionScreen:Render(tScreen)
             local tmpColor = PST.kcolors.GREEN1
             local uberExtra = ""
             if expData.uber then
-                uberExtra = " (Uber)"
+                uberExtra = " (" .. PST:getLocalized("ui_uber") .. ")"
             end
             tmpStr = "Exp. Run ON" .. uberExtra
             if not PST:expedMeetsRequirements(self.currentDepth, self.uberMode) then
@@ -742,16 +727,16 @@ function expeditionScreen:Render(tScreen)
             PST.miniFont:DrawString("Exp. Run OFF", tmpX, tmpY, PST.kcolors.RED1)
         end
         tmpY = tmpY + 14
-        PST.miniFont:DrawStringScaled("(Q / Menu Tab to toggle)", tmpX, tmpY, 0.5, 0.5, PST.kcolors.WHITE)
+        PST.miniFont:DrawStringScaled("(" .. PST:getLocalized("ui_expQToToggle") .. ")", tmpX, tmpY, 0.5, 0.5, PST.kcolors.WHITE)
         tmpY = tmpY + 28
 
         -- In run - Progress enabled/disabled (for selected objective)
         local runDepth = PST:getTreeSnapshotMod("expedDepth", 0)
         if Isaac.IsInGame() and runDepth > 0 then
             if PST:expedCanProgress(runDepth, PST:getTreeSnapshotMod("isExpeduber", false)) then
-                PST.miniFont:DrawString("In run - Progress enabled", tmpX, tmpY, PST.kcolors.GREEN1)
+                PST.miniFont:DrawString(PST:getLocalized("ui_expInRunProgEnabled"), tmpX, tmpY, PST.kcolors.GREEN1)
             else
-                PST.miniFont:DrawString("In run - Progress disabled", tmpX, tmpY, PST.kcolors.RED1)
+                PST.miniFont:DrawString(PST:getLocalized("ui_expInRunProgDisabled"), tmpX, tmpY, PST.kcolors.RED1)
             end
         end
     end

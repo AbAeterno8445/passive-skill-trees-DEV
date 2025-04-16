@@ -40,6 +40,8 @@ return {
     ["ui_globalSPConvKey"] = "Press the Allocate button to convert:",
     ["ui_globalSPConvRate"] = "{{obols}} obols into 1 Global Skill Point.",
 
+    ["ui_tabNumsToSwitch"] = "Press TAB or 1 2 3 nums to switch tabs",
+
     ["ui_charLoadError"] = "Could not load current character data.",
 
     ["ui_selSeptentrions"] = "Selected Septentrional Artifacts:",
@@ -61,6 +63,27 @@ return {
     ["ui_mighty"] = "Mighty",
     ["ui_globalSP"] = "Global SP",
     ["ui_crimsonCore"] = "Crimson Starcore",
+    ["ui_none"] = "None",
+    ["ui_uber"] = "Uber",
+    ["ui_items"] = "Items",
+    ["ui_respecs"] = "respecs",
+    ["ui_Respecs"] = "Respecs",
+    ["ui_upgraded"] = "Upgraded",
+    ["ui_attempts"] = "Attempts",
+    ["ui_compNodes"] = "Completed nodes",
+    ["ui_compNode"] = "Completed node",
+    ["ui_depth"] = "Depth",
+    ["ui_char"] = "Char",
+    ["ui_unkItem"] = "Unknown Item",
+    ["ui_expedition"] = "Expedition",
+    ["ui_effects"] = "Effects",
+    ["ui_objective"] = "Objective",
+    ["ui_unkCurse"] = "Unknown Curse",
+    ["ui_unkReward"] = "Unknown Reward",
+    ["ui_shrouded"] = "Shrouded",
+    ["ui_reward"] = "Reward",
+    ["ui_gain"] = "Gain",
+    ["ui_globalSkillPoints"] = "Global Skill Point(s)",
 
     ["ui_crackedKey"] = "Cracked Key",
     ["ui_runeShard"] = "Rune Shard",
@@ -70,19 +93,6 @@ return {
 
     ["ui_sparkStardust"] = "Sparkling Stardust",
     ["ui_ancStardust"] = "Ancient Stardust",
-
-    ["ui_deepSpaceSP"] = "Deep-Space Skill Points",
-
-    ["ui_obolReq"] = "Requires {{obolReq}} Arcane Obols to allocate.",
-    ["ui_expDepthReq"] = "Requires completing expedition depth {{depthReq}}.",
-    ["ui_uberExpDepthReq"] = "Requires completing uber expedition depth {{depthReq}}.",
-    ["ui_charlvlReq"] = "Requires the current character ({{charName}}) to reach level {{lvlReq}}.",
-    ["ui_crimsonCoreReq"] = "Requires 1 crimson starcore.",
-    ["ui_deepSPReq"] = "Requires 1 Deep-Space Skill Point. (You have {{deepSP}})",
-    ["ui_globalSPReq"] = "Requires 1 Global SP to allocate.",
-    ["ui_expObjective"] = "Expedition objective",
-    ["ui_order"] = "order",
-    ["ui_entropy"] = "entropy",
 
     ["ui_charCrimsonCores"] = "{{charName}} crimson starcores: {{cores}}",
 

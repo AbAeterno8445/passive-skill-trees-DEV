@@ -70,3 +70,9 @@ function PST:getLocalizedFormatStr(text, vals, lang)
     end
     return tmpLocalized
 end
+
+-- Returns whether the given localization key/id is defined
+function PST:localeIDExists(id, lang)
+    if not lang then lang = Options.Language end
+    return locales[lang] and locales[lang][id]
+end

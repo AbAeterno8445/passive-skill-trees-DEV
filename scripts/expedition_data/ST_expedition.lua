@@ -119,7 +119,8 @@ function PST:expedAddCurse(depth, curseID, uber)
                 if curseData and curseData.modsFunc then
                     PST:addModifiers(curseData.modsFunc(runDepth), true)
 
-                    PST:createFloatTextFX("Applied Expedition Curse of " .. curseData.name, Vector.Zero, Color(1, 0.4, 0.4), 0.12, 120, true)
+                    local curseName = PST:getLocalized(curseData.localeID)
+                    PST:createFloatTextFX(PST:getLocalized("ui_appliedExped") .. " " .. curseName, Vector.Zero, Color(1, 0.4, 0.4), 0.12, 120, true)
                 end
             end
         end
@@ -327,7 +328,7 @@ function PST:expedAddOrderProg(depth, objName, prog)
                             if tmpExpedition.modifiers and tmpExpedition.modifiers.orderGain then
                                 tmpOrderGain = math.ceil(ordModData.order * (1 + tmpExpedition.modifiers.orderGain / 100))
                             end
-                            PST:expedAddOrder(depth, ordModData.order)
+                            PST:expedAddOrder(depth, tmpOrderGain)
                         end
                     end
                 end
@@ -648,14 +649,16 @@ function PST:getExpNodeObjectiveDesc(nodeData, expData)
         end
 
         local progressStr = tostring(objProgress) .. "/" .. tostring(nodeData.objective.req)
-        table.insert(tmpDescription, {"Objective:", tmpColor})
-        if type(objectiveData.description) == "table" then
-            for _, tmpLine in ipairs(objectiveData.description) do
+        table.insert(tmpDescription, {PST:getLocalized("ui_objective") .. ":", tmpColor})
+
+        local objDescription = PST:getLocalized(nodeData.objective.name)
+        if type(objDescription) == "table" then
+            for _, tmpLine in ipairs(objDescription) do
                 local formattedLine = PST:formatString(tmpLine, { progress = progressStr })
                 table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
             end
         else
-            local formattedLine = PST:formatString(objectiveData.description, { progress = progressStr })
+            local formattedLine = PST:formatString(objDescription, { progress = progressStr })
             table.insert(tmpDescription, {"   " .. formattedLine, tmpColor})
         end
     end
@@ -698,7 +701,7 @@ function PST:getExpedOrderModDescLine(expModData)
     local tmpDesc = ""
     local ordModData = PST.expedOrderMods[expModData.obj]
     if ordModData then
-        tmpDesc = "   " .. ordModData.desc
+        tmpDesc = "   " .. PST:getLocalized(expModData.obj)
         if ordModData.req and expModData.prog < ordModData.max then
             tmpDesc = tmpDesc .. " (" .. math.min(expModData.reqProg, ordModData.req) .. "/" .. ordModData.req .. ")"
         end
@@ -729,37 +732,39 @@ function PST:getExpNodeDescription(nodeData, expData)
             if curseData then
                 local tmpColor = PST.kcolors.RED3
                 if nodeData.accessible == false then tmpColor = PST.kcolors.GRAY1 end
-                table.insert(tmpDescription, {"Curse of " .. curseData.name .. ":", tmpColor})
-                if type(curseData.description) == "table" then
-                    for _, tmpLine in ipairs(curseData.description) do
+                table.insert(tmpDescription, {PST:getLocalized(curseData.localeID) .. ":", tmpColor})
+                local curseDesc = PST:getLocalized(curseData.localeID .. "_desc")
+                if type(curseDesc) == "table" then
+                    for _, tmpLine in ipairs(curseDesc) do
                         local formattedDesc = PST:formatString(tmpLine, curseData.modsFunc(expData.depth))
                         table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
                     end
                 else
-                    local formattedDesc = PST:formatString(curseData.description, curseData.modsFunc(expData.depth))
+                    local formattedDesc = PST:formatString(curseDesc, curseData.modsFunc(expData.depth))
                     table.insert(tmpDescription, {"   " .. formattedDesc, tmpColor})
                 end
             end
         else
-            table.insert(tmpDescription, {"Unknown Curse (Shrouded)", PST.kcolors.PINK1})
+            table.insert(tmpDescription, {PST:getLocalized("ui_unkCurse") .. " (" .. PST:getLocalized("ui_shrouded") .. ")", PST.kcolors.PINK1})
         end
     end
 
     -- Entropy modifiers
     if nodeData.entropyMods and #nodeData.entropyMods > 0 then
-        table.insert(tmpDescription, {"Entropy modifier(s):", PST.kcolors.RED1})
+        table.insert(tmpDescription, {PST:getLocalized("ui_entropyMods") .. ":", PST.kcolors.RED1})
 
         for _, tmpModID in ipairs(nodeData.entropyMods) do
             local tmpModName = PST.expedEntropyModList[tmpModID]
             local tmpEntMod = PST.expedEntropyMods[tmpModName]
             if tmpEntMod then
-                if type(tmpEntMod.desc) == "table" then
+                local entModDesc = PST:getLocalized(tmpModName)
+                if type(entModDesc) == "table" then
                     ---@diagnostic disable-next-line: param-type-mismatch
-                    for _, tmpLine in ipairs(tmpEntMod.desc) do
+                    for _, tmpLine in ipairs(entModDesc) do
                         table.insert(tmpDescription, {"   " .. tmpLine, PST.kcolors.RED1})
                     end
                 else
-                    table.insert(tmpDescription, {"   " .. tmpEntMod.desc, PST.kcolors.RED1})
+                    table.insert(tmpDescription, {"   " .. entModDesc, PST.kcolors.RED1})
                 end
             end
         end
@@ -769,7 +774,7 @@ function PST:getExpNodeDescription(nodeData, expData)
     if nodeData.rewardType == PSTExpNodeRewardType.ORDER and expData.orderObjs then
         local orderObjData = PST:getExpedOrderObjDataAt(expData.depth, expData.uber, nodeData.col - 1, nodeData.row)
         if orderObjData then
-            table.insert(tmpDescription, {"Order modifier(s):", PST.kcolors.TEAL1})
+            table.insert(tmpDescription, {PST:getLocalized("ui_orderMods") .. ":", PST.kcolors.TEAL1})
             for _, tmpMod in ipairs(orderObjData) do
                 local orderModData = PST.expedOrderMods[tmpMod.obj]
                 if orderModData then
@@ -789,84 +794,87 @@ function PST:getExpNodeDescription(nodeData, expData)
         if nodeData.accessible == false then tmpColor = PST.kcolors.GRAY1 end
 
         if not hasShrouding or nodeData.nodeType == PSTExpNodeType.FINAL then
-            table.insert(tmpDescription, {"Reward:", tmpColor})
+            table.insert(tmpDescription, {PST:getLocalized("ui_reward") .. ":", tmpColor})
 
             -- Reward: Boon
             if nodeData.rewardType == PSTExpNodeRewardType.BOON then
                 local boonData = PST.expeditionBoons[nodeData.rewardData]
                 if boonData then
-                    table.insert(tmpDescription, {"   Gain Boon of " .. boonData.name .. ":", tmpColor})
-                    if type(boonData.description) == "table" then
-                        for _, tmpLine in ipairs(boonData.description) do
+                    local boonName = PST:getLocalized(boonData.localeID)
+                    local boonDesc = PST:getLocalized(boonData.localeID .. "_desc")
+                    table.insert(tmpDescription, {"   " .. PST:getLocalized("ui_gain") .. " " .. boonName .. ":", tmpColor})
+                    if type(boonDesc) == "table" then
+                        for _, tmpLine in ipairs(boonDesc) do
                             local formattedDesc = PST:formatString(tmpLine, boonData.mods)
                             table.insert(tmpDescription, {"      " .. formattedDesc, tmpColor})
                         end
                     else
-                        local formattedDesc = PST:formatString(boonData.description, boonData.mods)
+                        local formattedDesc = PST:formatString(boonDesc, boonData.mods)
                         table.insert(tmpDescription, {"      " .. formattedDesc, tmpColor})
                     end
                 end
             -- Reward: Obols
             elseif nodeData.rewardType == PSTExpNodeRewardType.OBOLS then
-                table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Arcane Obols", tmpColor})
+                table.insert(tmpDescription, {"   " .. nodeData.rewardData .. " " .. PST:getLocalized("ui_arcaneObols"), tmpColor})
             -- Reward: Exp
             elseif nodeData.rewardType == PSTExpNodeRewardType.EXP then
-                table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " EXP", tmpColor})
+                table.insert(tmpDescription, {"   " .. nodeData.rewardData .. " EXP", tmpColor})
             -- Reward: Attempts
             elseif nodeData.rewardType == PSTExpNodeRewardType.ATTEMPTS then
-                table.insert(tmpDescription, {"   " .. tostring(nodeData.rewardData) .. " Expedition Attempt(s)", tmpColor})
+                table.insert(tmpDescription, {"   " .. nodeData.rewardData .. " " .. PST:getLocalized("ui_expAttempts"), tmpColor})
             -- Reward: Item
             elseif nodeData.rewardType == PSTExpNodeRewardType.ITEM then
                 local shownItem = false
                 local itemCfg = Isaac.GetItemConfig():GetCollectible(nodeData.rewardData)
                 if itemCfg then
-                    local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+                    local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, Options.Language)
                     if itemName ~= "StringTable::InvalidKey" then
-                        table.insert(tmpDescription, {"   Add " .. itemName .. " to this Expedition", tmpColor})
+                        table.insert(tmpDescription, {"   " .. PST:getLocalizedFormatStr("ui_expRewardAddItem", {itemName = itemName}), tmpColor})
                         shownItem = true
                     end
                 end
                 if not shownItem then
-                    table.insert(tmpDescription, {"   Add shown item to this Expedition", tmpColor})
+                    table.insert(tmpDescription, {"   " .. PST:getLocalized("ui_expAddUnkItem"), tmpColor})
                 end
             -- Reward: Crimson starcore
             elseif nodeData.rewardType == PSTExpNodeRewardType.C_STARCORE then
-                table.insert(tmpDescription, {"   +1 Crimson Starcore with " .. (PST:getCurrentCharName() or "the current character"), tmpColor})
+                local tmpCharName = PST:getCurrentCharName() or "the current character"
+                table.insert(tmpDescription, {"   +1 " .. PST:getLocalizedFormatStr("ui_expRewardCharCrimsonCore", {charName = tmpCharName}), tmpColor})
             -- Reward: Order
             elseif nodeData.rewardType == PSTExpNodeRewardType.ORDER then
-                table.insert(tmpDescription, {"   +" .. tostring(nodeData.rewardData) .. " Order", tmpColor})
+                table.insert(tmpDescription, {"   +" .. nodeData.rewardData .. " " .. PST:getLocalized("ui_Order"), tmpColor})
             -- Reward: Starblessed Weapon
             elseif nodeData.rewardType == PSTExpNodeRewardType.STARBLESS_WEP then
-                table.insert(tmpDescription, {"   Random Starblessed Ancient Weapon", tmpColor})
+                table.insert(tmpDescription, {"   " .. PST:getLocalized("ui_expRewardRandStarblessedWep"), tmpColor})
             -- Reward: Starblessed Prism
             elseif nodeData.rewardType == PSTExpNodeRewardType.STARBLESS_PRISM then
-                table.insert(tmpDescription, {"   +1 Starblessed Prism", tmpColor})
+                table.insert(tmpDescription, {"   +1 " .. PST:getLocalized("ui_starblessedPrism"), tmpColor})
             -- Reward: Global skill points
             elseif nodeData.rewardType == PSTExpNodeRewardType.GLOBAL_SP then
-                table.insert(tmpDescription, {"   +" .. tostring(nodeData.rewardData or 1) .. " Global Skill Point(s)", tmpColor})
+                table.insert(tmpDescription, {"   +" .. (nodeData.rewardData or 1) .. " " .. PST:getLocalized("ui_globalSkillPoints"), tmpColor})
             -- Reward choice (uber expeditions)
             elseif nodeData.rewardType == PSTExpNodeRewardType.UBER_CHOICE then
-                table.insert(tmpDescription, {"   Choice between various rewards", tmpColor})
+                table.insert(tmpDescription, {"   " .. PST:getLocalized("ui_expRewardChoice"), tmpColor})
             end
             -- Boon Upgrade node
             if nodeData.nodeType == PSTExpNodeType.BOONUPGRADE then
-                table.insert(tmpDescription, {"   +1 Boon upgrade point", tmpColor})
+                table.insert(tmpDescription, {"   +1 " .. PST:getLocalized("ui_expRewardBoonUpg"), tmpColor})
             end
             -- Deep-Space skill point (uber expeditions)
             if expData.uber and ((nodeData.col % 2 == 0) or nodeData.nodeType == PSTExpNodeType.FINAL) then
                 local tmpSP = 1
                 if nodeData.nodeType == PSTExpNodeType.FINAL then tmpSP = 2 end
-                table.insert(tmpDescription, {"   +" .. tostring(tmpSP) .. " Deep-Space skill point(s)", tmpColor})
+                table.insert(tmpDescription, {"   +" .. tmpSP .. " " .. PST:getLocalized("ui_deepSpaceSP_optPlural"), tmpColor})
             end
         else
             local tmpShroudColor = PST.kcolors.PINK1
             if nodeData.accessible == false then tmpShroudColor = tmpColor end
-            table.insert(tmpDescription, {"Unknown Reward (Shrouded)", tmpShroudColor})
+            table.insert(tmpDescription, {PST:getLocalized("ui_unkReward") .. " (" .. PST:getLocalized("ui_shrouded") .. ")", tmpShroudColor})
         end
     end
     -- Completed node
     if nodeData.nodeType == PSTExpNodeType.COMPLETED then
-        table.insert(tmpDescription, {"Completed node.", PST.kcolors.TEAL1})
+        table.insert(tmpDescription, {PST:getLocalized("ui_compNode") .. ".", PST.kcolors.TEAL1})
     end
 
     return tmpDescription

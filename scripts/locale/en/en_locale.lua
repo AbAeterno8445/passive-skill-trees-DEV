@@ -10,6 +10,7 @@ includeLocaleFile(include("scripts.locale.en.en_charTreeNodes"))
 includeLocaleFile(include("scripts.locale.en.en_taintedTreeNodes"))
 includeLocaleFile(include("scripts.locale.en.en_starTreeNodes"))
 includeLocaleFile(include("scripts.locale.en.en_siderealTreeNodes"))
+includeLocaleFile(include("scripts.locale.en.en_expeditions"))
 includeLocaleFile(include("scripts.locale.en.en_ui"))
 
 return englishLocale
