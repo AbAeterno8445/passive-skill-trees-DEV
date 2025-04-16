@@ -169,9 +169,9 @@ function PST:frameUpdate()
 		if PST:isFirstOrigStage() and PST:getTreeSnapshotMod("isExpedRun", false) then
 			local depth = PST:getTreeSnapshotMod("expedDepth", 1)
 			if not PST:getTreeSnapshotMod("isExpedUber", false) then
-				PST:createFloatTextFX("Beginning Expedition Run: Depth " .. tostring(depth), player.Position - Vector(0, 10), Color(0, 0.57, 1, 1), 0.13, 300, false)
+				PST:createFloatTextFX(PST:getLocalizedFormatStr("ftxt_expedBegin", {depth = depth}), player.Position - Vector(0, 10), Color(0, 0.57, 1, 1), 0.13, 300, false)
 			else
-				PST:createFloatTextFX("Beginning Uber Expedition: Depth " .. tostring(depth), player.Position - Vector(0, 10), Color(1, 0.2, 0.2, 1), 0.13, 300, false)
+				PST:createFloatTextFX(PST:getLocalizedFormatStr("ftxt_uberExpedBegin", {depth = depth}), player.Position - Vector(0, 10), Color(1, 0.2, 0.2, 1), 0.13, 300, false)
 			end
 		end
 
@@ -217,7 +217,7 @@ function PST:frameUpdate()
 
 		-- Mod: chance to cleanse natural curses (proc)
 		if PST:getTreeSnapshotMod("naturalCurseCleanseProc", false) then
-			PST:createFloatTextFX("Natural curse cleansed!", Vector.Zero, Color(), 0.12, 70, true)
+			PST:createFloatTextFX(PST:getLocalized("ftxt_natCurseCleanse"), Vector.Zero, Color(), 0.12, 70, true)
 		end
 
 		-- Mod: +luck when clearing a room below full red hearts (reset)
@@ -263,7 +263,7 @@ function PST:frameUpdate()
 
 		-- Death's Trial nodes (T. Lost's tree)
 		if PST:getTreeSnapshotMod("deathTrialActive", false) then
-			PST:createFloatTextFX("Death's Trial!", Vector.Zero, Color(), 0.13, 90, true)
+			PST:createFloatTextFX(PST:getLocalized("ftxt_deathTrial"), Vector.Zero, Color(), 0.13, 90, true)
 		end
 
 		-- Mod: remove The Stairway once it triggers when entering a floor
@@ -378,7 +378,7 @@ function PST:frameUpdate()
 				end
 				PST:addModifiers({ [newNode] = true }, true)
 			end
-			PST:createFloatTextFX("Spirit-gambler", Vector.Zero, Color(0.75, 0.75, 0.2, 1), 0.13, 120, true)
+			PST:createFloatTextFX(PST:getLocalized("ftxt_spiritGambler"), Vector.Zero, Color(0.75, 0.75, 0.2, 1), 0.13, 120, true)
 		end
 
 		-- First update - After first floor
@@ -438,7 +438,7 @@ function PST:frameUpdate()
 			-- Mod: chance to reveal map
 			if PST:getTreeSnapshotMod("mapRevealed", false) then
 				level:ShowMap()
-				PST:createFloatTextFX("Map revealed!", Vector.Zero, Color(), 0.12, 70, true)
+				PST:createFloatTextFX(PST:getLocalized("ftxt_mapReveal"), Vector.Zero, Color(), 0.12, 70, true)
 			end
 
 			-- Mod: chance to smelt currently held trinkets
@@ -448,7 +448,7 @@ function PST:frameUpdate()
 				if tmpTrinket and tmpTrinket > 0 then
 					if player:AddSmeltedTrinket(tmpTrinket) then
 						player:TryRemoveTrinket(tmpTrinket)
-						PST:createFloatTextFX("Trinket smelted!", Vector.Zero, Color(), 0.12, 70, true)
+						PST:createFloatTextFX(PST:getLocalized("ftxt_trinketSmelt"), Vector.Zero, Color(), 0.12, 70, true)
 					end
 				end
 			end
@@ -560,9 +560,9 @@ function PST:frameUpdate()
 									table.insert(ephItems, plItems[randItem])
 									copied = true
 
-									local itemName = Isaac.GetLocalizedString("Items", Isaac.GetItemConfig():GetCollectible(plItems[randItem]).Name, "en")
+									local itemName = Isaac.GetLocalizedString("Items", Isaac.GetItemConfig():GetCollectible(plItems[randItem]).Name, Options.Language)
 									if itemName ~= "StringTable::InvalidKey" then
-										PST:createFloatTextFX("Ephemeral Bond: " .. itemName, Vector.Zero, Color(0.8, 0.8, 1, 1), 0.14, 90, true)
+										PST:createFloatTextFX(PST:getLocalized("ui_ephBond") .. ": " .. itemName, Vector.Zero, Color(0.8, 0.8, 1, 1), 0.14, 90, true)
 									end
 									table.remove(plItems, randItem)
 								end
@@ -614,7 +614,7 @@ function PST:frameUpdate()
 					tmpColor.G = 1
 				end
 				if moddedHearts then
-					PST:createFloatTextFX("Normalized Vitality", Vector.Zero, tmpColor, 0.12, 100, true)
+					PST:createFloatTextFX(PST:getLocalized("ftxt_normalizedVit"), Vector.Zero, tmpColor, 0.12, 100, true)
 				end
 			end
 
@@ -685,7 +685,7 @@ function PST:frameUpdate()
 						table.remove(availableItems, newItem)
 					end
 				end
-				PST:createFloatTextFX("Osteomancy", Vector.Zero, Color(1, 1, 1, 1), 0.13, 120, true)
+				PST:createFloatTextFX(PST:getLocalized("node_osteomancy_name"), Vector.Zero, Color(1, 1, 1, 1), 0.13, 120, true)
 			end
 
 			-- Uber expedition entropy mod
@@ -1161,7 +1161,7 @@ function PST:frameUpdate()
 				if tmpProcs == 3 then
 					tmpColor = Color(0.7, 1, 1, 1)
 				end
-				PST:createFloatTextFX("Glass Piece: " .. tostring(tmpProcs) .. "/3", Vector.Zero, tmpColor, 0.12, 100, true)
+				PST:createFloatTextFX(PST:getLocalized("ftxt_glassPiece") .. ": " .. tmpProcs .. "/3", Vector.Zero, tmpColor, 0.12, 100, true)
 			end
 		end
 		PST.specialNodes.SC_glowingGlassProc = false
@@ -1274,7 +1274,7 @@ function PST:frameUpdate()
 			PST:addModifiers({ eldritchMappingDebuffs = 1, allstatsPerc = -4 }, true)
 			local curDebuffs = PST:getTreeSnapshotMod("eldritchMappingDebuffs")
 			level:RemoveCurses(LevelCurse.CURSE_OF_THE_LOST)
-			PST:createFloatTextFX("Eldritch Mapping " .. tostring(curDebuffs) .. "/3", Vector.Zero, Color(0.2, 0.1, 0.21, 1), 0.12, 90, true)
+			PST:createFloatTextFX(PST:getLocalized("node_eldritchmapping_name") .. " " .. curDebuffs .. "/3", Vector.Zero, Color(0.2, 0.1, 0.21, 1), 0.12, 90, true)
 			SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
 		end
     end
@@ -1829,7 +1829,7 @@ function PST:frameUpdate()
 			if PST.specialNodes.activeOnHitProc.pool == ItemPoolType.POOL_DEVIL then
 				tmpColor = Color(1, 0.6, 0.6, 1)
 			end
-			local itemName = Isaac.GetLocalizedString("Items", tmpItemCfg.Name, "en")
+			local itemName = Isaac.GetLocalizedString("Items", tmpItemCfg.Name, Options.Language)
 			if itemName ~= "StringTable::InvalidKey" then
 				PST:createFloatTextFX(itemName, Vector.Zero, tmpColor, 0.13, 70, true)
 			end
@@ -1852,7 +1852,7 @@ function PST:frameUpdate()
 			player:AddInnateCollectible(tmpItem)
 			PST:addModifiers({ treasureItemOnHitItem = tmpItem }, true)
 
-			local itemName = Isaac.GetLocalizedString("Items", tmpItemCfg.Name, "en")
+			local itemName = Isaac.GetLocalizedString("Items", tmpItemCfg.Name, Options.Language)
 			if itemName ~= "StringTable::InvalidKey" then
 				PST:createFloatTextFX("+" .. itemName, Vector.Zero, Color(1, 1, 0.7, 1), 0.13, 70, true)
 			end
@@ -1887,11 +1887,11 @@ function PST:frameUpdate()
 				player:RemoveCollectible(randItem.item)
 				player:AddCollectible(newItem)
 
-				local itemName = Isaac.GetLocalizedString("Items", newItemCfg.Name, "en")
+				local itemName = Isaac.GetLocalizedString("Items", newItemCfg.Name, Options.Language)
 				if itemName ~= "StringTable::InvalidKey" then
-					PST:createFloatTextFX("+1 Quality: " .. itemName, Vector.Zero, Color(0.5, 0.9, 1, 1), 0.12, 100, true)
+					PST:createFloatTextFX(PST:getLocalized("ftxt_plusQual") .. ": " .. itemName, Vector.Zero, Color(0.5, 0.9, 1, 1), 0.12, 100, true)
 				else
-					PST:createFloatTextFX("+1 Quality", Vector.Zero, Color(0.5, 0.9, 1, 1), 0.12, 100, true)
+					PST:createFloatTextFX(PST:getLocalized("ftxt_plusQual"), Vector.Zero, Color(0.5, 0.9, 1, 1), 0.12, 100, true)
 				end
 			end
 		end

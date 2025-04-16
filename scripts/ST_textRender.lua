@@ -16,8 +16,11 @@ PST.luaminiFont:Load("font/luamini.fnt")
 PST.lanaPixelFont = Font()
 PST.lanaPixelFont:Load("font/cjk/lanapixel.fnt")
 
+-- Can return a single string or a table of strings, depending on multi-lines
 ---@param text string
+---@param lang? string
 function PST:getLocalized(text, lang)
+    if not lang then lang = Options.Language end
     if text:sub(1, 1) == '#' then
         text = text:sub(2)
     end
@@ -31,11 +34,13 @@ function PST:getLocalized(text, lang)
     return tmpStr
 end
 
+-- Can return a single string or a table of strings, depending on multi-lines
 ---@param text string
----@param lang string
 ---@param vals table
----@return string[]
-function PST:getLocalizedFormatted(text, lang, vals)
+---@param lang? string
+---@return string|string[]
+function PST:getLocalizedFormat(text, vals, lang)
+    if not lang then lang = Options.Language end
     local newDesc = {}
     local tmpDesc = PST:getLocalized(text, lang)
     if type(tmpDesc) == "table" then
@@ -49,5 +54,19 @@ function PST:getLocalizedFormatted(text, lang, vals)
     else
         table.insert(newDesc, PST:formatString(tmpDesc, vals or {}))
     end
+    if #newDesc == 1 then return newDesc[1] end
     return newDesc
+end
+
+--- Always returns a string
+---@param text string
+---@param vals table
+---@param lang? string
+---@return string
+function PST:getLocalizedFormatStr(text, vals, lang)
+    local tmpLocalized = PST:getLocalizedFormat(text, vals, lang)
+    if type(tmpLocalized) == "table" then
+        return tmpLocalized[1]
+    end
+    return tmpLocalized
 end

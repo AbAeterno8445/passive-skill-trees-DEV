@@ -262,7 +262,7 @@ function PST:expedAddProgress(depth, prog, objName, uber)
                             SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.5, 2, false, 1.1)
                         end
                         if PST.config.expedProgTextThreshold ~= 0 then
-                            PST:createFloatTextFX("Expedition objective: " .. tostring(progPerc) .. "%", Vector.Zero, tmpColor, 0.13, 100, true)
+                            PST:createFloatTextFX(PST:getLocalized("ui_expObjective") .. ": " .. progPerc .. "%", Vector.Zero, tmpColor, 0.13, 100, true)
                         end
                     end
 
@@ -518,7 +518,7 @@ function PST:completeExpedNode(depth, col, row, giveReward, uber)
                         table.remove(tmpExpedition.nodeQueue, i)
 
                         if Isaac.IsInGame() then
-                            PST:createFloatTextFX("Selected queued node", Vector.Zero, Color(1, 0.6, 0.15), 0.12, 120, true)
+                            PST:createFloatTextFX(PST:getLocalized("ftxt_selQueueNode"), Vector.Zero, Color(1, 0.6, 0.15), 0.12, 120, true)
                         end
                         break
                     else
@@ -897,7 +897,7 @@ function PST:expedAddOrder(depth, order)
     expData.order = expData.order + order
 
     if Isaac.IsInGame() then
-        PST:createFloatTextFX("+" .. tostring(order) .. " order", Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 100, true)
+        PST:createFloatTextFX("+" .. order .. " " .. PST:getLocalized("ui_order"), Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 100, true)
     end
 end
 
@@ -925,7 +925,7 @@ function PST:expedObjAddEntropy(expData, entropy, noMods)
 
                 local orderDiff = origOrder - expData.order
                 if expData.order > 0 and Isaac.IsInGame() and not noMods then
-                    PST:createFloatTextFX("-" .. tostring(orderDiff) .. " order", Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 100, true)
+                    PST:createFloatTextFX("-" .. orderDiff .. " " .. PST:getLocalized("ui_order"), Vector.Zero, Color(0.3, 0.8, 0.8, 1), 0, 100, true)
                 end
             end
 
@@ -967,7 +967,7 @@ function PST:expedObjAddEntropy(expData, entropy, noMods)
 
             -- In-game text display
             if Isaac.IsInGame() and not noMods then
-                PST:createFloatTextFX("+" .. tostring(entropy) .. " entropy", Vector.Zero, Color(0.8, 0.2, 0.2, 1), 0, 100, true)
+                PST:createFloatTextFX("+" .. entropy .. " " .. PST:getLocalized("ui_entropy"), Vector.Zero, Color(0.8, 0.2, 0.2, 1), 0, 100, true)
             end
 
             if not expData.entropyEffects then expData.entropyEffects = {} end

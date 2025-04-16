@@ -55,7 +55,7 @@ function PST:onCompletionEvent(event)
 							PST.modData.ancientRewards[ancientJewel.name][rewardMod] = true
 
 							SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
-							PST:createFloatTextFX("Ancient jewel objective complete!", Vector.Zero, Color(1, 0.9, 0.5, 1), 0.13, 160, true)
+							PST:createFloatTextFX(PST:getLocalized("ftxt_ancJewelObj"), Vector.Zero, Color(1, 0.9, 0.5, 1), 0.13, 160, true)
 						end
 					end
 				end

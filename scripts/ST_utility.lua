@@ -277,7 +277,7 @@ function PST:addXP(xpParam, showText, overflow, noExped)
 					end
 				end
 
-				PST:createFloatTextFX("Level up!", Vector.Zero, Color(0.7, 0.85, 1, 0.7), 0.17, 100, true)
+				PST:createFloatTextFX(PST:getLocalized("ftxt_levelUp"), Vector.Zero, Color(0.7, 0.85, 1, 0.7), 0.17, 100, true)
 			end
 		end
 
@@ -295,7 +295,7 @@ function PST:addXP(xpParam, showText, overflow, noExped)
 			-- Add overflowing xp to next level, capped at 33%
 			PST.modData.xp = math.min(math.floor(PST.modData.xpRequired * 0.33), xpRemaining)
 
-			PST:createFloatTextFX("Global level up!", Vector.Zero, Color(0.1, 0.4, 1, 0.7), 0.17, 100, true)
+			PST:createFloatTextFX(PST:getLocalized("ftxt_globalLevelUp"), Vector.Zero, Color(0.1, 0.4, 1, 0.7), 0.17, 100, true)
 		end
 	end
 end
@@ -796,7 +796,7 @@ function PST:restoreDonoMachine()
 		newSlot.TargetPosition = tmpSlot.TargetPosition
 		tmpSlot:Remove()
 
-		PST:createFloatTextFX("Donation Machine Restored!", tmpSlot.Position, Color(0.6, 1, 0.6, 1), 0.13, 100, false)
+		PST:createFloatTextFX(PST:getLocalized("ftxt_donoMachineRestore"), tmpSlot.Position, Color(0.6, 1, 0.6, 1), 0.13, 100, false)
 		Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpSlot.Position, Vector.Zero, nil, 0, Random() + 1)
 		SFXManager():Play(SoundEffect.SOUND_SLOTSPAWN)
 	end

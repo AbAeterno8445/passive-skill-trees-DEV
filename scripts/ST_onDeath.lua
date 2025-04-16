@@ -34,7 +34,7 @@ function PST:onDeath(entity)
                 PST:addModifiers({ growingContritionProcs = 1 }, true)
                 if PST:getTreeSnapshotMod("growingContritionProcs", false) == 3 then
                     player:RemoveCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-                    PST:createFloatTextFX("Growing Contrition", Vector.Zero, Color(0.85, 0.35, 0.35, 1), 0.12, 100, true)
+                    PST:createFloatTextFX(PST:getLocalized("ftxt_growingContrition"), Vector.Zero, Color(0.85, 0.35, 0.35, 1), 0.12, 100, true)
                 end
             end
 
@@ -182,7 +182,7 @@ function PST:onDeath(entity)
             local tmpMod = PST:getTreeSnapshotMod("finalBossGSP", 0)
             if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and 100 * math.random() < tmpMod then
                 PST.modData.skillPoints = PST.modData.skillPoints + 1
-                PST:createFloatTextFX("+1 Global SP", Vector.Zero, Color(0.1, 0.4, 1, 1), 0.13, 100, true)
+                PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_globalSP"), Vector.Zero, Color(0.1, 0.4, 1, 1), 0.13, 100, true)
             end
 
             -- Uber expedition mods
@@ -192,7 +192,7 @@ function PST:onDeath(entity)
                 if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 200 and
                 math.random() < 0.2 then
                     PST:addCurrentCharCrimsonStarcores(1)
-                    PST:createFloatTextFX("+1 Crimson Starcore", Vector.Zero, Color(1, 0.3, 0.3, 1), 0.1, 150, true)
+                    PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_crimsonCore"), Vector.Zero, Color(1, 0.3, 0.3, 1), 0.1, 150, true)
                 end
             end
         end
@@ -245,7 +245,7 @@ function PST:onDeath(entity)
                         tmpAmt = tmpAmt + 1
                     end
                     PST.modData.ancientStardust = PST.modData.ancientStardust + tmpAmt
-                    PST:createFloatTextFX("+" .. tostring(tmpAmt) .. " Ancient Stardust", Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
+                    PST:createFloatTextFX("+" .. tmpAmt .. " " .. PST:getLocalized("ui_ancStardust"), Vector.Zero, PST:RGBColor(255, 172, 28), 0.13, 120, true)
                     SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.25, 2, false, 1.5)
                 end
             end
@@ -354,7 +354,7 @@ function PST:onDeath(entity)
                             end
                             if 100 * math.random() < sparkStardustChance then
                                 PST.modData.sparkStardust = PST.modData.sparkStardust + 1
-                                PST:createFloatTextFX("+1 Sparkling Stardust", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.13, 120, true)
+                                PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_sparkStardust"), Vector.Zero, Color(0.7, 0.7, 1, 1), 0.13, 120, true)
                                 SFXManager():Play(SoundEffect.SOUND_POWERUP3, 0.25, 2, false, 1.5)
                             end
                         end
@@ -564,7 +564,7 @@ function PST:onDeath(entity)
             tmpAncient.converted = entity.Type
             tmpAncient.convertedVariant = entity.Variant
             SFXManager():Play(SoundEffect.SOUND_LIGHTBOLT, 0.9)
-            PST:createFloatTextFX("Boss converted!", entity.Position, Color(0.7, 0.85, 1, 1), 0.12, 120, false)
+            PST:createFloatTextFX(PST:getLocalized("ftxt_bossConv"), entity.Position, Color(0.7, 0.85, 1, 1), 0.12, 120, false)
         end
         -- Ancient starcursed jewel: Mightstone
         if PST:SC_getSnapshotMod("mightstone", false) and tmpNPC and NPCisChamp then
@@ -907,7 +907,7 @@ function PST:onDeath(entity)
                                 PST:getPlayer():AddCollectible(newItem)
                                 PST:addModifiers({ darkBestowalItem = newItem, darkBestowalKills = { value = 0, set = true } }, true)
                                 SFXManager():Play(SoundEffect.SOUND_DEATH_CARD, 0.9, 2, false, 1.15)
-                                PST:createFloatTextFX("Dark Bestowal", Vector.Zero, PST:RGBColor(112, 41, 99), 0.12, 90, true)
+                                PST:createFloatTextFX(PST:getLocalized("ftxt_darkBestowal"), Vector.Zero, PST:RGBColor(112, 41, 99), 0.12, 90, true)
                             end
                         end
                     end
@@ -964,7 +964,7 @@ function PST:onDeath(entity)
                         tmpPlayer:TryRemoveTrinket(tmpTrinket)
                         tmpPlayer:AddTrinket(tmpTrinket | TrinketType.TRINKET_GOLDEN_FLAG)
                         SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 1, 2, false, 1.15)
-                        PST:createFloatTextFX("Gilded penny trinket", Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 90, true)
+                        PST:createFloatTextFX(PST:getLocalized("ftxt_gildedPennyTrinket"), Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 90, true)
                         break
                     end
                 end

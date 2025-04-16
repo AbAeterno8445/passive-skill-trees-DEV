@@ -56,7 +56,7 @@ function PST:preGrabCollectible(itemType, charge, firstTime, slot, varData, play
 
                     SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_DEAD, 0.7, 2, false, 1.2)
                     local tmpColor = Color(math.random(), math.random(), math.random(), 1)
-                    PST:createFloatTextFX("Chromatic Dissonance " .. tostring(math.min(7, procs)) .. "/7", Vector.Zero, tmpColor, 0.13, 100, true)
+                    PST:createFloatTextFX(PST:getLocalized("ftxt_chromDissonance") .. " " .. tostring(math.min(7, procs)) .. "/7", Vector.Zero, tmpColor, 0.13, 100, true)
                     return newFam
                 end
             end

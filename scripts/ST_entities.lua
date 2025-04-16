@@ -592,7 +592,7 @@ function PST:onBombInit(bomb)
                     tmpBomb = BombSubType.BOMB_GIGA
                 end
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, bomb.Position, Vector.Zero, nil, tmpBomb, Random() + 1)
-                PST:createFloatTextFX("Troll bomb disarmed", bomb.Position, Color(), 0.12, 70, false)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_tBombDisarm"), bomb.Position, Color(), 0.12, 70, false)
                 bomb:Remove()
             end
         end

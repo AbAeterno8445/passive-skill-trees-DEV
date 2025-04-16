@@ -16,7 +16,6 @@ for _, tmpType in pairs(PSTAstralWepType) do
         for i, ancData in ipairs(wepData.ancients) do
             local newWep = PST:createAstralWep(tmpType, PSTAstralWepRarity.ANCIENT, 1, i)
             newWep.name = ancData.name
-            newWep.typeName = wepData.name
             table.insert(ancWeaponList[tmpType], newWep)
         end
     end

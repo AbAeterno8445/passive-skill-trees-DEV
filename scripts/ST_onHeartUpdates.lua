@@ -107,7 +107,7 @@ function PST:onHeartUpdate(force)
             if PST:getTreeSnapshotMod("darkProtection", false) and not PST:getTreeSnapshotMod("darkProtectionProc", false) and player:GetHearts() <= 2 then
                 PST:addModifiers({ darkProtectionProc = true }, true)
                 SFXManager():Play(SoundEffect.SOUND_EMPRESS)
-                PST:createFloatTextFX("Dark protection!", Vector.Zero, Color(0.8, 0.4, 1, 1), 0.12, 70, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_darkProt"), Vector.Zero, Color(0.8, 0.4, 1, 1), 0.12, 70, true)
                 player:AddBlackHearts(2)
             end
 

@@ -998,12 +998,7 @@ function PST:onNewRoom()
 								elseif i == 2 then
 									tmpColor = PST:RGBColor(255, 84, 236)
 								end
-								PST:createFloatTextFX(
-									"Quality " .. tostring(i) .. " -> " .. tostring(i + 1),
-									tmpItem.Position,
-									tmpColor,
-									0.12, 90, false
-								)
+								PST:createFloatTextFX(PST:getLocalizedFormatStr("ftxt_qualConv", {oldQual = i, newQual = i + 1}), tmpItem.Position, tmpColor, 0.12, 90, false )
 							end
 						end
 					end
@@ -1021,7 +1016,7 @@ function PST:onNewRoom()
 					local newItem = Game():GetItemPool():GetCollectibleFromList(PST.babyFamiliarItems)
 					if newItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
 						tmpItem:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, true)
-						PST:createFloatTextFX("Rerolled into familiar!", tmpItem.Position, Color(1, 1, 0.7, 1), 0.12, 100, false)
+						PST:createFloatTextFX(PST:getLocalized("ftxt_rerollIntoFam"), tmpItem.Position, Color(1, 1, 0.7, 1), 0.12, 100, false)
 					end
 				end
 			end
@@ -1214,7 +1209,7 @@ function PST:onNewRoom()
 							entity:Remove()
 						end
 					end
-					PST:createFloatTextFX("Curse of T. Isaac", Vector.Zero, Color(1, 0.4, 0.4, 1), 0.09, 120, true)
+					PST:createFloatTextFX(PST:getLocalized("ftxt_curseOfTIsaac"), Vector.Zero, Color(1, 0.4, 0.4, 1), 0.09, 120, true)
 					SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
 					cosmicRCache.TIsaacProc = true
 				end

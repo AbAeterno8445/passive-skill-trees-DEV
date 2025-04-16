@@ -122,11 +122,11 @@ return {
     },
     ["dsnode_bringtheorder_name"] = "Bring The Order",
     ["dsnode_bringtheorder"] = {
-        "Uber expeditions start with 15 order.",
-        "While you have at least 10 order, losing a run doesn't subtract attempts from the",
+        "Uber expeditions start with 50 order.",
+        "While you have at least 30 order, losing a run doesn't subtract attempts from the",
         "uber expedition.",
         "Whenever you gain entropy, 25% chance to gain none instead.",
-        "-0.05 luck per order, applied once when beginning a run.",
+        "-0.03 luck per order, applied once when beginning a run.",
         "This effect is applied when generating an uber expedition run while allocated."
     },
     ["dsnode_eldritchexchange_name"] = "Eldritch Exchange",

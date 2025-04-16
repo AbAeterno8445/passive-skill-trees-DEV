@@ -242,7 +242,7 @@ function PST:onSlotUpdate(slot)
             tmpMod = PST:getTreeSnapshotMod("freeMachinesChance", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
                 freeUse = true
-                PST:createFloatTextFX("Free use!", Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 50, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_freeUse"), Vector.Zero, Color(1, 1, 0.5, 1), 0.12, 50, true)
                 SFXManager():Play(SoundEffect.SOUND_PENNYPICKUP)
             end
         end

@@ -974,7 +974,7 @@ function PST:onNewLevel()
         if tmpChance > 0 and 100 * math.random() < tmpChance then
             player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_BLOODY_CROWN)
             SFXManager():Play(SoundEffect.SOUND_BLACK_POOF)
-            PST:createFloatTextFX("Blood-Crowned no more...", Vector.Zero, Color(0.9, 0.3, 0.3, 1), 0.11, 150, true)
+            PST:createFloatTextFX(PST:getLocalized("ftxt_bloodCrownedNoMore"), Vector.Zero, Color(0.9, 0.3, 0.3, 1), 0.11, 150, true)
         end
     end
 

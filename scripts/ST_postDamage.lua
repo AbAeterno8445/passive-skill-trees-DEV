@@ -74,7 +74,7 @@ function PST:postDamage(target, damage, flag, source)
                         if tmpItemList then
                             PST:getPlayer():AddCollectible(tmpFamiliar.SubType, 0, false)
                             table.insert(tmpItemList, tmpFamiliar.SubType)
-                            PST:createFloatTextFX("Gained wisp item!", Vector.Zero, PST:RGBColor(198, 112, 251), 0.13, 90, true)
+                            PST:createFloatTextFX(PST:getLocalized("ftxt_gainWispItem"), Vector.Zero, PST:RGBColor(198, 112, 251), 0.13, 90, true)
                         end
                     end
                 end
@@ -981,7 +981,7 @@ function PST:postDamage(target, damage, flag, source)
             local tgData = PST:getEntData(target)
             if PST:getTreeSnapshotMod("dsdMod_finalLastStand", false) and PST:entityIsFinalBoss(target) and not isKillingHit and (target.HitPoints / target.MaxHitPoints) <= 0.12 and
             not tgData.PST_dsdLastStandWarn then
-                PST:createFloatTextFX("!!SUDDEN DEATH!!", Vector.Zero, Color(1, 0.1, 0.1, 1), 0.1, 180, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_suddenDeath"), Vector.Zero, Color(1, 0.1, 0.1, 1), 0.1, 180, true)
                 SFXManager():Play(SoundEffect.SOUND_SATAN_ROOM_APPEAR, 1, 2, false, 0.8)
                 tgData.PST_dsdLastStandWarn = true
             end

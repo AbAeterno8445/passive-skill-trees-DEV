@@ -33,7 +33,7 @@ function PST:preUseCard(card, player, useFlag)
                 showTxt = true
             end
             if showTxt then
-                PST:createFloatTextFX("Sinistral Runemaster", Vector.Zero, Color(0.7, 0.4, 1, 1), 0.12, 90, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_sinistralRunemaster"), Vector.Zero, Color(0.7, 0.4, 1, 1), 0.12, 90, true)
             end
         end
     end
@@ -78,7 +78,7 @@ function PST:preUseCard(card, player, useFlag)
                 player:UseCard(Card.RUNE_SHARD, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
             end
             if showTxt then
-                PST:createFloatTextFX("Dextral Runemaster", Vector.Zero, Color(0.7, 0.4, 1, 1), 0.12, 90, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_dextralRunemaster"), Vector.Zero, Color(0.7, 0.4, 1, 1), 0.12, 90, true)
             end
         end
     end

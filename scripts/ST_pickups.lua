@@ -250,7 +250,7 @@ function PST:prePickup(pickup, collider, low)
             elseif variant == PickupVariant.PICKUP_TRINKET then
                 -- Arcane Obols pickup (astral expeditions)
                 for i, obolValue in ipairs(PST.expedObolDropValues) do
-                    local tmpName = "Arcane Obols " .. tostring(i)
+                    local tmpName = "Arcane Obols " .. i
                     if subtype == Isaac.GetTrinketIdByName(tmpName) or subtype == Isaac.GetTrinketIdByName(tmpName) | TrinketType.TRINKET_GOLDEN_FLAG then
                         local tmpFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                         tmpFX.Color = Color(1, 1, 1, 1, 0.85, 0.35, 1)
@@ -258,7 +258,7 @@ function PST:prePickup(pickup, collider, low)
                         SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.6, 2, false, 0.8)
 
                         PST:addCurrentCharObols(obolValue)
-                        PST:createFloatTextFX("+" .. tostring(obolValue) .. " Arcane Obols", Vector.Zero, Color(0.8, 0.35, 1, 1), 0.13, 70, true)
+                        PST:createFloatTextFX("+" .. obolValue .. " " .. PST:getLocalized("ui_arcaneObols"), Vector.Zero, Color(0.8, 0.35, 1, 1), 0.13, 70, true)
 
                         -- Expedition objective: collect Arcane Obols
                         PST:expedAddProgInRun("obols", obolValue)
@@ -306,7 +306,7 @@ function PST:prePickup(pickup, collider, low)
                         tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                         pickup:Remove()
                         PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
-                        PST:createFloatTextFX("+ Azure Starcursed Jewel", Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_azureJewel"), Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
                         SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                         jewelCollisionTimer = 0
                         return { Collide = false, SkipCollisionEffects = true }
@@ -320,7 +320,7 @@ function PST:prePickup(pickup, collider, low)
                         tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                         pickup:Remove()
                         PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
-                        PST:createFloatTextFX("+ Crimson Starcursed Jewel", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_crimsonJewel"), Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
                         SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                         jewelCollisionTimer = 0
                         return { Collide = false, SkipCollisionEffects = true }
@@ -334,7 +334,7 @@ function PST:prePickup(pickup, collider, low)
                         tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                         pickup:Remove()
                         PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
-                        PST:createFloatTextFX("+ Viridian Starcursed Jewel", Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_viridianJewel"), Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
                         SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                         jewelCollisionTimer = 0
                         return { Collide = false, SkipCollisionEffects = true }
@@ -347,7 +347,7 @@ function PST:prePickup(pickup, collider, low)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
                     PST:SC_addJewel(PSTStarcursedType.ANCIENT, false, 0)
-                    PST:createFloatTextFX("+ Ancient Starcursed Jewel", Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
+                    PST:createFloatTextFX("+ " .. PST:getLocalized("ui_ancientJewel"), Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
                     jewelCollisionTimer = 0
                     return { Collide = false, SkipCollisionEffects = true }
@@ -356,7 +356,7 @@ function PST:prePickup(pickup, collider, low)
                 -- Jewel inventory full
                 if jewelInvFull ~= nil then
                     if jewelCollisionTimer == 0 then
-                        PST:createFloatTextFX(jewelInvFull .. " Inventory Full!", Vector.Zero, Color(0.9, 0.2, 0.2, 1), 0.12, 90, true)
+                        PST:createFloatTextFX(PST:getLocalized("ftxt_jewelInvFull"), Vector.Zero, Color(0.9, 0.2, 0.2, 1), 0.12, 90, true)
                         jewelCollisionTimer = 40
                     else
                         jewelCollisionTimer = jewelCollisionTimer - 1
@@ -378,8 +378,7 @@ function PST:prePickup(pickup, collider, low)
                                     local poofFX = Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, player.Position, Vector.Zero, nil, 0, Random() + 1)
                                     poofFX.Color = Color(1, 1, 0.5, 1)
                                     SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.9)
-                                    PST:createFloatTextFX("Trinket gilded!", Vector.Zero, Color(1, 1, 0.6, 1), 0.13, 100, true)
-
+                                    PST:createFloatTextFX(PST:getLocalized("ftxt_trinketGilded"), Vector.Zero, Color(1, 1, 0.6, 1), 0.13, 100, true)
                                     return
                                 end
                             end
@@ -403,7 +402,7 @@ function PST:prePickup(pickup, collider, low)
                         tmpFX.Color = Color(1, 0.2, 0.2, 1, 1, 0.2, 0.2)
                         pickup:Remove()
                         PST:addModifiers({ SC_crimsonWarpKeyStacks = 1 }, true)
-                        PST:createFloatTextFX("+ Cracked Key", Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 100, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_crackedKey"), Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 100, true)
                         SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.2)
                         return { Collide = false, SkipCollisionEffects = true }
                     end
@@ -454,7 +453,7 @@ function PST:prePickup(pickup, collider, low)
                         else
                             SFXManager():Play(SoundEffect.SOUND_UNLOCK00, 0.8, 2, false, 1.4)
                         end
-                        PST:createFloatTextFX("+ Rune Shard (" .. tostring(runeStacks) .. "/" .. tostring(stacksReq) .. ")", Vector.Zero, tmpColor, 0.12, 100, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_runeShard") .. " (" .. tostring(runeStacks) .. "/" .. tostring(stacksReq) .. ")", Vector.Zero, tmpColor, 0.12, 100, true)
                         return { Collide = false, SkipCollisionEffects = true }
                     end
                 end
@@ -473,7 +472,7 @@ function PST:prePickup(pickup, collider, low)
                             Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CROSS_POOF, pickup.Position, Vector.Zero, nil, 0, Random() + 1)
                             pickup:Remove()
                             PST:addModifiers({ holyCardStacks = 1 }, true)
-                            PST:createFloatTextFX("+ Holy Card", Vector.Zero, Color(0.6, 0.9, 1, 1), 0.12, 100, true)
+                            PST:createFloatTextFX("+ " .. PST:getLocalized("ui_holyCard"), Vector.Zero, Color(0.6, 0.9, 1, 1), 0.12, 100, true)
                             SFXManager():Play(SoundEffect.SOUND_BOOK_PAGE_TURN_12, 0.8, 2, false, 1.3)
                             return { Collide = false, SkipCollisionEffects = true }
                         end
@@ -528,7 +527,7 @@ function PST:prePickup(pickup, collider, low)
                                 if cosmicRCache.keeperFloorCoins == 5 then
                                     tmpColor = Color(0.7, 1, 0.7, 1)
                                 end
-                                PST:createFloatTextFX("Keeper's curse: " .. cosmicRCache.keeperFloorCoins .. "/5", Vector.Zero, tmpColor, 0.1, 50, true)
+                                PST:createFloatTextFX(PST:getLocalized("ftxt_keeperCurse") .. ": " .. cosmicRCache.keeperFloorCoins .. "/5", Vector.Zero, tmpColor, 0.1, 50, true)
                             end
                         end
                     end
@@ -958,7 +957,7 @@ function PST:onPickup(pickup, collider, low, forced)
                 for i, tmpPoop in ipairs(poopOrder) do
                     if plSpell == tmpPoop and poopOrder[i + 1] ~= nil then
                         player:SetPoopSpell(randSpell, poopOrder[i + 1])
-                        PST:createFloatTextFX("Transmuted!", Vector.Zero, Color(0.8, 0.9, 1, 1), 0.12, 40, true)
+                        PST:createFloatTextFX(PST:getLocalized("ftxt_transmuted"), Vector.Zero, Color(0.8, 0.9, 1, 1), 0.12, 40, true)
                         break
                     end
                 end

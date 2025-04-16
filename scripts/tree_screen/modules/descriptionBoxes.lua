@@ -14,11 +14,11 @@ local descriptionBoxesModule = {
                     end
                 end
                 table.insert(tmpDescription, {
-                    "Can now get unlocks as if playing as " .. tmpCharName .. ".", PST.kcolors.LIGHTBLUE1
+                    PST:getLocalizedFormat("ui_cosmicR_unlocksPlayingAs", {tmpCharName = tmpCharName}), PST.kcolors.LIGHTBLUE1
                 })
-                table.insert(tmpDescription, "Press the Respec Node button to deselect this character.")
+                table.insert(tmpDescription, PST:getLocalized("ui_cosmicR_respecDeselect"))
             elseif isAllocated then
-                descName = descName .. " (E to pick character)"
+                descName = descName .. " " .. PST:getLocalized("ui_cosmicR_EtoPick")
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -27,12 +27,12 @@ local descriptionBoxesModule = {
         ["Star Tree"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             if isAllocated then
                 if tScreen.currentTree ~= "starTree" then
-                    descName = descName .. " (E to view Star Tree)"
+                    descName = descName .. " " .. PST:getLocalized("ui_starTree_EtoView")
                 elseif tScreen.starcursedTotalMods then
                     -- Append starmight description to Star Tree node
                     local tmpColor = PST.kcolors.STAR_ORANGE
                     tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
-                    table.insert(tmpDescription, {"Starmight: " .. tScreen.starcursedTotalMods.totalStarmight, tmpColor})
+                    table.insert(tmpDescription, {PST:getLocalized("ui_starmight") .. ": " .. tScreen.starcursedTotalMods.totalStarmight, tmpColor})
                     for modName, modVal in pairs(PST:SC_getStarmightImplicits(tScreen.starcursedTotalMods.totalStarmight)) do
                         local parsedModLines = PST:parseModifierLines(modName, modVal)
                         for _, tmpLine in ipairs(parsedModLines) do
@@ -42,7 +42,7 @@ local descriptionBoxesModule = {
                 end
             elseif not PST:SC_isStarTreeUnlocked() then
                 tmpDescription = {
-                    {"Reach level " .. tostring(PST.SCStarTreeUnlockLevel) .. " with at least one character to unlock.", PST.kcolors.RED2}
+                    {PST:getLocalizedFormat("ui_starTree_levelReqWarn", {levelReq = PST.SCStarTreeUnlockLevel}), PST.kcolors.RED1}
                 }
             end
             return { name = descName, description = tmpDescription }
@@ -51,10 +51,10 @@ local descriptionBoxesModule = {
         -- Golden Trinket nodes, show whether golden trinkets are unlocked
         ["Golden Trinkets"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
-            if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
-                table.insert(tmpDescription, {"Golden trinkets are unlocked.", PST.kcolors.GREEN1})
+            if not Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
+                table.insert(tmpDescription, {PST:getLocalized("ui_goldenTrinketsUnlocked"), PST.kcolors.GREEN1})
             else
-                table.insert(tmpDescription, {"Golden trinkets are not unlocked.", PST.kcolors.RED2})
+                table.insert(tmpDescription, {PST:getLocalized("ui_goldenTrinketsNotUnlocked"), PST.kcolors.RED2})
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -63,7 +63,7 @@ local descriptionBoxesModule = {
         ["Grand Ingredient"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             if PST:grandIngredientNodes(false) > 2 then
                 tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
-                table.insert(tmpDescription, {"You have more than 2 Grand Ingredient nodes allocated!", PST.kcolors.RED2})
+                table.insert(tmpDescription, {PST:getLocalized("ui_grandIngredientWarn"), PST.kcolors.RED2})
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -74,16 +74,16 @@ local descriptionBoxesModule = {
             local bothDone = true
             -- Boss rush
             if Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.BOSS_RUSH) == 0 then
-                table.insert(tmpDescription, {"Missing Boss Rush completion with T. Siren!", PST.kcolors.RED2})
+                table.insert(tmpDescription, {PST:getLocalized("ui_tSirenBossRushWarn"), PST.kcolors.RED2})
                 bothDone = false
             end
             -- Hush
             if Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.HUSH) == 0 then
-                table.insert(tmpDescription, {"Missing Hush completion with T. Siren!", PST.kcolors.RED2})
+                table.insert(tmpDescription, {PST:getLocalized("ui_tSirenHushWarn"), PST.kcolors.RED2})
                 bothDone = false
             end
             if bothDone then
-                table.insert(tmpDescription, {"Boss Rush and Hush completed.", PST.kcolors.GREEN1})
+                table.insert(tmpDescription, {PST:getLocalized("ui_tSirenSoulComp"), PST.kcolors.GREEN1})
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -96,17 +96,17 @@ local descriptionBoxesModule = {
                 local socketedJewel = PST:SC_getSocketedJewel(extraData.jewelType, socketID)
                 if socketedJewel and socketedJewel.equipped == socketID then
                     tmpDescription = PST:SC_getJewelDescription(socketedJewel)
-                    table.insert(tmpDescription, "Press the Respec Node button to unsocket the jewel.")
+                    table.insert(tmpDescription, PST:getLocalized("ui_jewels_respecUnsocket"))
                     if socketedJewel.name then
                         descName = descName .. " - " .. socketedJewel.name
                         setName = true
                     end
                 end
                 if not setName then
-                    descName = descName .. " (E to open/close inventory)"
+                    descName = descName .. " " .. PST:getLocalized("ui_jewels_invKey")
                 end
             else
-                descName = descName .. " (E to open/close inventory)"
+                descName = descName .. " " .. PST:getLocalized("ui_jewels_invKey")
             end
             return { name = descName, description = tmpDescription }
         end,
@@ -117,7 +117,7 @@ local descriptionBoxesModule = {
                 local eqWeapon = PST:getEquippedAstralWep()
                 if eqWeapon then
                     tmpDescription = PST:getAstralWepDesc(eqWeapon, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))
-                    table.insert(tmpDescription, "Press Allocate to access the Astral Forge menu.")
+                    table.insert(tmpDescription, PST:getLocalized("ui_astralForgeKey"))
                 end
             end
             return { name = descName, description = tmpDescription }
@@ -129,12 +129,12 @@ local descriptionBoxesModule = {
                 local charData = PST:getCurrentCharData()
                 if charData and charData.bazaarPurchased and #charData.bazaarPurchased > 0 then
                     local newDesc = {table.unpack(tmpDescription)}
-                    table.insert(newDesc, 2, {"Purchased items:", PST.kcolors.LEVEL_PURPLE})
+                    table.insert(newDesc, 2, {PST:getLocalized("ui_purchItems"), PST.kcolors.LEVEL_PURPLE})
                     local gameCfg = Isaac.GetItemConfig()
                     for _, tmpItem in ipairs(charData.bazaarPurchased) do
                         local itemCfg = gameCfg:GetCollectible(tmpItem)
                         if itemCfg then
-                            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+                            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, Options.Language)
                             if itemName ~= "StringTable::InvalidKey" then
                                 table.insert(newDesc, 3, {"    " .. itemName, PST.kcolors.LEVEL_PURPLE})
                             end
@@ -152,8 +152,8 @@ local descriptionBoxesModule = {
             local charData = PST:getCurrentCharData()
             if charData then
                 local charName = PST:getCurrentCharName()
-                table.insert(newDesc, {"Current character: " .. charName, PST.kcolors.LEVEL_PURPLE})
-                table.insert(newDesc, {charName .. " skill points: " .. tostring(charData.skillPoints), PST.kcolors.LEVEL_PURPLE})
+                table.insert(newDesc, {PST:getLocalized("ui_currentChar") .. ": " .. charName, PST.kcolors.LEVEL_PURPLE})
+                table.insert(newDesc, {charName .. " " .. PST:getLocalized("ui_skillPoints") .. ": " .. charData.skillPoints, PST.kcolors.LEVEL_PURPLE})
             end
             return { name = descName, description = newDesc }
         end,
@@ -171,19 +171,19 @@ local descriptionBoxesModule = {
         ["Global Skill Point Exchange"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             local nodeDesc = {}
             if not isAllocated then
-                table.insert(nodeDesc, "Once allocated, press the Allocate button to convert some Arcane Obols into a Global Skill Point.")
-                table.insert(nodeDesc, "Obol conversion cost increases the more you use this exchange with the current character.")
+                table.insert(nodeDesc, PST:getLocalized("ui_globalSPConvDesc1"))
+                table.insert(nodeDesc, PST:getLocalized("ui_globalSPConvDesc2"))
             else
                 local charData = PST:getCurrentCharData()
                 if charData then
                     if not charData.obolGSPtrades then charData.obolGSPtrades = 0 end
-                    table.insert(nodeDesc, "Press the Allocate button to convert:")
+                    table.insert(nodeDesc, PST:getLocalized("ui_globalSPConvKey"))
                     table.insert(nodeDesc, {
-                        tostring(PST:getExpedObolToGSPRate(charData.obolGSPtrades)) .. " obols into 1 Global Skill Point.",
+                        PST:getLocalizedFormat("ui_globalSPConvRate", {obols = PST:getExpedObolToGSPRate(charData.obolGSPtrades)}),
                         PST.kcolors.PURPLE1
                     })
                 else
-                    table.insert(nodeDesc, {"Could not load current character data.", PST.kcolors.RED1})
+                    table.insert(nodeDesc, {PST:getLocalized("ui_charLoadError"), PST.kcolors.RED1})
                 end
             end
             return { name = descName, description = nodeDesc }
@@ -199,7 +199,7 @@ local descriptionBoxesModule = {
                 if charData then
                     -- Chosen Septentrional Artifact descriptions
                     if charData.northArtis and #charData.northArtis > 0 then
-                        table.insert(nodeDesc, "Selected Septentrional Artifacts:")
+                        table.insert(nodeDesc, PST:getLocalized("ui_selSeptentrions"))
                         for _, tmpArtiName in ipairs(charData.northArtis) do
                             local tmpArtiData = PST.sideArtiData[tmpArtiName]
                             if tmpArtiData then
@@ -216,12 +216,12 @@ local descriptionBoxesModule = {
                             end
                         end
                     else
-                        table.insert(nodeDesc, {"No Septentrional Artifacts Selected", PST.kcolors.BLUE1})
+                        table.insert(nodeDesc, {PST:getLocalized("ui_noSelSeptentrions"), PST.kcolors.BLUE1})
                     end
 
                     -- Chosen Meridional Artifact descriptions
                     if charData.southArtis and #charData.southArtis > 0 then
-                        table.insert(nodeDesc, "Selected Meridional Artifacts:")
+                        table.insert(nodeDesc, PST:getLocalized("ui_selMeridions"))
                         for _, tmpArtiName in ipairs(charData.southArtis) do
                             local tmpArtiData = PST.sideArtiData[tmpArtiName]
                             if tmpArtiData then
@@ -238,10 +238,10 @@ local descriptionBoxesModule = {
                             end
                         end
                     else
-                        table.insert(nodeDesc, {"No Meridional Artifacts Selected", PST.kcolors.ANCIENT_ORANGE})
+                        table.insert(nodeDesc, {PST:getLocalized("ui_noSelMeridions"), PST.kcolors.ANCIENT_ORANGE})
                     end
                 end
-                table.insert(nodeDesc, "Select Artifacts by allocating them, at no cost.")
+                table.insert(nodeDesc, PST:getLocalized("ui_selArtifacts"))
             end
             return { name = descName, description = nodeDesc }
         end,
@@ -257,7 +257,7 @@ local descriptionBoxesModule = {
 
                 -- Infectious Meridion extra
                 if extraData.artifact == "infectiousMeridion" then
-                    table.insert(nodeDesc, "Once allocated, press Allocate to choose the status effect the pulse inflicts. Causes poison by default.")
+                    table.insert(nodeDesc, PST:getLocalized("ui_infMeridionDesc"))
                 end
 
                 -- Unlock objective
@@ -270,19 +270,19 @@ local descriptionBoxesModule = {
                     if artiProg >= artiData.objective.req then
                         tmpCol = PST.kcolors.GREEN1
                     end
-                    table.insert(nodeDesc, {"Unlock: " .. PST:formatString(artiData.objective.desc, { progress = artiProg }), tmpCol})
+                    table.insert(nodeDesc, {PST:getLocalized("ui_unlock") .. ": " .. PST:formatString(artiData.objective.desc, { progress = artiProg }), tmpCol})
                 end
                 if not artiData.objective then
-                    table.insert(nodeDesc, "Default unlock.")
+                    table.insert(nodeDesc, PST:getLocalized("ui_defUnlock") .. ".")
                 end
 
                 -- Max selected
                 local charData = PST:getCurrentCharData()
                 if charData and not isAllocated and PST:isSideArtiUnlocked(extraData.artifact) and extraData.available then
                     if artiData.type == "septentrion" and #charData.northArtis >= charData.maxNorthArtis then
-                        table.insert(nodeDesc, {"Max Septentrional artifacts selected! Respec a different artifact to select this one.", PST.kcolors.RED1})
+                        table.insert(nodeDesc, {PST:getLocalized("ui_maxSeptentrionsWarn"), PST.kcolors.RED1})
                     elseif artiData.type == "meridion" and #charData.southArtis >= charData.maxSouthArtis then
-                        table.insert(nodeDesc, {"Max Meridional artifacts selected! Respec a different artifact to select this one.", PST.kcolors.RED1})
+                        table.insert(nodeDesc, {PST:getLocalized("ui_maxMeridionsWarn"), PST.kcolors.RED1})
                     end
                 end
             end
@@ -299,7 +299,7 @@ local descriptionBoxesModule = {
 
                     if charData.crimConvBuff and PST.crimConvergenceBuffs[charData.crimConvBuff] then
                         local buffData = PST.crimConvergenceBuffs[charData.crimConvBuff]
-                        table.insert(nodeDesc, {"Selected: " .. buffData.name, PST.kcolors.ANCIENT_ORANGE})
+                        table.insert(nodeDesc, {PST:getLocalized("ui_selected") .. ": " .. buffData.name, PST.kcolors.ANCIENT_ORANGE})
                         for _, tmpLine in ipairs(buffData.desc) do
                             table.insert(nodeDesc, {tmpLine, PST.kcolors.ANCIENT_ORANGE})
                         end
@@ -312,7 +312,7 @@ local descriptionBoxesModule = {
         -- Deep-Space Astrolabe, Deep-Space SP display
         ["Deep-Space Astrolabe"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             local nodeDesc = {table.unpack(tmpDescription)}
-            table.insert(nodeDesc, {"Deep-Space Skill Points: " .. tostring(PST.modData.deepSpaceSP or 0), PST.kcolors.STAR_ORANGE})
+            table.insert(nodeDesc, {PST:getLocalized("ui_deepSpaceSP") .. ": " .. (PST.modData.deepSpaceSP or 0), PST.kcolors.STAR_ORANGE})
             return { name = descName, description = nodeDesc }
         end,
 
@@ -321,7 +321,7 @@ local descriptionBoxesModule = {
             local nodeDesc = {table.unpack(tmpDescription)}
             local charData = PST:getCurrentCharData()
             if charData then
-                table.insert(nodeDesc, {PST:getCurrentCharName() .. " obols: " .. tostring(charData.arcaneObols), PST.kcolors.PURPLE1})
+                table.insert(nodeDesc, {PST:getCurrentCharName() .. " " .. PST:getLocalized("ui_obols") .. ": " .. charData.arcaneObols, PST.kcolors.PURPLE1})
             end
             return { name = descName, description = nodeDesc }
         end
@@ -428,7 +428,7 @@ function descriptionBoxesModule:Render(tScreen)
                     if tgtNode then
                         tmpDescription = {
                             table.unpack(hoveredNode.description),
-                            {"Selected node: " .. tgtNode.name, PST.kcolors.LIGHTRED1}
+                            {PST:getLocalized("ui_selNode") .. ": " .. tgtNode.name, PST.kcolors.LIGHTRED1}
                         }
                         for _, tmpLine in ipairs(tgtNode.description) do
                             table.insert(tmpDescription, {tmpLine, PST.kcolors.LIGHTRED1})
@@ -449,7 +449,7 @@ function descriptionBoxesModule:Render(tScreen)
                 obolReq = PST[obolReq.var]
             end
             if obolReq then
-                table.insert(tmpDescription, {"Requires " .. tostring(obolReq) .. " Arcane Obols to allocate.", PST.kcolors.PURPLE1})
+                table.insert(tmpDescription, {PST:getLocalizedFormat("ui_obolReq", {obolReq = obolReq}), PST.kcolors.PURPLE1})
             end
 
             -- Expedition depth requirement
@@ -459,7 +459,7 @@ function descriptionBoxesModule:Render(tScreen)
                 if PST.modData.expeditionDepth > expReq then
                     tmpColor = PST.kcolors.GREEN1
                 end
-                table.insert(tmpDescription, {"Requires completing expedition depth " .. tostring(expReq) .. ".", tmpColor})
+                table.insert(tmpDescription, {PST:getLocalizedFormat("ui_expDepthReq", {depthReq = expReq}), tmpColor})
             end
 
             -- Uber expedition depth requirement
@@ -469,14 +469,14 @@ function descriptionBoxesModule:Render(tScreen)
                 if PST.modData.uberExpedDepth > uberReq then
                     tmpColor = PST.kcolors.GREEN1
                 end
-                table.insert(tmpDescription, {"Requires completing uber expedition depth " .. tostring(uberReq) .. ".", tmpColor})
+                table.insert(tmpDescription, {PST:getLocalizedFormat("ui_uberExpDepthReq", {depthReq = uberReq}), tmpColor})
             end
 
             -- Character level requirement
             local currentChar = PST:getCurrentCharData()
             local charlvlReq = hoveredNode.reqs.charLevel
             if charlvlReq and currentChar and currentChar.level < charlvlReq then
-                table.insert(tmpDescription, {"Requires the current character (" .. PST:getCurrentCharName() .. ") to reach level " .. tostring(charlvlReq) .. ".", PST.kcolors.LIGHTRED1})
+                table.insert(tmpDescription, {PST:getLocalizedFormat("ui_charlvlReq", {charName = PST:getCurrentCharName(), lvlReq = charlvlReq}), PST.kcolors.LIGHTRED1})
             end
 
             -- Crimson starcores requirement
@@ -486,25 +486,28 @@ function descriptionBoxesModule:Render(tScreen)
                 if currentChar and currentChar.crimsonStarcores and currentChar.crimsonStarcores >= crimsonStarcoreReq then
                     tmpColor = PST.kcolors.GREEN1
                 end
-                table.insert(tmpDescription, {"Requires 1 crimson starcore.", tmpColor})
+                table.insert(tmpDescription, {PST:getLocalized("ui_crimsonCoreReq"), tmpColor})
 
                 if currentChar then
-                    table.insert(tmpDescription, {PST:getCurrentCharName() .. " crimson starcores: " .. tostring(currentChar.crimsonStarcores or 0), tmpColor})
+                    table.insert(tmpDescription, {
+                        PST:getLocalizedFormat("ui_charCrimsonCores", {charName = PST:getCurrentCharName(), cores = (currentChar.crimsonStarcores or 0)}),
+                        tmpColor
+                    })
                 end
             end
 
             -- Deep-Space SP requirement
             if hoveredNode.reqs.deepSpaceNode then
-                table.insert(tmpDescription, {"Requires 1 Deep-Space Skill Point. (You have " .. tostring(PST.modData.deepSpaceSP or 0) .. ")", PST.kcolors.STAR_ORANGE})
+                table.insert(tmpDescription, {PST:getLocalizedFormat("ui_deepSPReq", {deepSP = (PST.modData.deepSpaceSP or 0)}), PST.kcolors.STAR_ORANGE})
             end
         end
         if not isAllocated and not noSP and PST:arrHasValue(PST.globalTrees, tScreen.currentTree) and not PST:arrHasValue(PST.nodeSPExceptions, hoveredNode.name) then
             tmpDescription = {table.unpack(tmpDescription)}
-            table.insert(tmpDescription, {"Requires 1 Global SP to allocate.", PST.kcolors.BLUE1})
+            table.insert(tmpDescription, {PST:getLocalized("ui_globalSPReq"), PST.kcolors.BLUE1})
         end
         if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) and (PST:arrHasValue(nonDynamicNodes, hoveredNode.name) or (hoveredNode.reqs and hoveredNode.reqs.nonDynamic)) then
             tmpDescription = {table.unpack(tmpDescription)}
-            table.insert(tmpDescription, {"This node does not support Dynamic Tree Mode, and is only applied on run start.", PST.kcolors.RED2})
+            table.insert(tmpDescription, {PST:getLocalized("ui_nonDynamicWarn"), PST.kcolors.RED2})
         end
 
         ---- Localization ----
@@ -522,9 +525,10 @@ function descriptionBoxesModule:Render(tScreen)
                 tmpDescKey = tmpDescription[1]:sub(2)
             end
             if tmpDescKey then
-                local localizedDesc = PST:getLocalizedFormatted(tmpDescKey, Options.Language, hoveredNode.modifiers)
+                local localizedDesc = PST:getLocalizedFormat(tmpDescKey, hoveredNode.modifiers)
                 if localizedDesc then
-                    tmpDescription = localizedDesc
+                    if type(localizedDesc) == "string" then tmpDescription = {localizedDesc}
+                    else tmpDescription = localizedDesc end
                 end
             end
         end
@@ -539,7 +543,7 @@ function descriptionBoxesModule:Render(tScreen)
             local cosmicRSubmenu = submenusModule.submenus[PSTSubmenu.COSMICREALIGNMENT]
             if cosmicRSubmenu.hoveredCharID ~= nil then
                 local charID = cosmicRSubmenu.hoveredCharID
-                local tmpDescription = { "Unlock " .. PST.charNames[1 + charID] .. " to enable this option." }
+                local tmpDescription = { PST:getLocalizedFormat("ui_cosmicR_unlockChar", {charName = PST.charNames[1 + charID]}) }
                 if PST:cosmicRIsCharUnlocked(charID) then
                     tmpDescription = PST.cosmicRData.characters[charID].curseDesc
                 end
@@ -552,13 +556,13 @@ function descriptionBoxesModule:Render(tScreen)
             if jewelData then
                 local tmpDescription = PST:SC_getJewelDescription(jewelData)
                 if PST:SC_canDestroyJewel(jewelData) then
-                    table.insert(tmpDescription, "Press the Respec Node button to destroy this jewel.")
+                    table.insert(tmpDescription, PST:getLocalized("ui_jewels_respecDestroy"))
                 elseif jewelData.status and jewelData.status == "converted" then
-                    table.insert(tmpDescription, "Press the Respec Node button to remove the converted boss.")
+                    table.insert(tmpDescription, PST:getLocalized("ui_jewels_respecRemBoss"))
                 end
-                local jewelTitle = jewelData.name or jewelData.type .. " Starcursed Jewel"
+                local jewelTitle = jewelData.name or jewelData.type .. " " .. PST:getLocalized("ui_starcursedJewel")
                 if jewelData.mighty then
-                    jewelTitle = jewelTitle .. " (Mighty)"
+                    jewelTitle = jewelTitle .. " (" .. PST:getLocalized("ui_mighty") .. ")"
                 end
                 tScreen:DrawNodeBox(jewelTitle, tmpDescription)
             end
@@ -568,7 +572,7 @@ function descriptionBoxesModule:Render(tScreen)
             local nodeData = crimsonNodeSubmenu.hoveredNode
             if nodeData then
                 local tmpDesc = {table.unpack(nodeData.description)}
-                table.insert(tmpDesc, "Press Allocate to select this node.")
+                table.insert(tmpDesc, PST:getLocalized("ui_allocToSelNode"))
                 tScreen:DrawNodeBox(nodeData.name, tmpDesc)
             end
         -- Infectious Meridion submenu, hovered status
@@ -577,7 +581,7 @@ function descriptionBoxesModule:Render(tScreen)
             local tmpStatus = infMeridionSubmenu.hoveredItem
             if tmpStatus then
                 local tmpName = tmpStatus:gsub("^[a-z]", string.upper)
-                local tmpDesc = {"Pulse will inflict " .. tmpStatus .. "."}
+                local tmpDesc = {PST:getLocalized("ui_pulseInflict") .. " " .. tmpStatus .. "."}
                 tScreen:DrawNodeBox(tmpName, tmpDesc)
             end
         -- Crimson Convergence submenu, hovered buff
@@ -596,14 +600,23 @@ function descriptionBoxesModule:Render(tScreen)
                 local itemPrice = tostring(PST:getObsBazaarPrice(tmpItem.price))
                 local itemDesc = {}
                 if tmpItem.type == PSTExpNodeRewardType.C_STARCORE or tmpItem.type == PSTExpNodeRewardType.GLOBAL_SP then
-                    table.insert(itemDesc, tmpItem.name .. " for " .. (PST:getCurrentCharName() or "the current character") .. ".")
+                    table.insert(
+                        itemDesc,
+                        PST:getLocalizedFormat("ui_obsBazaarHoverDesc", {
+                            itemName = tmpItem.name,
+                            charName = PST:getCurrentCharName() or PST:getLocalized("ui_theCurrentChar")
+                        })
+                    )
                 end
                 local charData = PST:getCurrentCharData()
                 if charData then
-                    table.insert(itemDesc, {PST:getCurrentCharName() .. " obols: " .. tostring(charData.arcaneObols), PST.kcolors.PURPLE1})
+                    table.insert(itemDesc, {
+                        PST:getLocalizedFormat("ui_charObols", {charName = PST:getCurrentCharName(), obols = charData.arcaneObols}),
+                        PST.kcolors.PURPLE1
+                    })
                 end
-                table.insert(itemDesc, {"Costs " .. itemPrice .. " arcane obols.", PST.kcolors.LEVEL_PURPLE})
-                table.insert(itemDesc, "Press Allocate to purchase.")
+                table.insert(itemDesc, {PST:getLocalizedFormat("ui_costsObols", {price = itemPrice}), PST.kcolors.LEVEL_PURPLE})
+                table.insert(itemDesc, PST:getLocalized("ui_allocPurchase"))
                 tScreen:DrawNodeBox(tmpItem.name, itemDesc)
             end
         -- Weapon Compendium submenu, hovered weapon
@@ -612,11 +625,11 @@ function descriptionBoxesModule:Render(tScreen)
             local tmpItem = wepCompendiumSubmenu.hoveredID
             if tmpItem then
                 if not wepCompendiumSubmenu.selectedType then
-                    local itemDesc = {"Press Allocate to view a list of available ancient weapons for this type."}
-                    tScreen:DrawNodeBox("Weapon Type: " .. PST.astralWepData[tmpItem].name, itemDesc)
+                    local itemDesc = {PST:getLocalized("ui_wepCompendiumKey")}
+                    tScreen:DrawNodeBox(PST:getLocalized("ui_wepType") ": " .. PST.astralWepData[tmpItem].name, itemDesc)
                 else
                     local itemDesc = PST:getAstralWepDesc(tmpItem, true)
-                    tScreen:DrawNodeBox("Ancient " .. tmpItem.typeName .. ": " .. tmpItem.name, itemDesc)
+                    tScreen:DrawNodeBox(PST:getLocalized("ui_ancWep") .. ": " .. tmpItem.name, itemDesc)
                 end
             end
         end

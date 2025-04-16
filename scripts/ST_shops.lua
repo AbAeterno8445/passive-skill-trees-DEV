@@ -24,7 +24,7 @@ function PST:onShopPurchase(pickup, player, spent)
                         tmpColor = Color(1, 0.4, 0.4, 1)
                     end
                 end
-                PST:createFloatTextFX("Stolen!", Vector.Zero, tmpColor, 0.13, 100, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_stolen"), Vector.Zero, tmpColor, 0.13, 100, true)
             end
         end
 

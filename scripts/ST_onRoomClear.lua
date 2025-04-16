@@ -138,7 +138,7 @@ function PST:onRoomClear(RNG)
     -- Death's Trial nodes (T. Lost's tree)
     if PST:getTreeSnapshotMod("deathTrialActive", false) then
         PST:getLevel():GetCurrentRoomDesc().Flags = PST:getLevel():GetCurrentRoomDesc().Flags &~ RoomDescriptor.FLAG_CURSED_MIST
-        PST:createFloatTextFX("Death's Trial Complete!", Vector.Zero, Color(), 0.13, 90, true)
+        PST:createFloatTextFX(PST:getLocalized("ftxt_deathTrialComp"), Vector.Zero, Color(), 0.13, 90, true)
         PST:addModifiers({ deathTrialActive = false }, true)
     end
 
@@ -160,7 +160,7 @@ function PST:onRoomClear(RNG)
                     respecChance = respecChance - 100
                 end
                 if tmpRespecs > 0 then
-                    PST:createFloatTextFX("+" .. tmpRespecs .. " Respec(s)", Vector.Zero, Color(), 0.12, 90, true)
+                    PST:createFloatTextFX(PST:getLocalizedFormatStr("ftxt_respecGain", {respecs = tmpRespecs}), Vector.Zero, Color(), 0.12, 90, true)
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP)
                     PST.modData.respecPoints = PST.modData.respecPoints + tmpRespecs
                 end
@@ -180,7 +180,7 @@ function PST:onRoomClear(RNG)
 
             -- Ancient starcursed jewel: Sanguinis
             if PST:SC_getSnapshotMod("sanguinis", false) and not PST:getTreeSnapshotMod("SC_sanguinisTookDmg", false) then
-                PST:createFloatTextFX("-- Sanguinis --", Vector.Zero, Color(0.1, 0.85, 0.1, 1), 0.12, 100, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_sanguinisProc"), Vector.Zero, Color(0.1, 0.85, 0.1, 1), 0.12, 100, true)
                 player:AddBrokenHearts(-1)
             end
 
@@ -208,7 +208,7 @@ function PST:onRoomClear(RNG)
                 tmpMod = PST:getTreeSnapshotMod("ephBondBossHitless", 0)
                 if tmpMod > 0 and 100 * math.random() < tmpMod then
                     PST:addModifiers({ ephemeralBond = 1, gainedTempEphBond = 1 }, true)
-                    PST:createFloatTextFX("+1 Ephemeral Bond", Vector.Zero, Color(0.8, 0.8, 1, 1), 0.12, 12, true)
+                    PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_ephBond"), Vector.Zero, Color(0.8, 0.8, 1, 1), 0.12, 12, true)
                 end
 
                 -- Expedition objective: clear boss rooms without taking damage
@@ -253,7 +253,7 @@ function PST:onRoomClear(RNG)
                         if PST:arrHasValue(PST.pennyTrinkets, tmpTrinket) then
                             player:TryRemoveTrinket(tmpTrinket)
                             player:AddSmeltedTrinket(tmpTrinket)
-                            PST:createFloatTextFX("Smelted penny trinket", Vector.Zero, Color(1, 1, 0.7, 1), 0.12, 90, true)
+                            PST:createFloatTextFX(PST:getLocalized("ftxt_smeltedPennyT"), Vector.Zero, Color(1, 1, 0.7, 1), 0.12, 90, true)
 
                             local tmpPos = PST:getRoom():FindFreePickupSpawnPosition(player.Position, 40)
                             Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_PENNY, Random() + 1)
@@ -277,7 +277,7 @@ function PST:onRoomClear(RNG)
                 if not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE) then
                     player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_MANTLE)
                     player:GetEffects():AddNullEffect(NullItemID.ID_HOLY_CARD)
-                    PST:createFloatTextFX("Deferred Aegis", Vector.Zero, Color(), 0.12, 70, true)
+                    PST:createFloatTextFX(PST:getLocalized("ftxt_deferAegis"), Vector.Zero, Color(), 0.12, 70, true)
                 end
             end
 
@@ -291,7 +291,7 @@ function PST:onRoomClear(RNG)
             tmpMod = PST:getTreeSnapshotMod("stairwayBoon", 0)
             if tmpMod > 0 and not player:HasCollectible(CollectibleType.COLLECTIBLE_STAIRWAY) and 100 * math.random() < tmpMod then
                 player:AddCollectible(CollectibleType.COLLECTIBLE_STAIRWAY)
-                PST:createFloatTextFX("Stairway Boon", Vector.Zero, Color(1, 1, 0.6, 1), 0.12, 90, true)
+                PST:createFloatTextFX(PST:getLocalized("ftxt_stairwayBoon"), Vector.Zero, Color(1, 1, 0.6, 1), 0.12, 90, true)
             end
 
             -- Sidereal Caches on boss room clear

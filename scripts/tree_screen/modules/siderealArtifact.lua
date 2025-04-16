@@ -731,7 +731,7 @@ function PST:triggerMeridion(meridionName)
                     tmpRoom.DisplayFlags = 1 << 2
                     level:UpdateVisibility()
                     if PST.config.sideArtiText then
-                        PST:createFloatTextFX("The Blood Moon Reveals...", Vector(0, 8), PST:RGBColor(200, 55, 55), 0.12, 180, true)
+                        PST:createFloatTextFX(PST:getLocalized("ftxt_bloodMoonRev"), Vector(0, 8), PST:RGBColor(200, 55, 55), 0.12, 180, true)
                     end
                     break
                 end
