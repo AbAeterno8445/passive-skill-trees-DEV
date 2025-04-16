@@ -109,7 +109,7 @@ function PST:SC_getJewelDescription(jewel)
             if jewel.converted ~= nil then
                 local bossEnt = EntityConfig.GetEntity(jewel.converted, jewel.convertedVariant or 0, 0)
                 if bossEnt then
-                    local bossName = Isaac.GetLocalizedString("Entities", bossEnt:GetName(), "en")
+                    local bossName = Isaac.GetLocalizedString("Entities", bossEnt:GetName(), Options.Language)
                     if bossName == "StringTable::InvalidKey" then
                         bossName = bossEnt:GetName()
                     end

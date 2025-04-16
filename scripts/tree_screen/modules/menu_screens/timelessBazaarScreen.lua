@@ -370,7 +370,7 @@ function timelessBazaarScreen:Render(tScreen)
         local tmpItem = charData.bazaarSelection[self.selectedItem]
         local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
         if itemCfg then
-            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, Options.Language)
             if itemName == "StringTable::InvalidKey" then
                 itemName = itemCfg.Name
             end
