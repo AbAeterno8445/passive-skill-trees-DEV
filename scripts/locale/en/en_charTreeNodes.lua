@@ -494,7 +494,7 @@ return {
     },
     ["node_starblessed_name"] = "Starblessed",
     ["node_starblessed"] = {
-        "Start with an additional random item from the treasure room pool.",
+        "Start with an additional random passive item from the treasure room pool.",
         "First floor's boss drops an additional XVII - The Stars card."
     },
     ["node_edenhairdo_name"] = "Eden Hairdo",
