@@ -75,7 +75,7 @@ function PST:SC_getJewelDescription(jewel)
         if jewel.type ~= PSTStarcursedType.ANCIENT then
             for modName, modData in pairs(jewel.mods) do
                 if PST.SCMods[jewel.type] and PST.SCMods[jewel.type][modName] then
-                    local modDescription = PST.SCMods[jewel.type][modName].description
+                    local modDescription = PST:getLocalized("jewel_" .. modName)
                     if modDescription then
                         table.insert(tmpDescription, {
                             string.format(modDescription, table.unpack(modData.rolls)), PST.kcolors.TEAL2
@@ -98,12 +98,14 @@ function PST:SC_getJewelDescription(jewel)
                 tmpAncient = jewel
             end
             if tmpAncient.description then
-                local targetDesc = tmpAncient.description
+                local targetDesc = PST:getLocalized("jewel_" .. jewel.name .. "_desc")
                 if jewel.name == "Cause Converter" and jewel.status == "converted" then
-                    targetDesc = tmpAncient.descriptionConverted
+                    targetDesc = PST:getLocalized("jewel_" .. jewel.name .. "_descConv")
                 end
-                for _, tmpLine in ipairs(targetDesc) do
-                    table.insert(tmpDescription, {tmpLine, PST.kcolors.LIGHTORANGE1})
+                if type(targetDesc) == "table" then
+                    for _, tmpLine in ipairs(targetDesc) do
+                        table.insert(tmpDescription, {tmpLine, PST.kcolors.LIGHTORANGE1})
+                    end
                 end
             end
             if jewel.converted ~= nil then
@@ -113,7 +115,7 @@ function PST:SC_getJewelDescription(jewel)
                     if bossName == "StringTable::InvalidKey" then
                         bossName = bossEnt:GetName()
                     end
-                    table.insert(tmpDescription, {"Converted boss: " .. bossName, PST.kcolors.LIGHTYELLOW1})
+                    table.insert(tmpDescription, {PST:getLocalized("ui_convBoss") .. ": " .. bossName, PST.kcolors.LIGHTYELLOW1})
                 end
             end
             if tmpAncient.rewards then
@@ -122,17 +124,18 @@ function PST:SC_getJewelDescription(jewel)
                         local tmpRewardModVal = tmpAncient.rewards[tmpRewardMod]
                         if PST.SCMods[tmpRewardMod] ~= nil and tmpRewardModVal then
                             local tmpColor = PST.kcolors.SKY_BLUE
+                            local localeDesc = PST:getLocalized("jewel_" .. tmpRewardMod)
                             local descStr
                             if type(tmpRewardModVal) == "table" then
                                 ---@diagnostic disable-next-line: param-type-mismatch
-                                descStr = string.format(PST.SCMods[tmpRewardMod], table.unpack(tmpRewardModVal))
+                                descStr = string.format(localeDesc, table.unpack(tmpRewardModVal))
                             else
                                 ---@diagnostic disable-next-line: param-type-mismatch
-                                descStr = string.format(PST.SCMods[tmpRewardMod], tmpRewardModVal)
+                                descStr = string.format(localeDesc, tmpRewardModVal)
                             end
                             if tmpAncient.name then
                                 if PST.modData.ancientRewards[tmpAncient.name] and PST.modData.ancientRewards[tmpAncient.name][tmpRewardMod] then
-                                    descStr = descStr .. " (Done)"
+                                    descStr = descStr .. " (" .. PST:getLocalized("ui_done") .. ")"
                                     tmpColor = PST.kcolors.LIGHTYELLOW1
                                 end
                             end
@@ -142,14 +145,14 @@ function PST:SC_getJewelDescription(jewel)
                 end
             end
             if tmpAncient.noGreed then
-                table.insert(tmpDescription, {"This jewel can't be used in Greed Mode.", PST.kcolors.YELLOW1})
+                table.insert(tmpDescription, {PST:getLocalized("jewel_noGreedWarn"), PST.kcolors.YELLOW1})
             end
         end
         if jewel.starmight ~= 0 then
-            table.insert(tmpDescription, {"Starmight: " .. tostring(jewel.starmight), PST.kcolors.STAR_ORANGE})
+            table.insert(tmpDescription, {PST:getLocalized("ui_starmight") .. ": " .. tostring(jewel.starmight), PST.kcolors.STAR_ORANGE})
         end
     else
-        table.insert(tmpDescription, {"Unidentified. Press E to identify and reveal modifiers.", PST.kcolors.RED2})
+        table.insert(tmpDescription, {PST:getLocalized("jewel_unidPrompt"), PST.kcolors.RED2})
     end
     return tmpDescription
 end
@@ -325,7 +328,7 @@ function PST:SC_identifyJewel(jewel)
             end
         else
             jewel.name = "Faded Starpiece"
-            jewel.description = {"This jewel's energy has almost faded out..."}
+            jewel.description = {PST:getLocalized("jewel_fadedStarpiece_desc")}
             jewel.fading = 3
             jewel.starmight = 20 + math.random(41) - 1
             jewel.spriteFrame = 10

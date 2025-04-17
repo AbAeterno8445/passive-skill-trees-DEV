@@ -98,7 +98,8 @@ local descriptionBoxesModule = {
                     tmpDescription = PST:SC_getJewelDescription(socketedJewel)
                     table.insert(tmpDescription, PST:getLocalized("ui_jewels_respecUnsocket"))
                     if socketedJewel.name then
-                        descName = descName .. " - " .. socketedJewel.name
+                        local tmpName = PST:getLocalized("jewel_" .. socketedJewel.name)
+                        descName = descName .. " - " .. tmpName
                         setName = true
                     end
                 end

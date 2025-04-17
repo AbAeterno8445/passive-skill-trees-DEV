@@ -84,6 +84,9 @@ return {
     ["ui_reward"] = "Reward",
     ["ui_gain"] = "Gain",
     ["ui_globalSkillPoints"] = "Global Skill Point(s)",
+    ["ui_done"] = "Done",
+
+    ["ui_convBoss"] = "Converted boss",
 
     ["ui_crackedKey"] = "Cracked Key",
     ["ui_runeShard"] = "Rune Shard",
