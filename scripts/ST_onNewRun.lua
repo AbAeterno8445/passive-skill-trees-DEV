@@ -614,7 +614,16 @@ function PST:onNewRun(isContinued)
     -- Starblessed node (Eden's tree)
     if PST:getTreeSnapshotMod("starblessed", false) then
         local tmpItem = itemPool:GetCollectible(ItemPoolType.POOL_TREASURE)
-        player:AddCollectible(tmpItem)
+        local tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
+        local failsafe = 0
+        while (not tmpItemCfg or (tmpItemCfg and tmpItemCfg.Type ~= ItemType.ITEM_PASSIVE)) and failsafe < 500 do
+            tmpItem = itemPool:GetCollectible(ItemPoolType.POOL_TREASURE)
+            tmpItemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
+            failsafe = failsafe + 1
+        end
+        if failsafe < 500 then
+            player:AddCollectible(tmpItem)
+        end
     end
 
     -- Mod: chance to start with an additional coin/key/bomb
