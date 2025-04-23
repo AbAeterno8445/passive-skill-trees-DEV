@@ -6,6 +6,9 @@ function PST:getChangelogList()
         "v1.3.1",
         "- Added compatibility for items/entities from the Foks' Booster Pack mod, and Reverie: MGO's latest update.",
         "- Eden's \"Starblessed\" node now only rolls passive items.",
+        "- T. Apollyon's \"Great Devourer\" no longer guarantees electrified locust tears while \"Electrified Swarm\" is allocated.",
+        "- T. Apollyon's locust tears no longer gain spectral or piercing if the tear is electrified.",
+        "- T. Apollyon's locust tears are now fired once towards the closest enemy instead of all nearby enemies to the locust.",
         "- Uber expedition runs now gain an implicit +20% xp gain and +25% obols found.",
         "- Made the reduction applied to monster HP modifiers in earlier floors more significant:",
         "    - First floor: 30% effective (from 50%)",
@@ -14,7 +17,7 @@ function PST:getChangelogList()
         "    - Fourth floor: 90% effective (from 100%)",
         "- Monsters with 1 base HP or less no longer receive HP modifiers.",
         "- Fixed early monster HP mod effectiveness reduction not applying to the first floor's alt floors.",
-        "- Fixed monster HP initialization potentially adding more HP continuously if it was ran repeatedly.",
+        "- Fixed monster HP initialization potentially adding more HP continuously if it was somehow ran repeatedly.",
         "",
 
         "v1.3.0",
