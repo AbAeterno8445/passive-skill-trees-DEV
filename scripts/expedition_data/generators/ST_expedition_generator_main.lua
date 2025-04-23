@@ -14,7 +14,7 @@ function PST:getExpeditionImplicits(depth)
         end
 
         -- Boss HP
-        implicits.expedImp_bossHP = math.min(70, 10 + (depth - 2) * 3)
+        implicits.expedImp_bossHP = math.min(60, 10 + (depth - 2) * 3)
         if depth > 15 then
             implicits.expedImp_bossHP = math.min(120, implicits.expedImp_bossHP + math.floor((depth - 15) / 2))
         end
