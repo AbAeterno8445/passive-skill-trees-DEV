@@ -1045,6 +1045,9 @@ function PST:initModCompat()
 	if ReverieMGO and not initMods.reverieMGO then
         initMods.reverieMGO = true
 
+        -- Baby Familiars
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Sister Shion"))
+
 		-- Dice items
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("D58"))
 
@@ -1061,6 +1064,10 @@ function PST:initModCompat()
                 end
             end
         end
+
+        -- Song of the Few Familiars
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Power Point"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Sister Shion"))
 
 		-- Beggars
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Shion Beggar"))
@@ -2345,6 +2352,29 @@ function PST:initModCompat()
         -- Coin Machines
         table.insert(PST.coinMachines, wakaba.Enums.Slots.CRYSTAL_RESTOCK)
     end
+
+    -- Foks' Booster Pack
+    if _FOKS_BOOSTER_PACK_MOD then
+        -- Poop items
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Appetizer"))
+
+        -- HP Ups
+        local tmpHPUpItems = {
+            {"Appetizer", 1}, {"Dead Orange", 1}
+        }
+        for _, tmpItem in ipairs(tmpHPUpItems) do
+            local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
+            if tmpItemID ~= -1 then
+                PST.heartUpItems[tmpItemID] = tmpItem[2]
+            end
+        end
+
+        -- Song of the Few
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Asherah Pole"))
+
+        -- Grand Consonance
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Asherah Pole"))
+    end
 end
 
 -- Add mod items to the 'blue' item pool
@@ -2457,6 +2487,7 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Positive Singyoku"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Fantasy Talisman"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Sing-Along Buddy"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Sister Shion"))
 	end
 
 	-- Andromeda blue items
@@ -2623,5 +2654,10 @@ function PST:initModBlueItems()
         table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.WAKABAS_BLESSING)
         table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.VINTAGE_THREAT)
         table.insert(PST.blueItemPool, wakaba.Enums.Collectibles.WAKABA_DUALITY)
+    end
+
+    -- Foks' Booster Pack blue items
+    if _FOKS_BOOSTER_PACK_MOD then
+        table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Plastic Brick"))
     end
 end

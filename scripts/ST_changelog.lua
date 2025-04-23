@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.3.1",
+        "- Added compatibility for items/entities from the Foks' Booster Pack mod, and Reverie: MGO's latest update.",
         "- Eden's \"Starblessed\" node now only rolls passive items.",
         "- Uber expedition runs now gain an implicit +20% xp gain and +25% obols found.",
         "- Made the reduction applied to monster HP modifiers in earlier floors more significant:",
