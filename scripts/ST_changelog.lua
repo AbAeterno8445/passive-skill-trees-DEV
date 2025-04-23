@@ -5,7 +5,14 @@ function PST:getChangelogList()
 
         "v1.3.1",
         "- Eden's \"Starblessed\" node now only rolls passive items.",
-        "- Uber expedition runs now gain an implicit +20% xp gain and +35% obols found.",
+        "- Uber expedition runs now gain an implicit +20% xp gain and +25% obols found.",
+        "- Made the reduction applied to monster HP modifiers in earlier floors more significant:",
+        "    - First floor: 30% effective (from 50%)",
+        "    - Second floor: 50% effective (from 75%)",
+        "    - Third floor: 75% effective (from 100%)",
+        "    - Fourth floor: 90% effective (from 100%)",
+        "- Monsters with 1 base HP or less no longer receive HP modifiers.",
+        "- Fixed early monster HP mod effectiveness reduction not applying to the first floor's alt floors.",
         "- Fixed monster HP initialization potentially adding more HP continuously if it was ran repeatedly.",
         "",
 

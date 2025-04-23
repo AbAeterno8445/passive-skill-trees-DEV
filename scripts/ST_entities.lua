@@ -147,16 +147,20 @@ function PST:onNPCUpdate(npc)
             local noHPMods = PST:entityIsHPModBlacklisted(npc)
 
             ---- HP modifiers ----
-            if not noHPMods then
+            if not noHPMods and npc.MaxHitPoints > 1 then
                 local tmpHPMod = 0
                 local tmpHPMult = 1
 
                 local extraHPMult = 1
                 -- Reduce HP boosts on the first floors
-                if PST:isFirstOrigStage() then
-                    extraHPMult = 0.5
+                if PST:getLevel():GetStage() == 1 then
+                    extraHPMult = 0.3
                 elseif PST:getLevel():GetStage() == 2 then
+                    extraHPMult = 0.5
+                elseif PST:getLevel():GetStage() == 3 then
                     extraHPMult = 0.75
+                elseif PST:getLevel():GetStage() == 4 then
+                    extraHPMult = 0.9
                 end
 
                 -- Larry Jr nerf
