@@ -141,6 +141,7 @@ function PST:onNPCUpdate(npc)
             end
         end
         if not npcData.PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
+            EntityConfig.GetEntity(EntityType.ENTITY_HUSH, 0, 0):GetBaseHP()
             npcData.PST_mobInit = true
 
             local noHPMods = PST:entityIsHPModBlacklisted(npc)
@@ -197,8 +198,15 @@ function PST:onNPCUpdate(npc)
                     tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
                 end
 
-                npc.MaxHitPoints = (npc.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
-                npc.HitPoints = (npc.HitPoints + tmpHPMod * extraHPMult) * tmpHPMult
+                local tmpBaseHP = npc.MaxHitPoints
+                local entityCfg = EntityConfig.GetEntity(npc.Type, npc.Variant, npc.SubType)
+                if entityCfg then
+                    tmpBaseHP = entityCfg:GetBaseHP()
+                end
+                local tmpHPPerc = math.min(1, npc.HitPoints / npc.MaxHitPoints)
+
+                npc.MaxHitPoints = (tmpBaseHP + tmpHPMod * extraHPMult) * tmpHPMult
+                npc.HitPoints = npc.MaxHitPoints * tmpHPPerc
 
                 -- Boon: bosses start with % missing HP
                 if npc:IsBoss() then
