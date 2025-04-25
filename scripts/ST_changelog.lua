@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.2",
+        "- Added toggle key hint to the 'Tree effects disabled' warning.",
+        "",
+
         "v1.3.1",
         "- Added compatibility for items/entities from the Foks' Booster Pack mod, and Reverie: MGO's latest update.",
         "- Eden's \"Starblessed\" node now only rolls passive items.",

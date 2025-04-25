@@ -125,6 +125,8 @@ function PST.treeScreen:Render()
         -- Tree disabled warning
         if PST.modData.treeDisabled then
             Isaac.RenderText("Tree effects disabled", tmpX, tmpY, 1, 0.4, 0.4, 1)
+            tmpY = tmpY + 14
+            PST.miniFont:DrawString("(Shift + Q to re-enable)", tmpX, tmpY, PST.kcolors.RED1)
             tmpY = tmpY + 16
         elseif PST.modData.expedEnabled and ((not PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.expedSelDepth)) or
         (PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.uberExpedSelDepth, true))) then
