@@ -141,21 +141,26 @@ function PST:onNPCUpdate(npc)
             end
         end
         if not npcData.PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
+            EntityConfig.GetEntity(EntityType.ENTITY_HUSH, 0, 0):GetBaseHP()
             npcData.PST_mobInit = true
 
             local noHPMods = PST:entityIsHPModBlacklisted(npc)
 
             ---- HP modifiers ----
-            if not noHPMods then
+            if not noHPMods and npc.MaxHitPoints > 1 then
                 local tmpHPMod = 0
                 local tmpHPMult = 1
 
                 local extraHPMult = 1
                 -- Reduce HP boosts on the first floors
-                if PST:isFirstOrigStage() then
-                    extraHPMult = 0.5
+                if PST:getLevel():GetStage() == 1 then
+                    extraHPMult = 0.3
                 elseif PST:getLevel():GetStage() == 2 then
+                    extraHPMult = 0.5
+                elseif PST:getLevel():GetStage() == 3 then
                     extraHPMult = 0.75
+                elseif PST:getLevel():GetStage() == 4 then
+                    extraHPMult = 0.9
                 end
 
                 -- Larry Jr nerf
@@ -197,8 +202,15 @@ function PST:onNPCUpdate(npc)
                     tmpHPMult = tmpHPMult + (tmpMod * extraHPMult) / 100
                 end
 
-                npc.MaxHitPoints = (npc.MaxHitPoints + tmpHPMod * extraHPMult) * tmpHPMult
-                npc.HitPoints = (npc.HitPoints + tmpHPMod * extraHPMult) * tmpHPMult
+                local tmpBaseHP = npc.MaxHitPoints
+                local entityCfg = EntityConfig.GetEntity(npc.Type, npc.Variant, npc.SubType)
+                if entityCfg then
+                    tmpBaseHP = entityCfg:GetBaseHP()
+                end
+                local tmpHPPerc = math.min(1, npc.HitPoints / npc.MaxHitPoints)
+
+                npc.MaxHitPoints = (tmpBaseHP + tmpHPMod * extraHPMult) * tmpHPMult
+                npc.HitPoints = npc.MaxHitPoints * tmpHPPerc
 
                 -- Boon: bosses start with % missing HP
                 if npc:IsBoss() then

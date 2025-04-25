@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v1.3.1"
+PST.modVersion = "v1.3.2"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -1752,9 +1752,9 @@ function PST:resetMods()
 		-- Deep-Space nodes
 		finalBossGSP = 0,
 		expedChoiceAdd = 0,
-		obolsFoundUber = 0,
+		obolsFoundUber = 25,
 		obolsFoundEntropy = 0,
-		xpgainUber = 0,
+		xpgainUber = 20,
 		orderGain = 0,
 		entropyGainRed = 0,
 		entropicTradeoff = false,

@@ -3423,8 +3423,7 @@ PST.treeModDescriptions = {
             "    locust, up to a total 200%%",
             "    Double extension cord beam damage if it targets a locust",
             "    Triple your total chance for locusts to fire tears, and these inherit an additional 40%%",
-            "    of your damage",
-            "    If Electrified Swarm is allocated, locust tears are always electrified"
+            "    of your damage"
         },
         category = "charTree", sort = 3653
     },

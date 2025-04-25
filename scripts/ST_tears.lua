@@ -18,7 +18,7 @@ function PST:postFireTear(tear)
                 local nearbyEnemies = Isaac.FindInRadius(tmpLocust.Position, 120, EntityPartition.ENEMY)
                 if #nearbyEnemies > 0 then
                     for _, tmpEnemy in ipairs(nearbyEnemies) do
-                        if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() then
+                        if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
                             local tearVel = (tmpEnemy.Position - tmpLocust.Position):Normalized() * (7 * PST:getPlayer().ShotSpeed)
                             local tmpVariant = TearVariant.BLOOD
 
@@ -35,9 +35,6 @@ function PST:postFireTear(tear)
                             -- Electrified Swarm node (T. Apollyon's tree)
                             if PST:getTreeSnapshotMod("electrifiedSwarm", false) then
                                 local tmpChance = 33
-                                if PST:getTreeSnapshotMod("greatDevourer", false) then
-                                    tmpChance = 100
-                                end
                                 if 100 * math.random() < tmpChance then
                                     newTear:ToTear():AddTearFlags(TearFlags.TEAR_JACOBS)
                                 end
@@ -45,7 +42,7 @@ function PST:postFireTear(tear)
 
                             -- Mod: % chance for locusts tears to be spectral and piercing
                             local tmpSpectral = PST:getTreeSnapshotMod("locustTearSpectral", 0)
-                            if tmpSpectral > 0 and 100 * math.random() < tmpSpectral then
+                            if tmpSpectral > 0 and not newTear:ToTear():HasTearFlags(TearFlags.TEAR_JACOBS) and 100 * math.random() < tmpSpectral then
                                 newTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL)
                             end
 
@@ -54,6 +51,7 @@ function PST:postFireTear(tear)
                             else
                                 newTear.SpriteScale = tmpLocust.SpriteScale - Vector(0.15, 0.15)
                             end
+                            break
                         end
                     end
                 end
