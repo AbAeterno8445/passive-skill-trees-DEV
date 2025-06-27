@@ -14,7 +14,7 @@ menuTabberScreen.BGSprite:Play("Pixel", true)
 
 local targetScreens = {
     {
-        name = "Star Tree",
+        name = PST:getLocalized("ui_starTree"),
         nodeFrame = 319,
         enabledFunc = function()
             return PST:isNodeNameAllocated("global", "Star Tree")
@@ -25,7 +25,7 @@ local targetScreens = {
         end
     },
     {
-        name = "Arcane Astrolabe",
+        name = PST:getLocalized("ui_arcaneAstrolabe"),
         nodeFrame = 757,
         enabledFunc = function()
             return PST:isNodeNameAllocated("starTree" ,"Arcane Astrolabe")
@@ -36,7 +36,7 @@ local targetScreens = {
         end
     },
     {
-        name = "Sidereal Tree",
+        name = PST:getLocalized("ui_siderealTree"),
         nodeFrame = 758,
         enabledFunc = function()
             return PST:isNodeNameAllocated("starTree", "Sidereal Tree")
@@ -48,7 +48,7 @@ local targetScreens = {
         end
     },
     {
-        name = "Astral Forge",
+        name = PST:getLocalized("ui_astralForge"),
         nodeFrame = 761,
         enabledFunc = function()
             return PST:isNodeNameAllocated("sidereal", "Astral Forge")
@@ -59,7 +59,7 @@ local targetScreens = {
         end
     },
     {
-        name = "Ancient Weapon Bounties",
+        name = PST:getLocalized("ui_ancwepBounties"),
         nodeFrame = 845,
         enabledFunc = function()
             return PST:isNodeNameAllocated("sidereal", "Ancient Weapon Bounties")
@@ -70,7 +70,7 @@ local targetScreens = {
         end
     },
     {
-        name = "Timeless Bazaar",
+        name = PST:getLocalized("ui_timelessBazaar"),
         nodeFrame = 792,
         enabledFunc = function()
             return PST:isNodeNameAllocated("sidereal", "Timeless Bazaar")
@@ -120,7 +120,7 @@ end
 
 ---@param tScreen PST.treeScreen
 function menuTabberScreen:Render(tScreen)
-    local tmpStr = "Select a tree/screen to switch to:"
+    local tmpStr = PST:getLocalized("ui_selScreenToSwitch") .. ":"
     local tmpWidth = PST.miniFont:GetStringWidth(tmpStr) + 10
     local tmpHeight = 21 + #targetScreens * 34
 
@@ -169,7 +169,7 @@ function menuTabberScreen:Render(tScreen)
         end
         PST.miniFont:DrawString(tmpNodeTxt, tmpDrawX + 40, nodeY - 7, tmpColor)
         if not isEnabled then
-            PST.miniFont:DrawStringScaled("Locked", tmpDrawX + 40, nodeY + 5, 0.5, 0.5, PST.kcolors.RED1)
+            PST.miniFont:DrawStringScaled(PST:getLocalized("ui_locked"), tmpDrawX + 40, nodeY + 5, 0.5, 0.5, PST.kcolors.RED1)
         end
 
         tmpDrawn = tmpDrawn + 1

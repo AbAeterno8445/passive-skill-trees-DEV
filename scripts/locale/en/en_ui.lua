@@ -5,9 +5,16 @@ return {
     ["ui_cosmicR_EtoPick"] = "(E to pick character)",
     ["ui_cosmicR_unlockChar"] = "Unlock {{charName}} to enable this option.",
 
+    ["ui_starTree"] = "Star Tree",
     ["ui_starTree_EtoView"] = "(E to view Star Tree)",
     ["ui_starTree_levelReqWarn"] = "Reach level {{levelReq}} with at least one character to unlock.",
     ["ui_starmight"] = "Starmight",
+
+    ["ui_arcaneAstrolabe"] = "Arcane Astrolabe",
+    ["ui_siderealTree"] = "Sidereal Tree",
+    ["ui_timelessBazaar"] = "Timeless Bazaar",
+    ["ui_selScreenToSwitch"] = "Select a tree/screen to switch to",
+    ["ui_locked"] = "Locked",
 
     ["ui_goldenTrinketsUnlocked"] = "Golden trinkets are unlocked.",
     ["ui_goldenTrinketsNotUnlocked"] = "Golden trinkets are not unlocked.",
