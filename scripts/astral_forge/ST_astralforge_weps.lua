@@ -418,7 +418,7 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     -- Ancient name
     if weaponData.ancientID ~= nil and wepTypeData.ancients[weaponData.ancientID] then
-        local tmpName = wepTypeData.ancients[weaponData.ancientID].name
+        local tmpName = PST:getLocalized("aforge_ancname_" .. wepTypeData.ancients[weaponData.ancientID].name)
         if weaponData.starblessed then
             tmpName = tmpName .. " *"
         end
@@ -427,15 +427,15 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     -- Rarity + type
     local tmpColor = PST.kcolors.WHITE
-    local tmpRarity = "Normal"
+    local tmpRarity = PST:getLocalized("ui_Normal")
     if weaponData.rarity == PSTAstralWepRarity.MAGIC then
         tmpColor = PST.kcolors.LIGHTBLUE1
-        tmpRarity = "Magic"
+        tmpRarity = PST:getLocalized("ui_Magic")
     elseif weaponData.rarity == PSTAstralWepRarity.ANCIENT then
         tmpColor = PST.kcolors.ANCIENT_ORANGE
-        tmpRarity = "Ancient"
+        tmpRarity = PST:getLocalized("ui_Ancient")
     end
-    local tmpType = wepTypeData.name
+    local tmpType = PST:getLocalized("aforge_wepname_" .. wepTypeData.name)
     table.insert(tmpDescription, {tmpRarity .. " " .. tmpType, tmpColor})
 
     local function PST_tmpShowImplicit(wepType, implicitRolls)
@@ -468,7 +468,7 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
     local modDisplayed = false
     -- Multi-implicit mod
     if weaponData.multiImplicits and #weaponData.multiImplicits > 0 then
-        table.insert(tmpDescription, {"---- Implicits ----", PST.kcolors.GRAY1})
+        table.insert(tmpDescription, {"---- " .. PST:getLocalized("ui_Implicits") .. " ----", PST.kcolors.GRAY1})
 
         for _, tmpMod in ipairs(weaponData.multiImplicits) do
             if tmpMod.type and tmpMod.rolls then PST_tmpShowImplicit(tmpMod.type, tmpMod.rolls) end
@@ -476,7 +476,7 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
         modDisplayed = true
     -- Implicit modifier
     elseif weaponData.implicitMod and not wepTypeData.implicitMod.noAncient or (wepTypeData.implicitMod.noAncient and weaponData.rarity ~= PSTAstralWepRarity.ANCIENT) then
-        table.insert(tmpDescription, {"---- Implicit ----", PST.kcolors.GRAY1})
+        table.insert(tmpDescription, {"---- " .. PST:getLocalized("ui_Implicit") .. " ----", PST.kcolors.GRAY1})
 
         PST_tmpShowImplicit(weaponData.type, weaponData.implicitMod)
         modDisplayed = true
@@ -491,7 +491,6 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
             tmpColor = PST.kcolors.LIGHTBLUE1
             if tmpModData and tmpModData.description then
                 local modDesc = tmpModData.description
-
                 local tmpRollList = {}
                 if not tmpModData.ancient then
                     for i, tmpRoll in ipairs(tmpMod.rolls) do
@@ -521,6 +520,9 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
                         end
                     end
                 end
+
+                local modDescLocale = PST:getLocalizedFormat("aforge_mod_desc_" .. tmpMod.name, tmpRollList)
+                if modDescLocale then modDesc = modDescLocale end
 
                 if type(modDesc) == "table" then
                     for _, tmpLine in ipairs(modDesc) do
@@ -553,6 +555,10 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
                         end
                         tmpRollList[tgtRoll] = tostring(tmpMathFunc(tmpModData.maxRolls[i], tmpRoll + tmpModData.upgIncrements[i] * tmpMod[1]))
                     end
+
+                    local modDescLocale = PST:getLocalizedFormat("aforge_mod_desc_" .. tmpTargetMod, tmpRollList)
+                    if modDescLocale then modDesc = modDescLocale end
+
                     if type(modDesc) == "table" then
                         for _, tmpLine in ipairs(modDesc) do
                             table.insert(tmpDescription, {PST:formatString(tmpLine, tmpRollList), PST.kcolors.PURPLE1})
@@ -571,12 +577,12 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
 
     -- Honing level
     if weaponData.honing and weaponData.honing > 0 then
-        table.insert(tmpDescription, "Honing: " .. tostring(weaponData.honing) .. "/50")
+        table.insert(tmpDescription, PST:getLocalized("ui_Honing") .. ": " .. tostring(weaponData.honing) .. "/50")
     end
 
     -- Weapon tier
     local tmpTierStr = wepTierTxt[weaponData.tier]
-    table.insert(tmpDescription, {"Tier " .. tmpTierStr, PST.kcolors["WEP_TIER_" .. tmpTierStr]})
+    table.insert(tmpDescription, {PST:getLocalized("ui_Tier") .. " " .. tmpTierStr, PST.kcolors["WEP_TIER_" .. tmpTierStr]})
 
     return tmpDescription
 end

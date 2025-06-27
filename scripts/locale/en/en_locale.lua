@@ -12,6 +12,7 @@ includeLocaleFile(include("scripts.locale.en.en_starTreeNodes"))
 includeLocaleFile(include("scripts.locale.en.en_siderealTreeNodes"))
 includeLocaleFile(include("scripts.locale.en.en_expeditions"))
 includeLocaleFile(include("scripts.locale.en.en_starcursed"))
+includeLocaleFile(include("scripts.locale.en.en_astralForge"))
 includeLocaleFile(include("scripts.locale.en.en_ui"))
 
 return englishLocale

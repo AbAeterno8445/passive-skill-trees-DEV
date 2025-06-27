@@ -27,50 +27,50 @@ local invFilters = {
 }
 local wepRarityStr = {"Normal", "Magic", "Ancient"}
 local matsData = {
-    mundaneEssence = {"Mundane Essence", PST.kcolors.WHITE},
-    sparkEssence = {"Sparkling Essence", PST.kcolors.LIGHTBLUE1},
-    ancientEssence = {"Ancient Essence", PST.kcolors.ANCIENT_ORANGE},
-    sparkStardust = {"Sparkling Stardust", PST.kcolors.LIGHTBLUE1},
-    ancientStardust = {"Ancient Stardust", PST.kcolors.ANCIENT_ORANGE},
-    starblessPrism = {"Starblessed Prism", PST.kcolors.TEAL1}
+    mundaneEssence = {PST:getLocalized("ui_mundaneEssence"), PST.kcolors.WHITE},
+    sparkEssence = {PST:getLocalized("ui_sparklingEssence"), PST.kcolors.LIGHTBLUE1},
+    ancientEssence = {PST:getLocalized("ui_ancientEssence"), PST.kcolors.ANCIENT_ORANGE},
+    sparkStardust = {PST:getLocalized("ui_sparklingStardust"), PST.kcolors.LIGHTBLUE1},
+    ancientStardust = {PST:getLocalized("ui_ancientStardust"), PST.kcolors.ANCIENT_ORANGE},
+    starblessPrism = {PST:getLocalized("ui_starblessedPrism"), PST.kcolors.TEAL1}
 }
 local matsOrder = {"mundaneEssence", "sparkEssence", "sparkStardust", "ancientEssence", "ancientStardust", "starblessPrism"}
 local UIMats = {
     {
         -- Mundane Essence
-        {name = "Mundane Essence", frame = 3, targetVal = "mundaneEssence", color = PST.kcolors.LIGHTGRAY1,
-        source = {"    Deconstructing normal weapons." }},
+        {name = PST:getLocalized("ui_mundaneEssence"), frame = 3, targetVal = "mundaneEssence", color = PST.kcolors.LIGHTGRAY1,
+        source = {"    " .. PST:getLocalized("ui_mundaneEssence_src") }},
         -- Sparkling Essence
-        {name = "Sparkling Essence", frame = 4, targetVal = "sparkEssence", color = PST.kcolors.LIGHTBLUE1,
-        source = {"    Deconstructing weapons with modifiers (magic/ancient)."}},
+        {name = PST:getLocalized("ui_sparklingEssence"), frame = 4, targetVal = "sparkEssence", color = PST.kcolors.LIGHTBLUE1,
+        source = {"    " .. PST:getLocalized("ui_sparklingEssence_src")}},
         -- Ancient Essence
-        {name = "Ancient Essence", frame = 5, targetVal = "ancientEssence", color = PST.kcolors.ANCIENT_ORANGE,
-        source = {"    Deconstructing ancient weapons."}},
+        {name = PST:getLocalized("ui_ancientEssence"), frame = 5, targetVal = "ancientEssence", color = PST.kcolors.ANCIENT_ORANGE,
+        source = {"    " .. PST:getLocalized("ui_ancientEssence_src")}},
     },
     {
         -- Sparkling Stardust
-        {name = "Sparkling Stardust", frame = 1, targetVal = "sparkStardust", color = PST.kcolors.LIGHTBLUE1,
-        source = {"    Killing bosses & clearing challenge rooms."}},
+        {name = PST:getLocalized("ui_sparklingStardust"), frame = 1, targetVal = "sparkStardust", color = PST.kcolors.LIGHTBLUE1,
+        source = {"    " .. PST:getLocalized("ui_sparklingStardust_src")}},
         -- Ancient Stardust
-        {name = "Ancient Stardust", frame = 2, targetVal = "ancientStardust", color = PST.kcolors.ANCIENT_ORANGE,
-        source = {"    Killing final bosses."}},
+        {name = PST:getLocalized("ui_ancientStardust"), frame = 2, targetVal = "ancientStardust", color = PST.kcolors.ANCIENT_ORANGE,
+        source = {"    " .. PST:getLocalized("ui_ancientStardust_src")}},
         -- Starblessed Prisms
-        {name = "Starblessed Prism", frame = 6, targetVal = "starblessPrism", color = PST.kcolors.TEAL1,
-        source = {"    Uber Expedition rewards."}},
+        {name = PST:getLocalized("ui_starblessedPrism"), frame = 6, targetVal = "starblessPrism", color = PST.kcolors.TEAL1,
+        source = {"    " .. PST:getLocalized("ui_starblessedPrism_src")}},
     }
 }
 local forgingButtons = {
     {
-        name = "Honing",
-        description = {"Hone the weapon, improving its implicit modifier. Each weapon can be honed up to 50 times."},
+        name = PST:getLocalized("ui_Honing"),
+        description = PST:getLocalized("ui_Honing_desc"),
         targetAction = "honing",
         actionFunc = PST.astralWepForgeHone,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BISHOP_HIT, 0.8) end,
         frame = 2
     },
     {
-        name = "Transmutation",
-        description = {"Transform this normal weapon into a magic weapon, adding 1 random modifier."},
+        name = PST:getLocalized("ui_Transmutation"),
+        description = PST:getLocalized("ui_Transmutation_desc"),
         targetAction = "transmutation",
         actionFunc = PST.astralWepForgeTransmute,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_FLASHBACK, 0.8, 2, false, 1.3) end,
@@ -78,8 +78,8 @@ local forgingButtons = {
         reqRarity = PSTAstralWepRarity.NORMAL
     },
     {
-        name = "Reroll Modifiers",
-        description = {"Reroll the weapon's modifiers. Can result in 1 or 2 modifiers."},
+        name = PST:getLocalized("ui_rerollMods"),
+        description = PST:getLocalized("ui_rerollMods_desc"),
         targetAction = "reroll",
         actionFunc = PST.astralWepForgeReroll,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BISHOP_HIT, 0.8, 2, false, 0.7) end,
@@ -87,8 +87,8 @@ local forgingButtons = {
         reqRarity = PSTAstralWepRarity.MAGIC
     },
     {
-        name = "Add Modifier",
-        description = {"Add a random modifier if the weapon only has 1."},
+        name = PST:getLocalized("ui_addMod"),
+        description = PST:getLocalized("ui_addMod_desc"),
         targetAction = "addition",
         actionFunc = PST.astralWepForgeAdd,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BULB_FLASH, 0.8) end,
@@ -96,8 +96,8 @@ local forgingButtons = {
         reqRarity = PSTAstralWepRarity.MAGIC
     },
     {
-        name = "Remove Modifier",
-        description = {"Remove a random modifier if the weapon has 2."},
+        name = PST:getLocalized("ui_removeMod"),
+        description = PST:getLocalized("ui_removeMod_desc"),
         targetAction = "removal",
         actionFunc = PST.astralWepForgeRemove,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_BULB_FLASH, 0.8, 2, false, 0.5) end,
@@ -105,8 +105,8 @@ local forgingButtons = {
         reqRarity = PSTAstralWepRarity.MAGIC
     },
     {
-        name = "Alter Modifiers",
-        description = {"Randomise the values of the random, non-implicit modifiers on this weapon."},
+        name = PST:getLocalized("ui_alterMods"),
+        description = PST:getLocalized("ui_alterMods_desc"),
         targetAction = "alteration",
         actionFunc = PST.astralWepForgeAlter,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_DEAD, 0.8, 2, false, 0.9 + 0.2 * math.random()) end,
@@ -114,24 +114,16 @@ local forgingButtons = {
         reqRarity = PSTAstralWepRarity.MAGIC
     },
     {
-        name = "Ancient Imprinting",
-        description = {
-            "Imprint a random modifier from another magic weapon into this Ancient weapon.",
-            "Target magic weapon must have more than 1 modifier.",
-            "Can only imprint 1 modifier per Ancient weapon, or 2 if Starblessed.",
-            "Imprinted modifiers can no longer be altered once applied."
-        },
-        imprintDescription = {
-            "Hover over the magic weapon you wish to imprint from in the inventory, then press Allocate to imprint.",
-            "Press Allocate on this button again to deactivate imprinting mode."
-        },
+        name = PST:getLocalized("ui_ancImprint"),
+        description = PST:getLocalized("ui_ancImprint_desc"),
+        imprintDescription = PST:getLocalized("ui_ancImprint_desc_imp"),
         targetAction = "imprinting",
         frame = 5,
         reqRarity = PSTAstralWepRarity.ANCIENT
     },
     {
-        name = "Ancient Upgrade",
-        description = {"Improve this Ancient weapon's unique modifier."},
+        name = PST:getLocalized("ui_ancUpgrade"),
+        description = PST:getLocalized("ui_ancUpgrade_desc"),
         targetAction = "ancUpgrade",
         actionFunc = PST.astralWepForgeAncUpg,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_LAZARUS_FLIP_ALIVE, 0.8, 2, false, 0.9 + 0.2 * math.random()) end,
@@ -139,11 +131,8 @@ local forgingButtons = {
         reqRarity = PSTAstralWepRarity.ANCIENT
     },
     {
-        name = "Starblessing",
-        description = {
-            "Apply a Starblessed Prism to this weapon, allowing an additional modifier to be imprinted on it.",
-            "Applicable once per ancient weapon, if not already Starblessed."
-        },
+        name = PST:getLocalized("ui_starblessing"),
+        description = PST:getLocalized("ui_starblessing_desc"),
         targetAction = "starbless",
         actionFunc = PST.astralWepForgeStarbless,
         soundFunc = function() SFXManager():Play(SoundEffect.SOUND_POWERUP3, 0.6, 2, false, 1 + 0.2 * math.random()) end,
@@ -180,9 +169,9 @@ local function astralForgeScreenRender(self, tScreen)
     local tmpX, tmpY = startX, startY
     self:DrawUIBox(tmpX, tmpY, 170, 268)
     -- Inventory title
-    local tmpTitle = "Weapon Inventory"
-    if self.deconMode then tmpTitle = tmpTitle .. " (Decon)"
-    elseif self.imprintMode then tmpTitle = tmpTitle .. " (Imprint)" end
+    local tmpTitle = PST:getLocalized("ui_wepInv")
+    if self.deconMode then tmpTitle = tmpTitle .. " (" .. PST:getLocalized("ui_decon") .. ")"
+    elseif self.imprintMode then tmpTitle = tmpTitle .. " (" .. PST:getLocalized("ui_Imprint") .. ")" end
     PST.miniFont:DrawString(tmpTitle, tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
     tmpY = tmpY + 17
 
@@ -190,7 +179,7 @@ local function astralForgeScreenRender(self, tScreen)
     local matsX = startX
     local matsY = startY - 60
     self:DrawUIBox(matsX, matsY, 170, 54)
-    PST.miniFont:DrawString("Materials", matsX + 3, matsY, PST.kcolors.FORGE_ORANGE)
+    PST.miniFont:DrawString(PST:getLocalized("ui_Materials"), matsX + 3, matsY, PST.kcolors.FORGE_ORANGE)
     matsX = matsX + 3
     matsY = matsY + 17
     local hoveredMat = nil
@@ -214,7 +203,7 @@ local function astralForgeScreenRender(self, tScreen)
     local eqWepX = startX + 176
     local eqWepY = startY - 60
     self:DrawUIBox(eqWepX, eqWepY, 170, 54)
-    tmpTitle = "Equipped Weapon (" .. PST:getCurrentCharName() .. ")"
+    tmpTitle = PST:getLocalized("ui_equippedWeapon") .. " (" .. PST:getCurrentCharName() .. ")"
     PST.miniFont:DrawString(tmpTitle, eqWepX + 3, eqWepY, PST.kcolors.FORGE_ORANGE)
 
     eqWepX = eqWepX + 19
@@ -237,11 +226,11 @@ local function astralForgeScreenRender(self, tScreen)
 
         eqWepX = eqWepX + 18
         eqWepY = eqWepY - 18
-        PST.luaminiFont:DrawString("Hover for more info.", eqWepX, eqWepY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_hoverMoreInfo"), eqWepX, eqWepY, PST.kcolors.WHITE)
         eqWepY = eqWepY + 10
-        PST.luaminiFont:DrawString("Allocate to select.", eqWepX, eqWepY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_allocToSelect"), eqWepX, eqWepY, PST.kcolors.WHITE)
         eqWepY = eqWepY + 10
-        PST.luaminiFont:DrawString("Shift + Allocate to unequip.", eqWepX, eqWepY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_shiftAllocUnequip"), eqWepX, eqWepY, PST.kcolors.WHITE)
     end
 
     -- Inventory filter buttons
@@ -313,7 +302,7 @@ local function astralForgeScreenRender(self, tScreen)
     -- Weapons
     local drawnWeps = {}
     if #PST.modData.astralWepInventory == 0 then
-        PST.miniFont:DrawString("Inventory Empty.", tmpX, tmpY, PST.kcolors.WHITE)
+        PST.miniFont:DrawString(PST:getLocalized("ui_invEmpty") .. ".", tmpX, tmpY, PST.kcolors.WHITE)
     else
         local hasTypeFilter = #self.appliedFilters.weaponType > 0
         local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
@@ -393,7 +382,7 @@ local function astralForgeScreenRender(self, tScreen)
     end
     self:DrawUIBox(tmpX, tmpY, tmpBoxW, tmpBoxH)
 
-    PST.miniFont:DrawString("Weapon Forging", tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
+    PST.miniFont:DrawString(PST:getLocalized("ui_wepForging"), tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
     tmpY = tmpY + 17
 
     -- Selected weapon slot
@@ -403,7 +392,7 @@ local function astralForgeScreenRender(self, tScreen)
     self.forgeUISprite:Render(Vector(selWepX, selWepY))
 
     if not self.selectedWeapon then
-        PST.miniFont:DrawString("Select a weapon from your inventory to begin forging.", selWepX + 18, tmpY, PST.kcolors.WHITE)
+        PST.miniFont:DrawString(PST:getLocalized("ui_selWepToForge"), selWepX + 18, tmpY, PST.kcolors.WHITE)
     else
         PST:renderAstralWepAt(self.selectedWeapon, self.weaponSprite, selWepX, selWepY)
         -- Forge action buttons
@@ -471,7 +460,7 @@ local function astralForgeScreenRender(self, tScreen)
             tmpColor = PST.kcolors.TEAL1
         end
     end
-    PST.miniFont:DrawString("Prev", tmpX, tmpY, tmpColor)
+    PST.miniFont:DrawString(PST:getLocalized("ui_prev"), tmpX, tmpY, tmpColor)
 
     tmpX = tmpX + 100
     tmpColor = PST.kcolors.WHITE
@@ -486,7 +475,7 @@ local function astralForgeScreenRender(self, tScreen)
             tmpColor = PST.kcolors.TEAL1
         end
     end
-    PST.miniFont:DrawString("Next", tmpX, tmpY, tmpColor)
+    PST.miniFont:DrawString(PST:getLocalized("ui_next"), tmpX, tmpY, tmpColor)
 
     -- Current page text
     tmpX = tmpX - 50
@@ -496,11 +485,11 @@ local function astralForgeScreenRender(self, tScreen)
     -- Control hints
     if not self.selectedWeapon then
         tmpY = startY + 270
-        PST.luaminiFont:DrawString("Press Allocate to select hovered weapon for forging.", startX, tmpY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_allocToSelHoverWepForge"), startX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 12
-        PST.luaminiFont:DrawString("Shift + Allocate to equip hovered weapon.", startX, tmpY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_shiftAllocEquipHoverWep"), startX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 12
-        PST.luaminiFont:DrawString("Shift + H to favorite hovered weapon.", startX, tmpY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_shiftHFavWep"), startX, tmpY, PST.kcolors.WHITE)
     end
 
     -- Cursor
@@ -512,44 +501,44 @@ local function astralForgeScreenRender(self, tScreen)
     end
     tScreen.cursorSprite:Render(Vector(tScreen.screenW / 2, tScreen.screenH / 2))
 
-    Isaac.RenderText("Astral Forge", 8, 8, 1, 1, 1, 1)
+    Isaac.RenderText(PST:getLocalized("ui_astralForge"), 8, 8, 1, 1, 1, 1)
 
     -- Hovered filter description
     if self.hoveredFilter then
-        local hoverStr = "Filter: "
+        local hoverStr = PST:getLocalized("ui_filter") .. ": "
         if self.hoveredFilter.weaponType then
-            hoverStr = hoverStr .. PST.astralWepData[self.hoveredFilter.weaponType].name .. "s"
+            hoverStr = hoverStr .. PST:getLocalized("aforge_wepname_" .. PST.astralWepData[self.hoveredFilter.weaponType].name .. "s")
         elseif self.hoveredFilter.weaponRarity then
-            hoverStr = hoverStr .. wepRarityStr[self.hoveredFilter.weaponRarity + 1]
+            hoverStr = hoverStr .. PST:getLocalized("ui_" .. wepRarityStr[self.hoveredFilter.weaponRarity + 1])
         elseif self.hoveredFilter.honing == 1 then
-            hoverStr = hoverStr .. "No Honing"
+            hoverStr = hoverStr .. PST:getLocalized("ui_noHoning")
         elseif self.hoveredFilter.honing == 2 then
-            hoverStr = hoverStr .. "Some Honing"
+            hoverStr = hoverStr .. PST:getLocalized("ui_someHoning")
         elseif self.hoveredFilter.honing == 3 then
-            hoverStr = hoverStr .. "Maxed Honing"
+            hoverStr = hoverStr .. PST:getLocalized("ui_maxHoning")
         elseif self.hoveredFilter.favorite then
-            hoverStr = hoverStr .. "Favorited"
+            hoverStr = hoverStr .. PST:getLocalized("ui_favorited")
         end
-        tScreen:DrawNodeBox(hoverStr, {"Press the Allocate button to apply this filter."})
+        tScreen:DrawNodeBox(hoverStr, {PST:getLocalized("ui_allocApplyFilter")})
     -- Hovered material description
     elseif hoveredMat then
         local tmpMatDesc = {
             {hoveredMat.name, hoveredMat.color},
-            "Source:", table.unpack(hoveredMat.source)
+            PST:getLocalized("ui_source") .. ":", table.unpack(hoveredMat.source)
         }
-        tScreen:DrawNodeBox("Forge Material", tmpMatDesc)
+        tScreen:DrawNodeBox(PST:getLocalized("ui_forgeMaterial"), tmpMatDesc)
     -- Hovered weapon description
     elseif self.hoveredWeapon then
-        tmpTitle = "Astral Weapon"
+        tmpTitle = PST:getLocalized("ui_astralwep")
         if self.hoveredWeapon.equipped then
-            tmpTitle = tmpTitle .. " (Equipped by " .. self.hoveredWeapon.equipped .. ")"
+            tmpTitle = tmpTitle .. " (" .. PST:getLocalized("ui_equippedBy") .. " " .. self.hoveredWeapon.equipped .. ")"
         end
 
         local wepDesc = {}
         -- Decon mode extras
         if self.deconMode then
             -- Deconstruction mode description
-            table.insert(wepDesc, {"* Deconstructing Weapon *", PST.kcolors.RED1})
+            table.insert(wepDesc, {"* " .. PST:getLocalized("ui_deconstructingWep") .. " *", PST.kcolors.RED1})
             -- Get deconstruction materials
             local wepMats = PST:getAstralWepDeconMats(self.hoveredWeapon)
             if wepMats.mundane > 0 then
@@ -562,9 +551,9 @@ local function astralForgeScreenRender(self, tScreen)
                 table.insert(wepDesc, {tostring(wepMats.ancient) .. "x " .. matsData.ancientEssence[1] .. ".", matsData.ancientEssence[2]})
             end
             if self.hoveredWeapon.rarity ~= PSTAstralWepRarity.ANCIENT then
-                table.insert(wepDesc, "Press the Respec button to deconstruct this weapon and gain these materials.")
+                table.insert(wepDesc, PST:getLocalized("ui_respecDecon"))
             else
-                table.insert(wepDesc, "Hold the Respec button for 1 second to deconstruct this weapon and gain these materials.")
+                table.insert(wepDesc, PST:getLocalized("ui_holdRespecDecon"))
             end
             table.insert(wepDesc, "")
         end
@@ -575,42 +564,34 @@ local function astralForgeScreenRender(self, tScreen)
         if not self.deconMode then
             -- Imprinting mode description extras
             if self.imprintMode and self.hoveredWeapon.rarity == PSTAstralWepRarity.MAGIC then
-                table.insert(wepDesc, 1, {"NOTE: Imprinting will destroy this weapon!", PST.kcolors.DARKORANGE1})
-                table.insert(wepDesc, 1, {"Press Allocate to imprint this weapon into the currently selected Ancient weapon.", PST.kcolors.FORGE_ORANGE})
-                table.insert(wepDesc, 1, {"* Imprinting Weapon *", PST.kcolors.FORGE_ORANGE})
+                table.insert(wepDesc, 1, {PST:getLocalized("ui_imprintNote1"), PST.kcolors.DARKORANGE1})
+                table.insert(wepDesc, 1, {PST:getLocalized("ui_imprintNote2"), PST.kcolors.FORGE_ORANGE})
+                table.insert(wepDesc, 1, {"* " .. PST:getLocalized("ui_imprintingWep") .. " *", PST.kcolors.FORGE_ORANGE})
             end
 
             if not self.hoveredWeapon.equipped then
-                table.insert(wepDesc, "Press Shift + Allocate to equip this weapon with " .. PST:getCurrentCharName() .. ".")
+                table.insert(wepDesc, PST:getLocalizedFormat("ui_shiftAllocEquipWith", {charName = PST:getCurrentCharName()}))
             end
             if not self.hoveredWeapon.favorite then
-                table.insert(wepDesc, "Press Shift + H to favorite this weapon.")
+                table.insert(wepDesc, PST:getLocalized("ui_shiftHFavThisWep"))
             end
         end
 
         tScreen:DrawNodeBox(tmpTitle, wepDesc)
     -- Hovered deconstruction button description
     elseif self.deconHovered then
-        local deconDesc = {
-            "Press the Allocate button to toggle Deconstruction Mode.",
-            "While in deconstruction mode, hover over a weapon and press Respec to deconstruct it into",
-            "forging materials, destroying it in the process."
-        }
-        tScreen:DrawNodeBox("Toggle Deconstruction Mode", deconDesc)
+        tScreen:DrawNodeBox(PST:getLocalized("ui_toggleDeconMode"), PST:getLocalized("ui_forgeDeconDesc"))
     -- Hovered multi-deconstruction button description
     elseif self.multiDeconHovered then
-        local deconDesc = {
-            "Press the Allocate button to toggle Multi-Deconstruction Mode.",
-            "While in this mode, you may select multiple weapons with the Allocate button before mass-deconstructing",
-            "them at once.",
-            "Press Ctrl + Allocate while hovering a filter or a weapon to select all currently filtered weapons.",
-            "Press Respec on a weapon to deconstruct all selected weapons.",
-            {"Use with care! Make sure not to select weapons you might wish to keep.", PST.kcolors.STAR_ORANGE}
-        }
-        tScreen:DrawNodeBox("Toggle Multi-Deconstruction", deconDesc)
+        tScreen:DrawNodeBox(PST:getLocalized("ui_toggleMultiDecon"), PST:getLocalized("ui_multiDeconDesc"))
     -- Hovered forge action button description
     elseif self.hoveredForgeButton then
-        local forgeDesc = {table.unpack(self.hoveredForgeButton.description)}
+        local tmpButtonDesc = self.hoveredForgeButton.description
+        local forgeDesc = {}
+
+        if type(tmpButtonDesc) == "table" then
+            forgeDesc = {table.unpack(tmpButtonDesc)}
+        end
 
         -- Imprint mode description
         local isImprintToggled = self.hoveredForgeButton.targetAction == "imprinting" and self.imprintMode
@@ -621,14 +602,14 @@ local function astralForgeScreenRender(self, tScreen)
         -- Forge action costs
         local wepCosts = PST:getAstralWepCraftCosts(self.selectedWeapon)[self.hoveredForgeButton.targetAction]
         if wepCosts and not PST.debugOptions.freeForging then
-            table.insert(forgeDesc, "Costs:")
+            table.insert(forgeDesc, PST:getLocalized("ui_costs") .. ":")
             for _, tmpMat in ipairs(matsOrder) do
                 local tmpCost = wepCosts[tmpMat]
                 if tmpCost and matsData[tmpMat] then
-                    local tmpStr = "    x " .. tostring(tmpCost) .. " " .. matsData[tmpMat][1] .. "."
+                    tmpStr = "    x " .. tostring(tmpCost) .. " " .. matsData[tmpMat][1] .. "."
                     local canAfford = PST.modData[tmpMat] and PST.modData[tmpMat] >= tmpCost
                     if not canAfford then
-                        tmpStr = tmpStr .. " (missing, you have " .. tostring(PST.modData[tmpMat]) .. ")"
+                        tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_missingYouHave") .. " " .. tostring(PST.modData[tmpMat]) .. ")"
                     end
                     table.insert(forgeDesc, {tmpStr, matsData[tmpMat][2]})
                 end

@@ -86,6 +86,21 @@ return {
     ["ui_globalSkillPoints"] = "Global Skill Point(s)",
     ["ui_done"] = "Done",
 
+    ["ui_normal"] = "normal",
+    ["ui_Normal"] = "Normal",
+    ["ui_magic"] = "magic",
+    ["ui_Magic"] = "Magic",
+    ["ui_ancient"] = "ancient",
+    ["ui_Ancient"] = "Ancient",
+
+    ["ui_Implicit"] = "Implicit",
+    ["ui_Implicits"] = "Implicits",
+
+    ["ui_Tier"] = "Tier",
+
+    ["ui_prev"] = "Prev",
+    ["ui_next"] = "Next",
+
     ["ui_convBoss"] = "Converted boss",
 
     ["ui_crackedKey"] = "Cracked Key",
