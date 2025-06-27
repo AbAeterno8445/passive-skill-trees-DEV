@@ -245,6 +245,6 @@ function PST:closeTreeMenu(mute, force)
     PST.treeScreen.open = false
 
     if Isaac.IsInGame() then
-        OptionsMenu.SetSelectedElement(0)
+        PauseMenu.SetState(PauseMenuStates.OPEN)
     end
 end

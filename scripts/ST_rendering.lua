@@ -595,6 +595,11 @@ local markLayerOverrides = {
     [CompletionType.BEAST] = 11
 }
 function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
+	-- Invariably hide marks when viewing tree
+	if PST.treeScreen.open then
+		return false
+	end
+
 	if PST.config.specialMarkRendering then
 		local pTypeStr = tostring(playerType)
 		local markPathNormal = "gfx/ui/completion_widget.png"

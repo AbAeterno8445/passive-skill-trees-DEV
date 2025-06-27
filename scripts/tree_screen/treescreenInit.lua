@@ -194,11 +194,9 @@ end
 -- Pause menu render func
 function PST:treePauseRender()
     if PST.treeScreen.open then
-        -- Force pause menu to loop between options and open in the background, while tree is open
-        if Options.Language == "en" then
-            PauseMenu.SetState(PauseMenuStates.OPTIONS)
-        end
-        OptionsMenu.SetSelectedElement(999)
+        -- Pause screen state 4 seems to keep the game paused without interface interaction in the background
+        ---@diagnostic disable-next-line: param-type-mismatch
+        PauseMenu.SetState(4)
         return false
     end
 end

@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.3",
+        "- Adjusted how pausing is handled while viewing the tree screen in-game, potentially preventing crashes or other weird issues while using it.",
+        "",
+
         "v1.3.2",
         "- Added toggle key hint to the 'Tree effects disabled' warning.",
         "",
