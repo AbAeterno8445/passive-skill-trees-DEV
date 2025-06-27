@@ -154,8 +154,6 @@ function PST:openTreeMenu()
         ---@diagnostic disable-next-line: param-type-mismatch
         MenuManager.SetInputMask(ButtonActionBitwise.ACTION_FULLSCREEN | ButtonActionBitwise.ACTION_MUTE)
         MenuManager.SetColorModifier(ColorModifier())
-    elseif not Game():IsPauseMenuOpen() then
-        return
     else
         local player = PST:getPlayer()
         PST.selectedMenuChar = player:GetPlayerType()
@@ -222,6 +220,11 @@ function PST:closeTreeMenu(mute, force)
         if tmpFunc then tmpFunc() end
     end
 
+    if Isaac.IsInGame() then
+        PauseMenu.SetState(PauseMenuStates.OPEN)
+        print("set to open")
+    end
+
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
         MenuManager.SetInputMask(PST.menuInputMask)
@@ -244,8 +247,4 @@ function PST:closeTreeMenu(mute, force)
     PST.treeScreen.backupsPopup = false
     PST.treeScreen.currentTree = "global"
     PST.treeScreen.open = false
-
-    if Isaac.IsInGame() then
-        OptionsMenu.SetSelectedElement(0)
-    end
 end

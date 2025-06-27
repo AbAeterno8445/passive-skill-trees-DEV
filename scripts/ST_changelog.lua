@@ -3,6 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.3",
+        "- Added compatibility for various mod hidden characters, and Joseph mod items.",
+        "- Adjusted how pausing is handled while viewing the tree screen in-game, potentially preventing crashes or other weird issues while using it.",
+        "- The tree screen no longer requires pausing to open in-game, and will pause the game in the background while open.",
+        "",
+
         "v1.3.2",
         "- Added toggle key hint to the 'Tree effects disabled' warning.",
         "",

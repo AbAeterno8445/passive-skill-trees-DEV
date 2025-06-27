@@ -486,6 +486,53 @@ if Isaac.IsInGame() then
 				end
 			end
 		end
+
+		if FiendFolio then
+			PST:initUnknownChar("China", false)
+			PST:initUnknownChar("Slippy", false)
+			PST:initUnknownChar("Fend", false)
+			PST:initUnknownChar("Fient", false)
+			PST:initUnknownChar("Peat", false)
+		end
+
+		if yandereWaifu then
+			PST:initUnknownChar("Red Rebekah", false)
+			PST:initUnknownChar("Soul Rebekah", false)
+			PST:initUnknownChar("Evil Rebekah", false)
+			PST:initUnknownChar("Eternal Rebekah", false)
+			PST:initUnknownChar("Gold Rebekah", false)
+			PST:initUnknownChar("Bone Rebekah", false)
+			PST:initUnknownChar("Rotten Rebekah", false)
+			PST:initUnknownChar("Broken Rebekah", false)
+			PST:initUnknownChar("Immortal Rebekah", false)
+			PST:initUnknownChar("Deborah", false)
+			PST:initUnknownChar("Deborah", true)
+		end
+
+		if Reverie then
+			PST:initUnknownChar("Hourai", false)
+			PST:initUnknownChar("Hourai", true)
+		end
+
+		if ReverieMGO then
+			PST:initUnknownChar("Rin", false)
+		end
+
+		if Retribution then
+			PST:initUnknownChar("Persephone", false)
+		end
+
+		if RedBaby then
+			PST:initUnknownChar("...", false)
+		end
+
+		if _wakaba then
+			PST:initUnknownChar("Shima", false)
+			PST:initUnknownChar("Cecilia", false)
+			PST:initUnknownChar("Anna", false)
+			PST:initUnknownChar("Koron", false)
+			PST:initUnknownChar("Ciel", false)
+		end
 	end
 
 	PST.gameInit = true

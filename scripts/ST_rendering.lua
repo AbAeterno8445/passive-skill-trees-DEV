@@ -128,6 +128,17 @@ function PST:Render()
 		end
 	end
 
+	-- Input: Open tree menu (in-game)
+	if Isaac.IsInGame() then
+		if PST:isKeybindActive(PSTKeybind.OPEN_TREE) or (not PST.treeScreen.open and PST:IsActionTriggered(ButtonAction.ACTION_ITEM, 1)) then
+			if not PST.treeScreen.open then
+				PST:openTreeMenu()
+			else
+				PST:closeTreeMenu()
+			end
+		end
+	end
+
 	local player = PST:getPlayer()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
 	local screenRatioY = Isaac.GetScreenHeight() / 270
@@ -595,6 +606,11 @@ local markLayerOverrides = {
     [CompletionType.BEAST] = 11
 }
 function PST:cosmicRMarksRender(markSprite, markPos, markScale, playerType)
+	-- Invariably hide marks when viewing tree
+	if PST.treeScreen.open then
+		return false
+	end
+
 	if PST.config.specialMarkRendering then
 		local pTypeStr = tostring(playerType)
 		local markPathNormal = "gfx/ui/completion_widget.png"
