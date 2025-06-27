@@ -128,6 +128,17 @@ function PST:Render()
 		end
 	end
 
+	-- Input: Open tree menu (in-game)
+	if Isaac.IsInGame() then
+		if PST:isKeybindActive(PSTKeybind.OPEN_TREE) or (not PST.treeScreen.open and PST:IsActionTriggered(ButtonAction.ACTION_ITEM, 1)) then
+			if not PST.treeScreen.open then
+				PST:openTreeMenu()
+			else
+				PST:closeTreeMenu()
+			end
+		end
+	end
+
 	local player = PST:getPlayer()
 	local screenRatioX = Isaac.GetScreenWidth() / 480
 	local screenRatioY = Isaac.GetScreenHeight() / 270

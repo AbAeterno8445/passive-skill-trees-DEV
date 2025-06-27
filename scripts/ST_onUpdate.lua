@@ -56,6 +56,74 @@ function PST:frameUpdate()
 		if Epiphany and Epiphany.Character.JUDAS:IsJudas(player) then
 			PST:initUnknownChar("Tr. Judas", false, 1 + plType)
 		end
+		if yandereWaifu then
+			if plType == Isaac.GetPlayerTypeByName("Red Rebekah") then
+				PST:initUnknownChar("Red Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Soul Rebekah", false) then
+				PST:initUnknownChar("Soul Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Evil Rebekah", false) then
+				PST:initUnknownChar("Evil Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Eternal Rebekah", false) then
+				PST:initUnknownChar("Eternal Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Gold Rebekah", false) then
+				PST:initUnknownChar("Gold Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Bone Rebekah", false) then
+				PST:initUnknownChar("Bone Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Rotten Rebekah", false) then
+				PST:initUnknownChar("Rotten Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Broken Rebekah", false) then
+				PST:initUnknownChar("Broken Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Immortal Rebekah", false) then
+				PST:initUnknownChar("Immortal Rebekah", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Deborah", true) then
+				PST:initUnknownChar("Deborah", true)
+			elseif plType == Isaac.GetPlayerTypeByName("Deborah", true) then
+				PST:initUnknownChar("Deborah", true)
+			end
+		end
+		if Reverie then
+			if plType == Isaac.GetPlayerTypeByName("Hourai") then
+				PST:initUnknownChar("Hourai", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Hourai", true) then
+				PST:initUnknownChar("Hourai", true)
+			end
+		end
+		if FiendFolio then
+			if plType == Isaac.GetPlayerTypeByName("China") then
+				PST:initUnknownChar("China", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Slippy", true) then
+				PST:initUnknownChar("Slippy", true)
+			elseif plType == Isaac.GetPlayerTypeByName("Fend", true) then
+				PST:initUnknownChar("Fend", true)
+			elseif plType == Isaac.GetPlayerTypeByName("Fient", true) then
+				PST:initUnknownChar("Fient", true)
+			elseif plType == Isaac.GetPlayerTypeByName("Peat", true) then
+				PST:initUnknownChar("Peat", true)
+			end
+		end
+		if Retribution then
+			if plType == Isaac.GetPlayerTypeByName("Persephone") then
+				PST:initUnknownChar("Persephone", false)
+			end
+		end
+		if RedBaby then
+			if plType == Isaac.GetPlayerTypeByName("...") then
+				PST:initUnknownChar("...", false)
+			end
+		end
+		if _wakaba then
+			if plType == Isaac.GetPlayerTypeByName("Shima") then
+				PST:initUnknownChar("Shima", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Cecilia") then
+				PST:initUnknownChar("Cecilia", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Anna") then
+				PST:initUnknownChar("Anna", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Koron") then
+				PST:initUnknownChar("Koron", false)
+			elseif plType == Isaac.GetPlayerTypeByName("Ciel") then
+				PST:initUnknownChar("Ciel", false)
+			end
+		end
 	end
 
 	if inDeathCertificate and level:GetDimension() ~= Dimension.DEATH_CERTIFICATE then

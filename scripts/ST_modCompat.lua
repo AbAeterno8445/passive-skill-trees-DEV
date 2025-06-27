@@ -2375,6 +2375,24 @@ function PST:initModCompat()
         -- Grand Consonance
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Asherah Pole"))
     end
+
+    if JosephMod and not initMods.joseph then
+        initMods.joseph = true
+
+        -- HP UPS
+        -- Note to self: figure out how Calendar works
+
+        -- Blue Gambit cards
+        local tmpCards = {
+            "XX - The Aeon"
+        }
+        for _, tmpCard in ipairs(tmpCards) do
+            local tmpCardID = Isaac.GetCardIdByName(tmpCard)
+            if tmpCardID then
+                table.insert(PST.blueGambitCards, tmpCardID)
+            end
+        end
+    end
 end
 
 -- Add mod items to the 'blue' item pool
@@ -2659,5 +2677,10 @@ function PST:initModBlueItems()
     -- Foks' Booster Pack blue items
     if _FOKS_BOOSTER_PACK_MOD then
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Plastic Brick"))
+    end
+
+    -- Joseph blue items
+    if JosephMod then
+        table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Card Sleeve"))
     end
 end
