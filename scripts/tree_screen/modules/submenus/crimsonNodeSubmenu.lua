@@ -68,7 +68,7 @@ function crimsonNodeSubmenu:Render(tScreen, submenusModule)
         tScreen,
         nodesPerPage, tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
-        crimsonNodeName[tmpCrimsonType] .. " Crimson Node",
+        PST:getLocalized("ui_" .. crimsonNodeName[tmpCrimsonType] .. " Crimson Node"),
         function()
             -- Draw available medium nodes
             for i=1,nodesPerPage do

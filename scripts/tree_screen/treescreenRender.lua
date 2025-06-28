@@ -1,29 +1,8 @@
-local treeControlDesc = {
-    "WASD / Arrow keys: pan camera",
-    "Shift + V: re-center camera",
-    "Z / Shift + Z: zoom in/out",
-    "E: allocate hovered node",
-    "R: respec hovered node",
-    "Q: switch to selected character's tree",
-    "Shift + Q: enable/disable tree effects next run",
-    "Shift + H: display a list of all active modifiers",
-    "Shift + C: show mod changelog"
-}
-local treeControlDescController = {
-    "Joystick / Dpad: pan camera",
-    "RT: re-center camera",
-    "Item + Shoot down/up: zoom in/out",
-    "Menu action: allocate hovered node",
-    "Item + Menu action: respec hovered node",
-    "Menu tab: switch to selected character's tree",
-    "Item + Menu tab: enable/disable tree effects next run",
-    "Item + Select: display a list of all active modifiers"
-}
 local backupsMsg = {
-    {"Potential data loss has been detected, and backup files are present.", PST.kcolors.LIGHTRED1},
-    {"Press up/down to select one of these available backups, and E to attempt loading it.", PST.kcolors.LIGHTRED1},
-    {"Press ESC / Back to dismiss popup.", PST.kcolors.LIGHTRED1},
-    {"(This popup will stop showing up once your global level is higher than 1)", PST.kcolors.LIGHTRED1},
+    {PST:getLocalized("ui_backupWarn1"), PST.kcolors.LIGHTRED1},
+    {PST:getLocalized("ui_backupWarn2"), PST.kcolors.LIGHTRED1},
+    {PST:getLocalized("ui_backupWarn3"), PST.kcolors.LIGHTRED1},
+    {PST:getLocalized("ui_backupWarn4"), PST.kcolors.LIGHTRED1},
     ""
 }
 
@@ -63,7 +42,7 @@ function PST.treeScreen:Render()
 
     -- Tree name display
     local skPoints = PST.modData.skillPoints
-    local treeName = "Global Tree - LV " .. PST.modData.level
+    local treeName = PST:getLocalized("ui_globalTree") .. " - LV " .. PST.modData.level
     if self.currentTree ~= "global" then
         local charAlias = self.currentTree
         if self.treeAliases[self.currentTree] then
@@ -74,18 +53,18 @@ function PST.treeScreen:Render()
             if self.starcursedTotalMods then
                 tmpStarmight = self.starcursedTotalMods.totalStarmight
             end
-            treeName = "Star Tree (" .. tmpStarmight .. " total starmight)"
+            treeName = PST:getLocalized("ui_starTree") .. " (" .. PST:getLocalizedFormatStr("ui_totalStarmight", {starmight = tmpStarmight}) .. ")"
         elseif self.currentTree == "sidereal" then
-            treeName = "Sidereal Tree"
+            treeName = PST:getLocalized("ui_siderealTree")
             local curName = PST:getCurrentCharName()
             if curName then treeName = treeName .. " (" .. curName .. ")" end
         elseif PST.modData.charData[charAlias] then
             skPoints = PST.modData.charData[charAlias].skillPoints
-            local tmpPossessive = "s"
+            local tmpPossessive = "'s"
             if string.sub(charAlias, -1) == "s" then
-                tmpPossessive = ""
+                tmpPossessive = "'"
             end
-            treeName = charAlias .. "'" .. tmpPossessive .. " Tree"
+            treeName = PST:getLocalizedFormatStr("ui_charTreeName", {charName = charAlias, en_possessive = tmpPossessive})
         else
             treeName = self.currentTree
         end
@@ -100,7 +79,7 @@ function PST.treeScreen:Render()
 
         -- Global SP / Respecs
         Isaac.RenderText(
-            "Skill points: " .. skPoints .. " / Respecs: " .. PST.modData.respecPoints,
+            PST:getLocalized("ui_SkillPoints") .. ": " .. skPoints .. " / " .. PST:getLocalized("ui_Respecs") .. ": " .. PST.modData.respecPoints,
             tmpX, tmpY, 1, 1, 1, 1
         )
         -- Mod version top right
@@ -112,11 +91,11 @@ function PST.treeScreen:Render()
         tmpY = tmpY + 12
         local tmpCharName = PST:getCurrentCharName()
         if self.currentTree == "global" and tmpCharName and PST.trees[tmpCharName] then
-            local tmpPossessive = "s"
+            local tmpPossessive = "'s"
             if string.sub(tmpCharName, -1) == "s" then
-                tmpPossessive = ""
+                tmpPossessive = "'"
             end
-            PST.miniFont:DrawStringScaled("Press Q to access " .. tmpCharName .. "'" .. tmpPossessive .. " tree.", tmpX, tmpY, 1, 1, PST.kcolors.WHITE)
+            PST.miniFont:DrawStringScaled(PST:getLocalizedFormatStr("ui_charTreeAccessHint", {charName = tmpCharName, en_possessive = tmpPossessive}), tmpX, tmpY, 1, 1, PST.kcolors.WHITE)
             tmpY = tmpY + 16
         else
             tmpY = tmpY + 4
@@ -124,9 +103,9 @@ function PST.treeScreen:Render()
 
         -- Tree disabled warning
         if PST.modData.treeDisabled then
-            Isaac.RenderText("Tree effects disabled", tmpX, tmpY, 1, 0.4, 0.4, 1)
+            Isaac.RenderText(PST:getLocalized("ui_treeEffectsDisabled"), tmpX, tmpY, 1, 0.4, 0.4, 1)
             tmpY = tmpY + 14
-            PST.miniFont:DrawString("(Shift + Q to re-enable)", tmpX, tmpY, PST.kcolors.RED1)
+            PST.miniFont:DrawString("(" .. PST:getLocalized("ui_treeReenableHint") .. ")", tmpX, tmpY, PST.kcolors.RED1)
             tmpY = tmpY + 16
         elseif PST.modData.expedEnabled and ((not PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.expedSelDepth)) or
         (PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.uberExpedSelDepth, true))) then
@@ -139,12 +118,12 @@ function PST.treeScreen:Render()
         end
 
         -- Help toggle indicator
-        local tmpStr = "H / Select: toggle help  |  Tab: Menu quick select"
+        local tmpStr = PST:getLocalized("ui_helpToggleHint1") .. "  |  " .. PST:getLocalized("ui_helpToggleHint2")
         PST.miniFont:DrawString(tmpStr, 12, self.screenH - 30, PST.kcolors.WHITE)
 
         -- In-run warning
         if Isaac.IsInGame() and not PST:getTreeSnapshotMod("dynamicMode", false) then
-            PST.miniFont:DrawString("(IN RUN - Changes to the tree will be reflected on the next run you start)", 12, self.screenH - 16, PST.kcolors.RED1)
+            PST.miniFont:DrawString("(" .. PST:getLocalized("ui_inRunNonDynamic") .. ")", 12, self.screenH - 16, PST.kcolors.RED1)
         end
 
         -- Sidereal tree extra
@@ -154,16 +133,9 @@ function PST.treeScreen:Render()
                 tmpY = tmpY + 14
                 PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
                 tmpY = tmpY + 14
-                PST.miniFont:DrawString("Arcane Obols: " .. tostring(currentChar.arcaneObols), tmpX, tmpY, PST.kcolors.PURPLE1)
+                PST.miniFont:DrawString(PST:getLocalized("ui_arcaneObols") .. ": " .. tostring(currentChar.arcaneObols), tmpX, tmpY, PST.kcolors.PURPLE1)
                 tmpY = tmpY + 28
             end
-        end
-
-        -- Help popups
-        if self.helpPopup == "helpkeyboard" then
-            self:DrawNodeBox("Tree Controls", treeControlDesc, 16, 40, true, 1)
-        elseif self.helpPopup == "helpcontroller" then
-            self:DrawNodeBox("Tree Controls (Controller)", treeControlDescController, 16, 40, true, 1)
         end
     end
 
@@ -180,11 +152,11 @@ function PST.treeScreen:Render()
                 local backupLine = tostring(i) .. ". Level: " .. tostring(tmpBackup[2])
                 if self.selectedBackup == i then
                     tmpColor = PST.kcolors.BLUE1
-                    backupLine = backupLine .. " (E / Action Button to load this backup)"
+                    backupLine = backupLine .. " (" .. PST:getLocalized("ui_loadBackupHint") .. ")"
                 end
                 table.insert(tmpBackupsMsg, {backupLine, tmpColor})
             end
         end
-        self:DrawNodeBox("Data Loss Detected", tmpBackupsMsg, 32, 32, true, 1)
+        self:DrawNodeBox(PST:getLocalized("ui_dataLossDetected"), tmpBackupsMsg, 32, 32, true, 1)
     end
 end

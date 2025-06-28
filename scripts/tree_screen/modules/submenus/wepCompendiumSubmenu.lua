@@ -35,11 +35,11 @@ function weaponCompendiumSubmenu:Render(tScreen, submenusModule)
     self.hoveredID = nil
     self.hoveredBackButton = false
 
-    local tmpTitle = "Weapon Compendium"
+    local tmpTitle = PST:getLocalized("ui_wepCompendium")
     local itemCount = 14
     local selectedData = PST.astralWepData[self.selectedType]
     if selectedData then
-        tmpTitle = selectedData.name .. " Compendium"
+        tmpTitle = PST:getLocalized("ui_compendium") .. " (" .. PST:getLocalized("aforge_wepname_" .. selectedData.name .. "s") .. ")"
         itemCount = #selectedData.ancients + 5
     end
     submenusModule:DrawNodeSubMenu(
@@ -114,7 +114,7 @@ function weaponCompendiumSubmenu:Render(tScreen, submenusModule)
                     tScreen.cursorHighlight = true
                     tmpColor = PST.kcolors.ANCIENT_ORANGE
                 end
-                PST.normalFont:DrawString("Back", buttonX - tScreen.treeCamera.X - tScreen.camZoomOffset.X, buttonY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y, tmpColor)
+                PST.normalFont:DrawString(PST:getLocalized("ui_back"), buttonX - tScreen.treeCamera.X - tScreen.camZoomOffset.X, buttonY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y, tmpColor)
             end
         end
     )

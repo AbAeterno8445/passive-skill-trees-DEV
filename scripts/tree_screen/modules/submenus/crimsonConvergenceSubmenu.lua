@@ -22,7 +22,7 @@ function crimsonConvergenceSubmenu:Render(tScreen, submenusModule)
         PST.crimConvBuffsLen,
         tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
-        "Crimson Convergence",
+        PST:getLocalized("ui_crimsonConvergence"),
         function()
             for i, buffName in ipairs(PST.crimConvBuffOrder) do
                 local nodeX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32

@@ -32,7 +32,7 @@ function edenHairSubmenu:Render(tScreen, submenusModule)
         hairstyleCount,
         tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
-        "Eden Hairdo",
+        PST:getLocalized("ui_edenHairdo"),
         function()
             for i=1,hairstyleCount do
                 local nodeX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32

@@ -162,9 +162,9 @@ function PST:treeScreenMenuRender()
             local selCharData = PST.modData.charData[selCharName]
             if selCharData and PST.config.charSelectInfoText then
                 local tmpStr = selCharName .. " LV " .. selCharData.level
-                tmpStr = tmpStr .. " (V / LT or LB to open tree)"
+                tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_openTreeKey") .. ")"
                 if PST.modData.treeDisabled then
-                    tmpStr = tmpStr .. " (tree disabled)"
+                    tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_treeDisabled") .. ")"
                 end
                 PST.miniFont:DrawString(
                     tmpStr,
@@ -175,7 +175,7 @@ function PST:treeScreenMenuRender()
             end
         end
     elseif Game():IsPauseMenuOpen() and not PST.treeScreen.open and PST.config.drawPauseText then
-        local tmpStr = "V / LT or LB to open tree"
+        local tmpStr = PST:getLocalized("ui_openTreeKey")
         PST.miniFont:DrawString(
             tmpStr,
             Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2.5,
@@ -190,7 +190,6 @@ function PST:treeScreenMenuRender()
             -- Pause screen state 4 seems to keep the game paused without interface interaction in the background
             ---@diagnostic disable-next-line: param-type-mismatch
             PauseMenu.SetState(4)
-            print("set to 4")
         end
 
         PST.treeScreen:Update()
@@ -217,14 +216,14 @@ function PST:postPauseRender()
                 if not PST:isKeybindActive(PSTKeybind.TREE_TAB, true) then
                     local tmpDesc = {table.unpack(PST:getExpNodeObjectiveDesc(tmpNode, expData))}
                     if not PST:expedCanProgress(depth) then
-                        table.insert(tmpDesc, {"(Can't progress in this run - must start a new one)", PST.kcolors.RED1})
+                        table.insert(tmpDesc, {"(" .. PST:getLocalized("ui_cantProgInRun") .. ")", PST.kcolors.RED1})
                     end
                     for _, tmpLine in ipairs(tmpDesc) do
                         local tmpStr = tmpLine[1]
-                        if tmpStr == "Objective:" then
-                            tmpStr = "Expedition Objective:"
+                        if tmpStr == PST:getLocalized("ui_objective") .. ":" then
+                            tmpStr = PST:getLocalized("ui_ExpObjective") .. ":"
                             if tmpOrderObjData then
-                                tmpStr = tmpStr .. " (hold TAB for order objectives)"
+                                tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_holdTabOrderObj") .. ")"
                             end
                         end
                         local tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
@@ -232,7 +231,7 @@ function PST:postPauseRender()
                         tmpY = tmpY + 14 * tmpScale
                     end
                 elseif tmpOrderObjData then
-                    local tmpStr = "Expedition Order Objectives:"
+                    local tmpStr = PST:getLocalized("ui_expOrderObjectives")
                     local tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
                     PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, PST.kcolors.TEAL1)
                     tmpY = tmpY + 14 * tmpScale

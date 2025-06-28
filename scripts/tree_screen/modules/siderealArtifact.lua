@@ -1,192 +1,147 @@
 PST.sideArtiData = {
     ---- SEPTENTRIONS ----
     bloodSeptentrion = {
-        name = "Blood Septentrion",
+        name = PST:getLocalized("sideart_bloodSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Kill a monster", PST.kcolors.BLUE1},
-            {"Generates 3 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_bloodSeptentrion_desc"),
         energy = 3
     },
     taintbloodSeptentrion = {
-        name = "Taintblood Septentrion",
+        name = PST:getLocalized("sideart_taintbloodSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Kill a monster affected by any status effect", PST.kcolors.BLUE1},
-            {"Generates 4 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_taintbloodSeptentrion_desc"),
         objective = {
-            desc = "Kill {{progress}}/100 monsters affected by any status effect.",
+            desc = PST:getLocalized("sideart_taintbloodSeptentrion_obj"),
             req = 100
         },
         energy = 4
     },
     icySeptentrion = {
-        name = "Icy Septentrion",
+        name = PST:getLocalized("sideart_icySeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Destroy a frozen monster.", PST.kcolors.BLUE1},
-            {"Generates 3 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_icySeptentrion_desc"),
         objective = {
-            desc = "Destroy {{progress}}/100 frozen monsters.",
+            desc = PST:getLocalized("sideart_icySeptentrion_obj"),
             req = 100
         },
         energy = 3
     },
     beastseekerSeptentrion = {
-        name = "Beastseeker Septentrion",
+        name = PST:getLocalized("sideart_beastseekerSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Hit a boss monster 3 times.", PST.kcolors.BLUE1},
-            {"Generates 1 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_beastseekerSeptentrion_desc"),
         objective = {
-            desc = "Defeat 15 boss monsters in a single run.",
+            desc = PST:getLocalized("sideart_beastseekerSeptentrion_obj"),
             req = 1
         },
         energy = 1
     },
     giantseekerSeptentrion = {
-        name = "Giantseeker Septentrion",
+        name = PST:getLocalized("sideart_giantseekerSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Hit a boss monster 8 times.", PST.kcolors.BLUE1},
-            {"Generates 4 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_giantseekerSeptentrion_desc"),
         objective = {
-            desc = "Clear {{progress}}/7 boss rooms without taking damage.",
+            desc = PST:getLocalized("sideart_giantseekerSeptentrion_obj"),
             req = 7
         },
         energy = 4
     },
     rotseekerSeptentrion = {
-        name = "Rotseeker Septentrion",
+        name = PST:getLocalized("sideart_rotseekerSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Hit a boss affected by any status effect.", PST.kcolors.BLUE1},
-            {"Generates 3 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_rotseekerSeptentrion_desc"),
         objective = {
-            desc = "Inflict status effects on bosses {{progress}}/50 times.",
+            desc = PST:getLocalized("sideart_rotseekerSeptentrion_obj"),
             req = 50
         },
         energy = 3
     },
     titanseekerSeptentrion = {
-        name = "Titanseeker Septentrion",
+        name = PST:getLocalized("sideart_titanseekerSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Hit a final boss.", PST.kcolors.BLUE1},
-            {"Generates 2 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_titanseekerSeptentrion_desc"),
         objective = {
-            desc = "Defeat any final boss without taking damage more than once.",
+            desc = PST:getLocalized("sideart_titanseekerSeptentrion_obj"),
             req = 1
         },
         energy = 2
     },
     assassinSeptentrion = {
-        name = "Assassin Septentrion",
+        name = PST:getLocalized("sideart_assassinSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Hit a non-boss monster above 90% HP or below 10% HP.", PST.kcolors.BLUE1},
-            {"Generates 2 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_assassinSeptentrion_desc"),
         objective = {
-            desc = "Kill {{progress}}/300 monsters that have at least 10 HP.",
+            desc = PST:getLocalized("sideart_assassinSeptentrion_obj"),
             req = 300
         },
         energy = 2
     },
     deathseekerSeptentrion = {
-        name = "Deathseeker Septentrion",
+        name = PST:getLocalized("sideart_deathseekerSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Hit an undead monster.", PST.kcolors.BLUE1},
-            {"Generates 3 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_deathseekerSeptentrion_desc"),
         objective = {
-            desc = "Kill {{progress}}/100 undead monsters with at least 10 HP.",
+            desc = PST:getLocalized("sideart_deathseekerSeptentrion_obj"),
             req = 100
         },
         energy = 3
     },
     allianceSeptentrion = {
-        name = "Alliance Septentrion",
+        name = PST:getLocalized("sideart_allianceSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Kill a monster with familiar damage.", PST.kcolors.BLUE1},
-            {"Generates 5 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_allianceSeptentrion_desc"),
         objective = {
-            desc = "Kill {{progress}}/50 monsters with familiar damage.",
+            desc = PST:getLocalized("sideart_allianceSeptentrion_obj"),
             req = 50
         },
         energy = 5
     },
     slayerSeptentrion = {
-        name = "Slayer Septentrion",
+        name = PST:getLocalized("sideart_slayerSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Kill a champion monster.", PST.kcolors.BLUE1},
-            {"Generates 7 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_slayerSeptentrion_desc"),
         objective = {
-            desc = "Kill {{progress}}/100 champion monsters.",
+            desc = PST:getLocalized("sideart_slayerSeptentrion_obj"),
             req = 100
         },
         energy = 7
     },
     magicSeptentrion = {
-        name = "Magic Septentrion",
+        name = PST:getLocalized("sideart_magicSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Use an active item.", PST.kcolors.BLUE1},
-            {"Generates 4 energy per used charge.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_magicSeptentrion_desc"),
         objective = {
-            desc = "Use an active item with at least 1 charge in rooms with monsters {{progress}}/30 times.",
+            desc = PST:getLocalized("sideart_magicSeptentrion_obj"),
             req = 30
         },
         energy = 4
     },
     solarSeptentrion = {
-        name = "Solar Septentrion",
+        name = PST:getLocalized("sideart_solarSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Enter a treasure room for the first time in the floor.", PST.kcolors.BLUE1},
-            {"Generates 2 energy per second for 60 seconds.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_solarSeptentrion_desc"),
         objective = {
-            desc = "Enter {{progress}}/30 different treasure rooms.",
+            desc = PST:getLocalized("sideart_solarSeptentrion_obj"),
             req = 30
         },
         energy = 2
     },
     lunarSeptentrion = {
-        name = "Lunar Septentrion",
+        name = PST:getLocalized("sideart_lunarSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Enter a secret room for the first time in the floor.", PST.kcolors.BLUE1},
-            {"Generates 4 energy per second for 30 seconds.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_lunarSeptentrion_desc"),
         objective = {
-            desc = "Enter {{progress}}/30 different secret rooms.",
+            desc = PST:getLocalized("sideart_lunarSeptentrion_obj"),
             req = 30
         },
         energy = 4
     },
     superstitiousSeptentrion = {
-        name = "Superstitious Septentrion",
+        name = PST:getLocalized("sideart_superstitiousSeptentrion"),
         type = "septentrion",
-        desc = {
-            {"Condition: Use any consumable pocket item.", PST.kcolors.BLUE1},
-            {"Generates 15 energy.", PST.kcolors.TEAL1}
-        },
+        desc = PST:getLocalized("sideart_superstitiousSeptentrion_desc"),
         objective = {
-            desc = "Use consumable pocket items {{progress}}/40 times.",
+            desc = PST:getLocalized("sideart_superstitiousSeptentrion_obj"),
             req = 40
         },
         energy = 15
@@ -194,272 +149,203 @@ PST.sideArtiData = {
 
     ---- MERIDIONS ----
     galvanicMeridion = {
-        name = "Galvanic Meridion",
+        name = PST:getLocalized("sideart_galvanicMeridion"),
         type = "meridion",
-        desc = {
-            {"15 energy: Gain 3% all stats for 5 seconds.", PST.kcolors.TEAL1},
-            "No artifact cooldown.",
-        },
+        desc = PST:getLocalized("sideart_galvanicMeridion_desc"),
         energyReq = 15
     },
     glacialMeridion = {
-        name = "Glacial Meridion",
+        name = PST:getLocalized("sideart_glacialMeridion"),
         type = "meridion",
-        desc = {
-            {"25 energy: Triggers Hourglass' effect.", PST.kcolors.TEAL1},
-            "4 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_glacialMeridion_desc"),
         objective = {
-            desc = "Kill {{progress}}/40 slowed enemies.",
+            desc = PST:getLocalized("sideart_glacialMeridion_obj"),
             req = 40
         },
         energyReq = 25,
         cooldown = 4
     },
     smitingMeridion = {
-        name = "Smiting Meridion",
+        name = PST:getLocalized("sideart_smitingMeridion"),
         type = "meridion",
-        desc = {
-            {"30 energy: Damage all enemies in the room for 5 + 7% of their max HP, up to 4 times per room.", PST.kcolors.TEAL1},
-            {"Flat damage dealt goes up as you progress through floors.", PST.kcolors.TEAL1},
-            "3 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_smitingMeridion_desc"),
         objective = {
-            desc = "Clear {{progress}}/30 rooms within 7 seconds each.",
+            desc = PST:getLocalized("sideart_smitingMeridion_obj"),
             req = 30
         },
         energyReq = 30,
         cooldown = 3
     },
     infectiousMeridion = {
-        name = "Infectious Meridion",
+        name = PST:getLocalized("sideart_infectiousMeridion"),
         type = "meridion",
-        desc = {
-            {"20 energy: Generate a pulse that damages nearby enemies and inflicts a status effect on them", PST.kcolors.TEAL1},
-            {"for 4 seconds.", PST.kcolors.TEAL1},
-            "2 second artifact cooldown"
-        },
+        desc = PST:getLocalized("sideart_infectiousMeridion_desc"),
         objective = {
-            desc = "Inflict status effects on non-boss enemies {{progress}}/200 times.",
+            desc = PST:getLocalized("sideart_infectiousMeridion_obj"),
             req = 200
         },
         energyReq = 20,
         cooldown = 2
     },
     virtuousMeridion = {
-        name = "Virtuous Meridion",
+        name = PST:getLocalized("sideart_virtuousMeridion"),
         type = "meridion",
-        desc = {
-            {"60 energy: Generate a random orbiting Wisp to assist you, up to 5 times per floor.", PST.kcolors.TEAL1},
-            "7 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_virtuousMeridion_desc"),
         objective = {
-            desc = "Kill {{progress}}/15 boss monsters with familiar damage.",
+            desc = PST:getLocalized("sideart_virtuousMeridion_obj"),
             req = 15
         },
         energyReq = 60,
         cooldown = 7
     },
     stoneMeridion = {
-        name = "stoneMeridion",
+        name = PST:getLocalized("sideart_stoneMeridion"),
         type = "meridion",
-        desc = {
-            {"30 energy: Petrify a random enemy in the room for 7 seconds, prioritizing enemies with the", PST.kcolors.TEAL1},
-            {"highest health.", PST.kcolors.TEAL1},
-            "4 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_stoneMeridion_desc"),
         objective = {
-            desc = "Kill {{progress}}/50 petrified enemies.",
+            desc = PST:getLocalized("sideart_stoneMeridion_obj"),
             req = 50
         },
         energyReq = 30,
         cooldown = 4
     },
     infernalMeridion = {
-        name = "infernalMeridion",
+        name = PST:getLocalized("sideart_infernalMeridion"),
         type = "meridion",
-        desc = {
-            {"90 energy:", PST.kcolors.TEAL1},
-            {"   Inflict burning on all enemies in the room for 6 seconds.", PST.kcolors.TEAL1},
-            {"   For the rest of the room, burning enemies explode on death, damaging other nearby enemies.", PST.kcolors.TEAL1},
-            "6 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_infernalMeridion_desc"),
         objective = {
-            desc = "Kill {{progress}}/50 burning enemies",
+            desc = PST:getLocalized("sideart_infernalMeridion_obj"),
             req = 50
         },
         energyReq = 90,
         cooldown = 6
     },
     deadSeaMeridion = {
-        name = "Dead Sea Meridion",
+        name = PST:getLocalized("sideart_deadSeaMeridion"),
         type = "meridion",
-        desc = {
-            {"30 energy: Trigger Dead Sea Scrolls' effect, up to 4 times per room.", PST.kcolors.TEAL1},
-            "4 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_deadSeaMeridion_desc"),
         objective = {
-            desc = "Use active items with at least 3 charges in boss rooms {{progress}}/20 times",
+            desc = PST:getLocalized("sideart_deadSeaMeridion_obj"),
             req = 20
         },
         energyReq = 30,
         cooldown = 4
     },
     flowingMeridion = {
-        name = "Flowing Meridion",
+        name = PST:getLocalized("sideart_flowingMeridion"),
         type = "meridion",
-        desc = {
-            {"20 energy: Trigger Isaac's Tears' effect.", PST.kcolors.TEAL1},
-            "3 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_flowingMeridion_desc"),
         objective = {
-            desc = "Kill {{progress}}/300 monsters with tears.",
+            desc = PST:getLocalized("sideart_flowingMeridion_obj"),
             req = 300
         },
         energyReq = 20,
         cooldown = 3
     },
     osseousMeridion = {
-        name = "Osseous Meridion",
+        name = PST:getLocalized("sideart_osseousMeridion"),
         type = "meridion",
-        desc = {
-            {"70 energy:", PST.kcolors.TEAL1},
-            {"   Floors 1-3: Spawn 2 friendly Bonys, up to 3 times per floor.", PST.kcolors.TEAL1},
-            {"   Floors 4-6: Spawn 3 friendly Bonys, up to 3 times per floor.", PST.kcolors.TEAL1},
-            {"   Floors 7-9: Spawn 1 friendly Holy Bony, once per floor.", PST.kcolors.TEAL1},
-            {"   Floors 10+: Spawn 1 friendly Holy Bony, up to twice per floor.", PST.kcolors.TEAL1},
-            "5 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_osseousMeridion_desc"),
         objective = {
-            desc = "Kill {{progress}}/100 Bonys or its variants.",
+            desc = PST:getLocalized("sideart_osseousMeridion_obj"),
             req = 100
         },
         energyReq = 70,
         cooldown = 5
     },
     monstrousMeridion = {
-        name = "Monstrous Meridion",
+        name = PST:getLocalized("sideart_monstrousMeridion"),
         type = "meridion",
-        desc = {
-            {"50 energy: Trigger Monster Manual's effect, up to 4 times per floor.", PST.kcolors.TEAL1},
-            "3 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_monstrousMeridion_desc"),
         objective = {
-            desc = "Clear {{progress}}/20 boss rooms while having at least 6 familiars.",
+            desc = PST:getLocalized("sideart_monstrousMeridion_obj"),
             req = 20
         },
         energyReq = 50,
         cooldown = 3
     },
     brimMeridion = {
-        name = "Brim Meridion",
+        name = PST:getLocalized("sideart_brimMeridion"),
         type = "meridion",
-        desc = {
-            {"45 energy: Inflict every monster in the room with Hemoptysis' curse for 7 seconds,", PST.kcolors.TEAL1},
-            {"once per room.", PST.kcolors.TEAL1},
-            "No artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_brimMeridion_desc"),
         objective = {
-            desc = "Kill {{progress}}/200 monsters with lasers.",
+            desc = PST:getLocalized("sideart_brimMeridion_obj"),
             req = 200
         },
         energyReq = 45
     },
     executionerMeridion = {
-        name = "Executioner Meridion",
+        name = PST:getLocalized("sideart_executionerMeridion"),
         type = "meridion",
-        desc = {
-            {"60 energy: For 8 seconds, your hits will execute monsters below 15% HP.", PST.kcolors.TEAL1},
-            "4 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_executionerMeridion_desc"),
         objective = {
-            desc = "Defeat 2 final bosses within the same run {{progress}}/3 times.",
+            desc = PST:getLocalized("sideart_executionerMeridion_obj"),
             req = 3
         },
         energyReq = 60,
         cooldown = 4
     },
     blastingMeridion = {
-        name = "Blasting Meridion",
+        name = PST:getLocalized("sideart_blastingMeridion"),
         type = "meridion",
-        desc = {
-            {"60 energy: Trigger XVI - The Tower's effect and become immune to explosions for 4 seconds,", PST.kcolors.TEAL1},
-            {"up to twice per room.", PST.kcolors.TEAL1},
-            "5 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_blastingMeridion_desc"),
         objective = {
-            desc = "Win a run with the Circadian Destructor ancient starcursed jewel equipped.",
+            desc = PST:getLocalized("sideart_blastingMeridion_obj"),
             req = 1
         },
         energyReq = 60,
         cooldown = 5
     },
     gildedMeridion = {
-        name = "Gilded Meridion",
+        name = PST:getLocalized("sideart_gildedMeridion"),
         type = "meridion",
-        desc = {
-            {"50 energy: For 7 seconds, killing enemies will drop double pennies that vanish in 3 seconds, once", PST.kcolors.TEAL1},
-            {"per room.", PST.kcolors.TEAL1},
-            "5 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_gildedMeridion_desc"),
         objective = {
-            desc = "Purchase 12 items within the same run.",
+            desc = PST:getLocalized("sideart_gildedMeridion_obj"),
             req = 1
         },
         energyReq = 50,
         cooldown = 5
     },
     smelterMeridion = {
-        name = "Smelter Meridion",
+        name = PST:getLocalized("sideart_smelterMeridion"),
         type = "meridion",
-        desc = {
-            {"200 energy: Smelt a random trinket you don't currently have for the current floor, up to 3 per floor.", PST.kcolors.TEAL1},
-            "3 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_smelterMeridion_desc"),
         objective = {
-            desc = "Win a run with at least 4 smelted trinkets.",
+            desc = PST:getLocalized("sideart_smelterMeridion_obj"),
             req = 4
         },
         energyReq = 200,
         cooldown = 3
     },
     siderealMeridion = {
-        name = "Sidereal Meridion",
+        name = PST:getLocalized("sideart_siderealMeridion"),
         type = "meridion",
-        desc = {
-            {"200 energy: Spawn a Sidereal Cache, up to 5 times per floor.", PST.kcolors.TEAL1},
-            "3 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_siderealMeridion_desc"),
         objective = {
-            desc = "Open {{progress}}/40 Sidereal Caches.",
+            desc = PST:getLocalized("sideart_siderealMeridion_obj"),
             req = 40
         },
         energyReq = 200,
         cooldown = 3
     },
     snakeyeMeridion = {
-        name = "Snake-Eye Meridion",
+        name = PST:getLocalized("sideart_snakeyeMeridion"),
         type = "meridion",
-        desc = {
-            {"250 energy: Spawn a Dice Shard, up to 3 times per floor.", PST.kcolors.TEAL1},
-            "5 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_snakeyeMeridion_desc"),
         objective = {
-            desc = "Use dice active items {{progress}}/40 times.",
+            desc = PST:getLocalized("sideart_snakeyeMeridion_obj"),
             req = 40
         },
         energyReq = 250,
         cooldown = 5
     },
     bloodmoonMeridion = {
-        name = "Bloodmoon Meridion",
+        name = PST:getLocalized("sideart_bloodmoonMeridion"),
         type = "meridion",
-        desc = {
-            {"350 energy: Spawn a Cracked Key. 6% chance to reveal the Ultra Secret Room on trigger.", PST.kcolors.TEAL1},
-            "5 second artifact cooldown."
-        },
+        desc = PST:getLocalized("sideart_bloodmoonMeridion_desc"),
         objective = {
-            desc = "Enter the Ultra Secret Room {{progress}}/5 times.",
+            desc = PST:getLocalized("sideart_bloodmoonMeridion_obj"),
             req = 5
         },
         energyReq = 350,

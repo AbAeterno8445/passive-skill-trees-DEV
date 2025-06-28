@@ -201,5 +201,45 @@ return {
     ["node_ancwepcompendium"] = {
         "Once allocated, press Allocate to open a list of all available Ancient Weapons for each",
         "weapon type."
-    }
+    },
+
+
+    ---- CRIMSON CONVERGENCE ----
+    ["ui_crimconv_mundaneSlaughter"] = "Mundane Slaughter",
+    ["ui_crimconv_mundaneSlaughter_desc"] = {"Per Crimson Starcore: +1% damage dealt to normal monsters."},
+    ["ui_crimconv_giantSlaughter"] = "Giant Slaughter",
+    ["ui_crimconv_giantSlaughter_desc"] = {"Per Crimson Starcore: +1% damage dealt to champions and non-final bosses."},
+    ["ui_crimconv_titanSlaughter"] = "Titan Slaughter",
+    ["ui_crimconv_titanSlaughter_desc"] = {"Per Crimson Starcore: +2% damage dealt to final bosses."},
+    ["ui_crimconv_blightseeking"] = "Blightseeking",
+    ["ui_crimconv_blightseeking_desc"] = {"Per Crimson Starcore: +1% damage dealt to enemies affected by any status effect."},
+    ["ui_crimconv_celerity"] = "Celerity",
+    ["ui_crimconv_celerity_desc"] = {"Your minimum speed in cleared rooms becomes 1 + 0.04 per Crimson Starcore."},
+    ["ui_crimconv_bloodshield"] = "Bloodshield",
+    ["ui_crimconv_bloodshield_desc"] = {
+        "When entering a room with monsters, become invulnerable for 1.5 seconds.",
+        "+0.1 seconds to the invulnerability duration per Crimson Starcore."
+    },
+    ["ui_crimconv_abundanceGoods"] = "Abundance: Goods",
+    ["ui_crimconv_abundanceGoods_desc"] = {
+        "Per Crimson Starcore: Whenever a coin/key/bomb first appears, 1% chance to duplicate it.",
+        "Triple this chance for vanishing pickups."
+    },
+    ["ui_crimconv_abundanceVitality"] = "Abundance: Vitality",
+    ["ui_crimconv_abundanceVitality_desc"] = {
+        "Per Crimson Starcore: Whenever a heart first appears, 1% chance to duplicate it.",
+        "Double this chance for vanishing hearts."
+    },
+    ["ui_crimconv_sanguineCharges"] = "Sanguine Charges",
+    ["ui_crimconv_sanguineCharges_desc"] = {
+        "Per Crimson Starcore: When using an active item with at least 2 charges, 10% chance to",
+        "regain 1 charge. Above 100% total chance, roll for multiple charge regain.",
+        "Can overcharge."
+    },
+    ["ui_crimconv_fortuna"] = "Fortuna",
+    ["ui_crimconv_fortuna_desc"] = {
+        "Per Crimson Starcore: 1% of your luck stat gets added to your damage."
+    },
+    ["ui_crimconv_starstruck"] = "Starstruck",
+    ["ui_crimconv_starstruck_desc"] = {"Per Crimson Starcore: +3% obols found."}
 }

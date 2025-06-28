@@ -296,7 +296,7 @@ local descriptionBoxesModule = {
             if isAllocated then
                 local charData = PST:getCurrentCharData()
                 if charData then
-                    table.insert(nodeDesc, {PST:getCurrentCharName() .. " Crimson Starcores: " .. charData.crimsonStarcores, PST.kcolors.RED3})
+                    table.insert(nodeDesc, {PST:getLocalizedFormatStr("ui_charCrimsonCores", {charName = PST:getCurrentCharName(), cores = charData.crimsonStarcores}), PST.kcolors.RED3})
 
                     if charData.crimConvBuff and PST.crimConvergenceBuffs[charData.crimConvBuff] then
                         local buffData = PST.crimConvergenceBuffs[charData.crimConvBuff]

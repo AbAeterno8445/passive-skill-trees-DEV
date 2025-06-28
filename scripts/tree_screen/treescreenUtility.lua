@@ -131,14 +131,14 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
             tmpColor = description[i][2]
         else
             -- Harmonic mods color (Siren's tree)
-            if PST:strStartsWith(tmpStr, "[Harmonic]") then
+            if PST:strStartsWith(tmpStr, PST:getLocalized("harmonic_prefix")) then
                 if PST:songNodesAllocated(false) <= 2 then
                     tmpColor = PST.kcolors.SKY_BLUE
                 else
                     tmpColor = PST.kcolors.GRAY2
                 end
             -- Spiritful mods color (Forgotten's tree)
-            elseif PST:strStartsWith(tmpStr, "[Spiritful]") then
+            elseif PST:strStartsWith(tmpStr, PST:getLocalized("spiritful_prefix")) then
                 tmpColor = PST.kcolors.LIGHTBLUE1
             end
         end

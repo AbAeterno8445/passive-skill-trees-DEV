@@ -1,74 +1,47 @@
 PST.crimConvergenceBuffs = {
     mundaneSlaughter = {
-        name = "Mundane Slaughter",
-        desc = {
-            "Per Crimson Starcore: +1% damage dealt to normal monsters."
-        }
+        name = PST:getLocalized("ui_crimconv_mundaneSlaughter"),
+        desc = PST:getLocalized("ui_crimconv_mundaneSlaughter_desc")
     },
     giantSlaughter = {
-        name = "Giant Slaughter",
-        desc = {
-            "Per Crimson Starcore: +1% damage dealt to champions and non-final bosses."
-        }
+        name = PST:getLocalized("ui_crimconv_giantSlaughter"),
+        desc = PST:getLocalized("ui_crimconv_giantSlaughter_desc")
     },
     titanSlaughter = {
-        name = "Titan Slaughter",
-        desc = {
-            "Per Crimson Starcore: +2% damage dealt to final bosses."
-        }
+        name = PST:getLocalized("ui_crimconv_titanSlaughter"),
+        desc = PST:getLocalized("ui_crimconv_titanSlaughter_desc")
     },
     blightseeking = {
-        name = "Blightseeking",
-        desc = {
-            "Per Crimson Starcore: +1% damage dealt to enemies affected by any status effect."
-        }
+        name = PST:getLocalized("ui_crimconv_blightseeking"),
+        desc = PST:getLocalized("ui_crimconv_blightseeking_desc")
     },
     celerity = {
-        name = "Celerity",
-        desc = {
-            "Your minimum speed in cleared rooms becomes 1 + 0.04 per Crimson Starcore."
-        }
+        name = PST:getLocalized("ui_crimconv_celerity"),
+        desc = PST:getLocalized("ui_crimconv_celerity_desc")
     },
     bloodshield = {
-        name = "Bloodshield",
-        desc = {
-            "When entering a room with monsters, become invulnerable for 1.5 seconds.",
-            "+0.1 seconds to the invulnerability duration per Crimson Starcore."
-        }
+        name = PST:getLocalized("ui_crimconv_bloodshield"),
+        desc = PST:getLocalized("ui_crimconv_bloodshield_desc")
     },
     abundanceGoods = {
-        name = "Abundance: Goods",
-        desc = {
-            "Per Crimson Starcore: Whenever a coin/key/bomb first appears, 1% chance to duplicate it.",
-            "Triple this chance for vanishing pickups."
-        }
+        name = PST:getLocalized("ui_crimconv_abundanceGoods"),
+        desc = PST:getLocalized("ui_crimconv_abundanceGoods_desc")
     },
     abundanceVitality = {
-        name = "Abundance: Vitality",
-        desc = {
-            "Per Crimson Starcore: Whenever a heart first appears, 1% chance to duplicate it.",
-            "Double this chance for vanishing hearts."
-        }
+        name = PST:getLocalized("ui_crimconv_abundanceVitality"),
+        desc = PST:getLocalized("ui_crimconv_abundanceVitality_desc")
     },
     sanguineCharges = {
-        name = "Sanguine Charges",
-        desc = {
-            "Per Crimson Starcore: When using an active item with at least 2 charges, 10% chance to",
-            "regain 1 charge. Above 100% total chance, roll for multiple charge regain.",
-            "Can overcharge."
-        }
+        name = PST:getLocalized("ui_crimconv_sanguineCharges"),
+        desc = PST:getLocalized("ui_crimconv_sanguineCharges_desc")
     },
     fortuna = {
-        name = "Fortuna",
-        desc = {
-            "Per Crimson Starcore: 1% of your luck stat gets added to your damage."
-        }
+        name = PST:getLocalized("ui_crimconv_fortuna"),
+        desc = PST:getLocalized("ui_crimconv_fortuna_desc")
     },
     starstruck = {
-        name = "Starstruck",
-        desc = {
-            "Per Crimson Starcore: +3% obols found."
-        }
+        name = PST:getLocalized("ui_crimconv_starstruck"),
+        desc = PST:getLocalized("ui_crimconv_starstruck_desc")
     }
 }
 PST.crimConvBuffsLen = 0

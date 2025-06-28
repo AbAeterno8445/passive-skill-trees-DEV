@@ -20,7 +20,7 @@ function cosmicRSubmenu:Render(tScreen, submenusModule)
         #PST.cosmicRData.characters,
         tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
-        "Cosmic Realignment",
+        PST:getLocalized("ui_cosmicRealignment"),
         function()
             local i = 1
             for charID, _ in pairs(PST.cosmicRData.characters) do

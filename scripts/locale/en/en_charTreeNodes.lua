@@ -737,6 +737,7 @@ return {
 
 
     -- THE FORGOTTEN'S TREE --
+    ["spiritful_prefix"] = "[Spiritful]",
     ["node_soulful_name"] = "Soulful",
     ["node_soulful"] = {
         "Losing a bone heart spawns a soul heart.",
@@ -928,6 +929,7 @@ return {
 
 
     -- SIREN'S TREE --
+    ["harmonic_prefix"] = "[Harmonic]",
     ["node_darksongstress_name"] = "Dark Songstress",
     ["node_darksongstress"] = {
         "Non-charmed enemies receive 8% less damage.",

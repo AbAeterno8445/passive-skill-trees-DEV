@@ -27,9 +27,9 @@ end
 function starcursedInvSubmenu:Render(tScreen, submenusModule)
     local tmpJewelType = self.jewelType
     local tmpJewelPages = math.ceil(#PST.modData.starTreeInventory[tmpJewelType] / jewelsPerPage)
-    local tmpTitle = tmpJewelType .. " Inventory"
+    local tmpTitle = tmpJewelType .. " " .. PST:getLocalized("ui_inventory")
     if self.socket then
-        tmpTitle = tmpJewelType .. " Socket " .. tostring(self.socket)
+        tmpTitle = tmpJewelType .. " " .. PST:getLocalized("ui_socket") .. " " .. tostring(self.socket)
     end
 
     self.hoveredJewel = nil
@@ -132,7 +132,7 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
 
         local textX = self.menuX * tScreen.zoomScale - 80 - tScreen.treeCamera.X - tScreen.camZoomOffset.X
         local textY = self.menuY * tScreen.zoomScale + 220 - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
-        local tmpStr = "Ancient Jewels found: " .. foundJewels .. "/" .. PST.totalAncientJewels
+        local tmpStr = PST:getLocalized("ui_ancJewelsFound") .. ": " .. foundJewels .. "/" .. PST.totalAncientJewels
         PST.normalFont:DrawString(tmpStr, textX, textY, PST.kcolors.ANCIENT_ORANGE, 160, true)
     end
 end

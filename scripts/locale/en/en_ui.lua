@@ -5,8 +5,13 @@ return {
     ["ui_cosmicR_EtoPick"] = "(E to pick character)",
     ["ui_cosmicR_unlockChar"] = "Unlock {{charName}} to enable this option.",
 
+    ["ui_globalTree"] = "Global Tree",
+    ["ui_charTreeName"] = "{{charName}}{{en_possessive}} Tree",
+    ["ui_charTreeAccessHint"] = "Press Q to access {{charName}}{{en_possessive}} tree.",
+
     ["ui_starTree"] = "Star Tree",
     ["ui_starTree_EtoView"] = "(E to view Star Tree)",
+    ["ui_totalStarmight"] = "({{starmight}} total starmight)",
     ["ui_starTree_levelReqWarn"] = "Reach level {{levelReq}} with at least one character to unlock.",
     ["ui_starmight"] = "Starmight",
 
@@ -17,6 +22,29 @@ return {
     ["ui_locked"] = "locked",
     ["ui_Locked"] = "Locked",
     ["ui_cost"] = "Cost",
+
+    ["ui_treeEffectsDisabled"] = "Tree effects disabled",
+    ["ui_treeReenableHint"] = "Shift + Q to re-enable",
+
+    ["ui_helpToggleHint1"] = "H / Select: toggle help",
+    ["ui_helpToggleHint2"] = "Tab: Menu quick select",
+
+    ["ui_inRunNonDynamic"] = "IN RUN - Changes to the tree will be reflected on the next run you start",
+
+    ["ui_cosmicRealignment"] = "Cosmic Realignment",
+
+    ["ui_crimsonConvergence"] = "Crimson Convergence",
+    ["ui_Universal Crimson Node"] = "Universal Crimson Node",
+    ["ui_Core Crimson Node"] = "Core Crimson Node",
+    ["ui_Divergent Crimson Node"] = "Divergent Crimson Node",
+
+    ["ui_edenHairdo"] = "Eden Hairdo",
+
+    ["ui_infectiousMeridion"] = "Infectious Meridion",
+
+    ["ui_obscureBazaar"] = "Obscure Bazaar",
+
+    ["ui_ancJewelsFound"] = "Ancient Jewels found",
 
     ["ui_bazaarRefresh"] = "Bazaar Refresh",
     ["ui_allocBazaarRefresh"] = "Allocate the 'Bazaar Refresh' node to unlock.",
@@ -58,6 +86,7 @@ return {
 
     ["ui_currentChar"] = "Current character",
     ["ui_skillPoints"] = "skill points",
+    ["ui_SkillPoints"] = "Skill Points",
 
     ["ui_globalSPConvDesc1"] = "Once allocated, press the Allocate button to convert some Arcane Obols into a Global Skill Point.",
     ["ui_globalSPConvDesc2"] = "Obol conversion cost increases the more you use this exchange with the current character.",
@@ -86,7 +115,9 @@ return {
     ["ui_arcaneObols"] = "Arcane Obols",
     ["ui_mighty"] = "Mighty",
     ["ui_globalSP"] = "Global SP",
+    ["ui_characterSkillPoint"] = "Character Skill Point",
     ["ui_crimsonCore"] = "Crimson Starcore",
+    ["ui_crimsonCores"] = "Crimson Starcores",
     ["ui_none"] = "None",
     ["ui_uber"] = "Uber",
     ["ui_items"] = "Items",
@@ -109,6 +140,8 @@ return {
     ["ui_gain"] = "Gain",
     ["ui_globalSkillPoints"] = "Global Skill Point(s)",
     ["ui_done"] = "Done",
+    ["ui_inventory"] = "Inventory",
+    ["ui_socket"] = "Socket",
 
     ["ui_normal"] = "normal",
     ["ui_Normal"] = "Normal",
@@ -124,6 +157,7 @@ return {
 
     ["ui_prev"] = "Prev",
     ["ui_next"] = "Next",
+    ["ui_back"] = "Back",
 
     ["ui_convBoss"] = "Converted boss",
 
@@ -149,10 +183,23 @@ return {
     ["ui_costsObols"] = "Costs {{price}} arcane obols.",
     ["ui_allocPurchase"] = "Press Allocate to purchase.",
 
+    ["ui_wepCompendium"] = "Weapon Compendium",
     ["ui_wepCompendiumKey"] = "Press Allocate to view a list of available ancient weapons for this type.",
 
     ["ui_wepType"] = "Weapon Type",
     ["ui_ancWep"] = "Ancient Weapon",
+
+    ["ui_cantProgInRun"] = "Can't progress in this run - must start a new one",
+
+    ["ui_openTreeKey"] = "V / LT or LB to open tree",
+    ["ui_treeDisabled"] = "tree disabled",
+
+    ["ui_dataLossDetected"] = "Data Loss Detected",
+    ["ui_backupWarn1"] = "Potential data loss has been detected, and backup files are present.",
+    ["ui_backupWarn2"] = "Press up/down to select one of these available backups, and E to attempt loading it.",
+    ["ui_backupWarn3"] = "Press ESC / Back to dismiss popup.",
+    ["ui_backupWarn4"] = "This popup will stop showing up once your global level is higher than 1",
+    ["ui_loadBackupHint"] = "E / Action Button to load this backup",
 
 
     ---- FLOATING TEXTS ----

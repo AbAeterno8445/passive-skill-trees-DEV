@@ -7,7 +7,7 @@ local obsBazaarSubmenu = {
 
 local obsBazaarItems = {
     {
-        name = "Crimson Starcore",
+        name = PST:getLocalized("ui_crimsonCore"),
         price = 2500,
         type = PSTExpNodeRewardType.C_STARCORE,
         purchaseFunc = function(charData)
@@ -16,7 +16,7 @@ local obsBazaarItems = {
         end
     },
     {
-        name = "Starblessed Prism",
+        name = PST:getLocalized("ui_starblessedPrism"),
         price = 4000,
         type = PSTExpNodeRewardType.STARBLESS_PRISM,
         purchaseFunc = function(charData)
@@ -24,7 +24,7 @@ local obsBazaarItems = {
         end
     },
     {
-        name = "Character Skill Point",
+        name = PST:getLocalized("ui_characterSkillPoint"),
         price = 1200,
         type = PSTExpNodeRewardType.GLOBAL_SP,
         purchaseFunc = function(charData)
@@ -59,7 +59,7 @@ function obsBazaarSubmenu:Render(tScreen, submenusModule)
         #obsBazaarItems,
         tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
-        "Obscure Bazaar",
+        PST:getLocalized("ui_obscureBazaar"),
         function()
             local i = 1
             for _, tmpItem in ipairs(obsBazaarItems) do

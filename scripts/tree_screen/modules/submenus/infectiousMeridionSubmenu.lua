@@ -24,7 +24,7 @@ function infMeridionSubmenu:Render(tScreen, submenusModule)
         #infStatus,
         tScreen.camCenterX, tScreen.camCenterY,
         self.menuX, self.menuY,
-        "Infectious Meridion",
+        PST:getLocalized("ui_infectiousMeridion"),
         function()
             local i = 1
             for _, tmpStatus in ipairs(infStatus) do

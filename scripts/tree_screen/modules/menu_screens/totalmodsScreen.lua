@@ -83,7 +83,7 @@ function totalmodsScreen:OnOpen(openData)
         local parsedModLines = PST:parseModifierLines(tmpModName, tmpModVal)
         for _, tmpLine in ipairs(parsedModLines) do
             -- Harmonic modifiers, check if disabled
-            if PST:strStartsWith(tmpLine, "    [Harmonic]") and PST:songNodesAllocated() > 2 then
+            if PST:strStartsWith(tmpLine, "    " .. PST:getLocalized("harmonic_prefix")) and PST:songNodesAllocated() > 2 then
                 tmpColor = PST.kcolors.GRAY1
             end
             table.insert(self.totalModsList, {tmpLine, tmpColor})

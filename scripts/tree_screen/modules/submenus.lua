@@ -96,7 +96,7 @@ function submenusModule:DrawNodeSubMenu(tScreen, menuRows, centerX, centerY, men
 
         self.BGSprite:Render(Vector(tmpBGX - tScreen.treeCamera.X - tScreen.camZoomOffset.X, tmpBGY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y))
         Isaac.RenderText(
-            "Prev",
+            PST:getLocalized("ui_prev"),
             tmpBGX - tScreen.treeCamera.X - tScreen.camZoomOffset.X + 8,
             tmpBGY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y + 3,
             table.unpack(tmpColor)
@@ -123,7 +123,7 @@ function submenusModule:DrawNodeSubMenu(tScreen, menuRows, centerX, centerY, men
 
         self.BGSprite:Render(Vector(tmpBGX - tScreen.treeCamera.X - tScreen.camZoomOffset.X, tmpBGY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y))
         Isaac.RenderText(
-            "Next",
+            PST:getLocalized("ui_next"),
             tmpBGX - tScreen.treeCamera.X - tScreen.camZoomOffset.X + 9,
             tmpBGY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y + 3,
             table.unpack(tmpColor)
