@@ -169,7 +169,7 @@ function menuTabberScreen:Render(tScreen)
         end
         PST.miniFont:DrawString(tmpNodeTxt, tmpDrawX + 40, nodeY - 7, tmpColor)
         if not isEnabled then
-            PST.miniFont:DrawStringScaled(PST:getLocalized("ui_locked"), tmpDrawX + 40, nodeY + 5, 0.5, 0.5, PST.kcolors.RED1)
+            PST.miniFont:DrawStringScaled(PST:getLocalized("ui_Locked"), tmpDrawX + 40, nodeY + 5, 0.5, 0.5, PST.kcolors.RED1)
         end
 
         tmpDrawn = tmpDrawn + 1

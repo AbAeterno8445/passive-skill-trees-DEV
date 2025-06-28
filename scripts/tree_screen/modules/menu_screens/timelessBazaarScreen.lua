@@ -185,12 +185,12 @@ end
 
 local tmpResources = {
     {
-        name = "Global SP",
+        name = PST:getLocalized("ui_globalSP"),
         targetVal = function() return PST.modData.skillPoints end,
         color = PST.kcolors.BLUE1
     },
     {
-        name = "Arcane Obols",
+        name = PST:getLocalized("ui_arcaneObols"),
         targetVal = function()
             local charData = PST:getCurrentCharData()
             if charData and charData.arcaneObols then return charData.arcaneObols end
@@ -199,7 +199,7 @@ local tmpResources = {
         color = PST.kcolors.PURPLE1
     },
     {
-        name = "Respecs",
+        name = PST:getLocalized("ui_Respecs"),
         targetVal = function() return PST.modData.respecPoints end,
         color = PST.kcolors.WHITE
     }
@@ -211,7 +211,7 @@ function timelessBazaarScreen:Render(tScreen)
     local startX = tScreen.screenW / 2 - boxW / 2
     local startY = tScreen.screenH / 2 - boxH / 2
     self:DrawUIBox(startX, startY, boxW, boxH)
-    PST.miniFont:DrawString("Timeless Bazaar", startX + 3, startY, PST.kcolors.PURPLE1)
+    PST.miniFont:DrawString(PST:getLocalized("ui_timelessBazaar"), startX + 3, startY, PST.kcolors.PURPLE1)
     local drawX = startX + 22
     local drawY = startY + 36
 
@@ -236,27 +236,27 @@ function timelessBazaarScreen:Render(tScreen)
     drawX = drawX + 17
     drawY = drawY - 18
 
-    local tmpStr = "Bazaar Refresh"
-    if not canRefresh then tmpStr = tmpStr .. " (locked)" end
+    local tmpStr = PST:getLocalized("ui_bazaarRefresh")
+    if not canRefresh then tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_locked") .. ")" end
     PST.miniFont:DrawString(tmpStr, drawX, drawY, PST.kcolors.PURPLE1)
     drawY = drawY + 12
 
     if not canRefresh then
-        local tmpMsg = "Allocate the 'Bazaar Refresh' node to unlock."
+        local tmpMsg = PST:getLocalized("ui_allocBazaarRefresh")
         local charData = PST:getCurrentCharData()
         if charData and charData.bazaarDone then
-            tmpMsg = "Refresh has been spent for this bazaar cycle."
+            tmpMsg = PST:getLocalized("ui_bazaarRefreshSpent")
         end
         PST.luaminiFont:DrawString(tmpMsg, drawX, drawY, PST.kcolors.WHITE)
         drawY = drawY + 11
     else
-        PST.luaminiFont:DrawString("Hold Respec for 1 second to refresh the item selection.", drawX, drawY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_bazaarHoldRefresh"), drawX, drawY, PST.kcolors.WHITE)
         drawY = drawY + 11
-        PST.luaminiFont:DrawString("Doing this will remove any purchased items!", drawX, drawY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawString(PST:getLocalized("ui_bazaarHoldRefresh2"), drawX, drawY, PST.kcolors.WHITE)
         drawX = startX + 8
         drawY = drawY + 11
         local refreshCosts = PST:bazaarGetCost("refresh")
-        tmpStr = "Refreshing costs " .. tostring(refreshCosts.SP) .. " global SP, " .. tostring(refreshCosts.obols) .. " obols, and " .. tostring(refreshCosts.respecs) .. " respecs."
+        tmpStr = PST:getLocalizedFormatStr("ui_bazaarrefreshCost", refreshCosts)
         PST.luaminiFont:DrawString(tmpStr, drawX, drawY, PST.kcolors.LEVEL_PURPLE)
     end
     drawX = startX + 5
@@ -279,10 +279,10 @@ function timelessBazaarScreen:Render(tScreen)
 
     -- Draw offered items
     local tmpColor = PST.kcolors.PURPLE1
-    tmpStr = "Offered Items:"
+    tmpStr = PST:getLocalized("ui_offeredItems") .. ":"
     if charData and charData.bazaarFrozen then
         tmpColor = PST.kcolors.SKY_BLUE
-        tmpStr = tmpStr .. " (frozen)"
+        tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_frozen") .. ")"
         self.bazaarUISprite:SetFrame("Default", 3)
         self.bazaarUISprite:Render(Vector(drawX + PST.miniFont:GetStringWidth(tmpStr) + 3, drawY - 5))
     end
@@ -332,13 +332,13 @@ function timelessBazaarScreen:Render(tScreen)
     end
     drawX = drawX + 3
     drawY = drawY + 36
-    PST.luaminiFont:DrawString("Left/Right to select item.", drawX, drawY, PST.kcolors.WHITE)
+    PST.luaminiFont:DrawString(PST:getLocalized("ui_leftRightSelItem"), drawX, drawY, PST.kcolors.WHITE)
     drawY = drawY + 12
-    PST.luaminiFont:DrawString("Press Q to freeze/unfreeze offered items.", drawX, drawY, PST.kcolors.SKY_BLUE)
+    PST.luaminiFont:DrawString(PST:getLocalized("ui_freezeItems"), drawX, drawY, PST.kcolors.SKY_BLUE)
     drawY = drawY + 16
 
     -- Draw purchased items
-    PST.miniFont:DrawString("Purchased Items:", drawX, drawY, PST.kcolors.PURPLE1)
+    PST.miniFont:DrawString(PST:getLocalized("ui_purchItems"), drawX, drawY, PST.kcolors.PURPLE1)
     drawY = drawY + 15
 
     self.BGSprite.Color.RO = 0.1
@@ -379,16 +379,16 @@ function timelessBazaarScreen:Render(tScreen)
             if not PST:bazaarCanAffordCost(itemCfg.Quality) and not PST.debugOptions.freeBazaar then
                 costColor = PST.kcolors.RED1
             end
-            local itemDesc = { "Hold allocate for 1 second to purchase this item." }
+            local itemDesc = { PST:getLocalized("ui_bazaarHoldPurchase") }
             -- Chance to keep other items
             local tmpMod = self.siderealMods["bazaarSelKeep"]
             if tmpMod and tmpMod > 0 then
-                table.insert(itemDesc, tostring(tmpMod) .. "% chance to keep the other item options when purchasing.")
+                table.insert(itemDesc, PST:getLocalizedFormatStr("ui_bazaarChanceToKeepItems", { chance = tmpMod }))
             else
-                table.insert(itemDesc, "Purchasing this item will remove the other options!")
+                table.insert(itemDesc, PST:getLocalized("ui_bazaarPurchaseOptionRem"))
             end
             -- Cost
-            table.insert(itemDesc, {"Cost: " .. tostring(itemCost.obols) .. " arcane obols.", costColor})
+            table.insert(itemDesc, {PST:getLocalized("ui_cost") .. ": " .. tostring(itemCost.obols) .. " " .. PST:getLocalized("ui_arcaneObols") .. ".", costColor})
 
             -- Final item description box
             tScreen:DrawNodeBox(itemName, itemDesc, startX + 7, 190, true, 1)
