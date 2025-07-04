@@ -42,6 +42,12 @@ return {
 
     ["ui_infectiousMeridion"] = "Meridión Infeccioso",
 
+    ["ui_poison"] = "veneno",
+    ["ui_fear"] = "miedo",
+    ["ui_charm"] = "encanto",
+    ["ui_slow"] = "ralentización",
+    ["ui_burn"] = "quemado",
+
     ["ui_obscureBazaar"] = "Bazar Solitario",
 
     ["ui_ancJewelsFound"] = "Joyas Antiguas encontradas",

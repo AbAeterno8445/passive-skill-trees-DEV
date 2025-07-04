@@ -536,6 +536,8 @@ if Isaac.IsInGame() then
 	end
 
 	PST.gameInit = true
+
+	PST:closeTreeMenu(true, true)
 end
 
 PST:initModCompat()

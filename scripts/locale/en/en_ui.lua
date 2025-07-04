@@ -42,6 +42,12 @@ return {
 
     ["ui_infectiousMeridion"] = "Infectious Meridion",
 
+    ["ui_poison"] = "poison",
+    ["ui_fear"] = "fear",
+    ["ui_charm"] = "charm",
+    ["ui_slow"] = "slow",
+    ["ui_burn"] = "burn",
+
     ["ui_obscureBazaar"] = "Obscure Bazaar",
 
     ["ui_ancJewelsFound"] = "Ancient Jewels found",

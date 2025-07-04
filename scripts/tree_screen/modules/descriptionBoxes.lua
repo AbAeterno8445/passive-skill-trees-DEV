@@ -585,10 +585,11 @@ function descriptionBoxesModule:Render(tScreen)
         -- Infectious Meridion submenu, hovered status
         elseif submenusModule.currentSubmenu == PSTSubmenu.INFECTIOUS_MERIDION then
             local infMeridionSubmenu = submenusModule.submenus[PSTSubmenu.INFECTIOUS_MERIDION]
-            local tmpStatus = infMeridionSubmenu.hoveredItem
+            local tmpStatus = infMeridionSubmenu.hoveredStatus
             if tmpStatus then
-                local tmpName = tmpStatus:gsub("^[a-z]", string.upper)
-                local tmpDesc = {PST:getLocalized("ui_pulseInflict") .. " " .. tmpStatus .. "."}
+                local statusLocale = PST:getLocalized("ui_" .. tmpStatus)
+                local tmpName = statusLocale:gsub("^[a-z]", string.upper)
+                local tmpDesc = {PST:getLocalized("ui_pulseInflict") .. " " .. statusLocale .. "."}
                 tScreen:DrawNodeBox(tmpName, tmpDesc)
             end
         -- Crimson Convergence submenu, hovered buff

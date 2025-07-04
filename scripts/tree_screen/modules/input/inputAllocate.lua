@@ -410,7 +410,7 @@ function PST.treeScreen:InputAllocate()
             end
         -- Infectious Meridion submenu
         elseif submenusModule.currentSubmenu == PSTSubmenu.INFECTIOUS_MERIDION then
-            local tmpStatus = infMeridionSubmenu.hoveredItem
+            local tmpStatus = infMeridionSubmenu.hoveredStatus
             if tmpStatus ~= nil then
                 local charData = PST:getCurrentCharData()
                 if charData then
