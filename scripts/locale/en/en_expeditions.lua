@@ -347,18 +347,18 @@ return {
     ["expobj_tintedRocks"] = "Destroy {{progress}} tinted rocks.",
     ["expobj_winRun"] = "Win a run having defeated at least 1 final boss.",
 
-    ["expobjfinal_bossRush"] = "Complete {{progress}} boss rush encounter(s).",
-    ["expobjfinal_hush"] = "Defeat Hush.",
-    ["expobjfinal_hushNoDmgTwice"] = "Defeat Hush without taking damage more than twice during the fight.",
-    ["expobjfinal_hushNoDmgOnce"] = "Defeat Hush without taking damage more than once during the fight.",
-    ["expobjfinal_finalBoss"] = {
+    ["expobj_bossRush"] = "Complete {{progress}} boss rush encounter(s).",
+    ["expobj_hush"] = "Defeat Hush.",
+    ["expobj_hushNoDmgTwice"] = "Defeat Hush without taking damage more than twice during the fight.",
+    ["expobj_hushNoDmgOnce"] = "Defeat Hush without taking damage more than once during the fight.",
+    ["expobj_finalBoss"] = {
         "Defeat any final boss {{progress}} time(s).",
         "Final bosses include Delirium, ???, The Lamb, Mega Satan, The Beast, Mother and Ultra Greed."
     },
-    ["expobjfinal_floorNoDmgTwice"] = "Clear {{progress}} floors without taking damage more than twice.",
-    ["expobjfinal_floorNoDmgOnce"] = "Clear {{progress}} floors without taking damage more than once.",
-    ["expobjfinal_bossesNoDmgC3"] = "Clear {{progress}} boss room(s) past Chapter 3 (Womb and beyond) without taking damage.",
-    ["expobjfinal_beastDeliNoDmg"] = "Defeat The Beast or Delirium without taking damage more than once.",
+    ["expobj_floorNoDmgTwice"] = "Clear {{progress}} floors without taking damage more than twice.",
+    ["expobj_floorNoDmgOnce"] = "Clear {{progress}} floors without taking damage more than once.",
+    ["expobj_bossesNoDmgC3"] = "Clear {{progress}} boss room(s) past Chapter 3 (Womb and beyond) without taking damage.",
+    ["expobj_beastDeliNoDmg"] = "Defeat The Beast or Delirium without taking damage more than once.",
 
     -- EXPEDITION MODIFIERS --
     ["expedImp_mobHP"] = "+{{impVal}}% non-boss monster HP.",

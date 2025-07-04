@@ -241,7 +241,7 @@ function ancientWepBountiesScreen:Render(tScreen)
             drawY = drawY + 17
 
             -- Bounty reward title
-            local tmpStr = PST:getLocalized("ui_bounty") .. ": " .. ancientData.name
+            local tmpStr = PST:getLocalized("ui_bounty") .. ": " .. PST:getLocalized("aforge_ancname_" .. ancientData.name)
             PST.miniFont:DrawStringUTF8(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.ANCIENT_ORANGE)
             drawY = drawY + 15
 
@@ -262,7 +262,7 @@ function ancientWepBountiesScreen:Render(tScreen)
                         objectiveData = PST.expeditionObjectivesFinal[tmpObjective.name]
                     end
                     if objectiveData then
-                        local objDesc = objectiveData.description
+                        local objDesc = PST:getLocalized("expobj_" .. tmpObjective.name)
                         local descFormatVal = {
                             progress = tostring(tmpObjective.prog) .. "/" .. tostring(tmpObjective.req)
                         }

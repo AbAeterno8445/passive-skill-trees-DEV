@@ -347,18 +347,18 @@ return {
     ["expobj_tintedRocks"] = "Destruye {{progress}} rocas secretas.",
     ["expobj_winRun"] = "Gana una partida habiendo derrotado al menos 1 jefe final.",
 
-    ["expobjfinal_bossRush"] = "Completa {{progress}} boss rush.",
-    ["expobjfinal_hush"] = "Derrota a Hush.",
-    ["expobjfinal_hushNoDmgTwice"] = "Derrota a Hush sin recibir daño más de 2 veces durante la pelea.",
-    ["expobjfinal_hushNoDmgOnce"] = "Derrota a Hush sin recibir daño más de 1 vez durante la pelea.",
-    ["expobjfinal_finalBoss"] = {
+    ["expobj_bossRush"] = "Completa {{progress}} boss rush.",
+    ["expobj_hush"] = "Derrota a Hush.",
+    ["expobj_hushNoDmgTwice"] = "Derrota a Hush sin recibir daño más de 2 veces durante la pelea.",
+    ["expobj_hushNoDmgOnce"] = "Derrota a Hush sin recibir daño más de 1 vez durante la pelea.",
+    ["expobj_finalBoss"] = {
         "Derrota a cualquier jefe final {{progress}} vez/veces.",
         "Los jefes finales incluyen a Delirio, ???, La Cabra, Mega Satán, La Bestia, Madre y Ultra Codicia."
     },
-    ["expobjfinal_floorNoDmgTwice"] = "Completa {{progress}} pisos sin recibir daño más de 2 veces.",
-    ["expobjfinal_floorNoDmgOnce"] = "Completa {{progress}} pisos sin recibir daño más de una vez.",
-    ["expobjfinal_bossesNoDmgC3"] = "Completa {{progress}} habitación(es) del jefe más allá del Capítulo 3 (Útero) sin recibir daño.",
-    ["expobjfinal_beastDeliNoDmg"] = "Derrota a La Bestia o Delirio sin recibir daño más de una vez.",
+    ["expobj_floorNoDmgTwice"] = "Completa {{progress}} pisos sin recibir daño más de 2 veces.",
+    ["expobj_floorNoDmgOnce"] = "Completa {{progress}} pisos sin recibir daño más de una vez.",
+    ["expobj_bossesNoDmgC3"] = "Completa {{progress}} habitación(es) del jefe más allá del Capítulo 3 (Útero) sin recibir daño.",
+    ["expobj_beastDeliNoDmg"] = "Derrota a La Bestia o Delirio sin recibir daño más de una vez.",
 
     -- EXPEDITION MODIFIERS --
     ["expedImp_mobHP"] = "+{{impVal}}% vida de los monstruos no-jefes.",
