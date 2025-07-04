@@ -340,7 +340,7 @@ function PST:onRoomClear(RNG)
         -- Regular room
         if roomType == RoomType.ROOM_DEFAULT then
             -- Uber expedition entropy mod
-            if PST:getTreeSnapshotMod("expedEnt_clearTime", false) and room:GetFrameCount() >= 300 then
+            if PST:getTreeSnapshotMod("expedEnt_clearTime", false) and level:GetStage() >= 4 and room:GetFrameCount() >= 300 then
                 PST:expedAddEntropy(
                     PST:getTreeSnapshotMod("expedDepth", 1),
                     PST.expedEntropyMods.expedEnt_clearTime.entropy

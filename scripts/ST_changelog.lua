@@ -9,6 +9,7 @@ function PST:getChangelogList()
         "- Adjusted how pausing is handled while viewing the tree screen in-game, potentially preventing crashes or other weird issues while using it.",
         "- The tree screen no longer requires pausing to open in-game, and will pause the game in the background while open.",
         "- Potential fix for occasional nil value error when dealing damage under specific circumstances.",
+        "- Fixed uber expedition entropy modifier 'Take longer than X seconds to clear a regular room past floor 4' applying from the first floor regardless.",
         "",
 
         "v1.3.2",
