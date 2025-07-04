@@ -509,15 +509,13 @@ function PST:Render()
 
 				textY = textY - textFX.step * textFX.speed
 
-				Isaac.RenderText(
-					textFX.text,
-					textX,
-					textY,
-					textFX.color.R,
-					textFX.color.G,
-					textFX.color.B,
-					textFX.color.A - textFX.startAlpha * textFX.step / textFX.totalSteps
-				)
+				-- Conversion to KColor from legacy Color usage
+				if not textFX.kcol then
+					textFX.kcol = KColor(textFX.color.R, textFX.color.G, textFX.color.B, textFX.color.A)
+				end
+				textFX.kcol.Alpha = textFX.startAlpha - textFX.startAlpha * textFX.step / textFX.totalSteps
+
+				PST.normalFont:DrawStringUTF8(textFX.text, textX, textY, textFX.kcol)
 
 				textFX.step = textFX.step + 1
 				if textFX.step >= textFX.totalSteps then
