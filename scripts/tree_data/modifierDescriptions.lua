@@ -6,6 +6,75 @@ PST.treeModDescriptionCategories = {
     charTree = { name = "", color = KColor(1, 0.8, 1, 1) }
 }
 
+--[[PST.treeModCategories = {
+    stats = {
+        "allstats", "allstatsPerc", "damage", "damagePerc", "luck", "luckPerc", "speed", "speedPerc", "tears", "tearsPerc",
+        "shotSpeed", "shotSpeedPerc", "range", "rangePerc"
+    },
+    condStats = {
+        "beggarLuck", "cardFloorLuck", "pillFloorLuck", "secretRoomFloorLuck", "secretRoomRandomStat", "tintedRockAllstats",
+        "planetariumAllstats", "firstItemDamage", "firstItemTears", "firstItemRange", "firstItemSpeed", "firstItemShotspeed",
+        "firstItemLuck", "curseAllstats", "donoMachineStatBoost"
+    },
+    xp = {
+        "xpgain", "secretXP", "challengeXP", "challengeXPgain", "bossChallengeXP", "xpgainNormalMob", "xpgainBoss", "expertSpelunker",
+        "fireXP", "poopXP", "tintedRockXP", "championXP", "beggarHelpXP", "shellGameXP", "slotMachineXP", "fortuneMachineXPmax",
+        "flawlessXP", "respecChance", "relearning"
+    },
+    extra = {
+        "devilChance", "coinDupe", "keyDupe", "bombDupe", "grabBag", "mapChance", "luckyPennyChance", "planetariumChance", "hellFavour",
+        "heavenFavour", "curseRoomSpikesOut", "goldenKeyConvert", "sacrificeRoomHearts", "naturalCurseCleanse", "goldenTrinkets", "championChance",
+        "activeItemReroll", "shopSaving", "spiderMod", "eldritchMapping", "trollBombDisarm", "trollDisarmGiga", "championChest", "championStoneChest",
+        "championMaxChests", "spikedChestReplace", "chargedKeyConv", "clearThrowableBomb", "deadlySinKey", "deadlySinBattery", "donoEntranceRestore",
+        "donoPurchaseRestore", "donoPurchaseThresh", "generosityInSteps", "bossRushTimer", "beasthunterRush", "hushTimer", "bossLockedChest",
+        "bossRedChest", "bossStoneChest", "bossRushWaves", "coalescingSoulChance", "coalescingSoulProcs", "warpedCoalescence", "coalSoulRoomClearChance",
+        "coalSoulHitChance", "soulStoneAllstats", "soulStoneUnusedAllstats", "sacRoomBuff", "specialSacks", "enableSCJewels", "SC_SMMightyChance",
+        "SC_SMAncientChance"
+    },
+    charTree = {
+        "isaacBlessing", "magicDie", "intermittentConceptions", "boonOrdinary", "allstatsBirthright", "allstatsRoom", "d6Pickup", "d6HalfCharge", "pickupDupe",
+        "pickupBoons", "chestReclose",
+        "magdaleneBlessing", "crystalHeart", "bloodDonor", "blesserHeart", "innerGlow", "yumHeartHealHalf", "allstatsFullRed", "bloodMachineSpawn",
+        "bloodDonationLuck", "bloodDonationNickel", "healOnClear", "heartblessedChests", "heartblessedSpeed", "fullHealthCharge",
+        "impromptuGambler", "thievery", "fickleFortune", "goldenGimmick", "wealthsmith", "stealChance", "trinketSpawn", "freeMachinesChance", "arcadeReveal",
+        "shopReveal", "nickelOnClear", "gildedMachines",
+        "darkHeart", "innerDemon", "sacrificeDarkness", "tenetBelial", "darkApotheosis", "darkJudasSpeed", "darkJudasShotspeedRange", "belialBossHitCharge",
+        "lostBlackHeartsLuck", "blackHeartLuckDrop",
+        "blueGambit", "brownBlessing", "slippingEssence", "beanDiet", "soulOnCardPill", "poopItemLuck", "poopTrinketLuck", "thePoopAllStats", "thePoopAllStatsPerc",
+        "soulHeartTearsRange", "cardPillPoop", "beanActiveSpeed",
+        "heartless", "darkProtection", "carrionAvian", "phantomcrows", "deadBirdNullify", "activeDeadBirdDamage", "activeDeadBirdSpeed", "activeDeadBirdTears",
+        "activeDeadBirdRange", "activeDeadBirdShotspeed", "deadBirdInheritDamage", "luckOnClearBelowFull", "allstatsOneRed", "eveMascaraChamp",
+        "hasted", "rageBuildup", "hearty", "bloodcrowned", "samsonTempDamage", "samsonTempSpeed", "speedWhenHit", "bossCulling", "bossQuickKillLuck",
+        "bossFlawlessLuck", "treasureDoubleHeart",
+        "demonicSouvenirs", "demonHelpers", "demonicAmbition", "earlyBird", "heartsToBlack", "blackHeartOnDeals", "evilTrinketLuck", "devilBeggarBlackHeart",
+        "cardFloorDamage", "cardFloorTears",
+        "soulfulAwakening", "kingCurse", "aTrueEnding", "growingContrition", "lazarusDamage", "lazarusSpeed", "lazarusTears", "lazarusRange", "lazarusLuck",
+        "luckyAllStats", "momPlanC", "lazarusClearHearts",
+        "chaoticTreasury", "sporadicGrowth", "starblessed", "spaghettification", "clayshaping", "edenHairdo", "treasureShopItemStat", "treasureShopItemStatPerc",
+        "devilAngelBossItemStat", "devilAngelBossItemStatPerc", "itemRandLuck", "itemRandLuckPerc", "trinketRandLuck", "startCoinKeyBomb", "edenBlessingSpawn",
+        "treasureItemCEpiphany", "devilItemCEpiphany", "curseRoomCEpiphany", "myosotisOnClear",
+        "spectralAdvantage", "sacredAegis", "heartseekerPhantasm", "vagrantSoul", "killingHitNegation", "noHolyMantleAllStats", "soulHeartTears", "blackHeartDamage",
+        "eternalD6Charge", "soulHeartOnClear", "pennyToBlessed",
+        "minionManeuvering", "heavyFriends", "daemonArmy", "companionshipGravitas", "familiarKillSoulHeart", "activeFamiliarsLuck", "activeIncubusDamage", "activeIncubusTears",
+        "boxOfFriendsCharge", "boxOfFriendsAllStats", "monsterManualOnClear",
+        "keeperBlessing", "gulp", "avidShopper", "blueKin", "coinShield", "itemPurchaseLuck", "purchaseKeepCoins", "firstBossGreed", "greedLowerHealth", "greedNickelDrop",
+        "greedDimeDrop", "blueFlyDeathDamage",
+        "apollyonBlessing", "null", "harbingerLocusts", "reverseAnnihilation", "voidBlueFlies", "voidBlueSpiders", "voidAnnihilation", "eraserSecondFloor", "locustHeldLuck",
+        "locustConsumedLuck", "conquestLocustSpeed", "deathLocustTears", "famineLocustRangeShotspeed", "pestilenceLocustLuck", "warLocustDamage",
+        "soulful", "spiritEbb", "innerFlare", "innerFlareSlowDuration", "forgottenMeleeTearBuff", "forgottenSoulDamage", "forgottenSoulTears", "theSoulBoneDamage",
+        "theSoulBoneTears",
+        "spiritBringer", "spiritTaker", "spiritReaper", "spiritProtector", "spiritGambler", "osteomancy", "necromancy", "soulWispOnClear", "soulWispTears", "redFullToBone",
+        "treasureBoneItem", "forgCarrionPrincess",
+        "willOTheWisp", "soulTrickle", "fatePendulum", "chaoticWisps", "activeItemWisp", "chargeOnClear", "soulChargeOnClear", "wispDestroyedLuck", "wispFloorBuff", "redHeartsSoulCharge",
+        "heartLink", "statuePilgrimage", "coordination", "keepThemAtBay", "JEChoices", "brotherHitNegation", "jacobHeartLuck", "jacobBirthright", "jacobHeartOnKill", "esauSoulOnKill",
+        "jacobItemAllstats", "slowParaExtension", "redStewBoon",
+        "darkSongstress", "songOfDarkness", "songOfFortune", "songOfCelerity", "songOfAwe", "overwhelmingVoice", "luckOnCharmedKill", "mightOfFortune", "charmedRetaliation",
+        "charmedHitNegation", "charmExplosions",
+        "vacuophobia", "consumingVoid", "fracturedRemains", "sinistralRunemaster", "dextralRunemaster", "blackRuneAbsorb", "trinketOnClear", "obtainedItemDamage", "obtainedItemTears",
+        "obtainedItemRange", "flawlessBossLuck", "voidConsumeLuck", "diceShardRuneShard", "runicSpeed", "runeshardStacking", "runeshardStacksReq"
+    }
+}]]
+
 PST.treeModDescriptions = {
     --#region STATS CATEGORY --
     allstats = {

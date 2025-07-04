@@ -71,11 +71,11 @@ function totalmodsScreen:OnOpen(openData)
                 if PST.treeScreen.treeAliases[PST.treeScreen.currentTree] then
                     charAlias = PST.treeScreen.treeAliases[PST.treeScreen.currentTree]
                 end
-                local tmpPossessive = "s"
+                local tmpPossessive = "'s"
                 if string.sub(charAlias, -1) == "s" then
-                    tmpPossessive = ""
+                    tmpPossessive = "'"
                 end
-                tmpName = tmpCharName .. "'" .. tmpPossessive .. " tree:"
+                tmpName = tmpCharName .. tmpPossessive .. " tree:"
             end
             table.insert(self.totalModsList, {"---- " .. tmpName .. " ----", PST.treeModDescriptionCategories[lastCategory].color})
         end
