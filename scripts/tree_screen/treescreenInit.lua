@@ -200,7 +200,7 @@ end
 -- Post pause menu render
 function PST:postPauseRender()
     -- Expedition objective display
-    if Isaac.IsInGame() and PST.config.drawPauseText and PST:getTreeSnapshotMod("isExpedRun", false) then
+    if Isaac.IsInGame() and PST.config.drawPauseText and PST:getTreeSnapshotMod("isExpedRun", false) and not PST.treeScreen.open then
         local depth = PST:getTreeSnapshotMod("expedDepth", 1)
         local expData = PST:getExpedData(depth, PST:getTreeSnapshotMod("isExpedUber", false))
         if expData and expData.selectedNode then
