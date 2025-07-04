@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.3.3",
         "- Internal support for internationalization (translation of UI to other languages). Currently supported languages: English (default), Spanish.",
+        "- Added a Mod Config Menu option to force english localization for the mod regardless of the game's language setting.",
         "- Added compatibility for various mod hidden characters, and Joseph mod items.",
         "- Adjusted how pausing is handled while viewing the tree screen in-game, potentially preventing crashes or other weird issues while using it.",
         "- The tree screen no longer requires pausing to open in-game, and will pause the game in the background while open.",

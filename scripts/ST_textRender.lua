@@ -26,6 +26,8 @@ end
 ---@param lang? string
 function PST:getLocalized(text, lang)
     if not lang then lang = Options.Language end
+    if PST.config.forceEnglishLocale then lang = 'en' end
+
     if text:sub(1, 1) == '#' then
         text = text:sub(2)
     end
@@ -46,6 +48,8 @@ end
 ---@return string|string[]
 function PST:getLocalizedFormat(text, vals, lang)
     if not lang then lang = Options.Language end
+    if PST.config.forceEnglishLocale then lang = 'en' end
+
     local newDesc = {}
     local tmpDesc = PST:getLocalized(text, lang)
     if type(tmpDesc) == "table" then

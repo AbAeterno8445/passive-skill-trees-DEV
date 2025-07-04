@@ -53,6 +53,9 @@ PST.config = {
     -- Sidereal Artifact text on proc toggle
     sideArtiText = true,
 
+    -- Force english localization regardless of game language
+    forceEnglishLocale = false,
+
     -- Keybinds for mod actions. Available options:
     -- shift: true, requires shift to be held during keyboard press. If not set or false, key won't fire if shift is pressed
     -- ctrl: true, requires ctrl to be held during keyboard press. If not set or false, key won't fire if ctrl is pressed
@@ -595,6 +598,26 @@ function PST:initModConfigMenu()
                 PST.config.specialMarkRendering = b
             end,
             Info = {"Draw special challenge marks", "Disable if the challenge mark graphic looks broken"}
+        }
+    )
+    -- Force english localization toggle
+    ModConfigMenu.RemoveSetting(PST.modName, "Misc", "forceEnglishLocale")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Misc",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "forceEnglishLocale",
+            CurrentSetting = function()
+                return PST.config.forceEnglishLocale
+            end,
+            Display = function()
+                return "Force english UI: " .. (PST.config.forceEnglishLocale and "yes" or "no")
+            end,
+            OnChange = function(b)
+                PST.config.forceEnglishLocale = b
+            end,
+            Info = {"Force the UI localization for PST to english,", "regardless of the game's language setting"}
         }
     )
 end
