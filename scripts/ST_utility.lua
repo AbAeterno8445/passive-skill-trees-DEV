@@ -1060,7 +1060,8 @@ end
 
 function PST:inMineshaftPuzzle()
 	local level = PST:getLevel()
-	return level:GetDimension() == Dimension.MINESHAFT and (level:GetStage() == LevelStage.STAGE2_1 or level:GetStage() == LevelStage.STAGE2_2)
+	local stage = level:GetStage()
+	return level:GetDimension() == Dimension.MINESHAFT and (stage == LevelStage.STAGE2_1 or stage == LevelStage.STAGE2_2)
 end
 
 function PST:LJ_inMortis()

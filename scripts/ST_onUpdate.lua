@@ -132,6 +132,8 @@ function PST:frameUpdate()
 	end
 	inDeathCertificate = level:GetDimension() == Dimension.DEATH_CERTIFICATE
 
+	local inMineshaftPuzzle = PST:inMineshaftPuzzle()
+
 	local updateTrackers = PST:getTreeSnapshotMod("updateTrackers", PST.treeMods.updateTrackers)
 
 	if PST.floorFirstUpdate or not modResetUpdate then
@@ -818,7 +820,7 @@ function PST:frameUpdate()
 
 		-- Ancient starcursed jewel: Saturnian Luminite
 		if PST:SC_getSnapshotMod("saturnianLuminite", false) then
-			if not PST:inMineshaftPuzzle() then
+			if not inMineshaftPuzzle then
 				player:SetCanShoot(false)
 			else
 				player:SetCanShoot(true)
@@ -1051,7 +1053,7 @@ function PST:frameUpdate()
 		end
 	end
 	-- Ancient starcursed jewel: Martian Ultimatum
-	if PST:SC_getSnapshotMod("martianUltimatum", false) then
+	if PST:SC_getSnapshotMod("martianUltimatum", false) and not inMineshaftPuzzle then
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_MARS) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
 			if player:GetOtherTwin() and not player:GetOtherTwin():HasCollectible(CollectibleType.COLLECTIBLE_MARS) then
@@ -1146,7 +1148,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient starcursed jewel: Cursed Auric Shard
-	if PST:SC_getSnapshotMod("cursedAuricShard", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_CARD_READING) then
+	if PST:SC_getSnapshotMod("cursedAuricShard", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_CARD_READING) and not inMineshaftPuzzle then
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
 	end
 	local tmpTimer = PST:getTreeSnapshotMod("SC_cursedAuricTimer", 0)
@@ -1156,7 +1158,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient starcursed jewel: Unusually Small Starstone
-	if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_PLUTO) then
+	if PST:SC_getSnapshotMod("unusuallySmallStarstone", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_PLUTO) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLUTO)
 		if player:GetOtherTwin() and not player:GetOtherTwin():HasCollectible(CollectibleType.COLLECTIBLE_PLUTO) then
 			player:GetOtherTwin():AddInnateCollectible(CollectibleType.COLLECTIBLE_MARS)
@@ -1164,7 +1166,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient starcursed jewel: Primordial Kaleidoscope
-	if PST:SC_getSnapshotMod("primordialKaleidoscope", false) then
+	if PST:SC_getSnapshotMod("primordialKaleidoscope", false) and not inMineshaftPuzzle then
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
 		end
@@ -1237,10 +1239,11 @@ function PST:frameUpdate()
 
 	-- Ancient starcursed jewel: Crystallized Anamnesis
 	if PST:SC_getSnapshotMod("crystallizedAnamnesis", false) then
-		if not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
-			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
-		end
-		if not PST:inMineshaftPuzzle() then
+		if not inMineshaftPuzzle then
+			if not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
+				player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
+			end
+
 			if not player:HasCollectible(CollectibleType.COLLECTIBLE_PURITY, true) and (level:GetCurrentRoomDesc().Flags & RoomDescriptor.FLAG_CURSED_MIST) == 0 then
 				player:AddCollectible(CollectibleType.COLLECTIBLE_PURITY)
 			end
@@ -1771,7 +1774,7 @@ function PST:frameUpdate()
 	end
 
 	-- Spider Mod node
-	if PST:getTreeSnapshotMod("spiderMod", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD) then
+	if PST:getTreeSnapshotMod("spiderMod", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD) and not inMineshaftPuzzle then
         player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SPIDER_MOD)
 	end
 
@@ -1802,7 +1805,7 @@ function PST:frameUpdate()
 
 	-- Mod: innate items absorbed by Black Rune
 	tmpMod = PST:getTreeSnapshotMod("blackRuneInnateItems", {})
-	if #tmpMod > 0 then
+	if #tmpMod > 0 and not inMineshaftPuzzle then
 		for _, tmpItem in ipairs(tmpMod) do
 			if not player:HasCollectible(tmpItem) then
 				player:AddInnateCollectible(tmpItem)
@@ -1811,7 +1814,7 @@ function PST:frameUpdate()
 	end
 
 	-- Dextral Runemaster: Berkano innate Hive Mind
-	if PST:getTreeSnapshotMod("berkanoHivemind", false) and roomFrame > 1 and not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) then
+	if PST:getTreeSnapshotMod("berkanoHivemind", false) and roomFrame > 1 and not player:HasCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND)
 	end
 	-- Dextral Runemaster: Algiz buff
@@ -1875,7 +1878,7 @@ function PST:frameUpdate()
 	end
 
 	-- Chaos Take The World node (T. Eden's tree)
-	if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) then
+	if PST:getTreeSnapshotMod("chaosTakeTheWorld", false) and not player:HasCollectible(CollectibleType.COLLECTIBLE_CHAOS) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CHAOS)
 	end
 
@@ -2863,7 +2866,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Lost Coral Trident
-	if PST:getSnapAstralWepMod("lostCoralTrident") and not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) and not PST:inMineshaftPuzzle() then
+	if PST:getSnapAstralWepMod("lostCoralTrident") and not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS)
 	end
 
@@ -2873,7 +2876,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Oceanic Might
-	if PST:getSnapAstralWepMod("oceanicMight") and not player:HasCollectible(CollectibleType.COLLECTIBLE_AQUARIUS) and not PST:inMineshaftPuzzle() then
+	if PST:getSnapAstralWepMod("oceanicMight") and not player:HasCollectible(CollectibleType.COLLECTIBLE_AQUARIUS) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS)
 	end
 	if PST.specialNodes.ancwep_oceanicMightCD > 0 then
@@ -2894,7 +2897,7 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Storm's Advance
-	if PST:getSnapAstralWepMod("stormAdvance") and not player:HasCollectible(CollectibleType.COLLECTIBLE_120_VOLT) and not PST:inMineshaftPuzzle() then
+	if PST:getSnapAstralWepMod("stormAdvance") and not player:HasCollectible(CollectibleType.COLLECTIBLE_120_VOLT) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT)
 	end
 	if PST.specialNodes.ancwep_stormAdvanceCD > 0 then
@@ -2902,12 +2905,12 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Quill Rain
-	if PST:getSnapAstralWepMod("quillRain") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) and not PST:inMineshaftPuzzle() then
+	if PST:getSnapAstralWepMod("quillRain") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)
 	end
 
 	-- Ancient weapon mod: Gilded Seeker
-	if PST:getSnapAstralWepMod("gildedSeeker") and not player:HasCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER) and not PST:inMineshaftPuzzle() then
+	if PST:getSnapAstralWepMod("gildedSeeker") and not player:HasCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER)
 	end
 
@@ -2999,12 +3002,12 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Glowing Moonblade
-	if PST:getSnapAstralWepMod("glowingMoonblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUNA) and not PST:inMineshaftPuzzle() then
+	if PST:getSnapAstralWepMod("glowingMoonblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUNA) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA)
 	end
 
 	-- Ancient weapon mod: Glowing Sunblade
-	if PST:getSnapAstralWepMod("glowingSunblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOL) and not PST:inMineshaftPuzzle() then
+	if PST:getSnapAstralWepMod("glowingSunblade") and not player:HasCollectible(CollectibleType.COLLECTIBLE_SOL) and not inMineshaftPuzzle then
 		player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL)
 	end
 
@@ -3059,7 +3062,7 @@ function PST:frameUpdate()
 
 	-- Ancient weapon mod: Tolling Bell
 	if PST:getSnapAstralWepMod("tollingBell") then
-		if not player:HasCollectible(CollectibleType.COLLECTIBLE_LEO) and not PST:inMineshaftPuzzle() then
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_LEO) and not inMineshaftPuzzle then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO)
 		end
 		if PST.specialNodes.ancwep_tollBellSpeedTimer > 0 then
@@ -3185,7 +3188,7 @@ function PST:frameUpdate()
 
 	-- Boon of the Ordinary node (Isaac's tree)
 	if PST:getTreeSnapshotMod("boonOrdinary", false) then
-		if not PST:inMineshaftPuzzle() then
+		if not inMineshaftPuzzle then
 			if player:GetNumKeys() >= 12 and not PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
 				player:AddCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS)
 			elseif player:GetNumKeys() < 12 and PST:getPlayer():HasCollectible(CollectibleType.COLLECTIBLE_EYE_DROPS) then
@@ -3196,7 +3199,7 @@ function PST:frameUpdate()
 
 	-- Wealthsmith node (Cain's tree)
 	if PST:getTreeSnapshotMod("wealthsmith", false) then
-		if not PST:inMineshaftPuzzle() then
+		if not inMineshaftPuzzle then
 			local hasCoinKeys = (player:GetNumCoins() >= 20 and player:GetNumKeys() < 10)
 			if hasCoinKeys and not player:HasCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY) then
 				player:AddCollectible(CollectibleType.COLLECTIBLE_PAY_TO_PLAY)
@@ -3208,7 +3211,7 @@ function PST:frameUpdate()
 
 	-- Demonic Ambition node (Azazel's tree)
 	if PST:getTreeSnapshotMod("demonicAmbition", false) then
-		if not PST:inMineshaftPuzzle() then
+		if not inMineshaftPuzzle then
 			if PST:GetBlackHeartCount(player) >= 4 and not player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
 				player:AddCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
 			elseif PST:GetBlackHeartCount(player) < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
@@ -3240,7 +3243,7 @@ function PST:frameUpdate()
 	end
 
 	-- Spirit-bringer node (Forgotten's tree)
-	if PST:getTreeSnapshotMod("spiritBringer", false) then
+	if PST:getTreeSnapshotMod("spiritBringer", false) and not inMineshaftPuzzle then
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS)
 		end
@@ -3252,7 +3255,7 @@ function PST:frameUpdate()
 	end
 
 	-- Spirit-taker node (Forgotten's tree)
-	if PST:getTreeSnapshotMod("spiritTaker", false) then
+	if PST:getTreeSnapshotMod("spiritTaker", false) and not inMineshaftPuzzle then
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO) and not PST:getTreeSnapshotMod("spiritTakerProc", false) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO)
 		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO) and PST:getTreeSnapshotMod("spiritTakerProc", false) then
@@ -3261,7 +3264,7 @@ function PST:frameUpdate()
 	end
 
 	-- Spirit-reaper node (Forgotten's tree)
-	if PST:getTreeSnapshotMod("spiritReaper", false) then
+	if PST:getTreeSnapshotMod("spiritReaper", false) and not inMineshaftPuzzle then
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_PURGATORY) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PURGATORY)
 		end
@@ -3271,7 +3274,7 @@ function PST:frameUpdate()
 	end
 
 	-- Spirit-protector node (Forgotten's tree)
-	if PST:getTreeSnapshotMod("spiritProtector", false) then
+	if PST:getTreeSnapshotMod("spiritProtector", false) and not inMineshaftPuzzle then
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL)
 		end
