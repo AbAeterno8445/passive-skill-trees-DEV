@@ -190,16 +190,11 @@ function PST:treeScreenMenuRender()
             -- Pause screen state 4 seems to keep the game paused without interface interaction in the background
             ---@diagnostic disable-next-line: param-type-mismatch
             PauseMenu.SetState(4)
-            print("set to 4")
         end
 
         PST.treeScreen:Update()
         PST.treeScreen:Render()
     end
-end
-
--- Pause menu render func
-function PST:treePauseRender()
 end
 
 -- Post pause menu render
@@ -257,5 +252,4 @@ end
 
 PST:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, PST.treeScreenMenuRender)
 PST:AddCallback(ModCallbacks.MC_POST_RENDER, PST.treeScreenMenuRender)
-PST:AddCallback(ModCallbacks.MC_PRE_PAUSE_SCREEN_RENDER, PST.treePauseRender)
 PST:AddCallback(ModCallbacks.MC_POST_PAUSE_SCREEN_RENDER, PST.postPauseRender)
