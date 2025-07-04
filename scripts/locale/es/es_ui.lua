@@ -107,6 +107,8 @@ return {
     ["ui_maxMeridionsWarn"] = "Límite de Artefactos Meridionales alcanzado! Usa Respecs en otro artefacto para seleccionar este.",
     ["ui_pulseInflict"] = "El pulso infligirá",
 
+    ["ui_siderealNodeWarning"] = "NOTA: Los nodos del Árbol Sideral no afectan a las partidas que no sean expediciones hasta que asignes el nodo Universalización Sideral.",
+
     ["ui_selected"] = "Seleccionado",
     ["ui_selNode"] = "Nodo seleccionado",
     ["ui_unlock"] = "Desbloquear",

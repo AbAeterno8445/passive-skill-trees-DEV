@@ -439,6 +439,11 @@ function descriptionBoxesModule:Render(tScreen)
             end
         end
 
+        -- Sidereal tree node warning
+        if PST.treeScreen.currentTree == "sidereal" and hoveredNode.name ~= "Sidereal Vicinity" and hoveredNode.name ~= "Sidereal Region" and hoveredNode.name ~= "Sidereal Expanse" then
+            table.insert(tmpDescription, {PST:getLocalized("ui_siderealNodeWarning"), PST.kcolors.STAR_ORANGE})
+        end
+
         -- Special node requirements
         local noSP = (hoveredNode.reqs and hoveredNode.reqs.noSP)
         if hoveredNode.reqs and not isAllocated then

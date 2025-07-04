@@ -107,6 +107,8 @@ return {
     ["ui_maxMeridionsWarn"] = "Max Meridional artifacts selected! Respec a different artifact to select this one.",
     ["ui_pulseInflict"] = "Pulse will inflict",
 
+    ["ui_siderealNodeWarning"] = "NOTE: Sidereal tree nodes don't affect non-expedition runs until you allocate Sidereal Universalization.",
+
     ["ui_selected"] = "Selected",
     ["ui_selNode"] = "Selected node",
     ["ui_unlock"] = "Unlock",
