@@ -83,7 +83,7 @@ return {
         "Every 2 nodes in an uber expedition, as well as the final node, grant 1 Deep-Space SP."
     },
     ["dsnode_finalboss_sp_name"] = "Final Boss Global SP",
-    ["dsnode_finalboss_sp"] = "{{finallBossGSP}}% chance to gain a Global Skill Point when defeating a final boss without taking damage.",
+    ["dsnode_finalboss_sp"] = "{{finalBossGSP}}% chance to gain a Global Skill Point when defeating a final boss without taking damage.",
     ["dsnode_addrewardchoice_name"] = "Additional Reward Choice",
     ["dsnode_addrewardchoice"] = "{{expedChoiceAdd}}% chance for choice reward nodes to include an additional choice.",
     ["dsnode_oboldrops_name"] = "Obol Drops",

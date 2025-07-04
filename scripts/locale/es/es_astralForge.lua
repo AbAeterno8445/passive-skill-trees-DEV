@@ -138,7 +138,7 @@ return {
     ["aforge_ancname_Glowing Moonblade"] = "Espada Selénica",
     ["aforge_ancname_Maxwell's Thermic Engine"] = "Motor Térmico de Maxwell",
     ["aforge_ancname_Glowing Sunblade"] = "Espada Solar",
-    ["aforge_ancname_Divine Interceptor"] = "Interceptador Divino",
+    ["aforge_ancname_Divine Interceptor"] = "Interceptadora Divina",
 
     ["aforge_ancname_Arcing Needle"] = "Aguja Eléctrica",
     ["aforge_ancname_Auric Persecutor"] = "Persecutor Áurico",

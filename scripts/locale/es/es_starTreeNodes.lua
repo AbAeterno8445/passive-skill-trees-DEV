@@ -83,7 +83,7 @@ return {
         "Cada 2 nodos en una Expedición Uber, así como el nodo final, otorgan 1 Punto Espacio-Temporal al completarse."
     },
     ["dsnode_finalboss_sp_name"] = "SP Global De Jefe Final",
-    ["dsnode_finalboss_sp"] = "{{finallBossGSP}}% chance de ganar 1 Punto de Habilidad Global al derrotar a un jefe final sin recibir daño.",
+    ["dsnode_finalboss_sp"] = "{{finalBossGSP}}% chance de ganar 1 Punto de Habilidad Global al derrotar a un jefe final sin recibir daño.",
     ["dsnode_addrewardchoice_name"] = "Elección De Recompensa Adicional",
     ["dsnode_addrewardchoice"] = "{{expedChoiceAdd}}% chance de que los nodos de elección de recompensa incluyan una opción adicional.",
     ["dsnode_oboldrops_name"] = "Oboles Encontrados",
