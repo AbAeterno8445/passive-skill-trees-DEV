@@ -11,6 +11,8 @@ function PST:getChangelogList()
         "- Protected various effects from looping while in the mineshaft chase sequence, such as those involving items added as innate effects.",
         "- Potential fix for occasional nil value error when dealing damage under specific circumstances.",
         "- Fixed uber expedition entropy modifier 'Take longer than X seconds to clear a regular room past floor 4' applying from the first floor regardless.",
+        "- Fixed Infectious Meridion being un-switchable and having no on-hover descriptions on the status effects.",
+        "- Fixed Boon of the Meek Giants (expeditions) causing bosses to have 1 HP or less.",
         "",
 
         "v1.3.2",
