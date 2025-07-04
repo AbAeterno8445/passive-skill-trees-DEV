@@ -888,56 +888,56 @@ PST.astralWepData = {
         ancients = {
             -- Grey Wind
             {
-                name = PST:getLocalized("aforge_ancname_Grey Wind"),
+                name = "Grey Wind",
                 spriteFrame = 0,
                 weight = 100,
                 ancientMods = {"greyWind"}
             },
             -- Executioner
             {
-                name = PST:getLocalized("aforge_ancname_Executioner"),
+                name = "Executioner",
                 spriteFrame = 1,
                 weight = 100,
                 ancientMods = {"executioner"}
             },
             -- Sword of Song
             {
-                name = PST:getLocalized("aforge_ancname_Sword of Song"),
+                name = "Sword of Song",
                 spriteFrame = 2,
                 weight = 100,
                 ancientMods = {"swordOfSong"}
             },
             -- Redbeak
             {
-                name = PST:getLocalized("aforge_ancname_Redbeak"),
+                name = "Redbeak",
                 spriteFrame = 3,
                 weight = 100,
                 ancientMods = {"redbeak"}
             },
             -- Glowing Moonblade
             {
-                name = PST:getLocalized("aforge_ancname_Glowing Moonblade"),
+                name = "Glowing Moonblade",
                 spriteFrame = 31,
                 weight = 100,
                 ancientMods = {"glowingMoonblade"}
             },
             -- Maxwell's Thermic Engine
             {
-                name = PST:getLocalized("aforge_ancname_Maxwell's Thermic Engine"),
+                name = "Maxwell's Thermic Engine",
                 spriteFrame = 34,
                 weight = 100,
                 ancientMods = {"maxwellEngine"}
             },
             -- Glowing Sunblade
             {
-                name = PST:getLocalized("aforge_ancname_Glowing Sunblade"),
+                name = "Glowing Sunblade",
                 spriteFrame = 35,
                 weight = 100,
                 ancientMods = {"glowingSunblade"}
             },
             -- Divine Interceptor
             {
-                name = PST:getLocalized("aforge_ancname_Divine Interceptor"),
+                name = "Divine Interceptor",
                 spriteFrame = 51,
                 weight = 100,
                 ancientMods = {"divineInterceptor"}
@@ -965,14 +965,14 @@ PST.astralWepData = {
         ancients = {
             -- Arcing Needle
             {
-                name = PST:getLocalized("aforge_ancname_Arcing Needle"),
+                name = "Arcing Needle",
                 spriteFrame = 4,
                 weight = 100,
                 ancientMods = {"arcingNeedle"}
             },
             -- Auric Persecutor
             {
-                name = PST:getLocalized("aforge_ancname_Auric Persecutor"),
+                name = "Auric Persecutor",
                 spriteFrame = 5,
                 weight = 100,
                 ancientMods = {"auricPersecutor"}
@@ -1000,21 +1000,21 @@ PST.astralWepData = {
         ancients = {
             -- The Scrambler
             {
-                name = PST:getLocalized("aforge_ancname_The Scrambler"),
+                name = "The Scrambler",
                 spriteFrame = 6,
                 weight = 100,
                 ancientMods = {"scrambler"}
             },
             -- Adrift Blade
             {
-                name = PST:getLocalized("aforge_ancname_Adrift Blade"),
+                name = "Adrift Blade",
                 spriteFrame = 7,
                 weight = 100,
                 ancientMods = {"adriftBlade"}
             },
             -- Ivory Vampire
             {
-                name = PST:getLocalized("aforge_ancname_Ivory Vampire"),
+                name = "Ivory Vampire",
                 spriteFrame = 39,
                 weight = 100,
                 ancientMods = {"ivoryVampire"}
@@ -1043,21 +1043,21 @@ PST.astralWepData = {
         ancients = {
             -- Nimble Twins
             {
-                name = PST:getLocalized("aforge_ancname_Nimble Twins"),
+                name = "Nimble Twins",
                 spriteFrame = 8,
                 weight = 100,
                 ancientMods = {"nimbleTwins"}
             },
             -- Crimson Altruist
             {
-                name = PST:getLocalized("aforge_ancname_Crimson Altruist"),
+                name = "Crimson Altruist",
                 spriteFrame = 9,
                 weight = 100,
                 ancientMods = {"crimsonAltruist"}
             },
             -- Quicksilver
             {
-                name = PST:getLocalized("aforge_ancname_Quicksilver"),
+                name = "Quicksilver",
                 spriteFrame = 46,
                 weight = 100,
                 ancientMods = {"quicksilver"}
@@ -1085,28 +1085,28 @@ PST.astralWepData = {
         ancients = {
             -- Beastbane
             {
-                name = PST:getLocalized("aforge_ancname_Beastbane"),
+                name = "Beastbane",
                 spriteFrame = 10,
                 weight = 100,
                 ancientMods = {"beastbane"}
             },
             -- Gravitas
             {
-                name = PST:getLocalized("aforge_ancname_Gravitas"),
+                name = "Gravitas",
                 spriteFrame = 11,
                 weight = 100,
                 ancientMods = {"gravitas"}
             },
             -- Boreal Frostspear
             {
-                name = PST:getLocalized("aforge_ancname_Boreal Frostspear"),
+                name = "Boreal Frostspear",
                 spriteFrame = 22,
                 weight = 100,
                 ancientMods = {"borealSpear"}
             },
             -- Viper Stinger
             {
-                name = PST:getLocalized("aforge_ancname_Viper Stinger"),
+                name = "Viper Stinger",
                 spriteFrame = 32,
                 weight = 100,
                 ancientMods = {"viperStinger"}
@@ -1134,28 +1134,28 @@ PST.astralWepData = {
         ancients = {
             -- Consecrator
             {
-                name = PST:getLocalized("aforge_ancname_Consecrator"),
+                name = "Consecrator",
                 spriteFrame = 12,
                 weight = 100,
                 ancientMods = {"consecrator"}
             },
             -- Verdant Green
             {
-                name = PST:getLocalized("aforge_ancname_Verdant Green"),
+                name = "Verdant Green",
                 spriteFrame = 13,
                 weight = 100,
                 ancientMods = {"verdantGreen"}
             },
             -- Lost Coral Trident
             {
-                name = PST:getLocalized("aforge_ancname_Lost Coral Trident"),
+                name = "Lost Coral Trident",
                 spriteFrame = 14,
                 weight = 100,
                 ancientMods = {"lostCoralTrident"}
             },
             -- Oceanic Might
             {
-                name = PST:getLocalized("aforge_ancname_Oceanic Might"),
+                name = "Oceanic Might",
                 spriteFrame = 33,
                 weight = 100,
                 ancientMods = {"oceanicMight"}
@@ -1183,21 +1183,21 @@ PST.astralWepData = {
         ancients = {
             -- Tale Ender
             {
-                name = PST:getLocalized("aforge_ancname_Tale Ender"),
+                name = "Tale Ender",
                 spriteFrame = 15,
                 weight = 100,
                 ancientMods = {"taleEnder"}
             },
             -- Crimson Reaper
             {
-                name = PST:getLocalized("aforge_ancname_Crimson Reaper"),
+                name = "Crimson Reaper",
                 spriteFrame = 16,
                 weight = 100,
                 ancientMods = {"crimsonReaper"}
             },
             -- Mobripper
             {
-                name = PST:getLocalized("aforge_ancname_Mobripper"),
+                name = "Mobripper",
                 spriteFrame = 17,
                 weight = 100,
                 ancientMods = {"mobripper"}
@@ -1225,21 +1225,21 @@ PST.astralWepData = {
         ancients = {
             -- Starsteel Broadaxe
             {
-                name = PST:getLocalized("aforge_ancname_Starsteel Broadaxe"),
+                name = "Starsteel Broadaxe",
                 spriteFrame = 18,
                 weight = 100,
                 ancientMods = {"starsteelBroadaxe"}
             },
             -- Ancient Runic Chopper
             {
-                name = PST:getLocalized("aforge_ancname_Ancient Runic Chopper"),
+                name = "Ancient Runic Chopper",
                 spriteFrame = 19,
                 weight = 100,
                 ancientMods = {"ancientRunicChopper"}
             },
             -- Circuit Splitter
             {
-                name = PST:getLocalized("aforge_ancname_Circuit Splitter"),
+                name = "Circuit Splitter",
                 spriteFrame = 36,
                 weight = 100,
                 ancientMods = {"circuitSplitter"}
@@ -1268,14 +1268,14 @@ PST.astralWepData = {
         ancients = {
             -- Berserker's Wrath
             {
-                name = PST:getLocalized("aforge_ancname_Berserker's Wrath"),
+                name = "Berserker's Wrath",
                 spriteFrame = 20,
                 weight = 100,
                 ancientMods = {"berserkerWrath"}
             },
             -- Frozen Terror
             {
-                name = PST:getLocalized("aforge_ancname_Frozen Terror"),
+                name = "Frozen Terror",
                 spriteFrame = 21,
                 weight = 100,
                 ancientMods = {"frozenTerror"}
@@ -1303,14 +1303,14 @@ PST.astralWepData = {
         ancients = {
             -- Storm's Advance
             {
-                name = PST:getLocalized("aforge_ancname_Storm's Advance"),
+                name = "Storm's Advance",
                 spriteFrame = 24,
                 weight = 100,
                 ancientMods = {"stormAdvance"}
             },
             -- Quill Rain
             {
-                name = PST:getLocalized("aforge_ancname_Quill Rain"),
+                name = "Quill Rain",
                 spriteFrame = 23,
                 weight = 50,
                 ancientMods = {"quillRain"}
@@ -1338,28 +1338,28 @@ PST.astralWepData = {
         ancients = {
             -- Gilded Seeker
             {
-                name = PST:getLocalized("aforge_ancname_Gilded Seeker"),
+                name = "Gilded Seeker",
                 spriteFrame = 25,
                 weight = 100,
                 ancientMods = {"gildedSeeker"}
             },
             -- Twisted Oakstring
             {
-                name = PST:getLocalized("aforge_ancname_Twisted Oakstring"),
+                name = "Twisted Oakstring",
                 spriteFrame = 26,
                 weight = 100,
                 ancientMods = {"twistedOakstring"}
             },
             -- Brute's Onslaught
             {
-                name = PST:getLocalized("aforge_ancname_Brute Onslaught"),
+                name = "Brute's Onslaught",
                 spriteFrame = 27,
                 weight = 100,
                 ancientMods = {"bruteOnslaught"}
             },
             -- Divine Messenger
             {
-                name = PST:getLocalized("aforge_ancname_Divine Messenger"),
+                name = "Divine Messenger",
                 spriteFrame = 52,
                 weight = 100,
                 ancientMods = {"divineMessenger"}
@@ -1388,21 +1388,21 @@ PST.astralWepData = {
         ancients = {
             -- Volatile Arbalest
             {
-                name = PST:getLocalized("aforge_ancname_Volatile Arbalest"),
+                name = "Volatile Arbalest",
                 spriteFrame = 28,
                 weight = 100,
                 ancientMods = {"volatileArbalest"}
             },
             -- Avelyn
             {
-                name = PST:getLocalized("aforge_ancname_Avelyn"),
+                name = "Avelyn",
                 spriteFrame = 29,
                 weight = 100,
                 ancientMods = {"avelyn"}
             },
             -- Precise Seeker
             {
-                name = PST:getLocalized("aforge_ancname_Precise Seeker"),
+                name = "Precise Seeker",
                 spriteFrame = 30,
                 weight = 100,
                 ancientMods = {"preciseSeeker"}
@@ -1428,21 +1428,21 @@ PST.astralWepData = {
         ancients = {
             -- Magefist
             {
-                name = PST:getLocalized("aforge_ancname_Magefist"),
+                name = "Magefist",
                 spriteFrame = 37,
                 weight = 100,
                 ancientMods = {"magefist"}
             },
             -- Ironhand
             {
-                name = PST:getLocalized("aforge_ancname_Ironhand"),
+                name = "Ironhand",
                 spriteFrame = 38,
                 weight = 100,
                 ancientMods = {"ironhand"}
             },
             -- Metamorphic Claw
             {
-                name = PST:getLocalized("aforge_ancname_Metamorphic Claw"),
+                name = "Metamorphic Claw",
                 spriteFrame = 45,
                 weight = 100,
                 ancientMods = {"metamorphicClaw"}
@@ -1472,35 +1472,35 @@ PST.astralWepData = {
         ancients = {
             -- Mighty Purifier
             {
-                name = PST:getLocalized("aforge_ancname_Mighty Purifier"),
+                name = "Mighty Purifier",
                 spriteFrame = 40,
                 weight = 100,
                 ancientMods = {"mightyPurifier"}
             },
             -- Chaotic Tumult
             {
-                name = PST:getLocalized("aforge_ancname_Chaotic Tumult"),
+                name = "Chaotic Tumult",
                 spriteFrame = 41,
                 weight = 100,
                 ancientMods = {"chaoticTumult"}
             },
             -- Firestarter
             {
-                name = PST:getLocalized("aforge_ancname_Firestarter"),
+                name = "Firestarter",
                 spriteFrame = 42,
                 weight = 100,
                 ancientMods = {"firestarter"}
             },
             -- Colossal Maul
             {
-                name = PST:getLocalized("aforge_ancname_Colossal Maul"),
+                name = "Colossal Maul",
                 spriteFrame = 43,
                 weight = 100,
                 ancientMods = {"colossalMaul"}
             },
             -- Tolling Bell
             {
-                name = PST:getLocalized("aforge_ancname_Tolling Bell"),
+                name = "Tolling Bell",
                 spriteFrame = 44,
                 weight = 100,
                 ancientMods = {"tollingBell"}
@@ -1530,28 +1530,28 @@ PST.astralWepData = {
         ancients = {
             -- Snakebite
             {
-                name = PST:getLocalized("aforge_ancname_Snakebite"),
+                name = "Snakebite",
                 spriteFrame = 47,
                 weight = 100,
                 ancientMods = {"snakebite"}
             },
             -- Devil's Tongue
             {
-                name = PST:getLocalized("aforge_ancname_Devil's Tongue"),
+                name = "Devil's Tongue",
                 spriteFrame = 48,
                 weight = 100,
                 ancientMods = {"devilTongue"}
             },
             -- Azurebinder
             {
-                name = PST:getLocalized("aforge_ancname_Azurebinder"),
+                name = "Azurebinder",
                 spriteFrame = 49,
                 weight = 100,
                 ancientMods = {"azurebinder"}
             },
             -- Sacred Scourge
             {
-                name = PST:getLocalized("aforge_ancname_Sacred Scourge"),
+                name = "Sacred Scourge",
                 spriteFrame = 50,
                 weight = 100,
                 ancientMods = {"sacredScourge"}

@@ -144,6 +144,7 @@ return {
     ["ui_done"] = "Done",
     ["ui_inventory"] = "Inventory",
     ["ui_socket"] = "Socket",
+    ["ui_Rarity"] = "Rarity",
 
     ["ui_normal"] = "normal",
     ["ui_Normal"] = "Normal",

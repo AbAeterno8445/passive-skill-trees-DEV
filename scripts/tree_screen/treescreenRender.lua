@@ -83,7 +83,7 @@ function PST.treeScreen:Render()
             tmpX, tmpY, 1, 1, 1, 1
         )
         -- Mod version top right
-        PST.miniFont:DrawString(PST.modVersion, self.screenW - 4 - PST.miniFont:GetStringWidth(PST.modVersion), tmpY, PST.kcolors.WHITE)
+        PST.miniFont:DrawStringUTF8(PST.modVersion, self.screenW - 4 - PST.miniFont:GetStringWidth(PST.modVersion), tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 16
 
         -- Tree name
@@ -95,7 +95,7 @@ function PST.treeScreen:Render()
             if string.sub(tmpCharName, -1) == "s" then
                 tmpPossessive = "'"
             end
-            PST.miniFont:DrawStringScaled(PST:getLocalizedFormatStr("ui_charTreeAccessHint", {charName = tmpCharName, possessive = tmpPossessive}), tmpX, tmpY, 1, 1, PST.kcolors.WHITE)
+            PST.miniFont:DrawStringScaledUTF8(PST:getLocalizedFormatStr("ui_charTreeAccessHint", {charName = tmpCharName, possessive = tmpPossessive}), tmpX, tmpY, 1, 1, PST.kcolors.WHITE)
             tmpY = tmpY + 16
         else
             tmpY = tmpY + 4
@@ -105,7 +105,7 @@ function PST.treeScreen:Render()
         if PST.modData.treeDisabled then
             Isaac.RenderText(PST:getLocalized("ui_treeEffectsDisabled"), tmpX, tmpY, 1, 0.4, 0.4, 1)
             tmpY = tmpY + 14
-            PST.miniFont:DrawString("(" .. PST:getLocalized("ui_treeReenableHint") .. ")", tmpX, tmpY, PST.kcolors.RED1)
+            PST.miniFont:DrawStringUTF8("(" .. PST:getLocalized("ui_treeReenableHint") .. ")", tmpX, tmpY, PST.kcolors.RED1)
             tmpY = tmpY + 16
         elseif PST.modData.expedEnabled and ((not PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.expedSelDepth)) or
         (PST.modData.expedUberMode and PST:expedMeetsRequirements(PST.modData.uberExpedSelDepth, true))) then
@@ -119,11 +119,11 @@ function PST.treeScreen:Render()
 
         -- Help toggle indicator
         local tmpStr = PST:getLocalized("ui_helpToggleHint1") .. "  |  " .. PST:getLocalized("ui_helpToggleHint2")
-        PST.miniFont:DrawString(tmpStr, 12, self.screenH - 30, PST.kcolors.WHITE)
+        PST.miniFont:DrawStringUTF8(tmpStr, 12, self.screenH - 30, PST.kcolors.WHITE)
 
         -- In-run warning
         if Isaac.IsInGame() and not PST:getTreeSnapshotMod("dynamicMode", false) then
-            PST.miniFont:DrawString("(" .. PST:getLocalized("ui_inRunNonDynamic") .. ")", 12, self.screenH - 16, PST.kcolors.RED1)
+            PST.miniFont:DrawStringUTF8("(" .. PST:getLocalized("ui_inRunNonDynamic") .. ")", 12, self.screenH - 16, PST.kcolors.RED1)
         end
 
         -- Sidereal tree extra
@@ -131,9 +131,9 @@ function PST.treeScreen:Render()
             local currentChar = PST:getCurrentCharData()
             if currentChar then
                 tmpY = tmpY + 14
-                PST.miniFont:DrawString("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
+                PST.miniFont:DrawStringUTF8("Char: " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
                 tmpY = tmpY + 14
-                PST.miniFont:DrawString(PST:getLocalized("ui_arcaneObols") .. ": " .. tostring(currentChar.arcaneObols), tmpX, tmpY, PST.kcolors.PURPLE1)
+                PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_arcaneObols") .. ": " .. tostring(currentChar.arcaneObols), tmpX, tmpY, PST.kcolors.PURPLE1)
                 tmpY = tmpY + 28
             end
         end

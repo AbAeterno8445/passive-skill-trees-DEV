@@ -16,6 +16,11 @@ PST.luaminiFont:Load("font/luamini.fnt")
 PST.lanaPixelFont = Font()
 PST.lanaPixelFont:Load("font/cjk/lanapixel.fnt")
 
+-- Switch to compatible fonts when required for certain languages
+if Options.Language ~= 'en' then
+    PST.luaminiFont = PST.lanaPixelFont
+end
+
 -- Can return a single string or a table of strings, depending on multi-lines
 ---@param text string
 ---@param lang? string

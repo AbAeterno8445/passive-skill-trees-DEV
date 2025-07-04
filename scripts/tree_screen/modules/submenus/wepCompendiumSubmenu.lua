@@ -114,7 +114,7 @@ function weaponCompendiumSubmenu:Render(tScreen, submenusModule)
                     tScreen.cursorHighlight = true
                     tmpColor = PST.kcolors.ANCIENT_ORANGE
                 end
-                PST.normalFont:DrawString(PST:getLocalized("ui_back"), buttonX - tScreen.treeCamera.X - tScreen.camZoomOffset.X, buttonY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y, tmpColor)
+                PST.normalFont:DrawStringUTF8(PST:getLocalized("ui_back"), buttonX - tScreen.treeCamera.X - tScreen.camZoomOffset.X, buttonY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y, tmpColor)
             end
         end
     )

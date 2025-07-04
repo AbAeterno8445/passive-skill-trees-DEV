@@ -651,7 +651,7 @@ function PST:getExpNodeObjectiveDesc(nodeData, expData)
         local progressStr = tostring(objProgress) .. "/" .. tostring(nodeData.objective.req)
         table.insert(tmpDescription, {PST:getLocalized("ui_objective") .. ":", tmpColor})
 
-        local objDescription = PST:getLocalized(nodeData.objective.name)
+        local objDescription = PST:getLocalized("expobj_" .. nodeData.objective.name)
         if type(objDescription) == "table" then
             for _, tmpLine in ipairs(objDescription) do
                 local formattedLine = PST:formatString(tmpLine, { progress = progressStr })

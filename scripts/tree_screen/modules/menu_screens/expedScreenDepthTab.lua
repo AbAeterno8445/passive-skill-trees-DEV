@@ -24,7 +24,7 @@ local function expedScreenDepthTab(expData, expedScreen, tScreen)
         elseif (not expData.uber and PST.expeditionsData[i]) or (expData.uber and PST.uberExpeditionsData[i]) then
             tmpColor = PST.kcolors.EXPED_BLUE
         end
-        PST.miniFont:DrawString(tostring(i), drawX - PST.miniFont:GetStringWidth(tostring(i)) / 2, drawY - 7, tmpColor)
+        PST.miniFont:DrawStringUTF8(tostring(i), drawX - PST.miniFont:GetStringWidth(tostring(i)) / 2, drawY - 7, tmpColor)
 
         -- Hovered depth
         local hovered = false

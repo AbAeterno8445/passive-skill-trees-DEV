@@ -166,7 +166,7 @@ function PST:treeScreenMenuRender()
                 if PST.modData.treeDisabled then
                     tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_treeDisabled") .. ")"
                 end
-                PST.miniFont:DrawString(
+                PST.miniFont:DrawStringUTF8(
                     tmpStr,
                     Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2,
                     Isaac.GetScreenHeight() - 18,
@@ -176,7 +176,7 @@ function PST:treeScreenMenuRender()
         end
     elseif Game():IsPauseMenuOpen() and not PST.treeScreen.open and PST.config.drawPauseText then
         local tmpStr = PST:getLocalized("ui_openTreeKey")
-        PST.miniFont:DrawString(
+        PST.miniFont:DrawStringUTF8(
             tmpStr,
             Isaac.GetScreenWidth() / 2 - string.len(tmpStr) * 2.5,
             Isaac.GetScreenHeight() - 40,
@@ -227,13 +227,13 @@ function PST:postPauseRender()
                             end
                         end
                         local tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
-                        PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpLine[2])
+                        PST.miniFont:DrawStringScaledUTF8(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpLine[2])
                         tmpY = tmpY + 14 * tmpScale
                     end
                 elseif tmpOrderObjData then
                     local tmpStr = PST:getLocalized("ui_expOrderObjectives")
                     local tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
-                    PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, PST.kcolors.TEAL1)
+                    PST.miniFont:DrawStringScaledUTF8(tmpStr, tmpX, tmpY, tmpScale, tmpScale, PST.kcolors.TEAL1)
                     tmpY = tmpY + 14 * tmpScale
                     for _, tmpOrdMod in ipairs(tmpOrderObjData) do
                         local ordModData = PST.expedOrderMods[tmpOrdMod.obj]
@@ -244,7 +244,7 @@ function PST:postPauseRender()
                                 tmpColor = PST.kcolors.GREEN1
                             end
                             tmpX = Isaac.GetScreenWidth() / 2 - PST.miniFont:GetStringWidth(tmpStr) / (2 / tmpScale)
-                            PST.miniFont:DrawStringScaled(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpColor)
+                            PST.miniFont:DrawStringScaledUTF8(tmpStr, tmpX, tmpY, tmpScale, tmpScale, tmpColor)
                             tmpY = tmpY + 14 * tmpScale
                         end
                     end

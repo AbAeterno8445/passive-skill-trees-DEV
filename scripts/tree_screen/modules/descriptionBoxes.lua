@@ -440,7 +440,8 @@ function descriptionBoxesModule:Render(tScreen)
         end
 
         -- Sidereal tree node warning
-        if PST.treeScreen.currentTree == "sidereal" and hoveredNode.name ~= "Sidereal Vicinity" and hoveredNode.name ~= "Sidereal Region" and hoveredNode.name ~= "Sidereal Expanse" then
+        if PST.treeScreen.currentTree == "sidereal" and hoveredNode.name ~= "Sidereal Vicinity" and hoveredNode.name ~= "Sidereal Region" and hoveredNode.name ~= "Sidereal Expanse" and
+        (not PST:isNodeNameAllocated("sidereal", "Sidereal Universalization") or not PST.modData.expedEnabled) then
             table.insert(tmpDescription, {PST:getLocalized("ui_siderealNodeWarning"), PST.kcolors.STAR_ORANGE})
         end
 
@@ -527,7 +528,7 @@ function descriptionBoxesModule:Render(tScreen)
             local tmpDescKey
             if type(tmpDescription[1]) == "table" and tmpDescription[1][1]:sub(1, 1) == '#' then
                 tmpDescKey = tmpDescription[1][1]:sub(2)
-            elseif tmpDescription[1]:sub(1, 1) == '#' then
+            elseif type(tmpDescription[1]) == "string" and tmpDescription[1]:sub(1, 1) == '#' then
                 tmpDescKey = tmpDescription[1]:sub(2)
             end
             if tmpDescKey then
@@ -632,7 +633,7 @@ function descriptionBoxesModule:Render(tScreen)
             if tmpItem then
                 if not wepCompendiumSubmenu.selectedType then
                     local itemDesc = {PST:getLocalized("ui_wepCompendiumKey")}
-                    tScreen:DrawNodeBox(PST:getLocalized("ui_wepType") ": " .. PST.astralWepData[tmpItem].name, itemDesc)
+                    tScreen:DrawNodeBox(PST:getLocalized("ui_wepType") .. ": " .. PST.astralWepData[tmpItem].name, itemDesc)
                 else
                     local itemDesc = PST:getAstralWepDesc(tmpItem, true)
                     tScreen:DrawNodeBox(PST:getLocalized("ui_ancWep") .. ": " .. tmpItem.name, itemDesc)

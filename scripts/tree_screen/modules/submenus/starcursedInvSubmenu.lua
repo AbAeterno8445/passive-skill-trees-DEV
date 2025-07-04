@@ -86,7 +86,7 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
                         ))
                     else
                         if jewelData.equipped then
-                            PST.miniFont:DrawString(
+                            PST.miniFont:DrawStringUTF8(
                                 "E",
                                 jewelX - tScreen.treeCamera.X - tScreen.camZoomOffset.X + 8,
                                 jewelY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y,
@@ -94,7 +94,7 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
                             )
                         end
                         if jewelData.mighty then
-                            PST.miniFont:DrawString(
+                            PST.miniFont:DrawStringUTF8(
                                 "*",
                                 jewelX - tScreen.treeCamera.X - tScreen.camZoomOffset.X + 8,
                                 jewelY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y - 16,
@@ -133,7 +133,7 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
         local textX = self.menuX * tScreen.zoomScale - 80 - tScreen.treeCamera.X - tScreen.camZoomOffset.X
         local textY = self.menuY * tScreen.zoomScale + 220 - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
         local tmpStr = PST:getLocalized("ui_ancJewelsFound") .. ": " .. foundJewels .. "/" .. PST.totalAncientJewels
-        PST.normalFont:DrawString(tmpStr, textX, textY, PST.kcolors.ANCIENT_ORANGE, 160, true)
+        PST.normalFont:DrawStringUTF8(tmpStr, textX, textY, PST.kcolors.ANCIENT_ORANGE, 160, true)
     end
 end
 

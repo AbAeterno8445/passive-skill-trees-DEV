@@ -436,7 +436,13 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
         tmpRarity = PST:getLocalized("ui_Ancient")
     end
     local tmpType = PST:getLocalized("aforge_wepname_" .. wepTypeData.name)
-    table.insert(tmpDescription, {tmpRarity .. " " .. tmpType, tmpColor})
+
+    -- Change to a more neutral form for other languages
+    if Options.Language == 'en' then
+        table.insert(tmpDescription, {tmpRarity .. " " .. tmpType, tmpColor})
+    else
+        table.insert(tmpDescription, {tmpType .. " (" .. PST:getLocalized("ui_Rarity") .. ": " .. tmpRarity .. ")", tmpColor})
+    end
 
     local function PST_tmpShowImplicit(wepType, implicitRolls)
         local implicitWepTypeData = PST.astralWepData[wepType]

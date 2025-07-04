@@ -247,19 +247,19 @@ function PST:Render()
 			if not PST.config.xpbarStyle or PST.config.xpbarStyle == 1 then
 				-- Level text
 				local levelStr = "LV " .. charData.level
-				luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 12 * tmpScale, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
+				luaminiFont:DrawStringScaledUTF8(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 12 * tmpScale, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
 
 				-- Global level text
 				levelStr = "G.LV " .. PST.modData.level
-				luaminiFont:DrawStringScaled(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 5 * tmpScale, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
+				luaminiFont:DrawStringScaledUTF8(levelStr, barPos.X - luaminiFont:GetStringWidth(levelStr) * tmpScale - 6, barPos.Y - 5 * tmpScale, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
 			elseif PST.config.xpbarStyle == 2 or PST.config.xpbarStyle == 3 then
 				-- Beam style texts
 				local tmpY = Isaac.GetScreenHeight() - 16 * tmpScale
 				local levelStr = "LV " .. charData.level
-				luaminiFont:DrawStringScaled(levelStr, 2, tmpY, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
+				luaminiFont:DrawStringScaledUTF8(levelStr, 2, tmpY, tmpScale, tmpScale, PST.kcolors.LEVEL_PURPLE)
 
 				levelStr = "G.LV " .. PST.modData.level
-				luaminiFont:DrawStringScaled(levelStr, Isaac.GetScreenWidth() - luaminiFont:GetStringWidth(levelStr) - 2, tmpY, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
+				luaminiFont:DrawStringScaledUTF8(levelStr, Isaac.GetScreenWidth() - luaminiFont:GetStringWidth(levelStr) - 2, tmpY, tmpScale, tmpScale, PST.kcolors.GLOBAL_BLUE)
 			end
 		end
 	end
@@ -296,7 +296,7 @@ function PST:Render()
 				if PST.specialNodes.sideArtiCD > 0 then
 					tmpColor = KColor(1, 0.3, 0.3, expedUISprite.Color.A)
 				end
-				PST.miniFont:DrawStringScaled(PST:getTreeSnapshotMod("sideArtiEnergy", 0) .. "/" .. PST.sideArtiData[tmpMeridion].energyReq, 3, 22, 0.5, 0.5, tmpColor)
+				PST.miniFont:DrawStringScaledUTF8(PST:getTreeSnapshotMod("sideArtiEnergy", 0) .. "/" .. PST.sideArtiData[tmpMeridion].energyReq, 3, 22, 0.5, 0.5, tmpColor)
 			end
 		end
 
@@ -311,7 +311,7 @@ function PST:Render()
 			local drawX = 16 * screenRatioX
 			local drawY = Isaac.GetScreenHeight() - 16 * screenRatioY
 			chroniclerUISprite:Render(Vector(drawX, drawY))
-			miniFont:DrawString(tostring(remaining), drawX + 7 * screenRatioX, drawY - 6 * screenRatioY, tmpColor)
+			miniFont:DrawStringUTF8(tostring(remaining), drawX + 7 * screenRatioX, drawY - 6 * screenRatioY, tmpColor)
 		end
 	end
 	-- Ancient starcursed jewel: Nullstone (poof FX)
@@ -332,21 +332,21 @@ function PST:Render()
 	-- Ancient starcursed jewel: Crimson Warpstone (cracked key stacks text)
 	local tmpMod = PST:getTreeSnapshotMod("SC_crimsonWarpKeyStacks", 0)
 	if tmpMod > 0 and player:GetCard(0) == Card.CARD_CRACKED_KEY then
-		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
+		tempestasFont:DrawStringUTF8("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
 	end
 
 	-- Mod: rune shards can stack
 	if PST:getTreeSnapshotMod("runeshardStacking", false) then
 		tmpMod = PST:getTreeSnapshotMod("runeshardStacks", 0)
 		if tmpMod > 0 and player:GetCard(0) == Card.RUNE_SHARD then
-			tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
+			tempestasFont:DrawStringUTF8("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
 		end
 	end
 
 	-- Helping Hands node (T. Lost's tree) (Holy Card stacks text)
 	tmpMod = PST:getTreeSnapshotMod("holyCardStacks", 0)
 	if tmpMod > 0 and player:GetCard(0) == Card.CARD_HOLY then
-		tempestasFont:DrawString("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
+		tempestasFont:DrawStringUTF8("x" .. tostring(tmpMod + 1), Isaac.GetScreenWidth() - 16, Isaac.GetScreenHeight() - 14, PST.kcolors.WHITE)
 	end
 
 	local isEvenFrame = room:GetFrameCount() % 2 == 0

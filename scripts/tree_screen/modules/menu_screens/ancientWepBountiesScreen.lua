@@ -160,7 +160,7 @@ function ancientWepBountiesScreen:Render(tScreen)
     local startX = tScreen.screenW / 2 - boxW / 2
     local startY = tScreen.screenH / 2 - boxH / 2
     self:DrawUIBox(startX, startY, boxW, boxH)
-    PST.miniFont:DrawString(PST:getLocalized("ui_ancwepBounties"), startX + 3, startY, PST.kcolors.ANCIENT_ORANGE)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_ancwepBounties"), startX + 3, startY, PST.kcolors.ANCIENT_ORANGE)
 
     -- Decor ancient weapon bounties icon at the top
     local nodeSprite = tScreen.modules.nodeDrawingModule.nodesSprite
@@ -178,7 +178,7 @@ function ancientWepBountiesScreen:Render(tScreen)
         -- Draw obols
         self.bazaarUISprite:SetFrame("Default", 1)
         self.bazaarUISprite:Render(Vector(startX + 3, startY + 20))
-        PST.miniFont:DrawString(PST:getLocalized("ui_obols") .. ": " .. tostring(charData.arcaneObols or 0), startX + 20, startY + 20, PST.kcolors.PURPLE1)
+        PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_obols") .. ": " .. tostring(charData.arcaneObols or 0), startX + 20, startY + 20, PST.kcolors.PURPLE1)
 
         local curBounty = charData.ancWepBounty
         -- No current bounty
@@ -195,23 +195,23 @@ function ancientWepBountiesScreen:Render(tScreen)
             drawY = drawY + 17
 
             local tmpStr = PST:getLocalized("ui_selType") .. ": " .. wepTypeData.name
-            PST.miniFont:DrawString(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.WHITE)
+            PST.miniFont:DrawStringUTF8(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.WHITE)
             drawY = drawY + 16
 
             tmpStr = PST:getLocalized("ui_leftRightSel")
-            PST.miniFont:DrawString(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.WHITE)
+            PST.miniFont:DrawStringUTF8(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.WHITE)
             drawY = drawY + 20
 
             drawX = startX + 3
-            PST.miniFont:DrawString(PST:getLocalized("ui_noCurrentBounty"), drawX, drawY, PST.kcolors.ANCIENT_ORANGE)
+            PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_noCurrentBounty"), drawX, drawY, PST.kcolors.ANCIENT_ORANGE)
             drawY = drawY + 15
-            PST.luaminiFont:DrawString(PST:getLocalized("ui_generateBounty1"), drawX, drawY, PST.kcolors.WHITE)
+            PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_generateBounty1"), drawX, drawY, PST.kcolors.WHITE)
             drawY = drawY + 15
-            PST.luaminiFont:DrawString(PST:getLocalized("ui_generateBounty2"), drawX, drawY, PST.kcolors.WHITE)
+            PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_generateBounty2"), drawX, drawY, PST.kcolors.WHITE)
             drawY = drawY + 15
-            PST.luaminiFont:DrawString(PST:getLocalized("ui_generateBounty3"), drawX, drawY, PST.kcolors.WHITE)
+            PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_generateBounty3"), drawX, drawY, PST.kcolors.WHITE)
             drawY = drawY + 15
-            PST.luaminiFont:DrawString(PST:getLocalizedFormatStr("ui_generateBountyCost", {obolCost = PST.ancWepBountyObolCost}), drawX, drawY, PST.kcolors.PURPLE1)
+            PST.luaminiFont:DrawStringUTF8(PST:getLocalizedFormatStr("ui_generateBountyCost", {obolCost = PST.ancWepBountyObolCost}), drawX, drawY, PST.kcolors.PURPLE1)
             drawY = drawY + 15
 
         -- Current bounty info
@@ -242,17 +242,17 @@ function ancientWepBountiesScreen:Render(tScreen)
 
             -- Bounty reward title
             local tmpStr = PST:getLocalized("ui_bounty") .. ": " .. ancientData.name
-            PST.miniFont:DrawString(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.ANCIENT_ORANGE)
+            PST.miniFont:DrawStringUTF8(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.ANCIENT_ORANGE)
             drawY = drawY + 15
 
             tmpStr = PST:getLocalized("aforge_wepname_" .. wepTypeData.name) .. " (" .. PST:getLocalized("ui_Ancient") .. ")"
-            PST.miniFont:DrawString(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.ANCIENT_ORANGE)
+            PST.miniFont:DrawStringUTF8(tmpStr, drawX - PST.miniFont:GetStringWidth(tmpStr) / 2, drawY, PST.kcolors.ANCIENT_ORANGE)
             drawY = drawY + 20
 
             drawX = startX + 3
             if not self.weaponDescMode then
                 -- Draw bounty objectives
-                PST.miniFont:DrawString(PST:getLocalized("ui_bountyObjectivesTip"), drawX, drawY, PST.kcolors.ANCIENT_ORANGE)
+                PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_bountyObjectivesTip"), drawX, drawY, PST.kcolors.ANCIENT_ORANGE)
                 drawY = drawY + 16
 
                 local drawnObj = 0
@@ -279,7 +279,7 @@ function ancientWepBountiesScreen:Render(tScreen)
                                 if descLen > boxW - 4 then
                                     tmpScale = (boxW - 4) / descLen
                                 end
-                                PST.miniFont:DrawStringScaled(descStr, drawX, drawY + drawnObj * 15, tmpScale, 1, tmpColor)
+                                PST.miniFont:DrawStringScaledUTF8(descStr, drawX, drawY + drawnObj * 15, tmpScale, 1, tmpColor)
                                 drawnObj = drawnObj + 1
                             end
                         else
@@ -289,7 +289,7 @@ function ancientWepBountiesScreen:Render(tScreen)
                             if descLen > boxW - 4 then
                                 tmpScale = (boxW - 4) / descLen
                             end
-                            PST.miniFont:DrawStringScaled(descStr, drawX, drawY + drawnObj * 15, tmpScale, 1, tmpColor)
+                            PST.miniFont:DrawStringScaledUTF8(descStr, drawX, drawY + drawnObj * 15, tmpScale, 1, tmpColor)
                             drawnObj = drawnObj + 1
                         end
                     end
@@ -297,16 +297,16 @@ function ancientWepBountiesScreen:Render(tScreen)
                 drawY = drawY + (drawnObj - 1) * 15 + 2
 
                 drawY = drawY + 14
-                PST.luaminiFont:DrawString(PST:getLocalized("ui_allocFinishBounty"), drawX, drawY, PST.kcolors.WHITE)
+                PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_allocFinishBounty"), drawX, drawY, PST.kcolors.WHITE)
                 drawY = drawY + 14
-                PST.luaminiFont:DrawString(PST:getLocalized("ui_respecAbandonBounty"), drawX, drawY, PST.kcolors.LIGHTRED1)
+                PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_respecAbandonBounty"), drawX, drawY, PST.kcolors.LIGHTRED1)
                 if Isaac.IsInGame() and not PST:isRunSidereal() then
                     drawY = drawY + 14
-                    PST.luaminiFont:DrawString(PST:getLocalized("ui_cannotProgBounty"), drawX, drawY, PST.kcolors.RED2)
+                    PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_cannotProgBounty"), drawX, drawY, PST.kcolors.RED2)
                 end
             else
                 -- Draw ancient weapon reward's modifier
-                PST.miniFont:DrawString(PST:getLocalized("ui_weaponModBountyTip"), drawX, drawY, PST.kcolors.ANCIENT_ORANGE)
+                PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_weaponModBountyTip"), drawX, drawY, PST.kcolors.ANCIENT_ORANGE)
                 drawY = drawY + 16
 
                 if #ancientData.ancientMods > 0 then
@@ -327,7 +327,7 @@ function ancientWepBountiesScreen:Render(tScreen)
                                 if descLen > boxW - 4 then
                                     tmpScale = (boxW - 4) / descLen
                                 end
-                                PST.miniFont:DrawStringScaled(descStr, drawX, drawY + drawnLines * 15, tmpScale, 1, PST.kcolors.ANCIENT_ORANGE)
+                                PST.miniFont:DrawStringScaledUTF8(descStr, drawX, drawY + drawnLines * 15, tmpScale, 1, PST.kcolors.ANCIENT_ORANGE)
                                 drawnLines = drawnLines + 1
                             end
                         else
@@ -337,7 +337,7 @@ function ancientWepBountiesScreen:Render(tScreen)
                             if descLen > boxW - 4 then
                                 tmpScale = (boxW - 4) / descLen
                             end
-                            PST.miniFont:DrawStringScaled(descStr, drawX, drawY + drawnLines * 15, tmpScale, 1, PST.kcolors.ANCIENT_ORANGE)
+                            PST.miniFont:DrawStringScaledUTF8(descStr, drawX, drawY + drawnLines * 15, tmpScale, 1, PST.kcolors.ANCIENT_ORANGE)
                             drawnLines = drawnLines + 1
                         end
                     end

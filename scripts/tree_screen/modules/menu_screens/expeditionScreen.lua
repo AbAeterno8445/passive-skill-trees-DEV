@@ -676,10 +676,10 @@ function expeditionScreen:Render(tScreen)
         self.BGSprite.Color = tmpBGColor
         self.BGSprite:Render(Vector(drawX, 0))
 
-        PST.miniFont:DrawString(tmpTab, drawX, 2, tmpColor, tabW, true)
+        PST.miniFont:DrawStringUTF8(tmpTab, drawX, 2, tmpColor, tabW, true)
     end
     local tmpStr = PST:getLocalized("ui_tabNumsToSwitch")
-    PST.miniFont:DrawStringScaled(tmpStr, tScreen.screenW / 2 - PST.luaminiFont:GetStringWidth(tmpStr) / 4, tabH, 0.5, 0.5, PST.kcolors.WHITE)
+    PST.miniFont:DrawStringScaledUTF8(tmpStr, tScreen.screenW / 2 - PST.luaminiFont:GetStringWidth(tmpStr) / 4, tabH, 0.5, 0.5, PST.kcolors.WHITE)
 
     local currentChar = PST:getCurrentCharData()
 
@@ -687,26 +687,26 @@ function expeditionScreen:Render(tScreen)
     local tmpX = 12
     local tmpY = tabH + 2
     -- Global SP
-    PST.miniFont:DrawString(PST:getLocalized("ui_globalSP") .. ": " .. PST.modData.skillPoints, tmpX, tmpY, PST.kcolors.LIGHTBLUE1)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_globalSP") .. ": " .. PST.modData.skillPoints, tmpX, tmpY, PST.kcolors.LIGHTBLUE1)
     tmpY = tmpY + 14
     -- Respecs
-    PST.miniFont:DrawString(PST:getLocalized("ui_Respecs") .. ": " .. PST.modData.respecPoints, tmpX, tmpY, PST.kcolors.WHITE)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_Respecs") .. ": " .. PST.modData.respecPoints, tmpX, tmpY, PST.kcolors.WHITE)
     tmpY = tmpY + 14
     -- Arcane Obols
     if currentChar then
-        PST.miniFont:DrawString(PST:getLocalized("ui_char") .. ": " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
+        PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_char") .. ": " .. PST:getCurrentCharName(), tmpX, tmpY, PST.kcolors.PURPLE1)
         tmpY = tmpY + 14
-        PST.miniFont:DrawString(PST:getLocalized("ui_arcaneObols") .. ": " .. currentChar.arcaneObols, tmpX, tmpY, PST.kcolors.PURPLE1)
+        PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_arcaneObols") .. ": " .. currentChar.arcaneObols, tmpX, tmpY, PST.kcolors.PURPLE1)
         tmpY = tmpY + 28
     end
     -- Expedition attempts
-    PST.miniFont:DrawString(PST:getLocalized("ui_attempts") .. ": " .. expData.attempts .. "/" .. expData.startAttempts, tmpX, tmpY, PST.kcolors.EXPED_BLUE)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_attempts") .. ": " .. expData.attempts .. "/" .. expData.startAttempts, tmpX, tmpY, PST.kcolors.EXPED_BLUE)
     -- Order/Entropy (uber)
     if expData.uber then
         tmpY = tmpY + 14
-        PST.miniFont:DrawString(PST:getLocalized("ui_Order") .. ": " .. (expData.order or 0), tmpX, tmpY, PST.kcolors.TEAL1)
+        PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_Order") .. ": " .. (expData.order or 0), tmpX, tmpY, PST.kcolors.TEAL1)
         tmpY = tmpY + 14
-        PST.miniFont:DrawString(PST:getLocalized("ui_Entropy") .. ": " .. (expData.entropy or 0), tmpX, tmpY, PST.kcolors.RED1)
+        PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_Entropy") .. ": " .. (expData.entropy or 0), tmpX, tmpY, PST.kcolors.RED1)
     end
     tmpY = tmpY + 28
     if self.currentTab == 1 then
@@ -722,21 +722,21 @@ function expeditionScreen:Render(tScreen)
                 tmpColor = PST.kcolors.RED1
                 tmpStr = tmpStr .. " (Reqs!)"
             end
-            PST.miniFont:DrawString(tmpStr, tmpX, tmpY, tmpColor)
+            PST.miniFont:DrawStringUTF8(tmpStr, tmpX, tmpY, tmpColor)
         else
-            PST.miniFont:DrawString("Exp. Run OFF", tmpX, tmpY, PST.kcolors.RED1)
+            PST.miniFont:DrawStringUTF8("Exp. Run OFF", tmpX, tmpY, PST.kcolors.RED1)
         end
         tmpY = tmpY + 14
-        PST.miniFont:DrawStringScaled("(" .. PST:getLocalized("ui_expQToToggle") .. ")", tmpX, tmpY, 0.5, 0.5, PST.kcolors.WHITE)
+        PST.miniFont:DrawStringScaledUTF8("(" .. PST:getLocalized("ui_expQToToggle") .. ")", tmpX, tmpY, 0.5, 0.5, PST.kcolors.WHITE)
         tmpY = tmpY + 28
 
         -- In run - Progress enabled/disabled (for selected objective)
         local runDepth = PST:getTreeSnapshotMod("expedDepth", 0)
         if Isaac.IsInGame() and runDepth > 0 then
             if PST:expedCanProgress(runDepth, PST:getTreeSnapshotMod("isExpeduber", false)) then
-                PST.miniFont:DrawString(PST:getLocalized("ui_expInRunProgEnabled"), tmpX, tmpY, PST.kcolors.GREEN1)
+                PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_expInRunProgEnabled"), tmpX, tmpY, PST.kcolors.GREEN1)
             else
-                PST.miniFont:DrawString(PST:getLocalized("ui_expInRunProgDisabled"), tmpX, tmpY, PST.kcolors.RED1)
+                PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_expInRunProgDisabled"), tmpX, tmpY, PST.kcolors.RED1)
             end
         end
     end

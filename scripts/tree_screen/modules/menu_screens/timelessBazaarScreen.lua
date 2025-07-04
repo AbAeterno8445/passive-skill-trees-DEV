@@ -211,7 +211,7 @@ function timelessBazaarScreen:Render(tScreen)
     local startX = tScreen.screenW / 2 - boxW / 2
     local startY = tScreen.screenH / 2 - boxH / 2
     self:DrawUIBox(startX, startY, boxW, boxH)
-    PST.miniFont:DrawString(PST:getLocalized("ui_timelessBazaar"), startX + 3, startY, PST.kcolors.PURPLE1)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_timelessBazaar"), startX + 3, startY, PST.kcolors.PURPLE1)
     local drawX = startX + 22
     local drawY = startY + 36
 
@@ -238,7 +238,7 @@ function timelessBazaarScreen:Render(tScreen)
 
     local tmpStr = PST:getLocalized("ui_bazaarRefresh")
     if not canRefresh then tmpStr = tmpStr .. " (" .. PST:getLocalized("ui_locked") .. ")" end
-    PST.miniFont:DrawString(tmpStr, drawX, drawY, PST.kcolors.PURPLE1)
+    PST.miniFont:DrawStringUTF8(tmpStr, drawX, drawY, PST.kcolors.PURPLE1)
     drawY = drawY + 12
 
     if not canRefresh then
@@ -247,17 +247,17 @@ function timelessBazaarScreen:Render(tScreen)
         if charData and charData.bazaarDone then
             tmpMsg = PST:getLocalized("ui_bazaarRefreshSpent")
         end
-        PST.luaminiFont:DrawString(tmpMsg, drawX, drawY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(tmpMsg, drawX, drawY, PST.kcolors.WHITE)
         drawY = drawY + 11
     else
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_bazaarHoldRefresh"), drawX, drawY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_bazaarHoldRefresh"), drawX, drawY, PST.kcolors.WHITE)
         drawY = drawY + 11
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_bazaarHoldRefresh2"), drawX, drawY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_bazaarHoldRefresh2"), drawX, drawY, PST.kcolors.WHITE)
         drawX = startX + 8
         drawY = drawY + 11
         local refreshCosts = PST:bazaarGetCost("refresh")
         tmpStr = PST:getLocalizedFormatStr("ui_bazaarrefreshCost", refreshCosts)
-        PST.luaminiFont:DrawString(tmpStr, drawX, drawY, PST.kcolors.LEVEL_PURPLE)
+        PST.luaminiFont:DrawStringUTF8(tmpStr, drawX, drawY, PST.kcolors.LEVEL_PURPLE)
     end
     drawX = startX + 5
     drawY = drawY + 22
@@ -269,7 +269,7 @@ function timelessBazaarScreen:Render(tScreen)
 
         local tmpRes = tmpResources[i + 1]
         tmpStr = tmpRes.name .. ": " .. tostring(tmpRes.targetVal())
-        PST.miniFont:DrawString(tmpStr, drawX + 17, drawY, tmpRes.color)
+        PST.miniFont:DrawStringUTF8(tmpStr, drawX + 17, drawY, tmpRes.color)
         drawY = drawY + 15
     end
     drawX = drawX - 2
@@ -286,7 +286,7 @@ function timelessBazaarScreen:Render(tScreen)
         self.bazaarUISprite:SetFrame("Default", 3)
         self.bazaarUISprite:Render(Vector(drawX + PST.miniFont:GetStringWidth(tmpStr) + 3, drawY - 5))
     end
-    PST.miniFont:DrawString(tmpStr, drawX, drawY, tmpColor)
+    PST.miniFont:DrawStringUTF8(tmpStr, drawX, drawY, tmpColor)
     drawY = drawY + 15
 
     local itemBoxW = boxW - 10
@@ -332,13 +332,13 @@ function timelessBazaarScreen:Render(tScreen)
     end
     drawX = drawX + 3
     drawY = drawY + 36
-    PST.luaminiFont:DrawString(PST:getLocalized("ui_leftRightSelItem"), drawX, drawY, PST.kcolors.WHITE)
+    PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_leftRightSelItem"), drawX, drawY, PST.kcolors.WHITE)
     drawY = drawY + 12
-    PST.luaminiFont:DrawString(PST:getLocalized("ui_freezeItems"), drawX, drawY, PST.kcolors.SKY_BLUE)
+    PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_freezeItems"), drawX, drawY, PST.kcolors.SKY_BLUE)
     drawY = drawY + 16
 
     -- Draw purchased items
-    PST.miniFont:DrawString(PST:getLocalized("ui_purchItems"), drawX, drawY, PST.kcolors.PURPLE1)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_purchItems"), drawX, drawY, PST.kcolors.PURPLE1)
     drawY = drawY + 15
 
     self.BGSprite.Color.RO = 0.1

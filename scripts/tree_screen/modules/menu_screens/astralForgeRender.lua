@@ -172,14 +172,14 @@ local function astralForgeScreenRender(self, tScreen)
     local tmpTitle = PST:getLocalized("ui_wepInv")
     if self.deconMode then tmpTitle = tmpTitle .. " (" .. PST:getLocalized("ui_decon") .. ")"
     elseif self.imprintMode then tmpTitle = tmpTitle .. " (" .. PST:getLocalized("ui_Imprint") .. ")" end
-    PST.miniFont:DrawString(tmpTitle, tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
+    PST.miniFont:DrawStringUTF8(tmpTitle, tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
     tmpY = tmpY + 17
 
     -- Draw material counts UI box
     local matsX = startX
     local matsY = startY - 60
     self:DrawUIBox(matsX, matsY, 170, 54)
-    PST.miniFont:DrawString(PST:getLocalized("ui_Materials"), matsX + 3, matsY, PST.kcolors.FORGE_ORANGE)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_Materials"), matsX + 3, matsY, PST.kcolors.FORGE_ORANGE)
     matsX = matsX + 3
     matsY = matsY + 17
     local hoveredMat = nil
@@ -188,7 +188,7 @@ local function astralForgeScreenRender(self, tScreen)
             local tmpMatX = matsX + 48 * (i - 1)
             self.forgeUISprite:SetFrame("Resources", tmpMat.frame)
             self.forgeUISprite:Render(Vector(tmpMatX, matsY))
-            PST.miniFont:DrawString("x" .. tostring(PST.modData[tmpMat.targetVal]), tmpMatX + 17, matsY, tmpMat.color)
+            PST.miniFont:DrawStringUTF8("x" .. tostring(PST.modData[tmpMat.targetVal]), tmpMatX + 17, matsY, tmpMat.color)
 
             -- Hovered material
             if self.camCenterX >= tmpMatX and self.camCenterX <= tmpMatX + 55 and
@@ -204,7 +204,7 @@ local function astralForgeScreenRender(self, tScreen)
     local eqWepY = startY - 60
     self:DrawUIBox(eqWepX, eqWepY, 170, 54)
     tmpTitle = PST:getLocalized("ui_equippedWeapon") .. " (" .. PST:getCurrentCharName() .. ")"
-    PST.miniFont:DrawString(tmpTitle, eqWepX + 3, eqWepY, PST.kcolors.FORGE_ORANGE)
+    PST.miniFont:DrawStringUTF8(tmpTitle, eqWepX + 3, eqWepY, PST.kcolors.FORGE_ORANGE)
 
     eqWepX = eqWepX + 19
     eqWepY = eqWepY + 33
@@ -226,11 +226,11 @@ local function astralForgeScreenRender(self, tScreen)
 
         eqWepX = eqWepX + 18
         eqWepY = eqWepY - 18
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_hoverMoreInfo"), eqWepX, eqWepY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_hoverMoreInfo"), eqWepX, eqWepY, PST.kcolors.WHITE)
         eqWepY = eqWepY + 10
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_allocToSelect"), eqWepX, eqWepY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_allocToSelect"), eqWepX, eqWepY, PST.kcolors.WHITE)
         eqWepY = eqWepY + 10
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_shiftAllocUnequip"), eqWepX, eqWepY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_shiftAllocUnequip"), eqWepX, eqWepY, PST.kcolors.WHITE)
     end
 
     -- Inventory filter buttons
@@ -302,7 +302,7 @@ local function astralForgeScreenRender(self, tScreen)
     -- Weapons
     local drawnWeps = {}
     if #PST.modData.astralWepInventory == 0 then
-        PST.miniFont:DrawString(PST:getLocalized("ui_invEmpty") .. ".", tmpX, tmpY, PST.kcolors.WHITE)
+        PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_invEmpty") .. ".", tmpX, tmpY, PST.kcolors.WHITE)
     else
         local hasTypeFilter = #self.appliedFilters.weaponType > 0
         local hasRarityFilter = #self.appliedFilters.weaponRarity > 0
@@ -354,7 +354,7 @@ local function astralForgeScreenRender(self, tScreen)
 
                 -- Equipped
                 if tmpWeapon.equipped then
-                    PST.miniFont:DrawString("E", wepX + 8, wepY + 4, PST.kcolors.LIGHTYELLOW1)
+                    PST.miniFont:DrawStringUTF8("E", wepX + 8, wepY + 4, PST.kcolors.LIGHTYELLOW1)
                 end
 
                 self.weaponSprite.Color.RO = 0
@@ -382,7 +382,7 @@ local function astralForgeScreenRender(self, tScreen)
     end
     self:DrawUIBox(tmpX, tmpY, tmpBoxW, tmpBoxH)
 
-    PST.miniFont:DrawString(PST:getLocalized("ui_wepForging"), tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_wepForging"), tmpX + 3, tmpY, PST.kcolors.FORGE_ORANGE)
     tmpY = tmpY + 17
 
     -- Selected weapon slot
@@ -392,7 +392,7 @@ local function astralForgeScreenRender(self, tScreen)
     self.forgeUISprite:Render(Vector(selWepX, selWepY))
 
     if not self.selectedWeapon then
-        PST.miniFont:DrawString(PST:getLocalized("ui_selWepToForge"), selWepX + 18, tmpY, PST.kcolors.WHITE)
+        PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_selWepToForge"), selWepX + 18, tmpY, PST.kcolors.WHITE)
     else
         PST:renderAstralWepAt(self.selectedWeapon, self.weaponSprite, selWepX, selWepY)
         -- Forge action buttons
@@ -436,9 +436,9 @@ local function astralForgeScreenRender(self, tScreen)
         selWepY = selWepY + 18
         for _, tmpLine in ipairs(selectedWepDesc) do
             if type(tmpLine) == "table" then
-                PST.miniFont:DrawString(tmpLine[1], selWepX, selWepY, tmpLine[2])
+                PST.miniFont:DrawStringUTF8(tmpLine[1], selWepX, selWepY, tmpLine[2])
             else
-                PST.miniFont:DrawString(tmpLine, selWepX, selWepY, PST.kcolors.WHITE)
+                PST.miniFont:DrawStringUTF8(tmpLine, selWepX, selWepY, PST.kcolors.WHITE)
             end
             selWepY = selWepY + boxLineHeight
         end
@@ -460,7 +460,7 @@ local function astralForgeScreenRender(self, tScreen)
             tmpColor = PST.kcolors.TEAL1
         end
     end
-    PST.miniFont:DrawString(PST:getLocalized("ui_prev"), tmpX, tmpY, tmpColor)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_prev"), tmpX, tmpY, tmpColor)
 
     tmpX = tmpX + 100
     tmpColor = PST.kcolors.WHITE
@@ -475,21 +475,21 @@ local function astralForgeScreenRender(self, tScreen)
             tmpColor = PST.kcolors.TEAL1
         end
     end
-    PST.miniFont:DrawString(PST:getLocalized("ui_next"), tmpX, tmpY, tmpColor)
+    PST.miniFont:DrawStringUTF8(PST:getLocalized("ui_next"), tmpX, tmpY, tmpColor)
 
     -- Current page text
     tmpX = tmpX - 50
     local tmpStr = tostring(self.invPage) .. "/" .. invPageAmt
-    PST.miniFont:DrawString(tmpStr, tmpX, tmpY, PST.kcolors.WHITE)
+    PST.miniFont:DrawStringUTF8(tmpStr, tmpX, tmpY, PST.kcolors.WHITE)
 
     -- Control hints
     if not self.selectedWeapon then
         tmpY = startY + 270
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_allocToSelHoverWepForge"), startX, tmpY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_allocToSelHoverWepForge"), startX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 12
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_shiftAllocEquipHoverWep"), startX, tmpY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_shiftAllocEquipHoverWep"), startX, tmpY, PST.kcolors.WHITE)
         tmpY = tmpY + 12
-        PST.luaminiFont:DrawString(PST:getLocalized("ui_shiftHFavWep"), startX, tmpY, PST.kcolors.WHITE)
+        PST.luaminiFont:DrawStringUTF8(PST:getLocalized("ui_shiftHFavWep"), startX, tmpY, PST.kcolors.WHITE)
     end
 
     -- Cursor

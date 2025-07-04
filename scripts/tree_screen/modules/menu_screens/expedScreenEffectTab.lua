@@ -5,7 +5,7 @@ local baseDrawX, baseDrawY = 0, 0
 -- Text render helper
 local function tmpRenderText(txt, color, offsetY)
     if string.len(txt) > 0 then
-        PST.miniFont:DrawString(txt, baseDrawX, baseDrawY, color or PST.kcolors.WHITE)
+        PST.miniFont:DrawStringUTF8(txt, baseDrawX, baseDrawY, color or PST.kcolors.WHITE)
     end
     offsetY = offsetY or drawLineHeight
     baseDrawY = baseDrawY + offsetY

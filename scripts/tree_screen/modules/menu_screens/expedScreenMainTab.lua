@@ -167,7 +167,7 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
                 local tmpWidth = PST.miniFont:GetStringWidth(depthNum)
                 local tmpColor = PST.kcolors.WHITE
                 if expData.uber then tmpColor = PST.kcolors.RED2 end
-                PST.miniFont:DrawStringScaled(depthNum, drawPos.X + (13 - tmpWidth) * expedScreen.zoomScale, drawPos.Y + 3, expedScreen.zoomScale, expedScreen.zoomScale, tmpColor)
+                PST.miniFont:DrawStringScaledUTF8(depthNum, drawPos.X + (13 - tmpWidth) * expedScreen.zoomScale, drawPos.Y + 3, expedScreen.zoomScale, expedScreen.zoomScale, tmpColor)
             end
 
             -- Hovered node
@@ -212,10 +212,10 @@ local function expedScreenMainTab(expData, expedScreen, tScreen)
         -- Draw order
         local textX = drawPos.X - 13 * expedScreen.zoomScale
         local textY = drawPos.Y - 22 * expedScreen.zoomScale
-        PST.miniFont:DrawStringScaled(tostring(expData.order or 0), textX, textY, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.TEAL1, math.floor(26 * expedScreen.zoomScale), true)
+        PST.miniFont:DrawStringScaledUTF8(tostring(expData.order or 0), textX, textY, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.TEAL1, math.floor(26 * expedScreen.zoomScale), true)
         -- Draw entropy
         textY = drawPos.Y + 7 * expedScreen.zoomScale
-        PST.miniFont:DrawStringScaled(tostring(expData.entropy or 0), textX, textY, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.RED1, math.floor(26 * expedScreen.zoomScale), true)
+        PST.miniFont:DrawStringScaledUTF8(tostring(expData.entropy or 0), textX, textY, expedScreen.zoomScale, expedScreen.zoomScale, PST.kcolors.RED1, math.floor(26 * expedScreen.zoomScale), true)
 
         local nodeHalf = 16 * expedScreen.zoomScale
         if expedScreen.camCenterX >= drawPos.X - nodeHalf and expedScreen.camCenterX <= drawPos.X + nodeHalf and

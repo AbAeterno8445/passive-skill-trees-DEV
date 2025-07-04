@@ -61,7 +61,7 @@ function submenusModule:DrawNodeSubMenu(tScreen, menuRows, centerX, centerY, men
         tScreen.hoveredNode = nil
     end
 
-    PST.normalFont:DrawString(
+    PST.normalFont:DrawStringUTF8(
         title,
         tmpBGX - tScreen.treeCamera.X - tScreen.camZoomOffset.X,
         menuY * tScreen.zoomScale + 20 - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y,
