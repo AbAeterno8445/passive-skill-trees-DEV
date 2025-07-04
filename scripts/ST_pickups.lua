@@ -306,7 +306,7 @@ function PST:prePickup(pickup, collider, low)
                         tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                         pickup:Remove()
                         PST:SC_addJewel(PSTStarcursedType.AZURE, isMighty, 0)
-                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_azureJewel"), Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_AzureJewel"), Vector.Zero, Color(0.7, 0.7, 1, 1), 0.12, 90, true)
                         SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                         jewelCollisionTimer = 0
                         return { Collide = false, SkipCollisionEffects = true }
@@ -320,7 +320,7 @@ function PST:prePickup(pickup, collider, low)
                         tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                         pickup:Remove()
                         PST:SC_addJewel(PSTStarcursedType.CRIMSON, isMighty, 0)
-                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_crimsonJewel"), Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_CrimsonJewel"), Vector.Zero, Color(1, 0.7, 0.7, 1), 0.12, 90, true)
                         SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                         jewelCollisionTimer = 0
                         return { Collide = false, SkipCollisionEffects = true }
@@ -334,7 +334,7 @@ function PST:prePickup(pickup, collider, low)
                         tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                         pickup:Remove()
                         PST:SC_addJewel(PSTStarcursedType.VIRIDIAN, isMighty, 0)
-                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_viridianJewel"), Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
+                        PST:createFloatTextFX("+ " .. PST:getLocalized("ui_ViridianJewel"), Vector.Zero, Color(0.7, 1, 0.7, 1), 0.12, 90, true)
                         SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.6 + 0.1 * math.random())
                         jewelCollisionTimer = 0
                         return { Collide = false, SkipCollisionEffects = true }
@@ -347,7 +347,7 @@ function PST:prePickup(pickup, collider, low)
                     tmpFX.Color = Color(1, 1, 1, 1, 1, 1, 1)
                     pickup:Remove()
                     PST:SC_addJewel(PSTStarcursedType.ANCIENT, false, 0)
-                    PST:createFloatTextFX("+ " .. PST:getLocalized("ui_ancientJewel"), Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
+                    PST:createFloatTextFX("+ " .. PST:getLocalized("ui_AncientJewel"), Vector.Zero, Color(1, 0.65, 0.1, 1), 0.12, 120, true)
                     SFXManager():Play(SoundEffect.SOUND_KEYPICKUP_GAUNTLET, 0.9, 2, false, 1.4 + 0.1 * math.random())
                     jewelCollisionTimer = 0
                     return { Collide = false, SkipCollisionEffects = true }

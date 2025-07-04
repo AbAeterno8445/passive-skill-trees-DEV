@@ -81,10 +81,14 @@ return {
     ["ui_jewels_respecDestroy"] = "Presiona Respec para destruir esta joya.",
     ["ui_jewels_respecRemBoss"] = "Presiona Respec para quitar al jefe convertido.",
     ["ui_starcursedJewel"] = "Joya Maldecida",
-    ["ui_azureJewel"] = "Joya Azur Maldecida",
-    ["ui_crimsonJewel"] = "Joya Carmesí Maldecida",
-    ["ui_viridianJewel"] = "Joya Viridiana Maldecida",
-    ["ui_ancientJewel"] = "Joya Antigua Maldecida",
+    ["ui_AzureJewel"] = "Joya Azur Maldecida",
+    ["ui_AzureJewels"] = "Joyas Azur Maldecidas",
+    ["ui_CrimsonJewel"] = "Joya Carmesí Maldecida",
+    ["ui_CrimsonJewels"] = "Joyas Carmesí Maldecidas",
+    ["ui_ViridianJewel"] = "Joya Viridiana Maldecida",
+    ["ui_ViridianJewels"] = "Joyas Viridianas Maldecidas",
+    ["ui_AncientJewel"] = "Joya Antigua Maldecida",
+    ["ui_AncientJewels"] = "Joyas Antiguas Maldecidas",
 
     ["ui_astralForgeKey"] = "Presiona Asignar para acceder al menu de la Forja Astral.",
 
@@ -165,7 +169,7 @@ return {
     ["ui_Tier"] = "Tier",
 
     ["ui_prev"] = "Prev",
-    ["ui_next"] = "Sig",
+    ["ui_next"] = "Sig.",
     ["ui_back"] = "Volver",
 
     ["ui_convBoss"] = "Jefe convertido",

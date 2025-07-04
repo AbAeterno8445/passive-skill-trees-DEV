@@ -81,10 +81,14 @@ return {
     ["ui_jewels_respecDestroy"] = "Press the Respec Node button to destroy this jewel.",
     ["ui_jewels_respecRemBoss"] = "Press the Respec Node button to remove the converted boss.",
     ["ui_starcursedJewel"] = "Starcursed Jewel",
-    ["ui_azureJewel"] = "Azure Starcursed Jewel",
-    ["ui_crimsonJewel"] = "Crimson Starcursed Jewel",
-    ["ui_viridianJewel"] = "Viridian Starcursed Jewel",
-    ["ui_ancientJewel"] = "Ancient Starcursed Jewel",
+    ["ui_AzureJewel"] = "Azure Starcursed Jewel",
+    ["ui_AzureJewels"] = "Azure Starcursed Jewels",
+    ["ui_CrimsonJewel"] = "Crimson Starcursed Jewel",
+    ["ui_CrimsonJewels"] = "Crimson Starcursed Jewels",
+    ["ui_ViridianJewel"] = "Viridian Starcursed Jewel",
+    ["ui_ViridianJewels"] = "Viridian Starcursed Jewels",
+    ["ui_AncientJewel"] = "Ancient Starcursed Jewel",
+    ["ui_AncientJewels"] = "Ancient Starcursed Jewels",
 
     ["ui_astralForgeKey"] = "Press Allocate to access the Astral Forge menu.",
 

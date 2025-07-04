@@ -98,7 +98,7 @@ return {
     },
 
     ["jewel_Iridescent Purity"] = "Iridescent Purity",
-    ["jewel_Iridescent Purity_name"] = {
+    ["jewel_Iridescent Purity_desc"] = {
         "Each passive item you pick up has a 15% chance to be removed when entering the next floor.",
         "Chance increases by 15% individually for each item picked in the current floor."
     },

@@ -99,7 +99,7 @@ return {
     },
 
     ["jewel_Iridescent Purity"] = "Puridad Iridescente",
-    ["jewel_Iridescent Purity_name"] = {
+    ["jewel_Iridescent Purity_desc"] = {
         "Cada objeto pasivo que obtengas tiene un 15% chance de ser removido al entrar al siguiente piso.",
         "La chance aumenta un 15% individualmente por cada objeto recolectado en el piso actual."
     },

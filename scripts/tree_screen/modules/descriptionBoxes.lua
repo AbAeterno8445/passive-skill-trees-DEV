@@ -397,10 +397,16 @@ function descriptionBoxesModule:Render(tScreen)
                 end
             end
         end
+        local hasCustomName = false
         if nodeDescFunc then
-            local newDescData = nodeDescFunc(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local newDescName = descName
+            if hoveredNode.nameLocale then
+                newDescName = PST:getLocalized(hoveredNode.nameLocale)
+            end
+            local newDescData = nodeDescFunc(newDescName, tmpDescription, isAllocated, tScreen, extraData)
             descName = newDescData.name
             tmpDescription = newDescData.description
+            hasCustomName = true
         end
 
         -- Crimson nodes
@@ -519,7 +525,7 @@ function descriptionBoxesModule:Render(tScreen)
 
         ---- Localization ----
         -- Node name
-        if hoveredNode.nameLocale then
+        if not hasCustomName and hoveredNode.nameLocale then
             descName = PST:getLocalized(hoveredNode.nameLocale, Options.Language)
         end
 
@@ -567,7 +573,7 @@ function descriptionBoxesModule:Render(tScreen)
                 elseif jewelData.status and jewelData.status == "converted" then
                     table.insert(tmpDescription, PST:getLocalized("ui_jewels_respecRemBoss"))
                 end
-                local jewelTitle = jewelData.name or jewelData.type .. " " .. PST:getLocalized("ui_starcursedJewel")
+                local jewelTitle = jewelData.name and PST:getLocalized("jewel_" .. jewelData.name) or PST:getLocalized("ui_" .. jewelData.type .. "Jewel")
                 if jewelData.mighty then
                     jewelTitle = jewelTitle .. " (" .. PST:getLocalized("ui_mighty") .. ")"
                 end

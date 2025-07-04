@@ -21,15 +21,16 @@ end
 
 function starcursedInvSubmenu:OnClose()
     self.jewelType = ""
+    self.socket = nil
 end
 
 ---@param tScreen PST.treeScreen
 function starcursedInvSubmenu:Render(tScreen, submenusModule)
     local tmpJewelType = self.jewelType
     local tmpJewelPages = math.ceil(#PST.modData.starTreeInventory[tmpJewelType] / jewelsPerPage)
-    local tmpTitle = tmpJewelType .. " " .. PST:getLocalized("ui_inventory")
+    local tmpTitle = PST:getLocalized("ui_inventory") .. ": " .. PST:getLocalized("ui_" .. tmpJewelType .. "Jewels")
     if self.socket then
-        tmpTitle = tmpJewelType .. " " .. PST:getLocalized("ui_socket") .. " " .. tostring(self.socket)
+        tmpTitle = PST:getLocalized("ui_socket") .. " " .. self.socket .. ": " .. PST:getLocalized("ui_" .. tmpJewelType .. "Jewel")
     end
 
     self.hoveredJewel = nil
