@@ -3,7 +3,7 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
-        "v1.4.0",
+        "v1.3.3",
         "- Internal support for internationalization (translation of UI to other languages). Currently supported languages: English (default), Spanish.",
         "- Added compatibility for various mod hidden characters, and Joseph mod items.",
         "- Adjusted how pausing is handled while viewing the tree screen in-game, potentially preventing crashes or other weird issues while using it.",
