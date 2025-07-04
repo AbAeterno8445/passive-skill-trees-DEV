@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "- Added compatibility for various mod hidden characters, and Joseph mod items.",
         "- Adjusted how pausing is handled while viewing the tree screen in-game, potentially preventing crashes or other weird issues while using it.",
         "- The tree screen no longer requires pausing to open in-game, and will pause the game in the background while open.",
+        "- Potential fix for occasional nil value error when dealing damage under specific circumstances.",
         "",
 
         "v1.3.2",

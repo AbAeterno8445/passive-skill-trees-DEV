@@ -654,8 +654,12 @@ function PST:onDamage(target, damage, flag, source)
         if isBlacklistedSrc then return nil end
 
         local srcPlayer
-        if source and (source.Type == EntityType.ENTITY_PLAYER or source.SpawnerType == EntityType.ENTITY_PLAYER) then
-            srcPlayer = source.Entity:ToPlayer() or source.Entity.SpawnerEntity:ToPlayer()
+        if source and source.Entity then
+            if source.Type == EntityType.ENTITY_PLAYER then
+                srcPlayer = source.Entity:ToPlayer()
+            elseif source.SpawnerType == EntityType.ENTITY_PLAYER then
+                srcPlayer = source.Entity.SpawnerEntity:ToPlayer()
+            end
         end
         if not srcPlayer then srcPlayer = PST:getPlayer() end
 
