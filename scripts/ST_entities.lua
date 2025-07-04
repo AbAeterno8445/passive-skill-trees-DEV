@@ -216,7 +216,7 @@ function PST:onNPCUpdate(npc)
                 if npc:IsBoss() then
                     tmpMod = PST:getTreeSnapshotMod("boonMeekGiants", 0)
                     if tmpMod > 0 then
-                        npc.HitPoints = math.min(1, npc.HitPoints - math.ceil(npc.MaxHitPoints * (tmpMod / 100)))
+                        npc.HitPoints = math.max(1, npc.HitPoints - math.ceil(npc.MaxHitPoints * (tmpMod / 100)))
                     end
                 end
             end
