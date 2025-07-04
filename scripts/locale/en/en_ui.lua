@@ -6,8 +6,8 @@ return {
     ["ui_cosmicR_unlockChar"] = "Unlock {{charName}} to enable this option.",
 
     ["ui_globalTree"] = "Global Tree",
-    ["ui_charTreeName"] = "{{charName}}{{en_possessive}} Tree",
-    ["ui_charTreeAccessHint"] = "Press Q to access {{charName}}{{en_possessive}} tree.",
+    ["ui_charTreeName"] = "{{charName}}{{possessive}} Tree",
+    ["ui_charTreeAccessHint"] = "Press Q to access {{charName}}{{possessive}} tree.",
 
     ["ui_starTree"] = "Star Tree",
     ["ui_starTree_EtoView"] = "(E to view Star Tree)",

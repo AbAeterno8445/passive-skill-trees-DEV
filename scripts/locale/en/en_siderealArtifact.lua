@@ -244,7 +244,7 @@ return {
 
     ["sideart_bloodmoonMeridion"] = "Bloodmoon Meridion",
     ["sideart_bloodmoonMeridion_desc"] = {
-        {"250 energy: Spawn a Dice Shard, up to 3 times per floor.", PST.kcolors.TEAL1},
+        {"350 energy: Spawn a Cracked Key. 6% chance to reveal the Ultra Secret Room on trigger.", PST.kcolors.TEAL1},
         "5 second artifact cooldown."
     },
     ["sideart_bloodmoonMeridion_obj"] = "Enter the Ultra Secret Room {{progress}}/5 times."

@@ -27,7 +27,7 @@ return {
     ["node_crimsoninv"] = {
         "Allocate to unlock the Crimson Starcursed Jewel inventory.",
         "Once allocated, press allocate again to open inventory.",
-        "Crimson Starcursed Jewels can roll modifiers that affect monsters' might."
+        "Crimson Starcursed Jewels can roll modifiers that affect monsters' vitality."
     },
 
     ["node_viridiansocket1_name"] = "Viridian Socket 1",
@@ -41,7 +41,7 @@ return {
     ["node_viridianinv"] = {
         "Allocate to unlock the Viridian Starcursed Jewel inventory.",
         "Once allocated, press allocate again to open inventory.",
-        "Viridian Starcursed Jewels can roll modifiers that affect monsters' might."
+        "Viridian Starcursed Jewels can roll modifiers that affects the run directly."
     },
 
     ["node_ancientsocket1_name"] = "Ancient Socket 1",
@@ -53,7 +53,7 @@ return {
     ["node_ancientinv"] = {
         "Allocate to unlock the Ancient Starcursed Jewel inventory.",
         "Once allocated, press allocate again to open inventory.",
-        "Ancient Starcursed Jewels can roll modifiers that affect monsters' might."
+        "Ancient Starcursed Jewels can roll unique run-altering modifiers."
     },
 
 
@@ -80,7 +80,7 @@ return {
         "Allocate to unlock Uber Expeditions, a more challenging variant of expeditions.",
         "Once allocated, a toggle button will appear in the Astrolabe menu.",
         "Gain Deep-Space Skill Points by completing uber expedition nodes.",
-        "Every 3 nodes in an uber expedition, as well as the final node, grant 1 Deep-Space SP."
+        "Every 2 nodes in an uber expedition, as well as the final node, grant 1 Deep-Space SP."
     },
     ["dsnode_finalboss_sp_name"] = "Final Boss Global SP",
     ["dsnode_finalboss_sp"] = "{{finallBossGSP}}% chance to gain a Global Skill Point when defeating a final boss without taking damage.",

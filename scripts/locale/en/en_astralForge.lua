@@ -201,6 +201,70 @@ return {
     ["aforge_ancname_Sacred Scourge"] = "Sacred Scourge",
 
 
+    ["aforge_mod_desc_longswordImp"] = "+{{roll1}}% damage dealt to enemies within 1.5 tiles.",
+    ["aforge_mod_desc_estocImp"] = {
+        "Consecutive hits against enemies within 2 tiles of you grants +{{roll1}}% tears, up to {{roll2}}%.",
+        "Hitting an enemy beyond 2 tiles resets the bonus."
+    },
+    ["aforge_mod_desc_daggerImp"] = {
+        "{{roll1}}% chance for hits to deal {{roll2}}% more damage.",
+        "Double the chance against targets within 1.5 tiles."
+    },
+    ["aforge_mod_desc_quickbladeImp"] = {
+        "+{{roll1}} tears for {{roll2}} second(s) when hitting an enemy, which stacks up to {{roll3}}.",
+        "Double the duration if hitting targets within 1.5 tiles.",
+        "Each stack has its own duration."
+    },
+    ["aforge_mod_desc_spearImp"] = {
+        "+{{roll1}}% damage dealt to enemies between 1.5 and 2.5 tiles away from you.",
+        "-{{roll2}}% damage dealt to enemies within 1.5 tiles."
+    },
+    ["aforge_mod_desc_tridentImp"] = {
+        "Consecutive hits against enemies beyond 1.5 tiles of you grant +{{roll1}}% damage and tears, up to {{roll2}}%.",
+        "Hitting an enemy within 1.5 tiles of you resets the bonus."
+    },
+    ["aforge_mod_desc_scytheImp"] = {
+        "Hitting an enemy triggers a circular slash that hits nearby enemies for {{roll1}}% of the hit's damage.",
+        "This effect has a {{roll2}} second cooldown."
+    },
+    ["aforge_mod_desc_axeImp"] = {
+        "{{roll1}}% chance to cause bleeding for 3 seconds when hitting enemies.",
+        "+{{roll2}}% damage with hits against bleeding enemies."
+    },
+    ["aforge_mod_desc_greataxeImp"] = {
+        "Every {{roll1}} hits against each enemy causes them to bleed for 4 seconds.",
+        "+{{roll2}}% damage for 2 seconds after hitting a bleeding enemy.",
+        "{{roll3}}% tears."
+    },
+    ["aforge_mod_desc_shortbowImp"] = {
+        "+{{roll1}} shot speed.",
+        "{{roll2}}% of your shot speed above 1 becomes a tears multiplier, up to +80%."
+    },
+    ["aforge_mod_desc_bowImp"] = {
+        "+{{roll1}} shot speed.",
+        "Hits against enemies deal additional damage the farther away they are from you, up to {{roll2}}%."
+    },
+    ["aforge_mod_desc_crossbowImp"] = {
+        "{{roll1}} tears.",
+        "+{{roll2}} shot speed.",
+        "Your total shot speed becomes a damage multiplier, up to {{roll3}}%."
+    },
+    ["aforge_mod_desc_gauntletImp"] = {
+        "Can have an additional magic modifier. Magic modifiers are stronger.",
+        "Transmutation cost is halved."
+    },
+    ["aforge_mod_desc_greatmaceImp"] = {
+        "Hitting an enemy within 2.5 tiles causes a shockwave, paralyzing nearby enemies for {{roll1}} seconds.",
+        "Already paralyzed enemies hit by the shockwave receive {{roll2}}% of your damage, capped at 50.",
+        "{{roll3}} second cooldown."
+    },
+    ["aforge_mod_desc_whipImp"] = {
+        "When hitting an enemy, shoot a stream of 5 tears in a line towards them.",
+        "Hitting enemies with these tears randomly grants you either +{{roll1}}% speed or",
+        "+{{roll1}}% tears, up to {{roll2}}%, for {{roll3}} seconds.",
+        "2 second cooldown between tear shots."
+    },
+
     ["aforge_mod_desc_dmgStatus"] = "+{{roll1}}% damage dealt to enemies affected by status effects.",
     ["aforge_mod_desc_dmgStatusSlow"] = "+{{roll1}}% damage dealt to slowed enemies.",
     ["aforge_mod_desc_dmgStatusCharm"] = "+{{roll1}}% damage dealt to charmed enemies.",

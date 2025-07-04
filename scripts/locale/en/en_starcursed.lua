@@ -76,6 +76,13 @@ return {
 
     ["jewel_Gaze Averter"] = "Gaze Averter",
     ["jewel_Gaze Averter_desc"] = {
+        "Start with Tiny Planet and My Reflection.",
+        "-2 damage and -10 range.",
+        "Deal 75% less damage to enemies located in the side of the room you're currently facing."
+    },
+
+    ["jewel_Cursed Starpiece"] = "Cursed Starpiece",
+    ["jewel_Cursed Starpiece_desc"] = {
         "Starting from the second floor, all treasure rooms contain a Reversed Stars card",
         "instead of item pedestals.",
         "Starting from the second floor, -12% all stats for the current floor while you",

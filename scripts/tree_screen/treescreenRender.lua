@@ -64,7 +64,7 @@ function PST.treeScreen:Render()
             if string.sub(charAlias, -1) == "s" then
                 tmpPossessive = "'"
             end
-            treeName = PST:getLocalizedFormatStr("ui_charTreeName", {charName = charAlias, en_possessive = tmpPossessive})
+            treeName = PST:getLocalizedFormatStr("ui_charTreeName", {charName = charAlias, possessive = tmpPossessive})
         else
             treeName = self.currentTree
         end
@@ -95,7 +95,7 @@ function PST.treeScreen:Render()
             if string.sub(tmpCharName, -1) == "s" then
                 tmpPossessive = "'"
             end
-            PST.miniFont:DrawStringScaled(PST:getLocalizedFormatStr("ui_charTreeAccessHint", {charName = tmpCharName, en_possessive = tmpPossessive}), tmpX, tmpY, 1, 1, PST.kcolors.WHITE)
+            PST.miniFont:DrawStringScaled(PST:getLocalizedFormatStr("ui_charTreeAccessHint", {charName = tmpCharName, possessive = tmpPossessive}), tmpX, tmpY, 1, 1, PST.kcolors.WHITE)
             tmpY = tmpY + 16
         else
             tmpY = tmpY + 4

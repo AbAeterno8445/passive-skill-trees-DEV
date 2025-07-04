@@ -52,7 +52,7 @@ PST.astralWepMods = {
     ---- GENERIC MODS ----
     dmgStatus = {
         serial = 1,
-        description = "+{{roll1}}% damage dealt to enemies affected by status effects.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatus"),
         color = {145, 203, 196},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -62,7 +62,7 @@ PST.astralWepMods = {
     },
     dmgStatusSlow = {
         serial = 2,
-        description = "+{{roll1}}% damage dealt to slowed enemies.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatusSlow"),
         color = {185, 223, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -72,7 +72,7 @@ PST.astralWepMods = {
     },
     dmgStatusCharm = {
         serial = 3,
-        description = "+{{roll1}}% damage dealt to charmed enemies.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatusCharm"),
         color = {249, 185, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -82,7 +82,7 @@ PST.astralWepMods = {
     },
     dmgStatusPara = {
         serial = 4,
-        description = "+{{roll1}}% damage dealt to paralyzed enemies.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatusPara"),
         color = {72, 77, 92},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -92,7 +92,7 @@ PST.astralWepMods = {
     },
     dmgStatusFear = {
         serial = 5,
-        description = "+{{roll1}}% damage dealt to feared enemies.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatusFear"),
         color = {135, 60, 185},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -102,7 +102,7 @@ PST.astralWepMods = {
     },
     dmgStatusBleed = {
         serial = 6,
-        description = "+{{roll1}}% damage dealt to bleeding enemies.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatusBleed"),
         color = {185, 60, 93},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -112,7 +112,7 @@ PST.astralWepMods = {
     },
     dmgStatusPoison = {
         serial = 7,
-        description = "+{{roll1}}% damage dealt to poisoned enemies.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatusPoison"),
         color = {55, 172, 50},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -122,7 +122,7 @@ PST.astralWepMods = {
     },
     dmgStatusBurn = {
         serial = 8,
-        description = "+{{roll1}}% damage dealt to burning enemies.",
+        description = PST:getLocalized("aforge_mod_desc_dmgStatusBurn"),
         color = {255, 137, 20},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -133,7 +133,7 @@ PST.astralWepMods = {
 
     consecFireDmg = {
         serial = 9,
-        description = "+{{roll1}}% damage dealt after firing consecutively for 2 seconds. Resets when you stop firing.",
+        description = PST:getLocalized("aforge_mod_desc_consecFireDmg"),
         color = {235, 167, 90},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -143,10 +143,7 @@ PST.astralWepMods = {
     },
     consecFireDmg2 = {
         serial = 10,
-        description = {
-            "+{{roll1}}% damage dealt after firing consecutively for 3 seconds.",
-            "Resets 1 second after you stop firing."
-        },
+        description = PST:getLocalized("aforge_mod_desc_consecFireDmg2"),
         color = {255, 140, 10},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -157,7 +154,7 @@ PST.astralWepMods = {
 
     farEnemyDmg = {
         serial = 11,
-        description = "+{{roll1}}% damage dealt to enemies beyond 2 tiles of you.",
+        description = PST:getLocalized("aforge_mod_desc_farEnemyDmg"),
         color = {127, 107, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -167,7 +164,7 @@ PST.astralWepMods = {
     },
     closeEnemyDmg = {
         serial = 12,
-        description = "+{{roll1}}% damage dealt to enemies within 2 tiles of you.",
+        description = PST:getLocalized("aforge_mod_desc_closeEnemyDmg"),
         color = {255, 107, 107},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -178,7 +175,7 @@ PST.astralWepMods = {
 
     baseDmg = {
         serial = 13,
-        description = "+{{roll1}} base damage.",
+        description = PST:getLocalized("aforge_mod_desc_baseDmg"),
         color = {175, 0, 0},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -188,7 +185,7 @@ PST.astralWepMods = {
     },
     baseDmg2 = {
         serial = 14,
-        description = "+{{roll1}} base damage, removed for {{roll2}} seconds when you get hit.",
+        description = PST:getLocalized("aforge_mod_desc_baseDmg2"),
         color = {200, 20, 20},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -200,10 +197,7 @@ PST.astralWepMods = {
 
     redHealDmg = {
         serial = 15,
-        description = {
-            "When healing red hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 red heart recovered,",
-            "which stacks up to {{roll2}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_redHealDmg"),
         color = {255, 0, 110},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -214,10 +208,7 @@ PST.astralWepMods = {
     },
     soulHealDmg = {
         serial = 16,
-        description = {
-            "When gaining soul hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 soul heart gained,",
-            "which stacks up to {{roll2}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_soulHealDmg"),
         color = {105, 160, 215},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -228,10 +219,7 @@ PST.astralWepMods = {
     },
     blackHealDmg = {
         serial = 17,
-        description = {
-            "When gaining black hearts, +{{roll1}}% damage dealt for 5 seconds per 1/2 black heart gained,",
-            "which stacks up to {{roll2}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_blackHealDmg"),
         color = {48, 48, 48},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -243,10 +231,7 @@ PST.astralWepMods = {
 
     purchaseDmg = {
         serial = 18,
-        description = {
-            "+{{roll1}}% damage dealt for {{roll2}} seconds after purchasing an item, which stacks",
-            "up to {{roll3}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_purchaseDmg"),
         color = {255, 250, 188},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -259,10 +244,7 @@ PST.astralWepMods = {
 
     coinPickupDmg = {
         serial = 19,
-        description = {
-            "+{{roll1}}% damage dealt for {{roll2}} seconds after picking up any coin, which stacks",
-            "up to {{roll3}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_coinPickupDmg"),
         color = {255, 244, 78},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -274,7 +256,7 @@ PST.astralWepMods = {
     },
     coinPermDmg = {
         serial = 20,
-        description = "+{{roll1}}% permanent damage after picking up any coin worth at least 5, up to {{roll2}}%.",
+        description = PST:getLocalized("aforge_mod_desc_coinPermDmg"),
         color = {183, 172, 5},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -286,7 +268,7 @@ PST.astralWepMods = {
 
     onHitEnemyDmgTaken = {
         serial = 21,
-        description = "All enemies take {{roll1}}% more damage for {{roll2}} seconds after you get hit.",
+        description = PST:getLocalized("aforge_mod_desc_onHitEnemyDmgTaken"),
         color = {186, 113, 113},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -298,10 +280,7 @@ PST.astralWepMods = {
 
     flyGroundDmg = {
         serial = 22,
-        description = {
-            "+{{roll1}}% damage dealt to flying enemies if you're on the ground.",
-            "+{{roll1}}% damage dealt to ground enemies if you're flying."
-        },
+        description = PST:getLocalized("aforge_mod_desc_flyGroundDmg"),
         color = {158, 255, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -312,7 +291,7 @@ PST.astralWepMods = {
 
     activeFamDmg = {
         serial = 23,
-        description = "+{{roll1}}% damage dealt per active familiar, up to 40%",
+        description = PST:getLocalized("aforge_mod_desc_activeFamDmg"),
         color = {177, 225, 129},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -322,7 +301,7 @@ PST.astralWepMods = {
     },
     famKillDmg = {
         serial = 24,
-        description = "+{{roll1}}% damage dealt for {{roll2}} seconds after a familiar kills an enemy.",
+        description = PST:getLocalized("aforge_mod_desc_famKillDmg"),
         color = {182, 255, 108},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -334,7 +313,7 @@ PST.astralWepMods = {
 
     holyMantleDmg = {
         serial = 25,
-        description = "+{{roll1}}% damage dealt while you have a holy mantle shield.",
+        description = PST:getLocalized("aforge_mod_desc_holyMantleDmg"),
         color = {223, 253, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -345,7 +324,7 @@ PST.astralWepMods = {
 
     eternalDmg = {
         serial = 26,
-        description = "+{{roll1}}% damage dealt while you have an eternal heart.",
+        description = PST:getLocalized("aforge_mod_desc_eternalDmg"),
         color = {255, 255, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -356,7 +335,7 @@ PST.astralWepMods = {
 
     activeDmg = {
         serial = 27,
-        description = "+{{roll1}}% damage dealt for {{roll2}} seconds after using an active item.",
+        description = PST:getLocalized("aforge_mod_desc_activeDmg"),
         color = {0, 213, 192},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -368,7 +347,7 @@ PST.astralWepMods = {
 
     healthyMobDmg = {
         serial = 28,
-        description = "+{{roll1}}% damage dealt to enemies above 90% HP.",
+        description = PST:getLocalized("aforge_mod_desc_healthyMobDmg"),
         color = {255, 0, 145},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -378,7 +357,7 @@ PST.astralWepMods = {
     },
     injuredMobDmg = {
         serial = 29,
-        description = "+{{roll1}}% damage dealt to enemies below 15% HP.",
+        description = PST:getLocalized("aforge_mod_desc_injuredMobDmg"),
         color = {150, 0, 85},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -389,7 +368,7 @@ PST.astralWepMods = {
 
     creepDmg = {
         serial = 30,
-        description = "+{{roll1}}% damage dealt while standing on creep.",
+        description = PST:getLocalized("aforge_mod_desc_creepDmg"),
         color = {150, 200, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -399,7 +378,7 @@ PST.astralWepMods = {
     },
     playerCreepDmg = {
         serial = 31,
-        description = "+{{roll1}}% damage dealt by player creep.",
+        description = PST:getLocalized("aforge_mod_desc_playerCreepDmg"),
         color = {130, 150, 255},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -410,7 +389,7 @@ PST.astralWepMods = {
 
     laserDmg = {
         serial = 32,
-        description = "+{{roll1}}% damage dealt with lasers.",
+        description = PST:getLocalized("aforge_mod_desc_laserDmg"),
         color = {240, 140, 110},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -420,7 +399,7 @@ PST.astralWepMods = {
     },
     explosionDmg = {
         serial = 33,
-        description = "+{{roll1}}% damage dealt with explosions.",
+        description = PST:getLocalized("aforge_mod_desc_explosionDmg"),
         color = {111, 111, 111},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -431,7 +410,7 @@ PST.astralWepMods = {
 
     injuredDmg = {
         serial = 34,
-        description = "+{{roll1}}% damage dealt while half or more of your total red heart containers are empty.",
+        description = PST:getLocalized("aforge_mod_desc_injuredDmg"),
         color = {235, 140, 140},
         rollsFunc = function(wepTier, rollPerc)
             return {
@@ -444,13 +423,7 @@ PST.astralWepMods = {
     -- Ancient Longswords
     greyWind = {
         serial = 35,
-        description = {
-            "{{roll1}}% chance on hit to slash all enemies within 2 tiles of the target, dealing {{roll2}}%",
-            "of the hit's damage. This effect has a 2 second cooldown.",
-            "If the slashes target 3 or less enemies, they deal 50% more damage, cause bleeding for 3 seconds,",
-            "and the cooldown for that trigger is increased to 5 seconds.",
-            "-0.6 base damage."
-        },
+        description = PST:getLocalized("aforge_mod_desc_greyWind"),
         ancient = true,
         minRolls = {7, 120},
         maxRolls = {12, 160},
@@ -458,10 +431,7 @@ PST.astralWepMods = {
     },
     executioner = {
         serial = 36,
-        description = {
-            "+{{roll1}}% damage.",
-            "{{roll2}}% chance on hit to instantly kill enemies that are left with {{roll3}}% or less HP."
-        },
+        description = PST:getLocalized("aforge_mod_desc_executioner"),
         ancient = true,
         minRolls = {5, 25, 12},
         maxRolls = {8, 35, 16},
@@ -469,11 +439,7 @@ PST.astralWepMods = {
     },
     swordOfSong = {
         serial = 37,
-        description = {
-            "{{roll1}}% chance on hit to cause an area pulse at the hit's location that charms nearby enemies for 4 seconds.",
-            "+1% damage whenever you kill a charmed monster.",
-            "Every {{roll2}} hits against charmed monsters, reset the damage bonus and trigger Isaac's Tears' item effect."
-        },
+        description = PST:getLocalized("aforge_mod_desc_swordOfSong"),
         ancient = true,
         minRolls = {5, 16},
         maxRolls = {8, 8},
@@ -481,12 +447,7 @@ PST.astralWepMods = {
     },
     redbeak = {
         serial = 38,
-        description = {
-            "If half or more of your total red heart containers are empty:",
-            "    +{{roll1}}% damage dealt.",
-            "    {{roll2}}% chance for hits to inflict bleed on enemies for 4 seconds.",
-            "    {{roll3}}% chance for bleeding enemies to drop a 1/2 red heart on kill, which vanishes after 2 seconds."
-        },
+        description = PST:getLocalized("aforge_mod_desc_redbeak"),
         ancient = true,
         minRolls = {12, 6, 4},
         maxRolls = {20, 15, 8},
@@ -494,12 +455,7 @@ PST.astralWepMods = {
     },
     glowingMoonblade = {
         serial = 39,
-        description = {
-            "Start with innate Luna.",
-            "-{{roll1}}% damage and tears.",
-            "When first entering a secret room, remove these reductions for the current floor.",
-            "Entering 2 secret rooms grants +{{roll2}} speed for the current floor, once per floor."
-        },
+        description = PST:getLocalized("aforge_mod_desc_glowingMoonblade"),
         ancient = true,
         minRolls = {18, 0.06},
         maxRolls = {10, 0.12},
@@ -507,13 +463,7 @@ PST.astralWepMods = {
     },
     maxwellEngine = {
         serial = 40,
-        description = {
-            "+0.5% damage for 3 seconds when hitting an enemy, which stacks up to {{roll1}}%.",
-            "While the buff is maxed:",
-            "    {{roll2}}% chance for hits to cause burning or slow for 3 seconds on hit.",
-            "    15% chance for burning enemies to explode on death, dealing 30 damage to nearby enemies.",
-            "    15% chance for slowed enemies to freeze on death."
-        },
+        description = PST:getLocalized("aforge_mod_desc_maxwellEngine"),
         ancient = true,
         minRolls = {6, 12},
         maxRolls = {12, 22},
@@ -521,12 +471,7 @@ PST.astralWepMods = {
     },
     glowingSunblade = {
         serial = 41,
-        description = {
-            "Start with innate Sol.",
-            "-{{roll1}}% damage and tears.",
-            "When first entering the boss room, remove these reductions for the current floor.",
-            "When first entering the treasure room, gain +{{roll2}} speed for the current floor."
-        },
+        description = PST:getLocalized("aforge_mod_desc_glowingSunblade"),
         ancient = true,
         minRolls = {16, 0.05},
         maxRolls = {8, 0.1},
@@ -534,13 +479,7 @@ PST.astralWepMods = {
     },
     divineInterceptor = {
         serial = 86,
-        description = {
-            "When hitting an enemy within 2 tiles, fire a spread of sword projectiles towards them.",
-            "Current upgrade level: {{roll1}}.",
-            "Upgrade level 3: sword projectiles now pierce enemies.",
-            "Upgrade level 6: sword projectiles gain homing.",
-            "5 second cooldown."
-        },
+        description = PST:getLocalized("aforge_mod_desc_divineInterceptor"),
         ancient = true,
         minRolls = {0},
         maxRolls = {6},
@@ -549,11 +488,7 @@ PST.astralWepMods = {
     -- Ancient Estocs
     arcingNeedle = {
         serial = 42,
-        description = {
-            "Every 0.5 seconds spent firing, {{roll1}}% chance to gain Jacob's Ladder as an innate effect for {{roll2}} seconds.",
-            "Chance goes up in 1% increments as you keep firing, and resets once you stop firing.",
-            "Obtaining Jacob's Ladder naturally grants you +15% tears."
-        },
+        description = PST:getLocalized("aforge_mod_desc_arcingNeedle"),
         ancient = true,
         minRolls = {2, 2.5},
         maxRolls = {6, 4},
@@ -561,10 +496,7 @@ PST.astralWepMods = {
     },
     auricPersecutor = {
         serial = 43,
-        description = {
-            "Half of your coin count now acts as a tears multiplier, up to {{roll1}}%.",
-            "+{{roll2}}% damage for the current floor when picking up a coin worth at least 5, up to {{roll3}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_auricPersecutor"),
         ancient = true,
         minRolls = {20, 7, 21},
         maxRolls = {35, 15, 40},
@@ -573,12 +505,7 @@ PST.astralWepMods = {
     -- Ancient Daggers
     scrambler = {
         serial = 44,
-        description = {
-            "3% chance on hit to confuse enemies for 4 seconds. Triple the chance against targets within 1.5 tiles.",
-            "Increase this chance by 1% when entering a new floor.",
-            "Deal {{roll1}}% more damage against confused enemies.",
-            "Hitting confused enemies has a {{roll2}}% chance to remove their confusion."
-        },
+        description = PST:getLocalized("aforge_mod_desc_scrambler"),
         ancient = true,
         minRolls = {25, 50},
         maxRolls = {40, 20},
@@ -586,7 +513,7 @@ PST.astralWepMods = {
     },
     adriftBlade = {
         serial = 45,
-        description = "{{roll1}}% chance on hit to deal between {{roll2}}% and {{roll3}}% of the original damage.",
+        description = PST:getLocalized("aforge_mod_desc_adriftBlade"),
         ancient = true,
         minRolls = {25, 40, 200},
         maxRolls = {35, 60, 280},
@@ -594,12 +521,7 @@ PST.astralWepMods = {
     },
     ivoryVampire = {
         serial = 46,
-        description = {
-            "Red hearts can be picked up regardless of health status.",
-            "Every 1/2 red heart picked up grants you {{roll1}}% speed, tears and damage for {{roll2}} seconds,",
-            "which stacks up to 8 times.",
-            "Buff timer is paused while in a room with no enemies."
-        },
+        description = PST:getLocalized("aforge_mod_desc_ivoryVampire"),
         ancient = true,
         minRolls = {2, 4},
         maxRolls = {4, 5},
@@ -608,13 +530,7 @@ PST.astralWepMods = {
     -- Ancient Quickblades
     nimbleTwins = {
         serial = 47,
-        description = {
-            "+{{roll1}}% tears.",
-            "When hitting an enemy, additionally fire a slow-moving red tear and a quick blue tear towards them.",
-            "These tears deal {{roll2}}% of your damage.",
-            "Gain +3% damage for 2 seconds when hitting enemies with the red tear, which stacks up to {{roll3}}%.",
-            "Gain +3% tears for 2 seconds when hitting enemies with the blue tear, which stacks up to {{roll3}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_nimbleTwins"),
         ancient = true,
         minRolls = {5, 25, 15},
         maxRolls = {12, 50, 21},
@@ -622,11 +538,7 @@ PST.astralWepMods = {
     },
     crimsonAltruist = {
         serial = 48,
-        description = {
-            "+{{roll1}}% damage when using a blood donation machine, up to 100%.",
-            "+{{roll2}} tears every {{roll3}} blood donation machine uses.",
-            "Halve the active bonuses when entering a new floor."
-        },
+        description = PST:getLocalized("aforge_mod_desc_crimsonAltruist"),
         ancient = true,
         minRolls = {2, 0.2, 16},
         maxRolls = {6, 0.4, 9},
@@ -634,13 +546,7 @@ PST.astralWepMods = {
     },
     quicksilver = {
         serial = 49,
-        description = {
-            "Press the Drop button to briefly perform a Parry. Parrying blocks up to 1 incoming hit if timed right.",
-            "Parrying has a {{roll1}} second cooldown. You can only parry monster hits.",
-            "When successfully parrying a hit:",
-            "- Your next hit deals double damage. This doesn't stack.",
-            "- Gain +{{roll2}}% tears and speed for 3 seconds."
-        },
+        description = PST:getLocalized("aforge_mod_desc_quicksilver"),
         ancient = true,
         minRolls = {1.5, 8},
         maxRolls = {0.8, 12},
@@ -649,10 +555,7 @@ PST.astralWepMods = {
     -- Ancient Spears
     beastbane = {
         serial = 50,
-        description = {
-            "+{{roll1}}% damage dealt to bosses.",
-            "Defeating a boss grants you a permanent +{{roll2}}% damage, once every 2 floors."
-        },
+        description = PST:getLocalized("aforge_mod_desc_beastbane"),
         ancient = true,
         minRolls = {12, 4},
         maxRolls = {18, 6},
@@ -660,12 +563,7 @@ PST.astralWepMods = {
     },
     gravitas = {
         serial = 51,
-        description = {
-            "When hitting enemies beyond 2 tiles from you, {{roll1}}% chance to additionally fire",
-            "3 homing tears dealing {{roll2}}% of your damage. 0.5 seconds cooldown.",
-            "When hitting enemies with the homing tears, 3% chance to gain Spoon Bender for the current room.",
-            "-{{roll3}}% tears while you have Spoon Bender."
-        },
+        description = PST:getLocalized("aforge_mod_desc_gravitas"),
         ancient = true,
         minRolls = {7, 30, 12},
         maxRolls = {12, 50, 6},
@@ -673,12 +571,7 @@ PST.astralWepMods = {
     },
     borealSpear = {
         serial = 52,
-        description = {
-            "{{roll1}}% chance on hit to slow enemies for 3 seconds.",
-            "When you hit a slowed enemy beyond {{roll2}} tiles of you, +1% chance to freeze that enemy.",
-            "Hitting enemies repeatedly increases the chance to freeze them, with the freeze chance being",
-            "individual to each enemy."
-        },
+        description = PST:getLocalized("aforge_mod_desc_borealSpear"),
         ancient = true,
         minRolls = {7, 3},
         maxRolls = {10, 1.5},
@@ -686,12 +579,7 @@ PST.astralWepMods = {
     },
     viperStinger = {
         serial = 53,
-        description = {
-            "{{roll1}}% chance to paralyze enemies on hit for 2 seconds.",
-            "Double the chance and duration against poisoned enemies.",
-            "Killing a paralyzed enemy releases a toxic cloud, poisoning for 4 seconds and dealing {{roll2}}%",
-            "of your damage to nearby enemies.",
-        },
+        description = PST:getLocalized("aforge_mod_desc_viperStinger"),
         ancient = true,
         minRolls = {9, 80},
         maxRolls = {15, 150},
@@ -700,12 +588,7 @@ PST.astralWepMods = {
     -- Ancient Tridents
     consecrator = {
         serial = 54,
-        description = {
-            "Gain +{{roll1}}% damage when entering a devil room, up to {{roll2}}%.",
-            "Gain +{{roll1}}% tears when entering an angel room, up to {{roll2}}%.",
-            "Active buffs get halved when clearing a boss room.",
-            "+{{roll3}}% chance for angel/devil rooms to show up."
-        },
+        description = PST:getLocalized("aforge_mod_desc_consecrator"),
         ancient = true,
         minRolls = {9, 30, 5},
         maxRolls = {15, 40, 10},
@@ -713,12 +596,7 @@ PST.astralWepMods = {
     },
     verdantGreen = {
         serial = 55,
-        description = {
-            "{{roll1}}% chance on hit to create a poison cloud.",
-            "This chance receives a flat increase from your tears stat, up to +5%.",
-            "Poison clouds periodically poison enemies within it for 4 seconds. Poisoned enemies instead take {{roll2}}%",
-            "of your damage."
-        },
+        description = PST:getLocalized("aforge_mod_desc_verdantGreen"),
         ancient = true,
         minRolls = {6, 25},
         maxRolls = {9, 40},
@@ -726,10 +604,7 @@ PST.astralWepMods = {
     },
     lostCoralTrident = {
         serial = 56,
-        description = {
-            "Start with innate Neptunus.",
-            "-{{roll1}}% damage."
-        },
+        description = PST:getLocalized("aforge_mod_desc_lostCoralTrident"),
         ancient = true,
         minRolls = {25},
         maxRolls = {12},
@@ -737,13 +612,7 @@ PST.astralWepMods = {
     },
     oceanicMight = {
         serial = 57,
-        description = {
-            "Start with innate Aquarius.",
-            "Player creep deals {{roll1}}% more damage to enemies.",
-            "Hitting enemies standing on creep created by you has a 10% chance to trigger a water explosion, dealing",
-            "25 damage to nearby enemies. 2.5 second cooldown.",
-            "Explosion trigger chance becomes 40% against flying enemies."
-        },
+        description = PST:getLocalized("aforge_mod_desc_oceanicMight"),
         ancient = true,
         minRolls = {30, 5},
         maxRolls = {50, 10},
@@ -752,11 +621,7 @@ PST.astralWepMods = {
     -- Ancient Scythes
     taleEnder = {
         serial = 58,
-        description = {
-            "+{{roll1}}% damage dealt to full health enemies.",
-            "{{roll2}}% chance to instantly kill the first non-boss enemy you hit in each room.",
-            "Halve this chance when the effect triggers, and reset it when entering a new floor."
-        },
+        description = PST:getLocalized("aforge_mod_desc_taleEnder"),
         ancient = true,
         minRolls = {60, 75},
         maxRolls = {120, 100},
@@ -764,11 +629,7 @@ PST.astralWepMods = {
     },
     crimsonReaper = {
         serial = 59,
-        description = {
-            "When hitting a full health enemy, apply bleed to them for {{roll1}} seconds.",
-            "Double this duration against bosses.",
-            "Bleeding enemies below {{roll2}}% HP take increased damage based on their missing HP below {{roll2}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_crimsonReaper"),
         ancient = true,
         minRolls = {4, 20},
         maxRolls = {6, 50},
@@ -776,11 +637,7 @@ PST.astralWepMods = {
     },
     mobripper = {
         serial = 60,
-        description = {
-            "Circular slashes from the implicit modifier now deal {{roll1}}% of the hit's damage instead.",
-            "If the circular slash kills any enemy or hits a boss, fear all enemies hit by it for 3 seconds.",
-            "-{{roll2}}% damage."
-        },
+        description = PST:getLocalized("aforge_mod_desc_mobripper"),
         ancient = true,
         minRolls = {250, 25},
         maxRolls = {350, 15},
@@ -789,10 +646,7 @@ PST.astralWepMods = {
     -- Ancient Axes
     starsteelBroadaxe = {
         serial = 61,
-        description = {
-            "+2% tears for the current room when hitting bleeding enemies, up to {{roll1}}%.",
-            "Hitting a boss reduces their status effect cooldown by 0.5 seconds."
-        },
+        description = PST:getLocalized("aforge_mod_desc_starsteelBroadaxe"),
         ancient = true,
         minRolls = {20},
         maxRolls = {33},
@@ -800,10 +654,7 @@ PST.astralWepMods = {
     },
     ancientRunicChopper = {
         serial = 62,
-        description = {
-            "+{{roll1}}% permanent damage whenever you use a full rune, up to {{roll2}}%.",
-            "+{{roll3}}% tears for 10 seconds whenever you use a rune or rune shard."
-        },
+        description = PST:getLocalized("aforge_mod_desc_ancientRunicChopper"),
         ancient = true,
         minRolls = {3, 24, 12},
         maxRolls = {5, 36, 18},
@@ -811,12 +662,7 @@ PST.astralWepMods = {
     },
     circuitSplitter = {
         serial = 63,
-        description = {
-            "Hitting a bleeding enemy creates a laser ring that follows them, damaging nearby enemies",
-            "for {{roll1}}% of your damage per tick, capped at 5.",
-            "Laser rings last {{roll2}} seconds and can linger in place after the enemy dies.",
-            "Up to 3 laser rings from this effect can be in the room simultaneously."
-        },
+        description = PST:getLocalized("aforge_mod_desc_circuitSplitter"),
         ancient = true,
         minRolls = {15, 2},
         maxRolls = {25, 3},
@@ -825,11 +671,7 @@ PST.astralWepMods = {
     -- Ancient Greataxes
     berserkerWrath = {
         serial = 64,
-        description = {
-            "Trigger Berserk! when first entering a room with monsters, once per floor.",
-            "Entering the boss room causes Berserk! to stop.",
-            "+{{roll1}} seconds to Berserk!'s duration."
-        },
+        description = PST:getLocalized("aforge_mod_desc_berserkerWrath"),
         ancient = true,
         minRolls = {3},
         maxRolls = {5},
@@ -837,12 +679,7 @@ PST.astralWepMods = {
     },
     frozenTerror = {
         serial = 65,
-        description = {
-            "When hitting bleeding enemies, {{roll1}}% chance to slow them for 3 seconds.",
-            "When hitting slowed enemies within {{roll2}} tile(s) of you, perform a circular slash",
-            "around you that can freeze slowed enemies. 1.5 second cooldown.",
-            "Slash deals {{roll3}}% of your damage."
-        },
+        description = PST:getLocalized("aforge_mod_desc_frozenTerror"),
         ancient = true,
         minRolls = {15, 1.5, 80},
         maxRolls = {25, 2.5, 160},
@@ -851,12 +688,7 @@ PST.astralWepMods = {
     -- Ancient Shortbows
     stormAdvance = {
         serial = 66,
-        description = {
-            "Start with innate 120 Volt.",
-            "Every {{roll1}} hits against enemies, launch a fan of electrified tears towards the last target hit.",
-            "These tears deal {{roll2}}% of your damage.",
-            "Effect has a 2 second cooldown."
-        },
+        description = PST:getLocalized("aforge_mod_desc_stormAdvance"),
         ancient = true,
         minRolls = {10, 40},
         maxRolls = {6, 100},
@@ -864,10 +696,7 @@ PST.astralWepMods = {
     },
     quillRain = {
         serial = 67,
-        description = {
-            "Start with innate Soy Milk.",
-            "-{{roll2}}% damage dealt to enemies within {{roll1}} tiles of you."
-        },
+        description = PST:getLocalized("aforge_mod_desc_quillRain"),
         ancient = true,
         minRolls = {2.5, 40},
         maxRolls = {1.5, 10},
@@ -876,11 +705,7 @@ PST.astralWepMods = {
     -- Ancient Bows
     gildedSeeker = {
         serial = 68,
-        description = {
-            "Start with innate Head of the Keeper.",
-            "+1% damage when collecting any coin while there are monsters in the room, up to {{roll1}}%.",
-            "Halve your current bonus when clearing a room.",
-        },
+        description = PST:getLocalized("aforge_mod_desc_gildedSeeker"),
         ancient = true,
         minRolls = {25, 25},
         maxRolls = {40, 40},
@@ -888,11 +713,7 @@ PST.astralWepMods = {
     },
     twistedOakstring = {
         serial = 69,
-        description = {
-            "When hitting enemies beyond {{roll1}} tiles of you, create an additional homing, spectral and",
-            "fearing tear at their position. 0.5 second cooldown.",
-            "This tear deals {{roll2}}% of the hit's damage."
-        },
+        description = PST:getLocalized("aforge_mod_desc_twistedOakstring"),
         ancient = true,
         minRolls = {2.5, 80},
         maxRolls = {1.5, 140},
@@ -900,10 +721,7 @@ PST.astralWepMods = {
     },
     bruteOnslaught = {
         serial = 70,
-        description = {
-            "When using an active item, for each charge used, boost the next 5 hits' damage by {{roll1}}%.",
-            "+{{roll2}}% tears for 5 seconds after using an active item."
-        },
+        description = PST:getLocalized("aforge_mod_desc_bruteOnslaught"),
         ancient = true,
         minRolls = {20, 10},
         maxRolls = {40, 16},
@@ -911,12 +729,7 @@ PST.astralWepMods = {
     },
     divineMessenger = {
         serial = 87,
-        description = {
-            "When hitting an enemy beyond 3 tiles from you for the first time in a room, create a Holy Aura",
-            "at their position.",
-            "Holy Aura lasts for the rest of the room, slowly moves towards you, and grant +1 damage, +0.4 tears,",
-            "and +{{roll1}}% damage and tears while in it."
-        },
+        description = PST:getLocalized("aforge_mod_desc_divineMessenger"),
         ancient = true,
         minRolls = {12},
         maxRolls = {18},
@@ -925,10 +738,7 @@ PST.astralWepMods = {
     -- Ancient Crossbows
     volatileArbalest = {
         serial = 71,
-        description = {
-            "{{roll1}}% chance to cause a small explosion when hitting enemies beyond 2.5 tiles of you,",
-            "dealing {{roll2}}% of your damage. 1 second cooldown."
-        },
+        description = PST:getLocalized("aforge_mod_desc_volatileArbalest"),
         ancient = true,
         minRolls = {7, 250},
         maxRolls = {10, 400},
@@ -936,10 +746,7 @@ PST.astralWepMods = {
     },
     avelyn = {
         serial = 72,
-        description = {
-            "Every {{roll1}} total seconds spent firing, shoot 3 tears towards a nearby enemy, each dealing {{roll2}}%",
-            "of your damage."
-        },
+        description = PST:getLocalized("aforge_mod_desc_avelyn"),
         ancient = true,
         minRolls = {4, 40},
         maxRolls = {2.5, 75},
@@ -947,11 +754,7 @@ PST.astralWepMods = {
     },
     preciseSeeker = {
         serial = 73,
-        description = {
-            "Every second, mark a random enemy if available, prioritizing bosses.",
-            "Every {{roll1}} seconds, fire a very quick piercing and spectral tear towards the marked enemy.",
-            "Fired tear deals {{roll2}}% of your damage, up to 60."
-        },
+        description = PST:getLocalized("aforge_mod_desc_preciseSeeker"),
         ancient = true,
         minRolls = {5, 200},
         maxRolls = {2.5, 400},
@@ -960,11 +763,7 @@ PST.astralWepMods = {
     -- Ancient Gauntlets
     magefist = {
         serial = 74,
-        description = {
-            "Can imprint up to 3 modifiers on this weapon.",
-            "Imprinting cost is halved.",
-            "+{{roll1}}% all stats per modifier on this weapon."
-        },
+        description = PST:getLocalized("aforge_mod_desc_magefist"),
         ancient = true,
         minRolls = {0.2},
         maxRolls = {1.5},
@@ -972,11 +771,7 @@ PST.astralWepMods = {
     },
     ironhand = {
         serial = 75,
-        description = {
-            "Rolls 3 random weapon implicits.",
-            "Cannot imprint modifiers into this weapon.",
-            "+{{roll1}}% all stats for every 10 honing on this weapon."
-        },
+        description = PST:getLocalized("aforge_mod_desc_ironhand"),
         ancient = true,
         minRolls = {0.2},
         maxRolls = {1},
@@ -984,11 +779,7 @@ PST.astralWepMods = {
     },
     metamorphicClaw = {
         serial = 76,
-        description = {
-            "Mimics the effect of a random non-Gauntlet ancient weapon.",
-            "Effect changes every floor.",
-            "Ancient upgrade level used for chosen effects: {{roll1}}."
-        },
+        description = PST:getLocalized("aforge_mod_desc_metamorphicClaw"),
         ancient = true,
         minRolls = {0},
         maxRolls = {8},
@@ -997,11 +788,7 @@ PST.astralWepMods = {
     -- Ancient Great Maces
     mightyPurifier = {
         serial = 77,
-        description = {
-            "Paralyze undead enemies for {{roll1}} second(s) when first hitting them.",
-            "{{roll2}}% chance to block hits from undead enemies.",
-            "+{{roll3}}% damage dealt to undead enemies."
-        },
+        description = PST:getLocalized("aforge_mod_desc_mightyPurifier"),
         ancient = true,
         minRolls = {1.5, 15, 25},
         maxRolls = {2.5, 22, 35},
@@ -1009,12 +796,7 @@ PST.astralWepMods = {
     },
     chaoticTumult = {
         serial = 78,
-        description = {
-            "The implicit shockwave now triggers a random status effect on hit for twice as long, instead of paralysis.",
-            "When hitting an enemy affected by a status effect, 15% chance to spread the effect to a",
-            "random enemy within {{roll1}} tiles of the hit.",
-            "+1% damage for the current room when killing enemies affected by status effects, up to {{roll2}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_chaoticTumult"),
         ancient = true,
         minRolls = {3, 8},
         maxRolls = {4, 15},
@@ -1022,13 +804,7 @@ PST.astralWepMods = {
     },
     firestarter = {
         serial = 79,
-        description = {
-            "{{roll1}}% chance to inflict burning for 5 seconds on hit.",
-            "Chance is tripled for explosion hits.",
-            "Killing a burning enemy has a 35% chance to cause an explosion dealing {{roll2}}% of your damage, capped",
-            "at 50.",
-            "Getting hit by a burning enemy grants you +15% speed for 3 seconds."
-        },
+        description = PST:getLocalized("aforge_mod_desc_firestarter"),
         ancient = true,
         minRolls = {12, 220},
         maxRolls = {18, 300},
@@ -1036,13 +812,7 @@ PST.astralWepMods = {
     },
     colossalMaul = {
         serial = 80,
-        description = {
-            "Double the implicit shockwave's damage.",
-            "+{{roll3}}% implicit shockwave size.",
-            "Implicit shockwave's damage can affect enemies regardless of paralysis status.",
-            "+{{roll1}} seconds to the implicit shockwave's cooldown.",
-            "-{{roll2}}% speed and tears while the implicit shockwave is on cooldown."
-        },
+        description = PST:getLocalized("aforge_mod_desc_colossalMaul"),
         ancient = true,
         minRolls = {3, 12, 30},
         maxRolls = {2, 5, 40},
@@ -1050,13 +820,7 @@ PST.astralWepMods = {
     },
     tollingBell = {
         serial = 81,
-        description = {
-            "Start with innate Leo.",
-            "When certain sounds play, gain a temporary buff:",
-            "- Explosion sounds: +{{roll1}}% speed for 3 seconds.",
-            "- Broken rock sounds: +{{roll2}}% damage for 4 seconds.",
-            "- Boss door closing: +{{roll3}}% tears for 7 seconds."
-        },
+        description = PST:getLocalized("aforge_mod_desc_tollingBell"),
         ancient = true,
         minRolls = {7, 10, 10},
         maxRolls = {12, 18, 20},
@@ -1065,10 +829,7 @@ PST.astralWepMods = {
     -- Ancient Whips
     snakebite = {
         serial = 82,
-        description = {
-            "Implicit instead fires 3 tears that poison on hit.",
-            "These deal {{roll1}}% increased damage to already poisoned enemies."
-        },
+        description = PST:getLocalized("aforge_mod_desc_snakebite"),
         ancient = true,
         minRolls = {250},
         maxRolls = {400},
@@ -1076,12 +837,7 @@ PST.astralWepMods = {
     },
     devilTongue = {
         serial = 83,
-        description = {
-            "Implicit tears petrify enemies for {{roll1}} second(s) on hit.",
-            "Already petrified enemies are inflicted with burning for 3 seconds on hit.",
-            "Implicit cooldown is raised to 3 seconds.",
-            "+{{roll2}}% damage against burning enemies."
-        },
+        description = PST:getLocalized("aforge_mod_desc_devilTongue"),
         ancient = true,
         minRolls = {0.8, 12},
         maxRolls = {1.6, 18},
@@ -1089,11 +845,7 @@ PST.astralWepMods = {
     },
     azurebinder = {
         serial = 84,
-        description = {
-            "Implicit tears gain Lost Contact and Tiny Planet's effects.",
-            "Implicit tears fly for longer.",
-            "+{{roll1}}% damage for the current room per blocked tear, up to {{roll2}}%."
-        },
+        description = PST:getLocalized("aforge_mod_desc_azurebinder"),
         ancient = true,
         minRolls = {1, 8},
         maxRolls = {3, 15},
@@ -1101,12 +853,7 @@ PST.astralWepMods = {
     },
     sacredScourge = {
         serial = 85,
-        description = {
-            "After killing an undead enemy, for {{roll1}} seconds gain the following:",
-            "   - Implicit fires an additional 2 tears.",
-            "   - Implicit tears fly for longer.",
-            "   - Halve implicit cooldown."
-        },
+        description = PST:getLocalized("aforge_mod_desc_sacredScourge"),
         ancient = true,
         minRolls = {5},
         maxRolls = {9},
@@ -1131,7 +878,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "longswordImp",
-            description = "+{{roll1}}% damage dealt to enemies within 1.5 tiles.",
+            description = PST:getLocalized("aforge_mod_desc_longswordImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 10 + math.floor(honing / 3)
@@ -1141,56 +888,56 @@ PST.astralWepData = {
         ancients = {
             -- Grey Wind
             {
-                name = "Grey Wind",
+                name = PST:getLocalized("aforge_ancname_Grey Wind"),
                 spriteFrame = 0,
                 weight = 100,
                 ancientMods = {"greyWind"}
             },
             -- Executioner
             {
-                name = "Executioner",
+                name = PST:getLocalized("aforge_ancname_Executioner"),
                 spriteFrame = 1,
                 weight = 100,
                 ancientMods = {"executioner"}
             },
             -- Sword of Song
             {
-                name = "Sword of Song",
+                name = PST:getLocalized("aforge_ancname_Sword of Song"),
                 spriteFrame = 2,
                 weight = 100,
                 ancientMods = {"swordOfSong"}
             },
             -- Redbeak
             {
-                name = "Redbeak",
+                name = PST:getLocalized("aforge_ancname_Redbeak"),
                 spriteFrame = 3,
                 weight = 100,
                 ancientMods = {"redbeak"}
             },
             -- Glowing Moonblade
             {
-                name = "Glowing Moonblade",
+                name = PST:getLocalized("aforge_ancname_Glowing Moonblade"),
                 spriteFrame = 31,
                 weight = 100,
                 ancientMods = {"glowingMoonblade"}
             },
             -- Maxwell's Thermic Engine
             {
-                name = "Maxwell's Thermic Engine",
+                name = PST:getLocalized("aforge_ancname_Maxwell's Thermic Engine"),
                 spriteFrame = 34,
                 weight = 100,
                 ancientMods = {"maxwellEngine"}
             },
             -- Glowing Sunblade
             {
-                name = "Glowing Sunblade",
+                name = PST:getLocalized("aforge_ancname_Glowing Sunblade"),
                 spriteFrame = 35,
                 weight = 100,
                 ancientMods = {"glowingSunblade"}
             },
             -- Divine Interceptor
             {
-                name = "Divine Interceptor",
+                name = PST:getLocalized("aforge_ancname_Divine Interceptor"),
                 spriteFrame = 51,
                 weight = 100,
                 ancientMods = {"divineInterceptor"}
@@ -1207,10 +954,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "estocImp",
-            description = {
-                "Consecutive hits against enemies within 2 tiles of you grants +{{roll1}}% tears, up to {{roll2}}%.",
-                "Hitting an enemy beyond 2 tiles resets the bonus."
-            },
+            description = PST:getLocalized("aforge_mod_desc_estocImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 3 + PST:roundFloat(5 * (honing / 50), -2),
@@ -1221,14 +965,14 @@ PST.astralWepData = {
         ancients = {
             -- Arcing Needle
             {
-                name = "Arcing Needle",
+                name = PST:getLocalized("aforge_ancname_Arcing Needle"),
                 spriteFrame = 4,
                 weight = 100,
                 ancientMods = {"arcingNeedle"}
             },
             -- Auric Persecutor
             {
-                name = "Auric Persecutor",
+                name = PST:getLocalized("aforge_ancname_Auric Persecutor"),
                 spriteFrame = 5,
                 weight = 100,
                 ancientMods = {"auricPersecutor"}
@@ -1245,10 +989,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "daggerImp",
-            description = {
-                "{{roll1}}% chance for hits to deal {{roll2}}% more damage.",
-                "Double the chance against targets within 1.5 tiles."
-            },
+            description = PST:getLocalized("aforge_mod_desc_daggerImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 3 + PST:roundFloat(honing / 10, -2),
@@ -1259,21 +1000,21 @@ PST.astralWepData = {
         ancients = {
             -- The Scrambler
             {
-                name = "The Scrambler",
+                name = PST:getLocalized("aforge_ancname_The Scrambler"),
                 spriteFrame = 6,
                 weight = 100,
                 ancientMods = {"scrambler"}
             },
             -- Adrift Blade
             {
-                name = "Adrift Blade",
+                name = PST:getLocalized("aforge_ancname_Adrift Blade"),
                 spriteFrame = 7,
                 weight = 100,
                 ancientMods = {"adriftBlade"}
             },
             -- Ivory Vampire
             {
-                name = "Ivory Vampire",
+                name = PST:getLocalized("aforge_ancname_Ivory Vampire"),
                 spriteFrame = 39,
                 weight = 100,
                 ancientMods = {"ivoryVampire"}
@@ -1290,11 +1031,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "quickbladeImp",
-            description = {
-                "+{{roll1}} tears for {{roll2}} second(s) when hitting an enemy, which stacks up to {{roll3}}.",
-                "Double the duration if hitting targets within 1.5 tiles.",
-                "Each stack has its own duration."
-            },
+            description = PST:getLocalized("aforge_mod_desc_quickbladeImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 0.1 + PST:roundFloat(0.14 * (honing / 50), -2),
@@ -1306,21 +1043,21 @@ PST.astralWepData = {
         ancients = {
             -- Nimble Twins
             {
-                name = "Nimble Twins",
+                name = PST:getLocalized("aforge_ancname_Nimble Twins"),
                 spriteFrame = 8,
                 weight = 100,
                 ancientMods = {"nimbleTwins"}
             },
             -- Crimson Altruist
             {
-                name = "Crimson Altruist",
+                name = PST:getLocalized("aforge_ancname_Crimson Altruist"),
                 spriteFrame = 9,
                 weight = 100,
                 ancientMods = {"crimsonAltruist"}
             },
             -- Quicksilver
             {
-                name = "Quicksilver",
+                name = PST:getLocalized("aforge_ancname_Quicksilver"),
                 spriteFrame = 46,
                 weight = 100,
                 ancientMods = {"quicksilver"}
@@ -1337,10 +1074,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "spearImp",
-            description = {
-                "+{{roll1}}% damage dealt to enemies between 1.5 and 2.5 tiles away from you.",
-                "-{{roll2}}% damage dealt to enemies within 1.5 tiles."
-            },
+            description = PST:getLocalized("aforge_mod_desc_spearImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 14 + PST:roundFloat(11 * (honing / 50), -2),
@@ -1351,28 +1085,28 @@ PST.astralWepData = {
         ancients = {
             -- Beastbane
             {
-                name = "Beastbane",
+                name = PST:getLocalized("aforge_ancname_Beastbane"),
                 spriteFrame = 10,
                 weight = 100,
                 ancientMods = {"beastbane"}
             },
             -- Gravitas
             {
-                name = "Gravitas",
+                name = PST:getLocalized("aforge_ancname_Gravitas"),
                 spriteFrame = 11,
                 weight = 100,
                 ancientMods = {"gravitas"}
             },
             -- Boreal Frostspear
             {
-                name = "Boreal Frostspear",
+                name = PST:getLocalized("aforge_ancname_Boreal Frostspear"),
                 spriteFrame = 22,
                 weight = 100,
                 ancientMods = {"borealSpear"}
             },
             -- Viper Stinger
             {
-                name = "Viper Stinger",
+                name = PST:getLocalized("aforge_ancname_Viper Stinger"),
                 spriteFrame = 32,
                 weight = 100,
                 ancientMods = {"viperStinger"}
@@ -1389,10 +1123,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "tridentImp",
-            description = {
-                "Consecutive hits against enemies beyond 1.5 tiles of you grant +{{roll1}}% damage and tears, up to {{roll2}}%.",
-                "Hitting an enemy within 1.5 tiles of you resets the bonus."
-            },
+            description = PST:getLocalized("aforge_mod_desc_tridentImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 0.3 + PST:roundFloat(0.7 * (honing / 50), -2),
@@ -1403,28 +1134,28 @@ PST.astralWepData = {
         ancients = {
             -- Consecrator
             {
-                name = "Consecrator",
+                name = PST:getLocalized("aforge_ancname_Consecrator"),
                 spriteFrame = 12,
                 weight = 100,
                 ancientMods = {"consecrator"}
             },
             -- Verdant Green
             {
-                name = "Verdant Green",
+                name = PST:getLocalized("aforge_ancname_Verdant Green"),
                 spriteFrame = 13,
                 weight = 100,
                 ancientMods = {"verdantGreen"}
             },
             -- Lost Coral Trident
             {
-                name = "Lost Coral Trident",
+                name = PST:getLocalized("aforge_ancname_Lost Coral Trident"),
                 spriteFrame = 14,
                 weight = 100,
                 ancientMods = {"lostCoralTrident"}
             },
             -- Oceanic Might
             {
-                name = "Oceanic Might",
+                name = PST:getLocalized("aforge_ancname_Oceanic Might"),
                 spriteFrame = 33,
                 weight = 100,
                 ancientMods = {"oceanicMight"}
@@ -1441,10 +1172,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "scytheImp",
-            description = {
-                "Hitting an enemy triggers a circular slash that hits nearby enemies for {{roll1}}% of the hit's damage.",
-                "This effect has a {{roll2}} second cooldown."
-            },
+            description = PST:getLocalized("aforge_mod_desc_scytheImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 70 + PST:roundFloat(50 * (honing / 50), -2),
@@ -1455,21 +1183,21 @@ PST.astralWepData = {
         ancients = {
             -- Tale Ender
             {
-                name = "Tale Ender",
+                name = PST:getLocalized("aforge_ancname_Tale Ender"),
                 spriteFrame = 15,
                 weight = 100,
                 ancientMods = {"taleEnder"}
             },
             -- Crimson Reaper
             {
-                name = "Crimson Reaper",
+                name = PST:getLocalized("aforge_ancname_Crimson Reaper"),
                 spriteFrame = 16,
                 weight = 100,
                 ancientMods = {"crimsonReaper"}
             },
             -- Mobripper
             {
-                name = "Mobripper",
+                name = PST:getLocalized("aforge_ancname_Mobripper"),
                 spriteFrame = 17,
                 weight = 100,
                 ancientMods = {"mobripper"}
@@ -1486,10 +1214,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "axeImp",
-            description = {
-                "{{roll1}}% chance to cause bleeding for 3 seconds when hitting enemies.",
-                "+{{roll2}}% damage with hits against bleeding enemies."
-            },
+            description = PST:getLocalized("aforge_mod_desc_axeImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 6 + PST:roundFloat(9 * (honing / 50), -2),
@@ -1500,21 +1225,21 @@ PST.astralWepData = {
         ancients = {
             -- Starsteel Broadaxe
             {
-                name = "Starsteel Broadaxe",
+                name = PST:getLocalized("aforge_ancname_Starsteel Broadaxe"),
                 spriteFrame = 18,
                 weight = 100,
                 ancientMods = {"starsteelBroadaxe"}
             },
             -- Ancient Runic Chopper
             {
-                name = "Ancient Runic Chopper",
+                name = PST:getLocalized("aforge_ancname_Ancient Runic Chopper"),
                 spriteFrame = 19,
                 weight = 100,
                 ancientMods = {"ancientRunicChopper"}
             },
             -- Circuit Splitter
             {
-                name = "Circuit Splitter",
+                name = PST:getLocalized("aforge_ancname_Circuit Splitter"),
                 spriteFrame = 36,
                 weight = 100,
                 ancientMods = {"circuitSplitter"}
@@ -1531,11 +1256,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "greataxeImp",
-            description = {
-                "Every {{roll1}} hits against each enemy causes them to bleed for 4 seconds.",
-                "+{{roll2}}% damage for 2 seconds after hitting a bleeding enemy.",
-                "{{roll3}}% tears."
-            },
+            description = PST:getLocalized("aforge_mod_desc_greataxeImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 5 - math.floor(honing / 20),
@@ -1547,14 +1268,14 @@ PST.astralWepData = {
         ancients = {
             -- Berserker's Wrath
             {
-                name = "Berserker's Wrath",
+                name = PST:getLocalized("aforge_ancname_Berserker's Wrath"),
                 spriteFrame = 20,
                 weight = 100,
                 ancientMods = {"berserkerWrath"}
             },
             -- Frozen Terror
             {
-                name = "Frozen Terror",
+                name = PST:getLocalized("aforge_ancname_Frozen Terror"),
                 spriteFrame = 21,
                 weight = 100,
                 ancientMods = {"frozenTerror"}
@@ -1571,10 +1292,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "shortbowImp",
-            description = {
-                "+{{roll1}} shot speed.",
-                "{{roll2}}% of your shot speed above 1 becomes a tears multiplier, up to +80%."
-            },
+            description = PST:getLocalized("aforge_mod_desc_shortbowImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 0.07 + PST:roundFloat(0.05 * (honing / 50), -2),
@@ -1585,14 +1303,14 @@ PST.astralWepData = {
         ancients = {
             -- Storm's Advance
             {
-                name = "Storm's Advance",
+                name = PST:getLocalized("aforge_ancname_Storm's Advance"),
                 spriteFrame = 24,
                 weight = 100,
                 ancientMods = {"stormAdvance"}
             },
             -- Quill Rain
             {
-                name = "Quill Rain",
+                name = PST:getLocalized("aforge_ancname_Quill Rain"),
                 spriteFrame = 23,
                 weight = 50,
                 ancientMods = {"quillRain"}
@@ -1609,10 +1327,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "bowImp",
-            description = {
-                "+{{roll1}} shot speed.",
-                "Hits against enemies deal additional damage the farther away they are from you, up to {{roll2}}%."
-            },
+            description = PST:getLocalized("aforge_mod_desc_bowImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 0.04 + PST:roundFloat(0.04 * (honing / 50), -2),
@@ -1623,28 +1338,28 @@ PST.astralWepData = {
         ancients = {
             -- Gilded Seeker
             {
-                name = "Gilded Seeker",
+                name = PST:getLocalized("aforge_ancname_Gilded Seeker"),
                 spriteFrame = 25,
                 weight = 100,
                 ancientMods = {"gildedSeeker"}
             },
             -- Twisted Oakstring
             {
-                name = "Twisted Oakstring",
+                name = PST:getLocalized("aforge_ancname_Twisted Oakstring"),
                 spriteFrame = 26,
                 weight = 100,
                 ancientMods = {"twistedOakstring"}
             },
             -- Brute's Onslaught
             {
-                name = "Brute's Onslaught",
+                name = PST:getLocalized("aforge_ancname_Brute Onslaught"),
                 spriteFrame = 27,
                 weight = 100,
                 ancientMods = {"bruteOnslaught"}
             },
             -- Divine Messenger
             {
-                name = "Divine Messenger",
+                name = PST:getLocalized("aforge_ancname_Divine Messenger"),
                 spriteFrame = 52,
                 weight = 100,
                 ancientMods = {"divineMessenger"}
@@ -1661,11 +1376,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "crossbowImp",
-            description = {
-                "{{roll1}} tears.",
-                "+{{roll2}} shot speed.",
-                "Your total shot speed becomes a damage multiplier, up to {{roll3}}%."
-            },
+            description = PST:getLocalized("aforge_mod_desc_crossbowImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = -0.15 + PST:roundFloat(0.1 * (honing / 50), -2),
@@ -1677,21 +1388,21 @@ PST.astralWepData = {
         ancients = {
             -- Volatile Arbalest
             {
-                name = "Volatile Arbalest",
+                name = PST:getLocalized("aforge_ancname_Volatile Arbalest"),
                 spriteFrame = 28,
                 weight = 100,
                 ancientMods = {"volatileArbalest"}
             },
             -- Avelyn
             {
-                name = "Avelyn",
+                name = PST:getLocalized("aforge_ancname_Avelyn"),
                 spriteFrame = 29,
                 weight = 100,
                 ancientMods = {"avelyn"}
             },
             -- Precise Seeker
             {
-                name = "Precise Seeker",
+                name = PST:getLocalized("aforge_ancname_Precise Seeker"),
                 spriteFrame = 30,
                 weight = 100,
                 ancientMods = {"preciseSeeker"}
@@ -1708,10 +1419,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "gauntletImp",
-            description = {
-                "Can have an additional magic modifier. Magic modifiers are stronger.",
-                "Transmutation cost is halved."
-            },
+            description = PST:getLocalized("aforge_mod_desc_gauntletImp"),
             rollsFunc = function(honing)
                 return { roll1 = 1 }
             end,
@@ -1720,21 +1428,21 @@ PST.astralWepData = {
         ancients = {
             -- Magefist
             {
-                name = "Magefist",
+                name = PST:getLocalized("aforge_ancname_Magefist"),
                 spriteFrame = 37,
                 weight = 100,
                 ancientMods = {"magefist"}
             },
             -- Ironhand
             {
-                name = "Ironhand",
+                name = PST:getLocalized("aforge_ancname_Ironhand"),
                 spriteFrame = 38,
                 weight = 100,
                 ancientMods = {"ironhand"}
             },
             -- Metamorphic Claw
             {
-                name = "Metamorphic Claw",
+                name = PST:getLocalized("aforge_ancname_Metamorphic Claw"),
                 spriteFrame = 45,
                 weight = 100,
                 ancientMods = {"metamorphicClaw"}
@@ -1752,11 +1460,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "greatmaceImp",
-            description = {
-                "Hitting an enemy within 2.5 tiles causes a shockwave, paralyzing nearby enemies for {{roll1}} seconds.",
-                "Already paralyzed enemies hit by the shockwave receive {{roll2}}% of your damage, capped at 50.",
-                "{{roll3}} second cooldown."
-            },
+            description = PST:getLocalized("aforge_mod_desc_greatmaceImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 1.5 + PST:roundFloat(0.5 * (honing / 50), -2),
@@ -1768,35 +1472,35 @@ PST.astralWepData = {
         ancients = {
             -- Mighty Purifier
             {
-                name = "Mighty Purifier",
+                name = PST:getLocalized("aforge_ancname_Mighty Purifier"),
                 spriteFrame = 40,
                 weight = 100,
                 ancientMods = {"mightyPurifier"}
             },
             -- Chaotic Tumult
             {
-                name = "Chaotic Tumult",
+                name = PST:getLocalized("aforge_ancname_Chaotic Tumult"),
                 spriteFrame = 41,
                 weight = 100,
                 ancientMods = {"chaoticTumult"}
             },
             -- Firestarter
             {
-                name = "Firestarter",
+                name = PST:getLocalized("aforge_ancname_Firestarter"),
                 spriteFrame = 42,
                 weight = 100,
                 ancientMods = {"firestarter"}
             },
             -- Colossal Maul
             {
-                name = "Colossal Maul",
+                name = PST:getLocalized("aforge_ancname_Colossal Maul"),
                 spriteFrame = 43,
                 weight = 100,
                 ancientMods = {"colossalMaul"}
             },
             -- Tolling Bell
             {
-                name = "Tolling Bell",
+                name = PST:getLocalized("aforge_ancname_Tolling Bell"),
                 spriteFrame = 44,
                 weight = 100,
                 ancientMods = {"tollingBell"}
@@ -1814,12 +1518,7 @@ PST.astralWepData = {
         },
         implicitMod = {
             name = "whipImp",
-            description = {
-                "When hitting an enemy, shoot a stream of 5 tears in a line towards them.",
-                "Hitting enemies with these tears randomly grants you either +{{roll1}}% speed or",
-                "+{{roll1}}% tears, up to {{roll2}}%, for {{roll3}} seconds.",
-                "2 second cooldown between tear shots."
-            },
+            description = PST:getLocalized("aforge_mod_desc_whipImp"),
             rollsFunc = function(honing)
                 return {
                     roll1 = 0.3 + PST:roundFloat(0.9 * (honing / 50), -2), --1.5 + PST:roundFloat(0.5 * (honing / 50), -2),
@@ -1831,28 +1530,28 @@ PST.astralWepData = {
         ancients = {
             -- Snakebite
             {
-                name = "Snakebite",
+                name = PST:getLocalized("aforge_ancname_Snakebite"),
                 spriteFrame = 47,
                 weight = 100,
                 ancientMods = {"snakebite"}
             },
             -- Devil's Tongue
             {
-                name = "Devil's Tongue",
+                name = PST:getLocalized("aforge_ancname_Devil's Tongue"),
                 spriteFrame = 48,
                 weight = 100,
                 ancientMods = {"devilTongue"}
             },
             -- Azurebinder
             {
-                name = "Azurebinder",
+                name = PST:getLocalized("aforge_ancname_Azurebinder"),
                 spriteFrame = 49,
                 weight = 100,
                 ancientMods = {"azurebinder"}
             },
             -- Sacred Scourge
             {
-                name = "Sacred Scourge",
+                name = PST:getLocalized("aforge_ancname_Sacred Scourge"),
                 spriteFrame = 50,
                 weight = 100,
                 ancientMods = {"sacredScourge"}
