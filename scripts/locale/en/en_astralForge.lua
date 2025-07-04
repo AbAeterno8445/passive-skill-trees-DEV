@@ -125,6 +125,8 @@ return {
     ["aforge_wepname_Shortbows"] = "Shortbows",
     ["aforge_wepname_Bow"] = "Bow",
     ["aforge_wepname_Bows"] = "Bows",
+    ["aforge_wepname_Crossbow"] = "Crossbow",
+    ["aforge_wepname_Crossbows"] = "Crossbows",
     ["aforge_wepname_Gauntlet"] = "Gauntlet",
     ["aforge_wepname_Gauntlets"] = "Gauntlets",
     ["aforge_wepname_Great Mace"] = "Great Mace",
