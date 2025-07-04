@@ -701,7 +701,7 @@ function PST:getExpedOrderModDescLine(expModData)
     local tmpDesc = ""
     local ordModData = PST.expedOrderMods[expModData.obj]
     if ordModData then
-        tmpDesc = "   " .. PST:getLocalized(expModData.obj)
+        tmpDesc = "   " .. PST:getLocalizedFormatStr(expModData.obj, {order = ordModData.order})
         if ordModData.req and expModData.prog < ordModData.max then
             tmpDesc = tmpDesc .. " (" .. math.min(expModData.reqProg, ordModData.req) .. "/" .. ordModData.req .. ")"
         end
