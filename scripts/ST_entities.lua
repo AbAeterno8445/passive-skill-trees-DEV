@@ -13,7 +13,7 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
         -- Bethany, as Keeper: -0.01 luck whenever a blue fly spawns, up to -2
         if type == EntityType.ENTITY_FAMILIAR and variant == FamiliarVariant.BLUE_FLY and subtype == 0 and
         (player:GetPlayerType() == PlayerType.PLAYER_KEEPER or
-        player:GetPlayerType() == PlayerType.PLAYER_KEEPERB) then
+        player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B) then
             local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
             if cosmicRCache.bethanyKeeperLuck > -2 then
                 PST:addModifiers({ luck = -0.01 }, true)

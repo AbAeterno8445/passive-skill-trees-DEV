@@ -380,21 +380,24 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- Sumptorium
     elseif itemType == CollectibleType.COLLECTIBLE_SUMPTORIUM then
         -- Mod: +% damage per absorbed red clot for the current room
-        local tmpMod = PST:getTreeSnapshotMod("redClotAbsorbDmg", 0)
+        tmpMod = PST:getTreeSnapshotMod("redClotAbsorbDmg", 0)
         if tmpMod > 0 then
-            local redClots = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 0)
-            if #redClots > 0 then
-                local totalBuff = tmpMod * #redClots
-                PST:addModifiers({ damagePerc = totalBuff, redClotAbsorbBuff = totalBuff }, true)
+            local missingRedHearts = player:GetMaxHearts() - player:GetHearts()
+            if missingRedHearts > 0 then
+                local redClots = math.min(missingRedHearts, #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 0))
+                if redClots > 0 then
+                    local totalBuff = tmpMod * redClots
+                    PST:addModifiers({ damagePerc = totalBuff, redClotAbsorbBuff = totalBuff }, true)
+                end
             end
         end
 
         -- Mod: +% tears per absorbed soul clot for the current room
         tmpMod = PST:getTreeSnapshotMod("soulClotAbsorbTears", 0)
         if tmpMod > 0 then
-            local soulClots = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 1)
-            if #soulClots > 0 then
-                local totalBuff = tmpMod * #soulClots
+            local soulClots = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 1)
+            if soulClots > 0 then
+                local totalBuff = tmpMod * soulClots
                 PST:addModifiers({ tearsPerc = totalBuff, soulClotAbsorbBuff = totalBuff }, true)
             end
         end

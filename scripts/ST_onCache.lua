@@ -883,7 +883,7 @@ function PST:onCache(player, cacheFlag)
     -- Cosmic Realignment node
     if PST:getTreeSnapshotMod("cosmicRealignment", false) ~= false then
         local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache")
-        local isKeeper = playerType == PlayerType.PLAYER_KEEPER or playerType == PlayerType.PLAYER_KEEPERB
+        local isKeeper = playerType == PlayerType.PLAYER_KEEPER or playerType == PlayerType.PLAYER_KEEPER_B
         if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
             -- The Forgotten, Keeper debuff
             if isKeeper then
