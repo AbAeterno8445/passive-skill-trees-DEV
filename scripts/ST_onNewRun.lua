@@ -753,10 +753,13 @@ function PST:onNewRun(isContinued)
 
     -- Absolute Rage node (T. Samson's tree)
     if PST:getTreeSnapshotMod("absoluteRage", false) then
-        player:AddCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK, true)
-        if not PST:getTreeSnapshotMod("tempered", false) then
-            PST:addModifiers({ berserkTears = -30 }, true)
-        end
+        Isaac.CreateTimer(function()
+            SFXManager():Play(SoundEffect.SOUND_BERSERK_START, 0.8)
+            player:AddCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK, true)
+            if not PST:getTreeSnapshotMod("tempered", false) then
+                PST:addModifiers({ berserkTears = -30 }, true)
+            end
+        end, 15, 1, false)
     end
 
     -- Gilded Regrowth node (T. Azazel's tree)

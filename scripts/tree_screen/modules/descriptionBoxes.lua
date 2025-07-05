@@ -31,7 +31,7 @@ local descriptionBoxesModule = {
                 elseif tScreen.starcursedTotalMods then
                     -- Append starmight description to Star Tree node
                     local tmpColor = PST.kcolors.STAR_ORANGE
-                    tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
+                    tmpDescription = {table.unpack(tmpDescription)}
                     table.insert(tmpDescription, {PST:getLocalized("ui_starmight") .. ": " .. tScreen.starcursedTotalMods.totalStarmight, tmpColor})
                     for modName, modVal in pairs(PST:SC_getStarmightImplicits(tScreen.starcursedTotalMods.totalStarmight)) do
                         local parsedModLines = PST:parseModifierLines(modName, modVal)
@@ -50,7 +50,7 @@ local descriptionBoxesModule = {
 
         -- Golden Trinket nodes, show whether golden trinkets are unlocked
         ["Golden Trinkets"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
-            tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
+            tmpDescription = {table.unpack(tmpDescription)}
             if not Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
                 table.insert(tmpDescription, {PST:getLocalized("ui_goldenTrinketsUnlocked"), PST.kcolors.GREEN1})
             else
@@ -62,7 +62,7 @@ local descriptionBoxesModule = {
         -- Grand Ingredient nodes, add warning if more than 2 are allocated
         ["Grand Ingredient"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             if PST:grandIngredientNodes(false) > 2 then
-                tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
+                tmpDescription = {table.unpack(tmpDescription)}
                 table.insert(tmpDescription, {PST:getLocalized("ui_grandIngredientWarn"), PST.kcolors.RED2})
             end
             return { name = descName, description = tmpDescription }
@@ -70,7 +70,7 @@ local descriptionBoxesModule = {
 
         -- Soul Of The Siren node, track boss rush/hush completions
         ["Soul Of The Siren"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
-            tmpDescription = {table.unpack(tScreen.hoveredNode.description)}
+            tmpDescription = {table.unpack(tmpDescription)}
             local bothDone = true
             -- Boss rush
             if Isaac.GetCompletionMark(Isaac.GetPlayerTypeByName("Siren", true), CompletionType.BOSS_RUSH) == 0 then
@@ -352,6 +352,23 @@ function descriptionBoxesModule:Render(tScreen)
         local tmpDescription = hoveredNode.description
         local isAllocated = PST:isNodeAllocated(tScreen.currentTree, hoveredNode.id)
 
+        -- Node description localization
+        if tmpDescription[1] then
+            local tmpDescKey
+            if type(tmpDescription[1]) == "table" and tmpDescription[1][1]:sub(1, 1) == '#' then
+                tmpDescKey = tmpDescription[1][1]:sub(2)
+            elseif type(tmpDescription[1]) == "string" and tmpDescription[1]:sub(1, 1) == '#' then
+                tmpDescKey = tmpDescription[1]:sub(2)
+            end
+            if tmpDescKey then
+                local localizedDesc = PST:getLocalizedFormat(tmpDescKey, hoveredNode.modifiers)
+                if localizedDesc then
+                    if type(localizedDesc) == "string" then tmpDescription = {localizedDesc}
+                    else tmpDescription = localizedDesc end
+                end
+            end
+        end
+
         -- Check for node description additions
         local extraData = {}
         local nodeDescFunc = self.dynamicNodeDescriptions[hoveredNode.name]
@@ -407,6 +424,11 @@ function descriptionBoxesModule:Render(tScreen)
             descName = newDescData.name
             tmpDescription = newDescData.description
             hasCustomName = true
+        end
+
+        -- Node name localization
+        if not hasCustomName and hoveredNode.nameLocale then
+            descName = PST:getLocalized(hoveredNode.nameLocale, Options.Language)
         end
 
         -- Crimson nodes
@@ -521,29 +543,6 @@ function descriptionBoxesModule:Render(tScreen)
         if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) and (PST:arrHasValue(nonDynamicNodes, hoveredNode.name) or (hoveredNode.reqs and hoveredNode.reqs.nonDynamic)) then
             tmpDescription = {table.unpack(tmpDescription)}
             table.insert(tmpDescription, {PST:getLocalized("ui_nonDynamicWarn"), PST.kcolors.RED2})
-        end
-
-        ---- Localization ----
-        -- Node name
-        if not hasCustomName and hoveredNode.nameLocale then
-            descName = PST:getLocalized(hoveredNode.nameLocale, Options.Language)
-        end
-
-        -- Node description
-        if tmpDescription[1] then
-            local tmpDescKey
-            if type(tmpDescription[1]) == "table" and tmpDescription[1][1]:sub(1, 1) == '#' then
-                tmpDescKey = tmpDescription[1][1]:sub(2)
-            elseif type(tmpDescription[1]) == "string" and tmpDescription[1]:sub(1, 1) == '#' then
-                tmpDescKey = tmpDescription[1]:sub(2)
-            end
-            if tmpDescKey then
-                local localizedDesc = PST:getLocalizedFormat(tmpDescKey, hoveredNode.modifiers)
-                if localizedDesc then
-                    if type(localizedDesc) == "string" then tmpDescription = {localizedDesc}
-                    else tmpDescription = localizedDesc end
-                end
-            end
         end
 
         tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description)

@@ -2320,7 +2320,7 @@ function PST:frameUpdate()
 
 	-- Berserk update
 	local isBerserk = PST:isBerserk()
-	if updateTrackers.isBerserk ~= nil and updateTrackers.isBerserk ~= isBerserk then
+	if updateTrackers.isBerserk ~= nil and updateTrackers.isBerserk ~= isBerserk and roomFrame > 3 then
 		local berserkEffect = player:GetEffects():GetCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
 		if berserkEffect then
 			local berserkMaxCharge = PST:getBerserkMaxCharge()
@@ -2346,7 +2346,7 @@ function PST:frameUpdate()
 	end
 
 	-- Violent Marauder node (T. Samson's tree)
-	if PST:getTreeSnapshotMod("violentMarauder", false) then
+	if PST:getTreeSnapshotMod("violentMarauder", false) and roomFrame > 2 then
 		local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_SUPLEX)
 		if tmpSlot ~= -1 and not PST:isBerserk() then
 			player:SetActiveCharge(0, tmpSlot)
@@ -2364,8 +2364,8 @@ function PST:frameUpdate()
 			else
 				player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
 			end
-		elseif roomFrame % 30 == 0 then
-			player.SamsonBerserkCharge = math.min(100000, player.SamsonBerserkCharge + 5000)
+		elseif roomFrame % 15 == 0 then
+			player.SamsonBerserkCharge = math.min(100000, player.SamsonBerserkCharge + 2500)
 			if player.SamsonBerserkCharge >= 100000 then
 				player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BERSERK)
 				SFXManager():Play(SoundEffect.SOUND_BERSERK_START)

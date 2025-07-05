@@ -7,7 +7,7 @@ return {
     ["ui_deepSpaceSP"] = "Puntos Espacio-Temporales",
     ["ui_deepSpaceSP_optPlural"] = "Punto(s) espacio-temporal(es)",
 
-    ["ui_obolReq"] = "Requiere {{obolRq}} Oboles Arcanos para asignar.",
+    ["ui_obolReq"] = "Requiere {{obolReq}} Oboles Arcanos para asignar.",
     ["ui_expDepthReq"] = "Requiere completar la profundidad {{depthReq}} de expedición.",
     ["ui_uberExpDepthReq"] = "Requiere completar la profundidad {{depthReq}} de expedición uber.",
     ["ui_charlvlReq"] = "Requiere que el personaje actual ({{charName}}) alcanze el nivel {{lvlReq}}.",

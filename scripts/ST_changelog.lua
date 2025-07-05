@@ -3,6 +3,13 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.5",
+        "- Fixed additional requirements not showing up on node descriptions, such as obol costs.",
+        "- Fixed Berserk's charge getting reset when entering a new room.",
+        "- Fixed T. Samson's \"Violent Marauder\" resetting Suplex's cooldown when entering a new room even while berserk.",
+        "- Fixed T. Samson's \"Absolute Rage\" initially removing Berserk right after starting a run.",
+        "",
+
         "v1.3.4",
         "- Opening the tree in-game without pausing now requires enabling an option for it with Mod Config Menu (keyboard), and is",
         "no longer possible on controller due to keybind conflicts.",
