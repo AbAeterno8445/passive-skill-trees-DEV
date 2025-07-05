@@ -20,6 +20,9 @@ PST.config = {
     -- Whether tree mods are applied in challenges
     treeOnChallenges = false,
 
+    -- Allow opening tree in-game without pausing
+    allowTreeWithoutPause = false,
+
     -- XP multiplier option
     xpMult = 1,
 
@@ -67,6 +70,12 @@ PST.config = {
         openTree = {
             keyboardButton = Keyboard.KEY_V,
             controllerAction = ButtonAction.ACTION_MENULT,
+        },
+        openTreeKeyOnly = {
+            keyboardButton = Keyboard.KEY_V
+        },
+        openTreeController = {
+            controllerAction = ButtonAction.ACTION_MENULT
         },
         closeTree = {
             keyboardButton = Keyboard.KEY_ESCAPE,
@@ -180,6 +189,8 @@ PST.config = {
 ---@enum PSTKeybind
 PSTKeybind = {
     OPEN_TREE = "openTree",
+    OPEN_TREE_KEY = "openTreeKeyOnly",
+    OPEN_TREE_CONT = "openTreeController",
     CLOSE_TREE = "closeTree",
     ALLOCATE_NODE = "allocateNode",
     SHIFT_ALLOCATE_NODE = "shiftAllocateNode",
@@ -346,6 +357,26 @@ function PST:initModConfigMenu()
                 PST.config.descriptionBoxStyle = n
             end,
             Info = {"Tree node description box visual style", "New can look better in fullscreen or small resolutions"}
+        }
+    )
+    -- Allow opening tree in-game without pausing setting
+    ModConfigMenu.RemoveSetting(PST.modName, "Main", "allowTreeWithoutPause")
+    ModConfigMenu.AddSetting(
+        PST.modName,
+        "Main",
+        {
+            Type = ModConfigMenu.OptionType.BOOLEAN,
+            Attribute = "allowTreeWithoutPause",
+            CurrentSetting = function()
+                return PST.config.allowTreeWithoutPause
+            end,
+            Display = function()
+                return "Allow opening tree without pausing: " .. (PST.config.allowTreeWithoutPause and "yes" or "no")
+            end,
+            OnChange = function(b)
+                PST.config.allowTreeWithoutPause = b
+            end,
+            Info = {"Whether to allow opening the tree screen in-game without needing to pause. Does not affect controller"}
         }
     )
 

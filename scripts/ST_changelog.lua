@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.4",
+        "- Opening the tree in-game without pausing now requires enabling an option for it with Mod Config Menu (keyboard), and is",
+        "no longer possible on controller due to keybind conflicts.",
+        "",
+
         "v1.3.3",
         "- Internal support for internationalization (translation of UI to other languages). Currently supported languages: English (default), Spanish.",
         "Let me know if there are missing strings or numbers anywhere in the UI.",
