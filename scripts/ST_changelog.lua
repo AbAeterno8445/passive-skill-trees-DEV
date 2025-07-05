@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.3.5",
+        "- Fixed many post-damage effects (especially weapons') that depended on the player being the source not triggering.",
         "- Fixed additional requirements not showing up on node descriptions, such as obol costs.",
         "- Fixed Berserk's charge getting reset when entering a new room.",
         "- Fixed T. Samson's \"Violent Marauder\" resetting Suplex's cooldown when entering a new room even while berserk.",

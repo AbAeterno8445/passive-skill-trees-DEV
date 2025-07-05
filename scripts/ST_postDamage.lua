@@ -82,6 +82,13 @@ function PST:postDamage(target, damage, flag, source)
         end
 
         if source and source.Entity and target.Type ~= EntityType.ENTITY_FIREPLACE then
+            local srcPlayer = nil
+            if source.Type == EntityType.ENTITY_PLAYER then
+                srcPlayer = source.Entity:ToPlayer()
+            elseif source.SpawnerType == EntityType.ENTITY_PLAYER then
+                srcPlayer = source.Entity.SpawnerEntity:ToPlayer()
+            end
+
             -- Check if a familiar hit/killed enemy
             tmpFamiliar = source.Entity:ToFamiliar()
             if tmpFamiliar == nil and source.Entity.SpawnerEntity ~= nil then
@@ -239,7 +246,6 @@ function PST:postDamage(target, damage, flag, source)
             else
                 -- Player hit to enemy (direct/through tears)
                 if source.Type == EntityType.ENTITY_PLAYER or source.SpawnerType == EntityType.ENTITY_PLAYER then
-                    local srcPlayer = source.Entity:ToPlayer() or source.Entity.SpawnerEntity:ToPlayer()
                     if srcPlayer and targetIsVuln then
                         -- Player tear hit
                         if source.Type == EntityType.ENTITY_TEAR then
