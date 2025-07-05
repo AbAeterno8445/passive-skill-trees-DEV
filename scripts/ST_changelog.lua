@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.3.5",
+        "- Compatibility for the Devoid: Apollyon Rework mod - Void should now trigger related effects on use.",
         "- Fixed many post-damage effects (especially weapons') that depended on the player being the source not triggering.",
         "- Fixed additional requirements not showing up on node descriptions, such as obol costs.",
         "- Fixed Berserk's charge getting reset when entering a new room.",

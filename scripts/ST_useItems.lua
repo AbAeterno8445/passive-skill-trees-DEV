@@ -1,5 +1,10 @@
 -- Pre item use
 function PST:preUseItem(itemType, RNG, player, useFlags, slot, customVarData)
+    -- Apollyon Rework mod (Devoid) compat
+    if ApollyonReworkMOD and itemType == CollectibleType.COLLECTIBLE_VOID then
+        PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
+    end
+
     -- Mystery gift
     if itemType == CollectibleType.COLLECTIBLE_MYSTERY_GIFT then
         if PST:SC_getSnapshotMod("mistlestone", false) then
