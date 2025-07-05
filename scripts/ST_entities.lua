@@ -157,9 +157,9 @@ function PST:onNPCUpdate(npc)
                     extraHPMult = 0.3
                 elseif PST:getLevel():GetStage() == 2 then
                     extraHPMult = 0.5
-                elseif PST:getLevel():GetStage() == 3 then
+                elseif PST:getLevel():GetStage() == 3 and not PST:getTreeSnapshotMod("isExpedUber", false) then
                     extraHPMult = 0.75
-                elseif PST:getLevel():GetStage() == 4 then
+                elseif PST:getLevel():GetStage() == 4 and not PST:getTreeSnapshotMod("isExpedUber", false) then
                     extraHPMult = 0.9
                 end
 

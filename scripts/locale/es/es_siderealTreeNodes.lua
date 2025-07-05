@@ -214,8 +214,8 @@ return {
     ["ui_crimconv_celerity_desc"] = {"Tu velocidad mínima en habitaciones completadas se vuelve 1 + 0.04 por Núcleo Estelar Carmesí."},
     ["ui_crimconv_bloodshield"] = "Escudo Sanguíneo",
     ["ui_crimconv_bloodshield_desc"] = {
-        "Al entrar a una habitación con monstruos, vuelvete invulnerable por 1.5 segundos.",
-        "+0.1 segundos a la duración de la invulnerabilidad por Núcleo Estelar Carmesí."
+        "Al entrar a una habitación con monstruos, vuélvete invulnerable por 1.5 segundos.",
+        "+0.05 segundos a la duración de la invulnerabilidad por Núcleo Estelar Carmesí."
     },
     ["ui_crimconv_abundanceGoods"] = "Abundancia: Bienes",
     ["ui_crimconv_abundanceGoods_desc"] = {
@@ -239,5 +239,5 @@ return {
         "Por Núcleo Estelar Carmesí: 1% de tu estadística de suerte es añadida a tu daño."
     },
     ["ui_crimconv_starstruck"] = "Deslumbre",
-    ["ui_crimconv_starstruck_desc"] = {"Por Núcleo Estelar Carmesí: +3% oboles encontrados."}
+    ["ui_crimconv_starstruck_desc"] = {"Por Núcleo Estelar Carmesí: +2% oboles encontrados."}
 }

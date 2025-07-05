@@ -905,7 +905,7 @@ function PST:frameUpdate()
 		-- Crimson Convergence buff: Gain a shield when entering a room with monsters
 		local charData = PST:getCurrentCharData()
 		if charData and PST:getTreeSnapshotMod("crimConvBuff", "") == "bloodshield" and room:GetAliveEnemiesCount() > 0 then
-			player:SetMinDamageCooldown(90 + 6 * charData.crimsonStarcores)
+			player:SetMinDamageCooldown(90 + 3 * PST:getCrimConvCoreCount())
 		end
 
 		-- Mod: % chance to trigger Chaotic Epiphany when entering a Curse Room

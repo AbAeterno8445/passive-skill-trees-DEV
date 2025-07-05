@@ -752,7 +752,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     if isNormalCharge and slot ~= -1 and PST:getTreeSnapshotMod("crimConvBuff", "") == "sanguineCharges" and player:GetActiveMaxCharge(slot) >= 2 then
         local charData = PST:getCurrentCharData()
         if charData then
-            local tmpChance = charData.crimsonStarcores * 10
+            local tmpChance = PST:getCrimConvCoreCount() * 10
             while tmpChance > 0 do
                 if 100 * math.random() < tmpChance then
                     player:AddActiveCharge(1, slot, true, true, false)

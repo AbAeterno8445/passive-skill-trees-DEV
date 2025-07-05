@@ -218,7 +218,7 @@ return {
     ["ui_crimconv_bloodshield"] = "Bloodshield",
     ["ui_crimconv_bloodshield_desc"] = {
         "When entering a room with monsters, become invulnerable for 1.5 seconds.",
-        "+0.1 seconds to the invulnerability duration per Crimson Starcore."
+        "+0.05 seconds to the invulnerability duration per Crimson Starcore."
     },
     ["ui_crimconv_abundanceGoods"] = "Abundance: Goods",
     ["ui_crimconv_abundanceGoods_desc"] = {
@@ -241,5 +241,5 @@ return {
         "Per Crimson Starcore: 1% of your luck stat gets added to your damage."
     },
     ["ui_crimconv_starstruck"] = "Starstruck",
-    ["ui_crimconv_starstruck_desc"] = {"Per Crimson Starcore: +3% obols found."}
+    ["ui_crimconv_starstruck_desc"] = {"Per Crimson Starcore: +2% obols found."},
 }

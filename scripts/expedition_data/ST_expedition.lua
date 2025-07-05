@@ -164,14 +164,16 @@ function PST:expedRemoveItem(depth, itemID, uber)
 end
 
 -- Drop obols at the given position
-function PST:expedDropObolsAt(position, amount)
+function PST:expedDropObolsAt(position, amount, noMax)
     local tmpAmount = amount
     local tmpMult = 1
+    local maxAmount = 400 + PST:getTreeSnapshotMod("expedDepth", 0) * 10
     -- Obols found mods
     if PST:getTreeSnapshotMod("obolsFound", 0) > 0 then
         tmpMult = tmpMult + PST:getTreeSnapshotMod("obolsFound", 0) / 100
     end
     if PST:getTreeSnapshotMod("isExpedUber", false) then
+        maxAmount = maxAmount + PST:getTreeSnapshotMod("expedDepth", 0) * 20
         local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
         -- Mod: +% obols found in uber expedition runs
         if PST:getTreeSnapshotMod("obolsFoundUber", 0) > 0 then
@@ -187,6 +189,9 @@ function PST:expedDropObolsAt(position, amount)
         end
     end
     tmpAmount = math.ceil(tmpAmount * tmpMult)
+    if not noMax then
+        tmpAmount = math.min(maxAmount, tmpAmount)
+    end
 
     local obolDrops = {}
     for i=#PST.expedObolDropValues,1,-1 do

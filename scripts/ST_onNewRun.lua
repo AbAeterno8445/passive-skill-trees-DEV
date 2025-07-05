@@ -548,8 +548,9 @@ function PST:onNewRun(isContinued)
             PST:addModifiers({ crimConvBuff = charData.crimConvBuff }, true)
 
             -- Starstruck crimson buff
-            if charData.crimConvBuff == "starstruck" and charData.crimsonStarcores > 0 then
-                PST:addModifiers({ obolsFound = charData.crimsonStarcores * 3 }, true)
+            local tmpCores = PST:getCrimConvCoreCount()
+            if charData.crimConvBuff == "starstruck" and tmpCores > 0 then
+                PST:addModifiers({ obolsFound = tmpCores * 2 }, true)
             end
         end
     end

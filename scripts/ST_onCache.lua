@@ -1062,7 +1062,7 @@ function PST:onCache(player, cacheFlag)
         if PST:getTreeSnapshotMod("crimConvBuff", "") == "fortuna" then
             local charData = PST:getCurrentCharData()
             if charData then
-                player.Damage = player.Damage + (player.Luck * 0.01 * charData.crimsonStarcores) * dsdMult
+                player.Damage = player.Damage + (player.Luck * 0.01 * PST:getCrimConvCoreCount()) * dsdMult
             end
         end
 
@@ -1203,7 +1203,7 @@ function PST:onCache(player, cacheFlag)
         if PST:getTreeSnapshotMod("crimConvBuff", "") == "celerity" and PST:getRoom():GetAliveEnemiesCount() == 0 then
             local charData = PST:getCurrentCharData()
             if charData then
-                local tmpSpeed = math.min(2, 1 + 0.04 * charData.crimsonStarcores)
+                local tmpSpeed = math.min(2, 1 + 0.04 * PST:getCrimConvCoreCount())
                 if player.MoveSpeed < tmpSpeed then
                     player.MoveSpeed = tmpSpeed
                 end

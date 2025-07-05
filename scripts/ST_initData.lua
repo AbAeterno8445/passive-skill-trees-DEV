@@ -1752,7 +1752,7 @@ function PST:resetMods()
 		-- Deep-Space nodes
 		finalBossGSP = 0,
 		expedChoiceAdd = 0,
-		obolsFoundUber = 25,
+		obolsFoundUber = 15,
 		obolsFoundEntropy = 0,
 		xpgainUber = 20,
 		orderGain = 0,

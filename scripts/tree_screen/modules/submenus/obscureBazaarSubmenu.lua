@@ -8,7 +8,7 @@ local obsBazaarSubmenu = {
 local obsBazaarItems = {
     {
         name = PST:getLocalized("ui_crimsonCore"),
-        price = 2500,
+        price = 6666,
         type = PSTExpNodeRewardType.C_STARCORE,
         purchaseFunc = function(charData)
             if not charData then return end
@@ -17,7 +17,7 @@ local obsBazaarItems = {
     },
     {
         name = PST:getLocalized("ui_starblessedPrism"),
-        price = 4000,
+        price = 8000,
         type = PSTExpNodeRewardType.STARBLESS_PRISM,
         purchaseFunc = function(charData)
             PST.modData.starblessPrism = PST.modData.starblessPrism + 1
@@ -25,7 +25,7 @@ local obsBazaarItems = {
     },
     {
         name = PST:getLocalized("ui_characterSkillPoint"),
-        price = 1200,
+        price = 2000,
         type = PSTExpNodeRewardType.GLOBAL_SP,
         purchaseFunc = function(charData)
             if not charData then return end

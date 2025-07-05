@@ -1397,22 +1397,22 @@ function PST:onDamage(target, damage, flag, source)
                 if charData and tmpNPC then
                     -- Crimson Convergence buff: +% damage dealt to normal monsters
                     if PST:getTreeSnapshotMod("crimConvBuff", "") == "mundaneSlaughter" and not tmpNPC:IsBoss() and not tmpNPC:IsChampion() then
-                        dmgMult = dmgMult + 0.01 * charData.crimsonStarcores
+                        dmgMult = dmgMult + 0.01 * PST:getCrimConvCoreCount()
                     end
 
                     -- Crimson Convergence buff: +% damage dealt to champions and non-final bosses
                     if PST:getTreeSnapshotMod("crimConvBuff", "") == "giantSlaughter" and ((tmpNPC:IsBoss() and not PST:entityIsFinalBoss(target)) or tmpNPC:IsChampion()) then
-                        dmgMult = dmgMult + 0.01 * charData.crimsonStarcores
+                        dmgMult = dmgMult + 0.01 * PST:getCrimConvCoreCount()
                     end
 
                     -- Crimson Convergence buff: +% damage dealt to final bosses
                     if PST:getTreeSnapshotMod("crimConvBuff", "") == "titanSlaughter" and PST:entityIsFinalBoss(target) then
-                        dmgMult = dmgMult + 0.02 * charData.crimsonStarcores
+                        dmgMult = dmgMult + 0.02 * PST:getCrimConvCoreCount()
                     end
 
                     -- Crimson Convergence buff: +% damage dealt to enemies affected by any status effect
                     if PST:getTreeSnapshotMod("crimConvBuff", "") == "blightseeking" and PST:entityHasAnyStatus(target) then
-                        dmgMult = dmgMult + 0.01 * charData.crimsonStarcores
+                        dmgMult = dmgMult + 0.01 * PST:getCrimConvCoreCount()
                     end
                 end
 

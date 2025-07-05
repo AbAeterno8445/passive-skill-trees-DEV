@@ -184,6 +184,9 @@ return {
     ["ui_ancStardust"] = "Polvo Estelar Antiguo",
 
     ["ui_charCrimsonCores"] = "Núcleos estelares carmesí con {{charName}}: {{cores}}",
+    ["ui_crimConvCrimsonCores"] = "Núcleos estelares carmesí efectivos para la convergencia: {{cores}}/{{maxCores}}",
+    ["ui_crimConvEffCoreTip"] = "Puedes aumentar este límite en 1 por cada 2 profundidades de expedición normal desbloqueadas, y",
+    ["ui_crimConvEffCoreTip2"] = "en 2 por cada profundidad de expedición uber desbloqueada.",
 
     ["ui_nonDynamicWarn"] = "Este nodo no soporta el Modo de Árbol Dinámico, y solo se aplica al comenzar la partida.",
 

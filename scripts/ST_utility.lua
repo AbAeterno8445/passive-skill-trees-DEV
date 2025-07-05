@@ -1074,6 +1074,18 @@ function PST:LJ_inMortis()
 	return false
 end
 
+-- Return how many Crimson Starcores from the current character are considered for Crimson Convergence buffs
+function PST:getCrimConvCoreCount()
+	local charData = PST:getCurrentCharData()
+	if charData then
+		return math.min(PST:getMaxCrimConvCores(), charData.crimsonStarcores)
+	end
+	return 0
+end
+function PST:getMaxCrimConvCores()
+	return 30 + math.floor((PST.modData.expeditionDepth - 1) / 2) + (PST.modData.uberExpedDepth - 1) * 2
+end
+
 ---@param entity Entity
 function PST:getEntData(entity, trueGetData)
     if not PST.entDataCache[entity.InitSeed] then

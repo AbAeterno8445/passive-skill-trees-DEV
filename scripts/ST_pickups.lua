@@ -1486,7 +1486,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             if firstSpawn and charData then
                 -- Crimson Convergence buff: % chance to duplicate coin/key/bomb
                 if PST:getTreeSnapshotMod("crimConvBuff", "") == "abundanceGoods" then
-                    local tmpChance = charData.crimsonStarcores
+                    local tmpChance = PST:getCrimConvCoreCount()
                     if pickup.Timeout > 0 then
                         tmpChance = tmpChance * 3
                     end
@@ -1499,7 +1499,7 @@ function PST:onPickupInit(pickup, firstSpawn)
 
                 -- Crimson Convergence buff: % chance to duplicate hearts
                 if PST:getTreeSnapshotMod("crimConvBuff", "") == "abundanceVitality" then
-                    local tmpChance = charData.crimsonStarcores
+                    local tmpChance = PST:getCrimConvCoreCount()
                     if pickup.Timeout > 0 then
                         tmpChance = tmpChance * 2
                     end

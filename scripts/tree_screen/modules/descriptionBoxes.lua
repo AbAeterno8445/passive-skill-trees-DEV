@@ -296,7 +296,14 @@ local descriptionBoxesModule = {
             if isAllocated then
                 local charData = PST:getCurrentCharData()
                 if charData then
-                    table.insert(nodeDesc, {PST:getLocalizedFormatStr("ui_charCrimsonCores", {charName = PST:getCurrentCharName(), cores = charData.crimsonStarcores}), PST.kcolors.RED3})
+                    table.insert(nodeDesc, {
+                        PST:getLocalizedFormatStr("ui_charCrimsonCores", {charName = PST:getCurrentCharName(), cores = charData.crimsonStarcores}),
+                        PST.kcolors.RED3
+                    })
+                    table.insert(nodeDesc, {
+                        PST:getLocalizedFormat("ui_crimConvCrimsonCores", {cores = PST:getCrimConvCoreCount(), maxCores = PST:getMaxCrimConvCores()}),
+                        PST.kcolors.RED3
+                    })
 
                     if charData.crimConvBuff and PST.crimConvergenceBuffs[charData.crimConvBuff] then
                         local buffData = PST.crimConvergenceBuffs[charData.crimConvBuff]
@@ -469,7 +476,7 @@ function descriptionBoxesModule:Render(tScreen)
 
         -- Sidereal tree node warning
         if PST.treeScreen.currentTree == "sidereal" and hoveredNode.name ~= "Sidereal Vicinity" and hoveredNode.name ~= "Sidereal Region" and hoveredNode.name ~= "Sidereal Expanse" and
-        (not PST:isNodeNameAllocated("sidereal", "Sidereal Universalization") or not PST.modData.expedEnabled) then
+        (not PST:isNodeNameAllocated("sidereal", "Sidereal Universalization") and not PST.modData.expedEnabled) then
             table.insert(tmpDescription, {PST:getLocalized("ui_siderealNodeWarning"), PST.kcolors.STAR_ORANGE})
         end
 
@@ -603,7 +610,19 @@ function descriptionBoxesModule:Render(tScreen)
             local tmpBuff = crimConvSubmenu.hoveredBuff
             if tmpBuff and PST.crimConvergenceBuffs[tmpBuff] then
                 local buffData = PST.crimConvergenceBuffs[tmpBuff]
-                tScreen:DrawNodeBox(buffData.name, buffData.desc)
+                local buffDesc = buffData.desc
+                local tmpDesc = (type(buffDesc) == "table") and {table.unpack(buffDesc)} or {buffDesc}
+                table.insert(tmpDesc, {
+                    PST:getLocalizedFormat("ui_charCrimsonCores", {charName = PST:getCurrentCharName(), cores = charData.crimsonStarcores}),
+                    PST.kcolors.RED3
+                })
+                table.insert(tmpDesc, {
+                    PST:getLocalizedFormat("ui_crimConvCrimsonCores", {cores = PST:getCrimConvCoreCount(), maxCores = PST:getMaxCrimConvCores()}),
+                    PST.kcolors.RED3
+                })
+                table.insert(tmpDesc, {PST:getLocalized("ui_crimConvEffCoreTip"), PST.kcolors.RED3})
+                table.insert(tmpDesc, {PST:getLocalized("ui_crimConvEffCoreTip2"), PST.kcolors.RED3})
+                tScreen:DrawNodeBox(buffData.name, tmpDesc)
             end
         -- Obscure Bazaar submenu, hovered item
         elseif submenusModule.currentSubmenu == PSTSubmenu.OBSCURE_BAZAAR then
