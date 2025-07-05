@@ -382,12 +382,17 @@ function PST:sideArtiAddEnergy(energy, force)
         -- Meridional Artifact effects
         for tmpArti, artiData in pairs(PST.sideArtiData) do
             if artiData.type == "meridion" and PST:getTreeSnapshotMod(tmpArti, false) and newEnergy >= artiData.energyReq then
-                if artiData.cooldown and artiData.cooldown > 0 then
-                    PST.specialNodes.sideArtiCD = artiData.cooldown * 30
-                end
-                PST:addModifiers({ sideArtiEnergy = { value = 0, set = true } }, true)
+                -- Artifact energy limiter node
+                if PST:isNodeNameAllocated("sidereal", "Artifact Energy Limiter") and PST:getRoom():GetAliveEnemiesCount() == 0 then
+                    PST:addModifiers({ sideArtiEnergy = { value = artiData.energyReq - 1, set = true } }, true)
+                else
+                    if artiData.cooldown and artiData.cooldown > 0 then
+                        PST.specialNodes.sideArtiCD = artiData.cooldown * 30
+                    end
+                    PST:addModifiers({ sideArtiEnergy = { value = 0, set = true } }, true)
 
-                PST:triggerMeridion(tmpArti)
+                    PST:triggerMeridion(tmpArti)
+                end
                 break
             end
         end

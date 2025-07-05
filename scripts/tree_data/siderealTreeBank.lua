@@ -819,7 +819,7 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "1356": "{\"pos\":[15,0],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1355,1357],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1357": "{\"pos\":[16,0],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1356,1358,1521],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1358": "{\"pos\":[17,0],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1357,1439],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
-"1360": "{\"pos\":[19,0],\"type\":885,\"size\":\"Large\",\"name\":\"#node_siderealartifact_name\",\"description\":[\"#node_siderealartifact\"],\"modifiers\":{\"siderealArtifact\":true},\"adjacent\":[1361,1362,1439,1434],\"reqs\":{\"obols\":500}}",
+"1360": "{\"pos\":[19,0],\"type\":885,\"size\":\"Large\",\"name\":\"#node_siderealartifact_name\",\"description\":[\"#node_siderealartifact\"],\"modifiers\":{\"siderealArtifact\":true},\"adjacent\":[1361,1362,1439,1434,1543],\"reqs\":{\"obols\":500}}",
 "1361": "{\"pos\":[20,-1],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1360,1364],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1362": "{\"pos\":[20,1],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1360,1365],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1364": "{\"pos\":[21,-2],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1361,1440,1477],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
@@ -917,6 +917,7 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "1537": "{\"pos\":[35,-2],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1507,1535],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1538": "{\"pos\":[39,2],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1534,1536],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1539": "{\"pos\":[-6,1],\"type\":987,\"size\":\"Large\",\"name\":\"#node_obolmagnetism_name\",\"description\":[\"#node_obolmagnetism\"],\"modifiers\":{\"obolMagnetism\":true},\"adjacent\":[25],\"reqs\":{\"obols\":400}}",
-"1542": "{\"pos\":[-1,-11],\"type\":989,\"size\":\"Large\",\"name\":\"#node_ancwepcompendium_name\",\"description\":[\"#node_ancwepcompendium\"],\"modifiers\":{},\"adjacent\":[55],\"reqs\":{\"noSP\":true}}"
+"1542": "{\"pos\":[-1,-11],\"type\":989,\"size\":\"Large\",\"name\":\"#node_ancwepcompendium_name\",\"description\":[\"#node_ancwepcompendium\"],\"modifiers\":{},\"adjacent\":[55],\"reqs\":{\"noSP\":true}}",
+"1543": "{\"pos\":[21,0],\"type\":888,\"size\":\"Large\",\"name\":\"#node_artifactenergy_name\",\"description\":[\"#node_artifactenergy\"],\"modifiers\":{},\"adjacent\":[1360],\"reqs\":{\"obols\":100}}"
 }
 ]])

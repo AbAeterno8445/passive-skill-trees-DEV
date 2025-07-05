@@ -155,6 +155,11 @@ return {
         "By default you may only allocate 1 Septentrional and 1 Meridional Artifact.",
         "Artifacts can be allocated/respecced freely."
     },
+    ["node_artifactenergy_name"] = "Artifact Energy Limiter",
+    ["node_artifactenergy"] = {
+        "While allocated, sidereal artifacts cannot be triggered in rooms that have no monsters.",
+        "While there are no monsters in the room, artifact energy is limited to its maximum amount - 1."
+    },
     ["node_bloodseptentrion_name"] = "Blood Septentrion",
     ["node_taintbloodseptentrion_name"] = "Taintblood Septentrion",
     ["node_icyseptentrion_name"] = "Icy Septentrion",

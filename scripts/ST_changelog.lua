@@ -5,6 +5,9 @@ function PST:getChangelogList()
 
         "v1.3.5",
         "- Compatibility for the Devoid: Apollyon Rework mod - Void should now trigger related effects on use.",
+        "- Added a new \"Artifact Energy Limiter\" node in the sidereal tree which stops artifacts from triggering if there are no monsters",
+        "in the room while allocated.",
+        "- Individual obol drops in expeditions now have a quantity limit, which increases the deeper the expedition and whether it's uber.",
         "- Deep-Space tree's \"Uber Obols Found\" nodes now grant +2% obols found in uber expeditions (from 5%).",
         "- Crimson Convergence's buffs now have an 'effective core count' that is used instead of the full amount from the character.",
         "This effective core count starts at 30, increases by 1 for every 2 normal expedition depths unlocked, and by 2 for every uber expedition depth unlocked.",

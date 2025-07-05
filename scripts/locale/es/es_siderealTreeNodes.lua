@@ -152,6 +152,11 @@ return {
         "Por defecto solo puedes tener 1 artefacto Septentrional y 1 Meridional.",
         "Los nodos de artefactos pueden asignarse sin costo."
     },
+    ["node_artifactenergy_name"] = "Limitador de Energía de Artefacto",
+    ["node_artifactenergy"] = {
+        "Mientras este asignado, los artefactos siderales no pueden activarse si no hay monstruos en la habitación.",
+        "Mientras no hayan monstruos en la habitación, la energía de artefacto estará limitada a su cantidad máxima - 1."
+    },
     ["node_bloodseptentrion_name"] = "Septentrión Sanguíneo",
     ["node_taintbloodseptentrion_name"] = "Septentrión de Sangre Contaminada",
     ["node_icyseptentrion_name"] = "Septentrión Gélido",
