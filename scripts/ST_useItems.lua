@@ -610,7 +610,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
     -- Self-used items
     if (useFlags & UseFlag.USE_OWNED) > 0 then
         -- Mod: chance to spawn a regular wisp when using your active item
-        if 100 * math.random() < PST:getTreeSnapshotMod("activeItemWisp", 0) then
+        if isNormalCharge and 100 * math.random() < PST:getTreeSnapshotMod("activeItemWisp", 0) then
             Game():Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.WISP, player.Position, Vector.Zero, nil, 0, Random() + 1)
         end
 

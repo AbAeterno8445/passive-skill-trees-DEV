@@ -3,8 +3,12 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.6",
+        "- Fixed effects that spawn wisps when using active items being able to trigger from repeated-use actives such as Notched Axe.",
+        "",
+
         "v1.3.5",
-        "- Compatibility for the Devoid: Apollyon Rework mod - Void should now trigger related effects on use.",
+        "- Compatibility for the Devoid: Apollyon Rework mod. Void should now trigger related effects properly with it.",
         "- Added a new \"Artifact Energy Limiter\" node in the sidereal tree which stops artifacts from triggering if there are no monsters",
         "in the room while allocated.",
         "- Individual obol drops in expeditions now have a quantity limit, which increases the deeper the expedition and whether it's uber.",
