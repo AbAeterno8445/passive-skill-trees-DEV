@@ -105,7 +105,7 @@ return {
         "Doesn't apply to first floor."
     },
     ["node_blooddonoluck_name"] = "Blood Donation Luck",
-    ["node_blooddono"] = {
+    ["node_blooddonoluck"] = {
         "+{{bloodDonationLuck}} luck when using a Blood Donation Machine.",
         "Halve this bonus when entering the next floor."
     },
@@ -243,7 +243,7 @@ return {
         "This effect can trigger up to 3 times per floor."
     },
     ["node_blackheartconv_name"] = "Black Heart Conversion",
-    ["node_blackheartconv"] = "{{node_blackheartconv}}% chance to replace dropped hearts of any type with black hearts.",
+    ["node_blackheartconv"] = "{{heartsToBlack}}% chance to replace dropped hearts of any type with black hearts.",
 
 
     -- BLUE BABY'S TREE --
@@ -279,6 +279,10 @@ return {
     ["node_poopallstats_name"] = "The Poop All Stats",
     ["node_poopallstats"] = {
         "+{{thePoopAllStats}} all stats after using The Poop (once per room).",
+        "Resets every room."
+    },
+    ["node_poopallstatsperc"] = {
+        "+{{thePoopAllStatsPerc}}% all stats after using The Poop (once per room).",
         "Resets every room."
     },
     ["node_soultearsrange_name"] = "Soul Heart Tears And Range",
@@ -726,12 +730,12 @@ return {
     ["node_locustsluck"] = "+{{locustHeldLuck}} luck while holding a locust. Consuming a locust grants a permanent +{{locustConsumedLuck}} luck instead.",
     ["node_locustconquestboon_name"] = "Locust Of Conquest Boon",
     ["node_locustconquestboon"] = "+{{locustConquestSpeed}}% speed per Locust of Conquest held/consumed, up to 15%.",
-    ["node_locustdeathboon"] = "Locust Of Death Boon",
-    ["node_locustdeath"] = "+{{deathLocustTears}}% tears per Locust of Death held/consumed, up to 15%.",
+    ["node_locustdeathboon_name"] = "Locust Of Death Boon",
+    ["node_locustdeathboon"] = "+{{deathLocustTears}}% tears per Locust of Death held/consumed, up to 15%.",
     ["node_locustfamineboon_name"] = "Locust Of Famine Boon",
     ["node_locustfamineboon"] = "+{{famineLocustRangeShotspeed}}% range and shot speed per Locust of Famine held/consumed, up to 15%.",
-    ["node_locustpestilence_boon"] = "Locust Of Pestilence Boon",
-    ["node_locustpestilence"] = "+{{pestilenceLocustLuck}}% luck per Locust of Pestilence held/consumed, up to 12%.",
+    ["node_locustpestilenceboon_name"] = "Locust Of Pestilence Boon",
+    ["node_locustpestilenceboon"] = "+{{pestilenceLocustLuck}}% luck per Locust of Pestilence held/consumed, up to 12%.",
     ["node_locustwarboon_name"] = "Locust Of War Boon",
     ["node_locustwarboon"] = "+{{warLocustDamage}}% damage per Locust of War held/consumed, up to 15%.",
 

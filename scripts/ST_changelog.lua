@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.7",
+        "- Fixed various missing names/descriptions throughout the UI + localization tweaks.",
+        "",
+
         "v1.3.6",
         "- Fixed effects that spawn wisps when using active items being able to trigger from repeated-use actives such as Notched Axe.",
         "",

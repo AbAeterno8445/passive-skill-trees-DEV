@@ -591,7 +591,7 @@ return {
         "Estas infligen {{roll1}}% más daño a enemigos ya envenenados."
     },
     ["aforge_mod_desc_devilTongue"] = {
-        "Las lágrimas del efecto implícito petrifiacn a los enemigos golpeados por {{roll1}} segundo(s).",
+        "Las lágrimas del efecto implícito petrifican a los enemigos golpeados por {{roll1}} segundo(s).",
         "Los enemigos ya petrificados reciben quemadura por 3 segundos en cambio.",
         "El enfriamiento del efecto implícito es aumentado a 3 segundos.",
         "+{{roll2}}% daño contra enemigos con quemadura."

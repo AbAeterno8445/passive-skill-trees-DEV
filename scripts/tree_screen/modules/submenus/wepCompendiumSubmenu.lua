@@ -39,7 +39,7 @@ function weaponCompendiumSubmenu:Render(tScreen, submenusModule)
     local itemCount = 14
     local selectedData = PST.astralWepData[self.selectedType]
     if selectedData then
-        tmpTitle = PST:getLocalized("ui_compendium") .. " (" .. PST:getLocalized("aforge_wepname_" .. selectedData.name .. "s") .. ")"
+        tmpTitle = PST:getLocalized("aforge_wepname_" .. selectedData.name .. "s")
         itemCount = #selectedData.ancients + 5
     end
     submenusModule:DrawNodeSubMenu(

@@ -144,7 +144,7 @@ return {
     ["dsnode_obscurebazaardisc_name"] = "Obscure Bazaar Discount",
     ["dsnode_obscurebazaardisc"] = "{{obsBazaarDiscount}}% reduced obol costs in the Obscure Bazaar.",
     ["dsnode_cosmicaltruism_name"] = "Cosmic Altruism",
-    ["dsnode_cosmiclatruism"] = {
+    ["dsnode_cosmicaltruism"] = {
         "Increase rate of obols shared to other characters to 70%.",
         "{{obolsFound}}% Obols dropped in expedition runs."
     }

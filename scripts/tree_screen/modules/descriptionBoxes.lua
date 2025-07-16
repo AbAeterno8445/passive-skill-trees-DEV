@@ -590,9 +590,20 @@ function descriptionBoxesModule:Render(tScreen)
             local crimsonNodeSubmenu = submenusModule.submenus[PSTSubmenu.CRIMSON_NODE]
             local nodeData = crimsonNodeSubmenu.hoveredNode
             if nodeData then
-                local tmpDesc = {table.unpack(nodeData.description)}
+                local tmpDesc
+                local localeDesc = PST:getLocalizedFormat(nodeData.description[1], nodeData.modifiers)
+                if type(localeDesc) == "table" then
+                    tmpDesc = {table.unpack(localeDesc)}
+                else
+                    tmpDesc = {localeDesc}
+                end
                 table.insert(tmpDesc, PST:getLocalized("ui_allocToSelNode"))
-                tScreen:DrawNodeBox(nodeData.name, tmpDesc)
+
+                local descName = nodeData.name
+                if nodeData.nameLocale then
+                    descName = PST:getLocalized(nodeData.nameLocale)
+                end
+                tScreen:DrawNodeBox(descName, tmpDesc)
             end
         -- Infectious Meridion submenu, hovered status
         elseif submenusModule.currentSubmenu == PSTSubmenu.INFECTIOUS_MERIDION then
@@ -658,10 +669,10 @@ function descriptionBoxesModule:Render(tScreen)
             if tmpItem then
                 if not wepCompendiumSubmenu.selectedType then
                     local itemDesc = {PST:getLocalized("ui_wepCompendiumKey")}
-                    tScreen:DrawNodeBox(PST:getLocalized("ui_wepType") .. ": " .. PST.astralWepData[tmpItem].name, itemDesc)
+                    tScreen:DrawNodeBox(PST:getLocalized("ui_wepType") .. ": " .. PST:getLocalized("aforge_wepname_" .. PST.astralWepData[tmpItem].name .. "s"), itemDesc)
                 else
                     local itemDesc = PST:getAstralWepDesc(tmpItem, true)
-                    tScreen:DrawNodeBox(PST:getLocalized("ui_ancWep") .. ": " .. tmpItem.name, itemDesc)
+                    tScreen:DrawNodeBox(PST:getLocalized("ui_ancWep") .. ": " .. PST:getLocalized("aforge_ancname_" .. tmpItem.name), itemDesc)
                 end
             end
         end

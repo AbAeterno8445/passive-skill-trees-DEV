@@ -106,9 +106,9 @@ return {
     ["node_bazaarqual0to1_name"] = "Calidad De Objeto Del Bazar 0 a 1",
     ["node_bazaarqual0to1"] = "{{bazaarQual1}}% chance al refrescar el Bazar de mejorar los objetos de calidad 0 a calidad 1.",
     ["node_bazaarqual1to2_name"] = "Calidad De Objeto Del Bazar 1 a 2",
-    ["node_bazaarqual1to2"] = "{{bazaarQual1}}% chance al refrescar el Bazar de mejorar los objetos de calidad 1 a calidad 2.",
+    ["node_bazaarqual1to2"] = "{{bazaarQual2}}% chance al refrescar el Bazar de mejorar los objetos de calidad 1 a calidad 2.",
     ["node_bazaarqual2to3_name"] = "Calidad De Objeto Del Bazar 2 a 3",
-    ["node_bazaarqual2to3"] = "{{bazaarQual1}}% chance al refrescar el Bazar de mejorar los objetos de calidad 2 a calidad 3.",
+    ["node_bazaarqual2to3"] = "{{bazaarQual3}}% chance al refrescar el Bazar de mejorar los objetos de calidad 2 a calidad 3.",
     ["node_bazaaraddoffer_name"] = "Ofertas Adicionales Del Bazar",
     ["node_bazaaraddoffer"] = {
         "{{bazaarExtraItem}}% chance al refrescar el Bazar de incluir una opción de objeto adicional.",
@@ -121,7 +121,7 @@ return {
     ["node_bazaarangelitem_name"] = "Objetos Del Ángel Del Bazar",
     ["node_bazaarangelitem"] = "{{bazaarAngel}}% chance de que los objetos ofrecidos sean de la habitación del ángel al refrescar al Bazar.",
     ["node_bazaarrefresh_name"] = "Refresco Del Bazar",
-    ["node_bazaarrefresh"] = "Habilita la funcionalidad de \"Refresco\" el Bazar, permitiendo usar SP global y oboles para rerollear la selección de objetos.",
+    ["node_bazaarrefresh"] = "Habilita la funcionalidad de \"Refresco\" del Bazar, permitiendo usar SP global y oboles para rerollear la selección de objetos.",
     ["node_bazaarrefreshkeep_name"] = "Mantenimiento De Refresco Del Bazar",
     ["node_bazaarrefreshkeep"] = "{{bazaarRefreshKeep}}% chance de mantener el botón de refresco del Bazar al usarlo.",
 

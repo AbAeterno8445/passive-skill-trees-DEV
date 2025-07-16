@@ -244,7 +244,7 @@ return {
         "Éste efecto puede activarse hasta 3 veces por piso."
     },
     ["node_blackheartconv_name"] = "Conversión De Corazones Negros",
-    ["node_blackheartconv"] = "{{node_blackheartconv}}% chance de reemplazar cualquier corazón encontrado con corazones negros.",
+    ["node_blackheartconv"] = "{{heartsToBlack}}% chance de reemplazar cualquier corazón encontrado con corazones negros.",
 
 
     -- BLUE BABY'S TREE --
@@ -280,6 +280,10 @@ return {
     ["node_poopallstats_name"] = "Estadísticas Al Usar Popó",
     ["node_poopallstats"] = {
         "+{{thePoopAllStats}} a todas las estadísticas al usar Popó, una vez por habitación.",
+        "Se reinicia en cada habitación."
+    },
+    ["node_poopallstatsperc"] = {
+        "+{{thePoopAllStatsPerc}}% a todas las estadísticas al usar Popó, una vez por habitación.",
         "Se reinicia en cada habitación."
     },
     ["node_soultearsrange_name"] = "Lágrimas Y Rango Con Corazones De Alma",
@@ -726,12 +730,12 @@ return {
     ["node_locustsluck"] = "+{{locustHeldLuck}} suerte mientras tengas una langosta. Consumir un trinket de langosta otorga +{{locustConsumedLuck}} suerte.",
     ["node_locustconquestboon_name"] = "Bendición De Conquista",
     ["node_locustconquestboon"] = "+{{locustConquestSpeed}}% velocidad por langosta de conquista que tengas, hasta 15%.",
-    ["node_locustdeathboon"] = "Bendición De Muerte",
-    ["node_locustdeath"] = "+{{deathLocustTears}}% lágrimas por langosta de muerte que tengas, hasta 15%.",
+    ["node_locustdeathboon_name"] = "Bendición De Muerte",
+    ["node_locustdeathboon"] = "+{{deathLocustTears}}% lágrimas por langosta de muerte que tengas, hasta 15%.",
     ["node_locustfamineboon_name"] = "Bendición De Hambruna",
     ["node_locustfamineboon"] = "+{{famineLocustRangeShotspeed}}% rango y velocidad de disparo por langosta de hambruna que tengas, hasta 15%.",
-    ["node_locustpestilence_boon"] = "Bendición De Pestilencia",
-    ["node_locustpestilence"] = "+{{pestilenceLocustLuck}}% suerte por langosta de pestilencia que tengas, hasta 12%.",
+    ["node_locustpestilenceboon_name"] = "Bendición De Pestilencia",
+    ["node_locustpestilenceboon"] = "+{{pestilenceLocustLuck}}% suerte por langosta de pestilencia que tengas, hasta 12%.",
     ["node_locustwarboon_name"] = "Bendición De Guerra",
     ["node_locustwarboon"] = "+{{warLocustDamage}}% daño por langosta de guerra que tengas, hasta 15%.",
 
