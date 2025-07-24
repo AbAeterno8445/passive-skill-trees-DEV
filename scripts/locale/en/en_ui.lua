@@ -208,7 +208,7 @@ return {
 
     ["ui_cantProgInRun"] = "Can't progress in this run - must start a new one",
 
-    ["ui_openTreeKey"] = "V / LT or LB to open tree",
+    ["ui_openTreeKey"] = "V / LB to open tree",
     ["ui_treeDisabled"] = "tree disabled",
 
     ["ui_dataLossDetected"] = "Data Loss Detected",

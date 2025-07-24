@@ -15,7 +15,7 @@ XP, leveling, skill points and skill trees. Global passive skill tree + a person
 
 Generally the small nodes are not very impactful on their own, granting small bonuses like +0.02 damage or +2% xp gain, medium nodes will tend to grant slightly more significant boosts, and large nodes can present an upside vs downside effect or significant boosts under the right conditions, which can affect your run's choices.
 
-You can access the tree screen from the character select menu by pressing V (LT or LB on controller). Within the tree screen you can press H (or Select on controller) to get the control layout. The tree menu should have controller support but I've only tested on an old PS controller.
+You can access the tree screen from the character select menu by pressing V (LB on controller). Within the tree screen you can press H (or Select on controller) to get the control layout. The tree menu should have controller support but I've only tested on an old PS controller.
 
 ## Debugging and Config
 

@@ -208,7 +208,7 @@ return {
 
     ["ui_cantProgInRun"] = "No progresable en esta partida - una nueva debe empezarse",
 
-    ["ui_openTreeKey"] = "V / LT o LB para abrir el árbol",
+    ["ui_openTreeKey"] = "V / LB para abrir el árbol",
     ["ui_treeDisabled"] = "árbol desactivado",
 
     ["ui_dataLossDetected"] = "Pérdida de Datos Detectada",
