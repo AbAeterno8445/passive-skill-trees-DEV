@@ -718,6 +718,12 @@ function PST:onDeath(entity)
                 local tmpPos = Isaac.GetFreeNearPosition(entity.Position, 40)
                 Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_DIME, Random() + 1)
             end
+        -- Death for Death's Trial
+        elseif entity.Type == EntityType.ENTITY_DEATH then
+            if PST:getTreeSnapshotMod("deathTrialActive", false) and entity.Variant == 30 then
+                PST:createFloatTextFX(PST:getLocalized("ftxt_deathTrialComp"), Vector.Zero, Color(), 0.13, 90, true)
+                PST:addModifiers({ deathTrialActive = false }, true)
+            end
         end
 
         -- Harbinger Locusts node (Apollyon's tree)

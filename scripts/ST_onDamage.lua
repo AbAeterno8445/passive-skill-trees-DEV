@@ -191,12 +191,11 @@ function PST:onDamage(target, damage, flag, source)
             -- Death's Trial nodes (T. Lost's tree)
             local tmpMod = PST:getTreeSnapshotMod("deathTrial", 0)
             if tmpMod > 0 and player:GetPlayerType() == PlayerType.PLAYER_THELOST_B and damage >= tmpHP and not PST:getTreeSnapshotMod("deathTrialProc", false) and
-            100 * math.random() < tmpMod then
+            PST:getLevel():GetStage() >= 4 and 100 * math.random() < tmpMod then
                 player:UseActiveItem(CollectibleType.COLLECTIBLE_FORGET_ME_NOW, UseFlag.USE_NOANIM)
                 for i=1,0,-1 do
                     if player:GetCard(i) == Card.CARD_HOLY then player:RemovePocketItem(i) end
                 end
-                PST:removePlayerShields()
                 PST:addModifiers({ deathTrialProc = true, deathTrialActive = true, holyCardStacks = { value = 0, set = true } }, true)
                 return { Damage = 0 }
             end
@@ -2339,6 +2338,11 @@ function PST:onDamage(target, damage, flag, source)
         local tmpMod = PST:getTreeSnapshotMod("expedImp_mobDmgRed", 0)
         if tmpMod > 0 and target:IsBoss() and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly and not PST:entityIsHPModBlacklisted(target) then
             damage = damage * (1 - tmpMod / 100)
+        end
+
+        -- Death's Trial: Death damage reduction
+        if PST:getTreeSnapshotMod("deathTrialActive", false) and source.Type == EntityType.ENTITY_DEATH then
+            dmgMult = dmgMult - 0.66
         end
 
         return { Damage = damage * math.max(0.01, dmgMult) + dmgExtra }

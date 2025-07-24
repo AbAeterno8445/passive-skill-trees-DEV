@@ -334,6 +334,7 @@ function PST:frameUpdate()
 		-- Death's Trial nodes (T. Lost's tree)
 		if PST:getTreeSnapshotMod("deathTrialActive", false) then
 			PST:createFloatTextFX(PST:getLocalized("ftxt_deathTrial"), Vector.Zero, Color(), 0.13, 90, true)
+            PST:removePlayerShields()
 		end
 
 		-- Mod: remove The Stairway once it triggers when entering a floor

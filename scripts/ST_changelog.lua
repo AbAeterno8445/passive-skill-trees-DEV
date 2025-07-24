@@ -5,6 +5,11 @@ function PST:getChangelogList()
 
         "v1.3.8",
         "- Added localization support for the total modifiers screen, and reworked how it fetches descriptions internally.",
+        "- Modified T. Lost's \"Death's Trial\" nodes. These can now only trigger at or past the 4th floor you enter, your items are no longer",
+        "removed, and death receives 66% less damage.",
+        "- Increased total chance to trigger T. Lost's \"Death's Trial\".",
+        "- T. Lost's \"Deferred Aegis\" node is now located behind the Holy Card Luck node cluster. You might need to reallocate it.",
+        "- Fixed T. Lost's \"Death's Trial\" sometimes failing to complete properly, spawning death again in other rooms.",
         "- Fixed Azazel's \"Demonic Ambition\" granting Goat Head while having 2 black hearts or more, instead of 4+.",
         "",
 

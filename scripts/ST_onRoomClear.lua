@@ -137,7 +137,6 @@ function PST:onRoomClear(RNG)
 
     -- Death's Trial nodes (T. Lost's tree)
     if PST:getTreeSnapshotMod("deathTrialActive", false) then
-        PST:getLevel():GetCurrentRoomDesc().Flags = PST:getLevel():GetCurrentRoomDesc().Flags &~ RoomDescriptor.FLAG_CURSED_MIST
         PST:createFloatTextFX(PST:getLocalized("ftxt_deathTrialComp"), Vector.Zero, Color(), 0.13, 90, true)
         PST:addModifiers({ deathTrialActive = false }, true)
     end

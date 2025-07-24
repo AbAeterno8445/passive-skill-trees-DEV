@@ -718,9 +718,7 @@ function PST:onNewRoom()
 
 	-- Death's Trial nodes (T. Lost's tree)
 	if PST:getTreeSnapshotMod("deathTrialActive", false) then
-		local tmpDeath = Game():Spawn(EntityType.ENTITY_DEATH, 0, room:GetCenterPos() - Vector(0, 90), Vector.Zero, nil, 0, Random() + 1)
-		tmpDeath:SetSpeedMultiplier(0.7)
-		level:GetCurrentRoomDesc().Flags = level:GetCurrentRoomDesc().Flags | RoomDescriptor.FLAG_CURSED_MIST
+		Game():Spawn(EntityType.ENTITY_DEATH, 0, room:GetCenterPos() - Vector(0, 90), Vector.Zero, nil, 0, Random() + 1)
 		room:KeepDoorsClosed()
 	end
 

@@ -754,11 +754,10 @@ return {
     },
     ["node_deathtrial_name"] = "Juicio De La Muerte",
     ["node_deathtrial"] = {
-        "Al recibir daño fatal, 2% chance de activar el efecto de Olvídame Ya en vez de morir.",
+        "Al recibir daño fatal en (o por delante de) el 4to piso que entres, {{deathTrial}}% chance de activar el efecto de Olvídame Ya en vez de morir.",
         "Una vez ocurrido esto:",
-        "  - Muerte aparece.",
+        "  - Muerte aparece. Muerte recibe 66% menos daño durante esta pelea.",
         "  - Pierde todas tus Cartas Sagradas y escudos presentes.",
-        "  - Desactiva todos tus objetos durante esta pelea.",
         "Este efecto solo puede activarse una vez por partida."
     },
     ["node_holycardluck_name"] = "Suerte De Cartas Sagradas",

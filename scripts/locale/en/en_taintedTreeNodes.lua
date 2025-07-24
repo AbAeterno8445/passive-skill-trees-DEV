@@ -756,11 +756,10 @@ return {
     },
     ["node_deathtrial_name"] = "Death's Trial",
     ["node_deathtrial"] = {
-        "When receiving a fatal blow, 2% chance to trigger Forget Me Now's effect instead of dying.",
+        "When receiving a fatal blow at or past the 4th floor you enter, {{deathTrial}}% chance to trigger Forget Me Now's effect instead of dying.",
         "After this happens:",
-        "  - Spawn Death.",
+        "  - Spawn Death. Death receives 66% less damage during this fight.",
         "  - Lose all holy cards and present shields.",
-        "  - Deactivate your items during this fight.",
         "This effect can only trigger once per run.",
     },
     ["node_holycardluck_name"] = "Holy Card Luck",
