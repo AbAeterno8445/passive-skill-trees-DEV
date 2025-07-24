@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.8",
+        "- Fixed Azazel's \"Demonic Ambition\" granting Goat Head while having 2 black hearts or more, instead of 4+.",
+        "",
+
         "v1.3.7",
         "- Fixed various missing names/descriptions throughout the UI + localization tweaks.",
         "",

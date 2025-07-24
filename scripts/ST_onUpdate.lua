@@ -3212,9 +3212,9 @@ function PST:frameUpdate()
 	-- Demonic Ambition node (Azazel's tree)
 	if PST:getTreeSnapshotMod("demonicAmbition", false) then
 		if not inMineshaftPuzzle then
-			if PST:GetBlackHeartCount(player) >= 4 and not player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
+			if PST:GetBlackHeartCount(player) >= 8 and not player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
 				player:AddCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
-			elseif PST:GetBlackHeartCount(player) < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
+			elseif PST:GetBlackHeartCount(player) < 8 and player:HasCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD) then
 				player:RemoveCollectible(CollectibleType.COLLECTIBLE_GOAT_HEAD)
 			end
 		end
