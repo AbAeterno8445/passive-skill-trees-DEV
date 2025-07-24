@@ -367,7 +367,7 @@ function PST:SC_getTotalJewelMods()
                                 end
                             end
                         end
-                        tmpMods[mod].description = string.format(PST.SCMods[tmpType][mod].description, table.unpack(tmpMods[mod].rolls))
+                        tmpMods[mod].description = string.format(PST:getLocalized("jewel_" .. mod), table.unpack(tmpMods[mod].rolls))
                     end
                 -- Add ancient jewels as mods, using their keys from PST.SCAncients, set to true
                 elseif jewel.name then

@@ -34,9 +34,12 @@ local descriptionBoxesModule = {
                     tmpDescription = {table.unpack(tmpDescription)}
                     table.insert(tmpDescription, {PST:getLocalized("ui_starmight") .. ": " .. tScreen.starcursedTotalMods.totalStarmight, tmpColor})
                     for modName, modVal in pairs(PST:SC_getStarmightImplicits(tScreen.starcursedTotalMods.totalStarmight)) do
-                        local parsedModLines = PST:parseModifierLines(modName, modVal)
-                        for _, tmpLine in ipairs(parsedModLines) do
-                            table.insert(tmpDescription, {"   " .. tmpLine, tmpColor})
+                        local modDesc = PST:getLocalizedFormatStr("ui_" .. modName, {val = PST:roundFloat(modVal, -2)})
+                        if modName == "xpgain" then
+                            modDesc = PST:getLocalizedFormatStr("node_xp", {xpgain = PST:roundFloat(modVal, -2)})
+                        end
+                        if modDesc then
+                            table.insert(tmpDescription, {"   " .. modDesc, tmpColor})
                         end
                     end
                 end

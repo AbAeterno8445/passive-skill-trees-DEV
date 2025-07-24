@@ -12,6 +12,7 @@ return {
     ["ui_starTree"] = "Star Tree",
     ["ui_starTree_EtoView"] = "(E to view Star Tree)",
     ["ui_totalStarmight"] = "({{starmight}} total starmight)",
+    ["ui_starmightBonuses"] = "Starmight bonuses",
     ["ui_starTree_levelReqWarn"] = "Reach level {{levelReq}} with at least one character to unlock.",
     ["ui_starmight"] = "Starmight",
 
@@ -216,6 +217,14 @@ return {
     ["ui_backupWarn3"] = "Press ESC / Back to dismiss popup.",
     ["ui_backupWarn4"] = "This popup will stop showing up once your global level is higher than 1",
     ["ui_loadBackupHint"] = "E / Action Button to load this backup",
+
+    ["ui_activemods"] = "Active Modifiers",
+    ["ui_modcategory_stats"] = "Global stat alterations",
+    ["ui_modcategory_condstats"] = "Conditional stat alterations",
+    ["ui_modcategory_xp"] = "XP and respecs",
+    ["ui_modcategory_misc"] = "Miscellaneous",
+
+    ["ui_momheartproc_inactive"] = "Inactive until Mom's Heart is defeated again",
 
 
     ---- FLOATING TEXTS ----

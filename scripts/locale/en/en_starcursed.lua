@@ -1,5 +1,8 @@
 return {
     ---- STARCURSED ----
+    ["ui_SC_SMMightyChance"] = "{{val}}% chance for found Starcursed Jewels to be Mighty",
+    ["ui_SC_SMAncientChance"] = "{{val}}% additional chance to find Ancient Starcursed Jewels",
+
     -- CRIMSON JEWELS --
     ["jewel_mobHP"] = "Normal monsters have an additional %d HP.",
     ["jewel_bossHP"] = "Boss monsters have an additional %d HP.",

@@ -64,6 +64,7 @@ PST.SkillTreesAPI = {
         }
     end,
 
+    -- TODO: Rework this to adapt to the new total modifier screen functionality, which has localization support
     -- Add a description to the given modifier, to be displayed in the tree's "Active Modifiers" view
     ---@param modName string Modifier value name
     ---@param modCategory string Category value name

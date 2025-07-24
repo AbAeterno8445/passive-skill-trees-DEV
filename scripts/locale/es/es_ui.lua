@@ -12,6 +12,7 @@ return {
     ["ui_starTree"] = "Árbol Estelar",
     ["ui_starTree_EtoView"] = "(E para ver el Árbol Estelar)",
     ["ui_totalStarmight"] = "({{starmight}} poder estelar)",
+    ["ui_starmightBonuses"] = "Bonos del poder estelar",
     ["ui_starTree_levelReqWarn"] = "Llega al nivel {{levelReq}} con por lo menos un personaje para desbloquear.",
     ["ui_starmight"] = "Poder Estelar",
 
@@ -216,6 +217,14 @@ return {
     ["ui_backupWarn3"] = "Presiona ESC / Volver para quitar este aviso.",
     ["ui_backupWarn4"] = "Este aviso dejara de aparecer cuando tu nivel global sea mayor a 1",
     ["ui_loadBackupHint"] = "E / Botón de Acción para cargar este backup",
+
+    ["ui_activemods"] = "Modificadores Activos",
+    ["ui_modcategory_stats"] = "Alteraciones globales de estadísticas",
+    ["ui_modcategory_condstats"] = "Alteraciones condicionales de estadísticas",
+    ["ui_modcategory_xp"] = "XP y respecs",
+    ["ui_modcategory_misc"] = "Misceláneo",
+
+    ["ui_momheartproc_inactive"] = "Desactivado hasta derrotar al Corazón de Mama nuevamente",
 
 
     ---- FLOATING TEXTS ----

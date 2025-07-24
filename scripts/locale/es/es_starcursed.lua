@@ -1,5 +1,8 @@
 return {
     ---- STARCURSED ----
+    ["ui_SC_SMMightyChance"] = "{{val}}% chance de que las Joyas encontradas sean Potentes",
+    ["ui_SC_SMAncientChance"] = "{{val}}% chance adicional de encontrar Joyas Maldecidas Antiguas",
+
     -- CRIMSON JEWELS --
     ["jewel_mobHP"] = "Los monstruos normales tienen +%d vida base.",
     ["jewel_bossHP"] = "Los jefes tienen +%d vida base.",

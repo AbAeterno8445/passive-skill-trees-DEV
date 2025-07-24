@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.3.8",
+        "- Added localization support for the total modifiers screen, and reworked how it fetches descriptions internally.",
         "- Fixed Azazel's \"Demonic Ambition\" granting Goat Head while having 2 black hearts or more, instead of 4+.",
         "",
 
