@@ -107,8 +107,8 @@ return {
         "La chance aumenta un 15% individualmente por cada objeto recolectado en el piso actual."
     },
 
-    ["jewel_Challenger Starpiece"] = "Pieza Estelar Desafiante",
-    ["jewel_Challenger Starpiece_desc"] = {
+    ["jewel_Challenger's Starpiece"] = "Pieza Estelar Desafiante",
+    ["jewel_Challenger's Starpiece_desc"] = {
         "Al entrar a un piso, teletranspórtate a la habitación del desafío.",
         "Al entrar a una habitación del desafío por primera vez, crea una llave si solo hay cofres cerrados, o una bomba si",
         "solo hay cofres de piedra.",

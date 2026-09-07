@@ -106,8 +106,8 @@ return {
         "Chance increases by 15% individually for each item picked in the current floor."
     },
 
-    ["jewel_Challenger Starpiece"] = "Challenger's Starpiece",
-    ["jewel_Challenger Starpiece_desc"] = {
+    ["jewel_Challenger's Starpiece"] = "Challenger's Starpiece",
+    ["jewel_Challenger's Starpiece_desc"] = {
         "When entering a floor, teleport to the challenge room.",
         "When first entering a challenge room, drops a key if there are only locked chests, or a bomb if only stone chests.",
         "Your damage is halved while outside the challenge room if the latter isn't cleared.",

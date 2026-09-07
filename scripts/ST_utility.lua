@@ -54,7 +54,6 @@ function PST:initUnknownChar(charName, tainted, customID)
 			table.insert(PST.modData.newCharsTainted, tmpName)
 		end
 		PST:charInit(tmpName)
-		PST:save()
 	end
 end
 

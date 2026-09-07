@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.3.9",
         "- Fixed Difficulty Library (mod) drawing difficulty options above the passive tree menu while in character select.",
+        "- Various localization fixes.",
         "",
 
         "v1.3.8",
