@@ -147,6 +147,7 @@ function PST.treeScreen:DrawNodeBox(name, description, paramX, paramY, absolute,
 end
 
 -- Open tree
+local diffLibToggled = false
 local changelogPopup = false
 local hadFilterOption = false
 function PST:openTreeMenu()
@@ -154,6 +155,12 @@ function PST:openTreeMenu()
         ---@diagnostic disable-next-line: param-type-mismatch
         MenuManager.SetInputMask(ButtonActionBitwise.ACTION_FULLSCREEN | ButtonActionBitwise.ACTION_MUTE)
         MenuManager.SetColorModifier(ColorModifier())
+
+        -- Difficulty Library - stop drawing menu difficulties while tree open
+        if DifficultyLibrary and not diffLibToggled then
+            DifficultyLibrary:RemoveCallback(ModCallbacks.MC_MAIN_MENU_RENDER, DifficultyLibrary.menurenderfunction)
+            diffLibToggled = true
+        end
     else
         local player = PST:getPlayer()
         PST.selectedMenuChar = player:GetPlayerType()
@@ -213,6 +220,12 @@ function PST:closeTreeMenu(mute, force)
             PST:updateCacheDelayed(PST.allstatsCache)
         end
         PST.treeScreen.treeHasChanges = false
+    end
+
+    -- Difficulty Library - resume drawing
+    if DifficultyLibrary and diffLibToggled then
+        DifficultyLibrary:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, DifficultyLibrary.menurenderfunction)
+        diffLibToggled = false
     end
 
     -- Tree closed extra functions

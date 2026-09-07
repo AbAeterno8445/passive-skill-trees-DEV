@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.9",
+        "- Fixed Difficulty Library (mod) drawing difficulty options above the passive tree menu while in character select.",
+        "",
+
         "v1.3.8",
         "- Added localization support for the total modifiers screen, and reworked how it fetches descriptions internally.",
         "- Modified T. Lost's \"Death's Trial\" nodes. These can now only trigger at or past the 4th floor you enter, your items are no longer",
