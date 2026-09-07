@@ -744,7 +744,7 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         PST:sideArtiObjProgress("deadSeaMeridion", 1)
     end
     -- Sidereal Artifact condition: use an active item
-    if isNormalCharge and PST:getTreeSnapshotMod("magicSeptentrion", false) then
+    if isNormalCharge and slot ~= -1 and PST:getTreeSnapshotMod("magicSeptentrion", false) then
         PST:sideArtiAddEnergy(PST.sideArtiData.magicSeptentrion.energy * player:GetActiveMaxCharge(slot))
     end
 

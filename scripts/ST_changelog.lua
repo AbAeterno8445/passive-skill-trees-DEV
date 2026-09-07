@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.3.9",
         "- Fixed Difficulty Library (mod) drawing difficulty options above the passive tree menu while in character select.",
+        "- Fixed occasional Magic Septentrion artifact bug when using pocket consumables.",
         "- Various localization fixes.",
         "",
 
