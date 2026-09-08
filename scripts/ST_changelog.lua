@@ -8,6 +8,7 @@ function PST:getChangelogList()
         "page, linked in the mod's workshop page.",
         "- Ancient Jewels with all their objectives completed now display a little green icon in their inventory view.",
         "- Chronicler Stone (Ancient Jewel) now counts multi-rooms for its objective (hallways are worth 2, L-rooms 3, 2x2 rooms 4).",
+        "- Final Boss kill effects and rewards can now only trigger up to twice per room.",
         "- Fixed Difficulty Library (mod) drawing difficulty options above the passive tree menu while in character select.",
         "- Fixed occasional Magic Septentrion artifact bug when using pocket consumables.",
         "- Fixed T. Blue Baby's \"Treasured Waste\" granting excessive all stats when holding normal poop.",

@@ -167,34 +167,38 @@ function PST:onDeath(entity)
         -- Regular final boss kill
         if isFinalBoss then
             PST:addModifiers({ finalBossKills = 1 }, true)
-            -- Sidereal Artifact objective: defeat a final boss without taking damage more than once
-            if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
-                PST:sideArtiObjProgress("titanseekerSeptentrion", 1)
-            end
-            -- Sidereal Artifact objective: defeat 2 final bosses within the same run
-            if not PST:isSideArtiUnlocked("executionerMeridion") then
-                if PST:getTreeSnapshotMod("finalBossKills", 0) == 2 then
-                    PST:sideArtiObjProgress("executionerMeridion", 1)
+            if PST:getTreeSnapshotMod("finalBossKillProcs", 0) < 2 then
+                -- Sidereal Artifact objective: defeat a final boss without taking damage more than once
+                if PST:getTreeSnapshotMod("roomHitsReceived", 0) <= 1 then
+                    PST:sideArtiObjProgress("titanseekerSeptentrion", 1)
+                end
+                -- Sidereal Artifact objective: defeat 2 final bosses within the same run
+                if not PST:isSideArtiUnlocked("executionerMeridion") then
+                    if PST:getTreeSnapshotMod("finalBossKills", 0) == 2 then
+                        PST:sideArtiObjProgress("executionerMeridion", 1)
+                    end
+                end
+
+                -- Mod: % chance to gain a global SP when defeating a final boss without taking damage
+                local tmpMod = PST:getTreeSnapshotMod("finalBossGSP", 0)
+                if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and 100 * math.random() < tmpMod then
+                    PST.modData.skillPoints = PST.modData.skillPoints + 1
+                    PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_globalSP"), Vector.Zero, Color(0.1, 0.4, 1, 1), 0.13, 100, true)
+                end
+
+                -- Uber expedition mods
+                if PST:getTreeSnapshotMod("isExpedUber", false) then
+                    -- Bring The Chaos node (Deep-Space tree)
+                    local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
+                    if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 200 and
+                    math.random() < 0.2 then
+                        PST:addCurrentCharCrimsonStarcores(1)
+                        PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_crimsonCore"), Vector.Zero, Color(1, 0.3, 0.3, 1), 0.1, 150, true)
+                    end
                 end
             end
 
-            -- Mod: % chance to gain a global SP when defeating a final boss without taking damage
-            local tmpMod = PST:getTreeSnapshotMod("finalBossGSP", 0)
-            if tmpMod > 0 and not PST:getTreeSnapshotMod("roomGotHitByMob", false) and 100 * math.random() < tmpMod then
-                PST.modData.skillPoints = PST.modData.skillPoints + 1
-                PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_globalSP"), Vector.Zero, Color(0.1, 0.4, 1, 1), 0.13, 100, true)
-            end
-
-            -- Uber expedition mods
-            if PST:getTreeSnapshotMod("isExpedUber", false) then
-                -- Bring The Chaos node (Deep-Space tree)
-                local expData = PST:getExpedData(PST:getTreeSnapshotMod("expedDepth", 0), true)
-                if expData and expData.modifiers and expData.modifiers.bringTheChaos and expData.entropy and expData.entropy >= 200 and
-                math.random() < 0.2 then
-                    PST:addCurrentCharCrimsonStarcores(1)
-                    PST:createFloatTextFX("+1 " .. PST:getLocalized("ui_crimsonCore"), Vector.Zero, Color(1, 0.3, 0.3, 1), 0.1, 150, true)
-                end
-            end
+            PST:addModifiers({ finalBossKillProcs = 1 }, true)
         end
 
         -- Expedition/sidereal univ
@@ -239,7 +243,7 @@ function PST:onDeath(entity)
             -- Final boss kill
             if isFinalBoss then
                 -- Ancient Stardust drop
-                if PST:isNodeNameAllocated("sidereal", "Astral Forge") then
+                if PST:isNodeNameAllocated("sidereal", "Astral Forge") and PST:getTreeSnapshotMod("finalBossKillProcs", 0) < 2 then
                     local tmpAmt = 1
                     if 100 * math.random() < PST:getTreeSnapshotMod("bossExtraAncientStardust", 0) then
                         tmpAmt = tmpAmt + 1
@@ -334,7 +338,7 @@ function PST:onDeath(entity)
                     end
 
                     -- Proc up to 5 times within this room, or always on final bosses
-                    if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 or isFinalBoss then
+                    if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 or (isFinalBoss and PST:getTreeSnapshotMod("finalBossKillProcs", 0) < 5) then
                         -- Obols on boss kill
                         local tmpObols = PST.obolEvents.bossKill(PST:getTreeSnapshotMod("expedDepth", 1))
                         if tmpObols > 0 then

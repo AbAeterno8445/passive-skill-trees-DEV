@@ -582,6 +582,11 @@ function PST:onNewRoom()
 		PST:addModifiers({ roomHitsReceived = { value = 0, set = true } }, true)
 	end
 
+	-- Reset final boss kill procs
+	if PST:getTreeSnapshotMod("finalBossKillProcs", 0) > 0 then
+		PST:addModifiers({ finalBossKillProcs = { value = 0, set = true } }, true)
+	end
+
 	-- Cosmic Realignment node
 	local cosmicRCache = PST:getTreeSnapshotMod("cosmicRCache", PST.treeMods.cosmicRCache)
 	if PST:cosmicRCharPicked(PlayerType.PLAYER_SAMSON) then

@@ -1845,6 +1845,7 @@ function PST:resetMods()
 		--#endregion
 
 		finalBossKills = 0,
+		finalBossKillProcs = 0,
 	}
 	PST.defaultTreeMods = PST:copyTable(PST.treeMods)
 	-- Holds temporary data for allocated special nodes
