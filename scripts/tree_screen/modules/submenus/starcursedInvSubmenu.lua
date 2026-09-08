@@ -102,6 +102,13 @@ function starcursedInvSubmenu:Render(tScreen, submenusModule)
                                 PST.kcolors.TEAL2
                             )
                         end
+                        if jewelData.type == PSTStarcursedType.ANCIENT and PST:SC_isAncientObjComplete(jewelData.name) then
+                            jewelSprite:Play("AncientDone", true)
+                            jewelSprite:Render(Vector(
+                                jewelX - tScreen.treeCamera.X - tScreen.camZoomOffset.X,
+                                jewelY - tScreen.treeCamera.Y - tScreen.camZoomOffset.Y
+                            ))
+                        end
                     end
                 end
             end

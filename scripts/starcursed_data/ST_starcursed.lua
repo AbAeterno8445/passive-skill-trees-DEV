@@ -157,6 +157,34 @@ function PST:SC_getJewelDescription(jewel)
     return tmpDescription
 end
 
+-- Get whether the given ancient jewel's objectives are all complete
+---@param ancientName string
+function PST:SC_isAncientObjComplete(ancientName)
+    local tmpAncient = nil
+    -- Try to fetch original ancient data
+    for _, ancient in pairs(PST.SCAncients) do
+        if ancient.name == ancientName then
+            tmpAncient = ancient
+            break
+        end
+    end
+    if not tmpAncient then
+        return false
+    end
+    if tmpAncient.rewards then
+        local rewardsObtained = 0
+        for _, tmpRewardMod in ipairs(PST.SCAncientRewardsSorted) do
+            if PST.modData.ancientRewards[ancientName] and PST.modData.ancientRewards[ancientName][tmpRewardMod] then
+                rewardsObtained = rewardsObtained + 1
+            end
+        end
+        if rewardsObtained >= 2 then
+            return true
+        end
+    end
+    return false
+end
+
 -- Get the socketed jewel of the given type at the given socket
 ---@param jewelType PSTStarcursedType
 ---@param socketID string
