@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.3.9",
+        "- Chronicler Stone (Ancient Jewel) now counts multi-rooms for its objective (hallways are worth 2, L-rooms 3, 2x2 rooms 4).",
         "- Fixed Difficulty Library (mod) drawing difficulty options above the passive tree menu while in character select.",
         "- Fixed occasional Magic Septentrion artifact bug when using pocket consumables.",
         "- Various localization fixes.",

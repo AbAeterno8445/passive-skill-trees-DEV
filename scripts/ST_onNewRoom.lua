@@ -188,7 +188,17 @@ function PST:onNewRoom()
 	if room:IsFirstVisit() and PST:SC_getSnapshotMod("chroniclerStone", false) then
 		local tmpMod = PST:getTreeSnapshotMod("SC_chroniclerRooms", 0)
 		if tmpMod > 0 then
-			PST:addModifiers({ SC_chroniclerRooms = -1 }, true)
+			local roomWorth = 1
+			local roomShape = PST:getRoom():GetRoomShape()
+			if roomShape == RoomShape.ROOMSHAPE_1x2 or roomShape == RoomShape.ROOMSHAPE_2x1 or
+			roomShape == RoomShape.ROOMSHAPE_IIV or roomShape == RoomShape.ROOMSHAPE_IIH then
+				roomWorth = 2
+			elseif PST:getRoom():IsLShapedRoom() then
+				roomWorth = 3
+			elseif roomShape == RoomShape.ROOMSHAPE_2x2 then
+				roomWorth = 4
+			end
+			PST:addModifiers({ SC_chroniclerRooms = -roomWorth }, true)
 		end
 	end
 
