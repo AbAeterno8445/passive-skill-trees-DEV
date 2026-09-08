@@ -656,7 +656,7 @@ function PST:onDamage(target, damage, flag, source)
         if source and source.Entity then
             if source.Type == EntityType.ENTITY_PLAYER then
                 srcPlayer = source.Entity:ToPlayer()
-            elseif source.SpawnerType == EntityType.ENTITY_PLAYER then
+            elseif source.SpawnerType == EntityType.ENTITY_PLAYER and source.Entity.SpawnerEntity then
                 srcPlayer = source.Entity.SpawnerEntity:ToPlayer()
             end
         end
