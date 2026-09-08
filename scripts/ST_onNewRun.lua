@@ -509,7 +509,7 @@ function PST:onNewRun(isContinued)
     end
 
     -- Apply Sidereal tree nodes
-    if treeActive and PST:isRunSidereal() then
+    if treeActive and (PST:isRunSidereal() or PST:isNodeNameAllocated("sidereal", "Sidereal Universalization")) then
         -- Get snapshot of tree modifiers
         for nodeID, node in pairs(PST.trees["sidereal"]) do
             if PST:isNodeAllocated("sidereal", nodeID) then

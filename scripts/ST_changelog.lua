@@ -13,6 +13,7 @@ function PST:getChangelogList()
         "- Fixed occasional Magic Septentrion artifact bug when using pocket consumables.",
         "- Fixed T. Blue Baby's \"Treasured Waste\" granting excessive all stats when holding normal poop.",
         "- Fixed the Golden Trinkets unlock warning for relevant nodes being flipped relative to the achievement's status.",
+        "- Fixed Sidereal Universalization not applying properly on run start.",
         "- Various localization fixes.",
         "",
 

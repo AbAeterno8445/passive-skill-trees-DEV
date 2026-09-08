@@ -323,7 +323,7 @@ PST.expeditionBoons = {
     { -- 5
         name = "Distance",
         description = "+{{rangePerc}}% range.",
-        localeID = "#expboon_distance",
+        localeID = "#expboon_range",
         spriteFrame = 4,
         mods = { rangePerc = 10 },
         upgradedMods = { rangePerc = 16 }
