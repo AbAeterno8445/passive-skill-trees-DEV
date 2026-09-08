@@ -337,7 +337,9 @@ return {
         "detected, a prompt will appear when opening the tree that allows you to select a backup to",
         "try and load.",
         "You can find a download for the addon in the mod's workshop description page.",
-        "This node will disappear once the addon is installed and detected."
+        "This node will disappear once the addon is installed and detected.",
+        "[REP+] Make sure you have the latest Backup Addon version (v1.1+) installed, especially if",
+        "using the Repentogon Launcher."
     },
 
     ["node_specialsacks_name"] = "Special Sacks",

@@ -337,7 +337,9 @@ return {
         "alguna pérdida de datos, aparecerá un cartel al abrir el árbol que permite seleccionar una copia existente",
         "para intentar cargar.",
         "Puedes encontrar un link de descarga para el complemento en la página de descripción del mod en el workshop.",
-        "Este nodo desaparecerá una vez instalado el complemento."
+        "Este nodo desaparecerá una vez instalado el complemento.",
+        "[REP+] Asegurate de tener la última version del complemento (v1.1+) instalada, en especial si estas",
+        "usando el Launcher de Repentogon."
     },
 
     ["node_specialsacks_name"] = "Sacos Especiales",
