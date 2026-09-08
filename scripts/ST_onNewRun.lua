@@ -215,6 +215,7 @@ function PST:onNewRun(isContinued)
             player:SetCanShoot(false)
         end
         -- Ancient starcursed jewel: Cursed Auric Shard
+        PST:addModifiers({ cursedAuricShard = false }, true)
         if PST:SC_getSnapshotMod("cursedAuricShard", false) then
             itemPool:RemoveCollectible(CollectibleType.COLLECTIBLE_CARD_READING)
             player:AddInnateCollectible(CollectibleType.COLLECTIBLE_CARD_READING)

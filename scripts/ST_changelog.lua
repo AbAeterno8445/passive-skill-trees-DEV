@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.10",
+        "- Cursed Auric Shard's effect now stops triggering during the Ascent.",
+        "",
+
         "v1.3.9",
         "- The Backups Addon DLL now has a v1.1 release which is required for it to work on Repentance+/Repentogon Launcher. You can find it on its Github",
         "page, linked in the mod's workshop page.",

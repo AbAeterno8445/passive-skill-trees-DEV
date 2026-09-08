@@ -386,7 +386,7 @@ function PST:onRoomClear(RNG)
         end
 
         -- Ancient starcursed jewel: Cursed Auric Shard
-        if PST:SC_getSnapshotMod("cursedAuricShard", false) then
+        if PST:SC_getSnapshotMod("cursedAuricShard", false) and not PST:getLevel():IsAscent() then
             if roomType == RoomType.ROOM_BOSS then
                 PST:addModifiers({ SC_cursedAuricSpeedProc = true }, true)
             elseif not PST:getTreeSnapshotMod("SC_cursedAuricSpeedProc", false) and not PST.debugOptions.disableAuric and 100 * math.random() < 90 then

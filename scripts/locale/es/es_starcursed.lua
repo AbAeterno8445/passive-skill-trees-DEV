@@ -220,7 +220,8 @@ return {
     ["jewel_Cursed Auric Shard_desc"] = {
         "Comienza con el efecto de Cartomancia.",
         "Al completar una habitación, 90% de activar el efecto de Teletransporte 2.0.",
-        "El efecto de teletransportación no se activa en ciertas habitaciones, como las del jefe, diablo/ángel o malditas.",
+        "El efecto de teletransportación no se activa en ciertas habitaciones, como las del jefe, diablo/ángel, malditas, o",
+        "durante el Ascenso.",
         "Al derrotar al jefe del piso, tu velocidad mínima se vuelve 1.6 en habitaciones ya completadas y el efecto de",
         "teletransportación deja de activarse."
     },

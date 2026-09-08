@@ -740,7 +740,8 @@ PST.SCAncients = {
         description = {
             "Start with Card Reading as an innate effect.",
             "When clearing a room, 90% chance to trigger Teleport 2.0's effect.",
-            "Teleport effect doesn't trigger in certain rooms, such as boss, devil/angel, or curse rooms.",
+            "Teleport effect doesn't trigger in certain rooms, such as boss, devil/angel, curse rooms, or",
+            "during the Ascent.",
             "After defeating the floor's boss, your minimum speed becomes 1.6 in cleared rooms and the teleport",
             "effect stops triggering."
         },
