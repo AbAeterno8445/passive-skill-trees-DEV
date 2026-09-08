@@ -823,7 +823,7 @@ function PST:onCache(player, cacheFlag)
         -- Treasured Waste node (T. Blue Baby's tree)
         if PST:getTreeSnapshotMod("treasuredWaste", false) and PST.specialNodes.poopHeld ~= 0 then
             if PST.specialNodes.poopHeld == PoopSpellType.SPELL_POOP then
-                dynamicMods.allstats = dynamicMods.allstats + 2
+                dynamicMods.allstats = dynamicMods.allstats + 0.02
             elseif PST.specialNodes.poopHeld == PoopSpellType.SPELL_CORNY then
                 dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + 2
             elseif PST.specialNodes.poopHeld == PoopSpellType.SPELL_HOLY then
