@@ -54,7 +54,7 @@ local descriptionBoxesModule = {
         -- Golden Trinket nodes, show whether golden trinkets are unlocked
         ["Golden Trinkets"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
             tmpDescription = {table.unpack(tmpDescription)}
-            if not Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
+            if Isaac.GetPersistentGameData():Unlocked(Achievement.GOLDEN_TRINKET) then
                 table.insert(tmpDescription, {PST:getLocalized("ui_goldenTrinketsUnlocked"), PST.kcolors.GREEN1})
             else
                 table.insert(tmpDescription, {PST:getLocalized("ui_goldenTrinketsNotUnlocked"), PST.kcolors.RED2})

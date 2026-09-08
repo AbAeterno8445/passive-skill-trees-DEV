@@ -12,6 +12,7 @@ function PST:getChangelogList()
         "- Fixed Difficulty Library (mod) drawing difficulty options above the passive tree menu while in character select.",
         "- Fixed occasional Magic Septentrion artifact bug when using pocket consumables.",
         "- Fixed T. Blue Baby's \"Treasured Waste\" granting excessive all stats when holding normal poop.",
+        "- Fixed the Golden Trinkets unlock warning for relevant nodes being flipped relative to the achievement's status.",
         "- Various localization fixes.",
         "",
 
