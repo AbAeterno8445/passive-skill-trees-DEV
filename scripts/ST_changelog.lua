@@ -14,6 +14,7 @@ function PST:getChangelogList()
         "- Fixed T. Blue Baby's \"Treasured Waste\" granting excessive all stats when holding normal poop.",
         "- Fixed the Golden Trinkets unlock warning for relevant nodes being flipped relative to the achievement's status.",
         "- Fixed Sidereal Universalization not applying properly on run start.",
+        "- Fixed occasional error triggered by dealing damage.",
         "- Various localization fixes.",
         "",
 
