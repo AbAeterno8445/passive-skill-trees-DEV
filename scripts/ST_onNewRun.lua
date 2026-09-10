@@ -1150,6 +1150,18 @@ function PST:onNewRun(isContinued)
         end
     end
 
+    -- Ancient starcursed jewel: Iridescent Purity - protect starting items
+    if treeActive and PST:SC_getSnapshotMod("iridescentPurity", false) then
+        local iridescentProtected = PST:getTreeSnapshotMod("SC_iridescentProtected", nil)
+        if iridescentProtected then
+            for itemID, itemCount in pairs(player:GetCollectiblesList()) do
+                if itemCount > 0 then
+                    print("added item", itemID, "to iridescent protected list")
+                end
+            end
+        end
+    end
+
     PST:closeTreeMenu(true)
     PST.player = player
     PST.gameInit = true

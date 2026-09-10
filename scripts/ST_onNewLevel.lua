@@ -71,9 +71,10 @@ function PST:onNewLevel()
     -- Ancient starcursed jewel: Iridescent Purity
     if PST:SC_getSnapshotMod("iridescentPurity", false) then
         local iridescentItems = PST:getTreeSnapshotMod("SC_iridescentItems", nil)
+        local iridescentProtected = PST:getTreeSnapshotMod("SC_iridescentProtected", nil)
         if iridescentItems and #iridescentItems > 0 then
             for i, itemType in ipairs(iridescentItems) do
-                if 100 * math.random() < 15 * i then
+                if not PST:arrHasValue(iridescentProtected, itemType) and 100 * math.random() < 15 * i then
                     player:RemoveCollectible(itemType)
                 end
             end

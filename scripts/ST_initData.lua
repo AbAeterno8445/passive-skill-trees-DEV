@@ -1625,6 +1625,7 @@ function PST:resetMods()
 		SC_cursedStarpieceDebuff = false,
 		SC_opalescentProc = false,
 		SC_iridescentItems = {},
+		SC_iridescentProtected = {},
 		SC_levelHasChall = false,
 		SC_challDebuff = false,
 		SC_challClear = false,
