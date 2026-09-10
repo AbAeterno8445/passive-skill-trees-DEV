@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.3.11",
+        "- Internal support for character profiles, for upcoming Astral Vessel updates.",
+        "",
+
         "v1.3.10",
         "- Cursed Auric Shard's effect now stops triggering during the Ascent.",
         "",

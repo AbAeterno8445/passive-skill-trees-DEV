@@ -303,6 +303,9 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
             if (tree == "global" or tree == "starTree") and PST.modData.skillPoints <= 0 and not noSP then
                 return false
             elseif tree ~= "global" and tree ~= "starTree" and PST.modData.charData[tree] ~= nil then
+                if PST.modData.charLoadedProfile[tree] then
+                    tree = PST.modData.charLoadedProfile[tree]
+                end
                 if PST.modData.charData[tree].skillPoints <= 0 and not noSP then
                     return false
                 end

@@ -51,6 +51,9 @@ function PST.treeScreen:InputRespec()
                                 if self.treeAliases[self.currentTree] then
                                     charAlias = self.treeAliases[self.currentTree]
                                 end
+                                if PST.modData.charLoadedProfile[charAlias] then
+                                    charAlias = PST.modData.charLoadedProfile[charAlias]
+                                end
                                 if PST:arrHasValue(PST.globalTrees, self.currentTree) then
                                     PST.modData.skillPoints = PST.modData.skillPoints + 1
                                 elseif PST.modData.charData[charAlias] then

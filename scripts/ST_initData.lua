@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v1.3.10"
+PST.modVersion = "v1.3.11"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -2127,6 +2127,7 @@ function PST:resetData()
 		-- Completion tracker for Cosmic Realignment unlocks
 		cosmicRCompletions = { [0] = {} },
 		charData = {},
+		charLoadedProfile = {},
 
 		-- Star Tree
 		starTreeInventory = {

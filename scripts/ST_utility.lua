@@ -30,13 +30,18 @@ end
 -- Get current char name (different to EntityPlayer's GetName() func as it uses a custom name table)
 function PST:getCurrentCharName()
 	if not PST.charNames then return nil end
+	local tmpName = nil
 	if Isaac.IsInGame() then
 		local player = PST:getPlayer()
-		return PST.charNames[1 + player:GetPlayerType()]
+		tmpName = PST.charNames[1 + player:GetPlayerType()]
 	elseif PST.selectedMenuChar then
-		return PST.charNames[1 + PST.selectedMenuChar]
+		tmpName = PST.charNames[1 + PST.selectedMenuChar]
 	end
-	return nil
+	-- If profile is selected, return that name union instead
+	if PST.modData.charLoadedProfile[tmpName] then
+		tmpName = PST.modData.charLoadedProfile[tmpName]
+	end
+	return tmpName
 end
 
 -- Attempt to init a non-vanilla character so they can earn XP
@@ -55,6 +60,35 @@ function PST:initUnknownChar(charName, tainted, customID)
 		end
 		PST:charInit(tmpName)
 	end
+end
+
+function PST:getCharProfileName(charName, profileName)
+	return charName .. " (Profile " .. profileName .. ")"
+end
+
+function PST:initCharProfile(charName, profileName)
+	PST:charInit(PST:getCharProfileName(charName, profileName))
+	print("[Passive Skill Trees] Initialized profile", profileName, "for character", charName)
+	print(PST:getCharProfileName(charName, profileName))
+end
+
+function PST:deleteCharProfile(charName, profileName)
+	if PST.modData.charLoadedProfile[charName] == PST:getCharProfileName(charName, profileName) then
+		PST:selectCharProfile(charName, nil)
+	end
+	PST.modData.charData[PST:getCharProfileName(charName, profileName)] = nil
+end
+
+-- Set the selected profile for the given character
+---@param charName string Character name
+---@param newProfile string|nil Profile name. Leave nil to de-select profile and use default data instead
+function PST:selectCharProfile(charName, newProfile)
+	if newProfile then
+		PST.modData.charLoadedProfile[charName] = PST:getCharProfileName(charName, newProfile)
+	else
+		PST.modData.charLoadedProfile[charName] = nil
+	end
+	print("[Passive Skill Trees] Selected profile", newProfile, "for character", charName)
 end
 
 -- Updates stat caches a frame after this is called. If no cache flags are provided, update all stat caches

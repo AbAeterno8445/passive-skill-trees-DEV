@@ -158,6 +158,10 @@ function PST:treeScreenMenuRender()
 
     if not PST.treeScreen.open and isCharMenu and PST.selectedMenuChar ~= -1 then
         local selCharName = PST.charNames[1 + PST.selectedMenuChar]
+        -- Fetch character name from active profile if set
+        if PST.modData.charLoadedProfile[selCharName] then
+            selCharName = PST.modData.charLoadedProfile[selCharName]
+        end
         if selCharName then
             local selCharData = PST.modData.charData[selCharName]
             if selCharData and PST.config.charSelectInfoText then

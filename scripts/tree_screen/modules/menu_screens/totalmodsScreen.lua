@@ -42,6 +42,10 @@ function totalmodsScreen:OnOpen(openData)
     end
     PST_processTreeNodes("global")
     local tmpCharName = PST.charNames[1 + PST.selectedMenuChar]
+    -- Fetch character name from active profile if set
+    if PST.modData.charLoadedProfile[tmpCharName] then
+        tmpCharName = PST.modData.charLoadedProfile[tmpCharName]
+    end
     if tmpCharName and PST.trees[tmpCharName] ~= nil then
         PST_processTreeNodes(tmpCharName)
     end

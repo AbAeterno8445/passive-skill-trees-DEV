@@ -29,6 +29,10 @@ function PST:onNewRun(isContinued)
             if currentChar == nil or isChallenge then
                 currentChar = PST.charNames[1 + player:GetPlayerType()]
             end
+            -- Fetch character name from active profile if set
+            if PST.modData.charLoadedProfile[currentChar] then
+                currentChar = PST.modData.charLoadedProfile[currentChar]
+            end
             if currentChar ~= nil then
                 if PST.trees[currentChar] ~= nil then
                     for nodeID, node in pairs(PST.trees[currentChar]) do

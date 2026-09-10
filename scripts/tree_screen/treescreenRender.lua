@@ -59,6 +59,10 @@ function PST.treeScreen:Render()
             local curName = PST:getCurrentCharName()
             if curName then treeName = treeName .. " (" .. curName .. ")" end
         elseif PST.modData.charData[charAlias] then
+            -- Check for loaded profile
+            if PST.modData.charLoadedProfile[charAlias] then
+                charAlias = PST.modData.charLoadedProfile[charAlias]
+            end
             skPoints = PST.modData.charData[charAlias].skillPoints
             local tmpPossessive = "'s"
             if string.sub(charAlias, -1) == "s" then
