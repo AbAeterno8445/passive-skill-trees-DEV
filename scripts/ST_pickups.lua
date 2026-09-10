@@ -185,7 +185,7 @@ function PST:prePickup(pickup, collider, low)
 
                 -- Dextral Runemaster: Berkano innate Hive Mind
                 if PST:getTreeSnapshotMod("berkanoHivemind", false) and subtype == CollectibleType.COLLECTIBLE_HIVE_MIND then
-                    player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, -1)
+                    player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, 1, "")
                     PST:addModifiers({ berkanoHivemind = false }, true)
                 end
 

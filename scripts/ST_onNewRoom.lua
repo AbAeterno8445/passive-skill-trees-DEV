@@ -709,7 +709,7 @@ function PST:onNewRoom()
 	-- Mod: % chance to gain a passive treasure room item for the current room on hit (reset)
 	tmpMod = PST:getTreeSnapshotMod("treasureItemOnHitItem", 0)
 	if tmpMod > 0 then
-		player:AddInnateCollectible(tmpMod, -1)
+		player:RemoveInnateCollectible(tmpMod, 1, "")
 		PST:addModifiers({ treasureItemOnHitItem = { value = 0, set = true } }, true)
 		if not player:HasCollectible(tmpMod) then
 			local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpMod)

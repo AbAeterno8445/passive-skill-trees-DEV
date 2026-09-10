@@ -432,15 +432,15 @@ function PST:frameUpdate()
 				for _, tmpNode in ipairs(spiritNodes) do
 					if tmpNode ~= newNode and PST:getTreeSnapshotMod(tmpNode, false) then
 						if tmpNode == "spiritBringer" then
-							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS, -1)
-							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, -1)
+							player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_GHOST_BOMBS, 1, "")
+							player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, 1, "")
 						elseif tmpNode == "spiritTaker" then
-							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, -1)
+							player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, 1, "")
 						elseif tmpNode == "spiritReaper" then
-							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PURGATORY, -1)
-							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HUNGRY_SOUL, -1)
+							player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_PURGATORY, 1, "")
+							player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_HUNGRY_SOUL, 1, "")
 						elseif tmpNode == "spiritProtector" then
-							player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL, -1)
+							player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_LOST_SOUL, 1, "")
 							player:TryRemoveTrinket(TrinketType.TRINKET_YOUR_SOUL)
 							player:TryRemoveTrinket(TrinketType.TRINKET_FOUND_SOUL)
 						end
@@ -733,7 +733,7 @@ function PST:frameUpdate()
 				local osteoItems = PST:getTreeSnapshotMod("osteomancyItems", {})
 				if #osteoItems > 0 then
 					for _, tmpItem in ipairs(osteoItems) do
-						player:AddInnateCollectible(tmpItem, -1)
+						player:RemoveInnateCollectible(tmpItem, 1, "")
 					end
 					PST.modData.treeModSnapshot.osteomancyItems = {}
 				end
@@ -2630,7 +2630,7 @@ function PST:frameUpdate()
 		elseif room:GetAliveEnemiesCount() == 0 and (shadowmeldSlot == ActiveSlot.SLOT_POCKET or shadowmeldSlot == ActiveSlot.SLOT_POCKET2) then
 			local oldMelody = PST:getTreeSnapshotMod("sirenOldMelody", Isaac.GetItemIdByName("Empty Notes"))
 			player:SetPocketActiveItem(oldMelody, shadowmeldSlot, false)
-			player:AddInnateCollectible(oldMelody, -1)
+			player:RemoveInnateCollectible(oldMelody, 1, "")
 
 			local tmpMarkers = Isaac.FindByType(EntityType.ENTITY_EFFECT, PST.shadowmeldMarkerEffectID)
 			for _, marker in ipairs(tmpMarkers) do
@@ -2736,7 +2736,7 @@ function PST:frameUpdate()
 				tmpUseData.timer = tmpUseData.timer - 1
 				if tmpUseData.timer == 0 then
 					for _, tmpFamiliar in ipairs(tmpUseData.familiars) do
-						player:AddInnateCollectible(tmpFamiliar, -1)
+						player:RemoveInnateCollectible(tmpFamiliar, 1, "")
 					end
 					player:TryRemoveSmeltedTrinket(TrinketType.TRINKET_FRIENDSHIP_NECKLACE)
 					table.remove(PST.specialFX.sirenSoulUses, i)
@@ -2851,7 +2851,7 @@ function PST:frameUpdate()
 		if PST.specialNodes.ancwep_arcingNeedleTimer > 0 then
 			PST.specialNodes.ancwep_arcingNeedleTimer = PST.specialNodes.ancwep_arcingNeedleTimer - 1
 		else
-			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER, -1)
+			player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER, 1, "")
 			if not player:HasCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER) then
 				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER))
 			end
@@ -3255,12 +3255,12 @@ function PST:frameUpdate()
 		if PST.specialNodes.spaghettificationTimer == 300 then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE)
 		elseif PST.specialNodes.spaghettificationTimer == 150 then
-			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE, -1)
+			player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_FRUIT_CAKE, 1, "")
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE)
 		end
 		PST.specialNodes.spaghettificationTimer = PST.specialNodes.spaghettificationTimer - 1
 		if PST.specialNodes.spaghettificationTimer == 0 then
-			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE, -1)
+			player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_PLAYDOUGH_COOKIE, 1, "")
 		end
 	end
 
@@ -3280,7 +3280,7 @@ function PST:frameUpdate()
 		if player:GetPlayerType() == PlayerType.PLAYER_THESOUL and not player:HasCollectible(CollectibleType.COLLECTIBLE_QUINTS) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS)
 		elseif player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL and player:HasCollectible(CollectibleType.COLLECTIBLE_QUINTS) then
-			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, -1)
+			player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_QUINTS, 1, "")
 		end
 	end
 
@@ -3289,7 +3289,7 @@ function PST:frameUpdate()
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO) and not PST:getTreeSnapshotMod("spiritTakerProc", false) then
 			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO)
 		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO) and PST:getTreeSnapshotMod("spiritTakerProc", false) then
-			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, -1)
+			player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_VADE_RETRO, 1, "")
 		end
 	end
 

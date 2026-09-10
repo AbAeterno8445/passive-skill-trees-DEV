@@ -593,6 +593,11 @@ function PST:getAstralWepDesc(weaponData, showModRanges)
     return tmpDescription
 end
 
+local PST_tmpInnateCollectibleToggle = function(player, itemType, remove)
+    if not remove then player:AddInnateCollectible(itemType, 1, "")
+    else player:RemoveInnateCollectible(itemType, 1, "") end
+end
+
 -- Holds functions that allow applying/removing ancient weapon modifier stats/items dynamically
 local ancientWepStatFuncs = {
     executioner = function(tmpMod, remove)
@@ -602,11 +607,11 @@ local ancientWepStatFuncs = {
         PST:addModifiers({ tearsPerc = tmpMod[1] * ((remove == true) and -1 or 1) }, true)
     end,
     lostCoralTrident = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_NEPTUNUS, remove)
         PST:addModifiers({ damagePerc = -tmpMod[1] * ((remove == true) and -1 or 1) }, true)
     end,
     oceanicMight = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_AQUARIUS, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_AQUARIUS, remove)
     end,
     mobripper = function(tmpMod, remove)
         PST:addModifiers({ damagePerc = -tmpMod[2] * ((remove == true) and -1 or 1) }, true)
@@ -615,30 +620,30 @@ local ancientWepStatFuncs = {
         PST:addModifiers({ berserkDuration = tmpMod[1] * ((remove == true) and -1 or 1) }, true)
     end,
     stormAdvance = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_120_VOLT, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_120_VOLT, remove)
     end,
     quillRain = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOY_MILK, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_SOY_MILK, remove)
     end,
     gildedSeeker = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER, remove)
     end,
     glowingMoonblade = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LUNA, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_LUNA, remove)
         PST:addModifiers({
             damagePerc = -tmpMod[1] * ((remove == true) and -1 or 1),
             tearsPerc = -tmpMod[1] * ((remove == true) and -1 or 1)
         }, true)
     end,
     glowingSunblade = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_SOL, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_SOL, remove)
         PST:addModifiers({
             damagePerc = -tmpMod[1] * ((remove == true) and -1 or 1),
             tearsPerc = -tmpMod[1] * ((remove == true) and -1 or 1)
         }, true)
     end,
     tollingBell = function(tmpMod, remove, player)
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_LEO, ((remove == true) and -1 or 1))
+        PST_tmpInnateCollectibleToggle(player, CollectibleType.COLLECTIBLE_LEO, remove)
     end,
     devilTongue = function(tmpMod, remove)
         PST:addModifiers({ astralwep_dmgStatusBurn = {tmpMod[2] * ((remove == true) and -1 or 1)} }, true)

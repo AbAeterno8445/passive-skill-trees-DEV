@@ -357,7 +357,7 @@ function PST:onNewLevel()
     end
     -- Dextral Runemaster: Berkano innate Hive Mind
     if PST:getTreeSnapshotMod("berkanoHivemind", false) then
-        player:AddInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, -1)
+        player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_HIVE_MIND, 1, "")
         PST:addModifiers({ berkanoHivemind = false }, true)
     end
 
