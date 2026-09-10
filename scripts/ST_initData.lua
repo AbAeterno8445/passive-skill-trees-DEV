@@ -1994,6 +1994,7 @@ function PST:resetMods()
 		ancwep_bruteOnslaughtHits = 0,
 		ancwep_bruteOnslaughtBuffTimer = 0,
 		ancwep_volatileArbalestCD = 0,
+		ancwep_avelynCD = 0,
 		ancwep_preciseSeekerSprite = Sprite("gfx/precise_seeker_mark.anm2", true),
 		---@type Entity|nil
 		ancwep_preciseSeekerMarked = nil,

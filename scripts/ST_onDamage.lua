@@ -1235,8 +1235,13 @@ function PST:onDamage(target, damage, flag, source)
                         if PST.specialNodes.ancwep_sacScourgeBuff > 0 then
                             tmpMaxTears = tmpMaxTears + 2
                         end
+                        local isAzureBinder = PST:getSnapAstralWepMod("azurebinder")
                         for i=1,tmpMaxTears do
-                            local tmpVel = (target.Position - srcPlayer.Position):Normalized() * (3 + 2 * (i - 1))
+                            local tmpSpeed = 3 + 2 * (i - 1)
+                            if isAzureBinder then
+                                tmpSpeed = 3 + 1.25 * (i - 1)
+                            end
+                            local tmpVel = (target.Position - srcPlayer.Position):Normalized() * tmpSpeed
                             local tmpTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
                             tmpTear:ToTear().Height = srcPlayer.TearHeight
                             tmpTear:ToTear().FallingSpeed = 1
@@ -1251,11 +1256,12 @@ function PST:onDamage(target, damage, flag, source)
                                 tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_FREEZE)
                                 PST:getEntData(tmpTear).PST_devilTongueTear = true
                             -- Ancient weapon mod: Azurebinder
-                            elseif PST:getSnapAstralWepMod("azurebinder") then
+                            elseif isAzureBinder then
                                 tmpTear.Color = PST:RGBColor(120, 220, 220)
                                 tmpTear:ToTear():ChangeVariant(TearVariant.LOST_CONTACT)
                                 tmpTear:ToTear().FallingSpeed = -4
-                                tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SHIELDED | TearFlags.TEAR_ORBIT_ADVANCED)
+                                tmpTear:ToTear().FallingAcceleration = -0.07
+                                tmpTear:ToTear():AddTearFlags(TearFlags.TEAR_SHIELDED | TearFlags.TEAR_PIERCING | TearFlags.TEAR_ORBIT_ADVANCED)
                                 tmpTear:ToTear():ClearTearFlags(TearFlags.TEAR_HOMING)
                             -- Ancient weapon mod: Sacred Scourge
                             elseif PST.specialNodes.ancwep_sacScourgeBuff > 0 then
@@ -1344,8 +1350,12 @@ function PST:onDamage(target, damage, flag, source)
 
                 -- Ancient weapon mod: Divine Interceptor
                 tmpMod = PST:getSnapAstralWepMod("divineInterceptor")
-                if tmpMod and PST.specialNodes.ancwep_divineIntCD == 0 and srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(2) then
+                if tmpMod and PST.specialNodes.ancwep_divineIntCD == 0 and srcPlayer.Position:Distance(target.Position) <= PST:getTilesDist(3) then
                     local maxSwords = 7 + math.random(2 + tmpMod[1])
+                    local modThresholds = {
+                        tmpMod[1] >= 3,
+                        tmpMod[1] >= 6
+                    }
                     Isaac.CreateTimer(function()
                         local tmpVel = ((target.Position + RandomVector() * 35 * math.random()) - srcPlayer.Position):Normalized() * 12
                         local newSword = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, 0, srcPlayer.Position, tmpVel, srcPlayer)
@@ -1354,14 +1364,14 @@ function PST:onDamage(target, damage, flag, source)
                         newSword.CollisionDamage = math.min(50, srcPlayer.Damage / 2)
                         newSword:ToTear().FallingAcceleration = -0.1
                         newSword:ToTear().FallingSpeed = -0.1
-                        if tmpMod[1] >= 3 then
+                        if modThresholds[1] then
                             newSword:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING)
                         end
-                        if tmpMod[1] >= 6 then
+                        if modThresholds[2] then
                             newSword:ToTear():AddTearFlags(TearFlags.TEAR_HOMING)
                         end
                     end, 1, maxSwords, false)
-                    PST.specialNodes.ancwep_divineIntCD = 150
+                    PST.specialNodes.ancwep_divineIntCD = math.ceil((tmpMod[2] or 5) * 30)
                 end
 
                 -- Ancient weapon mod: Divine Messenger

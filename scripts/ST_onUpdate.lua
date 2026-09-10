@@ -2951,30 +2951,42 @@ function PST:frameUpdate()
 	end
 
 	-- Ancient weapon mod: Avelyn
+	if PST.specialNodes.ancwep_avelynCD > 0 then
+		PST.specialNodes.ancwep_avelynCD = PST.specialNodes.ancwep_avelynCD - 1
+	end
 	tmpMod = PST:getSnapAstralWepMod("avelyn")
-	if tmpMod and PST.specialNodes.consecutiveFire > 0 and (PST.specialNodes.consecutiveFire % math.floor(tmpMod[1] * 30)) == 0 then
-		local nearbyEnem = Isaac.FindInRadius(player.Position, 300, EntityPartition.ENEMY)
-		if #nearbyEnem > 0 then
-			local dist = 9999
-			local closest = nil
-			for _, tmpEnemy in ipairs(nearbyEnem) do
-				if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
-					local tmpDist = player.Position:Distance(tmpEnemy.Position)
-					if tmpDist < dist then
-						closest = tmpEnemy
-						dist = tmpDist
+	if tmpMod and PST.specialNodes.ancwep_avelynCD == 0 then
+		if isShooting then
+			local nearbyEnem = Isaac.FindInRadius(player.Position, 300, EntityPartition.ENEMY)
+			if #nearbyEnem > 0 then
+				local dist = 9999
+				local closest = nil
+				for _, tmpEnemy in ipairs(nearbyEnem) do
+					if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
+						local tmpDist = player.Position:Distance(tmpEnemy.Position)
+						if tmpDist < dist then
+							closest = tmpEnemy
+							dist = tmpDist
+						end
 					end
 				end
-			end
-			if closest then
-				for i=0,2 do
-					local tmpVel = (closest.Position - PST:getPlayer().Position):Normalized() * (8 + i * 3)
-					local tmpTear = player:FireTear(player.Position, tmpVel, false, true, false, player)
-                    tmpTear:ToTear().Height = PST:getPlayer().TearHeight
-                    tmpTear:ToTear().FallingSpeed = 0.5 + i * 0.2
-                    tmpTear.CollisionDamage = PST:getPlayer().Damage * (tmpMod[2] / 100)
+				if closest then
+					for i=0,2 do
+						local tmpVel = (closest.Position - PST:getPlayer().Position):Normalized() * (11 + i * 3)
+						local tmpTear = player:FireTear(player.Position, tmpVel, false, true, false, player)
+						tmpTear:ToTear().Height = PST:getPlayer().TearHeight
+						tmpTear:ToTear().FallingSpeed = 0.5 + i * 0.2
+						tmpTear:ToTear().Scale = 1.3
+						local shotSpeedMult = 1
+						if player.ShotSpeed > 1 then
+							shotSpeedMult = shotSpeedMult + player.ShotSpeed - 1
+						end
+						tmpTear.CollisionDamage = PST:getPlayer().Damage * (tmpMod[2] / 100) * shotSpeedMult
+					end
+					SFXManager():Play(SoundEffect.SOUND_STATIC, 0.6, 2, false, 2)
+
+					PST.specialNodes.ancwep_avelynCD = math.ceil(tmpMod[1] * 30)
 				end
-				SFXManager():Play(SoundEffect.SOUND_STATIC, 0.6, 2, false, 2)
 			end
 		end
 	end

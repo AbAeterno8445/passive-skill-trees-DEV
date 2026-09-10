@@ -946,12 +946,6 @@ function PST:onCache(player, cacheFlag)
         dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.min(tmpTreeMod[1], player:GetNumCoins() / 2)
     end
 
-    -- Ancient weapon mod: Gravitas
-    tmpTreeMod = PST:getSnapAstralWepMod("gravitas")
-    if tmpTreeMod and player:HasCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER) then
-        dynamicMods.tearsPerc = dynamicMods.tearsPerc - tmpTreeMod[3]
-    end
-
     -- Ancient weapon mod: Ivory Vampire
     tmpTreeMod = PST:getSnapAstralWepMod("ivoryVampire")
     if tmpTreeMod and PST.specialNodes.ancwep_ivoryVampTimer > 0 then

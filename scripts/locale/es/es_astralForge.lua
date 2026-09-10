@@ -364,7 +364,9 @@ return {
     },
     ["aforge_mod_desc_divineInterceptor"] = {
         "Al golpear a un enemigo a 2 casillas de ti, dispara una dispersión de proyectiles espada hacia el enemigo.",
+        "Estos proyectiles espada infligen 50% de tu daño, limitado a 50.",
         "Nivel de mejora actual: {{roll1}}.",
+        "Dispara un proyectil espada adicional con cada nivel de mejora.",
         "Nivel 3 de mejora: los proyectiles espada ahora perforan a los enemigos.",
         "Nivel 6 de mejora: los proyectiles espada ahora persiguen a los enemigos.",
         "Este efecto tiene 5 segundos de enfriamiento."
@@ -418,8 +420,7 @@ return {
         "Al golpear a enemigos a más de 2 casillas de ti, {{roll1}}% chance de disparar 3 lágrimas persecutoras que",
         "infligen {{roll2}}% de tu daño. 0.5 segundos de enfriamiento.",
         "Al golpear enemigos con las lágrimas persecutoras, 3% chance de obtener Doblador de Cucharas para la",
-        "habitación actual.",
-        "-{{roll3}}% lágrimas mientras tienes Doblador de Cucharas."
+        "habitación actual."
     },
     ["aforge_mod_desc_borealSpear"] = {
         "{{roll1}}% chance al golpear enemigos de ralentizarlos por 3 segundos.",
@@ -428,7 +429,7 @@ return {
     },
     ["aforge_mod_desc_viperStinger"] = {
         "{{roll1}}% chance al golpear enemigos de paralizarlos por 2 segundos.",
-        "Duplica la chance y duración contra enemigos envenenados.",
+        "Duplica la chance y duración contra enemigos no-jefes envenenados.",
         "Matar a un enemigo paralizado libera una nube tóxica por 4 segundos que envenena y daña a enemigos cercanos",
         "por {{roll2}}% de tu daño."
     },
@@ -528,11 +529,12 @@ return {
     },
     ["aforge_mod_desc_volatileArbalest"] = {
         "{{roll1}}% chance de causar una pequeña explosión al golpear a enemigos a más de 2.5 casillas de ti,",
-        "infligiendo {{roll2}}% de tu daño. 1 segundo de enfriamiento."
+        "infligiendo {{roll2}}% de tu daño. 0.5 segundos de enfriamiento."
     },
     ["aforge_mod_desc_avelyn"] = {
-        "Cada {{roll1}} segundos totales disparando, lanza 3 lágrimas hacia un enemigo cercano.",
-        "Estas lágrimas infligen un {{roll2}}% de tu daño."
+        "Al disparar, lanza 3 lágrimas rápidas hacia un enemigo cercano. {{roll1}} segundos de enfriamiento.",
+        "Estas lágrimas infligen {{roll2}}% de tu daño, y adicionalmente usan tu velocidad de disparo como un",
+        "multiplicador de daño, si es mayor a 1."
     },
     ["aforge_mod_desc_preciseSeeker"] = {
         "Cada segundo, marca a un enemigo aleatorio si es posible, priorizando jefes.",

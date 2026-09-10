@@ -365,11 +365,13 @@ return {
         "When first entering the treasure room, gain +{{roll2}} speed for the current floor."
     },
     ["aforge_mod_desc_divineInterceptor"] = {
-        "When hitting an enemy within 2 tiles, fire a spread of sword projectiles towards them.",
+        "When hitting an enemy within 3 tiles, fire a spread of sword projectiles towards them.",
+        "These sword projectiles deal 50% of your damage, capped at 50.",
         "Current upgrade level: {{roll1}}.",
+        "Fire an additional sword projectile with each upgrade level.",
         "Upgrade level 3: sword projectiles now pierce enemies.",
         "Upgrade level 6: sword projectiles gain homing.",
-        "5 second cooldown."
+        "{{roll2}} second cooldown."
     },
     ["aforge_mod_desc_arcingNeedle"] = {
         "Every 0.5 seconds spent firing, {{roll1}}% chance to gain Jacob's Ladder as an innate effect for {{roll2}} seconds.",
@@ -419,8 +421,7 @@ return {
     ["aforge_mod_desc_gravitas"] = {
         "When hitting enemies beyond 2 tiles from you, {{roll1}}% chance to additionally fire",
         "3 homing tears dealing {{roll2}}% of your damage. 0.5 seconds cooldown.",
-        "When hitting enemies with the homing tears, 3% chance to gain Spoon Bender for the current room.",
-        "-{{roll3}}% tears while you have Spoon Bender."
+        "When hitting enemies with the homing tears, 3% chance to gain Spoon Bender for the current room."
     },
     ["aforge_mod_desc_borealSpear"] = {
         "{{roll1}}% chance on hit to slow enemies for 3 seconds.",
@@ -430,7 +431,7 @@ return {
     },
     ["aforge_mod_desc_viperStinger"] = {
         "{{roll1}}% chance to paralyze enemies on hit for 2 seconds.",
-        "Double the chance and duration against poisoned enemies.",
+        "Double the chance and duration against poisoned non-boss enemies.",
         "Killing a paralyzed enemy releases a toxic cloud, poisoning for 4 seconds and dealing {{roll2}}%",
         "of your damage to nearby enemies.",
     },
@@ -529,11 +530,12 @@ return {
     },
     ["aforge_mod_desc_volatileArbalest"] = {
         "{{roll1}}% chance to cause a small explosion when hitting enemies beyond 2.5 tiles of you,",
-        "dealing {{roll2}}% of your damage. 1 second cooldown."
+        "dealing {{roll2}}% of your damage. 0.5 second cooldown."
     },
     ["aforge_mod_desc_avelyn"] = {
-        "Every {{roll1}} total seconds spent firing, shoot 3 tears towards a nearby enemy, each dealing {{roll2}}%",
-        "of your damage."
+        "Whenever you fire, shoot 3 quick tears towards a nearby enemy. {{roll1}} second cooldown.",
+        "These tears deal {{roll2}}% of your damage, and additionally use your shot speed as a damage multiplier",
+        "if it is above 1."
     },
     ["aforge_mod_desc_preciseSeeker"] = {
         "Every second, mark a random enemy if available, prioritizing bosses.",

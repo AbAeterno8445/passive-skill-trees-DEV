@@ -640,10 +640,13 @@ function descriptionBoxesModule:Render(tScreen)
                 local buffData = PST.crimConvergenceBuffs[tmpBuff]
                 local buffDesc = buffData.desc
                 local tmpDesc = (type(buffDesc) == "table") and {table.unpack(buffDesc)} or {buffDesc}
-                table.insert(tmpDesc, {
-                    PST:getLocalizedFormat("ui_charCrimsonCores", {charName = PST:getCurrentCharName(), cores = charData.crimsonStarcores}),
-                    PST.kcolors.RED3
-                })
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    table.insert(tmpDesc, {
+                        PST:getLocalizedFormat("ui_charCrimsonCores", {charName = PST:getCurrentCharName(), cores = charData.crimsonStarcores}),
+                        PST.kcolors.RED3
+                    })
+                end
                 table.insert(tmpDesc, {
                     PST:getLocalizedFormat("ui_crimConvCrimsonCores", {cores = PST:getCrimConvCoreCount(), maxCores = PST:getMaxCrimConvCores()}),
                     PST.kcolors.RED3

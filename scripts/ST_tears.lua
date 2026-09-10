@@ -94,7 +94,7 @@ function PST:onTearCollision(tear, collider, low)
     -- Ancient weapon mod: Azurebinder
     local tmpMod = PST:getSnapAstralWepMod("azurebinder")
     local tearData = PST:getEntData(tear)
-    if tmpMod and tear:HasTearFlags(TearFlags.TEAR_SHIELDED) and collider.Type == EntityType.ENTITY_TEAR and not tearData.PST_collided then
+    if tmpMod and tear:HasTearFlags(TearFlags.TEAR_SHIELDED) and collider.Type == EntityType.ENTITY_PROJECTILE and not tearData.PST_collided then
         if PST.specialNodes.ancwep_azurebinderBuff < tmpMod[2] then
             PST.specialNodes.ancwep_azurebinderBuff = math.min(PST.specialNodes.ancwep_azurebinderBuff + tmpMod[1], tmpMod[2])
             PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)

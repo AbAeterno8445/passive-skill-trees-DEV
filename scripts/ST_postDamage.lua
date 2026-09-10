@@ -684,10 +684,10 @@ function PST:postDamage(target, damage, flag, source)
                 if tmpMod then
                     local tmpChance = tmpMod[1]
                     local isPoisoned = (target:GetEntityFlags() & EntityFlag.FLAG_POISON) > 0
-                    if isPoisoned then tmpChance = tmpChance * 2 end
-                    if 100 * math.random() < tmpChance then
+                    if isPoisoned and not target:IsBoss() then tmpChance = tmpChance * 2 end
+                    if target:GetFreezeCountdown() == 0 and 100 * math.random() < tmpChance then
                         local tmpDur = 60
-                        if isPoisoned then tmpDur = tmpDur * 2 end
+                        if isPoisoned and not target:IsBoss() then tmpDur = tmpDur * 2 end
                         target:AddFreeze(EntityRef(PST:getPlayer()), tmpDur)
                     end
                 end
@@ -863,17 +863,17 @@ function PST:postDamage(target, damage, flag, source)
                 if tmpMod and PST:getPlayer().Position:Distance(target.Position) > PST:getTilesDist(2.5) and (flag & DamageFlag.DAMAGE_EXPLOSION) == 0 and
                 PST.specialNodes.ancwep_volatileArbalestCD == 0 and 100 * math.random() < tmpMod[1] then
                     local tmpExplosionSpr = PST:createAnimFXAt("gfx/1000.001_bomb explosion.anm2", "Explosion", target.Position)
-                    tmpExplosionSpr.Scale = Vector(0.6, 0.6)
+                    tmpExplosionSpr.Scale = Vector(0.75, 0.75)
                     SFXManager():Play(SoundEffect.SOUND_EXPLOSION_WEAK, 1, 2, false, 1 + 0.25 * math.random())
 
-                    local nearbyEnem = Isaac.FindInRadius(target.Position, 80, EntityPartition.ENEMY)
+                    local nearbyEnem = Isaac.FindInRadius(target.Position, 100, EntityPartition.ENEMY)
                     local tmpDmg = PST:getPlayer().Damage * (tmpMod[2] / 100)
                     for _, tmpEnemy in ipairs(nearbyEnem) do
                         if tmpEnemy:IsActiveEnemy(false) and tmpEnemy:IsVulnerableEnemy() and not EntityRef(tmpEnemy).IsFriendly then
                             tmpEnemy:TakeDamage(tmpDmg, DamageFlag.DAMAGE_EXPLOSION, EntityRef(PST:getPlayer()), 0)
                         end
                     end
-                    PST.specialNodes.ancwep_volatileArbalestCD = 30
+                    PST.specialNodes.ancwep_volatileArbalestCD = 15
                 end
 
                 -- Ancient weapon mod: Circuit Splitter

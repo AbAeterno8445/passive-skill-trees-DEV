@@ -481,9 +481,9 @@ PST.astralWepMods = {
         serial = 86,
         description = PST:getLocalized("aforge_mod_desc_divineInterceptor"),
         ancient = true,
-        minRolls = {0},
-        maxRolls = {6},
-        upgIncrements = {1}
+        minRolls = {0, 5},
+        maxRolls = {6, 3.5},
+        upgIncrements = {1, 0.25}
     },
     -- Ancient Estocs
     arcingNeedle = {
@@ -565,9 +565,9 @@ PST.astralWepMods = {
         serial = 51,
         description = PST:getLocalized("aforge_mod_desc_gravitas"),
         ancient = true,
-        minRolls = {7, 30, 12},
-        maxRolls = {12, 50, 6},
-        upgIncrements = {0.25, 2, -0.5}
+        minRolls = {7, 30},
+        maxRolls = {12, 50},
+        upgIncrements = {0.25, 2}
     },
     borealSpear = {
         serial = 52,
@@ -639,9 +639,9 @@ PST.astralWepMods = {
         serial = 60,
         description = PST:getLocalized("aforge_mod_desc_mobripper"),
         ancient = true,
-        minRolls = {250, 25},
-        maxRolls = {350, 15},
-        upgIncrements = {8, -1}
+        minRolls = {250, 35},
+        maxRolls = {300, 25},
+        upgIncrements = {4, -1}
     },
     -- Ancient Axes
     starsteelBroadaxe = {
@@ -740,17 +740,17 @@ PST.astralWepMods = {
         serial = 71,
         description = PST:getLocalized("aforge_mod_desc_volatileArbalest"),
         ancient = true,
-        minRolls = {7, 250},
-        maxRolls = {10, 400},
-        upgIncrements = {0.2, 10}
+        minRolls = {10, 250},
+        maxRolls = {15, 400},
+        upgIncrements = {0.4, 10}
     },
     avelyn = {
         serial = 72,
         description = PST:getLocalized("aforge_mod_desc_avelyn"),
         ancient = true,
-        minRolls = {4, 40},
-        maxRolls = {2.5, 75},
-        upgIncrements = {-0.1, 1}
+        minRolls = {2.5, 80},
+        maxRolls = {1, 125},
+        upgIncrements = {-0.15, 5}
     },
     preciseSeeker = {
         serial = 73,
@@ -847,9 +847,9 @@ PST.astralWepMods = {
         serial = 84,
         description = PST:getLocalized("aforge_mod_desc_azurebinder"),
         ancient = true,
-        minRolls = {1, 8},
-        maxRolls = {3, 15},
-        upgIncrements = {0.2, 0.2, 0.4}
+        minRolls = {1, 15},
+        maxRolls = {3, 30},
+        upgIncrements = {0.2, 1, 0.4}
     },
     sacredScourge = {
         serial = 85,
@@ -1217,7 +1217,7 @@ PST.astralWepData = {
             description = PST:getLocalized("aforge_mod_desc_axeImp"),
             rollsFunc = function(honing)
                 return {
-                    roll1 = 6 + PST:roundFloat(9 * (honing / 50), -2),
+                    roll1 = 10 + PST:roundFloat(12 * (honing / 50), -2),
                     roll2 = 10 + PST:roundFloat(6 * (honing / 50), -2)
                 }
             end
