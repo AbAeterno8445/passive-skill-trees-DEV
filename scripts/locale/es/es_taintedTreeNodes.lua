@@ -159,6 +159,10 @@ return {
         "{{bloodDonoTempHearts}}% chance de crear 1/2 corazón rojo al usar una Máquina de Donación de Sangre, el cual",
         "desaparece luego de 2 segundos."
     },
+    ["node_heartdraincd_name"] = "Drenaje de Corazones",
+    ["node_heartdraincd"] = {
+        "+{{heartDrainCD}} segundos antes de que los corazones rojos excesivos sean drenados."
+    },
 
 
     -- T. CAIN'S TREE --

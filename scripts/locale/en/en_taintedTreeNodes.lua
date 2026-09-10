@@ -158,6 +158,10 @@ return {
         "{{bloodDonoTempHearts}}% chance to drop a 1/2 red heart when using a Blood Donation Machine, which vanishes",
         "after 2 seconds."
     },
+    ["node_heartdraincd_name"] = "Heart Drain Delay",
+    ["node_heartdraincd"] = {
+        "+{{heartDrainCD}} seconds before excess red hearts are drained."
+    },
 
 
     -- T. CAIN'S TREE --

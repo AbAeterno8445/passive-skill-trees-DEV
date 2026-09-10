@@ -1730,6 +1730,23 @@ function PST:frameUpdate()
 		updateTrackers.bloodCharges = player:GetEffectiveBloodCharge()
 	end
 
+	-- Tainted Magdalene heart drain timer changes
+	if player:GetPlayerType() == PlayerType.PLAYER_MAGDALENE_B then
+		local magTimer = player:GetMaggyHealthDrainCooldown()
+		if magTimer > updateTrackers.magHeartDrain and not PST:getTreeSnapshotMod("magHeartDrainProc", false) then
+			-- Mod: + seconds before excess red hearts are drained
+			tmpMod = PST:getTreeSnapshotMod("heartDrainCD", 0)
+			if tmpMod > 0 then
+				player:SetMaggyHealthDrainCooldown(magTimer + math.ceil(tmpMod * 30))
+			end
+			updateTrackers.magHeartDrain = player:GetMaggyHealthDrainCooldown()
+			PST:addModifiers({ magHeartDrainProc = true }, true)
+		elseif magTimer == 1 then
+			updateTrackers.magHeartDrain = 0
+			PST:addModifiers({ magHeartDrainProc = false }, true)
+		end
+	end
+
 	-- Mod: every X total seconds spent firing, shoot an additional piercing/homing tear
 	tmpMod = PST:getTreeSnapshotMod("tBethHomingTear", 0)
 	if tmpMod > 0 then

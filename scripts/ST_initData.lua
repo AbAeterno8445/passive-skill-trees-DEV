@@ -778,7 +778,8 @@ function PST:resetMods()
 			craftBagPickups = 0,
 			isBerserk = false,
 			bloodCharges = 0,
-			keyTracker = 0
+			keyTracker = 0,
+			magHeartDrain = 0
 		},
 
 		-- 'Keystone' nodes
@@ -1239,6 +1240,7 @@ function PST:resetMods()
 		creepDamage = 0,
 		halfHeartPickupToFull = 0,
 		bloodDonoTempHeart = 0,
+		heartDrainCD = 0,
 		---- T. Cain ----
 		ransacking = false,
 		ransackingRoomPickups = 0,
