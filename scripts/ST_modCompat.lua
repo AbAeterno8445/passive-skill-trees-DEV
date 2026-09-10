@@ -104,6 +104,7 @@ function PST:initModCompat()
         table.insert(PST.songOfTheFewFamiliars, Epiphany.Item.LIL_GUPPY.ID)
         table.insert(PST.songOfTheFewFamiliars, Epiphany.Item.OLD_KNIFE.ID)
 		table.insert(PST.songOfTheFewFamiliars, Epiphany.Item.CARDBOARD_CUTOUT.ID)
+		table.insert(PST.songOfTheFewFamiliars, Epiphany.Item.RELATIVE_ROBBY.ID)
 
         -- Grand Consonance node whitelist
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Old Knife"))
@@ -149,6 +150,7 @@ function PST:initModCompat()
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Bowler"))
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Mr. Gurgle"))
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Flagpole"))
+        table.insert(PST.noChampionMobs, PST_getCustomMobTable("Little Boy"))
 
 		-- No, really, no champions!
 		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Fishaac"))
@@ -158,6 +160,7 @@ function PST:initModCompat()
         table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Sub Horf"))
 		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Gurgle"))
 		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Gob"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Little Boy"))
 
         -- Segmented bosses
         table.insert(PST.segmentBosses, Isaac.GetEntityTypeByName("Kingpin"))
@@ -183,12 +186,20 @@ function PST:initModCompat()
             "Oralopede", "Tommy", "Benny", "Steralis", "Lurker", "Enlightened", "Effigy",
             "Deadfly", "Cherub", "Cherubskull", "Congression", "Specturn", "Dizzy", "Reaper", "Buck",
             "The Whispers", "Griddle Horn", "Meltdown", "Ghostbuster", "Slinger", "Aquagob", "Junkstrap",
-            "The Organization", "Dusk", "Mr. Dead", "Cacophobia", "Gravedigger", "Drainer"
+            "The Organization", "Dusk", "Mr. Dead", "Cacophobia", "Gravedigger", "Drainer", "Suave", "Fog Stalker",
+			"Ghastly", "Blubbie", "Drowned Spitty", "Drowned Conjoined Spitty", "Klutz", "Writhe", "Clickety Char", 
+			"Mirage", "Skullshroom", "Anti Fiend", "Desolator", "Elephant", "Elephant Jr", "Flux", "Necorn",  "Meltdown's Head", 
+			"Meltdown's Head 2", "Red Bony", "Meatsack", "Kawasaki", "Kriegsheld", "Brandon", "Angler", "Hazy",
+			"Chubber Embryo", "Drowned Embryo", "Pale Embryo", "Headless Embryo", "Scarred Embryo", "Blue Embryo", "Guillotine Embryo", "Peeping Embryo", "Level 2 Embryo", "Skinless Embryo", "Tainted Embryo"
         }
         PST_addUndeadMobs(tmpUndead)
 
         -- Progression items
         table.insert(PST.progressionItems, Isaac.GetItemIdByName("Contraband"))
+
+		-- Bean items
+        table.insert(PST.beanActives, Isaac.GetItemIdByName("Holy Bean"))
+        table.insert(PST.beanActives, Isaac.GetItemIdByName("Black-Eyed Pea"))
 
         -- Baby Familiars
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Fiend"))
@@ -198,23 +209,39 @@ function PST:initModCompat()
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Sibling Syl"))
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Robo-Baby 3.0"))
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Bag of Bobbies"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Friend"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Antisaac"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Cherub Chubby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Careless Whispers"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Outlet Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Papal Pal"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Burglar Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Cyborg Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Baby Bell"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Cry Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Inaba"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Skibidi Baby"))
 
         -- Demon familiars
         table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Lil Fiend"))
         table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Lil Lamb"))
+        table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Lil Friend"))
 
         -- Poop items
         table.insert(PST.poopItems, Isaac.GetItemIdByName("Nugget Bombs"))
         table.insert(PST.poopItems, Isaac.GetItemIdByName("The Brown Horn"))
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("18 Foot Leash"))
 
         -- Poop trinkets
         table.insert(PST.poopTrinkets, Isaac.GetTrinketIdByName("Petrified Gel"))
         table.insert(PST.poopTrinkets, Isaac.GetTrinketIdByName("Coprolite Fossil"))
+        table.insert(PST.poopTrinkets, Isaac.GetTrinketIdByName("Poop Penny"))
 
         local tmpHPUpItems = {
             {"GMO Corn", 1}, {"Bacon Grease", 1}, {"Leftover Takeout", 1}, {"Glizzy", 1}, {"Tea", 1}, {"Fraudulent Fungus", 1},
             {"Strange Red Object", 1}, {"Chomp Chomp!", 10}, {"Kinda Egg", 1}, {"Dad's Dip", 1}, {"Goldshi Lunch", 1},
-            {"Reheated Pizza", 1}, {"Chirumiru", 1}, {"Spare Ribs", 1}, {"The Deluxe", 3}, {"Bottle of Water", 2}
+            {"Reheated Pizza", 1}, {"Chirumiru", 1}, {"Spare Ribs", 1}, {"The Deluxe", 3}, {"Bottle of Water", 2}, {"Level 2 Breakfast", 2},
+			{"Fun Pizza", 1}, {"Space Food", 1}, {"Baby Formula", 1}, {"Tower of Heaven", 1}, {"Green Apple", 1}
         }
         for _, tmpItem in ipairs(tmpHPUpItems) do
             local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
@@ -242,7 +269,9 @@ function PST:initModCompat()
             "3 of Wands", "3 of Swords", "3 of Pentacles", "3 of Cups", "King of Wands", "King of Swords",
             "King of Pentacles", "King of Cups", "Grass Energy", "Fire Energy", "Water Energy", "Lightning Energy",
             "Fighting Energy", "Psychic Energy", "Colorless Energy", "Darkness Energy", "Metal Energy",
-            "Dragon Energy", "Fairy Energy"
+            "Dragon Energy", "Fairy Energy", "Aberrant Lovers", "Aberrant Death", "Aberrant Tower", "Aberrant Stars", 
+			"Aberrant Moon", "Aberrant Sun", "Misprinted 3 of Diamonds", "Misprinted JusticeJack", "King of Pentacles?", 
+			"Misprinted King of Pentacles", "XXIII - Happy Squirrel", "XVIIIb - The Invisible Moon"
         }
         for _, tmpCard in ipairs(tmpCards) do
             local tmpCardID = Isaac.GetCardIdByName(tmpCard)
@@ -255,6 +284,9 @@ function PST:initModCompat()
         table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Nyx"))
         table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Deimos"))
         table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Monas Hieroglyphica"))
+        table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Ganymede"))
+        table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Planet X"))
+        table.insert(PST.planetariumItems, Isaac.GetItemIdByName("G!kún||'hòmdímà")) -- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
         -- Penny trinkets
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Egg Penny"))
@@ -263,10 +295,40 @@ function PST:initModCompat()
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Molten Penny"))
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Fuzzy Penny"))
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Ore Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Bent Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Trollface Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Airbag Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Micro Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Map Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Pretty Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Facebook Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Charitable Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Devious Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Switch Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Poop Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Slippery Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Canadian Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Alpha Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Stone Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Red Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Puck Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Prism Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Berry Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Calcium Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Dog Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Dad's Lost Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Sundial Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Loaded Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Brazilian Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Honeyed Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Scarab Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Flaming Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Stack of Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Penny Pack"))
 
         -- Soul stones
         local tmpSoulstones = {
-            {"Fiend", "Soul of Fiend"}, {"Golem", "Soul of Golem"}
+            {"Fiend", "Soul of Fiend"}, {"Golem", "Soul of Golem"}, {"Friend", "Soul of Friend"}, {"Inaba", "Soul of Inaba"}, {"Craig", "Soul of Craig"}
         }
         for _, tmpSoulData in ipairs(tmpSoulstones) do
             for i=1,2 do
@@ -296,6 +358,35 @@ function PST:initModCompat()
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Clutch's Curse"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Pet Peeve"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Bag of Bobbies"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Friend"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Antisaac"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Cherub Chubby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Careless Whispers"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Outlet Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Papal Pal"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Burglar Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Cyborg Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Baby Bell"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Cry Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Lil Inaba"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Skibidi Baby"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Default Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Devil Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Divine Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Discount Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Dead Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Destined Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Daunting Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Dwarf Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Dewey Decimal Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Dog Dog Dog Dog"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Kalu"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Plasma Ball"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Planet X"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Devilsknife"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Hare-Trigger"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Dumb Bunny"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Soul Extraction Bum"))
 
         -- Grand Consonance node whitelist
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Baby Crater"))
@@ -307,6 +398,16 @@ function PST:initModCompat()
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Token Bag"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Bag of Bobbies"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Fetal Stone"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Lil Inaba"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Lil Friend"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Papal Pal"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burglar Baby"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cyborg Baby"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Outlet Baby"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Hare-Trigger Familiar"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Dumb Bunny Familiar"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Soul Extraction Familiar"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Double Dog Dog"))
 
         -- Coin machines
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Robot Teller"))
@@ -314,6 +415,9 @@ function PST:initModCompat()
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Vending Machine (Fiend Folio)"))
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Golden Slot Machine"))
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Midarizer"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Penny Press"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Milk Machine"))
+        table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("MM Quality Modulator"))
 
         -- Bone items
         table.insert(PST.boneItems, Isaac.GetItemIdByName("Spare Ribs"))
@@ -751,6 +855,8 @@ function PST:initModCompat()
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Conqueror Baby"))
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Boner Baby"))
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Burnt Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Plague Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Spider Kid"))
 
         -- Poop Items
         table.insert(PST.poopItems, Isaac.GetItemIdByName("Potty"))
@@ -760,7 +866,7 @@ function PST:initModCompat()
 
         --HP Ups
         local tmpHPUpItems = {
-            {"Taco", 1}, {"Gummy Bear", 1}, {"Croissant", 1}, {"Brunch", 1}, {"Mystery Meat", 1}, {"Akedah", 3}, {"Mudpie", 1}, {"Old Bib", 1}
+            {"Taco", 1}, {"Gummy Bear", 1}, {"Croissant", 1}, {"Brunch", 1}, {"Mystery Meat", 1}, {"Akedah", 3}, {"Mudpie", 1}, {"Old Bib", 1}, {"Drip Key", 1}
         }
         for _, tmpItem in ipairs(tmpHPUpItems) do
             local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
@@ -798,11 +904,16 @@ function PST:initModCompat()
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Conqueror Baby"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Boner Baby"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Burnt Baby"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Plauge Baby"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Spider Kid"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Mandrake"))
 
 		-- Grand Consonance
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cousin Cletus"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Boner Baby"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Burnt Baby"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Plague Baby"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Spider Kid"))
 		-- Interested in seeing synergies for: Conqueror Baby (like dry baby), 
 
         -- Bean items
@@ -822,6 +933,18 @@ function PST:initModCompat()
 
 		-- Beggars
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Fat Beggar"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Hobo"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Cute Beggar"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Gimp Beggar"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Conjoined Beggar"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Ill Beggar"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Box Beggar"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Horny Devil (Beggar)"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Belial (Beggar)"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Sex Pest (Beggar)"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Dominion (Beggar)"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Virtue (Beggar)"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Angel Intern (Beggar)"))
 	end
 
     -- God's Gambit (TODO: review interactions with effects such as Challenger's Starpiece + check if GetEntityTypeByName works instead)
@@ -1048,12 +1171,15 @@ function PST:initModCompat()
         -- Baby Familiars
 		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Sister Shion"))
 
+		-- Poop Items
+        table.insert(PST.poopItems, Isaac.GetItemIdByName("Glitched Creature"))
+
 		-- Dice items
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("D58"))
 
 		-- Soul stones
         local tmpSoulstones = {
-            {"Flandre", "Soul of Flandre"}
+            {"Flandre", "Soul of Flandre"}, {"Reimu", "Soul of Reimu"}, {"Rin", "Regret of Rin"}
         }
         for _, tmpSoulData in ipairs(tmpSoulstones) do
             for i=1,2 do
@@ -1068,9 +1194,13 @@ function PST:initModCompat()
         -- Song of the Few Familiars
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Power Point"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Sister Shion"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Frost Orb"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("The Lightless Shadow"))
 
 		-- Beggars
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Shion Beggar"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Nazrin"))
+		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Flan-chan"))
 	end
 
 	-- THE FUTURE
@@ -1495,7 +1625,7 @@ function PST:initModCompat()
 	end
 
 	-- Arachna
-	if ARACHNAMOD and not initMods.arachna then
+	if ArachnaMod and not initMods.arachna then
         initMods.arachna = true
 
 		-- Baby familiars
@@ -1538,6 +1668,9 @@ function PST:initModCompat()
 		-- Baby familiars
 		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lililith"))
 		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Cultist Baby"))
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Clubby Seal"))
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Bum-bo Baby"))
+		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Aether Octopus"))
 
 		-- Demon familiars
 		table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Lililith"))
@@ -1546,7 +1679,7 @@ function PST:initModCompat()
         local tmpHPUpItems = {
             {"Potato", 1}, {"Muscle Meat", 1}, {"Holy Ravioli", 1}, {"Angry Meal", 1},
 			{"Bacon Pancakes", 1}, {"Aurora", 1}, {"Wonder Waffle", 1}, {"Loaf of Bread", 1},
-			{"Jelly-Filled Donut", 1}, {"Onigirya", 1}
+			{"Jelly-Filled Donut", 1}, {"Onigirya", 1}, {"Instant Noodles", 1}, {"Chorizo", 1}
         }
         for _, tmpItem in ipairs(tmpHPUpItems) do
             local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
@@ -1572,6 +1705,7 @@ function PST:initModCompat()
 		table.insert(PST.allRunes, Isaac.GetCardIdByName("Golden Bronze"))
 		table.insert(PST.allRunes, Isaac.GetCardIdByName("Glistening Gold"))
 		table.insert(PST.allRunes, Isaac.GetCardIdByName("Charming Gem"))
+		table.insert(PST.allRunes, Isaac.GetCardIdByName("Delta Rune"))
 
 		-- Blue Gambit cards (the duplicates are intentional, they have spaces after them so they can work as different cards - wooky)
         local tmpCards = {
@@ -1585,7 +1719,7 @@ function PST:initModCompat()
 			"Storm Temple Card", "Zero Milestone Card", "Ancestral Crypt Card", "Ancestral Crypt Card", "Cemetery Card",
 			"Village Card", "Grove Card", "Spider Cocoon Card", "Vampire Mansion Card", "Wheat Fields Card", "Swamp Card",
 			"Ruins Card", "Road Lantern Card", "Smith's Forge Card", "Chrono Crystals Card", "Witch Hut Card", "Beacon Card",
-			"Temporal Beacon Card"
+			"Temporal Beacon Card", "Knave of Hearts"
         }
         for _, tmpCard in ipairs(tmpCards) do
             local tmpCardID = Isaac.GetCardIdByName(tmpCard)
@@ -1630,11 +1764,17 @@ function PST:initModCompat()
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Cultist Baby"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Magician's Top"))
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Betty Sweetooth"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Clubby Seal"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Bum-bo Baby"))
+		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Aether Octopus"))
 
 		-- Grand Consonance
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Red Bag"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Stone Frog fam"))
 		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Cultist Baby"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Bum-bo Baby"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Aether Octopus"))
+		table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Clubby Seal"))
 
 		-- Beggars
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Mongo Beggar"))
@@ -1907,14 +2047,14 @@ function PST:initModCompat()
 		table.insert(PST.poopItems, Isaac.GetItemIdByName("Uranus?"))
 
 		-- Planetarium items
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Mercurius?"))
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Venus?"))
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Terra?"))
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Mars?"))
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Jupiter?"))
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Saturnus?"))
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Uranus?"))
-		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Neptunus?"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Mercurius"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Venus"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Terra"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Mars"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Jupiter"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Saturnus"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Uranus"))
+		table.insert(PST.planetariumItems, Isaac.GetItemIdByName("Retrograde Neptunus"))
 
 		-- Song of the Few
 		table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Venus?"))
@@ -2426,6 +2566,21 @@ function PST:initModBlueItems()
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Chirumiru"))
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Bedtime Story"))
         table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Telebombs"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Ganymede"))
+        table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Planet X"))
+        table.insert(PST.blueItemPool, Isaac.GetItemIdByName("G!kún||'hòmdímà"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Shock Image"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Level 2 Breakfast"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Shuffle Time"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Speed Module"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Stardust"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Cyborg Baby"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Eternal Pendant"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Pyx"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Can of Beans"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Echolilac"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Snooze Button"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Magic Bullet"))
     end
 
     -- Revelations blue items
@@ -2506,6 +2661,10 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Fantasy Talisman"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Sing-Along Buddy"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Sister Shion"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Frost Orb"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Giant Killer"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("The Blue Reverberation"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Detective Magnifying Glass"))
 	end
 
 	-- Andromeda blue items
@@ -2569,6 +2728,7 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Witch's Cap"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Blue Soup"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Fool Moon"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Lot's Stone"))
 	end
 
 	-- Kicks and Giggles blue items
