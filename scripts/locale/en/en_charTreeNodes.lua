@@ -450,7 +450,7 @@ return {
     },
     ["node_trueending_name"] = "A True Ending?",
     ["node_trueending"] = {
-        "First floor's boss, Mom and Mom's Heart drop a Suicide King card when defeated.",
+        "First floor's boss, Mom and Mom's Heart/It Lives drop a Suicide King card when defeated.",
         "+2% all stats as Lazarus Risen per Suicide King card used."
     },
     ["node_growingcontrition_name"] = "Growing Contrition",
