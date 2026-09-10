@@ -6,6 +6,7 @@ function PST:getChangelogList()
         "v1.3.11",
         "- Internal support for character profiles, for upcoming Astral Vessel updates.",
         "- Additional compatibility for new mod items and entities (wookywok).",
+        "- Fixed Crimson Node descriptions not loading localized text when a target node is selected.",
         "",
 
         "v1.3.10",

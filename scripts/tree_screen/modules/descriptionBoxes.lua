@@ -465,12 +465,26 @@ function descriptionBoxesModule:Render(tScreen)
                         end
                     end
                     if tgtNode then
-                        tmpDescription = {
-                            table.unpack(hoveredNode.description),
-                            {PST:getLocalized("ui_selNode") .. ": " .. tgtNode.name, PST.kcolors.LIGHTRED1}
-                        }
-                        for _, tmpLine in ipairs(tgtNode.description) do
-                            table.insert(tmpDescription, {tmpLine, PST.kcolors.LIGHTRED1})
+                        tmpDescription = {}
+                        -- Crimson node description
+                        local srcNodeDesc = PST:getLocalizedFormat(hoveredNode.description[1], hoveredNode.modifiers)
+                        if type(srcNodeDesc) == "table" then
+                            for _, tmpLine in ipairs(srcNodeDesc) do
+                                table.insert(tmpDescription, tmpLine)
+                            end
+                        else
+                            table.insert(tmpDescription, srcNodeDesc)
+                        end
+
+                        -- Append selected node's description
+                        table.insert(tmpDescription, {PST:getLocalized("ui_selNode") .. ": " .. PST:getLocalized(tgtNode.name), PST.kcolors.LIGHTRED1})
+                        local tgtNodeDesc = PST:getLocalizedFormat(tgtNode.description[1], tgtNode.modifiers)
+                        if type(tgtNodeDesc) == "table" then
+                            for _, tmpLine in ipairs(tgtNodeDesc) do
+                                table.insert(tmpDescription, {tmpLine, PST.kcolors.LIGHTRED1})
+                            end
+                        else
+                            table.insert(tmpDescription, {tgtNodeDesc, PST.kcolors.LIGHTRED1})
                         end
                     end
                 end
