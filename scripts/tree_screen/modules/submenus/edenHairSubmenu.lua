@@ -8,7 +8,7 @@ local edenHairSubmenu = {
 local isaacHeadSprite = Sprite("gfx/001.000_player.anm2", true)
 isaacHeadSprite:SetFrame("HeadDown", 0)
 
-local hairstyleCount = 40
+local hairstyleCount = 54
 edenHairSubmenu.edenHairSprite:SetFrame("HeadDown", 0)
 
 local headFrames = {"HeadDown", "HeadLeft", "HeadUp", "HeadRight"}

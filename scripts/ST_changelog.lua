@@ -4,7 +4,8 @@ function PST:getChangelogList()
         "",
 
         "v1.3.11",
-        "- Internal support for character profiles, for upcoming Astral Vessel updates.",
+        "- Internal character support features, for Astral Vessel (character mod) compatibility.",
+        "- New Rep+ Eden hairstyles are now available for the Eden Hairdo node.",
         "- Additional compatibility for new mod items and entities (wookywok).",
         "- Fixed Iridescent Purity (Ancient Jewel) being able to target a character's starting items.",
         "- Fixed Crimson Node descriptions not loading localized text when a target node is selected.",
