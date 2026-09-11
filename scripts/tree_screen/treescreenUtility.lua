@@ -212,7 +212,7 @@ function PST:addCloseTreeExtraFunc(funcName, func)
 end
 
 -- Close tree
-function PST:closeTreeMenu(mute, force)
+function PST:closeTreeMenu(mute)
     if PST.treeScreen.treeHasChanges then
         PST:save(true)
         -- Dynamic Tree Mode, update player cache
@@ -236,8 +236,6 @@ function PST:closeTreeMenu(mute, force)
     if not Isaac.IsInGame() then
         ---@diagnostic disable-next-line: param-type-mismatch
         MenuManager.SetInputMask(PST.menuInputMask)
-    elseif not Game():IsPauseMenuOpen() and not force then
-        return
     else
         Game():GetHUD():SetVisible(true)
     end
@@ -255,8 +253,4 @@ function PST:closeTreeMenu(mute, force)
     PST.treeScreen.backupsPopup = false
     PST.treeScreen.currentTree = "global"
     PST.treeScreen.open = false
-
-    if Isaac.IsInGame() then
-        PauseMenu.SetState(PauseMenuStates.CLOSED)
-    end
 end

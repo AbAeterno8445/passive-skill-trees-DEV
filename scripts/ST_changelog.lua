@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.3.11",
+        "- Adjusted how the game pauses while the tree menu is open, and should work more reliably now.",
         "- Added 'Heart Drain Delay' sets of nodes for Tainted Magdalene.",
         "- New Rep+ Eden hairstyles are now available for the Eden Hairdo node.",
         "- Additional compatibility for new mod items and entities (wookywok).",

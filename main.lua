@@ -371,6 +371,7 @@ include("scripts.ST_onDamage")
 include("scripts.ST_postDamage")
 include("scripts.ST_onDeath")
 include("scripts.ST_onHeartUpdates")
+include("scripts.ST_preUpdate")
 include("scripts.ST_onUpdate")
 include("scripts.ST_onUpdateRoomClear")
 include("scripts.ST_rendering")
@@ -429,6 +430,7 @@ PST:AddCallback(ModCallbacks.MC_POST_TEAR_DEATH, PST.onTearDeath)
 PST:AddCallback(ModCallbacks.MC_POST_TEAR_COLLISION, PST.onTearCollision)
 PST:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, PST.onRoomClear)
 -- Repentogon callbacks
+PST:AddCallback(ModCallbacks.MC_PRE_UPDATE, PST.preUpdate)
 PST:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PST.onSaveSlot)
 PST:AddCallback(ModCallbacks.MC_POST_COMPLETION_MARKS_RENDER, PST.onCharSelect)
 PST:AddCallback(ModCallbacks.MC_PRE_SLOT_COLLISION, PST.preSlotCollision)
@@ -537,7 +539,7 @@ if Isaac.IsInGame() then
 
 	PST.gameInit = true
 
-	PST:closeTreeMenu(true, true)
+	PST:closeTreeMenu(true)
 end
 
 PST:initModCompat()

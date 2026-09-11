@@ -146,7 +146,7 @@ function PST:treeScreenMenuRender()
     -- Input: Open tree menu (outside game)
     if not Isaac.IsInGame() then
         if PST.treeScreen.open and not isCharMenu then
-            PST:closeTreeMenu(true, true)
+            PST:closeTreeMenu(true)
         elseif (PST:isKeybindActive(PSTKeybind.OPEN_TREE) or (not PST.treeScreen.open and PST:IsActionTriggered(ButtonAction.ACTION_ITEM, 1))) and isCharMenu then
             if PST.treeScreen.open then
                 PST:closeTreeMenu()
@@ -190,10 +190,8 @@ function PST:treeScreenMenuRender()
 
     -- Actual tree rendering when opened
     if PST.treeScreen.open then
-        if Isaac.IsInGame() and PauseMenu.GetState() ~= 4 then
-            -- Pause screen state 4 seems to keep the game paused without interface interaction in the background
-            ---@diagnostic disable-next-line: param-type-mismatch
-            PauseMenu.SetState(4)
+        if Isaac.IsInGame() and Game():IsPauseMenuOpen() then
+            PauseMenu.SetState(PauseMenuStates.CLOSED)
         end
 
         PST.treeScreen:Update()

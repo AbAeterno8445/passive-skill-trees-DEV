@@ -129,11 +129,8 @@ function PST:Render()
 	end
 
 	-- Input: Open tree menu (in-game)
-	-- Keyboard allows opening in-game if the option is defined, or in pause screen only otherwise. Controller is always pause-only.
 	if Isaac.IsInGame() then
-		local gamePaused = Game():IsPauseMenuOpen()
-		local kbPauseEnabled = gamePaused or (not gamePaused and PST.config.allowTreeWithoutPause)
-		if (kbPauseEnabled and PST:isKeybindActive(PSTKeybind.OPEN_TREE_KEY)) or (PST:isKeybindActive(PSTKeybind.OPEN_TREE_CONT) and gamePaused) then
+		if PST:isKeybindActive(PSTKeybind.OPEN_TREE_KEY) or (PST:isKeybindActive(PSTKeybind.OPEN_TREE_CONT) and Game():IsPauseMenuOpen()) then
 			if not PST.treeScreen.open then
 				PST:openTreeMenu()
 			else
