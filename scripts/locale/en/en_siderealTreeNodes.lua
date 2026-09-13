@@ -224,8 +224,11 @@ return {
     ["node_companionslot"] = {
         "Once allocated, press Allocate to select a hatched companion to equip.",
         "Equipped companions will scavenge arcane obols whenever their objective is fulfilled, up to a limit.",
+        "This floor limit can be increased by reaching deeper expedition levels.",
         "Companions may level up to 3, improving their effect on the run. Leveling a companion to 3 additionally",
-        "provides rewards."
+        "provides rewards.",
+        "Companions cannot be switched while in a run. Continuing a run will restore equipped companions to the ones",
+        "that run started with."
     },
 
     ["node_scavengedobols_name"] = "Scavenged Obols",

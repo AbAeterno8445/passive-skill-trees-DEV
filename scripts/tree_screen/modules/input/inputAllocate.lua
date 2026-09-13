@@ -546,11 +546,23 @@ function PST.treeScreen:InputAllocate()
                         if compData.level < 3 and compData.objProg >= baseCompData.objReqs[compData.level + 1] then
                             -- Ready to level up
                             PST:astralCompLevelUp(tmpComp)
-                            SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+
+                            -- Level 3 rewards
+                            if compData.level == 2 then
+                                PST.modData.skillPoints = PST.modData.skillPoints + 3
+                                PST.modData.ancientStardust = PST.modData.ancientStardust + 1
+                                SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.8)
+                            else
+                                SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+                            end
                         else
-                            -- Equip/unequip companion on slot
-                            PST:equipAstralComp(tmpComp, tostring(PST.selectedAstralCompanionSlot), true)
-                            SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                            if not Isaac.IsInGame() then
+                                -- Equip/unequip companion on slot
+                                PST:equipAstralComp(tmpComp, tostring(PST.selectedAstralCompanionSlot), true)
+                                SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                            else
+                                SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
+                            end
                         end
                     end
                 end

@@ -617,6 +617,10 @@ function PST:onPickup(pickup, collider, low, forced)
     if pickup:GetSprite():GetAnimation() ~= "Collect" and not forced then return end
 
     if player and (not pickup:IsShopItem() or forced) then
+        -- Astral Companion: Quokka scavenge event and objective
+        PST:astralCompAddProgress("quokka", 1)
+        PST:astralCompProcScavenge("quokka")
+
         -- On pickup coin
         if variant == PickupVariant.PICKUP_COIN then
             local coinChance = PST:getTreeSnapshotMod("coinDupe", 0)
@@ -627,6 +631,22 @@ function PST:onPickup(pickup, collider, low, forced)
 
             -- Expedition objective: grab coins
 			PST:expedAddProgInRun("coins", pickup:GetCoinValue())
+
+            -- Astral Companion: Rat scavenge event and objective
+            PST:astralCompAddProgress("rat", 1)
+            PST:astralCompProcScavenge("rat")
+
+            -- Astral Companion: River Rat scavenge event and objective
+            if subtype ~= CoinSubType.COIN_PENNY then
+                PST:astralCompAddProgress("riverRat", 1)
+                PST:astralCompProcScavenge("riverRat")
+            end
+
+            -- Astral Companion: Hell Rat scavenge event and objective
+            if PST:getLevel():GetStage() >= 7 then
+                PST:astralCompAddProgress("hellRat", 1)
+                PST:astralCompProcScavenge("hellRat")
+            end
 
             -- Grand Consonance node (T. Siren's tree) - Bum Friend
             if PST:getTreeSnapshotMod("grandConsonance", false) and player:HasCollectible(CollectibleType.COLLECTIBLE_BUM_FRIEND) then
@@ -659,7 +679,7 @@ function PST:onPickup(pickup, collider, low, forced)
             end
 
             -- Astral weapon mod: +% damage for X seconds when picking up any coin
-            local tmpMod = PST:getSnapAstralWepMod("coinPickupDmg")
+            tmpMod = PST:getSnapAstralWepMod("coinPickupDmg")
             if tmpMod then
                 PST.specialNodes.astralwep_coinBuff = math.min(tmpMod[3], PST.specialNodes.astralwep_coinBuff + tmpMod[1])
                 PST.specialNodes.astralwep_coinTimer = math.ceil(tmpMod[2] * 30)

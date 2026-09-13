@@ -371,6 +371,8 @@ local descriptionBoxesModule = {
                     end
                 end
             end
+            table.insert(nodeDesc, "")
+            table.insert(nodeDesc, {PST:getLocalized("astralcomp_ui_slotActiveWarn" .. extraData.node.reqs.companionSlot), PST.kcolors.ANCIENT_ORANGE})
             return { name = descName, description = nodeDesc }
         end,
 
@@ -601,7 +603,7 @@ function descriptionBoxesModule:Render(tScreen)
                 if currentChar and currentChar.crimsonStarcores and currentChar.crimsonStarcores >= crimsonStarcoreReq then
                     tmpColor = PST.kcolors.GREEN1
                 end
-                table.insert(tmpDescription, {PST:getLocalized("ui_crimsonCoreReq"), tmpColor})
+                table.insert(tmpDescription, {PST:getLocalizedFormatStr("ui_crimsonCoreReq", { crimsonCores = crimsonStarcoreReq }), tmpColor})
 
                 if currentChar then
                     table.insert(tmpDescription, {
@@ -782,6 +784,14 @@ function descriptionBoxesModule:Render(tScreen)
                 local equippedComp = PST:getEquippedAstralComp(PST.selectedAstralCompanionSlot)
                 if compData and compData.level < 3 and compData.objProg >= baseCompData.objReqs[compData.level + 1] then
                     table.insert(compDesc, {PST:getLocalized("astralcomp_ui_compLevelReady"), PST.kcolors.GREEN1})
+                    -- Level 3 companion reward info
+                    if compData.level == 2 then
+                        table.insert(compDesc, {PST:getLocalized("astralcomp_ui_lv3rewards") .. ":", PST.kcolors.EXPED_BLUE})
+                        table.insert(compDesc, {"+3 " .. PST:getLocalized("ui_globalSkillPointsPL"), PST.kcolors.EXPED_BLUE})
+                        table.insert(compDesc, {"+1 " .. PST:getLocalized("ui_ancStardust"), PST.kcolors.EXPED_BLUE})
+                    end
+                elseif Isaac.IsInGame() then
+                    table.insert(compDesc, {PST:getLocalized("astralcomp_ui_cannotSwitchComp"), PST.kcolors.LIGHTRED1})
                 elseif equippedComp and equippedComp == tmpComp then
                     table.insert(compDesc, PST:getLocalized("astralcomp_ui_allocUnequipComp"))
                 else

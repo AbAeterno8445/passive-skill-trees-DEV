@@ -12,6 +12,7 @@ return {
     ["astralcomp_ui_equippedComp"] = "Equipped companion",
 
     ["astralcomp_ui_lv3effect"] = "Level 3 effect",
+    ["astralcomp_ui_lv3rewards"] = "Level 3 rewards",
     ["astralcomp_ui_eggHatchObj"] = "Egg hatching objective",
     ["astralcomp_ui_hatchingPaused"] = "Hatching paused. Equip the egg to progress its hatching.",
     ["astralcomp_ui_currentlyHatching"] = "Currently hatching.",
@@ -21,6 +22,12 @@ return {
     ["astralcomp_ui_eggNotFound"] = "Egg not found yet.",
     ["astralcomp_ui_locHint"] = "Location hint",
     ["astralcomp_ui_scavengedObols"] = "Scavenged obols",
+    ["astralcomp_ui_cannotSwitchComp"] = "Cannot switch companions while in a run.",
+    ["astralcomp_foundEgg"] = "Found Egg",
+
+    ["astralcomp_ui_slotActiveWarn1"] = "Companions in this slot are only active between floors 1 and 5.",
+    ["astralcomp_ui_slotActiveWarn2"] = "Companions in this slot are only active between floors 6 and 10.",
+    ["astralcomp_ui_slotActiveWarn3"] = "Companions in this slot are always active.",
 
     ---- ASTRAL COMPANIONS ----
     ["astralcomp_rat_name"] = "Rat",
@@ -45,9 +52,9 @@ return {
 
     ["astralcomp_hellrat_name"] = "Hell Rat",
     ["astralcomp_hellrat_eggname"] = "Sulphurous Skittish Egg",
-    ["astralcomp_hellrat_obj"] = "Collect coins past the Womb.",
+    ["astralcomp_hellrat_obj"] = "Collect coins at or past the Womb.",
     ["astralcomp_hellrat_eggHint"] = "Mom.",
-    ["astralcomp_hellrat_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting coins past the Womb, up to {{floorLimit}} times per floor.",
+    ["astralcomp_hellrat_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting coins at or past the Womb, up to {{floorLimit}} times per floor.",
     ["astralcomp_hellrat_maxeffects"] = {
         "8% chance for champion monsters to drop an additional coin on death, increased by 1% per completed floor.",
         "-8% coin scarcity if applicable."
@@ -56,7 +63,7 @@ return {
     ["astralcomp_quokka_name"] = "Quokka",
     ["astralcomp_quokka_eggname"] = "Light Mundane Egg",
     ["astralcomp_quokka_obj"] = "Collect pickups.",
-    ["astralcomp_quokka_eggHint"] = "Floor 1 or 2 bosses.",
+    ["astralcomp_quokka_eggHint"] = "Floor 1 or 2 bosses without taking damage.",
     ["astralcomp_quokka_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting pickups, up to {{floorLimit}} times per floor.",
     ["astralcomp_quokka_maxeffects"] = {
         "12% chance for pickups to give an additional one when collected."

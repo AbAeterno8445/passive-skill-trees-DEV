@@ -152,6 +152,7 @@ return {
     ["ui_reward"] = "Reward",
     ["ui_gain"] = "Gain",
     ["ui_globalSkillPoints"] = "Global Skill Point(s)",
+    ["ui_globalSkillPointsPL"] = "Global Skill Points",
     ["ui_done"] = "Done",
     ["ui_inventory"] = "Inventory",
     ["ui_socket"] = "Socket",

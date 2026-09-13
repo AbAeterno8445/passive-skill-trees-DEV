@@ -4,6 +4,16 @@ function PST:onNewRun(isContinued)
         PST.player = Isaac.GetPlayer()
         PST.gameInit = true
         PST:onNewRoom()
+
+        -- Load Astral Companion config
+        local charData = PST:getCurrentCharData()
+        if charData then
+            if not charData.astralCompanions then charData.astralCompanions = {} end
+            for i=1,3 do
+                local tmpSlotComp = PST:getTreeSnapshotMod("astralCompSlot" .. i, nil)
+                charData.astralCompanions[tostring(i)] = tmpSlotComp
+            end
+        end
         return
     end
 
@@ -556,6 +566,18 @@ function PST:onNewRun(isContinued)
             local tmpCores = PST:getCrimConvCoreCount()
             if charData.crimConvBuff == "starstruck" and tmpCores > 0 then
                 PST:addModifiers({ obolsFound = tmpCores * 2 }, true)
+            end
+        end
+
+        -- Astral Companion chance
+        if PST:isNodeNameAllocated("sidereal", "Astral Companions") then
+            PST:addModifiers({ astralCompEggChance = 100 }, true)
+        end
+
+        -- Astral Companion config
+        if charData and charData.astralCompanions then
+            for i=1,3 do
+                PST:addModifiers({ ["astralCompSlot" .. i] = charData.astralCompanions[tostring(i)] }, true)
             end
         end
     end

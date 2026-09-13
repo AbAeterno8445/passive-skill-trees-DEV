@@ -1,3 +1,6 @@
+-- Defines which floors companion slots 1 and 2 are active in
+PST.astralCompSlotFloors = {{1, 5}, {6, 10}}
+
 -- objReqs: {hatching, level 1->2, level 2->3}
 PST.astralCompanions = {
     rat = {

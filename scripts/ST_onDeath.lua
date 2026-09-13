@@ -337,6 +337,21 @@ function PST:onDeath(entity)
                         PST:expedAddProgInRun("defeatBosses", 1)
                     end
 
+                    -- Astral Companion Egg: Rat & Quokka
+                    if PST:getLevel():GetStage() < 3 then
+                        PST:astralCompEggUnlockProc("rat")
+
+                        if PST:getTreeSnapshotMod("roomHitsReceived", 0) == 0 then
+                            PST:astralCompEggUnlockProc("quokka")
+                        end
+                    end
+
+                    -- Astral Companion Egg: River Rat
+                    if (PST:getLevel():GetStage() == 1 and PST:getLevel():GetStageType() >= 4) or
+                    (PST:getLevel():GetStage() == 2 and PST:getLevel():GetStageType() == StageType.STAGETYPE_AFTERBIRTH) then
+                        PST:astralCompEggUnlockProc("riverRat")
+                    end
+
                     -- Proc up to 5 times within this room, or always on final bosses
                     if PST:getTreeSnapshotMod("roomBossKills", 0) <= 5 or (isFinalBoss and PST:getTreeSnapshotMod("finalBossKillProcs", 0) < 5) then
                         -- Obols on boss kill
@@ -699,6 +714,9 @@ function PST:onDeath(entity)
             if PST:getTreeSnapshotMod("othersideSeeker", false) and not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
                 PST:getPlayer():AddSmeltedTrinket(TrinketType.TRINKET_CRYSTAL_KEY)
             end
+
+            -- Astral Companion Egg: Hell Rat
+            PST:astralCompEggUnlockProc("hellRat")
         -- Mom's Heart death procs
         elseif entity.Type == EntityType.ENTITY_MOMS_HEART and not PST.specialNodes.momHeartDeathProc then
             PST.specialNodes.momDeathProc = true

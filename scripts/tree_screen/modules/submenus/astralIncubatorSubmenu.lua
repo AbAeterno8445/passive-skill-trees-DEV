@@ -34,7 +34,7 @@ function astralIncubatorSubmenu:Render(tScreen, submenusModule)
                 if compData then
                     local eggX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32
                     local eggY = self.menuY * tScreen.zoomScale + 52 + math.floor((i - 1) / 5) * 32
-                    local isEquipped = PST:isCompEquipped(compName)
+                    local isEquipped = PST:isCompEquipped(compName, true)
 
                     -- Hovered
                     self.eggSprite.Color.A = 1

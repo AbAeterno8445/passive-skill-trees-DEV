@@ -4,6 +4,13 @@ function PST:getCompScavengeMax()
     return 2000
 end
 
+-- Modify the given floor limit based on reached expedition depths
+function PST:astralCompModFloorLimit(baseLimit)
+    local depthFactor = math.max(0.1, (PST.modData.expeditionDepth + (PST.modData.uberExpedDepth - 1) * 2) / 30)
+    local newLimit = math.floor(baseLimit * depthFactor)
+    return math.max(1, newLimit)
+end
+
 -- Returns whether the given companion is equipped anywhere
 function PST:isCompEquipped(compName, isEgg)
     local charData = PST:getCurrentCharData()
@@ -160,7 +167,7 @@ function PST:getAstralCompDesc(compName)
 
                 local scavengeFullStr = PST:getLocalizedFormatStr(compData.identifier .. "_scavenge", {
                     obolCount = scavengedObolsStr,
-                    floorLimit = compData.scavengeMax and compData.scavengeMax[playerCompData.level] or 0
+                    floorLimit = PST:astralCompModFloorLimit(compData.scavengeMax and compData.scavengeMax[playerCompData.level] or 0)
                 })
                 if compData.scavengeOdds then
                     scavengeFullStr = scavengeFullStr .. " (" .. compData.scavengeOdds[playerCompData.level] .. "% chance)"
@@ -223,5 +230,74 @@ function PST:astralCompLevelUp(eggName)
             compData.objProg = 0
             compData.level = compData.level + 1
         end
+    end
+end
+
+-- Scavenge obols in the given slot for the current character
+function PST:astralCompScavengeObolsInSlot(compSlot, obols, checkSlot)
+    local scavengedSlot = tostring(compSlot)
+    local charData = PST:getCurrentCharData()
+    if charData then
+        if not charData.scavengedObols then charData.scavengedObols = {} end
+        if not charData.scavengedObols[scavengedSlot] then
+            charData.scavengedObols[scavengedSlot] = 0
+        end
+        local curStage = PST:getLevel():GetStage()
+        if not checkSlot or compSlot < 3 or (checkSlot and PST.astralCompSlotFloors[compSlot] and
+        curStage >= PST.astralCompSlotFloors[compSlot][1] and curStage <= PST.astralCompSlotFloors[compSlot][2]) then
+            charData.scavengedObols[scavengedSlot] = math.min(PST:getCompScavengeMax(), charData.scavengedObols[scavengedSlot] + obols)
+        end
+    end
+end
+
+-- Attempt to scavenge obols for the given companion, checking if it is equipped, its level, floor limits and proc odds
+function PST:astralCompProcScavenge(compName)
+    local charData = PST:getCurrentCharData()
+    local baseCompData = PST.astralCompanions[compName]
+    local compData = PST.modData.astralcomps[compName]
+    if charData and charData.astralCompanions and baseCompData and compData and compData.level > 0 then
+        local floorLimit = PST:astralCompModFloorLimit(baseCompData.scavengeMax and baseCompData.scavengeMax[compData.level] or 0)
+        if floorLimit == 0 or (floorLimit > 0 and PST:getTreeSnapshotMod("astralCompFloorProcs_" .. compName, 0) < floorLimit) then
+            local procOdds = baseCompData.scavengeOdds and baseCompData.scavengeOdds[compData.level] or nil
+            if not procOdds or (procOdds and 100 * math.random() < procOdds) then
+                local scavengedObolsBase = baseCompData.scavengeRanges[compData.level]
+                local scavengedObols = 0
+                if type(scavengedObolsBase) == "table" then
+                    scavengedObols = math.random(scavengedObolsBase[1], scavengedObolsBase[2])
+                else
+                    scavengedObols = scavengedObolsBase
+                end
+                for i=1,3 do
+                    if charData.astralCompanions[tostring(i)] == compName then
+                        PST:astralCompScavengeObolsInSlot(i, scavengedObols, true)
+                        break
+                    end
+                end
+                PST:addModifiers({ ["astralCompFloorProcs_" .. compName] = 1 }, true)
+
+                --[[if procSprite then
+                    local tmpSprite = PST.treeScreen.modules.submenusModule.submenus[PSTSubmenu.ASTRAL_COMPANION_SLOT].compSprite
+                    tmpSprite:SetFrame("Default", baseCompData.compSprite)
+                    PST:createFloatIconFX(tmpSprite, Vector(0, -8), 0, 20, true, true)
+                end]]
+            end
+        end
+    end
+end
+
+-- Attempts to unlock the given egg, considering the run's total egg find chance and the egg's rate
+function PST:astralCompEggUnlockProc(eggName)
+    local eggChance = PST:getTreeSnapshotMod("astralCompEggChance", 0)
+    local eggData = PST.astralCompanions[eggName]
+    if not PST.modData.astralcomps[eggName] and eggData and 100 * math.random() < eggChance * ((eggData.eggRate or 100) / 100) then
+        PST.modData.astralcomps[eggName] = { level = 0, objProg = 0 }
+        PST:createFloatTextFX(PST:getLocalized("astralcomp_foundEgg") .. ": " .. PST:getLocalized(eggData.identifier .. "_eggname"), Vector.Zero, Color(0.35, 0.9, 0.35), 0.12, 120, true)
+        SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
+        PST:addModifiers({ astralCompEggChance = eggChance / -2 }, true)
+
+        -- Egg icon
+        local tmpSprite = PST.treeScreen.modules.submenusModule.submenus[PSTSubmenu.ASTRAL_INCUBATOR].eggSprite
+        tmpSprite:SetFrame("Eggs", eggData.compSprite)
+        PST:createFloatIconFX(tmpSprite, Vector(0, -24), 0.12, 120, true, true)
     end
 end

@@ -1007,6 +1007,17 @@ function PST:onNewLevel()
         PST:addModifiers({ expedEnt_chestCounter = { value = 0, set = true } }, true)
     end
 
+    -- Astral Companions, reset floor procs
+    local charData = PST:getCurrentCharData()
+    if charData and charData.astralCompanions then
+        for i=1,3 do
+            local tmpComp = charData.astralCompanions[tostring(i)]
+            if tmpComp then
+                PST:addModifiers({ ["astralCompFloorProcs_" .. tmpComp] = { value = 0, set = true } }, true)
+            end
+        end
+    end
+
     -- Reset boss rush proc
     if PST:getTreeSnapshotMod("bossRushClear", false) then
         PST:addModifiers({ bossRushClear = false }, true)

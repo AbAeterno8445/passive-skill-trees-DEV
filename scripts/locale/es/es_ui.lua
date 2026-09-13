@@ -152,6 +152,7 @@ return {
     ["ui_reward"] = "Recompensa",
     ["ui_gain"] = "Gana",
     ["ui_globalSkillPoints"] = "Punto(s) de Habilidad Global",
+    ["ui_globalSkillPointsPL"] = "Puntos de Habilidad Global",
     ["ui_done"] = "Listo",
     ["ui_inventory"] = "Inventario",
     ["ui_socket"] = "Ranura",

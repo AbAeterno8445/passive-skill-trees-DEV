@@ -11,7 +11,7 @@ return {
     ["ui_expDepthReq"] = "Requiere completar la profundidad {{depthReq}} de expedición.",
     ["ui_uberExpDepthReq"] = "Requiere completar la profundidad {{depthReq}} de expedición uber.",
     ["ui_charlvlReq"] = "Requiere que el personaje actual ({{charName}}) alcanze el nivel {{lvlReq}}.",
-    ["ui_crimsonCoreReq"] = "Requiere 1 Núcleo Estelar Carmesí.",
+    ["ui_crimsonCoreReq"] = "Requiere {{crimsonCores}} Núcleo Estelar Carmesí.",
     ["ui_deepSPReq"] = "Requiere 1 Punto Espacio-Temporal. (Tienes {{deepSP}})",
     ["ui_globalSPReq"] = "Requiere 1 SP Global para asignar.",
     ["ui_expObjective"] = "Objetivo de expedición",

@@ -11,7 +11,7 @@ return {
     ["ui_expDepthReq"] = "Requires completing expedition depth {{depthReq}}.",
     ["ui_uberExpDepthReq"] = "Requires completing uber expedition depth {{depthReq}}.",
     ["ui_charlvlReq"] = "Requires the current character ({{charName}}) to reach level {{lvlReq}}.",
-    ["ui_crimsonCoreReq"] = "Requires 1 crimson starcore.",
+    ["ui_crimsonCoreReq"] = "Requires {{crimsonCores}} crimson starcore(s).",
     ["ui_deepSPReq"] = "Requires 1 Deep-Space Skill Point. (You have {{deepSP}})",
     ["ui_globalSPReq"] = "Requires 1 Global SP to allocate.",
     ["ui_expObjective"] = "Expedition objective",
