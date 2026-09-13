@@ -100,6 +100,7 @@ function PST:charInit(charName, forceReset)
 	if not charData.southArtis then charData.southArtis = {} end
 	if not charData.artiInfMeridionStatus then charData.artiInfMeridionStatus = "poison" end
 	if not charData.crimConvBuff then charData.crimConvBuff = "" end
+	if not charData.astralIncubators then charData.astralIncubators = {} end
 end
 
 -- Save mod data
@@ -392,6 +393,7 @@ include("scripts.ST_inputs")
 include("scripts.ST_gridEntities")
 include("scripts.ST_tears")
 include("scripts.starcursed_data.ST_starcursed")
+include("scripts.astral_companions.ST_astralCompanions")
 
 PST:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, PST.playerInit)
 PST:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, PST.onExitGame)

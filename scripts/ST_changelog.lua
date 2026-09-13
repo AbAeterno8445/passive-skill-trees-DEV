@@ -16,7 +16,7 @@ function PST:getChangelogList()
         "- Volatile Arbalest (Ancient Crossbow weapon) now has a proc chance of 10-15% (from 7-10%), a 0.5 second cooldown (from 1 second), and",
         "a slightly larger explosion.",
         "- Avelyn (Ancient Crossbow weapon) now fires when you do (on a cooldown) instead of after firing for X seconds.",
-        "Its tears now deal 80-125% of your damage (from 40-75%), apply your shot speed as a damage multiplier if its higher than 1,",
+        "Its tears now deal 80-125% of your damage (from 40-75%), apply your shot speed as a damage multiplier if it's higher than 1,",
         "and are slightly larger. Cooldown is now 2.5 - 1 seconds (from 4 - 2.5).",
         "- Azurebinder (Ancient Whip weapon) tears now last substantially longer and have piercing. Damage on tear block is",
         "now 15-30% (from 8-15%) for the room.",

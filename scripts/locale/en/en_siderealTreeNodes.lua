@@ -208,6 +208,26 @@ return {
         "weapon type."
     },
 
+    ["node_astralcompanions_name"] = "Astral Companions",
+    ["node_astralcompanions"] = {
+        "Once allocated, you may now find Astral Companion Eggs in runs.",
+        "Incubator nodes to the left list out available eggs you may find, and a hint on how to find each one.",
+        "Chance to find eggs starts at 100%, and gets halved for the rest of that run when finding one."
+    },
+    ["node_astralincubator_name"] = "Astral Incubator",
+    ["node_astralincubator"] = {
+        "Once allocated, press Allocate to open a menu listing available Astral Companion Eggs.",
+        "Select any obtained un-hatched egg to begin incubating it.",
+        "Each egg has a different objective that contributes towards hatching it."
+    },
+    ["node_companionslot_name"] = "Companion Slot",
+    ["node_companionslot"] = {
+        "Once allocated, press Allocate to select a hatched companion to equip.",
+        "Equipped companions will scavenge arcane obols whenever their objective is fulfilled.",
+        "Companions may level up to 3, improving their effect on the run. Leveling a companion to 3 additionally",
+        "provides rewards."
+    },
+
 
     ---- CRIMSON CONVERGENCE ----
     ["ui_crimconv_mundaneSlaughter"] = "Mundane Slaughter",

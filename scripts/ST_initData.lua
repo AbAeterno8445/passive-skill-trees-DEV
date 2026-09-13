@@ -59,6 +59,9 @@ PST.nodeSPExceptions = {
 -- Crimson node variants
 PST.crimsonNodeNames = {"Universal Crimson Node", "Core Crimson Node", "Divergent Crimson Node"}
 
+-- Currently selected Astral Incubator slot
+PST.selectedAstralIncubator = 0
+
 PST.finalBosses = {
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_ISAAC, EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN_2,
 	EntityType.ENTITY_BEAST, EntityType.ENTITY_MOTHER, EntityType.ENTITY_ULTRA_GREED
@@ -2176,6 +2179,16 @@ function PST:resetData()
 
 		-- Sidereal Artifact unlock progress
 		sideArtiUnlockProg = {},
+
+		-- Astral Companions progress and status
+		-- Level 0 companions are the found button un-hatched egg status, level 1+ is companion itself
+		astralcomps = {
+			--[[ Example entry:
+			rat = {
+				level = 0,
+				objProg = 4
+			}]]
+		},
 
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},

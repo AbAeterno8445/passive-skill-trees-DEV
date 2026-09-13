@@ -335,7 +335,25 @@ local descriptionBoxesModule = {
                 table.insert(nodeDesc, {PST:getCurrentCharName() .. " " .. PST:getLocalized("ui_obols") .. ": " .. charData.arcaneObols, PST.kcolors.PURPLE1})
             end
             return { name = descName, description = nodeDesc }
-        end
+        end,
+
+        -- Astral Incubator node equipped egg info
+        ["Astral Incubator"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {table.unpack(tmpDescription)}
+            if isAllocated then
+                local tmpEgg = PST:getEquippedIncubatorEgg(extraData.node.reqs.incubatorSlot or 0)
+                if tmpEgg then
+                    local eggName = PST:getLocalized(PST.astralCompanions[tmpEgg].identifier .. "_eggname")
+                    table.insert(nodeDesc, {"Equipped egg: " .. eggName, PST.kcolors.ANCIENT_ORANGE})
+
+                    local eggDesc = PST:getCompanionEggDesc(tmpEgg)
+                    for _, tmpLine in ipairs(eggDesc) do
+                        table.insert(nodeDesc, tmpLine)
+                    end
+                end
+            end
+            return { name = descName, description = nodeDesc }
+        end,
     }
 }
 
@@ -430,6 +448,7 @@ function descriptionBoxesModule:Render(tScreen)
             if hoveredNode.nameLocale then
                 newDescName = PST:getLocalized(hoveredNode.nameLocale)
             end
+            if not extraData.node then extraData.node = hoveredNode end
             local newDescData = nodeDescFunc(newDescName, tmpDescription, isAllocated, tScreen, extraData)
             descName = newDescData.name
             tmpDescription = newDescData.description
@@ -539,7 +558,7 @@ function descriptionBoxesModule:Render(tScreen)
             end
 
             -- Crimson starcores requirement
-            local crimsonStarcoreReq = hoveredNode.reqs.crimsonStarcore
+            local crimsonStarcoreReq = hoveredNode.reqs.crimsonStarcore or hoveredNode.reqs.crimsonStarcores
             if crimsonStarcoreReq then
                 local tmpColor = PST.kcolors.RED1
                 if currentChar and currentChar.crimsonStarcores and currentChar.crimsonStarcores >= crimsonStarcoreReq then
@@ -694,6 +713,26 @@ function descriptionBoxesModule:Render(tScreen)
                     local itemDesc = PST:getAstralWepDesc(tmpItem, true)
                     tScreen:DrawNodeBox(PST:getLocalized("ui_ancWep") .. ": " .. PST:getLocalized("aforge_ancname_" .. tmpItem.name), itemDesc)
                 end
+            end
+        -- Astral Incubator submenu, hovered egg
+        elseif submenusModule.currentSubmenu == PSTSubmenu.ASTRAL_INCUBATOR then
+            local astralIncubatorSubmenu = submenusModule.submenus[PSTSubmenu.ASTRAL_INCUBATOR]
+            local tmpEgg = astralIncubatorSubmenu.hoveredEgg
+            if tmpEgg then
+                local compData = PST.astralCompanions[tmpEgg]
+                local eggData = PST.modData.astralcomps[tmpEgg]
+                local eggDesc = PST:getCompanionEggDesc(tmpEgg)
+                local equippedEgg = PST:getEquippedIncubatorEgg(PST.selectedAstralIncubator)
+                if not eggData or eggData.level == 0 then
+                    if eggData and eggData.objProg >= compData.objReqs[1] then
+                        table.insert(eggDesc, {"Ready. Press Allocate to hatch this egg!", PST.kcolors.GREEN1})
+                    elseif equippedEgg and equippedEgg == tmpEgg then
+                        table.insert(eggDesc, "Press Allocate to unequip this egg from this incubator.")
+                    elseif PST.modData.astralcomps[tmpEgg] then
+                        table.insert(eggDesc, "Press Allocate to equip this egg in this incubator.")
+                    end
+                end
+                tScreen:DrawNodeBox(PST:getLocalized(compData.identifier .. "_eggname"), eggDesc)
             end
         end
     end

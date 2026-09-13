@@ -152,12 +152,39 @@ function nodeDrawingModule:Render(tScreen)
                     tmpSprite:SetFrame("Default", 761)
                     tmpSprite:Render(Vector(finalDrawX, finalDrawY))
                 end
+            -- Astral Incubator node, draw equipped egg or grayscale egg icon
+            elseif node.name == "Astral Incubator" then
+                local eggDrawn = false
+                if charData and charData.astralIncubators then
+                    local equippedEgg = charData.astralIncubators[tostring(node.reqs.incubatorSlot or 0)]
+                    if equippedEgg then
+                        local eggData = PST.astralCompanions[equippedEgg]
+                        if eggData then
+                            local eggSprite = PST.treeScreen.modules.submenusModule.submenus[PSTSubmenu.ASTRAL_INCUBATOR].eggSprite
+                            eggSprite:SetFrame("Eggs", eggData.compSprite)
+                            eggSprite.Color.A = 1
+                            eggSprite.Scale = Vector(tScreen.zoomScale, tScreen.zoomScale)
+                            eggSprite:Render(Vector(finalDrawX, finalDrawY))
+                            eggSprite.Scale = Vector.One
+                            eggDrawn = true
+                        end
+                    end
+                end
+                if not eggDrawn then
+                    tmpSprite:SetFrame("Default", 996)
+                    tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+                end
             end
 
             if not isAstralForge and isAllocated then
                 self.nodesExtraSprite.Color = Color()
                 self.nodesExtraSprite.Color.A = 1
-                self.nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)
+                if not (node.reqs and node.reqs.specialAllocBorder) then
+                    self.nodesExtraSprite:SetFrame("Allocated " .. node.size, 0)
+                else
+                    -- Special allocated borders
+                    self.nodesExtraSprite:SetFrame("Allocated Special", node.reqs.specialAllocBorder)
+                end
                 self.nodesExtraSprite:Render(Vector(finalDrawX, finalDrawY))
             end
 

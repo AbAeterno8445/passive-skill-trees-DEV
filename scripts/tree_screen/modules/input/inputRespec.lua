@@ -69,8 +69,9 @@ function PST.treeScreen:InputRespec()
                         -- Node requirement refunds
                         if self.hoveredNode.reqs then
                             -- Return Crimson Starcores if required
-                            if self.hoveredNode.reqs.crimsonStarcore and charData then
-                                charData.crimsonStarcores = charData.crimsonStarcores + self.hoveredNode.reqs.crimsonStarcore
+                            local tmpStarcoreReq = self.hoveredNode.reqs.crimsonStarcore or self.hoveredNode.reqs.crimsonStarcores
+                            if tmpStarcoreReq and charData then
+                                charData.crimsonStarcores = charData.crimsonStarcores + tmpStarcoreReq
                             end
 
                             -- Sidereal Artifacts

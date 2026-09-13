@@ -342,7 +342,7 @@ function PST:isNodeAllocatable(tree, nodeID, allocation)
                 end
 
                 -- Crimson starcores requirement
-                local crimsonStarcoreReq = reqs.crimsonStarcore
+                local crimsonStarcoreReq = reqs.crimsonStarcore or reqs.crimsonStarcores
                 if crimsonStarcoreReq and currentChar and (not currentChar.crimsonStarcores or
                 (currentChar.crimsonStarcores and currentChar.crimsonStarcores < crimsonStarcoreReq)) then
                     return false

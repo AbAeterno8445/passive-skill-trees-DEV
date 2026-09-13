@@ -37,6 +37,7 @@ function PST.treeScreen:InputAllocate()
         local edenHairSubmenu = submenusModule.submenus[PSTSubmenu.EDEN_HAIR]
         local obsBazaarSubmenu = submenusModule.submenus[PSTSubmenu.OBSCURE_BAZAAR]
         local wepCompendiumSubmenu = submenusModule.submenus[PSTSubmenu.WEAPON_COMPENDIUM]
+        local astralIncubatorSubmenu = submenusModule.submenus[PSTSubmenu.ASTRAL_INCUBATOR]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -132,7 +133,7 @@ function PST.treeScreen:InputAllocate()
                     end
 
                     -- Crimson starcore requirement
-                    local crimsonStarcoreReq = reqs.crimsonStarcore
+                    local crimsonStarcoreReq = reqs.crimsonStarcore or reqs.crimsonStarcores
                     if crimsonStarcoreReq and currentChar and currentChar.crimsonStarcores and not PST.debugOptions.infSP then
                         currentChar.crimsonStarcores = math.max(0, currentChar.crimsonStarcores - crimsonStarcoreReq)
                     end
@@ -272,6 +273,17 @@ function PST.treeScreen:InputAllocate()
                         menuX = self.hoveredNode.pos.X * 38,
                         menuY = self.hoveredNode.pos.Y * 38
                     })
+
+                -- Astral Incubator node, open incubator submenu and set incubator slot
+                elseif self.hoveredNode.name == "Astral Incubator" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.ASTRAL_INCUBATOR, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+                    if self.hoveredNode.reqs and self.hoveredNode.reqs.incubatorSlot then
+                        PST.selectedAstralIncubator = self.hoveredNode.reqs.incubatorSlot
+                    end
 
                 -- Extra menu-opening nodes
                 elseif menuOpenNodes[self.hoveredNode.name] then
@@ -474,6 +486,28 @@ function PST.treeScreen:InputAllocate()
                     if not wepCompendiumSubmenu.selectedType then
                         wepCompendiumSubmenu.selectedType = tmpItem
                         SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    end
+                end
+            end
+        -- Astral Incubator submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.ASTRAL_INCUBATOR then
+            local tmpEgg = astralIncubatorSubmenu.hoveredEgg
+            if tmpEgg and PST.modData.astralcomps[tmpEgg] and PST.selectedAstralIncubator > 0 then
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    local eggData = PST.modData.astralcomps[tmpEgg]
+                    local compData = PST.astralCompanions[tmpEgg]
+                    if not eggData or eggData.level == 0 then
+                        if eggData and compData and eggData.objProg >= compData.objReqs[1] then
+                            -- Ready to level up
+                            PST:astralCompLevelUp(tmpEgg)
+                            PST:unequipIncubatorEgg(tmpEgg)
+                            SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+                        else
+                            -- Equip/unequip egg on incubator
+                            PST:equipIncubatorEgg(tmpEgg, tostring(PST.selectedAstralIncubator), true)
+                            SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                        end
                     end
                 end
             end
