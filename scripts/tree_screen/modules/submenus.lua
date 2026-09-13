@@ -9,7 +9,8 @@ PSTSubmenu = {
     EDEN_HAIR = "edenHair",
     OBSCURE_BAZAAR = "obscureBazaar",
     WEAPON_COMPENDIUM = "weaponCompendium",
-    ASTRAL_INCUBATOR = "astralIncubator"
+    ASTRAL_INCUBATOR = "astralIncubator",
+    ASTRAL_COMPANION_SLOT = "astralCompanionSlot"
 }
 
 -- Submenus refer to the smaller interactable menus that show up for e.g. Cosmic Realignment or starcursed jewel inventories
@@ -27,7 +28,8 @@ local submenusModule = {
         [PSTSubmenu.EDEN_HAIR] = include("scripts.tree_screen.modules.submenus.edenHairSubmenu"),
         [PSTSubmenu.OBSCURE_BAZAAR] = include("scripts.tree_screen.modules.submenus.obscureBazaarSubmenu"),
         [PSTSubmenu.WEAPON_COMPENDIUM] = include("scripts.tree_screen.modules.submenus.wepCompendiumSubmenu"),
-        [PSTSubmenu.ASTRAL_INCUBATOR] = include("scripts.tree_screen.modules.submenus.astralIncubatorSubmenu")
+        [PSTSubmenu.ASTRAL_INCUBATOR] = include("scripts.tree_screen.modules.submenus.astralIncubatorSubmenu"),
+        [PSTSubmenu.ASTRAL_COMPANION_SLOT] = include("scripts.tree_screen.modules.submenus.companionSlotSubmenu")
     },
 }
 

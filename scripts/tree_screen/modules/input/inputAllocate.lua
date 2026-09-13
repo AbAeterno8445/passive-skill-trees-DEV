@@ -38,6 +38,7 @@ function PST.treeScreen:InputAllocate()
         local obsBazaarSubmenu = submenusModule.submenus[PSTSubmenu.OBSCURE_BAZAAR]
         local wepCompendiumSubmenu = submenusModule.submenus[PSTSubmenu.WEAPON_COMPENDIUM]
         local astralIncubatorSubmenu = submenusModule.submenus[PSTSubmenu.ASTRAL_INCUBATOR]
+        local companionSlotSubmenu = submenusModule.submenus[PSTSubmenu.ASTRAL_COMPANION_SLOT]
 
         if self.backupsPopup and self.saveBackups[self.selectedBackup] ~= nil then
             -- Load selected backup if popup
@@ -274,7 +275,7 @@ function PST.treeScreen:InputAllocate()
                         menuY = self.hoveredNode.pos.Y * 38
                     })
 
-                -- Astral Incubator node, open incubator submenu and set incubator slot
+                -- Astral Incubator node, open incubator submenu and set selected incubator slot
                 elseif self.hoveredNode.name == "Astral Incubator" then
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                     submenusModule:SwitchSubmenu(PSTSubmenu.ASTRAL_INCUBATOR, {
@@ -283,6 +284,28 @@ function PST.treeScreen:InputAllocate()
                     })
                     if self.hoveredNode.reqs and self.hoveredNode.reqs.incubatorSlot then
                         PST.selectedAstralIncubator = self.hoveredNode.reqs.incubatorSlot
+                    end
+
+                -- Companion Slot node, open companion submenu and set selected companion slot
+                elseif self.hoveredNode.name == "Companion Slot" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.ASTRAL_COMPANION_SLOT, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+                    if self.hoveredNode.reqs and self.hoveredNode.reqs.companionSlot then
+                        PST.selectedAstralCompanionSlot = self.hoveredNode.reqs.companionSlot
+                    end
+
+                -- Scavenged Obols node, claim scavenged obols
+                elseif self.hoveredNode.name == "Scavenged Obols" then
+                    local charData = PST:getCurrentCharData()
+                    local scavengedSlot = tostring(self.hoveredNode.reqs.companionSlot)
+                    if charData and charData.scavengedObols and charData.scavengedObols[scavengedSlot] and
+                    charData.scavengedObols[scavengedSlot] > 0 then
+                        charData.arcaneObols = charData.arcaneObols + charData.scavengedObols[scavengedSlot]
+                        charData.scavengedObols[scavengedSlot] = 0
+                        SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.6, 2, false, 0.8)
                     end
 
                 -- Extra menu-opening nodes
@@ -506,6 +529,27 @@ function PST.treeScreen:InputAllocate()
                         else
                             -- Equip/unequip egg on incubator
                             PST:equipIncubatorEgg(tmpEgg, tostring(PST.selectedAstralIncubator), true)
+                            SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
+                        end
+                    end
+                end
+            end
+        -- Companion Slot submenu
+        elseif submenusModule.currentSubmenu == PSTSubmenu.ASTRAL_COMPANION_SLOT then
+            local tmpComp = companionSlotSubmenu.hoveredComp
+            if tmpComp and PST.selectedAstralCompanionSlot > 0 then
+                local charData = PST:getCurrentCharData()
+                if charData then
+                    local baseCompData = PST.astralCompanions[tmpComp]
+                    local compData = PST.modData.astralcomps[tmpComp]
+                    if compData and compData.level > 0 then
+                        if compData.level < 3 and compData.objProg >= baseCompData.objReqs[compData.level + 1] then
+                            -- Ready to level up
+                            PST:astralCompLevelUp(tmpComp)
+                            SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.8)
+                        else
+                            -- Equip/unequip companion on slot
+                            PST:equipAstralComp(tmpComp, tostring(PST.selectedAstralCompanionSlot), true)
                             SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.7)
                         end
                     end

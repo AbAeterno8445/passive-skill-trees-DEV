@@ -34,7 +34,7 @@ function astralIncubatorSubmenu:Render(tScreen, submenusModule)
                 if compData then
                     local eggX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32
                     local eggY = self.menuY * tScreen.zoomScale + 52 + math.floor((i - 1) / 5) * 32
-                    local isEquipped = PST:isCompEggEquipped(compName)
+                    local isEquipped = PST:isCompEquipped(compName)
 
                     -- Hovered
                     self.eggSprite.Color.A = 1
@@ -64,6 +64,11 @@ function astralIncubatorSubmenu:Render(tScreen, submenusModule)
                     if not PST.modData.astralcomps[compName] then
                         local tmpJewelSprite = PST.treeScreen.modules.nodeDrawingModule.SCJewelSprite
                         tmpJewelSprite:Play("Unidentified", true)
+                        tmpJewelSprite:Render(Vector(eggDrawX, eggDrawY))
+                    elseif PST.modData.astralcomps[compName].level > 0 then
+                        -- Hatched
+                        local tmpJewelSprite = PST.treeScreen.modules.nodeDrawingModule.SCJewelSprite
+                        tmpJewelSprite:Play("AncientDone", true)
                         tmpJewelSprite:Render(Vector(eggDrawX, eggDrawY))
                     end
                 end

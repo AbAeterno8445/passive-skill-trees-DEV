@@ -101,6 +101,8 @@ function PST:charInit(charName, forceReset)
 	if not charData.artiInfMeridionStatus then charData.artiInfMeridionStatus = "poison" end
 	if not charData.crimConvBuff then charData.crimConvBuff = "" end
 	if not charData.astralIncubators then charData.astralIncubators = {} end
+	if not charData.astralCompanions then charData.astralCompanions = {} end
+	if not charData.scavengedObols then charData.scavengedObols = {} end
 end
 
 -- Save mod data

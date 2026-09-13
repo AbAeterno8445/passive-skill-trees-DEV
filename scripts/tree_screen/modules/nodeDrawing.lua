@@ -163,9 +163,11 @@ function nodeDrawingModule:Render(tScreen)
                             local eggSprite = PST.treeScreen.modules.submenusModule.submenus[PSTSubmenu.ASTRAL_INCUBATOR].eggSprite
                             eggSprite:SetFrame("Eggs", eggData.compSprite)
                             eggSprite.Color.A = 1
-                            eggSprite.Scale = Vector(tScreen.zoomScale, tScreen.zoomScale)
+                            eggSprite.Scale.X = tScreen.zoomScale
+                            eggSprite.Scale.Y = tScreen.zoomScale
                             eggSprite:Render(Vector(finalDrawX, finalDrawY))
-                            eggSprite.Scale = Vector.One
+                            eggSprite.Scale.X = 1
+                            eggSprite.Scale.Y = 1
                             eggDrawn = true
                         end
                     end
@@ -173,6 +175,24 @@ function nodeDrawingModule:Render(tScreen)
                 if not eggDrawn then
                     tmpSprite:SetFrame("Default", 996)
                     tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+                end
+            -- Companion Slot node, draw equipped companion
+            elseif node.name == "Companion Slot" then
+                if charData and charData.astralCompanions then
+                    local equippedComp = charData.astralCompanions[tostring(node.reqs.companionSlot or 0)]
+                    if equippedComp then
+                        local compData = PST.astralCompanions[equippedComp]
+                        if compData then
+                            local compSprite = PST.treeScreen.modules.submenusModule.submenus[PSTSubmenu.ASTRAL_COMPANION_SLOT].compSprite
+                            compSprite:SetFrame("Default", compData.compSprite)
+                            compSprite.Color.A = 1
+                            compSprite.Scale.X = tScreen.zoomScale
+                            compSprite.Scale.Y = tScreen.zoomScale
+                            compSprite:Render(Vector(finalDrawX, finalDrawY))
+                            compSprite.Scale.X = 1
+                            compSprite.Scale.Y = 1
+                        end
+                    end
                 end
             end
 

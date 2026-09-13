@@ -223,9 +223,14 @@ return {
     ["node_companionslot_name"] = "Companion Slot",
     ["node_companionslot"] = {
         "Once allocated, press Allocate to select a hatched companion to equip.",
-        "Equipped companions will scavenge arcane obols whenever their objective is fulfilled.",
+        "Equipped companions will scavenge arcane obols whenever their objective is fulfilled, up to a limit.",
         "Companions may level up to 3, improving their effect on the run. Leveling a companion to 3 additionally",
         "provides rewards."
+    },
+
+    ["node_scavengedobols_name"] = "Scavenged Obols",
+    ["node_scavengedobols"] = {
+        "Once allocated, press Allocate to claim obols scavenged by companions in the connected slot."
     },
 
 

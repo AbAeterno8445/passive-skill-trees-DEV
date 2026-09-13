@@ -1,4 +1,27 @@
 return {
+    ---- ASTRAL COMPANIONS UI ----
+    ["astralcomp_ui_allocEquipEgg"] = "Press Allocate to equip this egg in this incubator.",
+    ["astralcomp_ui_allocUnequipEgg"] = "Press Allocate to unequip this egg from this incubator.",
+    ["astralcomp_ui_eggHatchReady"] = "Ready. Press Allocate to hatch this egg!",
+
+    ["astralcomp_ui_allocEquipComp"] = "Press Allocate to equip this companion in this slot.",
+    ["astralcomp_ui_allocUnequipComp"] = "Press Allocate to unequip this companion from this slot.",
+    ["astralcomp_ui_compLevelReady"] = "Ready to level up! Press Allocate to level up this companion.",
+
+    ["astralcomp_ui_equippedEgg"] = "Equipped egg",
+    ["astralcomp_ui_equippedComp"] = "Equipped companion",
+
+    ["astralcomp_ui_lv3effect"] = "Level 3 effect",
+    ["astralcomp_ui_eggHatchObj"] = "Egg hatching objective",
+    ["astralcomp_ui_hatchingPaused"] = "Hatching paused. Equip the egg to progress its hatching.",
+    ["astralcomp_ui_currentlyHatching"] = "Currently hatching.",
+    ["astralcomp_ui_hatchComplete"] = "Hatching complete!",
+    ["astralcomp_ui_eggHatchInto"] = "Egg hatched into",
+    ["astralcomp_ui_hatchCompHint"] = "You may now equip the hatched companion in one of the Companion Slot nodes to the right.",
+    ["astralcomp_ui_eggNotFound"] = "Egg not found yet.",
+    ["astralcomp_ui_locHint"] = "Location hint",
+    ["astralcomp_ui_scavengedObols"] = "Scavenged obols",
+
     ---- ASTRAL COMPANIONS ----
     ["astralcomp_rat_name"] = "Rat",
     ["astralcomp_rat_eggname"] = "Skittish Brown Egg",

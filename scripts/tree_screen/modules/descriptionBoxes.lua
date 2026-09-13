@@ -344,7 +344,7 @@ local descriptionBoxesModule = {
                 local tmpEgg = PST:getEquippedIncubatorEgg(extraData.node.reqs.incubatorSlot or 0)
                 if tmpEgg then
                     local eggName = PST:getLocalized(PST.astralCompanions[tmpEgg].identifier .. "_eggname")
-                    table.insert(nodeDesc, {"Equipped egg: " .. eggName, PST.kcolors.ANCIENT_ORANGE})
+                    table.insert(nodeDesc, {PST:getLocalized("astralcomp_ui_equippedEgg") .. ": " .. eggName, PST.kcolors.ANCIENT_ORANGE})
 
                     local eggDesc = PST:getCompanionEggDesc(tmpEgg)
                     for _, tmpLine in ipairs(eggDesc) do
@@ -354,6 +354,43 @@ local descriptionBoxesModule = {
             end
             return { name = descName, description = nodeDesc }
         end,
+
+        -- Companion Slot node equipped companion info
+        ["Companion Slot"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {table.unpack(tmpDescription)}
+            if isAllocated then
+                local tmpComp = PST:getEquippedAstralComp(extraData.node.reqs.companionSlot or 0)
+                if tmpComp then
+                    nodeDesc = {}
+                    local compName = PST:getLocalized(PST.astralCompanions[tmpComp].identifier .. "_name")
+                    table.insert(nodeDesc, PST:getLocalized("astralcomp_ui_equippedComp") .. ": " .. compName)
+
+                    local compDesc = PST:getAstralCompDesc(tmpComp)
+                    for _, tmpLine in ipairs(compDesc) do
+                        table.insert(nodeDesc, tmpLine)
+                    end
+                end
+            end
+            return { name = descName, description = nodeDesc }
+        end,
+
+        -- Scavenged Obols, display scavenged obols
+        ["Scavenged Obols"] = function(descName, tmpDescription, isAllocated, tScreen, extraData)
+            local nodeDesc = {table.unpack(tmpDescription)}
+            local charData = PST:getCurrentCharData()
+            if charData then
+                local scavengedSlot = tostring(extraData.node.reqs.companionSlot)
+                local scavengedObols = 0
+                if charData.scavengedObols and charData.scavengedObols[scavengedSlot] then
+                    scavengedObols = charData.scavengedObols[scavengedSlot]
+                end
+                table.insert(nodeDesc, {
+                    PST:getLocalized("astralcomp_ui_scavengedObols") .. ": " .. scavengedObols .. "/" .. PST:getCompScavengeMax(),
+                    PST.kcolors.EXPED_PURPLE
+                })
+            end
+            return { name = descName, description = nodeDesc }
+        end
     }
 }
 
@@ -725,14 +762,32 @@ function descriptionBoxesModule:Render(tScreen)
                 local equippedEgg = PST:getEquippedIncubatorEgg(PST.selectedAstralIncubator)
                 if not eggData or eggData.level == 0 then
                     if eggData and eggData.objProg >= compData.objReqs[1] then
-                        table.insert(eggDesc, {"Ready. Press Allocate to hatch this egg!", PST.kcolors.GREEN1})
+                        table.insert(eggDesc, {PST:getLocalized("astralcomp_ui_eggHatchReady"), PST.kcolors.GREEN1})
                     elseif equippedEgg and equippedEgg == tmpEgg then
-                        table.insert(eggDesc, "Press Allocate to unequip this egg from this incubator.")
+                        table.insert(eggDesc, PST:getLocalized("astralcomp_ui_allocUnequipEgg"))
                     elseif PST.modData.astralcomps[tmpEgg] then
-                        table.insert(eggDesc, "Press Allocate to equip this egg in this incubator.")
+                        table.insert(eggDesc, PST:getLocalized("astralcomp_ui_allocEquipEgg"))
                     end
                 end
                 tScreen:DrawNodeBox(PST:getLocalized(compData.identifier .. "_eggname"), eggDesc)
+            end
+        -- Astral Companion Slot submenu, hovered companion
+        elseif submenusModule.currentSubmenu == PSTSubmenu.ASTRAL_COMPANION_SLOT then
+            local companionSlotSubmenu = submenusModule.submenus[PSTSubmenu.ASTRAL_COMPANION_SLOT]
+            local tmpComp = companionSlotSubmenu.hoveredComp
+            if tmpComp then
+                local baseCompData = PST.astralCompanions[tmpComp]
+                local compData = PST.modData.astralcomps[tmpComp]
+                local compDesc = PST:getAstralCompDesc(tmpComp)
+                local equippedComp = PST:getEquippedAstralComp(PST.selectedAstralCompanionSlot)
+                if compData and compData.level < 3 and compData.objProg >= baseCompData.objReqs[compData.level + 1] then
+                    table.insert(compDesc, {PST:getLocalized("astralcomp_ui_compLevelReady"), PST.kcolors.GREEN1})
+                elseif equippedComp and equippedComp == tmpComp then
+                    table.insert(compDesc, PST:getLocalized("astralcomp_ui_allocUnequipComp"))
+                else
+                    table.insert(compDesc, PST:getLocalized("astralcomp_ui_allocEquipComp"))
+                end
+                tScreen:DrawNodeBox(PST:getLocalized(baseCompData.identifier .. "_name"), compDesc)
             end
         end
     end

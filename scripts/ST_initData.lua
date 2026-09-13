@@ -59,8 +59,9 @@ PST.nodeSPExceptions = {
 -- Crimson node variants
 PST.crimsonNodeNames = {"Universal Crimson Node", "Core Crimson Node", "Divergent Crimson Node"}
 
--- Currently selected Astral Incubator slot
+-- Currently selected Astral Incubator/Companion slot
 PST.selectedAstralIncubator = 0
+PST.selectedAstralCompanionSlot = 0
 
 PST.finalBosses = {
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_ISAAC, EntityType.ENTITY_THE_LAMB, EntityType.ENTITY_MEGA_SATAN_2,

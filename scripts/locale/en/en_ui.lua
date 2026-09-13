@@ -173,6 +173,9 @@ return {
     ["ui_next"] = "Next",
     ["ui_back"] = "Back",
 
+    ["ui_Level"] = "Level",
+    ["ui_Progress"] = "Progress",
+
     ["ui_convBoss"] = "Converted boss",
 
     ["ui_crackedKey"] = "Cracked Key",
