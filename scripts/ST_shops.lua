@@ -98,6 +98,12 @@ function PST:onShopPurchase(pickup, player, spent)
                 PST:sideArtiObjProgress("gildedMeridion", 1)
             end
         end
+
+        -- Astral Companion: Gilded Golem
+        tmpMod = PST:getTreeSnapshotMod("gildedGolemPurchaseDmg", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("gildedGolemBuff", 0) < 10 then
+            PST:addModifiers({ damagePerc = tmpMod, gildedGolemBuff = tmpMod }, true)
+        end
     elseif spent < 0 then
         -- Mod: chance to gain a black heart when spending hearts on deals
         local tmpMod = PST:getTreeSnapshotMod("blackHeartOnDeals", 0)
@@ -107,9 +113,16 @@ function PST:onShopPurchase(pickup, player, spent)
     end
 
     if spent ~= 0 then
-        -- Expedition objective: make devil deals
+        -- Devil deals
         if roomType == RoomType.ROOM_DEVIL then
+            -- Expedition objective: make devil deals
 		    PST:expedAddProgInRun("devilDeals", 1)
+
+            -- Astral Companion: Shadow Dragon
+            local tmpMod = PST:getTreeSnapshotMod("shadowDragDevilDealDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("shadowDragDmgBuff", 0) < 16 then
+                PST:addModifiers({ damagePerc = tmpMod, shadowDragDmgBuff = tmpMod }, true)
+            end
         end
 
         -- Uber expedition entropy mod
@@ -165,7 +178,7 @@ function PST:onShopItemPrice(pickupVariant, subtype, shopID, price)
         local priceMult = 1
 
         -- Starcursed mod: shop items cost more coins (except pickups)
-        tmpMod = PST:SC_getSnapshotMod("shopExpensive", 0)
+        local tmpMod = PST:SC_getSnapshotMod("shopExpensive", 0)
         if tmpMod ~= 0 and pickupVariant == PickupVariant.PICKUP_COLLECTIBLE then
             priceMod = priceMod + tmpMod
         end

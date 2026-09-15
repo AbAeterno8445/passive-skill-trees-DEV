@@ -719,6 +719,12 @@ function PST:onPickup(pickup, collider, low, forced)
             if PST:getTreeSnapshotMod("boonOrdinary", false) then
                 PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
             end
+
+            -- Mod: chance for coins/keys/bombs to give an additional one on pickup
+            tmpMod = PST:getTreeSnapshotMod("extraPickupOnGrab", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                player:AddCoins(1)
+            end
         -- On pickup key
         elseif variant == PickupVariant.PICKUP_KEY then
             local keyChance = PST:getTreeSnapshotMod("keyDupe", 0)
@@ -732,6 +738,12 @@ function PST:onPickup(pickup, collider, low, forced)
             if tmpMod and PST:getTreeSnapshotMod("pickupBoonsKeyBuff", 0) < 10 then
                 PST:addModifiers({ tearsPerc = tmpMod, pickupBoonsKeyBuff = tmpMod }, true)
             end
+
+            -- Mod: chance for coins/keys/bombs to give an additional one on pickup
+            tmpMod = PST:getTreeSnapshotMod("extraPickupOnGrab", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                player:AddKeys(1)
+            end
         -- On pickup bomb
         elseif variant == PickupVariant.PICKUP_BOMB then
             local bombChance = PST:getTreeSnapshotMod("bombDupe", 0)
@@ -744,6 +756,12 @@ function PST:onPickup(pickup, collider, low, forced)
             tmpMod = PST:getTreeSnapshotMod("pickupBoons", 0)
             if tmpMod and PST:getTreeSnapshotMod("pickupBoonsBombBuff", 0) < 10 then
                 PST:addModifiers({ damagePerc = tmpMod, pickupBoonsBombBuff = tmpMod }, true)
+            end
+
+            -- Mod: chance for coins/keys/bombs to give an additional one on pickup
+            tmpMod = PST:getTreeSnapshotMod("extraPickupOnGrab", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                player:AddBombs(1)
             end
         -- On pickup hearts
         elseif variant == PickupVariant.PICKUP_HEART then
@@ -923,6 +941,12 @@ function PST:onPickup(pickup, collider, low, forced)
                 tmpMod = PST:getTreeSnapshotMod("scaredHeartConv", 0) * 10
                 if tmpMod > 0 and subtype == HeartSubType.HEART_SCARED and 100 * math.random() < tmpMod then
                     player:AddHearts(1)
+                end
+
+                -- Mod: +% luck for the floor when collecting red hearts, up to limit (Salamander companion)
+                tmpMod = PST:getTreeSnapshotMod("salamanderRedHeartLuck", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("salamanderRedHeartBuff", 0) < 20 then
+                    PST:addModifiers({ luckPerc = tmpMod, salamanderRedHeartBuff = tmpMod }, true)
                 end
             end
 
@@ -1328,6 +1352,13 @@ function PST:onPickupInit(pickup, firstSpawn)
             100 * math.random() < tmpMod then
                 pickup:Morph(pickup.Type, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_BLESSED_PENNY)
                 PST:addModifiers({ pennyToBlessedProc = true }, true)
+                pickupGone = true
+            end
+
+            -- Mod: chance to replace pennies with double pennies
+            tmpMod = PST:getTreeSnapshotMod("pennyToDouble", 0)
+            if not pickupGone and tmpMod > 0 and subtype == CoinSubType.COIN_PENNY and 100 * math.random() < tmpChance then
+                pickup:Morph(pickup.Type, variant, CoinSubType.COIN_DOUBLEPACK)
                 pickupGone = true
             end
         -- Keys

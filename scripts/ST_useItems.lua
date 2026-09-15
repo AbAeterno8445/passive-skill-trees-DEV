@@ -761,6 +761,13 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
             end
         end
     end
+
+    -- Astral Companion: Mana Viper
+    tmpMod = PST:getTreeSnapshotMod("microBatteryOnActive", 0)
+    if tmpMod > 0 and slot ~= -1 and isNormalCharge and player:GetActiveMaxCharge(slot) >= 2 and 100 * math.random() < tmpMod then
+        local tmpPos = Isaac.GetFreeNearPosition(player.Position, 20)
+        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_MICRO, tmpPos, Vector.Zero, nil)
+    end
 end
 
 ---- CUSTOM ITEMS ----

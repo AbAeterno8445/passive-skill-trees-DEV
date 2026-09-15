@@ -205,7 +205,7 @@ function PST:getAstralCompDesc(compName)
                     end
                 end
             else
-                table.insert(compDesc, "Hmm... this is not quite right, this is supposed to be an egg.")
+                table.insert(compDesc, {"Hmm... this is not quite right, this is supposed to be an egg.", PST.kcolors.ANCIENT_ORANGE})
             end
         end
     end

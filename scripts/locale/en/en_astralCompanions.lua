@@ -36,8 +36,7 @@ return {
     ["astralcomp_rat_eggHint"] = "Floor 1 or 2 bosses.",
     ["astralcomp_rat_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting coins, up to {{floorLimit}} times per floor.",
     ["astralcomp_rat_maxeffects"] = {
-        "7% chance to spawn an additional coin when clearing a room.",
-        "-8% coin scarcity if applicable."
+        "7% chance to spawn an additional coin when clearing a room."
     },
 
     ["astralcomp_riverrat_name"] = "River Rat",
@@ -46,8 +45,7 @@ return {
     ["astralcomp_riverrat_eggHint"] = "Bosses in Downpour, Dross or Flooded Caves.",
     ["astralcomp_riverrat_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting unusual coins, up to {{floorLimit}} times per floor.",
     ["astralcomp_riverrat_maxeffects"] = {
-        "15% chance for regular coins to be converted to double coins on spawn.",
-        "-8% coin scarcity if applicable."
+        "15% chance for pennies to be converted to double pennies on spawn."
     },
 
     ["astralcomp_hellrat_name"] = "Hell Rat",
@@ -56,8 +54,7 @@ return {
     ["astralcomp_hellrat_eggHint"] = "Mom.",
     ["astralcomp_hellrat_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting coins at or past the Womb, up to {{floorLimit}} times per floor.",
     ["astralcomp_hellrat_maxeffects"] = {
-        "8% chance for champion monsters to drop an additional coin on death, increased by 1% per completed floor.",
-        "-8% coin scarcity if applicable."
+        "8% chance for champion monsters to drop an additional coin on death, increased by 1% per completed floor."
     },
 
     ["astralcomp_quokka_name"] = "Quokka",
@@ -66,7 +63,7 @@ return {
     ["astralcomp_quokka_eggHint"] = "Floor 1 or 2 bosses without taking damage.",
     ["astralcomp_quokka_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting pickups, up to {{floorLimit}} times per floor.",
     ["astralcomp_quokka_maxeffects"] = {
-        "12% chance for pickups to give an additional one when collected."
+        "7% chance for coins/keys/bombs to give an additional one when collected."
     },
 
     ["astralcomp_jackal_name"] = "Jackal",
@@ -84,7 +81,7 @@ return {
     ["astralcomp_hound_eggHint"] = "Golden chests (Rate: 10% of the total chance to find eggs).",
     ["astralcomp_hound_scavenge"] = "Scavenges {{obolCount}} arcane obols when opening golden chests, up to {{floorLimit}} times per floor.",
     ["astralcomp_hound_maxeffects"] = {
-        "+10% chance to additionally spawn a golden chest when clearing a room."
+        "+10% chance to additionally spawn a golden chest when clearing a room, up to twice per floor."
     },
 
     ["astralcomp_wolf_name"] = "Wolf",
@@ -102,7 +99,7 @@ return {
     ["astralcomp_cosmichound_eggHint"] = "Sidereal caches (Rate: 25% of the total chance to find eggs).",
     ["astralcomp_cosmichound_scavenge"] = "Scavenges {{obolCount}} arcane obols when opening Sidereal Caches, up to {{floorLimit}} times per floor.",
     ["astralcomp_cosmichound_maxeffects"] = {
-        "+10% chance to additionally spawn a Sidereal Cache when clearing a room."
+        "+5% chance to additionally spawn a Sidereal Cache when clearing a room past the first floor, up to twice per floor."
     },
 
     ["astralcomp_hellhound_name"] = "Hell Hound",
@@ -111,7 +108,7 @@ return {
     ["astralcomp_hellhound_eggHint"] = "Kill a boss at or past the Womb while it is burning.",
     ["astralcomp_hellhound_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing burning enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_hellhound_maxeffects"] = {
-        "Burning you inflict lasts 1 second longer."
+        "+0.5% damage for the room when killing burning enemies, up to 8%."
     },
 
     ["astralcomp_raiju_name"] = "Raiju",
@@ -120,7 +117,7 @@ return {
     ["astralcomp_raiju_eggHint"] = "Hidden amongst charged keys (Rate: 33% of the total chance to find eggs).",
     ["astralcomp_raiju_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting batteries or using battery actives with at least 1 charge, up to {{floorLimit}} times per floor.",
     ["astralcomp_raiju_maxeffects"] = {
-        "12% chance to spawn a lil battery when clearing a room if you have any actives below full charge, once per floor."
+        "7% chance to spawn an additional lil battery when clearing a room, up to 3 times per floor."
     },
 
     ["astralcomp_boulderbeetle_name"] = "Boulder Beetle",
@@ -147,7 +144,8 @@ return {
     ["astralcomp_deathscarab_eggHint"] = "Skulls and Hosts (Rate: 10% of the total chance to find eggs).",
     ["astralcomp_deathscarab_scavenge"] = "Scavenges {{obolCount}} arcane obols when destroying skulls or killing hosts, up to {{floorLimit}} times per floor.",
     ["astralcomp_deathscarab_maxeffects"] = {
-        "+7% damage against undead enemies. Hosts now die in one hit."
+        "+7% damage against undead enemies.",
+        "15% chance to create a blue fly when killing undead enemies, up to 10 times per room."
     },
 
     ["astralcomp_pharaohant_name"] = "Pharaoh Ant",
@@ -165,8 +163,7 @@ return {
     ["astralcomp_clockroach_eggHint"] = "Slowed champions (Rate: 10% of the total chance to find eggs).",
     ["astralcomp_clockroach_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing slowed or frozen enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_clockroach_maxeffects"] = {
-        "The first enemy you hit in a room is slowed for 8 seconds. Ignores boss status cooldown.",
-        "The first slowed enemy you kill in a room becomes frozen."
+        "The first enemy you hit in a room is slowed for 8 seconds. Ignores boss status cooldown."
     },
 
     ["astralcomp_butterfly_name"] = "Butterfly",
@@ -212,7 +209,7 @@ return {
     ["astralcomp_watermoccasin_eggHint"] = "Flooded Caves bosses (Rate: 50% of the total chance to find eggs).",
     ["astralcomp_watermoccasin_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting poison on enemies with at least 40 HP, up to {{floorLimit}} times per floor.",
     ["astralcomp_watermoccasin_maxeffects"] = {
-        "Poisons you inflict last 2 seconds longer."
+        "+0.5% damage for the room when killing poisoned enemies, up to 10%."
     },
 
     ["astralcomp_blackmamba_name"] = "Black Mamba",
@@ -240,7 +237,7 @@ return {
     ["astralcomp_anaconda_eggHint"] = "Petrified champions (Rate: 7% of the total chance to find eggs).",
     ["astralcomp_anaconda_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting petrification on enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_anaconda_maxeffects"] = {
-        "Petrification you inflict lasts 0.5 seconds longer.",
+        "+0.5% damage for the room when killing petrified enemies, up to 8%.",
         "Enemies take 1% more damage per second of remaining petrification."
     },
 
@@ -250,7 +247,7 @@ return {
     ["astralcomp_snappingturtle_eggHint"] = "Boss monsters outside boss rooms at or past the Womb (Rate: 10% of the total chance to find eggs).",
     ["astralcomp_snappingturtle_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing boss monsters outside boss rooms, up to {{floorLimit}} times per floor.",
     ["astralcomp_snappingturtle_maxeffects"] = {
-        "12% chance to block damage received by bosses outside boss rooms, once per room."
+        "50% chance to block damage received by bosses outside boss rooms. Once triggered, chance gets halved for the rest of the run."
     },
 
     ["astralcomp_alligatorsnappingturtle_name"] = "Alligator Snapping Turtle",
@@ -259,7 +256,7 @@ return {
     ["astralcomp_alligatorsnappingturtle_eggHint"] = "Cleared boss rooms past floor 1 (Rate: 5% of the total chance to find eggs).",
     ["astralcomp_alligatorsnappingturtle_scavenge"] = "Scavenges {{obolCount}} arcane obols when clearing boss rooms.",
     ["astralcomp_alligatorsnappingturtle_maxeffects"] = {
-        "15% chance to block damage received in boss rooms, once per room."
+        "25% chance to block damage received in boss rooms, once per room."
     },
 
     ["astralcomp_mountainshell_name"] = "Mountainshell",
@@ -268,7 +265,7 @@ return {
     ["astralcomp_mountainshell_eggHint"] = "Boss rooms cleared without taking damage past floor 2 (Rate: 33% of the total chance to find eggs).",
     ["astralcomp_mountainshell_scavenge"] = "Scavenges {{obolCount}} arcane obols when clearing boss rooms without taking damage.",
     ["astralcomp_mountainshell_maxeffects"] = {
-        "Block the first instance of damage received in a boss room, once per run."
+        "Block the first two hits you receive from final bosses."
     },
 
     ["astralcomp_culicivora_name"] = "Culicivora",
@@ -277,17 +274,17 @@ return {
     ["astralcomp_culicivora_eggHint"] = "Bleeding spiders with at least 5 HP (Rate: 8% of the total chance to find eggs).",
     ["astralcomp_culicivora_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing bleeding enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_culicivora_maxeffects"] = {
-        "Bleeding you inflict lasts 1 second longer.",
+        "+0.5% damage for the room when killing bleeding enemies, up to 8%.",
         "Enemies take 1% more damage per second of remaining bleed."
     },
 
     ["astralcomp_abyssaltarantula_name"] = "Abyssal Tarantula",
     ["astralcomp_abyssaltarantula_eggname"] = "Skittering Abyssal Egg",
     ["astralcomp_abyssaltarantula_obj"] = "Inflict fear on enemies.",
-    ["astralcomp_abyssaltarantula_eggHint"] = "Feared spiders with at least 5 HP (Rate: 8% of the total chance to find eggs).",
+    ["astralcomp_abyssaltarantula_eggHint"] = "Feared spiders with at least 5 base HP (Rate: 8% of the total chance to find eggs).",
     ["astralcomp_abyssaltarantula_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting fear on enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_abyssaltarantula_maxeffects"] = {
-        "Fear you inflict lasts 1 second longer.",
+        "+0.5% damage for the room when killing feared enemies, up to 8%.",
         "Enemies take 1% more damage per second of remaining fear."
     },
 
@@ -297,27 +294,26 @@ return {
     ["astralcomp_jumpingspider_eggHint"] = "Spider bosses (Rate: 40% of the total chance to find eggs).",
     ["astralcomp_jumpingspider_scavenge"] = "Scavenges {{obolCount}} arcane obols when inflicting slow on enemies more than 3 tiles away from you, up to {{floorLimit}} times per floor.",
     ["astralcomp_jumpingspider_maxeffects"] = {
-        "Slow you inflict lasts 1 second longer.",
+        "+0.5% damage for the room when killing slowed enemies, up to 8%.",
         "Enemies take 1% more damage per second of remaining slow."
     },
 
     ["astralcomp_scorpion_name"] = "Scorpion",
     ["astralcomp_scorpion_eggname"] = "Chitinous Brown Egg",
-    ["astralcomp_scorpion_obj"] = "Kill enemies with 6 HP or less.",
+    ["astralcomp_scorpion_obj"] = "Kill enemies with 6 base HP or less.",
     ["astralcomp_scorpion_eggHint"] = "Deadly sin bosses (Rate: 40% of the total chance to find eggs).",
-    ["astralcomp_scorpion_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing enemies with 6 HP or less, up to {{floorLimit}} times per floor.",
+    ["astralcomp_scorpion_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing enemies with 6 base HP or less, up to {{floorLimit}} times per floor.",
     ["astralcomp_scorpion_maxeffects"] = {
-        "1% chance to drop a 1/2 heart when killing enemies with 6 HP or less, once per floor."
+        "1% chance to drop a 1/2 heart when killing enemies with 6 base HP or less, up to 3 times per floor."
     },
 
     ["astralcomp_emperorscorpion_name"] = "Emperor Scorpion",
     ["astralcomp_emperorscorpion_eggname"] = "Regal Chitinous Egg",
-    ["astralcomp_emperorscorpion_obj"] = "Kill enemies with HP between 10 and 30.",
+    ["astralcomp_emperorscorpion_obj"] = "Kill enemies with base HP between 10 and 30.",
     ["astralcomp_emperorscorpion_eggHint"] = "Super deadly sin bosses (Rate: 33% of the total chance to find eggs).",
-    ["astralcomp_emperorscorpion_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing enemies with HP between 10 and 30, up to {{floorLimit}} times per floor.",
+    ["astralcomp_emperorscorpion_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing enemies with base HP between 10 and 30, up to {{floorLimit}} times per floor.",
     ["astralcomp_emperorscorpion_maxeffects"] = {
-        "1% chance to drop a 1/2 soul heart when killing enemies with HP between 10 and 30, once per floor.",
-        "This effect can only trigger 4 times per run."
+        "1% chance to drop a 1/2 soul heart when killing enemies with base HP between 10 and 30, up to twice per floor."
     },
 
     ["astralcomp_cosmicjellyfish_name"] = "Cosmic Jellyfish",
@@ -335,7 +331,7 @@ return {
     ["astralcomp_manticore_eggHint"] = "Hidden amongst red passive items (Rate: 8% of the total chance to find eggs).",
     ["astralcomp_manticore_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting status effects on boss monsters, up to {{floorLimit}} times per floor.",
     ["astralcomp_manticore_maxeffects"] = {
-        "Status effects inflicted on boss monsters last 1 second longer."
+        "Boss monsters take 2% increased damage for each different status effect they've received."
     },
 
     ["astralcomp_catoblepas_name"] = "Catoblepas",
@@ -353,7 +349,7 @@ return {
     ["astralcomp_skyshark_eggHint"] = "Bleeding flying tainted enemies (Rate: 20% of the total chance to find eggs).",
     ["astralcomp_skyshark_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing bleeding flying enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_skyshark_maxeffects"] = {
-        "Killing bleeding flying enemies grants +2% damage for 5 seconds, which stacks up to 10%.",
+        "Killing bleeding flying enemies grants +1% damage for 7 seconds, which stacks up to 8%.",
         "Bleeding champions are 7% more likely to drop obols on death."
     },
 
@@ -381,7 +377,7 @@ return {
     ["astralcomp_pearldragon_eggHint"] = "Angel rooms (Rate: 20% of the total chance to find eggs).",
     ["astralcomp_pearldragon_scavenge"] = "Scavenges {{obolCount}} arcane obols when first obtaining angelic passive items or defeating Angel bosses.",
     ["astralcomp_pearldragon_maxeffects"] = {
-        "+3% damage per angelic item you have, up to 18%."
+        "+2% damage when first entering an angel room in a floor, up to 10%."
     },
 
     ["astralcomp_icebeast_name"] = "Ice Beast",
@@ -390,6 +386,43 @@ return {
     ["astralcomp_icebeast_eggHint"] = "Frozen monsters with at least 20 HP (Rate: 10% of the total chance to find eggs).",
     ["astralcomp_icebeast_scavenge"] = "Scavenges {{obolCount}} arcane obols when destroying frozen monsters with at least 20 HP, up to {{floorLimit}} times per floor.",
     ["astralcomp_icebeast_maxeffects"] = {
-        "+1% damage for the floor for every 10 frozen monsters you destroy, up to 8%."
+        "+1% damage for the floor for every 8 frozen monsters you destroy, up to 8%."
     },
+
+    ["astralcomp_gildedgolem_name"] = "Gilded Golem",
+    ["astralcomp_gildedgolem_eggname"] = "Solid Gold Egg",
+    ["astralcomp_gildedgolem_obj"] = "Purchase shop items.",
+    ["astralcomp_gildedgolem_eggHint"] = "Hidden amongst shop items worth at least 10 coins (Rate: 10% of the total chance to find eggs).",
+    ["astralcomp_gildedgolem_scavenge"] = "Scavenges {{obolCount}} arcane obol(s) per coin spent in shops, up to {{floorLimit}} per floor.",
+    ["astralcomp_gildedgolem_maxeffects"] = {
+        "+1% damage for the floor per item purchased in the shop, up to 10%."
+    },
+
+    ["astralcomp_salamander_name"] = "Salamander",
+    ["astralcomp_salamander_eggname"] = "Hearty Egg",
+    ["astralcomp_salamander_obj"] = "Collect red hearts.",
+    ["astralcomp_salamander_eggHint"] = "Hidden amongst red heart pickups (Rate: 2% of the total chance to find eggs).",
+    ["astralcomp_salamander_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting red hearts, up to {{floorLimit}} times per floor.",
+    ["astralcomp_salamander_maxeffects"] = {
+        "+1% luck for the floor when collecting red hearts, up to 20%."
+    },
+
+    ["astralcomp_warg_name"] = "Warg",
+    ["astralcomp_warg_eggname"] = "Challenger Egg",
+    ["astralcomp_warg_obj"] = "Clear challenge rooms.",
+    ["astralcomp_warg_eggHint"] = "Challenge rooms.",
+    ["astralcomp_warg_scavenge"] = "Scavenges {{obolCount}} arcane obols when clearing challenge rooms.",
+    ["astralcomp_warg_maxeffects"] = {
+        "+1% all stats when clearing challenge rooms, up to 7% per run."
+    },
+
+    ["astralcomp_dreamsheep_name"] = "Dream Sheep",
+    ["astralcomp_dreamsheep_eggname"] = "Dreamy Egg",
+    ["astralcomp_dreamsheep_obj"] = "Earn experience.",
+    ["astralcomp_dreamsheep_eggHint"] = "Bedroom.",
+    ["astralcomp_dreamsheep_scavenge"] = "Scavenges ({{obolCount}} + floor) arcane obols when clearing a room while you haven't taken damage in the current floor.",
+    ["astralcomp_dreamsheep_maxeffects"] = {
+        "+15% exp and obols found while you haven't taken damage in the current floor.",
+        "When first taking damage in a floor, 15% chance to spawn a 1/2 soul heart if you have less than 2 soul hearts."
+    }
 }

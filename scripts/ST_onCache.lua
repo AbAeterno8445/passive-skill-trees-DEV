@@ -303,6 +303,11 @@ function PST:onCache(player, cacheFlag)
         if PST.specialNodes.ancwep_azurebinderBuff > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + PST.specialNodes.ancwep_azurebinderBuff
         end
+
+        -- Mod: +% damage for X seconds when killing flying bleeding enemies
+        if PST.specialNodes.astralcomp_skysharkBuffTimer > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + PST:getTreeSnapshotMod("skysharkBleedEnemBuff", 0) * PST:getTreeSnapshotMod("skysharkBleedEnemDmg", 0)
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: speed while dead bird is active
@@ -410,6 +415,12 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +% speed after using a Bean active
         tmpTreeMod = PST:getTreeSnapshotMod("beanActiveSpeed", 0)
         if tmpTreeMod > 0 and PST.specialNodes.beanSpeedTimer > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
+        end
+
+        -- Mod: +% speed while in red rooms
+        tmpTreeMod = PST:getTreeSnapshotMod("redRoomSpeedPerc", 0)
+        if tmpTreeMod > 0 and PST:inRedRoom() then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
         end
     -- TEARS CACHE

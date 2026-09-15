@@ -169,8 +169,14 @@ function PST:expedDropObolsAt(position, amount, noMax)
     local tmpMult = 1
     local maxAmount = 400 + PST:getTreeSnapshotMod("expedDepth", 0) * 10
     -- Obols found mods
-    if PST:getTreeSnapshotMod("obolsFound", 0) > 0 then
-        tmpMult = tmpMult + PST:getTreeSnapshotMod("obolsFound", 0) / 100
+    local tmpMod = PST:getTreeSnapshotMod("obolsFound", 0)
+    if tmpMod > 0 then
+        tmpMult = tmpMult + tmpMod / 100
+    end
+    -- Mod: +% obols found while you haven't taken damage in the current floor
+    tmpMod = PST:getTreeSnapshotMod("flawlessObols", 0)
+    if tmpMod > 0 and not PST:getTreeSnapshotMod("floorGotHit", false) then
+        tmpMult = tmpMult + tmpMod / 100
     end
     if PST:getTreeSnapshotMod("isExpedUber", false) then
         maxAmount = maxAmount + PST:getTreeSnapshotMod("expedDepth", 0) * 20

@@ -74,6 +74,12 @@ function PST:onRoomClear(RNG)
                 local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
             end
+
+            -- Astral Companion: Warg
+            tmpMod = PST:getTreeSnapshotMod("wargChallAllStats", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("wargChallBuff", 0) < 7 then
+                PST:addModifiers({ allstatsPerc = tmpMod, wargChallBuff = tmpMod }, true)
+            end
         end
     -- Boss rooms
     elseif roomType == RoomType.ROOM_BOSS then
@@ -564,6 +570,37 @@ function PST:onRoomClear(RNG)
             local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
             local newPickup = PST:getTCainRandPickup()
             Game():Spawn(EntityType.ENTITY_PICKUP, newPickup[1], tmpPos, Vector.Zero, nil, newPickup[2], Random() + 1)
+        end
+
+        -- Mod: chance to drop an additional coin when clearing a room
+        tmpChance = PST:getTreeSnapshotMod("roomClearCoin", 0)
+        if tmpChance > 0 and 100 * math.random() < tmpChance then
+            local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, tmpPos, Vector.Zero, nil, CoinSubType.COIN_PENNY, Random() + 1)
+        end
+
+        -- Mod: chance to spawn an additional golden chest when clearing a room, up to twice per floor (Hound companion)
+        tmpChance = PST:getTreeSnapshotMod("houndGoldChestOnClear", 0)
+        if tmpChance > 0 and PST:getTreeSnapshotMod("houndGoldChestProcs", 0) < 2 and 100 * math.random() < tmpChance then
+            local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+            Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, tmpPos, Vector.Zero, nil, ChestSubType.CHEST_CLOSED, Random() + 1)
+            PST:addModifiers({ houndGoldChestProcs = 1 }, true)
+        end
+
+        -- Mod: chance to spawn an additional sidereal cache when clearing a room past the first floor, up to twice per floor (Cosmic Hound companion)
+        tmpChance = PST:getTreeSnapshotMod("cHoundSideCacheOnClear", 0)
+        if tmpChance > 0 and not PST:isFirstOrigStage() and PST:getTreeSnapshotMod("cHoundCacheProcs", 0) < 2 and 100 * math.random() < tmpChance then
+            local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, Isaac.GetEntityVariantByName("Sidereal Cache"), 0, tmpPos, Vector.Zero, nil)
+            PST:addModifiers({ cHoundCacheProcs = 1 }, true)
+        end
+
+        -- Mod: chance to spawn a lil battery when clearing a room, up to 3 times per floor (Raiju companion)
+        tmpChance = PST:getTreeSnapshotMod("raijuBatteryOnClear", 0)
+        if tmpChance > 0 and PST:getTreeSnapshotMod("raijuBatteryProcs", 0) < 3 and 100 * math.random() < tmpChance then
+            local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_NORMAL, tmpPos, Vector.Zero, nil)
+            PST:addModifiers({ raijuBatteryProcs = 1 }, true)
         end
 
         -- Dark Bestowal node (T. Azazel's tree)

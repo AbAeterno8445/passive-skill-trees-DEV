@@ -569,15 +569,24 @@ function PST:onNewRun(isContinued)
             end
         end
 
-        -- Astral Companion chance
+        -- Astral Companion egg finding chance
         if PST:isNodeNameAllocated("sidereal", "Astral Companions") then
             PST:addModifiers({ astralCompEggChance = 100 }, true)
         end
 
-        -- Astral Companion config
+        -- Astral Companion config and level 3 mods
         if charData and charData.astralCompanions then
             for i=1,3 do
-                PST:addModifiers({ ["astralCompSlot" .. i] = charData.astralCompanions[tostring(i)] }, true)
+                local tmpComp = charData.astralCompanions[tostring(i)]
+                PST:addModifiers({ ["astralCompSlot" .. i] = tmpComp }, true)
+
+                local compData = PST.modData.astralcomps[tmpComp]
+                if compData and compData.level >= 3 then
+                    local baseCompData = PST.astralCompanions[tmpComp]
+                    if baseCompData and baseCompData.maxLevelEffects then
+                        PST:addModifiers(baseCompData.maxLevelEffects, true)
+                    end
+                end
             end
         end
     end

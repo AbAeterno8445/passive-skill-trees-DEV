@@ -159,6 +159,82 @@ function PST:onDeath(entity)
                 newCoin:ToPickup().Timeout = 90
             end
 
+            -- Astral Companion: Hell Hound
+            local tmpMod = PST:getTreeSnapshotMod("hHoundBurnKillDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("hHoundBurnKillProcs", 0) < 16 and entity:GetBurnCountdown() > 0 then
+                PST:addModifiers({ damagePerc = tmpMod, hHoundBurnKillProcs = 1 }, true)
+            end
+            -- Astral Companion: Pharaoh Ant
+            tmpMod = PST:getTreeSnapshotMod("deathScarabFlies", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("deathScarabFlyProcs", 0) < 10 and 100 * math.random() < tmpMod then
+                PST:getPlayer():AddBlueFlies(1, entity.Position)
+                PST:addModifiers({ deathScarabFlyProcs = 1 }, true)
+            end
+            -- Astral Companion: Water Moccasin
+            tmpMod = PST:getTreeSnapshotMod("waterMocPoisonKillDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("waterMocPoisonKillProcs", 0) < 20 and entity:GetPoisonDamageTimer() > 0 then
+                PST:addModifiers({ damagePerc = tmpMod, waterMocPoisonKillProcs = 1 }, true)
+            end
+            -- Astral Companion: Black Mamba
+            tmpMod = PST:getTreeSnapshotMod("blackMambaPoisonLuck", 0)
+            if tmpMod > 0 and entity:GetPoisonDamageTimer() > 0 and PST:getTreeSnapshotMod("blackMambaPoisonLuckTotal", 0) < 3 then
+                PST:addModifiers({ luck = tmpMod, blackMambaPoisonLuckTotal = tmpMod }, true)
+            end
+            -- Astral Companion: Anaconda
+            tmpMod = PST:getTreeSnapshotMod("anacondaPetrifKillDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("anacondaPetrifKillProcs", 0) < 16 and entity:GetFreezeCountdown() > 0 then
+                PST:addModifiers({ damagePerc = tmpMod, anacondaPetrifKillProcs = 1 }, true)
+            end
+            -- Astral Companion: Culicivora
+            tmpMod = PST:getTreeSnapshotMod("culicivoraBleedKillDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("culicivoraKillProcs", 0) < 16 and entity:GetBleedingCountdown() > 0 then
+                PST:addModifiers({ damagePerc = tmpMod, culicivoraKillProcs = 1 }, true)
+            end
+            -- Astral Companion: Abyssal Tarantula
+            tmpMod = PST:getTreeSnapshotMod("abTarFearKillDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("abTarKillProcs", 0) < 16 and entity:GetFearCountdown() > 0 then
+                PST:addModifiers({ damagePerc = tmpMod, abTarKillProcs = 1 }, true)
+            end
+            -- Astral Companion: Jumping Spider
+            tmpMod = PST:getTreeSnapshotMod("jumpSpiderSlowKillDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("jumpSpiderKillProcs", 0) < 16 and entity:GetSlowingCountdown() > 0 then
+                PST:addModifiers({ damagePerc = tmpMod, jumpSpiderKillProcs = 1 }, true)
+            end
+            -- Astral Companion: Scorpion
+            tmpMod = PST:getTreeSnapshotMod("scorpionHeartOnKill", 0)
+            if tmpMod > 0 and tmpNPC and tmpNPC.MaxHitPoints >= 6 and PST:getTreeSnapshotMod("scorpionKillProcs", 0) < 3 and 100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF, entity.Position, RandomVector() * 3, nil)
+                PST:addModifiers({ scorpionKillProcs = 1 }, true)
+            end
+            -- Astral Companion: Emperor Scorpion
+            tmpMod = PST:getTreeSnapshotMod("empScorpionSoulOnKill", 0)
+            if tmpMod > 0 and tmpNPC and tmpNPC.MaxHitPoints >= 10 and tmpNPC.MaxHitPoints <= 30 and PST:getTreeSnapshotMod("empScorpionProcs", 0) < 2 and
+            100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL, entity.Position, RandomVector() * 3, nil)
+                PST:addModifiers({ empScorpionProcs = 1 }, true)
+            end
+            -- Astral Companion: Skyshark
+            tmpMod = PST:getTreeSnapshotMod("skysharkBleedEnemDmg", 0)
+            if tmpMod > 0 and entity:GetBleedingCountdown() > 0 and entity:IsFlying() then
+                if PST:getTreeSnapshotMod("skysharkBleedEnemBuff", 0) < 8 then
+                    PST:addModifiers({ skysharkBleedEnemBuff = 1 }, true)
+                    PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                end
+                PST.specialNodes.astralcomp_skysharkBuffTimer = 210
+            end
+            -- Astral Companion: Ice Beast
+            tmpMod = PST:getTreeSnapshotMod("iceBeastFrozenDmg", 0)
+            if tmpMod > 0 and isFrozen and PST:getTreeSnapshotMod("iceBeastBuff", 0) < 8 then
+                PST:addModifiers({ iceBeastMobs = 1 }, true)
+                if PST:getTreeSnapshotMod("iceBeastMobs", 0) >= 8 then
+                    PST:addModifiers({
+                        damagePerc = tmpMod,
+                        iceBeastBuff = tmpMod,
+                        iceBeastMobs = { value = 0, set = true }
+                    }, true)
+                end
+            end
+
             PST:addTempXP(math.max(1, math.floor(mult * entity.MaxHitPoints / 2)), true)
         end
 
@@ -273,7 +349,23 @@ function PST:onDeath(entity)
 
                 -- Obols on champion kill
                 if PST:getTreeSnapshotMod("isExpedRun", false) then
-                    local tmpObols = PST.obolEvents.championKill(PST:getTreeSnapshotMod("expedDepth", 1))
+                    local tmpChanceMod = 0
+                    -- Astral Companion: Black Mamba
+                    local tmpMod = PST:getTreeSnapshotMod("blackMambaPoisonChampObols", 0)
+                    if tmpMod > 0 and entity:GetPoisonDamageTimer() > 0 then
+                        tmpChanceMod = tmpChanceMod + tmpMod
+                    end
+                    -- Astral Companion: Catoblepas
+                    tmpMod = PST:getTreeSnapshotMod("petrifChampObols", 0)
+                    if tmpMod > 0 and entity:GetFreezeCountdown() > 0 then
+                        tmpChanceMod = tmpChanceMod + tmpMod
+                    end
+                    -- Astral Companion: Skyshark
+                    tmpMod = PST:getTreeSnapshotMod("bleedChampObols", 0)
+                    if tmpMod > 0 and entity:GetBleedingCountdown() > 0 then
+                        tmpChanceMod = tmpChanceMod + tmpMod
+                    end
+                    local tmpObols = PST.obolEvents.championKill(PST:getTreeSnapshotMod("expedDepth", 1), tmpChanceMod / 100)
                     if tmpObols > 0 then PST:expedDropObolsAt(entity.Position, tmpObols) end
                 end
 
@@ -304,6 +396,17 @@ function PST:onDeath(entity)
                 if tmpMod > 0 and not PST:getTreeSnapshotMod("eveMascaraChampProc", false) and 100 * math.random() < tmpMod then
                     PST:getPlayer():AddCollectible(CollectibleType.COLLECTIBLE_EVES_MASCARA)
                     PST:addModifiers({ eveMascaraChampProc = true }, true)
+                end
+
+                -- Mod: % chance for champion monsters to drop an additional coin on death
+                tmpMod = PST:getTreeSnapshotMod("champExtraCoin", 0)
+                if tmpMod > 0 then
+                    -- Chance increases by 1 with each floor
+                    tmpMod = tmpMod + math.max(0, PST:getLevel():GetStage() - 1)
+
+                    if 100 * math.random() < tmpMod then
+                        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY, entity.Position, Vector.Zero, nil)
+                    end
                 end
             end
 

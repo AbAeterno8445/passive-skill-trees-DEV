@@ -113,6 +113,11 @@ function PST:onNewRoom()
 						-- Expedition curse: abundant might
 						tmpChance = tmpChance + PST:getTreeSnapshotMod("curseAbundantMightChance", 0)
 
+						-- Undead monster champion chance
+						if PST:isMobUndead(tmpNPC) then
+							tmpChance = tmpChance + PST:getTreeSnapshotMod("undeadChamps", 0)
+						end
+
 						if jewelChampChance > 0 and not NPCisBoss and PST:NPCChampionAvailable(tmpNPC, true) and
 						100 * math.random() < jewelChampChance then
 							tmpNPC:MakeChampion(Random() + 1)
@@ -1481,6 +1486,83 @@ function PST:onNewRoom()
 	-- Ancient weapon: Divine Messenger
 	if PST:getTreeSnapshotMod("ancwep_divineMessengerProc", false) then
 		PST:addModifiers({ ancwep_divineMessengerProc = false }, true)
+	end
+
+	-- Astral Companion: Hell Hound (reset buff)
+	tmpMod = PST:getTreeSnapshotMod("hHoundBurnKillProcs", 0)
+	if tmpMod > 0 then
+		local dmgBuff = PST:getTreeSnapshotMod("hHoundBurnKillDmg", 0) * tmpMod
+		PST:addModifiers({ damagePerc = -dmgBuff, hHoundBurnKillProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Death Scarab procs reset
+	if PST:getTreeSnapshotMod("deathScarabFlyProcs", 0) > 0 then
+		PST:addModifiers({ deathScarabFlyProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Clockroach proc reset
+	if PST:getTreeSnapshotMod("clockroachProc", false) then
+		PST:addModifiers({ clockroachProc = false }, true)
+	end
+	-- Astral Companion: Butterfly
+	tmpMod = PST:getTreeSnapshotMod("butterflyRoomSpeed", 0)
+	if tmpMod > 0 and roomType ~= RoomType.ROOM_DEFAULT and room:IsFirstVisit() then
+		PST:addModifiers({ speed = tmpMod, butterflyRoomSpeedTotal = tmpMod }, true)
+	end
+	-- Astral Companion: Lunar Moth
+	tmpMod = PST:getTreeSnapshotMod("lunarMothSecretRoomStats", 0)
+	if tmpMod > 0 and (roomType == RoomType.ROOM_SECRET or roomType == RoomType.ROOM_SUPERSECRET) and room:IsFirstVisit() and
+	PST:getTreeSnapshotMod("lunarMothProcs", 0) < 5 then
+		PST:addModifiers({ allstatsPerc = 1, lunarMothProcs = 1 }, true)
+	end
+	-- Astral Companion: Crimson Moth
+	if PST:getTreeSnapshotMod("crimsonMothRedRooms", false) and PST:inRedRoom() then
+		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_GLYPH_OF_BALANCE) and not PST:getTreeSnapshotMod("crimsonMothProc", false) then
+			player:AddInnateCollectible(CollectibleType.COLLECTIBLE_GLYPH_OF_BALANCE, 1, "", 0, false)
+			PST:addModifiers({ crimsonMothProc = true }, true)
+		end
+	elseif PST:getTreeSnapshotMod("crimsonMothProc", false) and not PST:inRedRoom() then
+		PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+		player:RemoveInnateCollectible(CollectibleType.COLLECTIBLE_GLYPH_OF_BALANCE, 1, "")
+		PST:addModifiers({ crimsonMothProc = false }, true)
+	end
+	-- Astral Companion: Water Moccasin (reset buff)
+	tmpMod = PST:getTreeSnapshotMod("waterMocPoisonKillProcs", 0)
+	if tmpMod > 0 then
+		local dmgBuff = PST:getTreeSnapshotMod("waterMocPoisonKillDmg", 0) * tmpMod
+		PST:addModifiers({ damagePerc = -dmgBuff, waterMocPoisonKillProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Anaconda (reset buff)
+	tmpMod = PST:getTreeSnapshotMod("anacondaPetrifKillProcs", 0)
+	if tmpMod > 0 then
+		local dmgBuff = PST:getTreeSnapshotMod("anacondaPetrifKillDmg", 0) * tmpMod
+		PST:addModifiers({ damagePerc = -dmgBuff, anacondaPetrifKillProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Alligator Snapping Turtle reset proc
+	if PST:getTreeSnapshotMod("aSnapTurtleProc", false) then
+		PST:addModifiers({ aSnapTurtleProc = false }, true)
+	end
+	-- Astral Companion: Culicivora (reset buff)
+	tmpMod = PST:getTreeSnapshotMod("culicivoraKillProcs", 0)
+	if tmpMod > 0 then
+		local dmgBuff = PST:getTreeSnapshotMod("culicivoraBleedKillDmg", 0) * tmpMod
+		PST:addModifiers({ damagePerc = -dmgBuff, culicivoraKillProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Abyssal Tarantula (reset buff)
+	tmpMod = PST:getTreeSnapshotMod("abTarKillProcs", 0)
+	if tmpMod > 0 then
+		local dmgBuff = PST:getTreeSnapshotMod("abTarFearKillDmg", 0) * tmpMod
+		PST:addModifiers({ damagePerc = -dmgBuff, abTarKillProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Jumping Spider (reset buff)
+	tmpMod = PST:getTreeSnapshotMod("jumpSpiderKillProcs", 0)
+	if tmpMod > 0 then
+		local dmgBuff = PST:getTreeSnapshotMod("jumpSpiderSlowKillDmg", 0) * tmpMod
+		PST:addModifiers({ damagePerc = -dmgBuff, jumpSpiderKillProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Pearl Dragon
+	tmpMod = PST:getTreeSnapshotMod("pearlDragAngelRoomDmg", 0)
+	if tmpMod > 0 and PST:getTreeSnapshotMod("pearlDragBuff", 0) < 10 and roomType == RoomType.ROOM_ANGEL then
+		PST:addModifiers({ damagePerc = tmpMod, pearlDragBuff = tmpMod }, true)
 	end
 
 	if PST.savePending then

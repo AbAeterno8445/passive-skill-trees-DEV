@@ -22,6 +22,31 @@ function PST:onDamage(target, damage, flag, source)
                 return { Damage = 0 }
             end
 
+            -- Mod: % chance to block damage received by bosses outside boss rooms, halved once triggered (Snapping Turtle companion)
+            local tmpMod = PST:getTreeSnapshotMod("snapTurtleBossBlock", 0)
+            local roomType = PST:getRoom():GetType()
+            if tmpMod > 0 and roomType ~= RoomType.ROOM_BOSS and source.Entity and source.Entity:IsBoss() and 100 * math.random() < tmpMod then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.6, 2, false, 1.2)
+                PST:addModifiers({ snapTurtleBossBlock = tmpMod / -2 }, true)
+                return { Damage = 0 }
+            end
+
+            -- Mod: % chance to block damage received in boss rooms, once per room (Alligator Snapping Turtle companion)
+            tmpMod = PST:getTreeSnapshotMod("aSnapTurtleBossBlock", 0)
+            if tmpMod > 0 and roomType == RoomType.ROOM_BOSS and not PST:getTreeSnapshotMod("aSnapTurtleProc", false) and 100 * math.random() < tmpMod then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.6, 2, false, 1.2)
+                PST:addModifiers({ aSnapTurtleProc = true }, true)
+                return { Damage = 0 }
+            end
+
+            -- Mod: block the first X hits you receive from final bosses (Mountainshell companion)
+            tmpMod = PST:getTreeSnapshotMod("mountainshellBlock", 0)
+            if tmpMod > 0 and source.Entity and PST:entityIsFinalBoss(source.Entity) then
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.6, 2, false, 1.2)
+                PST:addModifiers({ mountainshellBlock = -1 }, true)
+                return { Damage = 0 }
+            end
+
             -- Hasted node (Samson's tree)
             if PST:getTreeSnapshotMod("hasted", false) and PST:getTreeSnapshotMod("hastedHits", 0) < 5 then
                 PST:addModifiers({ tearsPerc = -1.5, shotSpeedPerc = -1.5, hastedHits = 1 }, true)
@@ -367,6 +392,13 @@ function PST:onDamage(target, damage, flag, source)
                     -- Set floor-wide hit flag
                     if not PST:getTreeSnapshotMod("floorGotHit", false) then
                         PST:addModifiers({ floorGotHit = true }, true)
+
+                        -- First hit in floor effects
+                        -- Mod: when first taking damage in a floor, % chance to spawn a 1/2 soul heart if you have less than 2 (Dream Sheep companion)
+                        tmpMod = PST:getTreeSnapshotMod("dreamSheepFirstDmgSoul", 0)
+                        if tmpMod > 0 and player:GetSoulHearts() < 4 and 100 * math.random() < tmpMod then
+                            Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL, player.Position, RandomVector() * 3, nil)
+                        end
                     end
 
                     -- Set run-wide hit flag
@@ -2003,6 +2035,52 @@ function PST:onDamage(target, damage, flag, source)
             tmpMod = PST:getTreeSnapshotMod("finalBossDmg", 0)
             if tmpMod > 0 and PST:entityIsFinalBoss(target) then
                 dmgMult = dmgMult + tmpMod / 100
+            end
+
+            -- Astral Companion: Clockroach slow
+            tmpMod = PST:getTreeSnapshotMod("clockroachSlow", 0)
+            if tmpMod > 0 and not PST:getTreeSnapshotMod("clockroachProc", false) and not target:HasMortalDamage() then
+                target:AddSlowing(EntityRef(srcPlayer), 240, 0.8, Color(0.8, 0.8, 0.8), true)
+                PST:addModifiers({ clockroachProc = true }, true)
+            end
+
+            -- Mod: +% damage taken per second of remaining poison
+            tmpMod = PST:getTreeSnapshotMod("remainingPoisonDmg", 0)
+            if tmpMod > 0 and target:GetPoisonDamageTimer() then
+                dmgMult = dmgMult + target:GetPoisonDamageTimer() / 3000
+            end
+
+            -- Mod: +% damage taken per second of remaining petrification
+            tmpMod = PST:getTreeSnapshotMod("remainingPetrifDmg", 0)
+            if tmpMod > 0 and target:GetFreezeCountdown() then
+                dmgMult = dmgMult + target:GetFreezeCountdown() / 3000
+            end
+
+            -- Mod: +% damage taken per second of remaining bleed
+            tmpMod = PST:getTreeSnapshotMod("remainingBleedDmg", 0)
+            if tmpMod > 0 and target:GetBleedingCountdown() then
+                dmgMult = dmgMult + target:GetBleedingCountdown() / 3000
+            end
+
+            -- Mod: +% damage taken per second of remaining fear
+            tmpMod = PST:getTreeSnapshotMod("remainingFearDmg", 0)
+            if tmpMod > 0 and target:GetFearCountdown() then
+                dmgMult = dmgMult + target:GetFearCountdown() / 3000
+            end
+
+            -- Mod: +% damage taken per second of remaining slow
+            tmpMod = PST:getTreeSnapshotMod("remainingSlowDmg", 0)
+            if tmpMod > 0 and target:GetSlowingCountdown() then
+                dmgMult = dmgMult + target:GetSlowingCountdown() / 3000
+            end
+
+            -- Mod: bosses receive % more damage for each different status effect they've received
+            tmpMod = PST:getTreeSnapshotMod("bossDiffStatusDmg", 0)
+            if tmpMod > 0 and target:IsBoss() then
+                local bossData = PST:getEntData(target)
+                if bossData.bossDiffStatusDmgList then
+                    dmgMult = dmgMult + (tmpMod * #bossData.bossDiffStatusDmgList) / 100
+                end
             end
         end
 

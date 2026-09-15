@@ -932,6 +932,20 @@ function PST:frameUpdate()
         if tmpMod > 0 and PST:getTreeSnapshotMod("totalFamiliars", 0) > 0 then
             PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
         end
+
+		-- Mod: % chance to turn a random rock into a tinted rock, up to 5 times per floor (Boulder Beetle companion)
+        tmpMod = PST:getTreeSnapshotMod("boulderBeetleTintRocks", 0)
+        if tmpMod > 0 and room:IsFirstVisit() and PST:getTreeSnapshotMod("boulderBeetleProcs", 0) < 5 and 100 * math.random() < tmpMod then
+            for i=0,room:GetGridSize() do
+                local tmpGridEnt = room:GetGridEntity(i)
+                if tmpGridEnt and tmpGridEnt:GetType() == GridEntityType.GRID_ROCK then
+                    tmpGridEnt:Destroy(true)
+                    room:SpawnGridEntity(i, GridEntityType.GRID_ROCKT, 0)
+                    PST:addModifiers({ boulderBeetleProcs = 1 }, true)
+                    break
+                end
+            end
+        end
 	end
 
 	-- First heart-related functions update
@@ -3357,6 +3371,15 @@ function PST:frameUpdate()
 		elseif not withinAura and PST.specialNodes.inHolyAura then
 			PST.specialNodes.inHolyAura = false
 			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY)
+		end
+	end
+
+	-- Mod: +% damage for X seconds when killing bleeding flying enemies (Skyshark companion)
+	if PST.specialNodes.astralcomp_skysharkBuffTimer > 0 then
+		PST.specialNodes.astralcomp_skysharkBuffTimer = PST.specialNodes.astralcomp_skysharkBuffTimer - 1
+		if PST.specialNodes.astralcomp_skysharkBuffTimer == 0 then
+			PST:addModifiers({ skysharkBleedEnemBuff = { value = 0, set = true } }, true)
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 		end
 	end
 

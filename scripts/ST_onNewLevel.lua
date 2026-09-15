@@ -1007,6 +1007,82 @@ function PST:onNewLevel()
         PST:addModifiers({ expedEnt_chestCounter = { value = 0, set = true } }, true)
     end
 
+    -- Astral Companion: Hound procs reset
+    if PST:getTreeSnapshotMod("houndGoldChestProcs", 0) > 0 then
+        PST:addModifiers({ houndGoldChestProcs = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Cosmic Hound procs reset
+    if PST:getTreeSnapshotMod("cHoundCacheProcs", 0) > 0 then
+        PST:addModifiers({ cHoundCacheProcs = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Raiju procs reset
+    if PST:getTreeSnapshotMod("raijuBatteryProcs", 0) > 0 then
+        PST:addModifiers({ raijuBatteryProcs = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Boulder Beetle procs reset
+    if PST:getTreeSnapshotMod("boulderBeetleProcs", 0) > 0 then
+        PST:addModifiers({ boulderBeetleProcs = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Butterfly buff reset
+    tmpMod = PST:getTreeSnapshotMod("butterflyRoomSpeedTotal", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ speed = -tmpMod, butterflyRoomSpeedTotal = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Lunar Moth buff reset
+    tmpMod = PST:getTreeSnapshotMod("lunarMothProcs", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ allstatsPerc = tmpMod / -2, lunarMothProcs = tmpMod / -2 }, true)
+    end
+    -- Astral Companion: Black Mamba buff reset
+    tmpMod = PST:getTreeSnapshotMod("blackMambaPoisonLuckTotal", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luck = -tmpMod, blackMambaPoisonLuckTotal = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Scorpion procs reset
+    if PST:getTreeSnapshotMod("scorpionKillProcs", 0) > 0 then
+        PST:addModifiers({ scorpionKillProcs = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Emperor Scorpion procs reset
+    if PST:getTreeSnapshotMod("empScorpionProcs", 0) > 0 then
+        PST:addModifiers({ empScorpionProcs = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Cosmic Jellyfish
+    tmpMod = PST:getTreeSnapshotMod("cJellyfishSoulSpeed", 0)
+    if tmpMod > 0 and not PST:isFirstOrigStage() then
+        local prevBuff = PST:getTreeSnapshotMod("cJellyfishSoulSpeed", 0)
+        if prevBuff > 0 then
+            PST:addModifiers({
+                speedPerc = -prevBuff,
+                shotSpeedPerc = -prevBuff,
+                cJellyfishSoulSpeed = { value = 0, set = true }
+            }, true)
+        end
+
+        local tmpBuff = math.min(7, tmpMod * math.floor(player:GetSoulHearts() / 2))
+        if tmpBuff > 0 then
+            PST:addModifiers({
+                cJellyfishSoulBuff = tmpBonus,
+                speedPerc = tmpBuff,
+                shotSpeedPerc = tmpBuff
+            }, true)
+        end
+    end
+    -- Astral Companion: Ice Beast buff reset
+    tmpMod = PST:getTreeSnapshotMod("iceBeastBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod, iceBeastBuff = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Gilded Golem buff reset
+    tmpMod = PST:getTreeSnapshotMod("gildedGolemBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod, gildedGolemBuff = { value = 0, set = true } }, true)
+    end
+    -- Astral Companion: Salamander buff reset
+    tmpMod = PST:getTreeSnapshotMod("salamanderRedHeartBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ luckPerc = -tmpMod, salamanderRedHeartBuff = { value = 0, set = true } }, true)
+    end
+
     -- Astral Companions, reset floor procs
     local charData = PST:getCurrentCharData()
     if charData and charData.astralCompanions then
