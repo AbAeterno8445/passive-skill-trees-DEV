@@ -768,6 +768,11 @@ function PST:onUseItem(itemType, RNG, player, useFlags, slot, customVarData)
         local tmpPos = Isaac.GetFreeNearPosition(player.Position, 20)
         Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LIL_BATTERY, BatterySubType.BATTERY_MICRO, tmpPos, Vector.Zero, nil)
     end
+    -- Mana Viper scavenge event and objective
+    if slot ~= -1 and isNormalCharge and player:GetActiveMaxCharge(slot) > 0 then
+        PST:astralCompAddProgress("manaViper", player:GetActiveMaxCharge(slot))
+        PST:astralCompProcScavenge("manaViper", player:GetActiveMaxCharge(slot) + 1)
+    end
 end
 
 ---- CUSTOM ITEMS ----

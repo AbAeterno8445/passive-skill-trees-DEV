@@ -417,6 +417,15 @@ function PST:onUsePill(pillEffect, player, useFlags)
             if tmpBonus ~= 0 and PST:getTreeSnapshotMod("floorLuckPerc", 0) < 15 then
                 PST:addModifiers({ luckPerc = tmpBonus, floorLuckPerc = tmpBonus }, true)
             end
+
+            -- Astral Companion: Bluecap
+            tmpMod = PST:getTreeSnapshotMod("bluecapPillDmg", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("bluecapDmgBuff", 0) < 7 then
+                PST:addModifiers({ damagePerc = tmpMod, bluecapDmgBuff = tmpMod }, true)
+            end
+            -- Bluecap scavenge event and objective
+            PST:astralCompAddProgress("bluecap", 1)
+            PST:astralCompProcScavenge("bluecap")
         end
     end
 

@@ -228,6 +228,20 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
                 PST:expedAddOrderProgInRun("expedOrd_passiveItems", 1)
             end
         end
+
+        -- Astral Companion: Cosmic Jellyfish egg
+        if PST:arrHasValue(PST.blueItemPool, itemType) then
+            PST:astralCompEggUnlockProc("cosmicJellyfish")
+        end
+        -- Astral Companion: Manticore egg
+        if PST:arrHasValue(PST.ultraSecretPool, itemType) then
+            PST:astralCompEggUnlockProc("manticore")
+        end
+        -- Astral Companion: Pearl Dragon scavenge event and objective
+        if PST:arrHasValue(PST.angelPool, itemType) then
+            PST:astralCompAddProgress("pearlDragon", 1)
+            PST:astralCompEggUnlockProc("pearlDragon")
+        end
     end
 
     -- Spectral Advantage node (The Lost's tree)

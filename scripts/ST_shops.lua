@@ -104,6 +104,17 @@ function PST:onShopPurchase(pickup, player, spent)
         if tmpMod > 0 and PST:getTreeSnapshotMod("gildedGolemBuff", 0) < 10 then
             PST:addModifiers({ damagePerc = tmpMod, gildedGolemBuff = tmpMod }, true)
         end
+        -- Gilded Golem objective
+        PST:astralCompAddProgress("gildedGolem", 1)
+        if spent >= 10 then
+            PST:astralCompEggUnlockProc("gildedGolem")
+        end
+        PST:astralCompProcScavenge("gildedGolem", 1, spent)
+
+        -- Astral Companion: Mana Viper egg
+        if pickup.Variant ~= PickupVariant.PICKUP_COLLECTIBLE then
+            PST:astralCompEggUnlockProc("manaViper")
+        end
     elseif spent < 0 then
         -- Mod: chance to gain a black heart when spending hearts on deals
         local tmpMod = PST:getTreeSnapshotMod("blackHeartOnDeals", 0)
@@ -122,6 +133,14 @@ function PST:onShopPurchase(pickup, player, spent)
             local tmpMod = PST:getTreeSnapshotMod("shadowDragDevilDealDmg", 0)
             if tmpMod > 0 and PST:getTreeSnapshotMod("shadowDragDmgBuff", 0) < 16 then
                 PST:addModifiers({ damagePerc = tmpMod, shadowDragDmgBuff = tmpMod }, true)
+            end
+            -- Shadow Dragon scavenge event and objective
+            PST:astralCompAddProgress("shadowDragon", 1)
+            PST:astralCompEggUnlockProc("shadowDragon")
+            local shadowDragLevel = PST.modData.astralcomps["shadowDragon"] and PST.modData.astralcomps["shadowDragon"].level or nil
+            if shadowDragLevel and spent < 0 then
+                local shadowDragExtra = {25, 35, 45}
+                PST:astralCompProcScavenge("shadowDragon", 1, -spent * shadowDragExtra[shadowDragLevel])
             end
         end
 

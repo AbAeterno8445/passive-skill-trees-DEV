@@ -1,6 +1,6 @@
 -- Mod data initialization
 PST.modName = "Passive Skill Trees"
-PST.modVersion = "v1.3.11"
+PST.modVersion = "v1.4.0"
 PST.isNewVersion = false -- Gets set to true when the mod updates, then remains false until next update
 PST.modData = {}
 PST.saveSlot = 1
@@ -215,6 +215,9 @@ PST.segmentBosses = {
 	EntityType.ENTITY_ENVY, EntityType.ENTITY_LARRYJR, EntityType.ENTITY_PIN, EntityType.ENTITY_CHUB,
 	EntityType.ENTITY_FISTULA_MEDIUM, EntityType.ENTITY_FISTULA_SMALL, EntityType.ENTITY_BLASTOCYST_MEDIUM, EntityType.ENTITY_BLASTOCYST_SMALL
 }
+PST.spiderBosses = {
+	EntityType.ENTITY_WIDOW, EntityType.ENTITY_DADDYLONGLEGS, EntityType.ENTITY_REAP_CREEP
+}
 PST.diceItems = {
 	CollectibleType.COLLECTIBLE_D1, CollectibleType.COLLECTIBLE_D4, CollectibleType.COLLECTIBLE_D6,
 	CollectibleType.COLLECTIBLE_D7, CollectibleType.COLLECTIBLE_D8, CollectibleType.COLLECTIBLE_D10,
@@ -255,6 +258,11 @@ PST.noChampionMobs = {
 	EntityType.ENTITY_SPLURT, EntityType.ENTITY_STRIDER, EntityType.ENTITY_SWARM, EntityType.ENTITY_SWARM_SPIDER,
 	EntityType.ENTITY_SWINGER, EntityType.ENTITY_WIZOOB, EntityType.ENTITY_BLOOD_PUPPY,
 	-- Tainted variants
+	{EntityType.ENTITY_BOOMFLY, 6}, {EntityType.ENTITY_FACELESS, 1}, {EntityType.ENTITY_HOPPER, 3}, {EntityType.ENTITY_MOLE, 1},
+	{EntityType.ENTITY_MULLIGAN, 3}, {EntityType.ENTITY_POOTER, 2}, {EntityType.ENTITY_ROUND_WORM, 2}, {EntityType.ENTITY_WALL_CREEP, 3},
+	{EntityType.ENTITY_SPITTY, 1}, {EntityType.ENTITY_SUB_HORF, 1}, {EntityType.ENTITY_SUCKER, 7}, {EntityType.ENTITY_ROUND_WORM, 3}
+}
+PST.taintedMobs = {
 	{EntityType.ENTITY_BOOMFLY, 6}, {EntityType.ENTITY_FACELESS, 1}, {EntityType.ENTITY_HOPPER, 3}, {EntityType.ENTITY_MOLE, 1},
 	{EntityType.ENTITY_MULLIGAN, 3}, {EntityType.ENTITY_POOTER, 2}, {EntityType.ENTITY_ROUND_WORM, 2}, {EntityType.ENTITY_WALL_CREEP, 3},
 	{EntityType.ENTITY_SPITTY, 1}, {EntityType.ENTITY_SUB_HORF, 1}, {EntityType.ENTITY_SUCKER, 7}, {EntityType.ENTITY_ROUND_WORM, 3}
@@ -564,6 +572,7 @@ PST.expedEntropyTrinketBlacklist = {}
 -- Generated when relevant
 PST.ultraSecretPool = {}
 PST.blueItemPool = {}
+PST.angelPool = {}
 PST.ItemPoolType = {
     POOL_BLUE = Isaac.GetPoolIdByName("blueItems")
 }
@@ -595,9 +604,6 @@ PST.floorFirstUpdate = false
 -- For cache updates that need to happen a couple frames later
 PST.delayedCacheUpdate = 0
 PST.delayedCacheFlags = 0
-
--- For segmented boss kill checks
-PST.segmentBossKillProcs = {}
 
 function PST:copyTable(dataTable)
 	local tmpTable = {}

@@ -139,6 +139,7 @@ function PST:gridEntityPoopUpdate(entityParam)
     end
 end
 
+---@param entityParam GridEntityRock
 function PST:gridEntityRockUpdate(entityParam)
     local convertedRock = false
     if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 then
@@ -183,6 +184,11 @@ function PST:gridEntityRockUpdate(entityParam)
                         -- Expedition objective: destroy tinted rocks
                         PST:expedAddProgInRun("tintedRocks", 1)
 
+                        -- Astral Companion: Boulder Beetle scavenge event and objective
+                        PST:astralCompAddProgress("boulderBeetle", 1)
+                        PST:astralCompProcScavenge("boulderBeetle")
+                        PST:astralCompEggUnlockProc("boulderBeetle")
+
                         -- Obols from tinted rocks
                         if PST:getTreeSnapshotMod("isExpedRun", false) then
                             local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1), 0.15)
@@ -191,6 +197,7 @@ function PST:gridEntityRockUpdate(entityParam)
                     end
                 end
             end
+        -- Regular rocks
         elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK then
             if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 and not PST:inMineshaftPuzzle() then
                 -- Ancient starcursed jewel: Tellurian Splinter
@@ -201,6 +208,7 @@ function PST:gridEntityRockUpdate(entityParam)
                     room:SpawnGridEntity(gridIdx, GridEntityType.GRID_ROCK_BOMB)
                 end
             end
+        -- Bomb rocks
         elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK_BOMB and entityParam.State == 2 then
             -- Ancient starcursed jewel: Tellurian Splinter
             if PST:SC_getSnapshotMod("tellurianSplinter", false) then
@@ -216,6 +224,36 @@ function PST:gridEntityRockUpdate(entityParam)
                     end
                 end
             end
+        end
+    end
+end
+
+---@param rock GridEntityRock
+---@param gridType GridEntityType
+---@param immediate boolean
+---@param source EntityRef
+function PST:gridEntityRockDestroy(rock, gridType, immediate, source)
+    -- Alt rocks (urns, mushrooms, non-tinted skulls)
+    if gridType == GridEntityType.GRID_ROCK_ALT then
+        local altRockType = rock:GetAltRockType(PST:getRoom():GetBackdropType())
+        -- Urns
+        if altRockType == 1 then
+            -- Astral Companion: Boulder Beetle scavenge event and objective
+            PST:astralCompAddProgress("boulderBeetle", 1)
+            PST:astralCompProcScavenge("boulderBeetle")
+            PST:astralCompEggUnlockProc("boulderBeetle")
+        -- Mushrooms
+        elseif altRockType == 2 then
+            -- Astral Companion: Bluecap scavenge event and objective
+            PST:astralCompAddProgress("bluecap", 1)
+            PST:astralCompEggUnlockProc("bluecap")
+            PST:astralCompProcScavenge("bluecap")
+        -- Skulls
+        elseif altRockType == 3 then
+            -- Astral Companion: Death Scarab scavenge event and objective
+            PST:astralCompAddProgress("deathScarab", 1)
+            PST:astralCompProcScavenge("deathScarab")
+            PST:astralCompEggUnlockProc("deathScarab")
         end
     end
 end

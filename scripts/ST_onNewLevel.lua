@@ -1082,6 +1082,11 @@ function PST:onNewLevel()
     if tmpMod > 0 then
         PST:addModifiers({ luckPerc = -tmpMod, salamanderRedHeartBuff = { value = 0, set = true } }, true)
     end
+    -- Astral Companion: Bluecap buff reset
+    tmpMod = PST:getTreeSnapshotMod("bluecapDmgBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ damagePerc = -tmpMod, bluecapDmgBuff = { value = 0, set = true } }, true)
+    end
 
     -- Astral Companions, reset floor procs
     local charData = PST:getCurrentCharData()

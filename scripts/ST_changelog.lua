@@ -3,10 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
-        "v1.3.11",
+        "v1.4.0",
         "- Adjusted how the game pauses while the tree menu is open, and should work more reliably now.",
         "- Added 'Heart Drain Delay' sets of nodes for Tainted Magdalene.",
         "- New Rep+ Eden hairstyles are now available for the Eden Hairdo node.",
+        "- Multi-segment bosses now only trigger on-death effects once no more segments are left in the room.",
         "- Additional compatibility for new mod items and entities (wookywok).",
         "- Increased implicit bleed chance on hit for Axe weapons (from 6-15% to 10-22%).",
         "- Gravitas (Ancient Spear weapon) no longer has the -tears downside.",

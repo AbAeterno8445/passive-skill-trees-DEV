@@ -105,7 +105,8 @@ PST.astralCompanions = {
         scavengeMax = {30, 35, 40},
         objReqs = {20, 35, 55},
         maxLevelEffects = {
-            raijuBatteryOnClear = 7
+            raijuBatteryOnClear = 7,
+            raijuCapacitor = 20
         }
     },
     boulderBeetle = {
@@ -207,7 +208,8 @@ PST.astralCompanions = {
         scavengeMax = {40, 40, 40},
         objReqs = {60, 120, 200},
         maxLevelEffects = {
-            remainingPoisonDmg = 1
+            remainingPoisonDmg = 1,
+            blackMambaPoisonChampObols = 7
         }
     },
     waterMoccasin = {
@@ -219,10 +221,12 @@ PST.astralCompanions = {
         scavengeMax = {40, 45, 50},
         objReqs = {25, 50, 75},
         maxLevelEffects = {
-            waterMocPoisonKillDmg = 0.5
+            waterMocPoisonKillDmg = 0.5,
+            blackMambaPoisonLuck = 0.05
         }
     },
-    blackMamba = {
+    --[[
+    blackMamba = { 
         identifier = "astralcomp_blackmamba",
         compSprite = 19,
         eggRate = 40,
@@ -234,11 +238,11 @@ PST.astralCompanions = {
             blackMambaPoisonLuck = 0.05,
             blackMambaPoisonChampObols = 7
         }
-    },
+    },]]
     manaViper = {
         identifier = "astralcomp_manaviper",
         compSprite = 20,
-        eggRate = 33,
+        eggRate = 10,
         scavengeRanges = {10, 12, 16},
         scavengeOdds = {7, 10, 15},
         scavengeMax = {30, 35, 40},
@@ -321,9 +325,8 @@ PST.astralCompanions = {
         identifier = "astralcomp_jumpingspider",
         compSprite = 27,
         eggRate = 40,
-        scavengeRanges = {{6, 7}, {9, 10}, {12, 14}},
-        scavengeOdds = {35, 45, 55},
-        scavengeMax = {35, 40, 45},
+        scavengeRanges = {8, 11, 15},
+        scavengeMax = {30, 35, 40},
         objReqs = {50, 60, 75},
         maxLevelEffects = {
             jumpSpiderSlowKillDmg = 0.5,
@@ -369,10 +372,10 @@ PST.astralCompanions = {
         identifier = "astralcomp_manticore",
         compSprite = 31,
         eggRate = 8,
-        scavengeRanges = {20, 24, 30},
-        scavengeOdds = {40, 45, 50},
+        scavengeRanges = {8, 14, 20},
+        scavengeOdds = {35, 40, 50},
         scavengeMax = {30, 30, 30},
-        objReqs = {30, 55, 80},
+        objReqs = {100, 250, 400},
         maxLevelEffects = {
             bossDiffStatusDmg = 2
         }
@@ -486,6 +489,16 @@ PST.astralCompanions = {
             flawlessObols = 15,
             dreamSheepFirstDmgSoul = 15
         }
+    },
+    bluecap = {
+        identifier = "astralcomp_bluecap",
+        compSprite = 43,
+        scavengeRanges = {{5, 8}, {9, 12}, 15},
+        objReqs = {20, 35, 60},
+        maxLevelEffects = {
+            bluecapPillDmg = 1,
+            bluecapChampDeathPill = 7
+        }
     }
 }
 PST.astralCompanionsLen = 0
@@ -494,7 +507,7 @@ for _ in pairs(PST.astralCompanions) do
 end
 PST.astralCompanionsOrdered = {
     "rat", "riverRat", "hellRat", "quokka", "jackal", "hound", "wolf", "cosmicHound", "hellHound",
-    "warg", "raiju", "iceBeast", "salamander", "boulderBeetle", "bombardierBeetle", "deathScarab",
+    "warg", "raiju", "dreamSheep", "iceBeast", "salamander", "boulderBeetle", "bombardierBeetle", "deathScarab",
     "pharaohAnt", "clockroach", "butterfly", "lunarMoth", "crimsonMoth", "adder",
     "waterMoccasin", "blackMamba", "manaViper", "anaconda", "snappingTurtle", "alligatorSnappingTurtle",
     "mountainshell", "culicivora", "abyssalTarantula", "jumpingSpider", "scorpion", "emperorScorpion",

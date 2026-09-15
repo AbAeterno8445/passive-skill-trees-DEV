@@ -80,6 +80,10 @@ function PST:onRoomClear(RNG)
             if tmpMod > 0 and PST:getTreeSnapshotMod("wargChallBuff", 0) < 7 then
                 PST:addModifiers({ allstatsPerc = tmpMod, wargChallBuff = tmpMod }, true)
             end
+            -- Warg scavenge event and objective
+            PST:astralCompAddProgress("warg", 1)
+            PST:astralCompEggUnlockProc("warg")
+            PST:astralCompProcScavenge("warg")
         end
     -- Boss rooms
     elseif roomType == RoomType.ROOM_BOSS then
@@ -111,6 +115,22 @@ function PST:onRoomClear(RNG)
 
         -- Expedition order objective: clear boss rooms
         PST:expedAddOrderProgInRun("expedOrd_bossRooms", 1)
+
+        -- Astral Companion: Alligator Snapping Turtle scavenge event and objective
+        PST:astralCompAddProgress("alligatorSnappingTurtle", 1)
+        PST:astralCompProcScavenge("alligatorSnappingTurtle")
+        if not PST:isFirstOrigStage() then
+            PST:astralCompEggUnlockProc("alligatorSnappingTurtle")
+        end
+
+        -- Astral Companion: Mountainshell scavenge event and objective
+        if not PST:getTreeSnapshotMod("roomGotHitByMob", false) then
+            PST:astralCompAddProgress("mountainshell", 1)
+            PST:astralCompProcScavenge("mountainshell")
+            if level:GetStage() > 2 then
+                PST:astralCompEggUnlockProc("mountainshell")
+            end
+        end
     -- Boss rush
     elseif roomType == RoomType.ROOM_BOSSRUSH then
         -- Boss rush clear
@@ -240,12 +260,24 @@ function PST:onRoomClear(RNG)
                     PST:addModifiers({ oldChestConvChance = tmpMod }, true)
                 end
 
-                -- Expedition objective: clear floors without taking damage more than twice
-                if PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 2 then
-                    PST:expedAddProgInRun("floorNoDmgTwice", 1)
-                -- Expedition objective: clear floors without taking damage more than once
-                elseif PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 1 then
-                    PST:expedAddProgInRun("floorNoDmgOnce", 1)
+                -- Floor clear (check for void)
+                local isVoid = (level:GetStage() == LevelStage.STAGE7)
+                if not isVoid or (isVoid and PST:getTreeSnapshotMod("roomDeliriumKill", false)) then
+                    -- Expedition objective: clear floors without taking damage more than twice
+                    if PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 2 then
+                        PST:expedAddProgInRun("floorNoDmgTwice", 1)
+                    -- Expedition objective: clear floors without taking damage more than once
+                    elseif PST:getTreeSnapshotMod("floorHitsReceived", 0) <= 1 then
+                        PST:expedAddProgInRun("floorNoDmgOnce", 1)
+                    end
+
+                    -- Astral Companion: Cosmic Jellyfish scavenge event and objective
+                    if not PST:isFirstOrigStage() then
+                        if player:GetSoulHearts() > 0 then
+                            PST:astralCompAddProgress("cosmicJellyfish", 1)
+                        end
+                        PST:astralCompProcScavenge("cosmicJellyfish", player:GetSoulHearts())
+                    end
                 end
             end
 
@@ -350,6 +382,11 @@ function PST:onRoomClear(RNG)
                     PST:getTreeSnapshotMod("expedDepth", 1),
                     PST.expedEntropyMods.expedEnt_clearTime.entropy
                 )
+            end
+
+            -- Astral Companion: Catoblepas egg
+            if level:GetStage() == LevelStage.STAGE5 and level:GetStageType() == StageType.STAGETYPE_ORIGINAL then
+                PST:astralCompEggUnlockProc("catoblepas")
             end
         end
 
@@ -800,6 +837,11 @@ function PST:onRoomClear(RNG)
                 local newCarrion = Isaac.Spawn(EntityType.ENTITY_CHARGER, 3, 0, player.Position, Vector.Zero, player)
                 newCarrion:AddCharmed(EntityRef(player), -1)
             end
+        end
+
+        -- Astral Companion: Dream Sheep scavenge event
+        if not PST:getTreeSnapshotMod("floorGotHit", false) then
+            PST:astralCompProcScavenge("dreamSheep", 1, level:GetStage())
         end
     end
 

@@ -117,6 +117,8 @@ return {
     ["astralcomp_raiju_eggHint"] = "Hidden amongst charged keys (Rate: 33% of the total chance to find eggs).",
     ["astralcomp_raiju_scavenge"] = "Scavenges {{obolCount}} arcane obols when collecting batteries or using battery actives with at least 1 charge, up to {{floorLimit}} times per floor.",
     ["astralcomp_raiju_maxeffects"] = {
+        "Spawn an Old Capacitor at the beginning of the first floor.",
+        "While you have Old Capacitor, champions and bosses have a 20% chance to drop a micro battery on death, which vanishes after 7 seconds.",
         "7% chance to spawn an additional lil battery when clearing a room, up to 3 times per floor."
     },
 
@@ -152,7 +154,7 @@ return {
     ["astralcomp_pharaohant_eggname"] = "Chitinous Mummified Egg",
     ["astralcomp_pharaohant_obj"] = "Kill undead enemies.",
     ["astralcomp_pharaohant_eggHint"] = "Undead bosses (Rate: 40% of the total chance to find eggs).",
-    ["astralcomp_pharaohant_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing undead enemies, up to {{floorLimit}} times per floor.",
+    ["astralcomp_pharaohant_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing undead enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_pharaohant_maxeffects"] = {
         "+15% chance for undead enemies to become champions."
     },
@@ -161,7 +163,7 @@ return {
     ["astralcomp_clockroach_eggname"] = "Chitinous Untimely Egg",
     ["astralcomp_clockroach_obj"] = "Kill slowed and frozen enemies.",
     ["astralcomp_clockroach_eggHint"] = "Slowed champions (Rate: 10% of the total chance to find eggs).",
-    ["astralcomp_clockroach_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing slowed or frozen enemies, up to {{floorLimit}} times per floor.",
+    ["astralcomp_clockroach_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing slowed or frozen enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_clockroach_maxeffects"] = {
         "The first enemy you hit in a room is slowed for 8 seconds. Ignores boss status cooldown."
     },
@@ -188,7 +190,7 @@ return {
     ["astralcomp_crimsonmoth_eggname"] = "Chitinous Otherside Egg",
     ["astralcomp_crimsonmoth_obj"] = "Enter red rooms.",
     ["astralcomp_crimsonmoth_eggHint"] = "Red rooms (Rate: 8% of the total chance to find eggs).",
-    ["astralcomp_crimsonmoth_scavenge"] = "Scavenges {{obolCount}} arcane obols when entering red rooms with monsters, up to {{floorLimit}} times per floor.",
+    ["astralcomp_crimsonmoth_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when entering red rooms with monsters, up to {{floorLimit}} times per floor.",
     ["astralcomp_crimsonmoth_maxeffects"] = {
         "Innately gain Glyph of Balance's effect while in red rooms, if you don't already have it.",
         "+3% speed while in red rooms."
@@ -198,18 +200,20 @@ return {
     ["astralcomp_adder_eggname"] = "Green Egg",
     ["astralcomp_adder_obj"] = "Inflict poison on enemies.",
     ["astralcomp_adder_eggHint"] = "Poisoned champions (Rate: 8% of the total chance to find eggs).",
-    ["astralcomp_adder_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting poison on enemies, up to {{floorLimit}} times per floor.",
+    ["astralcomp_adder_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing poisoned enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_adder_maxeffects"] = {
-        "Enemies take 1% more damage per second of remaining poison."
+        "Enemies take 1% more damage per second of remaining poison.",
+        "Poisoned champions are 7% more likely to drop obols on death."
     },
 
     ["astralcomp_watermoccasin_name"] = "Water Moccasin",
     ["astralcomp_watermoccasin_eggname"] = "Damp Brown Egg",
     ["astralcomp_watermoccasin_obj"] = "Poison enemies with at least 40 HP.",
     ["astralcomp_watermoccasin_eggHint"] = "Flooded Caves bosses (Rate: 50% of the total chance to find eggs).",
-    ["astralcomp_watermoccasin_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting poison on enemies with at least 40 HP, up to {{floorLimit}} times per floor.",
+    ["astralcomp_watermoccasin_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing poisoned enemies with at least 40 HP, up to {{floorLimit}} times per floor.",
     ["astralcomp_watermoccasin_maxeffects"] = {
-        "+0.5% damage for the room when killing poisoned enemies, up to 10%."
+        "+0.5% damage for the room when killing poisoned enemies, up to 10%.",
+        "+0.05 luck for the current floor when killing poisoned enemies, up to +3."
     },
 
     ["astralcomp_blackmamba_name"] = "Black Mamba",
@@ -225,7 +229,7 @@ return {
     ["astralcomp_manaviper_name"] = "Mana Viper",
     ["astralcomp_manaviper_eggname"] = "Mana Egg",
     ["astralcomp_manaviper_obj"] = "Use active items. Progresses 1 per used charge.",
-    ["astralcomp_manaviper_eggHint"] = "Purchased shop actives (Rate: 33% of the total chance to find eggs).",
+    ["astralcomp_manaviper_eggHint"] = "Hidden amongst sold shop pickups (Rate: 10% of the total chance to find eggs).",
     ["astralcomp_manaviper_scavenge"] = "Scavenges {{obolCount}} arcane obols when using active items, up to {{floorLimit}} times per floor.",
     ["astralcomp_manaviper_maxeffects"] = {
         "7% chance to spawn a micro battery when using an active item with at least 2 charges."
@@ -235,7 +239,7 @@ return {
     ["astralcomp_anaconda_eggname"] = "Constricting Egg",
     ["astralcomp_anaconda_obj"] = "Petrify enemies.",
     ["astralcomp_anaconda_eggHint"] = "Petrified champions (Rate: 7% of the total chance to find eggs).",
-    ["astralcomp_anaconda_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting petrification on enemies, up to {{floorLimit}} times per floor.",
+    ["astralcomp_anaconda_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when first inflicting petrification on enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_anaconda_maxeffects"] = {
         "+0.5% damage for the room when killing petrified enemies, up to 8%.",
         "Enemies take 1% more damage per second of remaining petrification."
@@ -245,7 +249,7 @@ return {
     ["astralcomp_snappingturtle_eggname"] = "Snapping Egg",
     ["astralcomp_snappingturtle_obj"] = "Kill boss monsters outside boss rooms.",
     ["astralcomp_snappingturtle_eggHint"] = "Boss monsters outside boss rooms at or past the Womb (Rate: 10% of the total chance to find eggs).",
-    ["astralcomp_snappingturtle_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing boss monsters outside boss rooms, up to {{floorLimit}} times per floor.",
+    ["astralcomp_snappingturtle_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing boss monsters outside boss rooms, up to {{floorLimit}} times per floor.",
     ["astralcomp_snappingturtle_maxeffects"] = {
         "50% chance to block damage received by bosses outside boss rooms. Once triggered, chance gets halved for the rest of the run."
     },
@@ -271,7 +275,7 @@ return {
     ["astralcomp_culicivora_name"] = "Culicivora",
     ["astralcomp_culicivora_eggname"] = "Skittering Dark Egg",
     ["astralcomp_culicivora_obj"] = "Kill bleeding enemies.",
-    ["astralcomp_culicivora_eggHint"] = "Bleeding spiders with at least 5 HP (Rate: 8% of the total chance to find eggs).",
+    ["astralcomp_culicivora_eggHint"] = "Bleeding champions past floor 2 (Rate: 8% of the total chance to find eggs).",
     ["astralcomp_culicivora_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing bleeding enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_culicivora_maxeffects"] = {
         "+0.5% damage for the room when killing bleeding enemies, up to 8%.",
@@ -281,8 +285,8 @@ return {
     ["astralcomp_abyssaltarantula_name"] = "Abyssal Tarantula",
     ["astralcomp_abyssaltarantula_eggname"] = "Skittering Abyssal Egg",
     ["astralcomp_abyssaltarantula_obj"] = "Inflict fear on enemies.",
-    ["astralcomp_abyssaltarantula_eggHint"] = "Feared spiders with at least 5 base HP (Rate: 8% of the total chance to find eggs).",
-    ["astralcomp_abyssaltarantula_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting fear on enemies, up to {{floorLimit}} times per floor.",
+    ["astralcomp_abyssaltarantula_eggHint"] = "Feared champions past floor 2 (Rate: 8% of the total chance to find eggs).",
+    ["astralcomp_abyssaltarantula_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing feared enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_abyssaltarantula_maxeffects"] = {
         "+0.5% damage for the room when killing feared enemies, up to 8%.",
         "Enemies take 1% more damage per second of remaining fear."
@@ -292,7 +296,7 @@ return {
     ["astralcomp_jumpingspider_eggname"] = "Skittering Jumpy Egg",
     ["astralcomp_jumpingspider_obj"] = "Inflict slow on enemies more than 3 tiles away from you.",
     ["astralcomp_jumpingspider_eggHint"] = "Spider bosses (Rate: 40% of the total chance to find eggs).",
-    ["astralcomp_jumpingspider_scavenge"] = "Scavenges {{obolCount}} arcane obols when inflicting slow on enemies more than 3 tiles away from you, up to {{floorLimit}} times per floor.",
+    ["astralcomp_jumpingspider_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing slowed champions and bosses, up to {{floorLimit}} times per floor.",
     ["astralcomp_jumpingspider_maxeffects"] = {
         "+0.5% damage for the room when killing slowed enemies, up to 8%.",
         "Enemies take 1% more damage per second of remaining slow."
@@ -302,7 +306,7 @@ return {
     ["astralcomp_scorpion_eggname"] = "Chitinous Brown Egg",
     ["astralcomp_scorpion_obj"] = "Kill enemies with 6 base HP or less.",
     ["astralcomp_scorpion_eggHint"] = "Deadly sin bosses (Rate: 40% of the total chance to find eggs).",
-    ["astralcomp_scorpion_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing enemies with 6 base HP or less, up to {{floorLimit}} times per floor.",
+    ["astralcomp_scorpion_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing enemies with 6 base HP or less, up to {{floorLimit}} times per floor.",
     ["astralcomp_scorpion_maxeffects"] = {
         "1% chance to drop a 1/2 heart when killing enemies with 6 base HP or less, up to 3 times per floor."
     },
@@ -311,7 +315,7 @@ return {
     ["astralcomp_emperorscorpion_eggname"] = "Regal Chitinous Egg",
     ["astralcomp_emperorscorpion_obj"] = "Kill enemies with base HP between 10 and 30.",
     ["astralcomp_emperorscorpion_eggHint"] = "Super deadly sin bosses (Rate: 33% of the total chance to find eggs).",
-    ["astralcomp_emperorscorpion_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing enemies with base HP between 10 and 30, up to {{floorLimit}} times per floor.",
+    ["astralcomp_emperorscorpion_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing enemies with base HP between 10 and 30, up to {{floorLimit}} times per floor.",
     ["astralcomp_emperorscorpion_maxeffects"] = {
         "1% chance to drop a 1/2 soul heart when killing enemies with base HP between 10 and 30, up to twice per floor."
     },
@@ -320,16 +324,16 @@ return {
     ["astralcomp_cosmicjellyfish_eggname"] = "Cosmic Graceful Egg",
     ["astralcomp_cosmicjellyfish_obj"] = "Clear floors past the first with any remaining soul hearts.",
     ["astralcomp_cosmicjellyfish_eggHint"] = "Hidden amongst blue passive items (Rate: 8% of the total chance to find eggs).",
-    ["astralcomp_cosmicjellyfish_scavenge"] = "Scavenges {{obolCount}} arcane obols when clearing a floor past the first.",
+    ["astralcomp_cosmicjellyfish_scavenge"] = "{{scavChance}}% chance per 1/2 soul heart you have to scavenge {{obolCount}} arcane obols when clearing a floor past the first.",
     ["astralcomp_cosmicjellyfish_maxeffects"] = {
         "When entering a floor past the first, +1% speed and shot speed for that floor per full soul heart you have, up to 7%."
     },
 
     ["astralcomp_manticore_name"] = "Manticore",
     ["astralcomp_manticore_eggname"] = "Cross-bred Egg",
-    ["astralcomp_manticore_obj"] = "Inflict status effects on boss monsters.",
+    ["astralcomp_manticore_obj"] = "Kill enemies affected by any status effect.",
     ["astralcomp_manticore_eggHint"] = "Hidden amongst red passive items (Rate: 8% of the total chance to find eggs).",
-    ["astralcomp_manticore_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting status effects on boss monsters, up to {{floorLimit}} times per floor.",
+    ["astralcomp_manticore_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when first inflicting status effects on boss monsters, up to {{floorLimit}} times per floor.",
     ["astralcomp_manticore_maxeffects"] = {
         "Boss monsters take 2% increased damage for each different status effect they've received."
     },
@@ -338,7 +342,7 @@ return {
     ["astralcomp_catoblepas_eggname"] = "Strange Petrified Egg",
     ["astralcomp_catoblepas_obj"] = "Inflict petrification on boss monsters.",
     ["astralcomp_catoblepas_eggHint"] = "Regular Sheol rooms with monsters (Rate: 5% of the total chance to find eggs).",
-    ["astralcomp_catoblepas_scavenge"] = "Scavenges {{obolCount}} arcane obols when first inflicting petrification on boss monsters, up to {{floorLimit}} times per floor.",
+    ["astralcomp_catoblepas_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when first inflicting petrification on boss monsters, up to {{floorLimit}} times per floor.",
     ["astralcomp_catoblepas_maxeffects"] = {
         "Petrified champions are 15% more likely to drop obols on death."
     },
@@ -347,7 +351,7 @@ return {
     ["astralcomp_skyshark_eggname"] = "Floaty Incisive Egg",
     ["astralcomp_skyshark_obj"] = "Kill bleeding flying enemies.",
     ["astralcomp_skyshark_eggHint"] = "Bleeding flying tainted enemies (Rate: 20% of the total chance to find eggs).",
-    ["astralcomp_skyshark_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing bleeding flying enemies, up to {{floorLimit}} times per floor.",
+    ["astralcomp_skyshark_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing bleeding flying enemies, up to {{floorLimit}} times per floor.",
     ["astralcomp_skyshark_maxeffects"] = {
         "Killing bleeding flying enemies grants +1% damage for 7 seconds, which stacks up to 8%.",
         "Bleeding champions are 7% more likely to drop obols on death."
@@ -384,7 +388,7 @@ return {
     ["astralcomp_icebeast_eggname"] = "Icy Egg",
     ["astralcomp_icebeast_obj"] = "Destroy frozen monsters.",
     ["astralcomp_icebeast_eggHint"] = "Frozen monsters with at least 20 HP (Rate: 10% of the total chance to find eggs).",
-    ["astralcomp_icebeast_scavenge"] = "Scavenges {{obolCount}} arcane obols when destroying frozen monsters with at least 20 HP, up to {{floorLimit}} times per floor.",
+    ["astralcomp_icebeast_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when destroying frozen monsters with at least 20 HP, up to {{floorLimit}} times per floor.",
     ["astralcomp_icebeast_maxeffects"] = {
         "+1% damage for the floor for every 8 frozen monsters you destroy, up to 8%."
     },
@@ -419,10 +423,20 @@ return {
     ["astralcomp_dreamsheep_name"] = "Dream Sheep",
     ["astralcomp_dreamsheep_eggname"] = "Dreamy Egg",
     ["astralcomp_dreamsheep_obj"] = "Earn experience.",
-    ["astralcomp_dreamsheep_eggHint"] = "Bedroom.",
+    ["astralcomp_dreamsheep_eggHint"] = "Clean bedroom.",
     ["astralcomp_dreamsheep_scavenge"] = "Scavenges ({{obolCount}} + floor) arcane obols when clearing a room while you haven't taken damage in the current floor.",
     ["astralcomp_dreamsheep_maxeffects"] = {
         "+15% exp and obols found while you haven't taken damage in the current floor.",
         "When first taking damage in a floor, 15% chance to spawn a 1/2 soul heart if you have less than 2 soul hearts."
+    },
+
+    ["astralcomp_bluecap_name"] = "Bluecap",
+    ["astralcomp_bluecap_eggname"] = "Blue Fungal Egg",
+    ["astralcomp_bluecap_obj"] = "Use pills and destroy mushrooms.",
+    ["astralcomp_bluecap_eggHint"] = "Mushrooms (Rate: 10% of the total chance to find eggs).",
+    ["astralcomp_bluecap_scavenge"] = "Scavenges {{obolCount}} arcane obols when using pills and destroying mushrooms, up to {{floorLimit}} times per floor.",
+    ["astralcomp_bluecap_maxeffects"] = {
+        "+1% damage when using a pill, up to 7%. Resets when entering a new floor.",
+        "Champions have a 7% chance to drop an additional random pill on death, once per floor."
     }
 }

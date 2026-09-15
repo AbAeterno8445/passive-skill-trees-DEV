@@ -1140,6 +1140,18 @@ function PST:onNewRoom()
 			if roomType == RoomType.ROOM_ULTRASECRET then
 				PST:sideArtiObjProgress("bloodmoonMeridion", 1)
 			end
+
+			-- Astral Companion: Butterfly egg
+			if roomType == RoomType.ROOM_SECRET and level:GetStage() >= 7 then
+				PST:astralCompEggUnlockProc("butterfly")
+			end
+
+			-- Astral Companion: Lunar Moth scavenge event and objective
+			PST:astralCompAddProgress("lunarMoth", 1)
+			PST:astralCompProcScavenge("lunarMoth")
+			if roomType == RoomType.ROOM_SUPERSECRET then
+				PST:astralCompEggUnlockProc("lunarMoth")
+			end
 		-- Devil/Angel rooms
 		elseif roomType == RoomType.ROOM_DEVIL or roomType == RoomType.ROOM_ANGEL then
 			local randomStat = PST:getRandomStat()
@@ -1267,6 +1279,14 @@ function PST:onNewRoom()
 		elseif roomType == RoomType.ROOM_CURSE then
 			-- Expedition objective: enter curse rooms
 			PST:expedAddProgInRun("curseRooms", 1)
+		-- Red rooms
+		elseif PST:inRedRoom() then
+			-- Astral Companion: Crimson Moth scavenge event and objective
+			PST:astralCompAddProgress("crimsonMoth", 1)
+			if room:GetAliveEnemiesCount() > 0 then
+				PST:astralCompProcScavenge("crimsonMoth")
+			end
+			PST:astralCompEggUnlockProc("crimsonMoth")
 		-- Shops
 		elseif roomType == RoomType.ROOM_SHOP then
 			-- Expedition curse: precariousness
@@ -1277,6 +1297,10 @@ function PST:onNewRoom()
 					items[i]:Remove()
 				end
 			end
+		-- Bedroom
+		elseif roomType == RoomType.ROOM_ISAACS then
+			-- Astral Companion: Dream Sheep egg
+			PST:astralCompEggUnlockProc("dreamSheep")
 		end
 	end
 
@@ -1350,14 +1374,15 @@ function PST:onNewRoom()
 	end
 
 	-- Blue and Red item pools
+	local gamePool = Game():GetItemPool()
 	if (#PST.ultraSecretPool == 0 or #PST.blueItemPool == 0) then
 		PST.ultraSecretPool = {}
-		for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(ItemPoolType.POOL_ULTRA_SECRET)) do
+		for _, tmpItem in ipairs(gamePool:GetCollectiblesFromPool(ItemPoolType.POOL_ULTRA_SECRET)) do
 			table.insert(PST.ultraSecretPool, tmpItem.itemID)
 		end
 		PST.blueItemPool = {}
 		---@diagnostic disable-next-line: undefined-field
-		for _, tmpItem in ipairs(Game():GetItemPool():GetCollectiblesFromPool(PST.ItemPoolType.POOL_BLUE)) do
+		for _, tmpItem in ipairs(gamePool:GetCollectiblesFromPool(PST.ItemPoolType.POOL_BLUE)) do
 			table.insert(PST.blueItemPool, tmpItem.itemID)
 		end
 		PST:initModBlueItems()
@@ -1365,6 +1390,10 @@ function PST:onNewRoom()
 		if PST:SC_getSnapshotMod("emberedAzurite", false) then
 			PST:updateCacheDelayed(PST.allstatsCache)
 		end
+	end
+	-- Angel item pool
+	if #PST.angelPool == 0 then
+		PST.angelPool = gamePool:GetCollectiblesFromPool(ItemPoolType.POOL_ANGEL)
 	end
 
 	-- Ancient starcursed jewel: Phantasm Prism
@@ -1503,9 +1532,15 @@ function PST:onNewRoom()
 		PST:addModifiers({ clockroachProc = false }, true)
 	end
 	-- Astral Companion: Butterfly
-	tmpMod = PST:getTreeSnapshotMod("butterflyRoomSpeed", 0)
-	if tmpMod > 0 and roomType ~= RoomType.ROOM_DEFAULT and room:IsFirstVisit() then
-		PST:addModifiers({ speed = tmpMod, butterflyRoomSpeedTotal = tmpMod }, true)
+	if roomType ~= RoomType.ROOM_DEFAULT and room:IsFirstVisit() then
+		-- Effect
+		tmpMod = PST:getTreeSnapshotMod("butterflyRoomSpeed", 0)
+		if tmpMod > 0 then
+			PST:addModifiers({ speed = tmpMod, butterflyRoomSpeedTotal = tmpMod }, true)
+		end
+		-- Scavenge event and objective
+		PST:astralCompAddProgress("butterfly", 1)
+		PST:astralCompProcScavenge("butterfly")
 	end
 	-- Astral Companion: Lunar Moth
 	tmpMod = PST:getTreeSnapshotMod("lunarMothSecretRoomStats", 0)
@@ -1560,9 +1595,18 @@ function PST:onNewRoom()
 		PST:addModifiers({ damagePerc = -dmgBuff, jumpSpiderKillProcs = { value = 0, set = true } }, true)
 	end
 	-- Astral Companion: Pearl Dragon
-	tmpMod = PST:getTreeSnapshotMod("pearlDragAngelRoomDmg", 0)
-	if tmpMod > 0 and PST:getTreeSnapshotMod("pearlDragBuff", 0) < 10 and roomType == RoomType.ROOM_ANGEL then
-		PST:addModifiers({ damagePerc = tmpMod, pearlDragBuff = tmpMod }, true)
+	if roomType == RoomType.ROOM_ANGEL and room:IsFirstVisit() then
+		tmpMod = PST:getTreeSnapshotMod("pearlDragAngelRoomDmg", 0)
+		if tmpMod > 0 and PST:getTreeSnapshotMod("pearlDragBuff", 0) < 10 then
+			PST:addModifiers({ damagePerc = tmpMod, pearlDragBuff = tmpMod }, true)
+		end
+		-- Pearl Dragon egg
+		PST:astralCompEggUnlockProc("pearlDragon")
+	end
+
+	-- Delirium room kill flag
+	if PST:getTreeSnapshotMod("roomDeliriumKill", false) then
+		PST:addModifiers({ roomDeliriumKill = false }, true)
 	end
 
 	if PST.savePending then

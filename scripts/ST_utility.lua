@@ -286,6 +286,9 @@ function PST:addXP(xpParam, showText, overflow, noExped)
 			PST:expedAddProgInRun("experience", math.ceil(xp))
 		end
 
+		-- Astral Companion: Dream Sheep objective
+		PST:astralCompAddProgress("dreamSheep", math.ceil(xp))
+
 		-- Character level up
 		if charData.xp >= charData.xpRequired then
 			local currentChar = PST:getCurrentCharName()
@@ -435,6 +438,17 @@ function PST:entityIsFinalBoss(entity)
 		isFinalBoss = false
 	end
 	return isFinalBoss
+end
+
+---@param entity Entity
+function PST:isLastMobOfType(entity, checkSubType)
+	local tmpOtherList = Isaac.FindByType(entity.Type, entity.Variant, checkSubType and entity.SubType or -1)
+	for _, tmpOther in ipairs(tmpOtherList) do
+		if (tmpOther:IsActiveEnemy(false) or tmpOther:IsVulnerableEnemy()) and not EntityRef(tmpOther).IsFriendly then
+			return false
+		end
+	end
+	return true
 end
 
 ---@param entity Entity

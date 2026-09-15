@@ -90,6 +90,11 @@ function PST:prePickup(pickup, collider, low)
                     PST:expedAddProgInRun("chests", 1)
                     -- Expedition order objective: open chests without taking damage in-between
                     PST:expedAddOrderProgInRun("expedOrd_chests", 1)
+
+                    -- Astral Companion: Cosmic Hound scavenge event and objective
+                    PST:astralCompAddProgress("cosmicHound", 1)
+                    PST:astralCompProcScavenge("cosmicHound")
+                    PST:astralCompEggUnlockProc("cosmicHound")
                 end
 
                 -- Start challenge room
@@ -744,6 +749,11 @@ function PST:onPickup(pickup, collider, low, forced)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
                 player:AddKeys(1)
             end
+
+            -- Astral Companion: Raiju egg
+            if subtype == KeySubType.KEY_CHARGED then
+                PST:astralCompEggUnlockProc("raiju")
+            end
         -- On pickup bomb
         elseif variant == PickupVariant.PICKUP_BOMB then
             local bombChance = PST:getTreeSnapshotMod("bombDupe", 0)
@@ -948,6 +958,11 @@ function PST:onPickup(pickup, collider, low, forced)
                 if tmpMod > 0 and PST:getTreeSnapshotMod("salamanderRedHeartBuff", 0) < 20 then
                     PST:addModifiers({ luckPerc = tmpMod, salamanderRedHeartBuff = tmpMod }, true)
                 end
+
+                -- Astral Companion: Salamander scavenge event and objective
+                PST:astralCompAddProgress("salamander", 1)
+                PST:astralCompEggUnlockProc("salamander")
+                PST:astralCompProcScavenge("salamander")
             end
 
             -- Heartless node (Eve's tree)
@@ -1006,6 +1021,11 @@ function PST:onPickup(pickup, collider, low, forced)
                     end
                 end
             end
+        -- On pickup batteries
+        elseif variant == PickupVariant.PICKUP_LIL_BATTERY then
+            -- Astral Companion: Raiju scavenge event and objective
+            PST:astralCompAddProgress("raiju", 1)
+            PST:astralCompProcScavenge("raiju")
         end
 
         -- Cosmic Realignment node
@@ -1694,6 +1714,32 @@ function PST:onPickupUpdate(pickup)
                     if tmpMod > 0 and PST:getTreeSnapshotMod("heartblessedSpeedBuff", 0) < 12 then
                         PST:addModifiers({ speedPerc = tmpMod, heartblessedSpeedBuff = tmpMod }, true)
                     end
+                end
+
+                -- Opened regular chest
+                if pickup.Variant == PickupVariant.PICKUP_CHEST then
+                    -- Astral Companion: Jackal scavenge event and objective
+                    PST:astralCompAddProgress("jackal", 1)
+                    PST:astralCompProcScavenge("jackal")
+                    PST:astralCompEggUnlockProc("jackal")
+                -- Opened golden chest
+                elseif pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST then
+                    -- Astral Companion: Hound scavenge event and objective
+                    PST:astralCompAddProgress("hound", 1)
+                    PST:astralCompProcScavenge("jackal")
+                    PST:astralCompEggUnlockProc("hound")
+                -- Opened stone chest
+                elseif pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
+                    -- Astral Companion: Wolf egg
+                    PST:astralCompEggUnlockProc("wolf")
+                    -- TODO: test
+                    print("HERE")
+                end
+
+                -- Astral Companion: Wolf scavenge event and objective
+                if pickup.Variant ~= PickupVariant.PICKUP_CHEST then
+                    PST:astralCompAddProgress("wolf", 1)
+                    PST:astralCompProcScavenge("wolf")
                 end
             end
         end

@@ -452,6 +452,13 @@ function PST:frameUpdate()
 			PST:createFloatTextFX(PST:getLocalized("ftxt_spiritGambler"), Vector.Zero, Color(0.75, 0.75, 0.2, 1), 0.13, 120, true)
 		end
 
+		-- Astral Companion: Raiju
+		if PST:getTreeSnapshotMod("raijuCapacitor", 0) > 0 and not PST:getTreeSnapshotMod("raijuCapacitorSpawn", false) then
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_OLD_CAPACITOR, tmpPos, Vector.Zero, nil)
+			PST:addModifiers({ raijuCapacitorSpawn = true }, true)
+		end
+
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
 			-- Ancient starcursed jewel: Challenger Starpiece
@@ -3143,22 +3150,6 @@ function PST:frameUpdate()
 			if PST.specialNodes.ancwep_quicksilverBuff == 0 then
 				PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
 			end
-		end
-	end
-
-	-- Segmented boss kill checks
-	if #PST.segmentBossKillProcs > 0 then
-		local bossData = PST.segmentBossKillProcs[1]
-		if bossData and gameFrame > bossData.killFrame + 2 then
-			local totalLeft = Isaac.FindByType(bossData.bossType, bossData.bossVariant, bossData.bossSub)
-			-- Segmented boss killed
-			if #totalLeft == 0 then
-				-- Expedition boss kill
-                if PST:isRunSidereal() then
-					PST:expedAddProgInRun("defeatBosses", 1)
-				end
-			end
-			table.remove(PST.segmentBossKillProcs, 1)
 		end
 	end
 
