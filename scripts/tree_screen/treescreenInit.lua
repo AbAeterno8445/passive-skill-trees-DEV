@@ -190,10 +190,6 @@ function PST:treeScreenMenuRender()
 
     -- Actual tree rendering when opened
     if PST.treeScreen.open then
-        if Isaac.IsInGame() and Game():IsPauseMenuOpen() then
-            PauseMenu.SetState(PauseMenuStates.CLOSED)
-        end
-
         PST.treeScreen:Update()
         PST.treeScreen:Render()
     end

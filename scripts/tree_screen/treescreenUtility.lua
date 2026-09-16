@@ -165,6 +165,10 @@ function PST:openTreeMenu()
         local player = PST:getPlayer()
         PST.selectedMenuChar = player:GetPlayerType()
         Game():GetHUD():SetVisible(false)
+
+        if Game():IsPauseMenuOpen() then
+            PauseMenu.SetState(PauseMenuStates.CLOSED)
+        end
     end
     SFXManager():Play(SoundEffect.SOUND_PAPER_IN)
 
