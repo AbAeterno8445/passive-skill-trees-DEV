@@ -221,6 +221,7 @@ function PST:initModCompat()
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Cry Baby"))
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Inaba"))
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Skibidi Baby"))
+        table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Golem"))
 
         -- Demon familiars
         table.insert(PST.demonFamiliars, Isaac.GetItemIdByName("Lil Fiend"))
@@ -325,6 +326,10 @@ function PST:initModCompat()
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Flaming Penny"))
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Stack of Penny"))
         table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Penny Pack"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Wrathful Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Wishful Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Sorrowful Penny"))
+        table.insert(PST.pennyTrinkets, Isaac.GetTrinketIdByName("Constellation Penny"))
 
         -- Soul stones
         local tmpSoulstones = {
@@ -387,6 +392,8 @@ function PST:initModCompat()
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Hare-Trigger"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Dumb Bunny"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Soul Extraction Bum"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("7 Seals 2"))
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Kalu's Writhing Tail"))
 
         -- Grand Consonance node whitelist
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Baby Crater"))
@@ -408,6 +415,7 @@ function PST:initModCompat()
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Dumb Bunny Familiar"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Soul Extraction Familiar"))
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Double Dog Dog"))
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Modern Horsemini"))
 
         -- Coin machines
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Robot Teller"))
@@ -434,6 +442,7 @@ function PST:initModCompat()
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("Loaded D6"))
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("Dusty D10"))
 		table.insert(PST.diceItems, Isaac.GetItemIdByName("Azurite Spindown"))
+		table.insert(PST.diceItems, Isaac.GetItemIdByName("D-Stock"))
 
 		-- Wisp Actives -- todo: figure out how to get them to work
 		--[[
@@ -486,6 +495,21 @@ function PST:initModCompat()
 		-- Trinket entropy blacklist
 		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Sand Dollar"))
 		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Brick Rock"))
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Delightful Drumstick")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Trinket Projectile")) -- idk if this is needed, but it couldnt hurt - these are the projectiles Delightful Drumstick fires when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Wife Hat")) -- Cursed trinket, designed specifically for Retribution compatability
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Vomit Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Wetstone Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Constant Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Broken Gaping Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Brimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Cross Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Eye Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Cauldron Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Gaping Grimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Trimlin")) -- acts as a familiar when dropped
+		table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Sensory Grimlin")) -- acts as a familiar when dropped
     end
 
     -- Last Judgement
@@ -866,7 +890,7 @@ function PST:initModCompat()
 
         --HP Ups
         local tmpHPUpItems = {
-            {"Taco", 1}, {"Gummy Bear", 1}, {"Croissant", 1}, {"Brunch", 1}, {"Mystery Meat", 1}, {"Akedah", 3}, {"Mudpie", 1}, {"Old Bib", 1}, {"Drip Key", 1}
+            {"Taco", 1}, {"Gummy Bear", 1}, {"Croissant", 1}, {"Brunch", 1}, {"Mystery Meat", 1}, {"Akedah", 3}, {"Mudpie", 1}, {"Old Bib", 1}, {"Drip Key", 1}, {"Spare Parts", 1}
         }
         for _, tmpItem in ipairs(tmpHPUpItems) do
             local tmpItemID = Isaac.GetItemIdByName(tmpItem[1])
@@ -919,6 +943,7 @@ function PST:initModCompat()
         -- Bean items
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Spring Bean"))
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Chilly Bean"))
+        table.insert(PST.beanActives, Isaac.GetItemIdByName("Pinto Bean"))
         table.insert(PST.beanActives, Isaac.GetItemIdByName("Bowl o' Beans"))
 
         -- Bone items
@@ -945,6 +970,9 @@ function PST:initModCompat()
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Dominion (Beggar)"))
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Virtue (Beggar)"))
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Angel Intern (Beggar)"))
+
+		-- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Defib"))
 	end
 
     -- God's Gambit (TODO: review interactions with effects such as Challenger's Starpiece + check if GetEntityTypeByName works instead)
@@ -1201,6 +1229,9 @@ function PST:initModCompat()
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Shion Beggar"))
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Nazrin"))
 		table.insert(PST.beggarTypes, Isaac.GetEntityVariantByName("Flan-chan"))
+
+		-- Extra life items
+        table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Return by Death"))
 	end
 
 	-- THE FUTURE
@@ -2638,6 +2669,10 @@ function PST:initModBlueItems()
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Twin Candles"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Power Ball"))
 		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Holy Glaive"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Polybius"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Silly Spring"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Mom's Pill Case"))
+		table.insert(PST.blueItemPool, Isaac.GetItemIdByName("Ku's Eye"))
 	end
 
 	-- Retribution Blue Items
