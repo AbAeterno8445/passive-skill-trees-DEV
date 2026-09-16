@@ -220,6 +220,8 @@ end
 
 -- Add some progress to the given companion if it is equipped
 function PST:astralCompAddProgress(eggName, prog)
+    if not PST:isRunSidereal() then return end
+
     if PST:isCompEquipped(eggName) or PST:isCompEquipped(eggName, true) then
         local compData = PST.astralCompanions[eggName]
         local eggData = PST.modData.astralcomps[eggName]
@@ -258,6 +260,8 @@ end
 
 -- Attempt to scavenge obols for the given companion, checking if it is equipped, its level, floor limits and proc odds
 function PST:astralCompProcScavenge(compName, chanceMult, obolMod)
+    if not PST:isRunSidereal() then return end
+
     local charData = PST:getCurrentCharData()
     local baseCompData = PST.astralCompanions[compName]
     local compData = PST.modData.astralcomps[compName]
@@ -301,7 +305,7 @@ end
 
 -- Attempts to unlock the given egg, considering the run's total egg find chance and the egg's rate
 function PST:astralCompEggUnlockProc(eggName)
-    if not PST:isRunSidereal() then return end
+    if not PST:isRunSidereal() or not PST:getTreeSnapshotMod("astralCompanions", false) then return end
 
     local eggChance = PST:getTreeSnapshotMod("astralCompEggChance", 0)
     local eggData = PST.astralCompanions[eggName]
