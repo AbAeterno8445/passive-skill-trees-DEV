@@ -37,6 +37,9 @@ PST.savePending = false
 -- For better GetData() usage (cache calls per entity using InitSeed index, and clean on new room)
 PST.entDataCache = {}
 
+-- Stores the EID isHidden setting when opening tree
+PST.EIDWasHidden = false
+
 include("scripts.ST_textRender")
 
 -- Initialization performed on the first menu render call

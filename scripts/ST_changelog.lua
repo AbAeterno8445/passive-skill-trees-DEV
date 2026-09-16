@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Adjusted how the game pauses while the tree menu is open, and should work more reliably now.",
         "- Added \"Heart Drain Delay\" sets of nodes for Tainted Magdalene.",
         "- New Rep+ Eden hairstyles are now available for the Eden Hairdo node.",
+        "- EID descriptions are now hidden while in the tree menu in-game.",
         "- New \"Weapon Magnetism\" Sidereal Tree node, which allows dropped weapons to move towards you.",
         "- Multi-segment bosses now only trigger on-death effects once no more segments are left in the room.",
         "- Additional compatibility for new mod items and entities (wookywok).",

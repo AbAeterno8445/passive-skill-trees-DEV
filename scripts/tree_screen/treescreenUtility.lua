@@ -169,6 +169,11 @@ function PST:openTreeMenu()
         if Game():IsPauseMenuOpen() then
             PauseMenu.SetState(PauseMenuStates.CLOSED)
         end
+
+        if EID then
+            PST.EIDWasHidden = EID.isHidden
+            EID.isHidden = true
+        end
     end
     SFXManager():Play(SoundEffect.SOUND_PAPER_IN)
 
@@ -243,6 +248,10 @@ function PST:closeTreeMenu(mute)
     else
         Game():GetHUD():SetVisible(true)
         PauseMenu.SetState(PauseMenuStates.CLOSED)
+
+        if EID and not PST.EIDWasHidden then
+            EID.isHidden = false
+        end
     end
     if not mute then
         SFXManager():Play(SoundEffect.SOUND_PAPER_OUT)
