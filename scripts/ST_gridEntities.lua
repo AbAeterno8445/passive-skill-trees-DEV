@@ -153,52 +153,8 @@ function PST:gridEntityRockUpdate(entityParam)
     end
 
     if not convertedRock then
-        -- Tinted rocks
-        if entityParam.Desc.Type == GridEntityType.GRID_ROCKT then
-            local entityID = PST:initStaticEntity(entityParam)
-            if entityID then
-                local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
-                if staticEntCache[entityID] ~= entityParam.State then
-                    local noXP = staticEntCache[entityID] == -1
-                    staticEntCache[entityID] = entityParam.State
-                    -- Tinted rock destroyed
-                    if staticEntCache[entityID] >= 2 and not noXP then
-                        -- Mod: +xp when destroying tinted rocks
-                        local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
-                        if tmpMod ~= 0 then
-                            PST:addTempXP(tmpMod, true)
-                        end
-
-                        -- Mod: +all stats when destroying tinted rocks
-                        tmpMod = PST:getTreeSnapshotMod("tintedRockAllstats", 0)
-                        if tmpMod ~= 0 then
-                            PST:addModifiers({ allstats = tmpMod }, true)
-                        end
-
-                        -- Mod +% all stats when destroying tinted rocks
-                        tmpMod = PST:getTreeSnapshotMod("tintedRockAllstatsPerc", 0)
-                        if tmpMod ~= 0 then
-                            PST:addModifiers({ allstatsPerc = tmpMod }, true)
-                        end
-
-                        -- Expedition objective: destroy tinted rocks
-                        PST:expedAddProgInRun("tintedRocks", 1)
-
-                        -- Astral Companion: Boulder Beetle scavenge event and objective
-                        PST:astralCompAddProgress("boulderBeetle", 1)
-                        PST:astralCompProcScavenge("boulderBeetle")
-                        PST:astralCompEggUnlockProc("boulderBeetle")
-
-                        -- Obols from tinted rocks
-                        if PST:getTreeSnapshotMod("isExpedRun", false) then
-                            local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1), 0.15)
-                            if tmpObols > 0 then PST:expedDropObolsAt(entityParam.Position, tmpObols) end
-                        end
-                    end
-                end
-            end
         -- Regular rocks
-        elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK then
+        if entityParam.Desc.Type == GridEntityType.GRID_ROCK then
             if PST:getRoom():IsFirstVisit() and PST:getRoom():GetFrameCount() == 0 and not PST:inMineshaftPuzzle() then
                 -- Ancient starcursed jewel: Tellurian Splinter
                 if PST:SC_getSnapshotMod("tellurianSplinter", false) and 100 * math.random() < 20 then
@@ -206,22 +162,6 @@ function PST:gridEntityRockUpdate(entityParam)
                     local gridIdx = entityParam:GetGridIndex()
                     room:GetGridEntity(gridIdx):ToRock():Destroy(true)
                     room:SpawnGridEntity(gridIdx, GridEntityType.GRID_ROCK_BOMB)
-                end
-            end
-        -- Bomb rocks
-        elseif entityParam.Desc.Type == GridEntityType.GRID_ROCK_BOMB and entityParam.State == 2 then
-            -- Ancient starcursed jewel: Tellurian Splinter
-            if PST:SC_getSnapshotMod("tellurianSplinter", false) then
-                local entityID = PST:initStaticEntity(entityParam)
-                if entityID then
-                    local staticEntCache = PST:getTreeSnapshotMod("staticEntitiesCache", {})
-                    if staticEntCache[entityID] ~= entityParam.State then
-                        -- Bomb rock destroyed
-                        if PST:getTreeSnapshotMod("SC_tellurianBuff", 0) < 35 then
-                            PST:addModifiers({ speedPerc = 1, SC_tellurianBuff = 1 }, true)
-                        end
-                        staticEntCache[entityID] = entityParam.State
-                    end
                 end
             end
         end
@@ -254,6 +194,49 @@ function PST:gridEntityRockDestroy(rock, gridType, immediate, source)
             PST:astralCompAddProgress("deathScarab", 1)
             PST:astralCompProcScavenge("deathScarab")
             PST:astralCompEggUnlockProc("deathScarab")
+        end
+    -- Bomb rocks
+    elseif gridType == GridEntityType.GRID_ROCK_BOMB then
+        -- Event seems to fire twice for bomb rocks, one with state 3 then state 2 (destroyed)
+        if rock.State == 2 then
+            -- Ancient Jewel: Tellurian Splinter
+            if PST:SC_getSnapshotMod("tellurianSplinter", false) and PST:getTreeSnapshotMod("SC_tellurianBuff", 0) < 35 then
+                print("here!!", rock.State)
+                PST:addModifiers({ speedPerc = 1, SC_tellurianBuff = 1 }, true)
+            end
+        end
+    -- Tainted rocks
+    elseif gridType == GridEntityType.GRID_ROCKT then
+        -- Mod: +xp when destroying tinted rocks
+        local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
+        if tmpMod ~= 0 then
+            PST:addTempXP(tmpMod, true)
+        end
+
+        -- Mod: +all stats when destroying tinted rocks
+        tmpMod = PST:getTreeSnapshotMod("tintedRockAllstats", 0)
+        if tmpMod ~= 0 then
+            PST:addModifiers({ allstats = tmpMod }, true)
+        end
+
+        -- Mod +% all stats when destroying tinted rocks
+        tmpMod = PST:getTreeSnapshotMod("tintedRockAllstatsPerc", 0)
+        if tmpMod ~= 0 then
+            PST:addModifiers({ allstatsPerc = tmpMod }, true)
+        end
+
+        -- Expedition objective: destroy tinted rocks
+        PST:expedAddProgInRun("tintedRocks", 1)
+
+        -- Astral Companion: Boulder Beetle scavenge event and objective
+        PST:astralCompAddProgress("boulderBeetle", 1)
+        PST:astralCompProcScavenge("boulderBeetle")
+        PST:astralCompEggUnlockProc("boulderBeetle")
+
+        -- Obols from tinted rocks
+        if PST:getTreeSnapshotMod("isExpedRun", false) then
+            local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1), 0.15)
+            if tmpObols > 0 then PST:expedDropObolsAt(entityParam.Position, tmpObols) end
         end
     end
 end
