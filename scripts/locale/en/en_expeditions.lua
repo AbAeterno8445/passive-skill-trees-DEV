@@ -64,6 +64,10 @@ return {
     ["ui_expAttempts"] = "Expedition Attempt(s)",
     ["ui_starblessedPrism"] = "Starblessed Prism",
 
+    ["ui_starblessedPrismDesc"] = {
+        "Starblessed Prisms can be applied once to Ancient weapons to allow imprinting an extra modifier on them."
+    },
+
     ["ui_expRewardAddItem"] = "Add {{itemName}} to this Expedition",
     ["ui_expAddUnkItem"] = "Add shown item to this Expedition",
     ["ui_expRewardCharCrimsonCore"] = "Crimson Starcore with {{charName}}",

@@ -17,6 +17,7 @@ local obsBazaarItems = {
     },
     {
         name = PST:getLocalized("ui_starblessedPrism"),
+        description = PST:getLocalized("ui_starblessedPrismDesc"),
         price = 8000,
         type = PSTExpNodeRewardType.STARBLESS_PRISM,
         purchaseFunc = function(charData)
@@ -30,6 +31,16 @@ local obsBazaarItems = {
         purchaseFunc = function(charData)
             if not charData then return end
             charData.skillPoints = charData.skillPoints + 1
+        end
+    },
+    {
+        name = PST:getLocalized("ui_ancStardust"),
+        description = PST:getLocalized("ui_ancStardustDesc"),
+        price = 7000,
+        type = 12,
+        purchaseFunc = function(charData)
+            if not PST.modData.ancientStardust then PST.modData.ancientStardust = 0 end
+            PST.modData.ancientStardust = PST.modData.ancientStardust + 1
         end
     }
 }

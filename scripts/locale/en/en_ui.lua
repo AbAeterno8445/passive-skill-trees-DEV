@@ -188,6 +188,10 @@ return {
     ["ui_sparkStardust"] = "Sparkling Stardust",
     ["ui_ancStardust"] = "Ancient Stardust",
 
+    ["ui_ancStardustDesc"] = {
+        "Ancient Stardust is used to upgrade Ancient weapons in the Astral Forge."
+    },
+
     ["ui_charCrimsonCores"] = "Crimson starcores with {{charName}}: {{cores}}",
     ["ui_crimConvCrimsonCores"] = "Effective crimson starcores for convergence: {{cores}}/{{maxCores}}",
     ["ui_crimConvEffCoreTip"] = "You can increase this limit by 1 for every 2 depths unlocked in normal expeditions, and",

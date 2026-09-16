@@ -64,6 +64,10 @@ return {
     ["ui_expAttempts"] = "Intento(s) de Expedición",
     ["ui_starblessedPrism"] = "Prisma Estelar",
 
+    ["ui_starblessedPrismDesc"] = {
+        "Los Prismas Estelares pueden aplicarse una vez a las armas Antiguas, permitiendo imprimirles un modificador adicional."
+    },
+
     ["ui_expRewardAddItem"] = "Añade {{itemName}} a esta expedición",
     ["ui_expAddUnkItem"] = "Añade el objeto mostrado a esta expedición",
     ["ui_expRewardCharCrimsonCore"] = "Núcleo Estelar Carmesí con {{charName}}",

@@ -63,11 +63,15 @@ function astralIncubatorSubmenu:Render(tScreen, submenusModule)
                     -- Not yet found
                     if not PST.modData.astralcomps[compName] then
                         local tmpJewelSprite = PST.treeScreen.modules.nodeDrawingModule.SCJewelSprite
+                        tmpJewelSprite.Scale.X = 1
+                        tmpJewelSprite.Scale.Y = 1
                         tmpJewelSprite:Play("Unidentified", true)
                         tmpJewelSprite:Render(Vector(eggDrawX, eggDrawY))
                     elseif PST.modData.astralcomps[compName].level > 0 then
                         -- Hatched
                         local tmpJewelSprite = PST.treeScreen.modules.nodeDrawingModule.SCJewelSprite
+                        tmpJewelSprite.Scale.X = 1
+                        tmpJewelSprite.Scale.Y = 1
                         tmpJewelSprite:Play("AncientDone", true)
                         tmpJewelSprite:Render(Vector(eggDrawX, eggDrawY))
                     end

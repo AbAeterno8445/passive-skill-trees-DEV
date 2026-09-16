@@ -720,6 +720,11 @@ function descriptionBoxesModule:Render(tScreen)
             if tmpItem then
                 local itemPrice = tostring(PST:getObsBazaarPrice(tmpItem.price))
                 local itemDesc = {}
+                if tmpItem.description then
+                    for _, tmpLine in ipairs(tmpItem.description) do
+                        table.insert(itemDesc, tmpLine)
+                    end
+                end
                 if tmpItem.type == PSTExpNodeRewardType.C_STARCORE or tmpItem.type == PSTExpNodeRewardType.GLOBAL_SP then
                     table.insert(
                         itemDesc,

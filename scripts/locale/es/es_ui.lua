@@ -185,6 +185,10 @@ return {
     ["ui_sparkStardust"] = "Polvo Estelar Reluciente",
     ["ui_ancStardust"] = "Polvo Estelar Antiguo",
 
+    ["ui_ancStardustDesc"] = {
+        "El Polvo Estelar Antiguo es usado para mejorar las armas Antiguas en la Forja Astral."
+    },
+
     ["ui_charCrimsonCores"] = "Núcleos estelares carmesí con {{charName}}: {{cores}}",
     ["ui_crimConvCrimsonCores"] = "Núcleos estelares carmesí efectivos para la convergencia: {{cores}}/{{maxCores}}",
     ["ui_crimConvEffCoreTip"] = "Puedes aumentar este límite en 1 por cada 2 profundidades de expedición normal desbloqueadas, y",
