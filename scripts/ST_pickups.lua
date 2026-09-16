@@ -1742,14 +1742,26 @@ function PST:onPickupUpdate(pickup)
             end
         end
 
-        -- Arcane Obols
-        if PST:getTreeSnapshotMod("obolMagnetism", false) then
-            for i, _ in ipairs(PST.expedObolDropValues) do
-                local tmpName = "Arcane Obols " .. tostring(i)
-                if pickup.SubType == Isaac.GetTrinketIdByName(tmpName) or pickup.SubType == Isaac.GetTrinketIdByName(tmpName) | TrinketType.TRINKET_GOLDEN_FLAG then
+        -- Magnetism nodes
+        if pickup.Variant == PickupVariant.PICKUP_TRINKET then
+            -- Arcane obols
+            if PST:getTreeSnapshotMod("obolMagnetism", false) then
+                for i, _ in ipairs(PST.expedObolDropValues) do
+                    local tmpName = "Arcane Obols " .. tostring(i)
+                    if pickup.SubType == Isaac.GetTrinketIdByName(tmpName) or pickup.SubType == Isaac.GetTrinketIdByName(tmpName) | TrinketType.TRINKET_GOLDEN_FLAG then
+                        local tmpMove = (PST:getPlayer().Position - pickup.Position):Normalized() * 1.5
+                        pickup.Position = pickup.Position + tmpMove
+                        break
+                    end
+                end
+            end
+
+            -- Weapons
+            if PST:getTreeSnapshotMod("weaponMagnetism", false) then
+                local itemCfg = Isaac.GetItemConfig():GetTrinket(pickup.SubType)
+                if itemCfg and PST:strStartsWith(itemCfg.Name, "Astral weapon") then
                     local tmpMove = (PST:getPlayer().Position - pickup.Position):Normalized() * 1.5
                     pickup.Position = pickup.Position + tmpMove
-                    break
                 end
             end
         end

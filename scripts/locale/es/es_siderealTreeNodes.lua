@@ -199,6 +199,9 @@ return {
     ["node_obolmagnetism_name"] = "Magnetismo de Oboles",
     ["node_obolmagnetism"] = "Los oboles arcanos recolectables son lentamente atraídos a tu posición.",
 
+    ["node_weaponmagnetism_name"] = "Magnetismo de Armas",
+    ["node_weaponmagnetism"] = "Las armas astrales son lentamente atraídas a tu posición.",
+
     ["node_ancwepcompendium_name"] = "Diccionario de Armas Antiguas",
     ["node_ancwepcompendium"] = {
         "Una vez asignado, presiona Asignar para abrir una lista de todas las armas antiguas disponibles",

@@ -32,7 +32,7 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "52": "{\"pos\":[0,7],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[51,54,1305],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "53": "{\"pos\":[0,-8],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[34,55],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "54": "{\"pos\":[0,8],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[52,1000],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
-"55": "{\"pos\":[0,-10],\"type\":760,\"size\":\"Large\",\"name\":\"#node_astralforge_name\",\"description\":[\"#node_astralforge\"],\"modifiers\":{},\"adjacent\":[53,57,58,59,1542],\"reqs\":{}}",
+"55": "{\"pos\":[0,-10],\"type\":760,\"size\":\"Large\",\"name\":\"#node_astralforge_name\",\"description\":[\"#node_astralforge\"],\"modifiers\":{},\"adjacent\":[53,57,58,59,1542,1583],\"reqs\":{}}",
 "57": "{\"pos\":[-2,-10],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[55,140],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "58": "{\"pos\":[0,-12],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[55,189],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "59": "{\"pos\":[2,-10],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[55,61],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
@@ -936,6 +936,7 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "1579": "{\"pos\":[10,5],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1578,1577],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1580": "{\"pos\":[14,3],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1564],\"reqs\":{\"noSP\":true,\"companionSlot\":1}}",
 "1581": "{\"pos\":[14,4],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1565],\"reqs\":{\"noSP\":true,\"companionSlot\":2}}",
-"1582": "{\"pos\":[14,5],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1566],\"reqs\":{\"noSP\":true,\"companionSlot\":3}}"
+"1582": "{\"pos\":[14,5],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1566],\"reqs\":{\"noSP\":true,\"companionSlot\":3}}",
+"1583": "{\"pos\":[1,-11],\"type\":999,\"size\":\"Large\",\"name\":\"#node_weaponmagnetism_name\",\"description\":[\"#node_weaponmagnetism\"],\"modifiers\":{\"weaponMagnetism\":true},\"adjacent\":[55],\"reqs\":{\"obols\":200}}"
 }
 ]])

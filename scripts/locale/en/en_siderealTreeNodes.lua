@@ -202,6 +202,9 @@ return {
     ["node_obolmagnetism_name"] = "Obol Magnetism",
     ["node_obolmagnetism"] = "Dropped arcane obols are now slowly attracted towards you.",
 
+    ["node_weaponmagnetism_name"] = "Weapon Magnetism",
+    ["node_weaponmagnetism"] = "Dropped astral weapons are now slowly attracted towards you.",
+
     ["node_ancwepcompendium_name"] = "Ancient Weapon Compendium",
     ["node_ancwepcompendium"] = {
         "Once allocated, press Allocate to open a list of all available Ancient Weapons for each",
