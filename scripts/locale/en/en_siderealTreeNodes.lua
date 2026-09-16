@@ -215,6 +215,7 @@ return {
     ["node_astralcompanions"] = {
         "Once allocated, you may now find Astral Companion Eggs in runs.",
         "Incubator nodes to the left list out available eggs you may find, and a hint on how to find each one.",
+        "Egg and companion progression is shared amongst all characters.",
         "Chance to find eggs starts at 100%, and gets halved for the rest of that run when finding one."
     },
     ["node_astralincubator_name"] = "Astral Incubator",

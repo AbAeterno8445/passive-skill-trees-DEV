@@ -30,6 +30,34 @@ function PST:isCompEquipped(compName, isEgg)
     return false
 end
 
+-- Returns the slot the given companion is equipped in for the current character, or 0 if unequipped
+function PST:getCompSlot(compName)
+    local charData = PST:getCurrentCharData()
+    if charData and charData.astralCompanions then
+        for i=1,3 do
+            if charData.astralCompanions[tostring(i)] == compName then
+                return i
+            end
+        end
+    end
+    return 0
+end
+
+-- Returns whether the given companion slot is available considering the current floor in the run
+function PST:isCompSlotAvailable(slot)
+    if slot == 3 then return true end
+
+    if Isaac.IsInGame() then
+        local lvlStage = PST:getLevel():GetStage()
+        for i, tmpSlot in ipairs(PST.astralCompSlotFloors) do
+            if i == slot and lvlStage >= tmpSlot[1] and lvlStage <= tmpSlot[2] then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 -- Returns the name of the egg equipped in the given slot.
 ---@param incubatorSlot number|string Incubator slot ID. Falls back to PST.selectedAstralIncubator if not provided
 function PST:getEquippedIncubatorEgg(incubatorSlot)
@@ -265,7 +293,8 @@ function PST:astralCompProcScavenge(compName, chanceMult, obolMod)
     local charData = PST:getCurrentCharData()
     local baseCompData = PST.astralCompanions[compName]
     local compData = PST.modData.astralcomps[compName]
-    if charData and charData.astralCompanions and baseCompData and compData and compData.level > 0 then
+    if charData and charData.astralCompanions and PST:isCompSlotAvailable(PST:getCompSlot(compName)) and baseCompData and
+    compData and compData.level > 0 then
         local floorLimit = PST:astralCompModFloorLimit(baseCompData.scavengeMax and baseCompData.scavengeMax[compData.level] or 0)
         if floorLimit == 0 or (floorLimit > 0 and PST:getTreeSnapshotMod("astralCompFloorProcs_" .. compName, 0) < floorLimit) then
             local procOdds = baseCompData.scavengeOdds and baseCompData.scavengeOdds[compData.level] or nil
@@ -293,7 +322,8 @@ function PST:astralCompProcScavenge(compName, chanceMult, obolMod)
                     end
                 end
 
-                --[[if procSprite then
+                --[[ Experimental, flashes the companion's icon over the player once scavenge event is triggered
+                if procSprite then
                     local tmpSprite = PST.treeScreen.modules.submenusModule.submenus[PSTSubmenu.ASTRAL_COMPANION_SLOT].compSprite
                     tmpSprite:SetFrame("Default", baseCompData.compSprite)
                     PST:createFloatIconFX(tmpSprite, Vector(0, -8), 0, 20, true, true)

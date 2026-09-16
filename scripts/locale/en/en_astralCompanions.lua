@@ -25,9 +25,10 @@ return {
     ["astralcomp_ui_cannotSwitchComp"] = "Cannot switch companions while in a run.",
     ["astralcomp_foundEgg"] = "Found Egg",
 
-    ["astralcomp_ui_slotActiveWarn1"] = "Companions in this slot are only active between floors 1 and 5.",
-    ["astralcomp_ui_slotActiveWarn2"] = "Companions in this slot are only active between floors 6 and 10.",
-    ["astralcomp_ui_slotActiveWarn3"] = "Companions in this slot are always active.",
+    ["astralcomp_ui_slotActiveWarn1"] = "This slot can only scavenge obols between floors 1 and 5.",
+    ["astralcomp_ui_slotActiveWarn2"] = "This slot can only scavenge obols between floors 6 and 10.",
+    ["astralcomp_ui_slotActiveWarn3"] = "This slot can always scavenge obols.",
+    ["astralcomp_ui_slotNotScavenging"] = "Currently not scavenging",
 
     ---- ASTRAL COMPANIONS ----
     ["astralcomp_rat_name"] = "Rat",

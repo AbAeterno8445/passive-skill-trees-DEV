@@ -373,6 +373,9 @@ local descriptionBoxesModule = {
             end
             table.insert(nodeDesc, "")
             table.insert(nodeDesc, {PST:getLocalized("astralcomp_ui_slotActiveWarn" .. extraData.node.reqs.companionSlot), PST.kcolors.ANCIENT_ORANGE})
+            if Isaac.IsInGame() and isAllocated and not PST:isCompSlotAvailable(extraData.node.reqs.companionSlot) then
+                table.insert(nodeDesc, {"(" .. PST:getLocalized("astralcomp_ui_slotNotScavenging") .. ")", PST.kcolors.LIGHTRED1})
+            end
             return { name = descName, description = nodeDesc }
         end,
 
