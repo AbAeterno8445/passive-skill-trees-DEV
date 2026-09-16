@@ -47,7 +47,6 @@ function PST:onDeath(entity)
     PST:getRoom():GetFrameCount() > 1 then
         local isSegmentBoss = PST:arrHasValue(PST.segmentBosses, entity.Type)
         if not isSegmentBoss or (isSegmentBoss and PST:isLastMobOfType(entity)) then
-            print("enemy dead", entity.Type, entity.Variant, entity.SubType)
             -- Enemy death
             local room = PST:getRoom()
             local tmpNPC = entity:ToNPC()

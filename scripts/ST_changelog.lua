@@ -26,6 +26,7 @@ function PST:getChangelogList()
         "- Fixed Iridescent Purity (Ancient Jewel) being able to target a character's starting items.",
         "- Fixed Crimson Node descriptions not loading localized text when a target node is selected.",
         "- Fixed Crimson Convergence node descriptions.",
+        "- Fixed Uber Expedition attempts not being subtracted properly when losing a run.",
         "",
 
         "v1.3.10",

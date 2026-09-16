@@ -1732,8 +1732,6 @@ function PST:onPickupUpdate(pickup)
                 elseif pickup.Variant == PickupVariant.PICKUP_BOMBCHEST then
                     -- Astral Companion: Wolf egg
                     PST:astralCompEggUnlockProc("wolf")
-                    -- TODO: test
-                    print("HERE")
                 end
 
                 -- Astral Companion: Wolf scavenge event and objective

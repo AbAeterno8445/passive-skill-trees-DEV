@@ -1187,7 +1187,7 @@ function PST:onNewRun(isContinued)
         if iridescentProtected then
             for itemID, itemCount in pairs(player:GetCollectiblesList()) do
                 if itemCount > 0 then
-                    print("added item", itemID, "to iridescent protected list")
+                    table.insert(iridescentProtected, itemID)
                 end
             end
         end

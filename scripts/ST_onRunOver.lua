@@ -66,8 +66,8 @@ function PST:onRunOver(isGameOver)
                     end
                 end
 
-                if loseAttempt and noAttemptStage == 0 or PST:getLevel():GetStage() < noAttemptStage then
-                    PST:expedLoseAttempt(depth)
+                if loseAttempt and (noAttemptStage == 0 or PST:getLevel():GetStage() < noAttemptStage) then
+                    PST:expedLoseAttempt(depth, PST:getTreeSnapshotMod("isExpedUber", false))
                 end
             end
 
