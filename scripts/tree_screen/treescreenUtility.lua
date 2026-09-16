@@ -242,6 +242,7 @@ function PST:closeTreeMenu(mute)
         MenuManager.SetInputMask(PST.menuInputMask)
     else
         Game():GetHUD():SetVisible(true)
+        PauseMenu.SetState(PauseMenuStates.CLOSED)
     end
     if not mute then
         SFXManager():Play(SoundEffect.SOUND_PAPER_OUT)

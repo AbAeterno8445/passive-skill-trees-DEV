@@ -190,6 +190,12 @@ function PST:treeScreenMenuRender()
 
     -- Actual tree rendering when opened
     if PST.treeScreen.open then
+        if Isaac.IsInGame() and PauseMenu.GetState() ~= 4 then
+            -- Pause screen state 4 seems to keep the game paused without interface interaction in the background
+            ---@diagnostic disable-next-line: param-type-mismatch
+            PauseMenu.SetState(4)
+        end
+
         PST.treeScreen:Update()
         PST.treeScreen:Render()
     end
