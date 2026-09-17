@@ -151,6 +151,16 @@ function PST:initModCompat()
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Mr. Gurgle"))
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Flagpole"))
         table.insert(PST.noChampionMobs, PST_getCustomMobTable("Little Boy"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Mutant Spider)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Harlequin Baby)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Tiny Planet)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (The Ludovico Technique)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Godhead)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Continuum)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Tech X)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Tractor Beam)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Varicose Veins)"))
+		table.insert(PST.noChampionMobs, PST_getCustomMobTable("Missing Link (Random)"))
 
 		-- No, really, no champions!
 		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Fishaac"))
@@ -161,6 +171,16 @@ function PST:initModCompat()
 		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Gurgle"))
 		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Mr. Gob"))
 		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Little Boy"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Mutant Spider)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Harlequin Baby)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Tiny Planet)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (The Ludovico Technique)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Godhead)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Continuum)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Tech X)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Tractor Beam)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Varicose Veins)"))
+		table.insert(PST.noChampionMobsJewel, PST_getCustomMobTable("Missing Link (Random)"))
 
         -- Segmented bosses
         table.insert(PST.segmentBosses, Isaac.GetEntityTypeByName("Kingpin"))
@@ -193,6 +213,35 @@ function PST:initModCompat()
 			"Chubber Embryo", "Drowned Embryo", "Pale Embryo", "Headless Embryo", "Scarred Embryo", "Blue Embryo", "Guillotine Embryo", "Peeping Embryo", "Level 2 Embryo", "Skinless Embryo", "Tainted Embryo"
         }
         PST_addUndeadMobs(tmpUndead)
+
+		-- Tainted enemies
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Beacon")) -- tainted bulb
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Dizzy"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Reaper"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Roy Gerald Dericott II"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Mutant Spider)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Harlequin Baby)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Tiny Planet)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (The Ludovico Technique)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Godhead)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Continuum)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Tech X)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Tractor Beam)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Varicose Veins)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Missing Link (Random)"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Mag Gaper"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Mag Horf"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Mag Clotty"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Accursed"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Murmur"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Buckshot"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Really Tall Boi"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Bloast"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Non-Binary"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Necornier"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Embryo")) -- Just in case
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Horse")) -- Just in case
 
         -- Progression items
         table.insert(PST.progressionItems, Isaac.GetItemIdByName("Contraband"))
@@ -530,6 +579,10 @@ function PST:initModCompat()
             "Cadavra Gut", "Pinky", "Haemotoxia", "Tainted Mr. Maw", "Tainted Maw"
         }
         PST_addUndeadMobs(tmpUndead)
+
+		-- Tainted Enemies
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Maw"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Mr. Maw"))
     end
 
     -- Crabby Cretins
@@ -542,6 +595,11 @@ function PST:initModCompat()
             "Globlobber", "Ramble Gag"
         }
         PST_addUndeadMobs(tmpUndead)
+
+		-- Tainted Enemies
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Hanger"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Mushroom"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Fire Worm"))
     end
 
     -- Restored Monster Pack
@@ -554,6 +612,9 @@ function PST:initModCompat()
 			"​Vessel (Antibirth)", "Vessel (RM)"
         }
         PST_addUndeadMobs(tmpUndead)
+
+		-- Tainted Enemies
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Rumpling"))
     end
 
     -- Fall From Grace
@@ -566,6 +627,9 @@ function PST:initModCompat()
             "Affusion", "Salmon", "Ms. Guano", "Bumblebat"
         }
         PST_addUndeadMobs(tmpUndead)
+		
+		-- Tainted Enemies
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Tubular"))
     end
 
     -- Repentance Plus! (MOD)
@@ -1990,6 +2054,12 @@ function PST:initModCompat()
 
         -- No HP modifier mobs
         table.insert(PST.mobHPBlacklist, PST_getCustomMobTable("Nightmare Gaper"))
+
+		-- Tainted Enemies
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Derp"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Host"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Boils"))
+		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Blurb"))
 	end
 
 	-- Reshaken Vol. 1
