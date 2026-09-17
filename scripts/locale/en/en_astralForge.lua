@@ -69,7 +69,7 @@ return {
     ["ui_sparklingEssence_src"] = "Deconstructing weapons with modifiers (magic/ancient).",
     ["ui_ancientEssence_src"] = "Deconstructing ancient weapons.",
     ["ui_sparklingStardust_src"] = "Killing bosses & clearing challenge rooms.",
-    ["ui_ancientStardust_src"] = "Killing final bosses.",
+    ["ui_ancientStardust_src"] = "Killing final bosses, leveling Astral Companions to 3, Obscure Bazaar.",
     ["ui_starblessedPrism_src"] = "Uber Expedition rewards.",
 
     ["ui_Honing"] = "Honing",

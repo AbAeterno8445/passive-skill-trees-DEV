@@ -68,7 +68,7 @@ return {
     ["ui_sparklingEssence_src"] = "Deconstruyendo armas con modificadores (mágicas/antiguas).",
     ["ui_ancientEssence_src"] = "Deconstruyendo armas antiguas.",
     ["ui_sparklingStardust_src"] = "Matando jefes y completando habitaciones del desafío.",
-    ["ui_ancientStardust_src"] = "Matando jefes finales.",
+    ["ui_ancientStardust_src"] = "Matando jefes finales, nivelando compañeros astrales a 3, Bazar Solitario.",
     ["ui_starblessedPrism_src"] = "Recompensa en Expediciones Uber.",
 
     ["ui_Honing"] = "Afilado",

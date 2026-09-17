@@ -42,12 +42,12 @@ function companionSlotSubmenu:Render(tScreen, submenusModule)
         self.menuX, self.menuY,
         PST:getLocalized("node_companionslot_name"),
         function()
+            local drawnComps = 0
             for i=1,compsPerPage do
                 local compID = i + self.invPage * compsPerPage
                 local compName = PST.astralCompanionsOrdered[compID]
                 local baseCompData = PST.astralCompanions[compName]
                 local compData = PST.modData.astralcomps[compName]
-                local drawnComps = 0
                 if baseCompData and compData and compData.level > 0 then
                     local compX = self.menuX * tScreen.zoomScale - 64 + (drawnComps % 5) * 32
                     local compY = self.menuY * tScreen.zoomScale + 52 + math.floor(drawnComps / 5) * 32

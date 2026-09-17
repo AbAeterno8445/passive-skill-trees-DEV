@@ -556,7 +556,7 @@ function PST.treeScreen:InputAllocate()
                             PST:astralCompLevelUp(tmpComp)
 
                             -- Level 3 rewards
-                            if compData.level == 2 then
+                            if compData.level == 3 then
                                 PST.modData.skillPoints = PST.modData.skillPoints + 3
                                 PST.modData.ancientStardust = PST.modData.ancientStardust + 1
                                 SFXManager():Play(SoundEffect.SOUND_POWERUP2, 0.8)
