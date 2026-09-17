@@ -10,7 +10,8 @@ PSTSubmenu = {
     OBSCURE_BAZAAR = "obscureBazaar",
     WEAPON_COMPENDIUM = "weaponCompendium",
     ASTRAL_INCUBATOR = "astralIncubator",
-    ASTRAL_COMPANION_SLOT = "astralCompanionSlot"
+    ASTRAL_COMPANION_SLOT = "astralCompanionSlot",
+    JEWEL_LOADOUTS = "jewelLoadouts"
 }
 
 -- Submenus refer to the smaller interactable menus that show up for e.g. Cosmic Realignment or starcursed jewel inventories
@@ -29,7 +30,8 @@ local submenusModule = {
         [PSTSubmenu.OBSCURE_BAZAAR] = include("scripts.tree_screen.modules.submenus.obscureBazaarSubmenu"),
         [PSTSubmenu.WEAPON_COMPENDIUM] = include("scripts.tree_screen.modules.submenus.wepCompendiumSubmenu"),
         [PSTSubmenu.ASTRAL_INCUBATOR] = include("scripts.tree_screen.modules.submenus.astralIncubatorSubmenu"),
-        [PSTSubmenu.ASTRAL_COMPANION_SLOT] = include("scripts.tree_screen.modules.submenus.companionSlotSubmenu")
+        [PSTSubmenu.ASTRAL_COMPANION_SLOT] = include("scripts.tree_screen.modules.submenus.companionSlotSubmenu"),
+        [PSTSubmenu.JEWEL_LOADOUTS] = include("scripts.tree_screen.modules.submenus.jewelLoadoutsSubmenu")
     },
 }
 

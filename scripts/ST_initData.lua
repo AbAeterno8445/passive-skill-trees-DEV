@@ -2159,6 +2159,8 @@ function PST:resetData()
 		identifiedAncients = {},
 		-- Collected ancient jewel rewards (e.g. skill points when killing X boss)
 		ancientRewards = {},
+		-- Jewel Loadouts
+		starJewelLoadouts = {},
 
 		-- Astral Expeditions
 		---@type PSTExpeditionSave[]

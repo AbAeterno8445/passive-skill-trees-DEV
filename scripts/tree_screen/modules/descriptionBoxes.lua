@@ -404,6 +404,13 @@ local nonDynamicNodes = {
     "Less Boss Rush Waves", "Sidereal Artifact", "Crimson Convergence"
 }
 
+local SCJewelKColorMap = {
+    Ancient = PST.kcolors.ANCIENT_ORANGE,
+    Azure = PST.kcolors.LIGHTBLUE1,
+    Crimson = PST.kcolors.LIGHTRED1,
+    Viridian = PST.kcolors.GREEN2
+}
+
 -- Additional functions that provide special/dynamic node descriptions
 -- Functions are run with the same parameters as above: (descName, tmpDescription, isAllocated, tScreen, extraData)
 -- extraData.node also contains node data
@@ -652,6 +659,9 @@ function descriptionBoxesModule:Render(tScreen)
             local jewelData = starInvSubmenu.hoveredJewel
             if jewelData then
                 local tmpDescription = PST:SC_getJewelDescription(jewelData)
+                if PST:SC_isJewelInLoadout(jewelData.id) then
+                    table.insert(tmpDescription, {PST:getLocalized("ui_jewelInLoadout"), PST.kcolors.TEAL1})
+                end
                 if PST:SC_canDestroyJewel(jewelData) then
                     table.insert(tmpDescription, PST:getLocalized("ui_jewels_respecDestroy"))
                 elseif jewelData.status and jewelData.status == "converted" then
@@ -806,6 +816,58 @@ function descriptionBoxesModule:Render(tScreen)
                     table.insert(compDesc, PST:getLocalized("astralcomp_ui_allocEquipComp"))
                 end
                 tScreen:DrawNodeBox(PST:getLocalized(baseCompData.identifier .. "_name"), compDesc)
+            end
+        -- Jewel Loadouts submenu, hovered loadout
+        elseif submenusModule.currentSubmenu == PSTSubmenu.JEWEL_LOADOUTS then
+            local jewelLoadoutSubmenu = submenusModule.submenus[PSTSubmenu.JEWEL_LOADOUTS]
+            local tmpLoadout = jewelLoadoutSubmenu.hoveredLoadout
+            if tmpLoadout then
+                local loadoutDesc = {}
+                local loadoutData = PST.modData.starJewelLoadouts[tostring(tmpLoadout)]
+                if loadoutData then
+                    -- Group up jewel mods from the current displayed jewel type
+                    local tmpGroupedMods = {}
+                    for jewelID, _ in pairs(loadoutData[PST.SCDisplayedLoadoutType]) do
+                        local tmpJewel = PST:SC_getJewelByID(jewelID)
+                        if tmpJewel then
+                            for modName, _ in pairs(tmpJewel.mods) do
+                                if not PST:arrHasValue(tmpGroupedMods, modName) then
+                                    table.insert(tmpGroupedMods, modName)
+                                end
+                            end
+                        end
+                    end
+                    if #tmpGroupedMods > 0 then
+                        local tmpJewelColor = SCJewelKColorMap[PST.SCDisplayedLoadoutType]
+                        table.insert(loadoutDesc, {PST:getLocalized("ui_" .. PST.SCDisplayedLoadoutType .. "Jewels") .. ":", tmpJewelColor})
+
+                        local loadoutJewelData = PST:SC_getTotalJewelMods(tostring(tmpLoadout), PST.SCDisplayedLoadoutType)
+                        for modName, modData in pairs(loadoutJewelData.totalMods) do
+                            local modDescription = PST:getLocalized("jewel_" .. modName)
+                            if modDescription then
+                                table.insert(loadoutDesc, {
+                                    string.format(modDescription, table.unpack(modData.rolls)), tmpJewelColor
+                                })
+                            end
+                        end
+                        local loadoutStarmightTotal = PST:SC_getTotalJewelMods(tostring(tmpLoadout))
+                        table.insert(loadoutDesc, {PST:getLocalized("ui_starmight") .. ": " .. (loadoutStarmightTotal.totalStarmight or 0), PST.kcolors.STAR_ORANGE})
+                        table.insert(loadoutDesc, "")
+                    end
+                end
+
+                table.insert(loadoutDesc, PST:getLocalized("ui_allocSaveLoadout"))
+                local tmpSwitchWarn = (not loadoutData) and (" " .. PST:getLocalized("ui_loadoutSwitchEmptyWarn")) or ""
+                table.insert(loadoutDesc, PST:getLocalized("ui_shiftAllocLoadout") .. tmpSwitchWarn)
+                if loadoutData then
+                    local tmpDeleteColor = PST.kcolors.WHITE
+                    if jewelLoadoutSubmenu.deleteTimer > 0 then
+                        tmpDeleteColor = PST.kcolors.RED1
+                    end
+                    table.insert(loadoutDesc, {PST:getLocalized("ui_respecDeleteLoadout"), tmpDeleteColor})
+                    table.insert(loadoutDesc, PST:getLocalized("ui_ctrlLoadoutDesc"))
+                end
+                tScreen:DrawNodeBox(PST:getLocalized("ui_jewelLoadout") .. " " .. tmpLoadout, loadoutDesc)
             end
         end
     end

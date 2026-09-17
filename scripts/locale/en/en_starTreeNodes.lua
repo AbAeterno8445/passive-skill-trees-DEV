@@ -56,6 +56,12 @@ return {
         "Ancient Starcursed Jewels can roll unique run-altering modifiers."
     },
 
+    ["node_jewelloadouts_name"] = "Jewel Loadouts",
+    ["node_jewelloadouts"] = {
+        "Once allocated, press Allocate to open a menu allowing you to swap between different Starcursed Jewel loadouts.",
+        "This allows quickly switching between different jewel setups."
+    },
+
 
     ---- EXPEDITION NODES ----
     ["node_arcaneastrolabe_name"] = "Arcane Astrolabe",

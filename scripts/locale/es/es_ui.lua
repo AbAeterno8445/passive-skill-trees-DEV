@@ -11,7 +11,7 @@ return {
 
     ["ui_starTree"] = "Árbol Estelar",
     ["ui_starTree_EtoView"] = "(E para ver el Árbol Estelar)",
-    ["ui_totalStarmight"] = "({{starmight}} poder estelar)",
+    ["ui_totalStarmight"] = "{{starmight}} poder estelar",
     ["ui_starmightBonuses"] = "Bonos del poder estelar",
     ["ui_starTree_levelReqWarn"] = "Llega al nivel {{levelReq}} con por lo menos un personaje para desbloquear.",
     ["ui_starmight"] = "Poder Estelar",

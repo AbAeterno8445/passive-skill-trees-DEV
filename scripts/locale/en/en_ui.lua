@@ -11,7 +11,7 @@ return {
 
     ["ui_starTree"] = "Star Tree",
     ["ui_starTree_EtoView"] = "(E to view Star Tree)",
-    ["ui_totalStarmight"] = "({{starmight}} total starmight)",
+    ["ui_totalStarmight"] = "{{starmight}} total starmight",
     ["ui_starmightBonuses"] = "Starmight bonuses",
     ["ui_starTree_levelReqWarn"] = "Reach level {{levelReq}} with at least one character to unlock.",
     ["ui_starmight"] = "Starmight",
@@ -90,6 +90,14 @@ return {
     ["ui_ViridianJewels"] = "Viridian Starcursed Jewels",
     ["ui_AncientJewel"] = "Ancient Starcursed Jewel",
     ["ui_AncientJewels"] = "Ancient Starcursed Jewels",
+
+    ["ui_jewelLoadout"] = "Jewel Loadout",
+    ["ui_jewelInLoadout"] = "Jewel is present in one or more loadouts!",
+    ["ui_allocSaveLoadout"] = "Press Allocate to save the current jewel configuration into this loadout.",
+    ["ui_shiftAllocLoadout"] = "Press Shift + Allocate to switch to this loadout.",
+    ["ui_loadoutSwitchEmptyWarn"] = "Since loadout is empty, this will unequip all jewels!",
+    ["ui_respecDeleteLoadout"] = "Press and hold Respec for 1 second to delete this loadout.",
+    ["ui_ctrlLoadoutDesc"] = "Press Ctrl to cycle between displayed bonuses.",
 
     ["ui_astralForgeKey"] = "Press Allocate to access the Astral Forge menu.",
 

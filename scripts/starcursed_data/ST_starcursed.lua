@@ -1,13 +1,5 @@
 include("scripts.starcursed_data.ST_starcursed_init")
 
----@enum PSTStarcursedType
-PSTStarcursedType = {
-    AZURE = "Azure",
-    CRIMSON = "Crimson",
-    VIRIDIAN = "Viridian",
-    ANCIENT = "Ancient"
-}
-
 -- Adds an unidentified starcursed jewel with the given properties to the Star Tree inventory
 ---@param jewelType PSTStarcursedType Jewel type
 function PST:SC_addJewel(jewelType, isMighty, fading)
@@ -19,6 +11,10 @@ function PST:SC_addJewel(jewelType, isMighty, fading)
         mighty = isMighty or nil,
         starmight = 0
     }
+    if jewelType ~= PSTStarcursedType.ANCIENT then
+        newJewel.id = PST.SCJewelIDTally
+        PST.SCJewelIDTally = PST.SCJewelIDTally + 1
+    end
     table.insert(PST.modData.starTreeInventory[jewelType], newJewel)
     return newJewel
 end
@@ -28,6 +24,17 @@ end
 function PST:SC_isInvFull(jewelType)
     if not PST.modData.starTreeInventory[jewelType] then return true end
     return #PST.modData.starTreeInventory[jewelType] >= PST.SCMaxInv
+end
+
+function PST:SC_getJewelByID(jewelID)
+    for _, jewelList in pairs(PST.modData.starTreeInventory) do
+        for _, jewel in ipairs(jewelList) do
+            if jewel.id and tostring(jewel.id) == tostring(jewelID) then
+                return jewel
+            end
+        end
+    end
+    return nil
 end
 
 function PST:SC_identifiedAllAncients()
@@ -369,71 +376,91 @@ end
 
 -- Generate a list of total modifiers from all equipped jewels
 -- Returns a table { totalMods, totalStarmight }
-function PST:SC_getTotalJewelMods()
+---@param loadout? string If provided, attempts to fetch mods and starmight from the given jewel loadout
+---@param jewelType? PSTStarcursedType If provided, only returns mods and starmight from the given jewel type
+function PST:SC_getTotalJewelMods(loadout, jewelType)
     local tmpMods = {}
     local tmpStarmight = 0
+    if loadout and not PST.modData.starJewelLoadouts[loadout] then
+        return { totalMods = {}, totalStarmight = 0 }
+    end
     for _, tmpType in pairs(PSTStarcursedType) do
-        local typeSocketedTotal = 0
-        for _, jewel in ipairs(PST.modData.starTreeInventory[tmpType]) do
-            -- Equipped jewel
-            if jewel.equipped ~= nil then
-                typeSocketedTotal = typeSocketedTotal + 1
+        if not jewelType or (jewelType and tmpType == jewelType) then
+            local typeSocketedTotal = 0
+            local jewelsTable = PST.modData.starTreeInventory[tmpType]
+            if loadout and PST.modData.starJewelLoadouts[loadout] then
+                jewelsTable = {}
+                local loadoutJewelData = PST.modData.starJewelLoadouts[loadout][tmpType]
+                if loadoutJewelData then
+                    for jewelID, _ in pairs(loadoutJewelData) do
+                        local tmpJewel = PST:SC_getJewelByID(jewelID)
+                        table.insert(jewelsTable, tmpJewel)
+                    end
+                end
+            end
+            if jewelsTable then
+                for _, jewel in ipairs(jewelsTable) do
+                    -- Equipped/loadout jewel
+                    if loadout or jewel.equipped ~= nil then
+                        typeSocketedTotal = typeSocketedTotal + 1
 
-                if jewel.type ~= PSTStarcursedType.ANCIENT then
-                    -- Get mods and handle mod conflicts (identical mods)
-                    for mod, modData in pairs(jewel.mods) do
-                        if tmpMods[mod] == nil then
-                            tmpMods[mod] = { rolls = {} }
-                            for _, tmpRoll in ipairs(modData.rolls) do
-                                table.insert(tmpMods[mod].rolls, tmpRoll)
+                        if jewel.type ~= PSTStarcursedType.ANCIENT then
+                            -- Get mods and handle mod conflicts (identical mods)
+                            for mod, modData in pairs(jewel.mods) do
+                                if tmpMods[mod] == nil then
+                                    tmpMods[mod] = { rolls = {} }
+                                    for _, tmpRoll in ipairs(modData.rolls) do
+                                        table.insert(tmpMods[mod].rolls, tmpRoll)
+                                    end
+                                else
+                                    for i, tmpRoll in ipairs(modData.rolls) do
+                                        local conflictFunc = PST.SCMods[tmpType][mod].onConflict[i]
+                                        if conflictFunc then
+                                            tmpMods[mod].rolls[i] = conflictFunc(tmpRoll, tmpMods[mod].rolls[i])
+                                        end
+                                    end
+                                end
+                                tmpMods[mod].description = string.format(PST:getLocalized("jewel_" .. mod), table.unpack(tmpMods[mod].rolls))
                             end
-                        else
-                            for i, tmpRoll in ipairs(modData.rolls) do
-                                local conflictFunc = PST.SCMods[tmpType][mod].onConflict[i]
-                                if conflictFunc then
-                                    tmpMods[mod].rolls[i] = conflictFunc(tmpRoll, tmpMods[mod].rolls[i])
+                        -- Add ancient jewels as mods, using their keys from PST.SCAncients, set to true
+                        elseif jewel.name then
+                            for ancientModName, ancientData in pairs(PST.SCAncients) do
+                                if jewel.name == ancientData.name then
+                                    tmpMods[ancientModName] = true
+                                    break
                                 end
                             end
                         end
-                        tmpMods[mod].description = string.format(PST:getLocalized("jewel_" .. mod), table.unpack(tmpMods[mod].rolls))
-                    end
-                -- Add ancient jewels as mods, using their keys from PST.SCAncients, set to true
-                elseif jewel.name then
-                    for ancientModName, ancientData in pairs(PST.SCAncients) do
-                        if jewel.name == ancientData.name then
-                            tmpMods[ancientModName] = true
-                            break
-                        end
+                        tmpStarmight = tmpStarmight + jewel.starmight
                     end
                 end
-                tmpStarmight = tmpStarmight + jewel.starmight
             end
-        end
 
-        -- Mod: +starmight per socketed jewel for each type
-        local tmpStarmightMods = {}
-        for nodeID, _ in pairs(PST.modData.treeNodes["starTree"]) do
-            if PST:isNodeAllocated("starTree", nodeID) then
-                for modName, modVal in pairs(PST.trees["starTree"][nodeID].modifiers) do
-                    if modName == "azureStarmight" or modName == "crimsonStarmight" or modName == "viridianStarmight" or modName == "ancientStarmight" then
-                        if tmpStarmightMods[modName] == nil then
-                            tmpStarmightMods[modName] = modVal
-                        else
-                            tmpStarmightMods[modName] = tmpStarmightMods[modName] + modVal
+            -- Mod: +starmight per socketed jewel for each type
+            local tmpStarmightMods = {}
+            for nodeID, _ in pairs(PST.modData.treeNodes["starTree"]) do
+                if PST:isNodeAllocated("starTree", nodeID) then
+                    for modName, modVal in pairs(PST.trees["starTree"][nodeID].modifiers) do
+                        if modName == "azureStarmight" or modName == "crimsonStarmight" or modName == "viridianStarmight" or modName == "ancientStarmight" then
+                            if tmpStarmightMods[modName] == nil then
+                                tmpStarmightMods[modName] = modVal
+                            else
+                                tmpStarmightMods[modName] = tmpStarmightMods[modName] + modVal
+                            end
                         end
                     end
                 end
             end
-        end
 
-        if tmpType == PSTStarcursedType.AZURE then
-            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.azureStarmight or 0)
-        elseif tmpType == PSTStarcursedType.CRIMSON then
-            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.crimsonStarmight or 0)
-        elseif tmpType == PSTStarcursedType.VIRIDIAN then
-            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.viridianStarmight or 0)
-        elseif tmpType == PSTStarcursedType.ANCIENT then
-            tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.ancientStarmight or 0)
+            if tmpType == PSTStarcursedType.AZURE then
+                tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.azureStarmight or 0)
+            elseif tmpType == PSTStarcursedType.CRIMSON then
+                tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.crimsonStarmight or 0)
+            elseif tmpType == PSTStarcursedType.VIRIDIAN then
+                tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.viridianStarmight or 0)
+            elseif tmpType == PSTStarcursedType.ANCIENT then
+                tmpStarmight = tmpStarmight + typeSocketedTotal * (tmpStarmightMods.ancientStarmight or 0)
+            end
         end
     end
     return { totalMods = tmpMods, totalStarmight = tmpStarmight }
@@ -595,6 +622,41 @@ function PST:oldJewelReplacements()
             end
         end
     end
+end
+
+function PST:SC_assignJewelIDTally()
+    for jewelType, jewelInv in pairs(PST.modData.starTreeInventory) do
+        if jewelType ~= PSTStarcursedType.ANCIENT then
+            for _, tmpJewel in ipairs(jewelInv) do
+                if tmpJewel.id and tmpJewel.id > PST.SCJewelIDTally then
+                    PST.SCJewelIDTally = tmpJewel.id
+                end
+            end
+        end
+    end
+    PST.SCJewelIDTally = PST.SCJewelIDTally + 1
+end
+
+function PST:SC_assignAllJewelIDs()
+    for jewelType, jewelInv in pairs(PST.modData.starTreeInventory) do
+        if jewelType ~= PSTStarcursedType.ANCIENT then
+            for _, tmpJewel in ipairs(jewelInv) do
+                if not tmpJewel.id then
+                    tmpJewel.id = PST.SCJewelIDTally
+                    PST.SCJewelIDTally = PST.SCJewelIDTally + 1
+                end
+            end
+        end
+    end
+end
+
+function PST:SC_isJewelInLoadout(jewelID)
+    for _, jewelData in pairs(PST.modData.starJewelLoadouts) do
+        if jewelData[tostring(jewelID)] then
+            return true
+        end
+    end
+    return false
 end
 
 function PST:SC_wipeInventories()

@@ -1,3 +1,11 @@
+---@enum PSTStarcursedType
+PSTStarcursedType = {
+    AZURE = "Azure",
+    CRIMSON = "Crimson",
+    VIRIDIAN = "Viridian",
+    ANCIENT = "Ancient"
+}
+
 -- 'Conflict functions' run when a modifier is present on more than 1 equipped jewel, and determine what to do for the total value for each roll when considering all equipped jewels
 local conflictFuncs = {
     simpleSum = function(roll, targetRoll)
@@ -10,6 +18,9 @@ local conflictFuncs = {
         return math.max(roll, targetRoll)
     end
 }
+
+PST.SCJewelIDTally = 0
+PST.SCDisplayedLoadoutType = PSTStarcursedType.AZURE
 
 PST.SCMods = {
     -- Crimson Starcursed Jewel modifiers

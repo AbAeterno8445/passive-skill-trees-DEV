@@ -94,7 +94,7 @@ PST.SkillTreesAPI.AddCharacterTree("starTree", false, [[
 "200": "{\"pos\":[0,8],\"type\":322,\"size\":\"Large\",\"name\":\"#node_viridiansocket4_name\",\"description\":[\"#node_viridiansocket\"],\"modifiers\":{\"viridianStarSockets\":1},\"adjacent\":[121],\"reqs\":{}}",
 "201": "{\"pos\":[-5,0],\"type\":327,\"size\":\"Large\",\"name\":\"#node_ancientsocket1_name\",\"description\":[\"#node_ancientsocket\"],\"modifiers\":{\"ancientStarSockets\":1},\"adjacent\":[153],\"reqs\":{}}",
 "202": "{\"pos\":[-8,0],\"type\":327,\"size\":\"Large\",\"name\":\"#node_ancientsocket2_name\",\"description\":[\"#node_ancientsocket\"],\"modifiers\":{\"ancientStarSockets\":1},\"adjacent\":[162],\"reqs\":{}}",
-"204": "{\"pos\":[0,0],\"type\":319,\"size\":\"Large\",\"name\":\"#node_startree_name\",\"description\":[\"#node_startree_lite\"],\"modifiers\":{},\"adjacent\":[208,209,210,207],\"alwaysAvailable\":true,\"reqs\":{}}",
+"204": "{\"pos\":[0,0],\"type\":319,\"size\":\"Large\",\"name\":\"#node_startree_name\",\"description\":[\"#node_startree_lite\"],\"modifiers\":{},\"adjacent\":[208,209,210,207,339],\"alwaysAvailable\":true,\"reqs\":{}}",
 "207": "{\"pos\":[-2,0],\"type\":331,\"size\":\"Large\",\"name\":\"#node_ancientinv_name\",\"description\":[\"#node_ancientinv\"],\"modifiers\":{},\"adjacent\":[204,167,151],\"reqs\":{}}",
 "208": "{\"pos\":[0,-2],\"type\":328,\"size\":\"Large\",\"name\":\"#node_azureinv_name\",\"description\":[\"#node_azureinv\"],\"modifiers\":{},\"adjacent\":[204,4,6],\"reqs\":{}}",
 "209": "{\"pos\":[2,0],\"type\":329,\"size\":\"Large\",\"name\":\"#node_crimsoninv_name\",\"description\":[\"#node_crimsoninv\"],\"modifiers\":{},\"adjacent\":[204,132,148],\"reqs\":{}}",
@@ -192,6 +192,7 @@ PST.SkillTreesAPI.AddCharacterTree("starTree", false, [[
 "335": "{\"pos\":[-4,-9],\"type\":985,\"size\":\"Small\",\"name\":\"#dsnode_obolsharing_name\",\"description\":[\"#dsnode_obolsharing\"],\"modifiers\":{\"obolSharing\":10},\"adjacent\":[336,330],\"reqs\":{\"deepSpaceNode\":true,\"noSP\":true}}",
 "336": "{\"pos\":[-4,-8],\"type\":985,\"size\":\"Small\",\"name\":\"#dsnode_obolsharing_name\",\"description\":[\"#dsnode_obolsharing\"],\"modifiers\":{\"obolSharing\":10},\"adjacent\":[337,335],\"reqs\":{\"deepSpaceNode\":true,\"noSP\":true}}",
 "337": "{\"pos\":[-5,-8],\"type\":985,\"size\":\"Small\",\"name\":\"#dsnode_obolsharing_name\",\"description\":[\"#dsnode_obolsharing\"],\"modifiers\":{\"obolSharing\":10},\"adjacent\":[227,336],\"reqs\":{\"deepSpaceNode\":true,\"noSP\":true}}",
-"338": "{\"pos\":[-10,-5],\"type\":986,\"size\":\"Large\",\"name\":\"#dsnode_cosmicaltruism_name\",\"description\":[\"#dsnode_cosmicaltruism\"],\"modifiers\":{\"cosmicAltruism\":true,\"obolsFound\":-25},\"adjacent\":[334],\"reqs\":{\"deepSpaceNode\":true,\"noSP\":true}}"
+"338": "{\"pos\":[-10,-5],\"type\":986,\"size\":\"Large\",\"name\":\"#dsnode_cosmicaltruism_name\",\"description\":[\"#dsnode_cosmicaltruism\"],\"modifiers\":{\"cosmicAltruism\":true,\"obolsFound\":-25},\"adjacent\":[334],\"reqs\":{\"deepSpaceNode\":true,\"noSP\":true}}",
+"339": "{\"pos\":[1,-1],\"type\":1000,\"size\":\"Large\",\"name\":\"#node_jewelloadouts_name\",\"description\":[\"#node_jewelloadouts\"],\"modifiers\":{},\"adjacent\":[204],\"reqs\":{\"noSP\":true}}"
 }
 ]])

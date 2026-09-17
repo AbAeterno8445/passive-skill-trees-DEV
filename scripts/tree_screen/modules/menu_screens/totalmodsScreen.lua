@@ -128,7 +128,7 @@ function totalmodsScreen:OnOpen(openData)
             return a[1] < b[1]
         end)
         -- Starmight
-        table.insert(starTreeMods, {PST:getLocalizedFormatStr("ui_totalStarmight", {starmight = tScreen.starcursedTotalMods.totalStarmight}), starTreeModsColor})
+        table.insert(starTreeMods, {"(" .. PST:getLocalizedFormatStr("ui_totalStarmight", {starmight = tScreen.starcursedTotalMods.totalStarmight}) .. ")", starTreeModsColor})
         table.insert(starTreeMods, {PST:getLocalized("ui_starmightBonuses") .. ":", starTreeModsColor})
         for modName, modVal in pairs(PST:SC_getStarmightImplicits(tScreen.starcursedTotalMods.totalStarmight)) do
             local modDesc = PST:getLocalizedFormatStr("ui_" .. modName, {val = PST:roundFloat(modVal, -2)})

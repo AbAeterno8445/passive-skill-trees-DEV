@@ -254,6 +254,8 @@ function PST:processLoadedData(loadedData)
 	end
 	-- Post-load data update funcs
 	PST:oldJewelReplacements()
+	PST:SC_assignJewelIDTally()
+	PST:SC_assignAllJewelIDs()
 	PST.treeScreen:UpdateStarTreeTotals()
 	PST:updateAllCharsXPReq()
 end

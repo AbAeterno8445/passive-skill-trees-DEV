@@ -308,6 +308,14 @@ function PST.treeScreen:InputAllocate()
                         SFXManager():Play(SoundEffect.SOUND_LUCKYPICKUP, 0.6, 2, false, 0.8)
                     end
 
+                -- Jewel Loadouts node, open submenu
+                elseif self.hoveredNode.name == "Jewel Loadouts" then
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    submenusModule:SwitchSubmenu(PSTSubmenu.JEWEL_LOADOUTS, {
+                        menuX = self.hoveredNode.pos.X * 38,
+                        menuY = self.hoveredNode.pos.Y * 38
+                    })
+
                 -- Extra menu-opening nodes
                 elseif menuOpenNodes[self.hoveredNode.name] then
                     self.modules.menuScreensModule:SwitchToMenu(menuOpenNodes[self.hoveredNode.name])

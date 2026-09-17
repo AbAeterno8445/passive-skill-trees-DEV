@@ -17,6 +17,8 @@ function PST:getChangelogList()
         "- Additional compatibility for new mod items and entities (wookywok).",
         "- EID descriptions are now hidden while in the tree menu in-game.",
         "NODES:",
+        "- Added a \"Jewel Loadouts\" node to the Star Tree. This allows you to create and switch between non-ancient starcursed jewel",
+        "sets quickly.",
         "- Added \"Heart Drain Delay\" sets of nodes for Tainted Magdalene.",
         "- New Rep+ Eden hairstyles are now available for the Eden Hairdo node.",
         "- New \"Weapon Magnetism\" Sidereal Tree node, which allows dropped weapons to move towards you.",

@@ -201,7 +201,6 @@ function PST:gridEntityRockDestroy(rock, gridType, immediate, source)
         if rock.State == 2 then
             -- Ancient Jewel: Tellurian Splinter
             if PST:SC_getSnapshotMod("tellurianSplinter", false) and PST:getTreeSnapshotMod("SC_tellurianBuff", 0) < 35 then
-                print("here!!", rock.State)
                 PST:addModifiers({ speedPerc = 1, SC_tellurianBuff = 1 }, true)
             end
         end
