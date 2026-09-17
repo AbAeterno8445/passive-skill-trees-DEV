@@ -928,7 +928,7 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "1564": "{\"pos\":[13,3],\"type\":992,\"size\":\"Large\",\"name\":\"#node_companionslot_name\",\"description\":[\"#node_companionslot\"],\"modifiers\":{},\"adjacent\":[1552,1580],\"reqs\":{\"obols\":400,\"companionSlot\":1,\"specialAllocBorder\":1}}",
 "1565": "{\"pos\":[13,4],\"type\":993,\"size\":\"Large\",\"name\":\"#node_companionslot_name\",\"description\":[\"#node_companionslot\"],\"modifiers\":{},\"adjacent\":[1554,1581],\"reqs\":{\"obols\":1000,\"companionSlot\":2,\"specialAllocBorder\":1}}",
 "1566": "{\"pos\":[13,5],\"type\":994,\"size\":\"Large\",\"name\":\"#node_companionslot_name\",\"description\":[\"#node_companionslot\"],\"modifiers\":{},\"adjacent\":[1556,1582],\"reqs\":{\"obols\":1500,\"crimsonStarcore\":2,\"companionSlot\":3,\"specialAllocBorder\":1}}",
-"1569": "{\"pos\":[11,3],\"type\":997,\"size\":\"Large\",\"name\":\"#node_astralcompanions_name\",\"description\":[\"#node_astralcompanions\"],\"modifiers\":{\"astralCompanions\":true},\"adjacent\":[1547,1552,1545],\"reqs\":{}}",
+"1569": "{\"pos\":[11,3],\"type\":997,\"size\":\"Large\",\"name\":\"#node_astralcompanions_name\",\"description\":[\"#node_astralcompanions\"],\"modifiers\":{\"astralCompanions\":true},\"adjacent\":[1547,1552,1545,1584],\"reqs\":{}}",
 "1575": "{\"pos\":[9,3],\"type\":995,\"size\":\"Large\",\"name\":\"#node_astralincubator_name\",\"description\":[\"#node_astralincubator\"],\"modifiers\":{},\"adjacent\":[1547],\"reqs\":{\"obols\":100,\"specialAllocBorder\":1,\"incubatorSlot\":1}}",
 "1576": "{\"pos\":[9,4],\"type\":995,\"size\":\"Large\",\"name\":\"#node_astralincubator_name\",\"description\":[\"#node_astralincubator\"],\"modifiers\":{},\"adjacent\":[1578],\"reqs\":{\"obols\":100,\"specialAllocBorder\":1,\"incubatorSlot\":2}}",
 "1577": "{\"pos\":[9,5],\"type\":995,\"size\":\"Large\",\"name\":\"#node_astralincubator_name\",\"description\":[\"#node_astralincubator\"],\"modifiers\":{},\"adjacent\":[1579],\"reqs\":{\"obols\":100,\"specialAllocBorder\":1,\"incubatorSlot\":3}}",
@@ -937,6 +937,7 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "1580": "{\"pos\":[14,3],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1564],\"reqs\":{\"noSP\":true,\"companionSlot\":1}}",
 "1581": "{\"pos\":[14,4],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1565],\"reqs\":{\"noSP\":true,\"companionSlot\":2}}",
 "1582": "{\"pos\":[14,5],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1566],\"reqs\":{\"noSP\":true,\"companionSlot\":3}}",
-"1583": "{\"pos\":[1,-11],\"type\":999,\"size\":\"Large\",\"name\":\"#node_weaponmagnetism_name\",\"description\":[\"#node_weaponmagnetism\"],\"modifiers\":{\"weaponMagnetism\":true},\"adjacent\":[55],\"reqs\":{\"obols\":200}}"
+"1583": "{\"pos\":[1,-11],\"type\":999,\"size\":\"Large\",\"name\":\"#node_weaponmagnetism_name\",\"description\":[\"#node_weaponmagnetism\"],\"modifiers\":{\"weaponMagnetism\":true},\"adjacent\":[55],\"reqs\":{\"obols\":200}}",
+"1584": "{\"pos\":[11,4],\"type\":1001,\"size\":\"Small\",\"name\":\"#node_compproc_name\",\"description\":[\"#node_compproc\"],\"modifiers\":{\"astralCompanionShowProc\":true},\"adjacent\":[1569],\"reqs\":{\"noSP\":true}}"
 }
 ]])

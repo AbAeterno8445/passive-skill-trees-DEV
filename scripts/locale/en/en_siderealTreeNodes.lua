@@ -234,6 +234,10 @@ return {
         "Companions cannot be switched while in a run. Continuing a run will restore equipped companions to the ones",
         "that run started with."
     },
+    ["node_compproc_name"] = "Companion Proc Display",
+    ["node_compproc"] = {
+        "While allocated, companions will briefly display their icon above you when their scavenge event is triggered."
+    },
 
     ["node_scavengedobols_name"] = "Scavenged Obols",
     ["node_scavengedobols"] = {

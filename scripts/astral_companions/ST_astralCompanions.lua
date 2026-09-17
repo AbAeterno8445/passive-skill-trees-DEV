@@ -203,9 +203,6 @@ function PST:getAstralCompDesc(compName)
                     obolCount = scavengedObolsStr,
                     floorLimit = PST:astralCompModFloorLimit(compData.scavengeMax and compData.scavengeMax[playerCompData.level] or 0)
                 })
-                if compData.scavengeOdds then
-                    scavengeFullStr = scavengeFullStr .. " (" .. compData.scavengeOdds[playerCompData.level] .. "% chance)"
-                end
                 table.insert(compDesc, {scavengeFullStr, PST.kcolors.EXPED_PURPLE})
 
                 if playerCompData.level < 3 then
@@ -322,12 +319,12 @@ function PST:astralCompProcScavenge(compName, chanceMult, obolMod)
                     end
                 end
 
-                --[[ Experimental, flashes the companion's icon over the player once scavenge event is triggered
-                if procSprite then
+                -- Companion icon flash
+                if PST:getTreeSnapshotMod("astralCompanionShowProc", false) then
                     local tmpSprite = PST.treeScreen.modules.submenusModule.submenus[PSTSubmenu.ASTRAL_COMPANION_SLOT].compSprite
                     tmpSprite:SetFrame("Default", baseCompData.compSprite)
-                    PST:createFloatIconFX(tmpSprite, Vector(0, -8), 0, 20, true, true)
-                end]]
+                    PST:createFloatIconFX(tmpSprite, Vector(0, -8), 0.05, 30, true)
+                end
             end
         end
     end

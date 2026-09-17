@@ -38,7 +38,7 @@ PST.astralCompanions = {
         compSprite = 3,
         scavengeRanges = {{1, 2}, {3, 4}, 6},
         scavengeMax = {15, 20, 25},
-        objReqs = {70, 120, 160},
+        objReqs = {70, 100, 150},
         maxLevelEffects = {
             extraPickupOnGrab = 7
         }
@@ -78,7 +78,7 @@ PST.astralCompanions = {
     },
     cosmicHound = {
         identifier = "astralcomp_cosmichound",
-        compSprite = 7,
+        compSprite = 8,
         eggRate = 25,
         scavengeRanges = {8, 12, 18},
         scavengeMax = {20, 20, 20},
@@ -89,7 +89,7 @@ PST.astralCompanions = {
     },
     hellHound = {
         identifier = "astralcomp_hellhound",
-        compSprite = 8,
+        compSprite = 7,
         scavengeRanges = {2, 4, 7},
         scavengeMax = {20, 25, 30},
         objReqs = {45, 70, 120},
@@ -203,7 +203,7 @@ PST.astralCompanions = {
         compSprite = 17,
         eggRate = 8,
         scavengeRanges = {{3, 5}, {6, 8}, 10},
-        scavengeOdds = {2, 3, 5},
+        scavengeOdds = {50, 55, 60},
         scavengeMax = {25, 25, 25},
         objReqs = {60, 120, 200},
         maxLevelEffects = {
@@ -216,7 +216,6 @@ PST.astralCompanions = {
         compSprite = 18,
         eggRate = 50,
         scavengeRanges = {{6, 8}, {11, 12}, 15},
-        scavengeOdds = {40, 50, 60},
         scavengeMax = {25, 30, 35},
         objReqs = {25, 50, 75},
         maxLevelEffects = {
@@ -439,7 +438,7 @@ PST.astralCompanions = {
         compSprite = 38,
         eggRate = 10,
         scavengeRanges = {{7, 10}, {12, 15}, {16, 18}},
-        scavengeOdds = {10, 12, 15},
+        scavengeOdds = {60, 75, 90},
         scavengeMax = {20, 25, 30},
         objReqs = {35, 60, 90},
         maxLevelEffects = {
@@ -481,7 +480,7 @@ PST.astralCompanions = {
     dreamSheep = {
         identifier = "astralcomp_dreamsheep",
         compSprite = 42,
-        scavengeRanges = {4, 8, 12},
+        scavengeRanges = {4, 7, 10},
         objReqs = {7000, 20000, 60000},
         maxLevelEffects = {
             flawlessXP = 15,
@@ -510,6 +509,6 @@ PST.astralCompanionsOrdered = {
     "pharaohAnt", "clockroach", "butterfly", "lunarMoth", "crimsonMoth", "adder",
     "waterMoccasin", "manaViper", "anaconda", "snappingTurtle", "alligatorSnappingTurtle",
     "mountainshell", "culicivora", "abyssalTarantula", "jumpingSpider", "scorpion", "emperorScorpion",
-    "cosmicJellyfish", "manticore", "catoblepas", "skyshark", "iceBeast", "goldenDragon", "shadowDragon",
+    "cosmicJellyfish", "manticore", "catoblepas", "skyshark", "goldenDragon", "shadowDragon",
     "pearlDragon", "gildedGolem"
 }
