@@ -651,9 +651,11 @@ function PST:SC_assignAllJewelIDs()
 end
 
 function PST:SC_isJewelInLoadout(jewelID)
-    for _, jewelData in pairs(PST.modData.starJewelLoadouts) do
-        if jewelData[tostring(jewelID)] then
-            return true
+    for _, loadoutData in pairs(PST.modData.starJewelLoadouts) do
+        for _, jewelData in pairs(loadoutData) do
+            if jewelData[tostring(jewelID)] then
+                return true
+            end
         end
     end
     return false

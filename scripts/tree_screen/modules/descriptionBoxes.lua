@@ -837,10 +837,9 @@ function descriptionBoxesModule:Render(tScreen)
                             end
                         end
                     end
+                    local tmpJewelColor = SCJewelKColorMap[PST.SCDisplayedLoadoutType]
+                    table.insert(loadoutDesc, {PST:getLocalized("ui_" .. PST.SCDisplayedLoadoutType .. "Jewels") .. ":", tmpJewelColor})
                     if #tmpGroupedMods > 0 then
-                        local tmpJewelColor = SCJewelKColorMap[PST.SCDisplayedLoadoutType]
-                        table.insert(loadoutDesc, {PST:getLocalized("ui_" .. PST.SCDisplayedLoadoutType .. "Jewels") .. ":", tmpJewelColor})
-
                         local loadoutJewelData = PST:SC_getTotalJewelMods(tostring(tmpLoadout), PST.SCDisplayedLoadoutType)
                         for modName, modData in pairs(loadoutJewelData.totalMods) do
                             local modDescription = PST:getLocalized("jewel_" .. modName)
@@ -850,10 +849,12 @@ function descriptionBoxesModule:Render(tScreen)
                                 })
                             end
                         end
-                        local loadoutStarmightTotal = PST:SC_getTotalJewelMods(tostring(tmpLoadout))
-                        table.insert(loadoutDesc, {PST:getLocalized("ui_starmight") .. ": " .. (loadoutStarmightTotal.totalStarmight or 0), PST.kcolors.STAR_ORANGE})
-                        table.insert(loadoutDesc, "")
+                    else
+                        table.insert(loadoutDesc, {"  N/A", tmpJewelColor})
                     end
+                    local loadoutStarmightTotal = PST:SC_getTotalJewelMods(tostring(tmpLoadout))
+                    table.insert(loadoutDesc, {PST:getLocalized("ui_starmight") .. ": " .. (loadoutStarmightTotal.totalStarmight or 0), PST.kcolors.STAR_ORANGE})
+                    table.insert(loadoutDesc, "")
                 end
 
                 table.insert(loadoutDesc, PST:getLocalized("ui_allocSaveLoadout"))

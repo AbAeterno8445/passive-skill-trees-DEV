@@ -56,6 +56,12 @@ return {
         "Las Joyas Maldecidas Antiguas pueden tener modificadores únicos que alteran la jugabilidad de la partida."
     },
 
+    ["node_jewelloadouts_name"] = "Configuraciones de Joyas",
+    ["node_jewelloadouts"] = {
+        "Una vez asignado, presiona Asignar para abrir el menu de configuraciones de joyas. Este te permite cambiar entre",
+        "sets de joyas distintos rapidamente."
+    },
+
 
     ---- EXPEDITION NODES ----
     ["node_arcaneastrolabe_name"] = "Astrolabio Arcano",

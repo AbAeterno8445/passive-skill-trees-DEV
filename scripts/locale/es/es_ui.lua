@@ -91,6 +91,14 @@ return {
     ["ui_AncientJewel"] = "Joya Antigua Maldecida",
     ["ui_AncientJewels"] = "Joyas Antiguas Maldecidas",
 
+    ["ui_jewelLoadout"] = "Configuración de Joyas",
+    ["ui_jewelInLoadout"] = "Esta joya esta presente en una o mas configuraciones!",
+    ["ui_allocSaveLoadout"] = "Presiona Asignar para guardar tu set de joyas actual en esta configuración.",
+    ["ui_shiftAllocLoadout"] = "Presiona Shift + Asignar para cambiar a esta configuración.",
+    ["ui_loadoutSwitchEmptyWarn"] = "Ya que esta configuración esta vacía, esto desequipara todas tus joyas actuales!",
+    ["ui_respecDeleteLoadout"] = "Presiona y manten Respece por 1 segundo para borrar esta configuración.",
+    ["ui_ctrlLoadoutDesc"] = "Presiona Ctrl para cambiar el tipo de modificadores de joyas mostrado.",
+
     ["ui_astralForgeKey"] = "Presiona Asignar para acceder al menu de la Forja Astral.",
 
     ["ui_purchItems"] = "Objetos comprados:",
