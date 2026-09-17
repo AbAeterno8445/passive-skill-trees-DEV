@@ -243,6 +243,9 @@ function PST:initModCompat()
 		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Embryo")) -- Just in case
 		table.insert(PST.taintedMobs, PST_getCustomMobTable("Tainted Horse")) -- Just in case
 
+		-- Spider bosses
+		table.insert(PST.spiderBosses, PST_getCustomMobTable("Slinger"))
+
         -- Progression items
         table.insert(PST.progressionItems, Isaac.GetItemIdByName("Contraband"))
 
@@ -892,6 +895,10 @@ function PST:initModCompat()
 			"Rag Drifty", "Pseudo Rag Drifty", "Draugr", "Haugr", "Jaugr", "Juniaugr", "Snowst", "Ragtime", "Rag Dancer", "Ragma"
         }
         PST_addUndeadMobs(tmpUndead)
+
+		-- Spider bosses
+		table.insert(PST.spiderBosses, PST_getCustomMobTable("Raging Long Legs"))
+		table.insert(PST.spiderBosses, PST_getCustomMobTable("Aragnid"))
 
         -- Baby Familiars
         table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Belial"))
@@ -2617,6 +2624,7 @@ function PST:initModCompat()
         table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Asherah Pole"))
     end
 
+	-- Joseph
     if JosephMod and not initMods.joseph then
         initMods.joseph = true
 
