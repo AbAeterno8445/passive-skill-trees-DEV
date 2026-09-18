@@ -510,5 +510,5 @@ PST.astralCompanionsOrdered = {
     "waterMoccasin", "manaViper", "anaconda", "snappingTurtle", "alligatorSnappingTurtle",
     "mountainshell", "culicivora", "abyssalTarantula", "jumpingSpider", "scorpion", "emperorScorpion",
     "cosmicJellyfish", "manticore", "catoblepas", "skyshark", "goldenDragon", "shadowDragon",
-    "pearlDragon", "gildedGolem"
+    "pearlDragon", "gildedGolem", "bluecap"
 }

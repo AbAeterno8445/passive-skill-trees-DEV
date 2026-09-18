@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.4.1",
+        "- Fixed not being able to level up unequipped astral companions.",
+        "- Fixed Bluecap companion not appearing in node lists.",
+        "",
+
         "v1.4.0",
         "FEATURES:",
         "- Introduced Astral Companions. These are creatures you can hatch and equip in the Sidereal Tree, which will scavenge",

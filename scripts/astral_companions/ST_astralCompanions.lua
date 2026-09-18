@@ -257,12 +257,10 @@ function PST:astralCompAddProgress(eggName, prog)
 end
 
 function PST:astralCompLevelUp(eggName)
-    if PST:isCompEquipped(eggName) or PST:isCompEquipped(eggName, true) then
-        local compData = PST.modData.astralcomps[eggName]
-        if compData and compData.level < 3 then
-            compData.objProg = 0
-            compData.level = compData.level + 1
-        end
+    local compData = PST.modData.astralcomps[eggName]
+    if compData and compData.level < 3 then
+        compData.objProg = 0
+        compData.level = compData.level + 1
     end
 end
 
