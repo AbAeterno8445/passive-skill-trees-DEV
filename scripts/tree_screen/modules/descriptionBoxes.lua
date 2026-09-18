@@ -510,7 +510,8 @@ function descriptionBoxesModule:Render(tScreen)
         end
 
         -- Crimson nodes
-        if PST:arrHasValue(PST.crimsonNodeNames, hoveredNode.name) then
+        local isCrimsonNode = PST:arrHasValue(PST.crimsonNodeNames, hoveredNode.name)
+        if isCrimsonNode then
             local charData = PST:getCurrentCharData()
             if charData and charData.crimsonNodes then
                 local tmpCrimsonNode = charData.crimsonNodes[tostring(hoveredNode.id)]
@@ -635,6 +636,16 @@ function descriptionBoxesModule:Render(tScreen)
         if Isaac.IsInGame() and PST:getTreeSnapshotMod("dynamicMode", false) and (PST:arrHasValue(nonDynamicNodes, hoveredNode.name) or (hoveredNode.reqs and hoveredNode.reqs.nonDynamic)) then
             tmpDescription = {table.unpack(tmpDescription)}
             table.insert(tmpDescription, {PST:getLocalized("ui_nonDynamicWarn"), PST.kcolors.RED2})
+        end
+
+        -- Crimson starcore sources for crimson nodes
+        if isCrimsonNode and not isAllocated then
+            local tmpSrcDescLines = PST:getLocalized("ui_crimsonCoreSrcDesc")
+            if type(tmpSrcDescLines) == "table" then
+                for _, tmpLine in ipairs(tmpSrcDescLines) do
+                    table.insert(tmpDescription, {tmpLine, PST.kcolors.ANCIENT_ORANGE})
+                end
+            end
         end
 
         tScreen:DrawNodeBox(descName, tmpDescription or hoveredNode.description)

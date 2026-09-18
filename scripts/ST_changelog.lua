@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "v1.4.2",
+        "- Crimson Nodes now display information on how to obtain crimson starcores.",
+        "",
+
         "v1.4.1",
         "- Adjusted tree opening input with controller to account for rep+ changes.",
         "- Fixed not being able to level up unequipped astral companions.",

@@ -33,6 +33,13 @@ return {
     ["ui_expReqs"] = "Expedition requirements:",
     ["ui_expReqNotMetWarn"] = "Warning: requirements not met! Next run can't be an expedition run.",
 
+    ["ui_crimsonCoreSrcDesc"] = {
+        "Crimson starcore sources:",
+        "- Chance to appear as a final node reward in expedition depths 15+, more common the deeper you go.",
+        "- Chance to appear as a regular node reward in uber expeditions.",
+        "- Available for purchase at the Obscure Bazaar (Star Tree)."
+    },
+
     ["ui_impMods"] = "Implicit modifiers:",
     ["ui_dsdMods"] = "Deep-Space Distortion modifiers:",
 

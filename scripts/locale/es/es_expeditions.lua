@@ -33,6 +33,13 @@ return {
     ["ui_expReqs"] = "Requerimientos de expedición:",
     ["ui_expReqNotMetWarn"] = "Aviso: no se cumplen los requerimientos! La próxima partida no puede ser una expedición.",
 
+    ["ui_crimsonCoreSrcDesc"] = {
+        "Fuentes de Núcleos estelares carmesí:",
+        "- Chance de aparecer como recompensa de nodos finales en expediciones de profundidad 15+, mas comun cuanto mas profundo.",
+        "- Chance de aparecer como recompensa de nodos regulares en expediciones uber.",
+        "- Disponible para comprar en el Bazar Solitario (Árbol Estelar)."
+    },
+
     ["ui_impMods"] = "Modificadores implícitos:",
     ["ui_dsdMods"] = "Modificadores de distorsión espacial:",
 
