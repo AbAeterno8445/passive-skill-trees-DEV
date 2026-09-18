@@ -505,6 +505,9 @@ PST.undeadEnemiesSpec = {
 	[EntityType.ENTITY_POLYCEPHALUS] = 1,
 	[EntityType.ENTITY_ISAAC] = 1
 }
+PST.hostEnemies = {
+	EntityType.ENTITY_HOST, EntityType.ENTITY_MOBILE_HOST, EntityType.ENTITY_FLOATING_HOST, EntityType.ENTITY_FLESH_MOBILE_HOST
+}
 PST.wispActives = {
 	CollectibleType.COLLECTIBLE_ABYSS, CollectibleType.COLLECTIBLE_PONY, CollectibleType.COLLECTIBLE_ANARCHIST_COOKBOOK,
 	CollectibleType.COLLECTIBLE_BEAN, CollectibleType.COLLECTIBLE_BERSERK, CollectibleType.COLLECTIBLE_BEST_FRIEND,

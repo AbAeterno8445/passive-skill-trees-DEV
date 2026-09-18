@@ -720,8 +720,7 @@ function PST:onDeath(entity)
                 end
 
                 -- Any type of Host death
-                if tmpNPC.Type == EntityType.ENTITY_HOST or tmpNPC.Type == EntityType.ENTITY_MOBILE_HOST or tmpNPC.Type == EntityType.ENTITY_FLOATING_HOST or
-                tmpNPC.Type == EntityType.ENTITY_FLESH_MOBILE_HOST then
+                if PST:arrHasValue(PST.hostEnemies, tmpNPC.Type) then
                     -- Astral Companion: Death Scarab scavenge event and objective
                     PST:astralCompAddProgress("deathScarab", 1)
                     PST:astralCompProcScavenge("deathScarab")
