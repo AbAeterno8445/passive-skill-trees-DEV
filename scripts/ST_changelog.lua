@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.4.1",
+        "- Adjusted tree opening input with controller to account for rep+ changes.",
         "- Fixed not being able to level up unequipped astral companions.",
         "- Fixed Bluecap companion not appearing in node lists.",
         "",

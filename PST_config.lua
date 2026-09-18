@@ -75,7 +75,7 @@ PST.config = {
             keyboardButton = Keyboard.KEY_V
         },
         openTreeController = {
-            controllerAction = ButtonAction.ACTION_MENULT
+            controllerAction = ButtonAction.ACTION_MENULB
         },
         closeTree = {
             keyboardButton = Keyboard.KEY_ESCAPE,
