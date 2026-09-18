@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "v1.4.2",
         "- Crimson Nodes now display information on how to obtain crimson starcores.",
+        "- Phantasm Prism (Ancient jewel) can no longer spawn boss enemies.",
         "",
 
         "v1.4.1",

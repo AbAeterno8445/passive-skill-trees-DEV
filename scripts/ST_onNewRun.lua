@@ -304,7 +304,7 @@ function PST:onNewRun(isContinued)
             local undeadMobs = {}
             for _, tmpMob in ipairs(PST.undeadEnemies) do
                 local tmpMobConfig = EntityConfig.GetEntity(tmpMob)
-                if tmpMobConfig then
+                if tmpMobConfig and not tmpMobConfig:IsBoss() then
                     table.insert(undeadMobs, {tmpMob, 0, tmpMobConfig:GetBaseHP()})
                 end
             end
@@ -312,13 +312,13 @@ function PST:onNewRun(isContinued)
                 if type(tmpMobVariant) == "table" then
                     for _, tmpVariant in ipairs(tmpMobVariant) do
                         local tmpMobConfig = EntityConfig.GetEntity(tmpMobType, tmpVariant)
-                        if tmpMobConfig then
+                        if tmpMobConfig and not tmpMobConfig:IsBoss() then
                             table.insert(undeadMobs, {tmpMobType, tmpVariant, tmpMobConfig:GetBaseHP()})
                         end
                     end
                 else
                     local tmpMobConfig = EntityConfig.GetEntity(tmpMobType, tmpMobVariant)
-                    if tmpMobConfig then
+                    if tmpMobConfig and not tmpMobConfig:IsBoss() then
                         table.insert(undeadMobs, {tmpMobType, tmpMobVariant, tmpMobConfig:GetBaseHP()})
                     end
                 end
