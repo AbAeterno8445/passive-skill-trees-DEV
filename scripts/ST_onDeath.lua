@@ -257,9 +257,9 @@ function PST:onDeath(entity)
                     PST:astralCompAddProgress("manticore", 1)
                 end
 
-                -- Astral Companion: Pharaoh Ant
+                -- Astral Companion: Death Scarab
                 tmpMod = PST:getTreeSnapshotMod("deathScarabFlies", 0)
-                if tmpMod > 0 and PST:getTreeSnapshotMod("deathScarabFlyProcs", 0) < 10 and 100 * math.random() < tmpMod then
+                if tmpMod > 0 and tmpNPC and PST:isMobUndead(tmpNPC) and PST:getTreeSnapshotMod("deathScarabFlyProcs", 0) < 10 and 100 * math.random() < tmpMod then
                     PST:getPlayer():AddBlueFlies(1, entity.Position)
                     PST:addModifiers({ deathScarabFlyProcs = 1 }, true)
                 end
