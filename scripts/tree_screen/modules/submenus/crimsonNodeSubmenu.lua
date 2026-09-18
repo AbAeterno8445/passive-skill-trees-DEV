@@ -60,6 +60,9 @@ function crimsonNodeSubmenu:Render(tScreen, submenusModule)
     for _, node in pairs(tgtNodeTable) do
         table.insert(medNodeTable, node)
     end
+    table.sort(medNodeTable, function(a, b)
+        return a.name < b.name
+    end)
 
     local tmpPages = math.ceil(#medNodeTable / nodesPerPage)
 
