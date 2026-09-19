@@ -145,6 +145,7 @@ return {
 
     ["aforge_ancname_Arcing Needle"] = "Arcing Needle",
     ["aforge_ancname_Auric Persecutor"] = "Auric Persecutor",
+    ["aforge_ancname_Scintillant"] = "Scintillant",
 
     ["aforge_ancname_The Scrambler"] = "The Scrambler",
     ["aforge_ancname_Adrift Blade"] = "Adrift Blade",
@@ -381,6 +382,12 @@ return {
     ["aforge_mod_desc_auricPersecutor"] = {
         "Half of your coin count now acts as a tears multiplier, up to {{roll1}}%.",
         "+{{roll2}}% damage for the current floor when picking up a coin worth at least 5, up to {{roll3}}%."
+    },
+    ["aforge_mod_desc_scintillant"] = {
+        "When hitting an enemy within 3 tiles of you, fire a quick sequence of 4 lasers towards them.",
+        "Lasers deal {{roll1}}% of your damage.",
+        "For every {{roll2}} tears you have, fire an additional laser, up to a maximum of 12.",
+        "4 seconds cooldown."
     },
     ["aforge_mod_desc_scrambler"] = {
         "3% chance on hit to confuse enemies for 4 seconds. Triple the chance against targets within 1.5 tiles.",

@@ -3357,6 +3357,11 @@ function PST:frameUpdate()
 		PST.specialNodes.ancwep_divineIntCD = PST.specialNodes.ancwep_divineIntCD - 1
 	end
 
+	-- Ancient weapon: Scintillant cooldown
+	if PST.specialNodes.ancwep_scintillantCD > 0 then
+		PST.specialNodes.ancwep_scintillantCD = PST.specialNodes.ancwep_scintillantCD - 1
+	end
+
 	-- Player near Holy Aura (Divine Messenger ancient weapon)
 	if roomFrame % 10 == 0 then
 		local tmpAuras = Isaac.FindByType(EntityType.ENTITY_EFFECT, PST.holyAuraEffectID)

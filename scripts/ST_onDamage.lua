@@ -964,7 +964,21 @@ function PST:onDamage(target, damage, flag, source)
                             local tmpAdd = math.min(tmpMod[1], tmpMod[2] - tmpBuff)
                             PST:addModifiers({ tearsPerc = tmpAdd, astralwep_estocImpBonus = tmpAdd }, true)
                         end
-                    else
+
+                        -- Ancient weapon mod: Scintillant
+                        tmpMod = PST:getSnapAstralWepMod("scintillant")
+                        if tmpMod and PST.specialNodes.ancwep_scintillantCD == 0 then
+                            local playerTears = (30 / (srcPlayer.MaxFireDelay + 1))
+                            local totalLasers = math.min(12, math.max(4, math.floor(playerTears / tmpMod[2])))
+                            local laserAng = (target.Position - srcPlayer.Position):Normalized()
+                            local laserDmgMult = tmpMod[1] / 100
+                            Isaac.CreateTimer(function()
+                                local laserSpread = (math.random() * 2 - 1) * 10
+                                srcPlayer:FireTechLaser(srcPlayer.Position, LaserOffset.LASER_TECH1_OFFSET, laserAng:Rotated(laserSpread), false, false, srcPlayer, laserDmgMult)
+                            end, 2, totalLasers, false)
+                            PST.specialNodes.ancwep_scintillantCD = 120
+                        end
+                    elseif (flag & (DamageFlag.DAMAGE_LASER | DamageFlag.DAMAGE_EXPLOSION)) == 0 then
                         PST:addModifiers({ tearsPerc = -tmpBuff, astralwep_estocImpBonus = { value = 0, set = true } }, true)
                     end
                 end

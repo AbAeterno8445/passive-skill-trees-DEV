@@ -502,6 +502,14 @@ PST.astralWepMods = {
         maxRolls = {35, 15, 40},
         upgIncrements = {1, 0.5, 1}
     },
+    scintillant = {
+        serial = 88,
+        description = PST:getLocalized("aforge_mod_desc_scintillant"),
+        ancient = true,
+        minRolls = {80, 1.5},
+        maxRolls = {100, 0.8},
+        upgIncrements = {2, -0.1}
+    },
     -- Ancient Daggers
     scrambler = {
         serial = 44,
@@ -976,6 +984,13 @@ PST.astralWepData = {
                 spriteFrame = 5,
                 weight = 100,
                 ancientMods = {"auricPersecutor"}
+            },
+            -- Scintillant
+            {
+                name = "Scintillant",
+                spriteFrame = 53,
+                weight = 100,
+                ancientMods = {"scintillant"}
             }
         }
     },

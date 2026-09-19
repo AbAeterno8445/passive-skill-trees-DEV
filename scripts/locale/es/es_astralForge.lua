@@ -142,6 +142,7 @@ return {
 
     ["aforge_ancname_Arcing Needle"] = "Aguja Eléctrica",
     ["aforge_ancname_Auric Persecutor"] = "Persecutor Áurico",
+    ["aforge_ancname_Scintillant"] = "Centellante",
 
     ["aforge_ancname_The Scrambler"] = "El Codificador",
     ["aforge_ancname_Adrift Blade"] = "Hoja a la Deriva",
@@ -379,6 +380,12 @@ return {
     ["aforge_mod_desc_auricPersecutor"] = {
         "La mitad de tus monedas ahora se aplican como un multiplicador de lágrimas, hasta {{roll1}}%.",
         "+{{roll2}}% daño para el piso actual al recolectar monedas valuadas en 5 o más, hasta {{roll3}}%."
+    },
+    ["aforge_mod_desc_scintillant"] = {
+        "Al golpear a un enemigo a 2 casillas de ti, dispara una rápida secuencia de láseres hacia el enemigo.",
+        "Estos láseres infligen {{roll1}}% de tu daño.",
+        "Por cada {{roll2}} lágrimas que tengas, dispara un láser adicional, hasta un máximo de 12.",
+        "4 segundos de enfriamiento."
     },
     ["aforge_mod_desc_scrambler"] = {
         "3% chance al golpear de confundir a los enemigos por 4 segundos. Triplica esta chance contra enemigos a 1.5 casillas de ti.",

@@ -2031,6 +2031,7 @@ function PST:resetMods()
 		ancwep_sacScourgeBuff = 0,
 		ancwep_swordOfSongCD = 0,
 		ancwep_divineIntCD = 0,
+		ancwep_scintillantCD = 0,
 
 		SC_circadianSpawnTime = 0,
 		SC_circadianExplImmune = 0,
