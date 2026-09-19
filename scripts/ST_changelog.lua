@@ -13,6 +13,7 @@ function PST:getChangelogList()
         "- Fixed \"Penny to Blessed Penny\" nodes still triggering while you have a blessed penny.",
         "- Fixed Expedition Curse of Urgency displaying the wrong number of minutes.",
         "- Fixed floating text and special effects rendering incorrectly in large mirror world rooms.",
+        "- Fixed modifiers to the boss rush door's timer being reset when entering any new floor.",
         "",
 
         "1.4.3",

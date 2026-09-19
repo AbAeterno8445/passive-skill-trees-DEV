@@ -167,6 +167,16 @@ function PST:onNewLevel()
         PST.modData.treeModSnapshot.impromptuGamblerItemsRemoved = {}
     end
 
+    -- Mod: +seconds to the boss rush door timer (BossRushParTime resets on new floor)
+    tmpMod = PST:getTreeSnapshotMod("bossRushTimer", 0)
+    -- Beast-hunter's Rush node
+    if PST:getTreeSnapshotMod("beasthunterRush", false) then
+        tmpMod = tmpMod * 3
+    end
+    if tmpMod > 0 then
+        Game().BossRushParTime = Game().BossRushParTime + math.ceil(tmpMod * 30)
+    end
+
     -- Sacrifice Darkness node (Judas' tree)
     if PST:getTreeSnapshotMod("sacrificeDarkness", false) then
         PST:addModifiers({ blackHeartSacrifices = { value = 0, set = true } }, true)
