@@ -119,7 +119,8 @@ include("scripts.tree_screen.treescreenUtility")
 local firstRender = false
 function PST:treeScreenMenuRender()
     local isCharMenu = false
-    if not Isaac.IsInGame() then
+    local isInGame = Isaac.IsInGame()
+    if not isInGame then
         isCharMenu = MenuManager.GetActiveMenu() == MainMenuType.CHARACTER
         ---@diagnostic disable-next-line: undefined-field
         if CharacterMenu.GetActiveStatus then
@@ -134,7 +135,7 @@ function PST:treeScreenMenuRender()
         PST:firstRenderInit()
         PST.treeScreen:UpdateStarTreeTotals()
 
-        if not Isaac.IsInGame() then
+        if not isInGame then
             -- Reset input mask if restarting
             if MenuManager.GetInputMask() ~= PST.menuInputMask then
                 ---@diagnostic disable-next-line: param-type-mismatch
@@ -144,7 +145,7 @@ function PST:treeScreenMenuRender()
     end
 
     -- Input: Open tree menu (outside game)
-    if not Isaac.IsInGame() then
+    if not isInGame then
         if PST.treeScreen.open and not isCharMenu then
             PST:closeTreeMenu(true)
         elseif (PST:isKeybindActive(PSTKeybind.OPEN_TREE) or (not PST.treeScreen.open and PST:IsActionTriggered(ButtonAction.ACTION_ITEM, 1))) and isCharMenu then
@@ -190,7 +191,7 @@ function PST:treeScreenMenuRender()
 
     -- Actual tree rendering when opened
     if PST.treeScreen.open then
-        if Isaac.IsInGame() and PauseMenu.GetState() ~= 4 then
+        if isInGame and PauseMenu.GetState() ~= 4 then
             -- Pause screen state 4 seems to keep the game paused without interface interaction in the background
             ---@diagnostic disable-next-line: param-type-mismatch
             PauseMenu.SetState(4)
