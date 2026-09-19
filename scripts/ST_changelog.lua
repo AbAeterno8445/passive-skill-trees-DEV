@@ -4,7 +4,7 @@ function PST:getChangelogList()
         "",
 
         "1.4.4",
-        "- Added 1 new Astral Companion: Scintillating egg.",
+        "- Added a new Astral Companion: Scintillating egg.",
         "- Added a new Ancient weapon: Scintillant (estoc).",
         "- Added an in-game text notification when astral companions are ready to hatch/level up, and when their slot's",
         "scavenged obols are full.",
