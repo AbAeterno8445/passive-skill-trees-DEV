@@ -2077,6 +2077,7 @@ function PST:resetMods()
 
 		astralcomp_skysharkBuffTimer = 0,
 		astralcomp_lingShadowBuffTimer = 0,
+		astralcomp_scintGolemBuffTimer = 0,
 
 		explosionImmunityTimer = 0,
 

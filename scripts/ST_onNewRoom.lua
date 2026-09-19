@@ -1283,7 +1283,7 @@ function PST:onNewRoom()
 		elseif PST:inRedRoom() then
 			-- Astral Companion: Crimson Moth scavenge event and objective
 			PST:astralCompAddProgress("crimsonMoth", 1)
-			if room:GetAliveEnemiesCount() > 0 then
+			if roomAliveEnemies > 0 then
 				PST:astralCompProcScavenge("crimsonMoth")
 			end
 			PST:astralCompEggUnlockProc("crimsonMoth")
@@ -1615,6 +1615,11 @@ function PST:onNewRoom()
 	-- Astral Companion: Blastfiend (reset procs)
 	if PST:getTreeSnapshotMod("blastfiendBombProcs", 0) > 0 then
 		PST:addModifiers({ blastfiendBombProcs = { value = 0, set = true } }, true)
+	end
+	-- Astral Companion: Scintillating Golem
+	tmpMod = PST:getTreeSnapshotMod("scintGolemLaserDmg", 0)
+	if tmpMod > 0 and roomAliveEnemies > 0 then
+		PST.specialNodes.astralcomp_scintGolemBuffTimer = tmpMod * 30
 	end
 
 	-- Delirium room kill flag

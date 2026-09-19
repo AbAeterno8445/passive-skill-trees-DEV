@@ -493,5 +493,15 @@ return {
     ["astralcomp_starcursedmass_maxeffects"] = {
         "+1% luck and obols found per 100 starmight you have, up to 12% (applied once on run start).",
         "+1% all stats per 300 starmight you have."
+    },
+
+    ["astralcomp_scintillatinggolem_name"] = "Scintillating Golem",
+    ["astralcomp_scintillatinggolem_eggname"] = "Scintillating Egg",
+    ["astralcomp_scintillatinggolem_obj"] = "Kill enemies with lasers.",
+    ["astralcomp_scintillatinggolem_eggHint"] = "Champions killed by lasers (Rate: 7% of the total chance to find eggs).",
+    ["astralcomp_scintillatinggolem_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols when killing champions and bosses with lasers, up to {{floorLimit}} times per floor.",
+    ["astralcomp_scintillatinggolem_maxeffects"] = {
+        "+10% damage with lasers when entering a room with monsters, decaying to 0% over 10 seconds.",
+        "Entering a new room refreshes the effect."
     }
 }

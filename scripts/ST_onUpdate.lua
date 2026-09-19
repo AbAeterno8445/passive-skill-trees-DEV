@@ -3393,6 +3393,11 @@ function PST:frameUpdate()
 		end
 	end
 
+	-- Astral Companion: Scintillating Golem temp laser damage buff
+	if PST.specialNodes.astralcomp_scintGolemBuffTimer > 0 then
+		PST.specialNodes.astralcomp_scintGolemBuffTimer = PST.specialNodes.astralcomp_scintGolemBuffTimer - 1
+	end
+
 	-- Award pending xp whenever room becomes empty
 	if PST.modData.xpObtained > 0 and room:GetAliveEnemiesCount() == 0 then
 		-- Convert temp xp to normal xp

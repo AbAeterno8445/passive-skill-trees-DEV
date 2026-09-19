@@ -553,6 +553,18 @@ PST.astralCompanions = {
             starMassLuckObols = 1,
             starMassStats = 1
         }
+    },
+    scintillatingGolem = {
+        identifier = "astralcomp_scintillatinggolem",
+        compSprite = 49,
+        eggRate = 7,
+        scavengeRanges = {{5, 7}, {8, 9}, {10, 12}},
+        scavengeOdds = {40, 45, 50},
+        scavengeMax = {20, 25, 30},
+        objReqs = {40, 80, 120},
+        maxLevelEffects = {
+            scintGolemLaserDmg = 10
+        }
     }
 }
 PST.astralCompanionsLen = 0
@@ -566,5 +578,6 @@ PST.astralCompanionsOrdered = {
     "waterMoccasin", "manaViper", "anaconda", "snappingTurtle", "alligatorSnappingTurtle",
     "mountainshell", "culicivora", "abyssalTarantula", "jumpingSpider", "trapdoorSpider", "scorpion", "emperorScorpion",
     "cosmicJellyfish", "manticore", "catoblepas", "skyshark", "goldenDragon", "shadowDragon",
-    "pearlDragon", "gildedGolem", "bluecap", "brainWorm", "blastfiend", "starcursedMass", "lingeringShadow"
+    "pearlDragon", "gildedGolem", "bluecap", "brainWorm", "blastfiend", "starcursedMass", "lingeringShadow",
+    "scintillatingGolem"
 }

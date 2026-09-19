@@ -191,10 +191,16 @@ function PST:postDamage(target, damage, flag, source)
                     end
                 end
 
-                -- Mod: chance for enemies killed by familiars to drop an additional 1/2 soul heart
-                tmpMod = PST:getTreeSnapshotMod("familiarKillSoulHeart", 0)
-                if tmpMod > 0 and target.SpawnerType == 0 and isKillingHit and 100 * math.random() < tmpMod then
-                    Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                -- Familiar kill
+                if isKillingHit then
+                    -- Mod: chance for enemies killed by familiars to drop an additional 1/2 soul heart
+                    tmpMod = PST:getTreeSnapshotMod("familiarKillSoulHeart", 0)
+                    if tmpMod > 0 and target.SpawnerType == 0 and 100 * math.random() < tmpMod then
+                        Game():Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, target.Position, Vector.Zero, nil, HeartSubType.HEART_HALF_SOUL, Random() + 1)
+                    end
+
+                    -- Brain Worm scavenge event
+                    PST:astralCompProcScavenge("brainWorm")
                 end
 
                 -- Astral weapon mod: +% damage dealt for X seconds after a familiar kills an enemy
@@ -304,6 +310,22 @@ function PST:postDamage(target, damage, flag, source)
                             if isKillingHit then
                                 -- Sidereal Artifact objective: kill enemies with lasers
                                 PST:sideArtiObjProgress("brimMeridion", 1)
+
+                                -- Astral Companion: Scintillating Golem scavenge event and objective
+                                if (flag & DamageFlag.DAMAGE_LASER) > 0 then
+                                    PST:astralCompAddProgress("scintillatingGolem", 1)
+
+                                    local tmpNPC = target:ToNPC()
+                                    if tmpNPC then
+                                        local isChamp = tmpNPC:IsChampion()
+                                        if isChamp then
+                                            PST:astralCompEggUnlockProc("scintillatingGolem")
+                                        end
+                                        if isChamp or tmpNPC:IsBoss() then
+                                            PST:astralCompProcScavenge("scintillatingGolem")
+                                        end
+                                    end
+                                end
                             end
                         -- Direct non-tear player hit to enemy (e.g. melee hits)
                         elseif source.Type == EntityType.ENTITY_PLAYER and flag == 0 then
@@ -409,6 +431,13 @@ function PST:postDamage(target, damage, flag, source)
                                     end
                                 end
                             end
+                        end
+
+                        -- Astral Companion: Clockroach slow
+                        tmpMod = PST:getTreeSnapshotMod("clockroachSlow", 0)
+                        if tmpMod > 0 and not PST:getTreeSnapshotMod("clockroachProc", false) and not isKillingHit then
+                            target:AddSlowing(EntityRef(srcPlayer), 240, 0.8, Color(0.8, 0.8, 0.8), true)
+                            PST:addModifiers({ clockroachProc = true }, true)
                         end
 
                         local tmpNPC = target:ToNPC()
@@ -1001,6 +1030,14 @@ function PST:postDamage(target, damage, flag, source)
                 if isKillingHit then
                     -- Expedition objective: kill enemies with explosions
 				    PST:expedAddProgInRun("explosions", 1)
+
+                    -- Astral Companion: Blastfiend scavenge event and objective
+                    PST:astralCompAddProgress("blastfiend", 1)
+
+                    local tmpNPC = target:ToNPC()
+                    if tmpNPC and (tmpNPC:IsBoss() or tmpNPC:IsChampion()) then
+                        PST:astralCompProcScavenge("blastfiend")
+                    end
                 end
             end
         end

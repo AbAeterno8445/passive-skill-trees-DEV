@@ -2013,14 +2013,22 @@ function PST:onDamage(target, damage, flag, source)
                 end
             end
 
-            -- Mod/Astral weapon mod: +% damage dealt with lasers
-            tmpMod = PST:getSnapAstralWepMod("laserDmg")
-            if tmpMod and (flag & DamageFlag.DAMAGE_LASER) > 0 then
-                dmgMult = dmgMult + tmpMod[1] / 100
-            end
-            tmpMod = PST:getTreeSnapshotMod("laserDmg", 0)
-            if tmpMod > 0 and (flag & DamageFlag.DAMAGE_LASER) > 0 then
-                dmgMult = dmgMult + tmpMod / 100
+            -- Laser damage
+            if (flag & DamageFlag.DAMAGE_LASER) > 0 then
+                -- Mod/Astral weapon mod: +% damage dealt with lasers
+                tmpMod = PST:getSnapAstralWepMod("laserDmg")
+                if tmpMod then
+                    dmgMult = dmgMult + tmpMod[1] / 100
+                end
+                tmpMod = PST:getTreeSnapshotMod("laserDmg", 0)
+                if tmpMod > 0 then
+                    dmgMult = dmgMult + tmpMod / 100
+                end
+
+                -- Astral Companion: Scintillating Golem temp laser damage buff
+                if PST.specialNodes.astralcomp_scintGolemBuffTimer > 0 then
+                    dmgMult = dmgMult + math.ceil(PST.specialNodes.astralcomp_scintGolemBuffTimer / 30) / 100
+                end
             end
 
             -- Mod/Astral weapon mod: +% damage dealt with explosions
@@ -2043,13 +2051,6 @@ function PST:onDamage(target, damage, flag, source)
             tmpMod = PST:getTreeSnapshotMod("finalBossDmg", 0)
             if tmpMod > 0 and PST:entityIsFinalBoss(target) then
                 dmgMult = dmgMult + tmpMod / 100
-            end
-
-            -- Astral Companion: Clockroach slow
-            tmpMod = PST:getTreeSnapshotMod("clockroachSlow", 0)
-            if tmpMod > 0 and not PST:getTreeSnapshotMod("clockroachProc", false) and not target:HasMortalDamage() then
-                target:AddSlowing(EntityRef(srcPlayer), 240, 0.8, Color(0.8, 0.8, 0.8), true)
-                PST:addModifiers({ clockroachProc = true }, true)
             end
 
             -- Mod: +% damage taken per second of remaining poison
@@ -2088,16 +2089,6 @@ function PST:onDamage(target, damage, flag, source)
                 local bossData = PST:getEntData(target)
                 if bossData.bossDiffStatusDmgList then
                     dmgMult = dmgMult + (tmpMod * #bossData.bossDiffStatusDmgList) / 100
-                end
-            end
-
-            -- Astral Companion: Blastfiend scavenge event and objective
-            if (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 and target:HasMortalDamage() then
-                PST:astralCompAddProgress("blastfiend", 1)
-
-                local tmpNPC = target:ToNPC()
-                if tmpNPC and (tmpNPC:IsBoss() or tmpNPC:IsChampion()) then
-                    PST:astralCompProcScavenge("blastfiend")
                 end
             end
         end
@@ -2339,10 +2330,6 @@ function PST:onDamage(target, damage, flag, source)
 
                 -- Astral Companion: Brain Worm objective
                 PST:astralCompAddProgress("brainWorm", math.floor(damage * math.max(0.01, dmgMult) + dmgExtra))
-                -- Brain Worm scavenge event
-                if target:HasMortalDamage() then
-                    PST:astralCompProcScavenge("brainWorm")
-                end
             -- Bomb hits enemy
             elseif source.Type == EntityType.ENTITY_BOMB then
                 -- Troll bomb hit
