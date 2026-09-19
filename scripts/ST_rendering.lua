@@ -497,8 +497,8 @@ function PST:Render()
 						worldPos = room:WorldToScreenPosition(player.Position)
 					else
 						-- Calculate diametric opposite X if in mirror world
-						local newX = room:GetCenterPos().X - (player.Position.X - room:GetCenterPos().X)
-						worldPos = room:WorldToScreenPosition(Vector(newX, player.Position.Y))
+						local playerPos = room:WorldToScreenPosition(player.Position)
+						worldPos = Vector(Isaac.GetScreenWidth() - playerPos.X, playerPos.Y)
 					end
 					textX = worldPos.X + textFX.position.X - string.len(textFX.text) * 3
 					textY = worldPos.Y + textFX.position.Y - 40
@@ -543,8 +543,8 @@ function PST:Render()
 					if not room:IsMirrorWorld() then
 						worldPos = room:WorldToScreenPosition(player.Position)
 					else
-						local newX = room:GetCenterPos().X - (player.Position.X - room:GetCenterPos().X)
-						worldPos = room:WorldToScreenPosition(Vector(newX, player.Position.Y))
+						local playerPos = room:WorldToScreenPosition(player.Position)
+						worldPos = Vector(Isaac.GetScreenWidth() - playerPos.X, playerPos.Y)
 					end
 					iconX = worldPos.X + tmpIcon.position.X
 					iconY = worldPos.Y + tmpIcon.position.Y - 30
@@ -570,8 +570,7 @@ function PST:Render()
 				local tmpFX = animFXList[i]
 				local worldPos = room:WorldToScreenPosition(tmpFX.pos)
 				if room:IsMirrorWorld() then
-					local newX = room:GetCenterPos().X - (tmpFX.pos.X - room:GetCenterPos().X)
-					worldPos = room:WorldToScreenPosition(Vector(newX, tmpFX.pos.Y))
+					worldPos = Vector(Isaac.GetScreenWidth() - worldPos.X, worldPos.Y)
 				end
 
 				tmpFX.sprite:Render(worldPos)

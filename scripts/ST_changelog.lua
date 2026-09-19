@@ -6,6 +6,8 @@ function PST:getChangelogList()
         "1.4.4",
         "- Glowing Glass Piece (Ancient jewel) no longer triggers in the mines' minecart room (and potentially breaking it).",
         "- Fixed error whenever tinted rocks would drop obols.",
+        "- Fixed \"Penny to Blessed Penny\" nodes still triggering while you have a blessed penny.",
+        "- Fixed floating text and special effects rendering in large mirror world rooms.",
         "",
 
         "1.4.3",
