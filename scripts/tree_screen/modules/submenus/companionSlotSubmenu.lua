@@ -43,9 +43,10 @@ function companionSlotSubmenu:Render(tScreen, submenusModule)
         PST:getLocalized("node_companionslot_name"),
         function()
             local drawnComps = 0
+            local ownedComps = PST:getHatchedCompanions()
             for i=1,compsPerPage do
                 local compID = i + self.invPage * compsPerPage
-                local compName = PST.astralCompanionsOrdered[compID]
+                local compName = ownedComps[compID]
                 local baseCompData = PST.astralCompanions[compName]
                 local compData = PST.modData.astralcomps[compName]
                 if baseCompData and compData and compData.level > 0 then

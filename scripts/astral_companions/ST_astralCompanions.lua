@@ -130,6 +130,18 @@ function PST:equipAstralComp(compName, companionSlot, unequipCheck)
     end
 end
 
+-- Returns all obtained companions above level 0 (hatched)
+function PST:getHatchedCompanions()
+    local hatchedComps = {}
+    for _, tmpComp in ipairs(PST.astralCompanionsOrdered) do
+        local compData = PST.modData.astralcomps[tmpComp]
+        if compData and compData.level > 0 then
+            table.insert(hatchedComps, tmpComp)
+        end
+    end
+    return hatchedComps
+end
+
 -- Returns the given egg's total description based on its status
 function PST:getCompanionEggDesc(eggName)
     local eggDesc = {}

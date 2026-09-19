@@ -4,9 +4,10 @@ function PST:getChangelogList()
         "",
 
         "v1.4.2",
-        "- Added 5 new Astral Companions.",
+        "- Added 5 new Astral Companions: Dirt-covered, Synaptic, Blast, Starcursed and Gloomy eggs.",
         "- Crimson Nodes now display information on how to obtain crimson starcores.",
         "- Phantasm Prism (Ancient jewel) can no longer spawn boss enemies.",
+        "- Fixed certain companions not being selectable once hatched if obtained early.",
         "",
 
         "v1.4.1",
