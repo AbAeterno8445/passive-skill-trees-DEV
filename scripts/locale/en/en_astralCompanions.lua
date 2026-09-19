@@ -8,6 +8,11 @@ return {
     ["astralcomp_ui_allocUnequipComp"] = "Press Allocate to unequip this companion from this slot.",
     ["astralcomp_ui_compLevelReady"] = "Ready to level up! Press Allocate to level up this companion.",
 
+    ["astralcomp_ui_lvlupText"] = "{{compName}} is ready to level up!",
+    ["astralcomp_ui_hatchText"] = "{{compName}} is ready to hatch!",
+
+    ["astralcomp_ui_scavObolsSlotMaxed"] = "Companion slot {{slotNumber}}'s scavenged obols are full!",
+
     ["astralcomp_ui_equippedEgg"] = "Equipped egg",
     ["astralcomp_ui_equippedComp"] = "Equipped companion",
 

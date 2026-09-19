@@ -260,10 +260,25 @@ function PST:astralCompAddProgress(eggName, prog)
     if not PST:isRunSidereal() then return end
 
     if PST:isCompEquipped(eggName) or PST:isCompEquipped(eggName, true) then
-        local compData = PST.astralCompanions[eggName]
-        local eggData = PST.modData.astralcomps[eggName]
-        if compData and eggData and eggData.level < 3 then
-            eggData.objProg = math.min(compData.objReqs[eggData.level + 1], eggData.objProg + prog)
+        local baseCompData = PST.astralCompanions[eggName]
+        local compData = PST.modData.astralcomps[eggName]
+        if baseCompData and compData and compData.level < 3 then
+            local levelReq = baseCompData.objReqs[compData.level + 1]
+            local progBelowMax = (compData.objProg < levelReq)
+            compData.objProg = math.min(levelReq, compData.objProg + prog)
+
+            -- Leveled up after progress added
+            if progBelowMax and compData.objProg >= levelReq then
+                if Isaac.IsInGame() then
+                    local compName = PST:getLocalized(baseCompData.identifier .. "_name")
+                    local targetText = "astralcomp_ui_lvlupText"
+                    if compData.level == 0 then
+                        targetText = "astralcomp_ui_hatchText"
+                    end
+                    PST:createFloatTextFX(PST:getLocalizedFormatStr(targetText, { compName = compName }), Vector.Zero, Color(0.7, 1, 0.7), 0.12, 200, true)
+                    SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
+                end
+            end
         end
     end
 end
@@ -288,7 +303,15 @@ function PST:astralCompScavengeObolsInSlot(compSlot, obols, checkSlot)
         local curStage = PST:getLevel():GetStage()
         if not checkSlot or compSlot < 3 or (checkSlot and PST.astralCompSlotFloors[compSlot] and
         curStage >= PST.astralCompSlotFloors[compSlot][1] and curStage <= PST.astralCompSlotFloors[compSlot][2]) then
-            charData.scavengedObols[scavengedSlot] = math.min(PST:getCompScavengeMax(), charData.scavengedObols[scavengedSlot] + obols)
+            local slotMax = PST:getCompScavengeMax()
+            local obolsBelowMax = (charData.scavengedObols[scavengedSlot] < slotMax)
+            charData.scavengedObols[scavengedSlot] = math.min(slotMax, charData.scavengedObols[scavengedSlot] + obols)
+
+            -- Scavenged obols slot full in-game notification
+            if obolsBelowMax and Isaac.IsInGame() and charData.scavengedObols[scavengedSlot] >= slotMax then
+                PST:createFloatTextFX(PST:getLocalizedFormatStr("astralcomp_ui_scavObolsSlotMaxed", { slotNumber = scavengedSlot }), Vector.Zero, Color(0.85, 0.55, 1), 0.12, 200, true)
+                SFXManager():Play(SoundEffect.SOUND_COIN_INSERT, 0.75)
+            end
         end
     end
 end
@@ -349,7 +372,7 @@ function PST:astralCompEggUnlockProc(eggName)
     local eggData = PST.astralCompanions[eggName]
     if not PST.modData.astralcomps[eggName] and eggData and 100 * math.random() < eggChance * ((eggData.eggRate or 100) / 100) then
         PST.modData.astralcomps[eggName] = { level = 0, objProg = 0 }
-        PST:createFloatTextFX(PST:getLocalized("astralcomp_foundEgg") .. ": " .. PST:getLocalized(eggData.identifier .. "_eggname"), Vector.Zero, Color(0.35, 0.9, 0.35), 0.12, 120, true)
+        PST:createFloatTextFX(PST:getLocalized("astralcomp_foundEgg") .. ": " .. PST:getLocalized(eggData.identifier .. "_eggname"), Vector.Zero, Color(0.35, 0.9, 0.35), 0.12, 150, true)
         SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)
         PST:addModifiers({ astralCompEggChance = eggChance / -2 }, true)
 

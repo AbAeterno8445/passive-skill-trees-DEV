@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "1.4.4",
+        "- Added an in-game text notification when astral companions are ready to hatch/level up, and when their slot's",
+        "scavenged obols are full.",
         "- Glowing Glass Piece (Ancient jewel) no longer triggers in the mines' minecart room (and potentially breaking it).",
         "- Fixed error whenever tinted rocks would drop obols.",
         "- Fixed \"Penny to Blessed Penny\" nodes still triggering while you have a blessed penny.",
