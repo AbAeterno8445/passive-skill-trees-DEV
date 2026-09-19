@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "1.4.3",
+        "- Fixed sprites/icons for the new companions.",
+        "",
+
         "v1.4.2",
         "- Added 5 new Astral Companions: Dirt-covered, Synaptic, Blast, Starcursed and Gloomy eggs.",
         "- Crimson Nodes now display information on how to obtain crimson starcores.",
