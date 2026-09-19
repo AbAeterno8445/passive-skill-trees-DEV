@@ -326,8 +326,8 @@ return {
 
     ["expcurse_urgency"] = "Curse of Urgency",
     ["expcurse_urgency_desc"] = {
-        "{{bossRushTimer}} minutes to the Boss Rush door timer.",
-        "{{hushTimer}} minutes to Hush's door timer."
+        "{{expUrgencyCurseDisplay}} minutes to the Boss Rush door timer.",
+        "{{expUrgencyCurseDisplay}} minutes to Hush's door timer."
     },
 
     -- EXPEDITION OBJECTIVES --

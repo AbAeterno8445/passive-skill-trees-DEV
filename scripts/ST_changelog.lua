@@ -11,6 +11,7 @@ function PST:getChangelogList()
         "- Fixed Blastfiend companion's objective and Brain Worm companion's scavenge evenet not triggering.",
         "- Fixed error whenever tinted rocks would drop obols.",
         "- Fixed \"Penny to Blessed Penny\" nodes still triggering while you have a blessed penny.",
+        "- Fixed Expedition Curse of Urgency displaying the wrong number of minutes.",
         "- Fixed floating text and special effects rendering incorrectly in large mirror world rooms.",
         "",
 

@@ -805,8 +805,8 @@ PST.expeditionCurses = {
     { -- 25
         name = "Urgency",
         description = {
-            "{{bossRushTimer}} minutes to the Boss Rush door timer.",
-            "{{hushTimer}} minutes to Hush's door timer."
+            "{{expUrgencyCurseDisplay}} minutes to the Boss Rush door timer.",
+            "{{expUrgencyCurseDisplay}} minutes to Hush's door timer."
         },
         localeID = "#expcurse_urgency",
         spriteFrame = 24,
@@ -814,7 +814,10 @@ PST.expeditionCurses = {
             local mins = 2
             if depth >= 10 then mins = 3 end
             if depth >= 20 then mins = 4 end
-            return { bossRushTimer = -mins * 1800, hushTimer = -mins * 1800 }
+            return {
+                bossRushTimer = -mins * 1800,
+                hushTimer = -mins * 1800,
+                expUrgencyCurseDisplay = -mins }
         end
     }
 }

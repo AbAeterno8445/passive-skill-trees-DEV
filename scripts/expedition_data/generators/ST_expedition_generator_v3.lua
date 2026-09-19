@@ -207,7 +207,7 @@ function PST:generateExpeditionV3(depth, seed)
                     newNode.rewardData = newBoonID
                     table.insert(pickedBoons, newBoonID)
                 else
-                    newNode.rewardType = PSTExpNodeType.OBOLS
+                    newNode.rewardType = PSTExpNodeRewardType.OBOLS
                 end
             -- Item reward type, pick an item
             elseif newNode.rewardType == PSTExpNodeRewardType.ITEM then
@@ -223,7 +223,7 @@ function PST:generateExpeditionV3(depth, seed)
                     newNode.rewardData = newItem
                     table.insert(pickedItems, newItem)
                 else
-                    newNode.rewardType = PSTExpNodeType.OBOLS
+                    newNode.rewardType = PSTExpNodeRewardType.OBOLS
                 end
             end
 

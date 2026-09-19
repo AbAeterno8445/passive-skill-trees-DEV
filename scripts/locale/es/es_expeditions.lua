@@ -326,8 +326,8 @@ return {
 
     ["expcurse_urgency"] = "Maldición de Urgencia",
     ["expcurse_urgency_desc"] = {
-        "{{bossRushTimer}} minutos al temporizador de la puerta de la Boss Rush.",
-        "{{hushTimer}} minutos al temporizador de la puerta de Hush."
+        "{{expUrgencyCurseDisplay}} minutos al temporizador de la puerta de la Boss Rush.",
+        "{{expUrgencyCurseDisplay}} minutos al temporizador de la puerta de Hush."
     },
 
     -- EXPEDITION OBJECTIVES --
