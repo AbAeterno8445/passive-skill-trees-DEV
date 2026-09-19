@@ -271,12 +271,23 @@ function PST:onRoomClear(RNG)
                         PST:expedAddProgInRun("floorNoDmgOnce", 1)
                     end
 
-                    -- Astral Companion: Cosmic Jellyfish scavenge event and objective
+                    -- Floor clear past first
                     if not PST:isFirstOrigStage() then
+                        -- Astral Companion: Cosmic Jellyfish scavenge event and objective
                         if player:GetSoulHearts() > 0 then
                             PST:astralCompAddProgress("cosmicJellyfish", 1)
                         end
                         PST:astralCompProcScavenge("cosmicJellyfish", player:GetSoulHearts())
+
+                        -- Astral Companion: Starcursed Mass scavenge event and objective
+                        local runStarmight = math.floor(PST:getTreeSnapshotMod("starmight", 0))
+                        PST:astralCompAddProgress("starcursedMass", runStarmight)
+                        PST:astralCompProcScavenge("starcursedMass", 1, 0, math.floor(runStarmight / 100))
+
+                        local tmpEggChance = math.floor(runStarmight / 50)
+                        if 100 * math.random() < tmpEggChance then
+                            PST:astralCompEggUnlockProc("starcursedMass")
+                        end
                     end
                 end
             end

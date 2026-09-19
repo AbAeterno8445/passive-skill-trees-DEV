@@ -210,6 +210,11 @@ function PST:onHeartUpdate(force)
                 PST.specialNodes.astralwep_blackHealTimer = 150
             end
 
+            -- Astral Companion: Lingering Shadow luck buff update
+            if PST:getTreeSnapshotMod("lingShadowBlackHeartLuck", 0) > 0 then
+                player:AddCacheFlags(CacheFlag.CACHE_LUCK)
+            end
+
             heartTracker.black[i] = plBlackHearts
             heartUpdated = true
         end

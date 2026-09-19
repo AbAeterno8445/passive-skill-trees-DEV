@@ -282,7 +282,7 @@ function PST:astralCompScavengeObolsInSlot(compSlot, obols, checkSlot)
 end
 
 -- Attempt to scavenge obols for the given companion, checking if it is equipped, its level, floor limits and proc odds
-function PST:astralCompProcScavenge(compName, chanceMult, obolMod)
+function PST:astralCompProcScavenge(compName, chanceMult, obolMod, obolMult)
     if not PST:isRunSidereal() then return end
 
     local charData = PST:getCurrentCharData()
@@ -301,6 +301,7 @@ function PST:astralCompProcScavenge(compName, chanceMult, obolMod)
                 else
                     scavengedObols = scavengedObolsBase
                 end
+                if obolMult then scavengedObols = math.floor(scavengedObols * obolMult) end
                 if obolMod then scavengedObols = scavengedObols + obolMod end
                 for i=1,3 do
                     if charData.astralCompanions[tostring(i)] == compName then

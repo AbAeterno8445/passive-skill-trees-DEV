@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "v1.4.2",
+        "- Added 5 new Astral Companions.",
         "- Crimson Nodes now display information on how to obtain crimson starcores.",
         "- Phantasm Prism (Ancient jewel) can no longer spawn boss enemies.",
         "",

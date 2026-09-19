@@ -655,6 +655,14 @@ function PST:onDamage(target, damage, flag, source)
                         player:Kill()
                     end
 
+                    -- Mod: +% damage per 1/2 black heart you have, temporarily doubled when taking damage (Lingering Shadow companion)
+                    if PST:getTreeSnapshotMod("lingShadowBlackHeartDmg", 0) > 0 then
+                        if PST.specialNodes.astralcomp_lingShadowBuffTimer == 0 then
+                            PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                        end
+                        PST.specialNodes.astralcomp_lingShadowBuffTimer = 180
+                    end
+
                     -- Chance for normal monsters to deal an extra 1/2 heart damage
                     tmpMod = PST:SC_getSnapshotMod("mobExtraHitDmg", 0)
                     if not tmpSource:IsBoss() and not tmpSource:IsChampion() and 100 * math.random() < tmpMod then
@@ -2082,6 +2090,16 @@ function PST:onDamage(target, damage, flag, source)
                     dmgMult = dmgMult + (tmpMod * #bossData.bossDiffStatusDmgList) / 100
                 end
             end
+
+            -- Astral Companion: Blastfiend scavenge event and objective
+            if (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 and target:HasMortalDamage() then
+                PST:astralCompAddProgress("blastfiend", 1)
+
+                local tmpNPC = target:ToNPC()
+                if tmpNPC and (tmpNPC:IsBoss() or tmpNPC:IsChampion()) then
+                    PST:astralCompProcScavenge("blastfiend")
+                end
+            end
         end
 
         -- Check if a familiar got hit
@@ -2318,6 +2336,13 @@ function PST:onDamage(target, damage, flag, source)
                         dmgMult = dmgMult - tmpReduction / 100
                     end
                 end
+
+                -- Astral Companion: Brain Worm objective
+                PST:astralCompAddProgress("brainWorm", math.floor(damage * math.max(0.01, dmgMult) + dmgExtra))
+                -- Brain Worm scavenge event
+                if target:HasMortalDamage() then
+                    PST:astralCompProcScavenge("brainWorm")
+                end
             -- Bomb hits enemy
             elseif source.Type == EntityType.ENTITY_BOMB then
                 -- Troll bomb hit
@@ -2467,6 +2492,14 @@ function PST:prePlayerDamage(player, damage, flag, source)
         SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 0.75)
         return false
     end
+end
+
+function PST:preBombDamage(position, damage, radius, lineCheck, source, tearFlags, damageFlags, damageSource)
+    -- Mod: immunity to throwable bombs
+	if source and source.Type == EntityType.ENTITY_BOMB and source.Variant == BombVariant.BOMB_THROWABLE and PST:getTreeSnapshotMod("throwBombImmunity", false) and
+	PST.specialNodes.explosionImmunityTimer < 10 then
+		PST.specialNodes.explosionImmunityTimer = 10
+	end
 end
 
 function PST:preNPCCollision(npc, collider, low)

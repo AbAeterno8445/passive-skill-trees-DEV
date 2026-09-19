@@ -152,6 +152,12 @@ function PST:onCache(player, cacheFlag)
                 dynamicMods.luck = dynamicMods.luck - (#tmpWisps * 0.03)
             end
         end
+
+        -- Mod: +% luck while you have any black hearts (Lingering Shadow companion)
+        tmpTreeMod = PST:getTreeSnapshotMod("lingShadowBlackHeartLuck", 0)
+        if tmpTreeMod > 0 and player:GetBlackHearts() > 0 then
+            dynamicMods.luckPerc = dynamicMods.luckPerc + tmpTreeMod
+        end
     -- DAMAGE CACHE
     elseif cacheFlag == CacheFlag.CACHE_DAMAGE then
         -- Mod: damage while dead bird is active
@@ -307,6 +313,16 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +% damage for X seconds when killing flying bleeding enemies
         if PST.specialNodes.astralcomp_skysharkBuffTimer > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + PST:getTreeSnapshotMod("skysharkBleedEnemBuff", 0) * PST:getTreeSnapshotMod("skysharkBleedEnemDmg", 0)
+        end
+
+        -- Mod: +% damage per 1/2 black heart you have (Lingering Shadow companion)
+        tmpTreeMod = PST:getTreeSnapshotMod("lingShadowBlackHeartDmg", 0)
+        if tmpTreeMod > 0 then
+            local tmpLimit = 6
+            if PST.specialNodes.astralcomp_lingShadowBuffTimer > 0 then
+                tmpLimit = tmpLimit * 2
+            end
+            dynamicMods.damagePerc = dynamicMods.damagePerc + math.min(tmpLimit, tmpTreeMod * player:GetBlackHearts())
         end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then

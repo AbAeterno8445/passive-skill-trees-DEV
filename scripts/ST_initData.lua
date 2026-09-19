@@ -2076,6 +2076,7 @@ function PST:resetMods()
 		arti_lunarBuffTimer = 0,
 
 		astralcomp_skysharkBuffTimer = 0,
+		astralcomp_lingShadowBuffTimer = 0,
 
 		explosionImmunityTimer = 0,
 

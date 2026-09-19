@@ -439,5 +439,54 @@ return {
     ["astralcomp_bluecap_maxeffects"] = {
         "+1% damage when using a pill, up to 7%. Resets when entering a new floor.",
         "Champions have a 7% chance to drop an additional random pill on death, once per floor."
+    },
+
+    ["astralcomp_blastfiend_name"] = "Blastfiend",
+    ["astralcomp_blastfiend_eggname"] = "Blast Egg",
+    ["astralcomp_blastfiend_obj"] = "Kill enemies with explosions.",
+    ["astralcomp_blastfiend_eggHint"] = "Mines or Ashpit bosses (Rate: 20% of the total chance to find eggs).",
+    ["astralcomp_blastfiend_scavenge"] = "Scavenges {{obolCount}} arcane obols when killing champions and bosses with explosions.",
+    ["astralcomp_blastfiend_maxeffects"] = {
+        "Champions have a 12% chance to drop a throwable bomb on death, which vanishes after 6 seconds, up to twice per room.",
+        "Throwable bomb explosions can no longer damage you."
+    },
+
+    ["astralcomp_brainworm_name"] = "Brain Worm",
+    ["astralcomp_brainworm_eggname"] = "Synaptic Egg",
+    ["astralcomp_brainworm_obj"] = "Deal damage with familiars.",
+    ["astralcomp_brainworm_eggHint"] = "Hidden amongst baby familiar items (Rate: 40% of the total chance to find eggs).",
+    ["astralcomp_brainworm_scavenge"] = "{{scavChance}}% chance to scavenge {{obolCount}} arcane obols whenever your familiars kill an enemy, up to {{floorLimit}} times per floor.",
+    ["astralcomp_brainworm_maxeffects"] = {
+        "+0.5% damage and luckwhen obtaining a familiar item, up to 10%."
+    },
+
+    ["astralcomp_lingeringshadow_name"] = "Lingering Shadow",
+    ["astralcomp_lingeringshadow_eggname"] = "Gloomy Egg",
+    ["astralcomp_lingeringshadow_obj"] = "Collect black hearts.",
+    ["astralcomp_lingeringshadow_eggHint"] = "Hidden amongst black hearts (Rate: 6% of the total chance to find eggs).",
+    ["astralcomp_lingeringshadow_scavenge"] = "Scavenge {{obolCount}} arcane obols when collecting black hearts, up to {{floorLimit}} times per floor.",
+    ["astralcomp_lingeringshadow_maxeffects"] = {
+        "+0.5% damage per 1/2 black heart you have, up to 6%. Double this bonus for 6 seconds when you take damage.",
+        "+2% luck while you have any black hearts."
+    },
+
+    ["astralcomp_trapdoorspider_name"] = "Trapdoor Spider",
+    ["astralcomp_trapdoorspider_eggname"] = "Dirt-covered Egg",
+    ["astralcomp_trapdoorspider_obj"] = "Enter crawl spaces.",
+    ["astralcomp_trapdoorspider_eggHint"] = "Crawl spaces past the first floor (Rate: 50% of the total chance to find eggs).",
+    ["astralcomp_trapdoorspider_scavenge"] = "Scavenge {{obolCount}} arcane obols when entering a crawl space, once per floor.",
+    ["astralcomp_trapdoorspider_maxeffects"] = {
+        "When entering a new floor, 10% chance to spawn a Reversed The World card, up to twice per run.",
+        "This chance is doubled if you didn't enter a crawl space in the previous floor."
+    },
+
+    ["astralcomp_starcursedmass_name"] = "Starcursed Mass",
+    ["astralcomp_starcursedmass_eggname"] = "Starcursed Egg",
+    ["astralcomp_starcursedmass_obj"] = "Clear floors past the first with at least 1 starmight. Progresses 1 per starmight you have.",
+    ["astralcomp_starcursedmass_eggHint"] = "Clearing floors past the first (Rate: 1% per 50 starmight).",
+    ["astralcomp_starcursedmass_scavenge"] = "Scavenge {{obolCount}} arcane obol(s) for every 100 starmight you have when clearing a floor past the first.",
+    ["astralcomp_starcursedmass_maxeffects"] = {
+        "+1% luck and obols found per 100 starmight you have, up to 12% (applied once on run start).",
+        "+1% all stats per 300 starmight you have."
     }
 }

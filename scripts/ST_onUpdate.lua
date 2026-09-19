@@ -458,6 +458,17 @@ function PST:frameUpdate()
 			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_OLD_CAPACITOR, tmpPos, Vector.Zero, nil)
 			PST:addModifiers({ raijuCapacitorSpawn = true }, true)
 		end
+		-- Astral Companion: Trapdoor Spider
+		tmpMod = PST:getTreeSnapshotMod("tpdSpiderRevWorld", 0)
+		if PST:getTreeSnapshotMod("tpdSpiderEnteredCrawl", false) then
+			tmpMod = tmpMod * 2
+			PST:addModifiers({ tpdSpiderEnteredCrawl = false }, true)
+		end
+		if tmpMod > 0 and PST:getTreeSnapshotMod("tpdSpiderProcs", 0) < 2 and 100 * math.random() < tmpMod then
+			local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_REVERSE_WORLD, tmpPos, Vector.Zero, nil)
+			PST:addModifiers({ tpdSpiderProcs = 1 }, true)
+		end
 
 		-- First update - After first floor
 		if not PST:isFirstOrigStage() then
@@ -3370,6 +3381,14 @@ function PST:frameUpdate()
 		PST.specialNodes.astralcomp_skysharkBuffTimer = PST.specialNodes.astralcomp_skysharkBuffTimer - 1
 		if PST.specialNodes.astralcomp_skysharkBuffTimer == 0 then
 			PST:addModifiers({ skysharkBleedEnemBuff = { value = 0, set = true } }, true)
+			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+		end
+	end
+
+	-- Mod: +% damage per 1/2 black heart you have, doubled temporarily when taking damage (Lingering Shadow companion)
+	if PST.specialNodes.astralcomp_lingShadowBuffTimer > 0 then
+		PST.specialNodes.astralcomp_lingShadowBuffTimer = PST.specialNodes.astralcomp_lingShadowBuffTimer - 1
+		if PST.specialNodes.astralcomp_lingShadowBuffTimer == 0 then
 			PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
 		end
 	end

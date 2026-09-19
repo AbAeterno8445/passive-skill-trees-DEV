@@ -806,6 +806,11 @@ function PST:onPickup(pickup, collider, low, forced)
                 if tmpBonus ~= 0 and PST:getTreeSnapshotMod("blackHeartDamageTotal", 0) < 3 then
                     PST:addModifiers({ damage = tmpBonus, blackHeartDamageTotal = tmpBonus }, true)
                 end
+
+                -- Astral Companion: Lingering Shadow scavenge event and objective
+                PST:astralCompAddProgress("lingeringShadow", 1)
+                PST:astralCompEggUnlockProc("lingeringShadow")
+                PST:astralCompProcScavenge("lingeringShadow")
             end
             -- Soul heart pickup
             if subtype == HeartSubType.HEART_SOUL or subtype == HeartSubType.HEART_HALF_SOUL or subtype == HeartSubType.HEART_BLENDED then

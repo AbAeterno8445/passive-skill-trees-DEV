@@ -1301,6 +1301,15 @@ function PST:onNewRoom()
 		elseif roomType == RoomType.ROOM_ISAACS then
 			-- Astral Companion: Dream Sheep egg
 			PST:astralCompEggUnlockProc("dreamSheep")
+		-- Crawl Spaces
+		elseif roomType == RoomType.ROOM_DUNGEON then
+			-- Astral Companion: Trapdoor Spider scavenge event and objective
+			PST:addModifiers({ tpdSpiderEnteredCrawl = true }, true)
+			PST:astralCompAddProgress("trapdoorSpider", 1)
+			PST:astralCompProcScavenge("trapdoorSpider")
+			if not PST:isFirstOrigStage() then
+				PST:astralCompEggUnlockProc("trapdoorSpider")
+			end
 		end
 	end
 
@@ -1602,6 +1611,10 @@ function PST:onNewRoom()
 		end
 		-- Pearl Dragon egg
 		PST:astralCompEggUnlockProc("pearlDragon")
+	end
+	-- Astral Companion: Blastfiend (reset procs)
+	if PST:getTreeSnapshotMod("blastfiendBombProcs", 0) > 0 then
+		PST:addModifiers({ blastfiendBombProcs = { value = 0, set = true } }, true)
 	end
 
 	-- Delirium room kill flag

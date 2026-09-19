@@ -574,6 +574,19 @@ function PST:onNewRun(isContinued)
             PST:addModifiers({ astralCompEggChance = 100 }, true)
         end
 
+        -- Astral Companion: Starcursed Mass
+        local tmpMod = PST:getTreeSnapshotMod("starMassLuckObols", 0)
+        if tmpMod > 0 then
+            local tmpStarmightBuff = math.min(12, math.floor(PST:getTreeSnapshotMod("starmight", 0) / 100))
+            if tmpStarmightBuff > 0 then
+                PST:addModifiers({ luckPerc = tmpStarmightBuff, obolsFound = tmpStarmightBuff }, true)
+            end
+            tmpStarmightBuff = math.floor(PST:getTreeSnapshotMod("starmight", 0) / 300)
+            if tmpStarmightBuff > 0 then
+                PST:addModifiers({ allstatsPerc = tmpStarmightBuff }, true)
+            end
+        end
+
         -- Astral Companion config and level 3 mods
         if charData and charData.astralCompanions then
             for i=1,3 do

@@ -242,6 +242,15 @@ function PST:onGrabCollectible(itemType, charge, firstTime, slot, varData, playe
             PST:astralCompAddProgress("pearlDragon", 1)
             PST:astralCompEggUnlockProc("pearlDragon")
         end
+        -- Astral Companion: Brain Worm egg
+        if PST:arrHasValue(PST.babyFamiliarItems, itemType) then
+            PST:astralCompEggUnlockProc("brainWorm")
+        end
+        -- Brain Worm effect
+        tmpMod = PST:getTreeSnapshotMod("brainwormFamDmgLuck", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("brainwormBuffTotal", 0) < 10 and PST:arrHasValue(PST.songOfTheFewFamiliars, itemType) then
+            PST:addModifiers({ damagePerc = tmpMod, luckPerc = tmpMod, brainwormBuffTotal = tmpMod }, true)
+        end
     end
 
     -- Spectral Advantage node (The Lost's tree)

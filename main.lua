@@ -449,6 +449,7 @@ PST:AddCallback(ModCallbacks.MC_PRE_DEVIL_APPLY_SPECIAL_ITEMS, PST.applyDevilCha
 PST:AddCallback(ModCallbacks.MC_PRE_ADD_COLLECTIBLE, PST.preGrabCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE, PST.onGrabCollectible)
 PST:AddCallback(ModCallbacks.MC_POST_TRIGGER_COLLECTIBLE_REMOVED, PST.onRemoveCollectible)
+PST:AddCallback(ModCallbacks.MC_PRE_BOMB_DAMAGE, PST.preBombDamage)
 PST:AddCallback(ModCallbacks.MC_POST_ENTITY_TAKE_DMG, PST.postDamage)
 PST:AddCallback(ModCallbacks.MC_PRE_PLAYER_TAKE_DMG, PST.prePlayerDamage)
 PST:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, PST.preNPCCollision)

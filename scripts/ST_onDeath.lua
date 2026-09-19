@@ -545,6 +545,15 @@ function PST:onDeath(entity)
                     if entity:GetFearCountdown() > 0 and lvlStage > 2 then
                         PST:astralCompEggUnlockProc("abyssalTarantula")
                     end
+                    -- Astral Companion: Blastfiend
+                    tmpMod = PST:getTreeSnapshotMod("blastfiendChampBomb", 0)
+                    if tmpMod > 0 and PST:getTreeSnapshotMod("blastfiendBombProcs", 0) < 2 then
+                        local tmpBomb = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, entity.Position, RandomVector() * 3, nil)
+                        if tmpBomb then
+                            tmpBomb:ToPickup().Timeout = 180
+                        end
+                        PST:addModifiers({ blastfiendBombProcs = 1 }, true)
+                    end
                 end
 
                 -- Boss kill
@@ -599,6 +608,11 @@ function PST:onDeath(entity)
                         -- Astral Companion: Jumping Spider egg
                         if PST:arrHasValue(PST.spiderBosses, entity.Type) then
                             PST:astralCompEggUnlockProc("jumpingSpider")
+                        end
+
+                        -- Astral Companion: Blastfiend egg
+                        if (lvlStage == 3 or lvlStage == 4) and (lvlStageType == StageType.STAGETYPE_REPENTANCE or lvlStageType == StageType.STAGETYPE_REPENTANCE_B) then
+                            PST:astralCompEggUnlockProc("blastfiend")
                         end
 
                         -- Deadly Sin boss kill

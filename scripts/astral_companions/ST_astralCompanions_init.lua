@@ -497,6 +497,62 @@ PST.astralCompanions = {
             bluecapPillDmg = 1,
             bluecapChampDeathPill = 7
         }
+    },
+    blastfiend = {
+        identifier = "astralcomp_blastfiend",
+        compSprite = 44,
+        eggRate = 33,
+        scavengeRanges = {{8, 10}, {12, 14}, {15, 18}},
+        scavengeMax = {25, 30, 35},
+        objReqs = {40, 90, 120},
+        maxLevelEffects = {
+            blastfiendChampBomb = 12,
+            throwBombImmunity = true
+        }
+    },
+    brainWorm = {
+        identifier = "astralcomp_brainworm",
+        compSprite = 45,
+        eggRate = 40,
+        scavengeRanges = {{3, 4}, {5, 6}, 7},
+        scavengeOdds = {22, 33, 44},
+        scavengeMax = {30, 35, 40},
+        objReqs = {2000, 6000, 10000},
+        maxLevelEffects = {
+            brainwormFamDmgLuck = 0.5
+        }
+    },
+    lingeringShadow = {
+        identifier = "astralcomp_lingeringshadow",
+        compSprite = 46,
+        eggRate = 6,
+        scavengeRanges = {8, 12, 15},
+        scavengeMax = {20, 25, 30},
+        objReqs = {25, 40, 60},
+        maxLevelEffects = {
+            lingShadowBlackHeartDmg = 0.5,
+            lingShadowBlackHeartLuck = 2
+        }
+    },
+    trapdoorSpider = {
+        identifier = "astralcomp_trapdoorspider",
+        compSprite = 47,
+        scavengeRanges = {{20, 50}, {40, 70}, {60, 80}},
+        scavengeMax = {1, 1, 1},
+        objReqs = {2, 5, 10},
+        maxLevelEffects = {
+            tpdSpiderRevWorld = 10
+        }
+    },
+    starcursedMass = {
+        identifier = "astralcomp_starcursedmass",
+        compSprite = 48,
+        scavengeRanges = {1, 2, 3},
+        objReqs = {5000, 12000, 25000},
+        maxLevelEffects = {
+            starMassLuckObols = 1,
+            starMassStats = 1
+        }
     }
 }
 PST.astralCompanionsLen = 0
@@ -508,7 +564,7 @@ PST.astralCompanionsOrdered = {
     "warg", "raiju", "dreamSheep", "iceBeast", "salamander", "boulderBeetle", "bombardierBeetle", "deathScarab",
     "pharaohAnt", "clockroach", "butterfly", "lunarMoth", "crimsonMoth", "adder",
     "waterMoccasin", "manaViper", "anaconda", "snappingTurtle", "alligatorSnappingTurtle",
-    "mountainshell", "culicivora", "abyssalTarantula", "jumpingSpider", "scorpion", "emperorScorpion",
+    "mountainshell", "culicivora", "abyssalTarantula", "jumpingSpider", "trapdoorSpider", "scorpion", "emperorScorpion",
     "cosmicJellyfish", "manticore", "catoblepas", "skyshark", "goldenDragon", "shadowDragon",
-    "pearlDragon", "gildedGolem", "bluecap"
+    "pearlDragon", "gildedGolem", "bluecap", "brainWorm", "blastfiend", "starcursedMass", "lingeringShadow"
 }
