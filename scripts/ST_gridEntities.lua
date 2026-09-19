@@ -235,7 +235,7 @@ function PST:gridEntityRockDestroy(rock, gridType, immediate, source)
         -- Obols from tinted rocks
         if PST:getTreeSnapshotMod("isExpedRun", false) then
             local tmpObols = PST.obolEvents.chests(PST:getTreeSnapshotMod("expedDepth", 1), 0.15)
-            if tmpObols > 0 then PST:expedDropObolsAt(entityParam.Position, tmpObols) end
+            if tmpObols > 0 then PST:expedDropObolsAt(rock.Position, tmpObols) end
         end
     end
 end

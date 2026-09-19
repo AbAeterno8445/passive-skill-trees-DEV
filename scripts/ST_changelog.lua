@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "1.4.4",
+        "- Glowing Glass Piece (Ancient jewel) no longer triggers in the mines' minecart room (and potentially breaking it).",
+        "- Fixed error whenever tinted rocks would drop obols.",
+        "",
+
         "1.4.3",
         "- Fixed sprites/icons for the new companions.",
         "",
