@@ -1494,8 +1494,7 @@ function PST:onDamage(target, damage, flag, source)
                     end
 
                     -- T. Forgotten bone tears
-                    if source.Entity.Variant == TearVariant.BONE and source.Entity.SpawnerEntity and
-                    source.Entity.SpawnerEntity:ToPlayer():GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
+                    if source.Entity.Variant == TearVariant.BONE and srcPLayer and srcPlayer:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
                         -- Mod: % chance for T. Forgotten bone tears to paralyze enemies on hit for 1 second
                         tmpMod = PST:getTreeSnapshotMod("forgBoneTearPara", 0)
                         if tmpMod > 0 and 100 * math.random() < tmpMod then

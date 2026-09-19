@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
         "",
 
+        "1.4.5",
+        "- Fixed potential error when hitting enemies with bone tears.",
+        "",
+
         "1.4.4",
         "- Added a new Astral Companion: Scintillating egg.",
         "- Added a new Ancient weapon: Scintillant (estoc).",
