@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "1.4.5",
         "- Fixed potential error when hitting enemies with bone tears.",
+        "- Fixed error on devil deal while incubating the Shadow Egg (Shadow Dragon companion).",
         "",
 
         "1.4.4",

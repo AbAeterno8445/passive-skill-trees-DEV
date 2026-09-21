@@ -138,7 +138,7 @@ function PST:onShopPurchase(pickup, player, spent)
             PST:astralCompAddProgress("shadowDragon", 1)
             PST:astralCompEggUnlockProc("shadowDragon")
             local shadowDragLevel = PST.modData.astralcomps["shadowDragon"] and PST.modData.astralcomps["shadowDragon"].level or nil
-            if shadowDragLevel and spent < 0 then
+            if shadowDragLevel and shadowDragLevel > 0 and spent < 0 then
                 local shadowDragExtra = {25, 35, 45}
                 PST:astralCompProcScavenge("shadowDragon", 1, -spent * shadowDragExtra[shadowDragLevel])
             end
