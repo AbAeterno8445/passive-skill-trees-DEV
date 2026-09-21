@@ -1111,6 +1111,17 @@ function PST:onPickupInit(pickup, firstSpawn)
     local variant = pickup.Variant
     local subtype = pickup.SubType
 
+    -- Setup shop spikes effect linked to this item (e.g. Pound of Flesh)
+    local tmpFleshPoundSpike = {}
+    if pickup.Price == -5 then
+        for _, tmpSpike in ipairs(Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.SHOP_SPIKES)) do
+            if tmpSpike.Parent and tmpSpike.Parent.InitSeed == pickup.InitSeed then
+                tmpFleshPoundSpike = tmpSpike
+                break
+            end
+        end
+    end
+
     local pickupGone = false
     -- Ancient starcursed jewel: Opalescent Purity
     if PST:SC_getSnapshotMod("opalescentPurity", false) and PST:getTreeSnapshotMod("SC_opalescentProc", false) and
@@ -1261,6 +1272,7 @@ function PST:onPickupInit(pickup, firstSpawn)
 
         if firstSpawn and (variant == PickupVariant.PICKUP_COIN or variant == PickupVariant.PICKUP_BOMB or
         variant == PickupVariant.PICKUP_KEY) and tmpMod > 0 and 100 * math.random() < tmpMod then
+            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 1, pickup.Position, Vector.Zero, nil)
             pickup:Remove()
             pickupGone = true
         end
@@ -1286,6 +1298,7 @@ function PST:onPickupInit(pickup, firstSpawn)
             if PST:inMineshaftPuzzle() then tmpMod = 0 end
 
             if firstSpawn and tmpMod > 0 and 100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 1, pickup.Position, Vector.Zero, nil)
                 pickup:Remove()
                 pickupGone = true
             end
@@ -1423,6 +1436,7 @@ function PST:onPickupInit(pickup, firstSpawn)
                 tmpMod = 0
             end
             if tmpMod > 0 and 100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 1, pickup.Position, Vector.Zero, nil)
                 pickup:Remove()
                 pickupGone = true
             end
@@ -1602,6 +1616,10 @@ function PST:onPickupInit(pickup, firstSpawn)
                 pickup:Morph(pickup.Type, pickup.Variant, newBag, true)
             end
         end
+    end
+
+    if tmpFleshPoundSpike and pickup:Exists() then
+        tmpFleshPoundSpike.Parent = pickup
     end
 end
 
