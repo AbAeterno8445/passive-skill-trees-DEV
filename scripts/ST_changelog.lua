@@ -1,6 +1,6 @@
 function PST:getChangelogList()
     local changelog = {
-        "(You can disable this popup on new versions through Mod Config Menu Pure in-game)",
+        "(You can disable this popup on new versions through Mod Config Menu Impure in-game)",
         "",
 
         "1.4.5",
