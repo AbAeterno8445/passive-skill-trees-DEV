@@ -630,7 +630,7 @@ return {
     ["node_famkillsoul_name"] = "Corazón De Alma Por Matanza Familiar",
     ["node_famkillsoul"] = "{{familiarKillSoulHeart}}% chance de que los enemigos matados por familiares tiren 1/2 corazón de alma adicional.",
     ["node_activefamluck_name"] = "Suerte Por Familiares Activos",
-    ["node_activefamluck"] = "+{{activeFamiliarsLuck}} suerte por familiar activo.",
+    ["node_activefamluck"] = "+{{activeFamiliarsLuck}} suerte por familiar activo, hasta +3.",
     ["node_incubusdmg_name"] = "Daño De Íncubo",
     ["node_incubusdmg"] = "+{{activeIncubusDamage}}% daño por íncubo activo.",
     ["node_incubustears_name"] = "Lágrimas De Íncubo",

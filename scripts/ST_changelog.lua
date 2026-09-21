@@ -5,6 +5,7 @@ function PST:getChangelogList()
 
         "1.4.5",
         "- Additional compatibility for new mod items and entities (wookywok).",
+        "- \"Active Familiars Luck\" nodes, which grant +luck per active familiar, are now capped at +3 luck.",
         "- Fixed potential error when hitting enemies with bone tears.",
         "- Fixed error on devil deal while incubating the Shadow Egg (Shadow Dragon companion).",
         "- Fixed shop pickups occasionally having visually retracted spikes (Pound of Flesh) despite still dealing damage.",

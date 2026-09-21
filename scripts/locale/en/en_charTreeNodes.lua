@@ -626,7 +626,7 @@ return {
     ["node_famkillsoul_name"] = "Familiar Kill Soul Heart",
     ["node_famkillsoul"] = "{{familiarKillSoulHeart}}% chance for enemies killed by familiars to drop an additional 1/2 soul heart.",
     ["node_activefamluck_name"] = "Active Familiars Luck",
-    ["node_activefamluck"] = "+{{activeFamiliarsLuck}} luck per currently active familiar.",
+    ["node_activefamluck"] = "+{{activeFamiliarsLuck}} luck per currently active familiar, up to +3.",
     ["node_incubusdmg_name"] = "Incubus Damage",
     ["node_incubusdmg"] = "+{{activeIncubusDamage}}% damage per active incubus.",
     ["node_incubustears_name"] = "Incubus Tears",

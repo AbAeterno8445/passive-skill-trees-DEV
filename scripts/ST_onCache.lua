@@ -115,7 +115,7 @@ function PST:onCache(player, cacheFlag)
         -- Mod: +luck per active familiar
         tmpTreeMod = PST:getTreeSnapshotMod("activeFamiliarsLuck", 0)
         if tmpTreeMod > 0 and totalFamiliars > 0 then
-            dynamicMods.luck = dynamicMods.luck + totalFamiliars * tmpTreeMod
+            dynamicMods.luck = dynamicMods.luck + math.min(3, totalFamiliars * tmpTreeMod)
         end
 
         -- Mod: +luck while holding a locust (trinket)
