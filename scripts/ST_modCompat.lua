@@ -2833,7 +2833,7 @@ function PST:initModCompat()
 
 	-- ENA Mod
 	if ENAmod and not initMods.ena then
-		initMode.ena = true
+		initMods.ena = true
 
 		-- Baby familiars
 		table.insert(PST.babyFamiliarItems, Isaac.GetItemIdByName("Lil Taskis"))
@@ -2883,8 +2883,6 @@ function PST:initModCompat()
 
 		-- Coin machines
         table.insert(PST.coinMachines, Isaac.GetEntityVariantByName("Wishing Well"))
-
-
 	end
 
 	-- Edith: Rebuilt
@@ -2942,6 +2940,19 @@ function PST:initModCompat()
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Bloody Cord"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Living Shield"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Fifth Seal"))
+	end
+
+	-- Monsters Monthly
+	if MonMon and not initMods.monmon then
+		initMods.monmon = true
+
+		local tmpUndead = {
+            "Stitch Boy", "Scale", "Bookworm", "Bone Rel", "Wizwhirls"
+        }
+        PST_addUndeadMobs(tmpUndead)
+
+		-- Hosts
+		table.insert(PST.hostEnemies, PST_getCustomMobTable("Purple Host"))
 	end
 
 	-- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list

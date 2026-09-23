@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "1.4.6",
+        "- Additional mod compatibility for Monsters Monthly (wookywok).",
         "- Optimized data saving calls when entering and exiting a run, which could cause longer freezes.",
         "- Fixed companion status effect objectives potentially not triggering if applied by tears, lasers, explosions, etc.",
         "- Fixed poison-related effects potentially not triggering properly.",
