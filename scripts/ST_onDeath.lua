@@ -183,7 +183,7 @@ function PST:onDeath(entity)
                 end
 
                 -- Poisoned enemy death
-                if entity:GetPoisonDamageTimer() > 0 then
+                if entity:GetPoisonCountdown() > 0 then
                     -- Astral Companion: Adder scavenge event
                     PST:astralCompProcScavenge("adder")
 
@@ -460,7 +460,7 @@ function PST:onDeath(entity)
                         local tmpChanceMod = 0
                         -- Astral Companion: Black Mamba
                         local tmpMod = PST:getTreeSnapshotMod("blackMambaPoisonChampObols", 0)
-                        if tmpMod > 0 and entity:GetPoisonDamageTimer() > 0 then
+                        if tmpMod > 0 and entity:GetPoisonCountdown() > 0 then
                             tmpChanceMod = tmpChanceMod + tmpMod
                         end
                         -- Astral Companion: Catoblepas
@@ -530,7 +530,7 @@ function PST:onDeath(entity)
                         PST:astralCompEggUnlockProc("clockroach")
                     end
                     -- Astral Companion: Adder egg
-                    if entity:GetPoisonDamageTimer() > 0 then
+                    if entity:GetPoisonCountdown() > 0 then
                         PST:astralCompEggUnlockProc("adder")
                     end
                     -- Astral Companion: Anaconda egg

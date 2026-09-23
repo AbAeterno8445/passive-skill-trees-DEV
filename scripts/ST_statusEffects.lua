@@ -4,10 +4,10 @@
 ---@param duration integer
 function PST:preStatusEffectApply(statusID, entity, source, duration)
     -- Status application by player
-    if source and source.Type == EntityType.ENTITY_PLAYER then
+    if source and (source.Type == EntityType.ENTITY_PLAYER or source.SpawnerType == EntityType.ENTITY_PLAYER) then
         -- Poison
         if statusID == StatusEffect.POISON then
-            if entity:GetPoisonDamageTimer() == 0 then
+            if entity:GetPoisonCountdown() == 0 then
                 -- Astral Companion: Adder scavenge event and objective
                 PST:astralCompAddProgress("adder", 1)
 
@@ -62,7 +62,7 @@ function PST:postStatusEffectApply(statusID, entity, source, duration)
     end
 
     -- Player status application
-    if source and source.Type == EntityType.ENTITY_PLAYER then
+    if source and (source.Type == EntityType.ENTITY_PLAYER or source.SpawnerType == EntityType.ENTITY_PLAYER) then
         -- Astral Companion: Manticore scavenge event
         if PST:isCompEquipped("manticore") and entity:IsBoss() then
             local bossData = PST:getEntData(entity)

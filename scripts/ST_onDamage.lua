@@ -2068,8 +2068,8 @@ function PST:onDamage(target, damage, flag, source)
 
             -- Mod: +% damage taken per second of remaining poison
             tmpMod = PST:getTreeSnapshotMod("remainingPoisonDmg", 0)
-            if tmpMod > 0 and target:GetPoisonDamageTimer() then
-                dmgMult = dmgMult + target:GetPoisonDamageTimer() / 3000
+            if tmpMod > 0 and target:GetPoisonCountdown() then
+                dmgMult = dmgMult + target:GetPoisonCountdown() / 3000
             end
 
             -- Mod: +% damage taken per second of remaining petrification
