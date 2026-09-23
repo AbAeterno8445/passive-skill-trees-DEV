@@ -44,7 +44,7 @@ PST.saveManager.AddCallback(PST.saveManager.Utility.CustomCallback.PRE_DATA_LOAD
 	end
 end)
 PST.saveManager.AddCallback(PST.saveManager.Utility.CustomCallback.POST_DATA_LOAD, function(modRef, saveData, isLuamod)
-	if modRef == PST and isLuamod ~= nil then
+	if modRef == PST and isLuamod ~= nil and PST.saveslotLoadingEnabled then
 		PST:load()
 	end
 end)
@@ -303,7 +303,7 @@ function PST:resetSaveData()
 end
 
 function PST:onSaveSlot(slot, isSlotSelected)
-	if not isSlotSelected then return end
+	if not isSlotSelected or not PST.saveslotLoadingEnabled then return end
 
 	local existingData = PST:LoadData()
 	if #existingData == 0 then
@@ -477,6 +477,12 @@ PST:AddCallback(ModCallbacks.MC_PRE_SFX_PLAY, PST.preSFXPlay)
 PST:AddCallback(ModCallbacks.MC_POST_MODS_LOADED, PST.postModsLoaded)
 PST:AddCallback(ModCallbacks.MC_MENU_INPUT_ACTION, PST.onMenuInput)
 -- Additional hooks are found for tree menu functionality in ST_treeScreen.lua
+
+-- Load saveslots only while in the menu (Isaac API triggers tons of saveslot loads when returning from game before menu renders)
+function PST:MenuEnableSaveslots()
+    PST.saveslotLoadingEnabled = true
+end
+PST:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, PST.MenuEnableSaveslots)
 
 if Isaac.IsInGame() then
 	PST:firstRenderInit()

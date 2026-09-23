@@ -1117,7 +1117,7 @@ function PST:onNewLevel()
     -- Reset opened chests
     PST.modData.treeModSnapshot.openedChests = {}
 
-    PST:save()
+    PST.savePending = true
 end
 
 local curseIDs = {

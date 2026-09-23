@@ -3,6 +3,10 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Impure in-game)",
         "",
 
+        "1.4.6",
+        "- Optimized data saving calls when entering and exiting a run, which could cause longer freezes.",
+        "",
+
         "1.4.5",
         "- Additional compatibility for new mod items and entities (wookywok).",
         "- \"Active Familiars Luck\" nodes, which grant +luck per active familiar, are now capped at +3 luck.",

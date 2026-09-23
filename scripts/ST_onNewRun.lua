@@ -1,5 +1,6 @@
 function PST:onNewRun(isContinued)
     Isaac.DebugString("[Passive Skill Trees] Beginning run init...")
+    PST.saveslotLoadingEnabled = false
     if isContinued then
         PST.player = Isaac.GetPlayer()
         PST.gameInit = true
@@ -1201,10 +1202,9 @@ function PST:onNewRun(isContinued)
     PST.gameInit = true
 
     -- Initial level & room funcs
+    PST.savePending = true
     PST:onNewLevel()
     PST:onNewRoom()
-
-    PST:save()
 
     -- Create backup if available
     if PST_BackupSave then
