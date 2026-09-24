@@ -15,6 +15,8 @@ return {
     ["node_poopxp"] = "Gana +{{poopXP}} de experiencia al destruir popo.",
     ["node_tintedxp_name"] = "Experiencia: Rocas Marcadas",
     ["node_tintedxp"] = "Gana +{{tintedRockXP}} de experiencia al destruir rocas marcadas.",
+    ["node_destructiblesxp_name"] = "Experiencia: Destructibles",
+    ["node_destructiblesxp"] = "Gana +{{destructiblesXP}} de experiencia al destruir calaveras, hongos y urnas.",
 
     ["node_leveling_of_isaac_name"] = "Nivelación De Isaac",
     ["node_leveling_of_isaac"] = {

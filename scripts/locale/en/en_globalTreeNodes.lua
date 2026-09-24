@@ -15,6 +15,8 @@ return {
     ["node_poopxp"] = "Gain +{{poopXP}} xp when destroying poop",
     ["node_tintedxp_name"] = "Tinted Rock XP",
     ["node_tintedxp"] = "Gain +{{tintedRockXP}} xp when destroying tinted rocks.",
+    ["node_destructiblesxp_name"] = "Destructibles XP",
+    ["node_destructiblesxp"] = "Gain +{{destructiblesXP}} xp when destroying skulls, mushrooms and urns.",
 
     ["node_leveling_of_isaac_name"] = "Leveling Of Isaac",
     ["node_leveling_of_isaac"] = {

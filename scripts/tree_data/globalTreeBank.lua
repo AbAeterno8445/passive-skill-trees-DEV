@@ -591,7 +591,7 @@ PST.SkillTreesAPI.AddCharacterTree("global", false, [[
 "1000": "{\"pos\":[8,-10],\"type\":839,\"size\":\"Small\",\"name\":\"#node_fortunemachinexp_name\",\"description\":[\"#node_fortunemachinexp\"],\"modifiers\":{\"fortuneMachineXPmax\":7},\"adjacent\":[995],\"reqs\":{}}",
 "1007": "{\"pos\":[2,-8],\"type\":840,\"size\":\"Small\",\"name\":\"#node_flawlessxp_name\",\"description\":[\"#node_flawlessxp\"],\"modifiers\":{\"flawlessXP\":2},\"adjacent\":[491,1008],\"reqs\":{}}",
 "1008": "{\"pos\":[3,-9],\"type\":840,\"size\":\"Small\",\"name\":\"#node_flawlessxp_name\",\"description\":[\"#node_flawlessxp\"],\"modifiers\":{\"flawlessXP\":2},\"adjacent\":[1007,1009],\"reqs\":{}}",
-"1009": "{\"pos\":[4,-10],\"type\":840,\"size\":\"Small\",\"name\":\"#node_flawlessxp_name\",\"description\":[\"#node_flawlessxp\"],\"modifiers\":{\"flawlessXP\":2},\"adjacent\":[1008,970,997,990,994],\"reqs\":{}}",
+"1009": "{\"pos\":[4,-10],\"type\":840,\"size\":\"Small\",\"name\":\"#node_flawlessxp_name\",\"description\":[\"#node_flawlessxp\"],\"modifiers\":{\"flawlessXP\":2},\"adjacent\":[1008,970,997,990,994,1054],\"reqs\":{}}",
 "1010": "{\"pos\":[-1,1],\"type\":842,\"size\":\"Large\",\"name\":\"#node_dynamictree_name\",\"description\":[\"#node_dynamictree\"],\"modifiers\":{\"dynamicMode\":true},\"adjacent\":[315],\"reqs\":{}}",
 "1011": "{\"pos\":[-2,-2],\"type\":852,\"size\":\"Large\",\"name\":\"#node_descboxstyle_name\",\"description\":[\"#node_descboxstyle\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"reqs\":{}}",
 "1013": "{\"pos\":[-2,-3],\"type\":853,\"size\":\"Large\",\"name\":\"#node_savebackupsaddon_name\",\"description\":[\"#node_savebackupsaddon\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"reqs\":{}}",
@@ -627,6 +627,9 @@ PST.SkillTreesAPI.AddCharacterTree("global", false, [[
 "1045": "{\"pos\":[39,-10],\"type\":984,\"size\":\"Small\",\"name\":\"#node_scaredhearts_name\",\"description\":[\"#node_scaredhearts\"],\"modifiers\":{\"scaredHeartConv\":1},\"adjacent\":[1046],\"reqs\":{}}",
 "1046": "{\"pos\":[40,-10],\"type\":984,\"size\":\"Small\",\"name\":\"#node_scaredhearts_name\",\"description\":[\"#node_scaredhearts\"],\"modifiers\":{\"scaredHeartConv\":1},\"adjacent\":[1044,1045,1047],\"reqs\":{}}",
 "1047": "{\"pos\":[40,-9],\"type\":984,\"size\":\"Small\",\"name\":\"#node_scaredhearts_name\",\"description\":[\"#node_scaredhearts\"],\"modifiers\":{\"scaredHeartConv\":1},\"adjacent\":[1046],\"reqs\":{}}",
-"1050": "{\"pos\":[-1,-38],\"type\":988,\"size\":\"Large\",\"name\":\"CHAOSMODE\",\"description\":[\"#node_chaosmode\"],\"modifiers\":{\"chaosmode\":true,\"xpgain\":-777},\"adjacent\":[],\"alwaysAvailable\":true,\"reqs\":{\"nonDynamic\":true}}"
+"1050": "{\"pos\":[-1,-38],\"type\":988,\"size\":\"Large\",\"name\":\"CHAOSMODE\",\"description\":[\"#node_chaosmode\"],\"modifiers\":{\"chaosmode\":true,\"xpgain\":-777},\"adjacent\":[],\"alwaysAvailable\":true,\"reqs\":{\"nonDynamic\":true}}",
+"1054": "{\"pos\":[5,-9],\"type\":1002,\"size\":\"Small\",\"name\":\"#node_destructiblesxp_name\",\"description\":[\"#node_destructiblesxp\"],\"modifiers\":{\"destructiblesXP\":4},\"adjacent\":[1009,1055]}",
+"1055": "{\"pos\":[6,-9],\"type\":1002,\"size\":\"Small\",\"name\":\"#node_destructiblesxp_name\",\"description\":[\"#node_destructiblesxp\"],\"modifiers\":{\"destructiblesXP\":4},\"adjacent\":[1054,1056]}",
+"1056": "{\"pos\":[7,-9],\"type\":1002,\"size\":\"Small\",\"name\":\"#node_destructiblesxp_name\",\"description\":[\"#node_destructiblesxp\"],\"modifiers\":{\"destructiblesXP\":4},\"adjacent\":[1055]}"
 }
 ]])

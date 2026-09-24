@@ -690,6 +690,7 @@ function PST:resetMods()
 		poopXP = 0,
 		tintedRockXP = 0,
 		tintedRockAllstats = 0,
+		destructiblesXP = 0,
 		planetariumChance = 0,
 		planetariumAllstats = 0,
 		planetariumAllstatsProc = false,

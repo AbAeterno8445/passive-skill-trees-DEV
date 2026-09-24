@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "1.4.7",
+        "- Added a \"Destructibles XP\" set of nodes to the global tree.",
         "- Pressing Respec on companion nodes can now unequip them instead of respeccing the node.",
         "- Companion slots and incubator nodes now refund obols if they're respecced.",
         "",

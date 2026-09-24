@@ -178,18 +178,36 @@ function PST:gridEntityRockDestroy(rock, gridType, immediate, source)
         local altRockType = rock:GetAltRockType(PST:getRoom():GetBackdropType())
         -- Urns
         if altRockType == 1 then
+            -- Destructibles XP node
+            local tmpMod = PST:getTreeSnapshotMod("destructiblesXP", 0)
+            if tmpMod ~= 0 then
+                PST:addTempXP(tmpMod, true)
+            end
+
             -- Astral Companion: Boulder Beetle scavenge event and objective
             PST:astralCompAddProgress("boulderBeetle", 1)
             PST:astralCompProcScavenge("boulderBeetle")
             PST:astralCompEggUnlockProc("boulderBeetle")
         -- Mushrooms
         elseif altRockType == 2 then
+            -- Destructibles XP node
+            local tmpMod = PST:getTreeSnapshotMod("destructiblesXP", 0)
+            if tmpMod ~= 0 then
+                PST:addTempXP(tmpMod, true)
+            end
+
             -- Astral Companion: Bluecap scavenge event and objective
             PST:astralCompAddProgress("bluecap", 1)
             PST:astralCompEggUnlockProc("bluecap")
             PST:astralCompProcScavenge("bluecap")
         -- Skulls
         elseif altRockType == 3 then
+            -- Destructibles XP node
+            local tmpMod = PST:getTreeSnapshotMod("destructiblesXP", 0)
+            if tmpMod ~= 0 then
+                PST:addTempXP(tmpMod, true)
+            end
+
             -- Astral Companion: Death Scarab scavenge event and objective
             PST:astralCompAddProgress("deathScarab", 1)
             PST:astralCompProcScavenge("deathScarab")
@@ -204,7 +222,7 @@ function PST:gridEntityRockDestroy(rock, gridType, immediate, source)
                 PST:addModifiers({ speedPerc = 1, SC_tellurianBuff = 1 }, true)
             end
         end
-    -- Tainted rocks
+    -- Tinted rocks
     elseif gridType == GridEntityType.GRID_ROCKT then
         -- Mod: +xp when destroying tinted rocks
         local tmpMod = PST:getTreeSnapshotMod("tintedRockXP", 0)
