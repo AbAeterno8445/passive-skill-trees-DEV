@@ -575,6 +575,7 @@ include("scripts.tree_data.apollyonTreeBank")
 include("scripts.tree_data.theForgottenTreeBank")
 include("scripts.tree_data.bethanyTreeBank")
 include("scripts.tree_data.jacobEsauTreeBank")
+include("scripts.tree_data.genericCharTreeBank")
 -- Tainted trees
 include("scripts.tree_data.tainted.taintedIsaacTreeBank")
 include("scripts.tree_data.tainted.taintedMagdaleneTreeBank")

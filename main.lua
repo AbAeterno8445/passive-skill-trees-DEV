@@ -103,6 +103,12 @@ function PST:charInit(charName, forceReset)
 	if not charData.astralIncubators then charData.astralIncubators = {} end
 	if not charData.astralCompanions then charData.astralCompanions = {} end
 	if not charData.scavengedObols then charData.scavengedObols = {} end
+
+	-- Init generic tree
+	if not PST.trees[charName] and PST.modData.charData[charName] then
+		PST.SkillTreesAPI.AddCharacterTree(charName, false, PST.GenericTreeBank)
+		PST.modData.charData[charName].genericTree = true
+	end
 end
 
 -- Save mod data
@@ -237,18 +243,16 @@ function PST:processLoadedData(loadedData)
 	-- Refund allocated nodes that no longer exist
 	for tree, nodes in pairs(PST.modData.treeNodes) do
 		for nodeID, allocated in pairs(nodes) do
-			if PST.trees[tree] ~= nil then
-				if PST.trees[tree][nodeID] == nil and nodeID ~= 0 and nodeID ~= "0" then
-					if allocated then
-						print("Passive Skill Trees: Found allocated non-existant node ID", nodeID, "for tree [", tree, "]. Refunding skill point.")
-						if tree == "global" or tree == "starTree" then
-							PST.modData.skillPoints = PST.modData.skillPoints + 1
-						elseif PST.modData.charData[tree] then
-							PST.modData.charData[tree].skillPoints = PST.modData.charData[tree].skillPoints + 1
-						end
+			if PST.trees[tree] ~= nil and PST.trees[tree][nodeID] == nil and nodeID ~= 0 and nodeID ~= "0" then
+				if allocated then
+					print("[Passive Skill Trees] Found allocated non-existant node ID", nodeID, "for tree [", tree, "]. Refunding skill point.")
+					if tree == "global" or tree == "starTree" then
+						PST.modData.skillPoints = PST.modData.skillPoints + 1
+					elseif PST.modData.charData[tree] then
+						PST.modData.charData[tree].skillPoints = PST.modData.charData[tree].skillPoints + 1
 					end
-					PST.modData.treeNodes[tree][nodeID] = nil
 				end
+				PST.modData.treeNodes[tree][nodeID] = nil
 			end
 		end
 	end

@@ -643,7 +643,7 @@ function descriptionBoxesModule:Render(tScreen)
         end
 
         -- Crimson starcore sources for crimson nodes
-        if isCrimsonNode and not isAllocated then
+        if isCrimsonNode and not isAllocated and (hoveredNode.reqs.crimsonStarcore or hoveredNode.reqs.crimsonStarcores) then
             local tmpSrcDescLines = PST:getLocalized("ui_crimsonCoreSrcDesc")
             if type(tmpSrcDescLines) == "table" then
                 for _, tmpLine in ipairs(tmpSrcDescLines) do

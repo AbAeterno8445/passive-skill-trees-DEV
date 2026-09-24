@@ -7,13 +7,28 @@ PST.SkillTreesAPI = {
     AddCharacterTree = function(charName, replace, treeData)
         local reloadMod = false
         if PST.trees[charName] ~= nil and not replace then
-            Console.PrintWarning("Passive Skill Trees: could not initialize tree for " .. charName ..", character name already initialized!")
+            Console.PrintWarning("[Passive Skill Trees] Could not initialize tree for " .. charName ..", character name already initialized!")
             return false
         elseif not PST.loadingBaseTrees and PST.fileLoaded then
             -- Reload if custom char tree
             reloadMod = true
         end
         PST.nodeLinks[charName] = {}
+
+        -- New tree replacing a character's generic tree, refund allocated nodes in the latter
+        local charData = PST.modData.charData[charName]
+        if replace and PST.modData.treeNodes[charName] and charData and charData.genericTree then
+            print("[Passive Skill Trees] New tree replacing generic one for", charName, "- Refunding allocated nodes...")
+            charData.genericTree = nil
+            for nodeID, allocated in pairs(PST.modData.treeNodes[charName]) do
+                if tostring(nodeID) ~= "0" then
+                    if allocated then
+                        charData.skillPoints = charData.skillPoints + 1
+                    end
+                    PST.modData.treeNodes[charName][nodeID] = nil
+                end
+            end
+        end
 
         local tmpTreeData
         if type(treeData) == "string" then
