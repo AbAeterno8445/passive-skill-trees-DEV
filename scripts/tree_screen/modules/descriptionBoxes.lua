@@ -350,6 +350,8 @@ local descriptionBoxesModule = {
                     for _, tmpLine in ipairs(eggDesc) do
                         table.insert(nodeDesc, tmpLine)
                     end
+
+                    table.insert(nodeDesc, PST:getLocalized("astralcomp_ui_respecUnequip"))
                 end
             end
             return { name = descName, description = nodeDesc }
@@ -369,6 +371,8 @@ local descriptionBoxesModule = {
                     for _, tmpLine in ipairs(compDesc) do
                         table.insert(nodeDesc, tmpLine)
                     end
+
+                    table.insert(nodeDesc, PST:getLocalized("astralcomp_ui_respecUnequip"))
                 end
             end
             table.insert(nodeDesc, "")

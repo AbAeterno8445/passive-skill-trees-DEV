@@ -26,6 +26,7 @@ function PST.treeScreen:InputRespec()
             end
             if not isSocketedJewel then
                 local isAllocated = PST:isNodeAllocated(self.currentTree, self.hoveredNode.id)
+                local nodeReqs = self.hoveredNode.reqs
                 local charData = PST:getCurrentCharData()
                 -- Crimson node, un-select node
                 if PST:arrHasValue(PST.crimsonNodeNames, self.hoveredNode.name) and isAllocated and charData and charData.crimsonNodes and
@@ -33,8 +34,20 @@ function PST.treeScreen:InputRespec()
                     charData.crimsonNodes[tostring(self.hoveredNode.id)] = nil
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
 
+                -- Companion Incubator slot, unequip companion egg
+                elseif nodeReqs and nodeReqs.incubatorSlot and PST:getEquippedIncubatorEgg(nodeReqs.incubatorSlot) then
+                    local tmpEgg = PST:getEquippedIncubatorEgg(nodeReqs.incubatorSlot)
+                    PST:unequipIncubatorEgg(tmpEgg)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
+                -- Companion slot, unequip companion
+                elseif nodeReqs and nodeReqs.companionSlot and charData and charData.astralCompanions and
+                PST:getEquippedAstralComp(nodeReqs.companionSlot) then
+                    charData.astralCompanions[tostring(nodeReqs.companionSlot)] = nil
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
                 elseif PST:isNodeAllocatable(self.currentTree, self.hoveredNode.id, false) then
-                    local noSP = (self.hoveredNode.reqs and self.hoveredNode.reqs.noSP)
+                    local noSP = (nodeReqs and nodeReqs.noSP)
 
                     -- Respec Cosmic Realignment node
                     local cosmicRChar = PST.modData.cosmicRealignment
@@ -67,15 +80,15 @@ function PST.treeScreen:InputRespec()
                         self:UpdateStarTreeTotals()
 
                         -- Node requirement refunds
-                        if self.hoveredNode.reqs then
+                        if nodeReqs then
                             -- Return Crimson Starcores if required
-                            local tmpStarcoreReq = self.hoveredNode.reqs.crimsonStarcore or self.hoveredNode.reqs.crimsonStarcores
+                            local tmpStarcoreReq = nodeReqs.crimsonStarcore or nodeReqs.crimsonStarcores
                             if tmpStarcoreReq and charData then
                                 charData.crimsonStarcores = charData.crimsonStarcores + tmpStarcoreReq
                             end
 
                             -- Sidereal Artifacts
-                            if self.hoveredNode.reqs.sideArti and charData then
+                            if nodeReqs.sideArti and charData then
                                 local sideArtiName
                                 for tmpMod, _ in pairs(self.hoveredNode.modifiers) do
                                     if PST.sideArtiData[tmpMod] then
@@ -97,8 +110,13 @@ function PST.treeScreen:InputRespec()
                             end
 
                             -- Deep-Space node
-                            if self.hoveredNode.reqs.deepSpaceNode then
+                            if nodeReqs.deepSpaceNode then
                                 PST.modData.deepSpaceSP = PST.modData.deepSpaceSP + 1
+                            end
+
+                            -- Node refunds obols
+                            if charData and nodeReqs.obols and nodeReqs.refundsObols then
+                                charData.arcaneObols = charData.arcaneObols + nodeReqs.obols
                             end
                         end
 

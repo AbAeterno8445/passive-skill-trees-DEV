@@ -101,7 +101,7 @@ function PST:unequipIncubatorEgg(eggName)
 end
 
 -- Returns the name of the companion equipped in the given companion slot.
----@param compSlot number|string Incubator slot ID. Falls back to PST.selectedAstralIncubator if not provided
+---@param compSlot number|string Companion slot ID. Falls back to PST.selectedAstralCompanionSlot if not provided
 function PST:getEquippedAstralComp(compSlot)
     local charData = PST:getCurrentCharData()
     if charData and charData.astralCompanions then

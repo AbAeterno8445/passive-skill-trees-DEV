@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Impure in-game)",
         "",
 
+        "1.4.7",
+        "- Pressing Respec on companion nodes can now unequip them instead of respeccing the node.",
+        "- Companion slots and incubator nodes now refund obols if they're respecced.",
+        "",
+
         "1.4.6",
         "- Additional mod compatibility for Monsters Monthly (wookywok).",
         "- Optimized data saving calls when entering and exiting a run, which could cause longer freezes.",
