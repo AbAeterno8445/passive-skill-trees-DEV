@@ -1,8 +1,15 @@
+-- Pre new room
+function PST:preNewRoom()
+	if not PST.gameInit then return end
+
+	-- Clean entity cache before they are re-initialized
+    PST.entDataCache = {}
+end
+
 -- On new room
 function PST:onNewRoom()
     if not PST.gameInit then return end
 
-    PST.entDataCache = {}
 	PST.modData.spawnKills = 0
 	PST.modData.xpObtained = 0
 	PST.specialNodes.bossHits = 0
