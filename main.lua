@@ -303,6 +303,8 @@ end
 function PST:resetSaveData()
 	PST:resetData()
 	PST:resetNodes()
+	PST.expeditionsData = { [0] = {} }
+	PST.uberExpeditionsData = { [0] = {} }
 	PST:save(true)
 end
 
