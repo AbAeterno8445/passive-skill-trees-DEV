@@ -77,7 +77,7 @@ function PST:gridEntityPoopUpdate(entityParam)
                         if PST:getTreeSnapshotMod("cardAgainstHumanityProc", false) then
                             tmpMod = tmpMod / 10
                         end
-                        PST:addTempXP(tmpMod, true, true)
+                        PST:addTempXP(tmpMod, true)
                     end
 
                     -- Alacritous Purpose node (T. Blue Baby's tree)
@@ -268,7 +268,7 @@ function PST:onFireRender(entityParam)
                 -- Mod: +xp when destroying a fireplace
                 local tmpBonus = PST:getTreeSnapshotMod("fireXP", 0)
                 if tmpBonus ~= 0 then
-                    PST:addTempXP(tmpBonus, true, true)
+                    PST:addTempXP(tmpBonus, true)
                 end
             end
             staticEntCache[entityID] = entityParam.HitPoints
