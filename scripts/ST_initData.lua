@@ -349,6 +349,9 @@ PST.causeConverterBossBlacklist = {
 	EntityType.ENTITY_DELIRIUM, EntityType.ENTITY_DOGMA, EntityType.ENTITY_BEAST,
 	EntityType.ENTITY_ULTRA_GREED, EntityType.ENTITY_GEMINI, EntityType.ENTITY_PIN
 }
+PST.nullstoneBlacklist = {
+	EntityType.ENTITY_MR_MINE, EntityType.ENTITY_FISSURE
+}
 PST.planetariumItems = {
 	CollectibleType.COLLECTIBLE_JUPITER, CollectibleType.COLLECTIBLE_LUNA, CollectibleType.COLLECTIBLE_MARS,
 	CollectibleType.COLLECTIBLE_MERCURIUS, CollectibleType.COLLECTIBLE_NEPTUNUS, CollectibleType.COLLECTIBLE_PLUTO,

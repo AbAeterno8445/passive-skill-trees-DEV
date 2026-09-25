@@ -7,6 +7,7 @@ function PST:getChangelogList()
         "- Multi-segment bosses now grant 10x as much XP on death in boss rooms, and 6x in non-boss rooms, to account for on-death effects triggering once.",
         "- Challenge rooms now grant a base 50 xp when cleared, and boss challenge rooms now grant a base 120 xp.",
         "- Monster HP modifier formula now accounts for the base game's extra stage HP for specific monsters.",
+        "- Certain monsters can no longer be nullified by Nullstone (Ancient jewel), such as Mr Mines and Fissures.",
         "- Fixed inconsistent HP application for Envy and Super Envy.",
         "",
 

@@ -231,8 +231,8 @@ function PST:onNewRoom()
 			local highestHP = 0
 			for _, tmpEntity in ipairs(PST_FetchRoomEntities()) do
 				local tmpNPC = tmpEntity:ToNPC()
-				if tmpNPC and not tmpNPC:IsBoss() and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and
-				not EntityRef(tmpNPC).IsFriendly then
+				if tmpNPC and not PST:arrHasValue(PST.nullstoneBlacklist, tmpNPC.Type) and tmpNPC:IsBoss() and tmpNPC:IsActiveEnemy(false)
+				and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
 					if tmpNPC.MaxHitPoints > highestHP then
 						highestHP = tmpNPC.MaxHitPoints
 					end
