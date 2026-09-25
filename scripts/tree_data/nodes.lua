@@ -79,6 +79,8 @@ end
 
 -- Initial setup for tree & nodes
 function PST:initTreeNodes(tree)
+    if not PST.trees[tree] then return end
+
     -- Sanitize json data in tree bank
     local tmpTreeData = {}
     for nodeID, nodeStr in pairs(PST.trees[tree]) do
@@ -538,7 +540,7 @@ end
 
 -- Character medium nodes
 function PST:updateCharMedNodes(charName)
-	if PST:arrHasValue(PST.globalTrees, charName) or PST:strStartsWith(charName, "Astral Vessel") then
+	if PST:arrHasValue(PST.globalTrees, charName) or PST:strStartsWith(charName, "Astral Vessel") or not PST.trees[charName] then
 		return
 	end
 
