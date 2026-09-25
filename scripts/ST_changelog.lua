@@ -3,6 +3,11 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Impure in-game)",
         "",
 
+        "1.4.8",
+        "- Multi-segment bosses now grant 10x as much XP on death in boss rooms, and 6x in non-boss rooms, to account for on-death effects triggering once.",
+        "- Challenge rooms now grant a base 50 xp when cleared, and boss challenge rooms now grant a base 120 xp.",
+        "",
+
         "1.4.7",
         "- Non-vanilla characters without a tree of their own now have a default, generic tree to allocate points in.",
         "This tree features stat-ups, xp gain, and an abundance of crimson nodes that don't require crimson starcores.",

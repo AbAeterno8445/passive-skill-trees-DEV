@@ -102,6 +102,15 @@ function PST:onDeath(entity)
                 -- Max 8% xp from frozen enemies
                 if isFrozen and mult > 0.08 then mult = 0.08 end
 
+                -- Segmented boss xp mult
+                if isSegmentBoss then
+                    if room:GetType() == RoomType.ROOM_BOSS then
+                        mult = mult + 9
+                    else
+                        mult = mult + 5
+                    end
+                end
+
                 -- Sidereal Artifact condition: kill monsters (count only xp granting mobs)
                 if PST:getTreeSnapshotMod("bloodSeptentrion", false) and not isFrozen then
                     PST:sideArtiAddEnergy(PST.sideArtiData.bloodSeptentrion.energy)

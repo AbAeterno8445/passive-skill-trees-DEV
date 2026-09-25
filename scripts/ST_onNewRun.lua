@@ -52,6 +52,14 @@ function PST:onNewRun(isContinued)
                         end
                     end
                 end
+                -- Vessel profile loading support
+                if PSTAVessel and PSTAVessel.vesselType and PSTAVessel.currentProfile and PST.trees["Astral Vessel"] then
+                    for nodeID, node in pairs(PST.trees["Astral Vessel"]) do
+                        if PST:isNodeAllocated("Astral Vessel", nodeID) then
+                            PST:addModifiers(node.modifiers)
+                        end
+                    end
+                end
             end
 
             -- Cosmic Realignment

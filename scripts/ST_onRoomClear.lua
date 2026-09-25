@@ -19,16 +19,21 @@ function PST:onRoomClear(RNG)
     local jewelDrop = false
     -- Challenge rooms
     if roomType == RoomType.ROOM_CHALLENGE then
+        local levelHasBoss = level:HasBossChallenge()
+
         -- Final round clear
         if not PST:getTreeSnapshotMod("challRoomClear", false) and
-        (Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (level:HasBossChallenge() and Ambush.GetCurrentWave() == 2)) then
+        (Ambush.GetCurrentWave() >= Ambush.GetMaxChallengeWaves() or (levelHasBoss and Ambush.GetCurrentWave() == 2)) then
             PST:addModifiers({ challRoomClear = true }, true)
 
             -- Challenge room XP reward
-            local challengeXP = PST:getTreeSnapshotMod("challengeXP", 0)
+            local challengeXP = 50 + PST:getTreeSnapshotMod("challengeXP", 0)
             local bossChallengeXP = PST:getTreeSnapshotMod("bossChallengeXP", false)
-            if challengeXP > 0 and (not level:HasBossChallenge() or (level:HasBossChallenge() and bossChallengeXP)) then
-                PST:addTempXP(challengeXP, true)
+            if levelHasBoss then
+                challengeXP = challengeXP + 70
+            end
+            if challengeXP > 0 and (not levelHasBoss or (levelHasBoss and bossChallengeXP)) then
+                PST:addTempXP(challengeXP, true, true)
             end
 
             if not PST:getTreeSnapshotMod("SC_challClear", false) then
