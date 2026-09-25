@@ -8,6 +8,24 @@ local clotHeartTypes = {
     HeartSubType.HEART_ROTTEN
 }
 
+local mobXPMults = {
+    [EntityType.ENTITY_ENVY] = {[30] = 6, [31] = 10},
+    [EntityType.ENTITY_PEEP] = 0.33,
+    [EntityType.ENTITY_CHUB] = 0.4
+}
+
+-- Special on-death checks for monsters
+---@param entity Entity
+function PST:isValidMobDeath(entity)
+    -- Envy, smallest heads only
+    if entity.Type == EntityType.ENTITY_ENVY then
+        if entity.Variant < 30 then
+            return false
+        end
+    end
+    return true
+end
+
 -- On entity death
 ---@param entity Entity
 function PST:onDeath(entity)
@@ -46,7 +64,7 @@ function PST:onDeath(entity)
     elseif entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly and
     PST:getRoom():GetFrameCount() > 1 then
         local isSegmentBoss = PST:arrHasValue(PST.segmentBosses, entity.Type)
-        if not isSegmentBoss or (isSegmentBoss and PST:isLastMobOfType(entity)) then
+        if PST:isValidMobDeath(entity) and (not isSegmentBoss or (isSegmentBoss and PST:isLastMobOfType(entity))) then
             -- Enemy death
             local room = PST:getRoom()
             local tmpNPC = entity:ToNPC()
@@ -78,9 +96,18 @@ function PST:onDeath(entity)
 
             if addXP and not PST:getTreeSnapshotMod("d7Proc", false) and not PST:getTreeSnapshotMod("deathTrialActive", false) then
                 local mult = 1
-                -- Reduce xp for certain bosses
-                if entity.Type == EntityType.ENTITY_PEEP then
-                    mult = 0.33
+
+                -- Specific mob xp multipliers
+                local tmpMobXPMult = mobXPMults[entity.Type]
+                if tmpMobXPMult then
+                    if type(tmpMobXPMult) ~= "table" then
+                        mult = tmpMobXPMult
+                    else
+                        local mobVariantXPMult = tmpMobXPMult[entity.Variant]
+                        if mobVariantXPMult then
+                            mult = mobVariantXPMult
+                        end
+                    end
                 end
 
                 if tmpNPC then

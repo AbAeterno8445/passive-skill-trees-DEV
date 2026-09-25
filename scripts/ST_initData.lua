@@ -216,7 +216,7 @@ PST.deadlySinBosses = {
 	EntityType.ENTITY_SLOTH
 }
 PST.segmentBosses = {
-	EntityType.ENTITY_ENVY, EntityType.ENTITY_LARRYJR, EntityType.ENTITY_PIN, EntityType.ENTITY_CHUB,
+	EntityType.ENTITY_ENVY, EntityType.ENTITY_LARRYJR, EntityType.ENTITY_PIN,
 	EntityType.ENTITY_FISTULA_MEDIUM, EntityType.ENTITY_FISTULA_SMALL, EntityType.ENTITY_BLASTOCYST_MEDIUM, EntityType.ENTITY_BLASTOCYST_SMALL
 }
 PST.spiderBosses = {
@@ -547,6 +547,7 @@ PST.submergedEnemies = {
 	EntityType.ENTITY_DEEP_GAPER
 }
 PST.mobHPBlacklist = {EntityType.ENTITY_HUSH_FLY}
+PST.baseHPBlacklist = {EntityType.ENTITY_ENVY}
 PST.explosionSounds = {
 	SoundEffect.SOUND_EXPLOSION_DEBRIS, SoundEffect.SOUND_EXPLOSION_STRONG, SoundEffect.SOUND_EXPLOSION_WEAK,
 	SoundEffect.SOUND_EXPLOSIVE_DIAH, SoundEffect.SOUND_BOSS1_EXPLOSIONS

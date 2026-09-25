@@ -441,8 +441,8 @@ function PST:entityIsFinalBoss(entity)
 end
 
 ---@param entity Entity
-function PST:isLastMobOfType(entity, checkSubType)
-	local tmpOtherList = Isaac.FindByType(entity.Type, entity.Variant, checkSubType and entity.SubType or -1)
+function PST:isLastMobOfType(entity, checkVariant, checkSubType)
+	local tmpOtherList = Isaac.FindByType(entity.Type, checkVariant and entity.Variant or -1, checkSubType and entity.SubType or -1)
 	for _, tmpOther in ipairs(tmpOtherList) do
 		if (tmpOther:IsActiveEnemy(false) or tmpOther:IsVulnerableEnemy()) and not EntityRef(tmpOther).IsFriendly then
 			return false

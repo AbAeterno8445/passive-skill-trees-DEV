@@ -3337,11 +3337,6 @@ function PST:frameUpdate()
 		PST.specialNodes.dsdMod_finalImmTimer = PST.specialNodes.dsdMod_finalImmTimer - 1
 	end
 
-	-- Periodically clean entity data cache
-	if roomFrame % 900 == 0 then
-		PST.entDataCache = {}
-	end
-
 	-- Apollyon locust tears mod
 	if PST.specialNodes.locustTearsTimer > 0 then
 		PST.specialNodes.locustTearsTimer = PST.specialNodes.locustTearsTimer - 1

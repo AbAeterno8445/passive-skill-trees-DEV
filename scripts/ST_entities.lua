@@ -21,6 +21,12 @@ function PST:onEntitySpawn(type, variant, subtype, position, velocity, spawner, 
             end
         end
     end
+
+    -- Init flag if already in cache (addresses certain spawns having the same seed such as Envy when splitting)
+    local tmpCache = PST.entDataCache[seed]
+    if tmpCache and tmpCache.PST_mobInit then
+        tmpCache.PST_mobInit = false
+    end
 end
 
 ---@param effect EntityEffect
@@ -102,6 +108,8 @@ end
 
 ---@param npc EntityNPC
 function PST:onNPCUpdate(npc)
+    if PST.modData.treeDisabled then return end
+
     -- Ancient starcursed jewel: Cause Converter - remove boss minions
     if PST.specialNodes.SC_causeConvBossEnt and ((npc.Parent and npc.Parent.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed) or
     (npc.SpawnerEntity and npc.SpawnerEntity.InitSeed == PST.specialNodes.SC_causeConvBossEnt.InitSeed)) then
@@ -141,7 +149,6 @@ function PST:onNPCUpdate(npc)
             end
         end
         if not npcData.PST_mobInit and npc.Type ~= EntityType.ENTITY_GIDEON and not noUpdate then
-            EntityConfig.GetEntity(EntityType.ENTITY_HUSH, 0, 0):GetBaseHP()
             npcData.PST_mobInit = true
 
             local noHPMods = PST:entityIsHPModBlacklisted(npc)
@@ -204,8 +211,14 @@ function PST:onNPCUpdate(npc)
 
                 local tmpBaseHP = npc.MaxHitPoints
                 local entityCfg = EntityConfig.GetEntity(npc.Type, npc.Variant, npc.SubType)
-                if entityCfg then
+                if entityCfg and not PST:arrHasValue(PST.baseHPBlacklist, npc.Type) then
                     tmpBaseHP = entityCfg:GetBaseHP()
+                    -- Apply Stage HP
+                    local stageHP = entityCfg:GetStageHP()
+                    local lvlStage = PST:getLevel():GetStage()
+                    if stageHP > 0 then
+                        tmpBaseHP = tmpBaseHP + (math.min(4, lvlStage) + 0.8 * math.max(0, math.min(5, lvlStage - 5))) * stageHP
+                    end
                 end
                 local tmpHPPerc = math.min(1, npc.HitPoints / npc.MaxHitPoints)
 
