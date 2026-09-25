@@ -246,5 +246,12 @@ return {
         {"350 energía: Crea una Llave Rota. 6% chance de revelar la habitación ultra secreta al activarse.", PST.kcolors.TEAL1},
         "5 segundos de enfriamiento de artefacto."
     },
-    ["sideart_bloodmoonMeridion_obj"] = "Entra a la habitación ultra secreta {{progress}}/5 veces."
+    ["sideart_bloodmoonMeridion_obj"] = "Entra a la habitación ultra secreta {{progress}}/5 veces.",
+
+    ["sideart_soulMeridion"] = "Meridión del Alma",
+    ["sideart_soulMeridion_desc"] = {
+        {"500 energia: Crea la Piedra del Alma asociada al personaje actual. Si no hay una, crea una aleatoria."},
+        "30 segundos de enfriamiento de artefacto."
+    },
+    ["sideart_soulMeridion_obj"] = "Usa fragmentos de runas, runas o piedras del alma {{progress}}/50 veces. Las piedras del alma dan 5 progreso."
 }

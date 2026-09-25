@@ -4,6 +4,7 @@ function PST:getChangelogList()
         "",
 
         "1.4.8",
+        "- Added a new \"Soul Meridion\" Artifact to the Sidereal Tree.",
         "- Multi-segment bosses now grant 10x as much XP on death in boss rooms, and 6x in non-boss rooms, to account for on-death effects triggering once.",
         "- Challenge rooms now grant a base 50 xp when cleared, and boss challenge rooms now grant a base 120 xp.",
         "- Monster HP modifier formula now accounts for the base game's extra stage HP for specific monsters.",

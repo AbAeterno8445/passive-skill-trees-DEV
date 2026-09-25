@@ -915,7 +915,7 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "1535": "{\"pos\":[35,-3],\"type\":964,\"size\":\"Small\",\"name\":\"#node_superstitiousseptentrion_name\",\"description\":[\"\"],\"modifiers\":{\"superstitiousSeptentrion\":true},\"adjacent\":[1537],\"reqs\":{\"noSP\":true,\"sideArti\":true}}",
 "1536": "{\"pos\":[39,3],\"type\":963,\"size\":\"Small\",\"name\":\"#node_bloodmoonmeridion_name\",\"description\":[\"\"],\"modifiers\":{\"bloodmoonMeridion\":true},\"adjacent\":[1538],\"reqs\":{\"noSP\":true,\"sideArti\":true}}",
 "1537": "{\"pos\":[35,-2],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1507,1535],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
-"1538": "{\"pos\":[39,2],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1534,1536],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
+"1538": "{\"pos\":[39,2],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1534,1536,1586],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}",
 "1539": "{\"pos\":[-6,1],\"type\":987,\"size\":\"Large\",\"name\":\"#node_obolmagnetism_name\",\"description\":[\"#node_obolmagnetism\"],\"modifiers\":{\"obolMagnetism\":true},\"adjacent\":[25],\"reqs\":{\"obols\":400}}",
 "1542": "{\"pos\":[-1,-11],\"type\":989,\"size\":\"Large\",\"name\":\"#node_ancwepcompendium_name\",\"description\":[\"#node_ancwepcompendium\"],\"modifiers\":{},\"adjacent\":[55],\"reqs\":{\"noSP\":true}}",
 "1543": "{\"pos\":[21,0],\"type\":888,\"size\":\"Large\",\"name\":\"#node_artifactenergy_name\",\"description\":[\"#node_artifactenergy\"],\"modifiers\":{},\"adjacent\":[1360],\"reqs\":{\"obols\":100}}",
@@ -938,6 +938,8 @@ PST.SkillTreesAPI.AddCharacterTree("sidereal", false, [[
 "1581": "{\"pos\":[14,4],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1565],\"reqs\":{\"noSP\":true,\"companionSlot\":2}}",
 "1582": "{\"pos\":[14,5],\"type\":998,\"size\":\"Small\",\"name\":\"#node_scavengedobols_name\",\"description\":[\"#node_scavengedobols\"],\"modifiers\":{},\"adjacent\":[1566],\"reqs\":{\"noSP\":true,\"companionSlot\":3}}",
 "1583": "{\"pos\":[1,-11],\"type\":999,\"size\":\"Large\",\"name\":\"#node_weaponmagnetism_name\",\"description\":[\"#node_weaponmagnetism\"],\"modifiers\":{\"weaponMagnetism\":true},\"adjacent\":[55],\"reqs\":{\"obols\":200}}",
-"1584": "{\"pos\":[11,4],\"type\":1001,\"size\":\"Small\",\"name\":\"#node_compproc_name\",\"description\":[\"#node_compproc\"],\"modifiers\":{\"astralCompanionShowProc\":true},\"adjacent\":[1569],\"reqs\":{\"noSP\":true}}"
+"1584": "{\"pos\":[11,4],\"type\":1001,\"size\":\"Small\",\"name\":\"#node_compproc_name\",\"description\":[\"#node_compproc\"],\"modifiers\":{\"astralCompanionShowProc\":true},\"adjacent\":[1569],\"reqs\":{\"noSP\":true}}",
+"1585": "{\"pos\":[40,3],\"type\":1003,\"size\":\"Small\",\"name\":\"#node_soulmeridion_name\",\"description\":[\"\"],\"modifiers\":{\"soulMeridion\":true},\"adjacent\":[1586],\"reqs\":{\"noSP\":true,\"sideArti\":true}}",
+"1586": "{\"pos\":[40,2],\"type\":762,\"size\":\"Small\",\"name\":\"#node_siderealvicinity_name\",\"description\":[\"#node_siderealtravel\"],\"modifiers\":{},\"adjacent\":[1538,1585],\"reqs\":{\"obols\":{\"var\":\"siderealVicinityCost\"}}}"
 }
 ]])

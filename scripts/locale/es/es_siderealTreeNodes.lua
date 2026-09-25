@@ -192,6 +192,7 @@ return {
     ["node_siderealmeridion_name"] = "Meridión Sideral",
     ["node_snakeeyemeridion_name"] = "Meridión Ojo de Serpiente",
     ["node_bloodmoonmeridion_name"] = "Meridión de la Luna de Sangre",
+    ["node_soulmeridion_name"] = "Meridión del Alma",
 
     ["node_addseptentrional_name"] = "Elección Septentrional Adicional",
     ["node_addseptentrional"] = "Permite asignar un artefacto Septentrional adicional.",

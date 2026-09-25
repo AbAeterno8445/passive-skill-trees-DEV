@@ -247,5 +247,12 @@ return {
         {"350 energy: Spawn a Cracked Key. 6% chance to reveal the Ultra Secret Room on trigger.", PST.kcolors.TEAL1},
         "5 second artifact cooldown."
     },
-    ["sideart_bloodmoonMeridion_obj"] = "Enter the Ultra Secret Room {{progress}}/5 times."
+    ["sideart_bloodmoonMeridion_obj"] = "Enter the Ultra Secret Room {{progress}}/5 times.",
+
+    ["sideart_soulMeridion"] = "Soul Meridion",
+    ["sideart_soulMeridion_desc"] = {
+        {"500 energy: spawn your current character's Soul Stone. If there's no Soul Stone, spawn a random one instead.", PST.kcolors.TEAL1},
+        "30 second artifact cooldown."
+    },
+    ["sideart_soulMeridion_obj"] = "Use rune shards, runes or soul stones {{progress}}/50 times. Soul stones count as 5 progress."
 }

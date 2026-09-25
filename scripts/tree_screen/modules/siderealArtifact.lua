@@ -350,6 +350,17 @@ PST.sideArtiData = {
         },
         energyReq = 350,
         cooldown = 5
+    },
+    soulMeridion = {
+        name = PST:getLocalized("sideart_soulMeridion"),
+        type = "meridion",
+        desc = PST:getLocalized("sideart_soulMeridion_desc"),
+        objective = {
+            desc = PST:getLocalized("sideart_soulMeridion_obj"),
+            req = 50
+        },
+        energyReq = 500,
+        cooldown = 30
     }
 }
 
@@ -628,6 +639,12 @@ function PST:triggerMeridion(meridionName)
                 end
             end
         end
+
+    -- Soul Meridion
+    elseif meridionName == "soulMeridion" then
+        local tmpPos = Isaac.GetFreeNearPosition(PST:getPlayer().Position, 20)
+        local newStone = PST:getMatchingSoulstone(PST:getPlayer():GetPlayerType())
+        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newStone, tmpPos, Vector.Zero, nil)
     end
 end
 

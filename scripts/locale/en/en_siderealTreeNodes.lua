@@ -195,6 +195,7 @@ return {
     ["node_siderealmeridion_name"] = "Sidereal Meridion",
     ["node_snakeeyemeridion_name"] = "Snake-Eye Meridion",
     ["node_bloodmoonmeridion_name"] = "Bloodmoon Meridion",
+    ["node_soulmeridion_name"] = "Soul Meridion",
 
     ["node_addseptentrional_name"] = "Additional Septentrional Choice",
     ["node_addseptentrional"] = "Allows allocating an additional Septentrional Artifact.",

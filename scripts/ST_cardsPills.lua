@@ -345,6 +345,20 @@ function PST:onUseCard(card, player, useFlags)
         end
     end
 
+    -- Soul Meridion progress
+    if card == Card.RUNE_SHARD or PST:arrHasValue(PST.allRunes, card) then
+        PST:sideArtiObjProgress("soulMeridion", 1)
+    else
+        for _, stoneType in pairs(PST.playerSoulstones) do
+            -- Used soul stone
+            if card == stoneType then
+                -- Soul Meridion progress
+                PST:sideArtiObjProgress("soulMeridion", 5)
+                break
+            end
+        end
+    end
+
     -- Mod: % chance to trigger The Poop's effect when using any card/pill
     tmpMod = PST:getTreeSnapshotMod("cardPillPoop", 0)
     if tmpMod > 0 and 100 * math.random() < tmpMod then
