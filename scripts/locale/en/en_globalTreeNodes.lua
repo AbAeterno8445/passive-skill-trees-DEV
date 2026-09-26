@@ -255,7 +255,7 @@ return {
         "at least 15 coins, if it's jammed."
     },
     ["node_donomachinerestore_threshold_name"] = "Dono Machine Purchase Restoration Price",
-    ["node_donomachinerestore_threshold"] = "{{donoPurchaseThresh}} coin price threshold for Donation Machine restoration on purchase.",
+    ["node_donomachinerestore_threshold"] = "-{{donoPurchaseThresh}} coin price threshold for Donation Machine restoration on purchase.",
 
     ["node_generosityinsteps_name"] = "Generosity In Steps",
     ["node_generosityinsteps"] = {
