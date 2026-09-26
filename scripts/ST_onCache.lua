@@ -439,6 +439,12 @@ function PST:onCache(player, cacheFlag)
         if tmpTreeMod > 0 and PST:inRedRoom() then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpTreeMod
         end
+
+        -- Mod: +speed while in cleared, empty rooms
+        tmpTreeMod = PST:getTreeSnapshotMod("emptyRoomSpeed", 0)
+	    if tmpTreeMod > 0 and PST:getRoom():GetAliveEnemiesCount() == 0 then
+            dynamicMods.speed = dynamicMods.speed + tmpTreeMod * 2
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: tears while dead bird is active

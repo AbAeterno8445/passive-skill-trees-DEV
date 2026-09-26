@@ -875,6 +875,11 @@ function PST:onRoomClear(RNG)
         PST.specialNodes.SC_anamnesisResetTimer = 1
     end
 
+    -- Mod: % speed while in cleared, empty rooms
+	if PST:getTreeSnapshotMod("emptyRoomSpeed", 0) > 0 then
+		player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+	end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_THEFORGOTTEN) then
         -- The Forgotten, reset Keeper debuff

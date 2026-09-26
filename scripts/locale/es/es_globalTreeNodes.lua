@@ -364,10 +364,15 @@ return {
         "+10% chance de regenerar 1/2 corazón adicional al conseguir corazones asustados."
     },
 
+    ["node_emptyroomspeed_name"] = "Velocidad en Habitaciones Vacias",
+    ["node_emptyroomspeed"] = {
+        "+{{emptyRoomSpeed}} velocidad en habitaciones completadas y sin monstruos."
+    },
+
     ["node_chaosmode"] = {
         "Comenzar una partida aplicará efectos de todos los árboles disponibles al azar, independientemente de",
         "la asignación de nodos.",
-        "No se pueden progresar los objetivos de Expediciones Astrals mientras este asignado.",
+        "No se pueden progresar los objetivos de Expediciones Astrales mientras este asignado.",
         "-777% experiencia ganada.",
         "Puede causar lag!"
     }

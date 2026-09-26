@@ -1528,6 +1528,11 @@ function PST:onNewRoom()
 		end
 	end
 
+	-- Mod: % speed while in cleared, empty rooms
+	if PST:getTreeSnapshotMod("emptyRoomSpeed", 0) > 0 then
+		player:AddCacheFlags(CacheFlag.CACHE_SPEED, true)
+	end
+
 	-- Ancient weapon: Divine Messenger
 	if PST:getTreeSnapshotMod("ancwep_divineMessengerProc", false) then
 		PST:addModifiers({ ancwep_divineMessengerProc = false }, true)

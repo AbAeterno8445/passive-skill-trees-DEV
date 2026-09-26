@@ -364,6 +364,11 @@ return {
         "+10% chance for scared hearts to heal an additional 1/2 heart on pickup."
     },
 
+    ["node_emptyroomspeed_name"] = "Empty Room Speed",
+    ["node_emptyroomspeed"] = {
+        "+{{emptyRoomSpeed}} speed while in cleared rooms with no monsters."
+    },
+
     ["node_chaosmode"] = {
         "While allocated, beginning a run applies effects from all trees at random, regardless of",
         "node allocation.",

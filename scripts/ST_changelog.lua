@@ -3,6 +3,9 @@ function PST:getChangelogList()
         "(You can disable this popup on new versions through Mod Config Menu Impure in-game)",
         "",
 
+        "1.4.9",
+        "- Added \"Empty Room Speed\" sets of nodes to the global tree.",
+
         "1.4.8",
         "- Added a new \"Soul Meridion\" Artifact to the Sidereal Tree.",
         "- Multi-segment bosses now grant 10x as much XP on death in boss rooms, and 6x in non-boss rooms, to account for on-death effects triggering once.",
