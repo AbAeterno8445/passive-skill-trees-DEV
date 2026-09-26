@@ -146,7 +146,7 @@ function PST:onSlotUpdate(slot)
             -- Generosity In Steps node
             if PST:getTreeSnapshotMod("generosityInSteps", false) then
                 PST:addModifiers({ generosityInStepsCount = 1 }, true)
-                if PST:getTreeSnapshotMod("generosityInStepsCount", 0) >= 10 then
+                if PST:getTreeSnapshotMod("generosityInStepsCount", 0) >= 10 + PST:getTreeSnapshotMod("generosityInStepsJamCount", 0) then
                     Game():SetStateFlag(GameStateFlag.STATE_DONATION_SLOT_JAMMED, true)
 
                     local donoSlots = Isaac.FindByType(EntityType.ENTITY_SLOT, SlotVariant.DONATION_MACHINE)
@@ -156,7 +156,6 @@ function PST:onSlotUpdate(slot)
                         newSlot.TargetPosition = tmpSlot.TargetPosition
                         tmpSlot:Remove()
                     end
-                    PST:addModifiers({ generosityInStepsCount = { value = 0, set = true } }, true)
                     SFXManager():Play(SoundEffect.SOUND_COIN_SLOT)
                 end
             end
@@ -287,6 +286,17 @@ function PST:onSlotUpdate(slot)
             local randPool = PST.impromptuGamblerPools[math.random(#PST.impromptuGamblerPools)]
 			local newItem = Game():GetItemPool():GetCollectible(randPool, false, Random() + 1)
             slot:SetPrizeCollectible(newItem)
+        end
+    end
+
+    -- Donation machine update
+    if slot.Variant == SlotVariant.DONATION_MACHINE then
+        -- Generosity In Steps node, restore if jammed before threshold
+        if PST:getTreeSnapshotMod("generosityInSteps", false) then
+            if PST:getTreeSnapshotMod("generosityInStepsCount", 0) < 10 + PST:getTreeSnapshotMod("generosityInStepsJamCount", 0) and
+            Game():GetStateFlag(GameStateFlag.STATE_DONATION_SLOT_JAMMED) == true then
+                PST:restoreDonoMachine()
+            end
         end
     end
 end

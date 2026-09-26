@@ -847,9 +847,6 @@ function PST:restoreDonoMachine()
 		Game():Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, tmpSlot.Position, Vector.Zero, nil, 0, Random() + 1)
 		SFXManager():Play(SoundEffect.SOUND_SLOTSPAWN)
 	end
-	if PST:getTreeSnapshotMod("generosityInSteps", false) then
-		PST:addModifiers({ generosityInStepsCount = { value = 0, set = true } }, true)
-	end
 end
 
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----

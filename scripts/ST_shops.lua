@@ -77,6 +77,10 @@ function PST:onShopPurchase(pickup, player, spent)
                 PST:restoreDonoMachine()
             end
         end
+        -- Increase Generosity In Steps threshold for floor
+        if PST:getTreeSnapshotMod("generosityInSteps", false) then
+            PST:addModifiers({ generosityInStepsJamCount = 10 }, true)
+        end
 
         -- Ancient starcursed jewel: Glittering Starstone
         if PST:SC_getSnapshotMod("glitteringStarstone", false) then

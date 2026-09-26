@@ -262,8 +262,9 @@ return {
 
     ["node_generosityinsteps_name"] = "Generosidad Paso A Paso",
     ["node_generosityinsteps"] = {
-        "La máquina de donaciones siempre se romperá cada 10 monedas donadas.",
-        "Comprar cualquier objeto restaura la máquina de donaciones, independientemente del precio."
+        "La máquina de donaciones siempre se romperá al donar 10 monedas.",
+        "Comprar cualquier objeto aumenta este limite en 10 monedas para el piso actual, y restaura la máquina de donaciones si esta rota.",
+        "Si la máquina de donaciones se rompe antes de este limite, se restaura automáticamente."
     },
 
     ["node_bossrushtimer_name"] = "Aumento De Tiempo Para Boss Rush",

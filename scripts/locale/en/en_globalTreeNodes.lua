@@ -260,7 +260,8 @@ return {
     ["node_generosityinsteps_name"] = "Generosity In Steps",
     ["node_generosityinsteps"] = {
         "Donation Machine always jams after donating 10 coins.",
-        "Purchasing any shop item restores a jammed Donation Machine."
+        "Purchasing any shop item increases this threshold by 10 coins for that floor, and restores the machine if jammed.",
+        "If the Donation Machine jams before the coin threshold, restore it."
     },
 
     ["node_bossrushtimer_name"] = "Boss Rush Door Timer Increase",

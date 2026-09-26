@@ -1179,6 +1179,11 @@ function PST:onCurseEval(curses)
         curses = curses | LevelCurse.CURSE_OF_DARKNESS
     end
 
+    -- Generosity in Steps node
+    if PST:getTreeSnapshotMod("generosityInSteps", false) then
+        PST:addModifiers({ generosityInStepsJamCount = { value = 0, set = true } }, true)
+    end
+
     -- Cosmic Realignment node
     if PST:cosmicRCharPicked(PlayerType.PLAYER_CAIN_B) then
         -- Tainted Cain, roll for curse of the blind
