@@ -10,7 +10,8 @@ PSTTreeScreenMenu = {
     ASTRAL_FORGE = "astralForge",
     BAZAAR = "bazaar",
     ANCIENT_WEAPON_BOUNTIES = "ancientWepBounties",
-    MENU_TABBER = "menuTabber"
+    MENU_TABBER = "menuTabber",
+    PROG_UPDATES = "progUpdates"
 }
 
 local menuScreensModule = {
@@ -25,7 +26,8 @@ local menuScreensModule = {
         [PSTTreeScreenMenu.ASTRAL_FORGE] = include("scripts.tree_screen.modules.menu_screens.astralForgeScreen"),
         [PSTTreeScreenMenu.BAZAAR] = include("scripts.tree_screen.modules.menu_screens.timelessBazaarScreen"),
         [PSTTreeScreenMenu.ANCIENT_WEAPON_BOUNTIES] = include("scripts.tree_screen.modules.menu_screens.ancientWepBountiesScreen"),
-        [PSTTreeScreenMenu.MENU_TABBER] = include("scripts.tree_screen.modules.menu_screens.menuTabberScreen")
+        [PSTTreeScreenMenu.MENU_TABBER] = include("scripts.tree_screen.modules.menu_screens.menuTabberScreen"),
+        [PSTTreeScreenMenu.PROG_UPDATES] = include("scripts.tree_screen.modules.menu_screens.progUpdatesScreen")
     }
 }
 

@@ -2217,6 +2217,9 @@ function PST:resetData()
 			}]]
 		},
 
+		-- Progression updates
+		progUpdates = {},
+
 		-- For initializing new unsupported characters, so they can gain XP
 		newChars = {},
 		newCharsTainted = {},

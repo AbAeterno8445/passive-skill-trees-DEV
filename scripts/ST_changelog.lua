@@ -4,6 +4,8 @@ function PST:getChangelogList()
         "",
 
         "1.4.9",
+        "- Added a \"Progression Updates\" free node to the global tree. While allocated, progression milestones and special unlocks will be logged",
+        "in a menu you can access through this node, to quickly review recent events.",
         "- Added \"Empty Room Speed\" sets of nodes to the global tree.",
         "- The \"Generosity In Steps\" node now increases its coin threshold by 10 for that floor when purchasing any item, and restores the donation machine",
         "if it jams before its coin threshold.",

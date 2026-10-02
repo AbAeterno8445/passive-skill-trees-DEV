@@ -274,6 +274,12 @@ function PST:astralCompAddProgress(eggName, prog)
                     local targetText = "astralcomp_ui_lvlupText"
                     if compData.level == 0 then
                         targetText = "astralcomp_ui_hatchText"
+
+                        -- Progression update: egg hatched
+                        PST:addProgressionUpdate(PSTProgUpdateType.EGG_HATCH, { compName = compName })
+                    else
+                        -- Progression update: companion level up
+                        PST:addProgressionUpdate(PSTProgUpdateType.COMP_LEVEL, { compNamee = compName, compLevel = compData.level + 1 })
                     end
                     PST:createFloatTextFX(PST:getLocalizedFormatStr(targetText, { compName = compName }), Vector.Zero, Color(0.7, 1, 0.7), 0.12, 200, true)
                     SFXManager():Play(SoundEffect.SOUND_THUMBSUP, 0.9)

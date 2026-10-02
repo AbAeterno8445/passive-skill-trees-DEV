@@ -47,6 +47,9 @@ PST.config = {
     -- Max amount of backups to keep (if backup dll is present)
     maxBackups = 3,
 
+    -- Max amount of progression update entries for the "Progression Updates" node. Past this number, oldest entries get removed
+    maxProgUpdates = 100,
+
     -- Toggle special challenge mark rendering (in case incompatibilities break it)
     specialMarkRendering = true,
 

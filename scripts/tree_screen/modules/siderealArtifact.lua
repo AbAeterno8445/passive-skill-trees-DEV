@@ -378,9 +378,15 @@ function PST:sideArtiObjProgress(artiName, prog, set)
         if not PST.modData.sideArtiUnlockProg[artiName] then
             PST.modData.sideArtiUnlockProg[artiName] = 0
         end
+        local wasUnlocked = PST:isSideArtiUnlocked(artiName)
         PST.modData.sideArtiUnlockProg[artiName] = math.min(sideArtiData.objective.req, PST.modData.sideArtiUnlockProg[artiName] + prog)
         if set then
             PST.modData.sideArtiUnlockProg[artiName] = math.min(sideArtiData.objective.req, prog)
+        end
+
+        -- Progression update: artifact unlocked
+        if not wasUnlocked and PST.modData.sideArtiUnlockProg[artiName] >= sideArtiData.objective.req then
+            PST:addProgressionUpdate(PSTProgUpdateType.ARTIFACT_UNLOCK, { artifactName = artiName })
         end
     end
 end

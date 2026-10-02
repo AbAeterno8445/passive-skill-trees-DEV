@@ -586,6 +586,10 @@ function PST:expedLoseAttempt(depth, uber)
     local tmpExpedition = PST:getExpedData(depth, uber)
     if tmpExpedition then
         tmpExpedition.attempts = math.max(0, tmpExpedition.attempts - 1)
+
+        -- Progression update: lost expedition attempt
+        PST:addProgressionUpdate(PSTProgUpdateType.EXPED_LOSE, { expDepth = depth, isUber = uber })
+
         if tmpExpedition.attempts == 0 then
             -- All attempts lost, re-generate expedition, marking inaccessible nodes as 'dead', and completed nodes as no longer rewarding (with deathState property)
             local compNodes = {}
@@ -627,6 +631,9 @@ function PST:expedLoseAttempt(depth, uber)
                 PST.uberExpeditionsData[depth] = newExpedition
             end
             PST:updateExpedAccess(depth, uber)
+
+            -- Progression update: expedition reset from lost attempts
+            PST:addProgressionUpdate(PSTProgUpdateType.EXPED_RESET, { expDepth = depth, isUber = uber })
         end
     end
 end
@@ -1028,6 +1035,9 @@ function PST:expedObjAddEntropy(expData, entropy, noMods)
                     end
                     if failsafe < 200 then
                         table.insert(expData.dsMods, newMod)
+
+                        -- Progression update: uber expedition gained deep-space mod
+                        PST:addProgressionUpdate(PSTProgUpdateType.UBEREXP_DEEPSP, { expDepth = expData.depth })
                     end
                     addMods = addMods - 1
                 end

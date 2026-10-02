@@ -294,6 +294,12 @@ function PST:addXP(xpParam, showText, overflow, noExped)
 			local currentChar = PST:getCurrentCharName()
 			if currentChar then
 				SFXManager():Play(SoundEffect.SOUND_POWERUP2)
+
+				-- Progress update notification: level 30
+				if charData.level == 29 and not PST:SC_isStarTreeUnlocked() then
+					PST:addProgressionUpdate(PSTProgUpdateType.LEVEL30)
+				end
+
 				charData.level = charData.level + 1
 				charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
 
@@ -311,6 +317,11 @@ function PST:addXP(xpParam, showText, overflow, noExped)
 						charData.skillPoints = PST.modData.charData[currentChar].skillPoints + 1
 						charData.xpRequired = PST:getLevelXPReq(charData.level)
 					end
+				end
+
+				-- Progress update notification: level 60
+				if charData.level == 60 then
+					PST:addProgressionUpdate(PSTProgUpdateType.LEVEL60, { charName = currentChar })
 				end
 
 				PST:createFloatTextFX(PST:getLocalized("ftxt_levelUp"), Vector.Zero, Color(0.7, 0.85, 1, 0.7), 0.17, 100, true)

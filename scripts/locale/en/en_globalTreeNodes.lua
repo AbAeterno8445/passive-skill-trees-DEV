@@ -370,6 +370,14 @@ return {
         "+{{emptyRoomSpeed}} speed while in cleared rooms with no monsters."
     },
 
+    ["node_progressionupdates_name"] = "Progression Updates",
+    ["node_progressionupdates"] = {
+        "While allocated, progression milestones will be logged in this node, such as a character reaching level 60,",
+        "unlocking new features, expedition attempts, etc.",
+        "Once allocated, press Allocate to access the Progression Updates view.",
+        "This node is free to allocate/respec."
+    },
+
     ["node_chaosmode"] = {
         "While allocated, beginning a run applies effects from all trees at random, regardless of",
         "node allocation.",

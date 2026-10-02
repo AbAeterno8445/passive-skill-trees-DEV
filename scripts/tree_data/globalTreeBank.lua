@@ -647,6 +647,7 @@ PST.SkillTreesAPI.AddCharacterTree("global", false, [[
 "1070": "{\"pos\":[-12,12],\"type\":1004,\"size\":\"Small\",\"name\":\"#node_emptyroomspeed_name\",\"description\":[\"#node_emptyroomspeed\"],\"modifiers\":{\"emptyRoomSpeed\":0.01},\"adjacent\":[1069]}",
 "1071": "{\"pos\":[-13,13],\"type\":1004,\"size\":\"Small\",\"name\":\"#node_emptyroomspeed_name\",\"description\":[\"#node_emptyroomspeed\"],\"modifiers\":{\"emptyRoomSpeed\":0.01},\"adjacent\":[1069]}",
 "1072": "{\"pos\":[-12,14],\"type\":1004,\"size\":\"Small\",\"name\":\"#node_emptyroomspeed_name\",\"description\":[\"#node_emptyroomspeed\"],\"modifiers\":{\"emptyRoomSpeed\":0.01},\"adjacent\":[1069]}",
-"1073": "{\"pos\":[-11,13],\"type\":1004,\"size\":\"Small\",\"name\":\"#node_emptyroomspeed_name\",\"description\":[\"#node_emptyroomspeed\"],\"modifiers\":{\"emptyRoomSpeed\":0.01},\"adjacent\":[1069]}"
+"1073": "{\"pos\":[-11,13],\"type\":1004,\"size\":\"Small\",\"name\":\"#node_emptyroomspeed_name\",\"description\":[\"#node_emptyroomspeed\"],\"modifiers\":{\"emptyRoomSpeed\":0.01},\"adjacent\":[1069]}",
+"1075": "{\"pos\":[-1,-1],\"type\":1005,\"size\":\"Large\",\"name\":\"#node_progressionupdates_name\",\"description\":[\"#node_progressionupdates\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true}"
 }
 ]])

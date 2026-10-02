@@ -212,6 +212,16 @@ function nodeDrawingModule:Render(tScreen)
             if node.name == "Ancient Weapon Bounties" then
                 tmpSprite:SetFrame("Default", 845)
                 tmpSprite:Render(Vector(finalDrawX, finalDrawY))
+            -- Progression Updates node, draw new updates number
+            elseif node.name == "Progression Updates" then
+                local newUpdateCount = PST:getNewProgUpdateCount()
+                if newUpdateCount > 0 then
+                    local txtCol = PST.kcolors.PROGUP_ORANGE
+                    local oldColAlpha = txtCol.Alpha
+                    txtCol.Alpha = self.alphaFlash
+                    PST.miniFont:DrawStringScaledUTF8(tostring(newUpdateCount) .. "!", finalDrawX + 7 * tScreen.zoomScale, finalDrawY + 5 * tScreen.zoomScale, tScreen.zoomScale, tScreen.zoomScale, txtCol)
+                    txtCol.Alpha = oldColAlpha
+                end
             end
 
             -- Crimson node, draw chosen medium node

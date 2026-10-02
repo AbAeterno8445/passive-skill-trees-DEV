@@ -182,6 +182,11 @@ function PST.treeScreen:InputAllocate()
                     self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.ANCIENT_WEAPON_BOUNTIES)
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
 
+                -- Progression Updates node, switch to progression updates menu
+                elseif self.hoveredNode.name == "Progression Updates" then
+                    self.modules.menuScreensModule:SwitchToMenu(PSTTreeScreenMenu.PROG_UPDATES)
+                    SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+
                 -- Obol Exchange node, convert global SP into arcane obols
                 elseif self.hoveredNode.name == "Obol Exchange" then
                     if PST.modData.skillPoints > 0 then
