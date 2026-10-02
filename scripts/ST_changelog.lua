@@ -9,6 +9,8 @@ function PST:getChangelogList()
         "- Added \"Empty Room Speed\" sets of nodes to the global tree.",
         "- The \"Generosity In Steps\" node now increases its coin threshold by 10 for that floor when purchasing any item, and restores the donation machine",
         "if it jams before its coin threshold.",
+        "- Additional compatibility for new mod items and entities (wookywok).",
+        "",
 
         "1.4.8",
         "- Added a new \"Soul Meridion\" Artifact to the Sidereal Tree.",

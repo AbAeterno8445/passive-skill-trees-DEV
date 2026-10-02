@@ -121,6 +121,21 @@ function PST:initModCompat()
 
 		-- Beggars
 		table.insert(PST.beggarTypes, Epiphany.Slot.CONVERTER_BEGGAR)
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Tr. Isaac", "Soul of Isaac"}, {"Tr. Magdalene", "Soul of Magdalene"}, {"Tr. Cain", "Soul of Cain"}, {"Tr. Judas", "Soul of Judas"}, {"Tr. ???", "Soul of ???"},
+			{"Tr. Eden", "Soul of Eden"}, {"Tr. Lost", "Soul of the Lost"}, {"Tr. Keeper", "Soul of the Keeper"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
 	end
 
     -- Fiend Folio
@@ -404,7 +419,7 @@ function PST:initModCompat()
 
         -- Soul stones
         local tmpSoulstones = {
-            {"Fiend", "Soul of Fiend"}, {"Golem", "Soul of Golem"}, {"Friend", "Soul of Friend"}, {"Inaba", "Soul of Inaba"}, {"Craig", "Soul of Craig"}
+            {"Fiend", "Soul of Fiend"}, {"Golem", "Soul of Golem"}, {"Friend", "Soul of Friend"}, {"Inaba", "Soul of Inaba"}, {"Craig", "Soul of Craig"}, {"The Skeletal Fiend", "Soul of Fiend"}, {"Tr. The Skeletal Fiend", "Soul of Fiend"},
         }
         for _, tmpSoulData in ipairs(tmpSoulstones) do
             for i=1,2 do
@@ -1328,6 +1343,9 @@ function PST:initModCompat()
 
 		-- Extra life items
         table.insert(PST.extraLifeItems, Isaac.GetItemIdByName("Return by Death"))
+
+		-- Trinket entropy blacklist
+        table.insert(PST.expedEntropyTrinketBlacklist, Isaac.GetTrinketIdByName("Precipice Blades"))
 	end
 
 	-- THE FUTURE
@@ -2940,6 +2958,21 @@ function PST:initModCompat()
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Bloody Cord"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Living Shield"))
         table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Fifth Seal"))
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Vitiated Isaac", "Soul of Isaac"}, {"Vitiated Cain", "Soul of Cain"}, {"Vitiated Azazel", "Soul of Azazel"},
+			{"Vitiated Lilith", "Soul of Lilith"}, {"Vitiated Apollyon", "Soul of Apollyon"}, {"Vitiated Bethany", "Soul of Bethany"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
 	end
 
 	-- Monsters Monthly
@@ -2953,6 +2986,31 @@ function PST:initModCompat()
 
 		-- Hosts
 		table.insert(PST.hostEnemies, PST_getCustomMobTable("Purple Host"))
+	end
+
+	-- TBoI: Retuned
+	if TBOI_RETUNED and not initMods.retuned then
+		initMods.retuned = true
+
+		-- Soul stones
+        local tmpSoulstones = {
+            {"Cadence", "Soul of Cadence"}
+        }
+        for _, tmpSoulData in ipairs(tmpSoulstones) do
+            for i=1,2 do
+                local plType = Isaac.GetPlayerTypeByName(tmpSoulData[1], i == 2)
+                local soulstoneID = Isaac.GetCardIdByName(tmpSoulData[2])
+                if plType ~= -1 and soulstoneID ~= -1 then
+                    PST.playerSoulstones[plType] = soulstoneID
+                end
+            end
+        end
+
+		-- Song of the Few node familiars
+        table.insert(PST.songOfTheFewFamiliars, Isaac.GetItemIdByName("Golden Lute"))
+
+		-- Grand Consonance node whitelist
+        table.insert(PST.grandConsonanceWhitelist, Isaac.GetEntityVariantByName("Golden Lute (Familiar)"))
 	end
 
 	-- Add songOfTheFewFamiliars items to T. Siren's Chromatic Dissonance familiar list
