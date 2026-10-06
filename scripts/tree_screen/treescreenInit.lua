@@ -105,9 +105,26 @@ for treeName, nodeNameList in pairs(tabNodes) do
     end
 end
 
-function PST.treeScreen:switchCurrentTree(newTree)
+function PST.treeScreen:switchCurrentTree(newTree, targetNode)
     self.currentTree = newTree
-    self:CenterCamera()
+
+    local nodeFound = false
+    if targetNode and PST.trees[newTree] then
+        -- Pan to given node if found
+        for _, tmpNode in pairs(PST.trees[newTree]) do
+            if tmpNode and tmpNode.name == targetNode then
+                self.treeCamera.X = -Isaac.GetScreenWidth() / 2 + tmpNode.pos.X * 38
+                self.treeCamera.Y = -Isaac.GetScreenHeight() / 2 + tmpNode.pos.Y * 38
+                self:UpdateCamZoomOffset()
+                nodeFound = true
+                break
+            end
+        end
+    end
+    if not nodeFound then
+        self:CenterCamera()
+    end
+
     self.modules.submenusModule:CloseSubmenu()
 end
 

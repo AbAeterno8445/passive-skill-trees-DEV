@@ -10,6 +10,7 @@ function PST:getChangelogList()
         "- The \"Generosity In Steps\" node now increases its coin threshold by 10 for that floor when purchasing any item, and restores the donation machine",
         "if it jams before its coin threshold.",
         "- Additional compatibility for new mod items and entities (wookywok).",
+        "- Reworked the Tab quick-access menu to be a grid of icons instead of a list, and added a few more options.",
         "",
 
         "1.4.8",
